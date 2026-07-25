@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🔴 Deep — SymbiQ</title>
+<link rel="stylesheet" href="style.css?v=10">
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" class="active" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<span class="tier r">🔴 Expert — formalism, equations, citations. Independently verified 2026-07-13.</span>
+<h1>The AI That Babysits Qubits</h1>
+
+<p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits; stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding = inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors.</p>
+
+<figure class="fig figcode figcard">
+  <div class="figscroll"><svg viewBox="0 0 566 286" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="The d=3 rotated surface code: nine data qubits, eight stabilizers — four weight-4 plaquettes in the bulk and four weight-2 checks on the boundary — with a weight-3 logical operator marked down the left column.">
+    <!-- Z plaquettes (violet): [0,1,3,4] [4,5,7,8] bulk, [2,5] [3,6] boundary -->
+    <rect class="plq z" x="120" y="50" width="80" height="80"/>
+    <rect class="plq z" x="200" y="130" width="80" height="80"/>
+    <path class="plq z" d="M280 50 A40 40 0 0 1 280 130 Z"/>
+    <path class="plq z" d="M120 130 A40 40 0 0 0 120 210 Z"/>
+    <!-- X plaquettes (teal): [1,2,4,5] [3,4,6,7] bulk, [0,1] [7,8] boundary -->
+    <rect class="plq x" x="200" y="50" width="80" height="80"/>
+    <rect class="plq x" x="120" y="130" width="80" height="80"/>
+    <path class="plq x" d="M120 50 A40 40 0 0 1 200 50 Z"/>
+    <path class="plq x" d="M200 210 A40 40 0 0 0 280 210 Z"/>
+
+    <!-- a weight-3 logical operator: undetectable, and its length IS the distance -->
+    <path d="M120 50 V210" stroke="var(--yellow)" stroke-width="3" stroke-dasharray="6 5" fill="none" opacity=".9"/>
+    <text class="lbl-s yellow" x="112" y="238" text-anchor="middle">X̄</text>
+
+    <!-- syndrome qubits at each check centre -->
+    <circle class="sq z" cx="160" cy="90"  r="7"/><circle class="sq z" cx="240" cy="170" r="7"/>
+    <circle class="sq z" cx="300" cy="90"  r="7"/><circle class="sq z" cx="100" cy="170" r="7"/>
+    <circle class="sq x" cx="240" cy="90"  r="7"/><circle class="sq x" cx="160" cy="170" r="7"/>
+    <circle class="sq x" cx="160" cy="30"  r="7"/><circle class="sq x" cx="240" cy="230" r="7"/>
+
+    <!-- data qubits -->
+    <g>
+      <circle class="dq" cx="120" cy="50"  r="11"/><circle class="dq" cx="200" cy="50"  r="11"/><circle class="dq" cx="280" cy="50"  r="11"/>
+      <circle class="dq" cx="120" cy="130" r="11"/><circle class="dq" cx="200" cy="130" r="11"/><circle class="dq" cx="280" cy="130" r="11"/>
+      <circle class="dq" cx="120" cy="210" r="11"/><circle class="dq" cx="200" cy="210" r="11"/><circle class="dq" cx="280" cy="210" r="11"/>
+    </g>
+    <g class="lbl-s" text-anchor="middle" style="font-size:9.5px">
+      <text x="120" y="53">0</text><text x="200" y="53">1</text><text x="280" y="53">2</text>
+      <text x="120" y="133">3</text><text x="200" y="133">4</text><text x="280" y="133">5</text>
+      <text x="120" y="213">6</text><text x="200" y="213">7</text><text x="280" y="213">8</text>
+    </g>
+
+    <!-- legend -->
+    <g transform="translate(360,44)">
+      <circle class="dq" cx="10" cy="0" r="9"/>
+      <text class="lbl" x="28" y="4">9 data qubits = d²</text>
+      <circle class="sq z" cx="10" cy="30" r="7"/>
+      <text class="lbl" x="28" y="34">4 Z-checks</text>
+      <circle class="sq x" cx="10" cy="56" r="7"/>
+      <text class="lbl" x="28" y="60">4 X-checks &nbsp;→ d²−1 = 8</text>
+      <rect class="plq z" x="2" y="80" width="16" height="16"/>
+      <text class="lbl" x="28" y="92">weight-4 in the bulk</text>
+      <path class="plq x" d="M2 112 A8 8 0 0 1 18 112 Z"/>
+      <text class="lbl" x="28" y="118">weight-2 on a boundary</text>
+      <line x1="2" y1="140" x2="18" y2="140" stroke="var(--yellow)" stroke-width="3" stroke-dasharray="5 4"/>
+      <text class="lbl" x="28" y="144">logical operator, weight 3</text>
+      <text class="lbl-s" x="0" y="168">Every check commutes with every</text>
+      <text class="lbl-s" x="0" y="181">other; the yellow chain commutes</text>
+      <text class="lbl-s" x="0" y="194">with all of them — so no syndrome</text>
+      <text class="lbl-s" x="0" y="207">ever fires, and the logical qubit</text>
+      <text class="lbl-s" x="0" y="220">flips silently.</text>
+    </g>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>d = 3, drawn exactly.</strong> Nine data qubits, eight stabilizers — four weight-4 plaquettes in the bulk, four weight-2 checks on the boundary, alternating X and Z so that every pair overlaps in an even number of qubits and commutes. The yellow chain is a logical X̄ operator: it commutes with all eight stabilizers, so it is <em>undetectable</em> — and the shortest such chain has weight 3, which is precisely why this code is called distance 3. Verified by exhaustive search over all 2⁹ Pauli supports: no nontrivial logical operator of weight 1 or 2 exists. Layout per Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a>; the same lattice drives <a href="qec.html#qec-widget">the interactive decoder</a>.</figcaption>
+</figure>
+
+<p>MWPM solves this on a decoder graph with edge weights from an assumed independent-Pauli + phenomenological noise model — provably good under that model, degraded under correlated noise, leakage, cross-talk, and non-Markovian drift.</p>
+
+<p><strong>AlphaQubit:</strong> recurrent transformer over per-round syndrome inputs (including analog "soft" readout information rather than binarized measurements — a key advantage), pretrained on hundreds of millions of simulated samples, fine-tuned on thousands of experimental samples from a Sycamore processor. Reported ~6% fewer logical errors than tensor-network decoders (near-optimal but too slow for real time) and ~30% fewer than correlated matching, maintained up to <em>d</em>=11 (241 qubits) in simulation.</p>
+
+<div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
+
+<p>Below threshold, a decoder that effectively raises p<sub>th</sub> or sharpens the exponent compounds through every future distance increase — decoder quality is hardware you don't have to build.</p>
+
+<p><strong>The real-time frontier:</strong> "NN decoders are too slow for the ~1 μs cycle" is no longer simply true — an FPGA neural decoder achieved 550 ns system latency (124 ns network inference) inside a 1.25 μs QEC cycle on superconducting hardware (May 2026). Scaling learned decoders to large <em>d</em> in real time remains open.</p>
+
+<h2>References</h2>
+<div class="card">
+  <p>• AlphaQubit: <a href="https://arxiv.org/abs/2310.05900">arXiv 2310.05900</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
+  • Below-threshold surface code (Willow): Google Quantum AI, <em>Nature</em> 2024<br>
+  • Real-time FPGA neural decoder: <a href="https://arxiv.org/abs/2605.04892">arXiv 2605.04892</a></p>
+</div>
+
+<footer>The deep end: formalism, citations, a hostile referee.<br>SymbiQ · Every 🔴 post passes an independent hostile-referee verification before it ships. Find an error anyway? It goes on the <a href="corrections.html">Corrections</a> page with more prominence than the original.</footer>
+</div>
+</body>
+</html>

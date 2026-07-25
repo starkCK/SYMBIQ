@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SymbiQ — Two broken geniuses, fixing each other.</title>
+<meta name="description" content="SymbiQ explains the loop between AI and quantum computing — daily, at three levels: no math, some math, real math.">
+<link rel="stylesheet" href="style.css?v=10">
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" class="active" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>Two broken geniuses,<br>fixing each other.</h1>
+<p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop — daily, at three levels, as a game.</p>
+
+<p>Everyone's watching the AI race. The interesting race is the one behind it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum computers are being aimed at the data AI can't get anywhere else. Neither story makes sense alone. SymbiQ covers the loop.</p>
+
+<figure class="fig figloop figcard">
+  <div class="figscroll"><svg viewBox="0 0 640 262" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Diagram of the loop: AI fixes quantum's errors today, drawn as a solid arrow; quantum will supercharge AI later, drawn as a dashed arrow.">
+    <defs>
+      <marker id="loopArrowT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/>
+      </marker>
+      <marker id="loopArrowV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--violet)"/>
+      </marker>
+    </defs>
+
+    <!-- the two halves -->
+    <circle class="node ai" cx="150" cy="130" r="62"/>
+    <text class="lbl-b teal" x="150" y="124" text-anchor="middle">AI</text>
+    <text class="lbl-s" x="150" y="142" text-anchor="middle">learns patterns,</text>
+    <text class="lbl-s" x="150" y="154" text-anchor="middle">is never exactly right</text>
+
+    <circle class="node q" cx="490" cy="130" r="62"/>
+    <text class="lbl-b violet" x="490" y="124" text-anchor="middle">QUANTUM</text>
+    <text class="lbl-s" x="490" y="142" text-anchor="middle">is exactly right,</text>
+    <text class="lbl-s" x="490" y="154" text-anchor="middle">falls apart constantly</text>
+
+    <!-- top: what already works -->
+    <path class="arc now" d="M 206 100 Q 320 26 434 100" marker-end="url(#loopArrowT)"/>
+    <text class="lbl-b teal" x="320" y="44" text-anchor="middle">reads the errors</text>
+    <text class="lbl-s teal" x="320" y="58" text-anchor="middle">SHIPPING NOW — learned decoders beat the hand-written ones</text>
+    <circle class="flow pulse f1" r="4"/>
+
+    <!-- bottom: what is still ahead. the dashes ARE the honesty -->
+    <path class="arc ahead" d="M 434 160 Q 320 234 206 160" marker-end="url(#loopArrowV)"/>
+    <text class="lbl-b violet" x="320" y="222" text-anchor="middle">will feed the data</text>
+    <text class="lbl-s violet" x="320" y="236" text-anchor="middle">MOSTLY AHEAD — one route is real, the rest are oversold</text>
+    <circle class="flow violet pulse2 f2" r="4"/>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>The asymmetry is the point.</strong> The top arrow is solid because it already happened — AI decoders are running against real chips today. The bottom arrow is dashed because it mostly has not. The genuine near-term route is quantum hardware <em>growing</em> training data about nature that no classical source can produce — while the loudest claim, an exponential speedup for the linear algebra under machine learning, usually dies on the cost of getting ordinary data into the machine in the first place. We draw it dashed on purpose. <a href="ai.html">Both directions, ranked honestly ▸</a></figcaption>
+</figure>
+
+<div class="card" id="daily-q">
+  <h3>The Daily Question</h3>
+  <p id="dq-meta"></p>
+  <p id="dq-q" style="font-size:1.05rem;font-weight:600"></p>
+  <div id="dq-opts"></div>
+  <p style="margin:8px 0 0"><button id="dq-hint" class="preset">Need a hint?</button></p>
+  <div id="dq-out" aria-live="polite"></div>
+  <p id="dq-lattice" style="color:var(--muted);font-size:.9rem;margin-bottom:0"></p>
+</div>
+
+<div class="grid">
+  <div class="card"><h3>🟢 Basics</h3><p>Zero math, zero jargon. Your smartest friend who studied literature gets it.</p><a href="basics.html">Start here →</a></div>
+  <div class="card"><h3>🟡 Concepts</h3><p>Real terms, light math. An engineer follows without googling.</p><a href="concepts.html">Go deeper →</a></div>
+  <div class="card"><h3>🔴 Deep</h3><p>Actual formalism, real equations, paper citations. Independently verified before it ships.</p><a href="deep.html">The mathematics →</a></div>
+</div>
+
+<h2>Why the timing matters</h2>
+<p>This field does not move at the speed of press releases. Here is the single clearest example, and every number is from a primary paper: how many physical qubits it would take to steal one Bitcoin key <em>inside the ten-minute window</em> before your transaction confirms.</p>
+
+<figure class="fig figbar figcard">
+  <div class="figscroll"><svg viewBox="0 0 600 216" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Logarithmic bar chart: the 2022 estimate for a racing attack on a Bitcoin key was 1.9 billion physical qubits; the 2026 estimate is about 500,000; today's biggest chips hold a few thousand.">
+    <!-- 2022 -->
+    <text class="lbl" x="158" y="44" text-anchor="end">2022 estimate</text>
+    <text class="lbl-s" x="158" y="57" text-anchor="end">Webber et al.</text>
+    <rect class="track" x="168" y="30" width="380" height="26" rx="6"/>
+    <rect class="bar old" x="168" y="30" width="341" height="26" rx="6"/>
+    <text class="num violet" x="519" y="48">1.9 billion</text>
+
+    <!-- 2026 -->
+    <text class="lbl" x="158" y="98" text-anchor="end">2026 estimate</text>
+    <text class="lbl-s" x="158" y="111" text-anchor="end">Gidney et al.</text>
+    <rect class="track" x="168" y="84" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="84" width="147" height="26" rx="6"/>
+    <text class="num teal" x="325" y="102">~500 thousand</text>
+
+    <!-- today -->
+    <text class="lbl" x="158" y="152" text-anchor="end">biggest chip today</text>
+    <text class="lbl-s" x="158" y="165" text-anchor="end">and it is noisy</text>
+    <rect class="track" x="168" y="138" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="138" width="26" height="26" rx="6"/>
+    <text class="num yellow" x="204" y="156">a few thousand</text>
+
+    <!-- log axis: stated, never implied -->
+    <line class="sMuted" x1="168" y1="184" x2="548" y2="184"/>
+    <g class="lbl-s" text-anchor="middle">
+      <line class="sMuted" x1="168" y1="184" x2="168" y2="189"/><text x="168" y="200">10³</text>
+      <line class="sMuted" x1="277" y1="184" x2="277" y2="189"/><text x="277" y="200">10⁵</text>
+      <line class="sMuted" x1="385" y1="184" x2="385" y2="189"/><text x="385" y="200">10⁷</text>
+      <line class="sMuted" x1="494" y1="184" x2="494" y2="189"/><text x="494" y="200">10⁹</text>
+    </g>
+    <text class="lbl-s" x="358" y="213" text-anchor="middle">physical qubits — logarithmic scale, so each step right is 100×</text>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>The same attack got 3,800× cheaper in four years.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at 1.9 billion physical qubits. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million — partly because the first half of Shor's algorithm can be precomputed before your transaction even appears. The gap from today's hardware is now roughly <strong>three</strong> orders of magnitude, not six. Note the axis is logarithmic: that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
+</figure>
+
+<h2>How it works here</h2>
+<p>A meme a day (the door). A question a day: answers sit in superposition — spoiler-tagged — until the nightly <strong>Collapse</strong>, when the Answer of the Day is named and credited. On weekends the whole community raids the <strong>Boss Question</strong> together: it has hit points, and verified partial results deal damage. Everything you earn grows <strong>The Lattice</strong> — the community's shared code distance, displayed right here as it climbs.</p>
+<p>SymbiQ is edited, not crowdsourced: member submissions are reviewed by the desk, and the best ship to the main feeds with your name on them. Catching an error in <em>our</em> content pays the biggest bounty on the server. A weekly scoreboard tracks the six labs racing to fault tolerance (<a href="race.html">The Race</a>) — including our own prediction record, kept publicly. When we get something wrong, the correction gets <em>more</em> prominence than the mistake (<a href="corrections.html">Corrections</a>).</p>
+
+<h2 id="join-loop">Join the loop</h2>
+<!-- FILL BEFORE LAUNCH: replace the three href="#" values below (Discord invite, Beehiiv signup URL, X profile URL). Nothing else on this page needs editing. -->
+<div class="grid">
+  <div class="card"><h3>Discord</h3><p>The daily question, the nightly Collapse, weekend Boss Raids. Free, always.</p><a href="#" id="join-discord">Join the server →</a></div>
+  <div class="card"><h3>The Symbiosis</h3><p>The weekly newsletter: best meme, the Signals, the Race, the week's credited answers.</p><a href="#" id="join-newsletter">Subscribe →</a></div>
+  <div class="card"><h3>Follow</h3><p>The daily meme and headline, wherever you already scroll.</p><a href="#" id="join-x">@symbiq on X →</a></div>
+</div>
+
+<footer>SymbiQ · The Symbiosis newsletter · No hype, no financial advice, sources always.</footer>
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById('daily-q');
+  if (!box) return;
+  var KEY = 'symbiq_dq_v1';
+  var TIER = { g: ['🟢', 'No math'], y: ['🟡', 'Some math'], r: ['🔴', 'Real math'] };
+  var TICK = { true: '🟩', false: '🟥' };
+
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+  fetch('data/today.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(init)
+    .catch(function () {
+      document.getElementById('dq-out').innerHTML =
+        '<p style="color:var(--muted)">The daily question reads <code>data/today.json</code>, so it needs the site to be served (it will work on the live site; for a local preview run <code>python -m http.server 8642 --directory site</code>).</p>';
+      document.getElementById('dq-hint').style.display = 'none';
+    });
+
+  function init(D) {
+    var s = load(), q = D.question, done = s.history && s.history[D.date];
+    document.getElementById('dq-meta').innerHTML =
+      '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
+      '<span style="color:var(--muted)"> Daily Question #' + D.qnum + ' · ' + D.date + '</span>';
+    document.getElementById('dq-q').textContent = q.text;
+    var opts = document.getElementById('dq-opts');
+    q.options.forEach(function (o, i) {
+      var b = document.createElement('button');
+      b.className = 'preset dq-opt';
+      b.textContent = String.fromCharCode(65 + i) + '. ' + o;
+      b.setAttribute('data-i', i);
+      b.addEventListener('click', function () { answer(D, i); });
+      opts.appendChild(b);
+    });
+    var hint = document.getElementById('dq-hint');
+    hint.addEventListener('click', function () {
+      hint.outerHTML = '<p style="color:var(--muted)"><em>Hint: ' + esc(q.hint) + '</em></p>';
+    });
+    if (D.lattice) {
+      document.getElementById('dq-lattice').innerHTML =
+        'The Lattice: <strong>' + D.lattice.f.toLocaleString('en-US') + ' F</strong> of ' +
+        D.lattice.goal.toLocaleString('en-US') + ' to reach code distance d=' + D.lattice.nextD +
+        ' — it only grows in the <a href="#join-loop">Discord</a>.';
+    }
+    if (done) reveal(D, done.pick, null);
+  }
+
+  function answer(D, pick) {
+    var s = load();
+    s.history = s.history || {};
+    if (s.history[D.date]) return;
+    var ok = pick === D.question.answerIndex;
+    var grace = false;
+    if (s.lastQnum == null) { s.streak = 1; }
+    else {
+      var gap = D.qnum - s.lastQnum;
+      if (gap === 1) { s.streak = (s.streak || 0) + 1; }
+      else if (gap === 2 && (s.graceQnum == null || D.qnum - s.graceQnum > 7)) {
+        s.streak = (s.streak || 0) + 1; s.graceQnum = D.qnum; grace = true;
+      }
+      else if (gap > 1) { s.streak = 1; }
+    }
+    s.lastQnum = D.qnum;
+    s.history[D.date] = { pick: pick, ok: ok, q: D.qnum };
+    save(s);
+    reveal(D, pick, grace);
+  }
+
+  function reveal(D, pick, grace) {
+    var s = load(), q = D.question, ok = pick === q.answerIndex;
+    Array.prototype.forEach.call(document.querySelectorAll('.dq-opt'), function (b) {
+      var i = +b.getAttribute('data-i');
+      b.disabled = true;
+      if (i === q.answerIndex) b.className = 'preset dq-opt dq-ok';
+      else if (i === pick) b.className = 'preset dq-opt dq-no';
+      else b.style.opacity = '.45';
+    });
+    var h = document.getElementById('dq-hint'); if (h) h.style.display = 'none';
+    var streak = s.streak || 1;
+    var line = ok
+      ? '<strong style="color:var(--teal)">Correct.</strong>'
+      : '<strong style="color:#f0708a">Not this one.</strong> Wrong answers still keep your streak alive — showing up is the mechanic.';
+    var gnote = grace ? ' <span style="color:var(--teal)">(error corrected ✓ — one missed day repaired, fault-tolerant streaks survive a single error)</span>' : '';
+    var out = document.getElementById('dq-out');
+    out.innerHTML =
+      '<p style="margin-top:12px">' + line + ' Coherence streak: <strong>' + streak + '</strong> day' + (streak === 1 ? '' : 's') + '.' + gnote + '</p>' +
+      '<details' + ' open><summary>🟢 Why (no math)</summary><p>' + esc(q.explain.g) + '</p></details>' +
+      '<details><summary>🟡 Why (some math)</summary><p>' + esc(q.explain.y) + '</p></details>' +
+      '<details><summary>🔴 Why (real math)</summary><p>' + esc(q.explain.r) + '</p></details>' +
+      '<div class="dq-heat" id="dq-heat" title="Your last 12 weeks"></div>' +
+      '<p style="margin-top:10px"><button class="preset" id="dq-share">Share result</button> ' +
+      '<a href="#join-loop" style="margin-left:8px">Streaks here are local — make them count in the Discord →</a></p>';
+    heat(s);
+    document.getElementById('dq-share').addEventListener('click', function () { share(D, ok, streak); });
+  }
+
+  function heat(s) {
+    var el = document.getElementById('dq-heat'), hist = s.history || {};
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var html = '', wk = '<span class="w">';
+    for (var i = 83; i >= 0; i--) {
+      var d = new Date(today.getTime() - i * 86400000);
+      var k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      var c = hist[k] ? (hist[k].ok ? 'background:var(--teal)' : 'background:#8B5CF6;opacity:.6') : '';
+      wk += '<i style="' + c + '" title="' + k + '"></i>';
+      if (i % 7 === 0) { html += wk + '</span>'; wk = '<span class="w">'; }
+    }
+    el.innerHTML = html;
+  }
+
+  function share(D, ok, streak) {
+    var s = load(), hist = s.history || {};
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var row = '';
+    for (var i = 6; i >= 0; i--) {
+      var d = new Date(today.getTime() - i * 86400000);
+      var k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      row += hist[k] ? TICK[hist[k].ok] : '⬛';
+    }
+    var txt = 'SymbiQ Daily #' + D.qnum + ' ' + TIER[D.tier][0] + ' ' + (ok ? '✅' : '❌') +
+      '\nCoherence streak: ' + streak + '\n' + row + '\n' + location.origin + location.pathname;
+    var btn = document.getElementById('dq-share');
+    function done() { btn.textContent = 'Copied ✓'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function () { fallback(txt, done); });
+    } else { fallback(txt, done); }
+  }
+  function fallback(txt, done) {
+    var t = document.createElement('textarea');
+    t.value = txt; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); done(); } catch (e) { window.prompt('Copy your result:', txt); }
+    document.body.removeChild(t);
+  }
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.dq-opt{display:block;width:100%;text-align:left;margin:6px 0}' +
+    '.dq-opt:disabled{cursor:default}' +
+    '.dq-ok{border-color:var(--teal)!important;box-shadow:0 0 0 1px var(--teal)}' +
+    '.dq-no{border-color:#f0708a!important;opacity:.8}' +
+    '#daily-q details{margin:6px 0;padding:6px 10px;border:1px solid var(--border);border-radius:8px}' +
+    '#daily-q summary{cursor:pointer}' +
+    '.dq-heat{display:flex;gap:3px;margin-top:12px}' +
+    '.dq-heat .w{display:flex;flex-direction:column;gap:3px}' +
+    '.dq-heat i{width:9px;height:9px;border-radius:2px;background:var(--border);display:block}';
+  document.head.appendChild(st);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Solver's Path — SymbiQ</title>
+<meta name="description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real quantum mechanics, wearing an adventure.">
+<link rel="stylesheet" href="style.css?v=10">
+<script src="save.js"></script>
+<script src="games.js?v=3"></script>
+<script src="nav.js?v=4" defer></script>
+<style>
+/* ---------------- The Solver's Path ---------------- */
+.journey { display: grid; grid-template-columns: minmax(0, 330px) 1fr; gap: 24px; align-items: start; margin-top: 6px; }
+@media (max-width: 720px) { .journey { grid-template-columns: 1fr; gap: 18px; } }
+
+/* cold open */
+#intro { max-width: 640px; margin: 8px auto; }
+#intro .script p { margin: 0 0 12px; opacity: 0; transform: translateY(8px); }
+#intro.go .script p { animation: fadeUp .6s cubic-bezier(.22,.7,.3,1) both; }
+#intro.go .script p:nth-child(1){animation-delay:.05s} #intro.go .script p:nth-child(2){animation-delay:.5s}
+#intro.go .script p:nth-child(3){animation-delay:1.0s} #intro.go .script p:nth-child(4){animation-delay:1.5s}
+#intro.go .script p:nth-child(5){animation-delay:2.0s} #intro.go .script p:nth-child(6){animation-delay:2.5s}
+#intro .lead { font-size: 1.12rem; }
+#intro .last { color: var(--text); font-weight: 600; }
+.namerow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; opacity: 0; }
+#intro.go .namerow { animation: fadeUp .6s ease-out 2.9s both; }
+#intro-name { flex: 1 1 200px; min-width: 0; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font: inherit; }
+#intro-name:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
+
+/* map */
+.mapwrap { position: sticky; top: 78px; }
+#map { display: block; width: 100%; max-width: 330px; height: auto; margin: 0 auto; overflow: visible; }
+.trail { fill: none; stroke: var(--border); stroke-width: 3; stroke-dasharray: 2 7; stroke-linecap: round; opacity: .7; }
+.trail-done { fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: round; opacity: .9; }
+.node { cursor: pointer; }
+.node .disc { fill: var(--bg); stroke: var(--border); stroke-width: 2.5; transition: transform .22s cubic-bezier(.2,.7,.3,1), stroke .25s, fill .25s; transform-box: fill-box; transform-origin: center; }
+.node:hover .disc { transform: scale(1.14); }
+.node.available .disc { stroke: var(--teal); }
+.node.available.pulsed .disc { animation: nodepulse 2.2s ease-in-out infinite; }
+.node.complete .disc { fill: var(--teal); stroke: var(--teal); }
+.node.locked { cursor: not-allowed; }
+.node.locked .disc { opacity: .5; }
+.node.soon .disc { stroke-dasharray: 3 3; }
+.node .num { fill: var(--muted); font: 700 12px/1 inherit; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.node.complete .num { fill: var(--bg); }
+.node.available .num { fill: var(--teal); }
+.node .lbl { fill: var(--muted); font: 600 10px/1 inherit; pointer-events: none; }
+.node.sel .disc { stroke: var(--violet); stroke-width: 3; }
+@keyframes nodepulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: .35; } }
+
+.avatar { pointer-events: none; transition: transform .8s cubic-bezier(.5,.05,.2,1); }
+.avatar .halo { fill: var(--teal); opacity: .18; animation: halo 2.4s ease-in-out infinite; }
+.avatar .core { fill: var(--teal); stroke: var(--bg); stroke-width: 1.5; }
+@keyframes halo { 0%,100% { transform: scale(1); opacity: .18; } 50% { transform: scale(1.5); opacity: .06; } transform-box: fill-box; transform-origin: center; }
+
+/* panels */
+.hud { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.hud .who { font-weight: 700; color: var(--text); }
+.hud .prog { color: var(--muted); font-size: .9rem; }
+.hud .rst { margin-left: auto; font-size: .8rem; color: var(--muted); background: none; border: none; cursor: pointer; text-decoration: underline; }
+.mpanel { min-height: 120px; }
+.eyebrow { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.mentorline { color: var(--muted); font-style: italic; border-left: 2px solid var(--teal); padding-left: 12px; margin: 10px 0; }
+.enter { display: inline-block; margin-top: 6px; }
+.tag { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); color: var(--muted); margin-left: 6px; vertical-align: middle; }
+.tag.done { color: var(--teal); border-color: rgba(45,212,191,.5); }
+.tag.soon { color: var(--yellow); border-color: rgba(250,204,21,.45); }
+
+.cast-list, .codex-list { list-style: none; padding: 0; margin: 6px 0 0; }
+.cast-list li, .codex-list li { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border); }
+.cast-list li:first-child, .codex-list li:first-child { border-top: none; }
+.glyph { flex: 0 0 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; font-size: 1.05rem;
+  background: linear-gradient(135deg, rgba(45,212,191,.16), rgba(167,139,250,.16)); color: var(--text); border: 1px solid var(--border); }
+.cast-list .nm { font-weight: 700; } .cast-list .dom { color: var(--teal); font-size: .82rem; }
+.cast-list .arc { color: var(--muted); font-size: .86rem; margin-top: 2px; }
+.codex-list .sealed { color: var(--muted); opacity: .7; }
+.codex-list .ct { font-size: .82rem; color: var(--muted); }
+
+.subtabs { display: flex; gap: 6px; margin: 4px 0 10px; }
+.subtab { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+  cursor: pointer; font: inherit; font-size: .86rem; transition: all .18s ease; }
+.subtab.on { color: var(--teal); border-color: rgba(45,212,191,.5); background: rgba(45,212,191,.08); }
+.subtab:active { transform: translateY(1px); }
+@media (prefers-reduced-motion: reduce) {
+  #intro .script p, .namerow { opacity: 1 !important; animation: none !important; transform: none !important; }
+  .avatar, .node .disc { transition: none !important; }
+  .avatar .halo, .node.available.pulsed .disc { animation: none !important; }
+}
+</style>
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "VideoGame", "name": "The Solver's Path",
+  "description": "A narrative learning game about quantum computing and the operations-research ideas that touch AI: play a Solver mending the Lattice across five missions, each a real quantum-mechanical fact you can look up.",
+  "genre": ["Educational", "Puzzle"], "gamePlatform": "Web browser", "applicationCategory": "Game",
+  "author": {"@type": "Organization", "name": "SymbiQ"}, "inLanguage": "en", "isAccessibleForFree": true }
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink active" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" class="active" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>The Solver's Path</h1>
+<p class="tagline">The world runs on a hidden layer of corrections — and it is coming apart. You can see it. Mend it the only way it mends: by understanding it.</p>
+
+<!-- COLD OPEN -->
+<div class="card" id="intro" style="display:none">
+  <div class="script">
+    <p class="lead">The world has a hidden layer. A lattice of corrections, running underneath everything, holding it in one piece.</p>
+    <p>It is coming apart.</p>
+    <p>Where it fails, the Static gets in — and things stop being sure of what they are.</p>
+    <p>Most people never see it. You are not most people.</p>
+    <p>You are a <strong>Solver</strong>. You mend the Lattice the only way it can be mended: by <em>understanding</em> it.</p>
+    <p class="last">What do they call you?</p>
+  </div>
+  <div class="namerow">
+    <input id="intro-name" type="text" maxlength="24" placeholder="Name your Solver" autocomplete="off" aria-label="Name your Solver">
+    <button class="preset" id="intro-begin">Begin ▸</button>
+  </div>
+</div>
+
+<!-- HUB -->
+<div id="hub" style="display:none">
+  <div class="hud">
+    <span class="who" id="hud-who">Solver</span>
+    <span class="prog" id="hud-prog"></span>
+    <button class="rst" id="hud-reset" title="Erase local progress and start over">↺ start over</button>
+  </div>
+  <div class="journey">
+    <div class="mapwrap">
+      <svg id="map" viewBox="0 0 300 520" xmlns="http://www.w3.org/2000/svg" aria-label="The Lattice — your map of fractures to mend"></svg>
+    </div>
+    <div>
+      <div class="card mpanel" id="mpanel"></div>
+      <div class="card" style="margin-top:16px">
+        <div class="subtabs">
+          <button class="subtab on" data-tab="cast">The cast</button>
+          <button class="subtab" data-tab="codex">Codex</button>
+        </div>
+        <div id="tab-cast"><ul class="cast-list" id="cast-list"></ul></div>
+        <div id="tab-codex" style="display:none">
+          <p style="color:var(--muted);font-size:.86rem;margin:0 0 4px">What you've learned crystallises here as you clear missions — named, tiered, and yours to keep.</p>
+          <ul class="codex-list" id="codex-list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Here the physics does the judging.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  var S = window.SymbiQ && window.SymbiQ.save;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var MISSIONS = [
+    { id:'golf', num:'I', world:'The Quantum Realm', title:"The Coin That Won't Decide", mentor:'Ada', face:'A', pos:[64,466],
+      intro:'A door that logic cannot open — because it needs the coin to be <em>both</em> faces at once. Don’t force it. Turn it.',
+      signoff:'“You didn’t break it by looking. You <em>chose</em>. That is the whole art.”',
+      real:'<p>The coin is a <strong>qubit</strong>, and the door is the fact that a qubit is not a bit that happens to be hidden. Its state is a point on a sphere, and the six clubs you swing are the real one-qubit gates — X, Y, Z, H, S, T — every one of them a <em>rotation</em> of that sphere rather than a flip of a switch.</p><p>That is the whole reason quantum computing is not just probabilistic computing: rotations can cancel. Two paths to the same place can arrive with opposite sign and annihilate, which no coin toss can do. Every algorithm later in the Path is an arrangement of exactly this — turn the state so the wrong answers cancel and the right one survives.</p>',
+      tier:'⟦Proven⟧' },
+    { id:'grover', num:'II', world:'The Locked Corridor', title:'The Long Way and the Fast Way', mentor:'Rue', face:'R', pos:[206,388],
+      intro:'Too many doors, no time to knock. Tilt the odds toward the right one — then look <em>once</em>. Look twice and you’ll lose it.',
+      signoff:'“See? Not faster knocking. <em>Fewer</em> knocks, aimed right. That’s the whole trick.”',
+      real:'<p>This is <strong>Grover’s algorithm</strong>, and the corridor is an unstructured search: N doors, no clue which is the exit. Knocking classically costs about N/2 tries. Rue’s way costs about <strong>√N</strong>.</p><p>The honest size of that: √N is <em>quadratic</em>, not exponential. It turns a million into a thousand, which is real and useful and nothing like the “quantum breaks everything” story. And it is <strong>optimal</strong> — proven, not merely unbeaten: no quantum algorithm can search an unstructured space faster (Bennett, Bernstein, Brassard &amp; Vazirani 1997). Rue’s scar is the other half: the odds are a <em>rotation</em>, so past the peak they come back down.</p>',
+      tier:'⟦Proven⟧' },
+    { id:'maxcut', num:'III', world:'Graph City', title:'The Divided City', mentor:'Cordon', face:'C', pos:[86,312],
+      intro:'The city is tearing in two. Cut it so the fewest neighbours end up on the wrong side. Some will, always. Learn which.',
+      signoff:'“You found the corner. And you saw which clashes could not be undone. Proportion, Solver.”',
+      real:'<p>Cordon’s city is <strong>Max-Cut</strong> — one of Karp’s original NP-hard problems (1972). This is where operations research and quantum computing stop being two subjects.</p><p>Label the two colours ±1. The number of satisfied roads is Σ w<sub>ij</sub>(1 − s<sub>i</sub>s<sub>j</sub>)/2, so <em>maximising the cut is exactly minimising</em> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the energy of an antiferromagnet. Routing, scheduling, portfolio selection and colouring all map to that same <strong>Ising</strong> form (Lucas 2014), which is the reason a quantum annealer or QAOA has anything to optimise at all.</p><p>The honest caveat, and Cordon would insist on it: the <em>mapping</em> is proven, the <em>advantage</em> is not. Classical solvers frequently match or beat today’s quantum ones on these problems.</p>',
+      tier:'⟦Proven⟧ formulation', or:'Operations research' },
+    { id:'volcano', num:'IV', world:'The Volcano', title:'Cool Slow, or Freeze', mentor:'Vesh', face:'V', pos:[214,234],
+      intro:'Exact answers die out here, friend. You’ll approximate — and the trick is cooling slow enough not to freeze in the first bad valley you fall into.',
+      signoff:'“Now you have it. Not the best answer — the best answer you could <em>afford</em>. Out here that is the same thing.”',
+      real:'<p>You are not the walker. You are the <strong>cooling schedule</strong>, and that is the entire algorithm. This is <strong>simulated annealing</strong> (Kirkpatrick, Gelatt &amp; Vecchi, <em>Science</em> 1983): propose a random step, take it if the landscape drops, and take it anyway with probability exp(−ΔE/T) if it rises. Hot means the walker will climb; cold means it will not.</p><p>It exists because of the wall you hit in Graph City. District 5 could not be escaped by any single flip — local search dies there. Accepting an occasional <em>worse</em> move is how you climb out, and the price is that you must then cool down, or you never settle anywhere at all.</p><p>Two honest limits, both built into the game. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice. The deepest barrier here is 4, so that schedule needs about <strong>3,000</strong> steps merely to cool to T = 0.5 (twelve times this game's whole budget of 240) and about <strong>500 million</strong> to reach T = 0.2. Logarithmic cooling converges because it barely cools at all. And the Salt Flat exists to humble the method: averaged over all possible landscapes, <strong>no search strategy beats any other</strong> (No Free Lunch, Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing does.</p>',
+      tier:'⟦Heuristic⟧', or:'Operations research' },
+    { id:'qttt', num:'V', world:'The Shore of Twins', title:'Two Bodies, One Fate', mentor:'Kai & Lyra', face:'KL', pos:[92,146],
+      intro:'“Place your mark in two places at once —” “— and when the loop closes, we are measured, and <em>you</em> do not choose which of us is real.” “The one who did not close it does.”',
+      signoff:'“You felt it. Our fates are bound —” “— and still, not one word crossed between us. A bond is not a leash.”',
+      real:'<p>The Twins are <strong>entangled</strong>: one system wearing two bodies. Measuring either one fixes both, instantly, at any distance — and that is exactly as far as it goes. You cannot ride that link to send a message, because each twin on its own looks like nothing but a fair coin. That is <strong>no-signalling</strong>, and it is why entanglement does not break relativity.</p><p>Be clear about what this board is: a faithful <em>analogy</em> from Allan Goff’s teaching game (<em>Am. J. Phys.</em> <strong>74</strong>, 962, 2006), not a qubit simulation. Marks really do live in two places until a loop forces a measurement, and a collapse really does have exactly two consistent outcomes — but a real measurement outcome is drawn by nature, whereas here a player picks it, which is Goff’s design choice to keep the game strategic. For entanglement you can actually <em>prove</em>, go and beat the classical ceiling in <a href="quantum-mechanics.html#chsh">the CHSH game</a>.</p>',
+      tier:'analogy' },
+    { id:'knot', num:'✦', world:'The Knot', title:'The Price of Knowing', mentor:'Halden', face:'H', pos:[180,62], soon:true, finale:true,
+      intro:'“I can read where the wound is faster than any Solver alive. I have never once been able to tell you what it is worth. That part was always yours.”',
+      soonNote:'The central wound. You and the decoder, together. This finale opens once the five fractures are mended.',
+      real:'<p>Halden is the honest version of the AI half of SymbiQ’s thesis: a learned <strong>decoder</strong> reads the error syndrome coming off a quantum chip faster and more accurately than the hand-written algorithm does — and it still does not decide anything. You can play its proving ground now in <a href="qec.html#duel">the Decoder Duel</a>.</p>',
+      tier:'⟦Frontier⟧' }
+  ];
+
+  var CAST = [
+    { g:'A', nm:'Ada', dom:'Superposition & measurement', arc:'Guilt → acceptance: observation isn’t destruction, it’s a choice — and choosing when to look is the Solver’s whole art.' },
+    { g:'R', nm:'Rue', dom:'Search & the √N speedup', arc:'Impatience → timing: don’t try every door faster — amplify the right one, and stop at the single right moment.' },
+    { g:'C', nm:'Cordon', dom:'Optimisation & duality', arc:'Perfectionism → proportion: some conflicts can’t all be satisfied; chasing a perfect answer past reason is its own failure.' },
+    { g:'V', nm:'Vesh', dom:'Metaheuristics', arc:'Cynicism → discernment: “good enough, fast” has dignity — and no single strategy wins everywhere.' },
+    { g:'KL', nm:'Kai & Lyra', dom:'Entanglement', arc:'A bond is not a leash: measuring one fixes the other instantly — and carries no message. Correlation, not communication.' },
+    { g:'H', nm:'Halden', dom:'The decoder (your AI ally)', arc:'Trust: the learning machine reads the damage faster than any Solver — but it never decides. You do.' }
+  ];
+
+  var CODEX = {
+    golf:  { name:'Superposition & gates', body:'A qubit is a point on a sphere; gates rotate it; global phase is invisible, as physics treats it.', tier:'⟦Proven⟧' },
+    grover:{ name:'Grover search', body:'Unstructured search costs √N, not N. Amplify, then measure at the peak — over-rotate and the odds fall again.', tier:'⟦Proven⟧' },
+    maxcut:{ name:'Max-Cut = Ising ground state', body:'Maximising a cut is minimising Σ wᵢⱼsᵢsⱼ. NP-hard, and the exact bridge from operations research to quantum optimisation.', tier:'⟦Proven⟧ formulation' },
+    volcano:{ name:'Simulated annealing', body:'Cool slowly to escape local optima; accept the occasional worse move. No method wins on every problem (No Free Lunch).', tier:'⟦Heuristic⟧' },
+    qttt:  { name:'Entanglement & no-signalling', body:'One system, two bodies: measuring one fixes the other at any distance — yet no message can ride that link.', tier:'analogy' }
+  };
+
+  function done(id) { return !!(S && S.isComplete(id)); }
+  function available(i) {
+    for (var j = 0; j < i; j++) { if (!MISSIONS[j].soon && !done(MISSIONS[j].id)) return false; }
+    return true;
+  }
+  function avatarIndex() {
+    for (var i = 0; i < MISSIONS.length; i++) { if (!MISSIONS[i].soon && available(i) && !done(MISSIONS[i].id)) return i; }
+    return MISSIONS.length - 1;
+  }
+  function completed() { var n = 0; MISSIONS.forEach(function (m) { if (!m.soon && done(m.id)) n++; }); return n; }
+  function completable() { var n = 0; MISSIONS.forEach(function (m) { if (!m.finale) n++; }); return n; }
+
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(t, a) { var n = document.createElementNS(NS, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
+  var map = document.getElementById('map'), sel = -1;
+
+  function drawMap() {
+    var ai = avatarIndex();
+    // remove trail + nodes, but keep any existing avatar so its transform can transition (glide)
+    Array.prototype.slice.call(map.querySelectorAll('.trail, .trail-done, .node')).forEach(function (n) { n.remove(); });
+    var av = map.querySelector('.avatar');
+    var pts = MISSIONS.map(function (m) { return m.pos; });
+    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0] + ' ' + p[1]; }).join(' ');
+    map.insertBefore(el('path', { 'class': 'trail', d: d }), map.firstChild);
+    var dd = pts.slice(0, ai + 1).map(function (p, i) { return (i ? 'L' : 'M') + p[0] + ' ' + p[1]; }).join(' ');
+    if (ai > 0) map.insertBefore(el('path', { 'class': 'trail-done', d: dd }), av || null);
+
+    MISSIONS.forEach(function (m, i) {
+      var st = done(m.id) ? 'complete' : (m.soon ? 'soon' : (available(i) ? 'available' : 'locked'));
+      var g = el('g', { 'class': 'node ' + st + (i === ai && st === 'available' ? ' pulsed' : '') + (i === sel ? ' sel' : ''), 'data-i': i, tabindex: '0', role: 'button' });
+      g.appendChild(el('circle', { 'class': 'disc', cx: m.pos[0], cy: m.pos[1], r: 17 }));
+      var num = el('text', { 'class': 'num', x: m.pos[0], y: m.pos[1] }); num.textContent = done(m.id) ? '✓' : m.num;
+      g.appendChild(num);
+      var left = m.pos[0] < 150;
+      var lbl = el('text', { 'class': 'lbl', x: m.pos[0] + (left ? 26 : -26), y: m.pos[1] + 4, 'text-anchor': left ? 'start' : 'end' });
+      lbl.textContent = m.world; g.appendChild(lbl);
+      g.addEventListener('click', function () { openMission(i); });
+      g.addEventListener('keypress', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openMission(i); } });
+      map.insertBefore(g, av || null); // nodes below the avatar
+    });
+    // persistent avatar — create once, then just move it so CSS transitions the glide
+    if (!av) {
+      av = el('g', { 'class': 'avatar' });
+      av.appendChild(el('circle', { 'class': 'halo', cx: 0, cy: 0, r: 15 }));
+      av.appendChild(el('circle', { 'class': 'core', cx: 0, cy: 0, r: 6 }));
+      map.appendChild(av);
+    }
+    var ap = MISSIONS[ai].pos;
+    av.setAttribute('transform', 'translate(' + ap[0] + ' ' + ap[1] + ')');
+  }
+
+  // The mission frame. The game engine itself lives in games.js and is mounted
+  // right here, in world — the Arcade mounts the identical engine without any of
+  // this story around it. One implementation, two costumes.
+  function openMission(i, autoplay) {
+    sel = i; drawMap();
+    var m = MISSIONS[i], p = document.getElementById('mpanel'), isDone = done(m.id), avail = available(i);
+    var GS = window.SymbiQ && SymbiQ.games, playable = GS && GS.get(m.id);
+
+    var head = '<div class="mission-head">' +
+      '<div class="eyebrow">Act ' + m.num + ' · ' + m.world + '</div>' +
+      '<h3>' + m.title +
+        (isDone ? '<span class="mission-tag done">mended ✓</span>'
+                : m.soon ? '<span class="mission-tag">not yet reachable</span>'
+                : avail ? '<span class="mission-tag">' + m.tier + '</span>'
+                : '<span class="mission-tag">sealed</span>') +
+        (isDone && !avail ? '<span class="mission-tag">cleared in the Arcade</span>' : '') +
+      '</h3>' +
+      '<div class="speech"><span class="face">' + (m.face || '?') + '</span>' +
+        '<span class="said"><b>' + m.mentor + (m.or ? '<span class="orbadge">' + m.or + '</span>' : '') + '</b>' +
+        (isDone ? (m.signoff || m.intro) : m.intro) + '</span></div>' +
+      '</div>';
+
+    var body = '<div class="mission-body">';
+    if (m.soon && !isDone) {
+      body += '<p style="font-size:.9rem;color:var(--muted)">' + m.soonNote + '</p>';
+    } else if (!avail && !isDone) {
+      // note: a mission cleared in the Arcade is complete even if the ones before
+      // it are not — already-mended can never read as sealed
+      var prev = MISSIONS[i - 1];
+      body += '<p style="color:var(--muted)">Sealed by the Static. Mend <strong>' +
+        (prev ? prev.world : 'the fracture before this') + '</strong> first — the path opens as you go.</p>';
+    } else if (playable && (avail || isDone)) {
+      body += '<button class="preset enter" id="mstart">' + (isDone ? 'Walk it again ▸' : 'Begin the mission ▸') + '</button>';
+    }
+    if (isDone && CODEX[m.id]) {
+      body += '<p style="font-size:.85rem;color:var(--muted);margin-top:10px">Codex unlocked: <strong>' +
+        CODEX[m.id].name + '</strong> ' + CODEX[m.id].tier + '</p>';
+    }
+    body += '<div id="mgame"></div>';
+    if (m.real) {
+      body += '<div class="whatsreal"><div class="wr-h">What is actually going on here ' +
+        '<span class="orbadge">' + m.tier + '</span></div>' + m.real + '</div>';
+    }
+    body += '</div>';
+
+    p.innerHTML = '<div class="mission">' + head + body + '</div>';
+    p.className = 'mpanel';        // the frame carries its own border now
+
+    var start = document.getElementById('mstart');
+    if (start) start.addEventListener('click', function () { mountMission(m); });
+    if (autoplay && playable && avail && !m.soon) mountMission(m);
+  }
+
+  function mountMission(m) {
+    var GS = window.SymbiQ && SymbiQ.games, host = document.getElementById('mgame');
+    if (!GS || !host) return;
+    host.innerHTML = '<div class="card" id="mgame-card" style="margin-top:14px"></div>';
+    var btn = document.getElementById('mstart');
+    if (btn) btn.style.display = 'none';
+    GS.mount(m.id, document.getElementById('mgame-card'), {
+      mode: 'mission',
+      onWin: function (id, first) {
+        if (!first) return;
+        refreshHud(); renderCodex(); drawMap();
+        var note = document.createElement('div');
+        note.className = 'verdict good';
+        note.style.marginTop = '14px';
+        // quotes are left intact: Kai & Lyra speak as two voices, so stripping the
+        // outer pair alone leaves their internal dialogue marks unbalanced
+        note.innerHTML = '<strong>The fracture closes.</strong> ' + m.mentor + ': <em>' +
+          (m.signoff || '') + '</em>' +
+          (CODEX[m.id] ? '<br><span style="font-weight:400">Codex entry added: <strong>' + CODEX[m.id].name + '</strong> ' + CODEX[m.id].tier + '</span>' : '');
+        host.appendChild(note);
+      }
+    });
+    host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function renderCast() {
+    document.getElementById('cast-list').innerHTML = CAST.map(function (c) {
+      return '<li><span class="glyph">' + c.g + '</span><span><span class="nm">' + c.nm + '</span> · <span class="dom">' + c.dom + '</span><span class="arc">' + c.arc + '</span></span></li>';
+    }).join('');
+  }
+  function renderCodex() {
+    var out = MISSIONS.filter(function (m) { return CODEX[m.id]; }).map(function (m) {
+      var c = CODEX[m.id];
+      if (done(m.id)) return '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' + c.tier + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+      return '<li><span class="glyph sealed">▢</span><span class="sealed"><span class="nm">Sealed</span><br><span class="ct">Clear ' + m.world + ' to reveal this entry.</span></span></li>';
+    }).join('');
+    document.getElementById('codex-list').innerHTML = out;
+  }
+
+  function refreshHud() {
+    var name = (S && S.getAvatar()) || 'Solver';
+    document.getElementById('hud-who').textContent = 'Solver ' + name;
+    document.getElementById('hud-prog').textContent = '· ' + completed() + ' of ' + completable() + ' fractures mended';
+  }
+
+  function showHub() {
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('hub').style.display = 'block';
+    refreshHud(); renderCast(); renderCodex();
+    drawMap();
+    // open the current mission (or the last cleared one) by default
+    openMission(avatarIndex());
+    // let the avatar glide in
+    if (!reduce) { var a = map.querySelector('.avatar'); if (a) { a.style.transform = a.getAttribute('transform'); } }
+  }
+
+  function showIntro() {
+    var intro = document.getElementById('intro');
+    intro.style.display = 'block';
+    requestAnimationFrame(function () { intro.classList.add('go'); });
+    var begin = document.getElementById('intro-begin'), input = document.getElementById('intro-name');
+    function go() {
+      var v = (input.value || '').trim();
+      if (!v) { input.focus(); input.style.borderColor = 'var(--yellow)'; return; }
+      if (S) S.setAvatar(v);
+      showHub();
+    }
+    begin.addEventListener('click', go);
+    input.addEventListener('keypress', function (e) { if (e.key === 'Enter') go(); });
+  }
+
+  // subtabs
+  Array.prototype.forEach.call(document.querySelectorAll('.subtab'), function (b) {
+    b.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.subtab'), function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      var t = b.getAttribute('data-tab');
+      document.getElementById('tab-cast').style.display = t === 'cast' ? 'block' : 'none';
+      document.getElementById('tab-codex').style.display = t === 'codex' ? 'block' : 'none';
+    });
+  });
+
+  document.getElementById('hud-reset').addEventListener('click', function () {
+    if (!confirm('Erase your local progress and start the Path over?')) return;
+    if (S) S.reset();
+    sel = -1; location.reload();
+  });
+
+  // react to progress written by a mission in another tab/return
+  if (S) S.onchange = function () { refreshHud(); renderCodex(); drawMap(); };
+
+  // boot
+  if (S && S.getAvatar()) showHub(); else showIntro();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantum computing companies compared: how to actually read the race</title>
+<meta name="description" content="The four qubit technologies — superconducting, trapped-ion, neutral-atom, photonic — and why you can't compare their qubit counts. A field guide to the metrics that actually decide the race.">
+<link rel="stylesheet" href="style.css?v=10">
+<style>
+.modtabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 16px; }
+.modtab { flex: 1 1 auto; min-width: 120px; text-align: left; }
+.modtab .who { display: block; font-size: .78rem; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.bars { margin: 4px 0 0; }
+.barrow { display: grid; grid-template-columns: 108px 1fr; align-items: center; gap: 10px; margin: 7px 0; }
+.barrow .axis { font-size: .85rem; color: var(--muted); }
+.track { background: var(--border); border-radius: 99px; height: 12px; overflow: hidden; }
+.fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--violet), var(--teal)); transition: width .35s ease; }
+.betline { margin: 12px 0 2px; }
+.betline .k { color: var(--teal); font-weight: 600; }
+.betline .b { color: var(--red); font-weight: 600; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Quantum computing companies compared: how to actually read the race",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-15",
+      "dateModified": "2026-07-15",
+      "description": "An evergreen field guide to comparing quantum computing companies: the four qubit modalities, their structural trade-offs, and the metrics that matter more than raw qubit count."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "Quantum computing companies compared", "item": "compare.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do you compare quantum computing companies?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Not by qubit count. Companies build on different physics — superconducting circuits, trapped ions, neutral atoms, photons — and a qubit in one technology is not comparable to a qubit in another. The honest comparison is what a machine can do: its physical error rates, qubit connectivity, gate speed and coherence, and above all how many error-corrected (logical) qubits it can keep alive. Raw physical-qubit headlines are the least informative number a company publishes."}
+        },
+        {
+          "@type": "Question",
+          "name": "What are the main types of quantum computers?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Four leading approaches. Superconducting qubits (Google, IBM) use fabricated circuits with nanosecond gates but short coherence and nearest-neighbor connectivity. Trapped ions (Quantinuum, IonQ) have excellent coherence and all-to-all connectivity but slow gates and hard scaling. Neutral atoms (QuEra, Pasqal, Atom Computing) offer large reconfigurable arrays. Photonic systems (PsiQuantum, Xanadu) use light, which barely decoheres, but must fight photon loss and probabilistic gates. Each bets that its particular bottleneck eases first."}
+        },
+        {
+          "@type": "Question",
+          "name": "Why can't you compare quantum computers by qubit count?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Because qubit count says nothing about qubit quality, and quality is what determines whether a machine can run a real algorithm. Fifty high-fidelity, well-connected qubits can outperform a thousand noisy ones, and error correction spends physical qubits at a punishing exchange rate — hundreds to thousands of physical qubits per usable logical qubit. Comparing raw counts across different hardware technologies compounds the error, since their qubits fail, connect, and operate in completely different ways."}
+        },
+        {
+          "@type": "Question",
+          "name": "Which quantum computing approach is winning?",
+          "acceptedAnswer": {"@type": "Answer", "text": "None decisively, and the race is not a single axis. The winning system must combine coherence, gate speed, connectivity, scalability, and engineering maturity — a product, not one number. Superconducting and trapped-ion systems are the most mature; neutral-atom arrays are scaling fast; photonics is a longer-shot bet on manufacturability. The most meaningful current scoreboard is logical-qubit count and demonstrated below-threshold error correction, not physical-qubit totals."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" class="active" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>Quantum computing companies compared</h1>
+<p class="tagline">Not a leaderboard of qubit counts — a field guide to reading one honestly. Four kinds of physics, four different bets, one number you should ignore.</p>
+
+<div class="card">
+<h3>The answer in four lines</h3>
+<p>Companies build on <strong>four different technologies</strong>, and a qubit in one is not a qubit in another — so <strong>comparing qubit counts across them is meaningless</strong>. What actually decides the race is a <em>product</em> of coherence, speed, connectivity, scalability, and maturity, cashed out in one honest metric: <strong>how many error-corrected qubits a machine can keep alive</strong>. For live standings, see <a href="race.html">The Race</a>; this page teaches you how to read it.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">Why the "biggest number" is the wrong number</h2>
+<p>Every few months a company announces a record qubit count and the headlines treat it like a lap time. It isn't one. A quantum computer's qubit count tells you almost nothing on its own — the way a car's number of cylinders tells you nothing about whether it wins races.</p>
+<p>Two reasons. First, <strong>qubits vary wildly in quality</strong>: a noisy qubit that forgets its state in a microsecond is not interchangeable with a pristine one that holds for seconds, and <a href="logical-qubit.html">error correction spends the noisy ones at a brutal exchange rate</a>. Fifty excellent qubits routinely beat a thousand sloppy ones.</p>
+<p>Second — and this is what <em>this</em> page is about — <strong>different companies aren't even building the same kind of qubit</strong>. There are four main technologies, each running on different physics, each with a completely different personality. Counting one against another is like comparing a sprinter's top speed to a marathoner's and declaring a winner. Below, click through the four and see what each is really betting on.</p>
+
+<h2>The four technologies, side by side</h2>
+<p>Click a technology. The bars are <em>structural</em> strengths and weaknesses — the physics tendencies of each approach, not this quarter's numbers (those live on <a href="race.html">The Race</a>). There's real variation between companies within each camp.</p>
+
+<div class="card" id="mod-widget">
+  <div class="modtabs" id="modtabs"></div>
+  <div class="bars" id="modbars"></div>
+  <p class="betline" id="modbet"></p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0" id="modnote"></p>
+</div>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">The trade-off nobody escapes</h2>
+<p>Why hasn't one technology simply won? Because the requirements pull against each other. Trapped ions hold their quantum state on the order of a <strong>million times longer</strong> than superconducting qubits — yet superconducting machines run vastly more operations per second, because their gates are nanoseconds where ions' are microseconds to milliseconds. One is a better memory; the other is a faster processor. Neither wins outright, because the figure of merit is roughly</p>
+<div class="formula">usefulness ≈ coherence × gate-speed × connectivity × scalability × engineering-maturity</div>
+<p>— a <em>product</em>, where any single zero sinks the whole thing. That's why "we have the most qubits" (one term, and the least informative one) is a marketing line, not a lead. Each technology is a bet that <em>its</em> weakest factor is the one that yields first: ions bet gate speed and trap-scaling get solved; superconductors bet coherence and connectivity improve; neutral atoms bet their large reconfigurable arrays keep scaling; photonics bets manufacturability beats photon loss.</p>
+<p><strong>The honest scoreboard.</strong> Skip qubit count. Look at: physical two-qubit error rate (are they below the error-correction threshold?), connectivity (all-to-all or nearest-neighbor?), demonstrated logical-qubit lifetime, and above all whether they've shown <a href="qec.html">below-threshold error correction</a> — the one result that turns raw qubits into <a href="logical-qubit.html">logical ones</a>. A machine's logical-qubit count is its real size.</p>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">What to read instead of the headline</h2>
+<p>The metrics that survive scrutiny, roughly in order of how much they tell you:</p>
+<div class="overflow"><table>
+<tr><th>Metric</th><th>What it captures</th><th>Why it beats qubit count</th></tr>
+<tr><td><strong>Logical qubits + code distance</strong></td><td>Error-corrected qubits actually kept alive, and how hard they are to break</td><td>The only count that maps to running algorithms; requires below-threshold operation to be non-zero at all.</td></tr>
+<tr><td>Below-threshold Λ</td><td>Error suppression per two-step distance increase (p<sub>L</sub> ≈ (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>)</td><td>Λ &gt; 1 proves error correction <em>works</em> on that hardware; Λ ≤ 1 means more qubits make it worse.</td></tr>
+<tr><td>Two-qubit gate fidelity</td><td>Error per entangling operation vs the code threshold</td><td>Sets the physical p that fixes the entire error-correction exchange rate — a small fidelity gain shrinks the logical-qubit cost super-linearly.</td></tr>
+<tr><td>Connectivity</td><td>All-to-all (ions) vs nearest-neighbor (superconducting) vs reconfigurable (atoms)</td><td>Poor connectivity forces SWAP overhead that inflates circuit depth and effective error.</td></tr>
+<tr><td>Coherence × gate-speed</td><td>How many operations fit inside one qubit's usable lifetime</td><td>The real "clock budget"; a long-lived slow qubit and a short-lived fast one can tie.</td></tr>
+<tr><td>Qubit count</td><td>How many physical qubits exist</td><td>Last, and only meaningful <em>after</em> all of the above — it's the denominator, not the score.</td></tr>
+</table></div>
+<p>The deep reason the field's scoreboard shifted from physical to logical counts around 2024–25 is that below-threshold error correction stopped being hypothetical (<a href="qec.html">the Willow-class demonstrations</a>). Once error correction provably works, the meaningful unit of progress becomes error-corrected qubits — so a company reporting a few high-distance logical qubits is further along than one reporting thousands of raw physical qubits with no correction story. When you read <a href="race.html">The Race</a>, that's the number to hunt for.</p>
+<p><em>Verification status: referee-verified — fresh-session hostile-referee pass 2026-07-15 (VERIFY_COMPARE_PILLAR.md: no Critical/Major; every modality claim, company attribution, and Λ/error-correction statement verified against primary sources), fixes applied 2026-07-19. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+
+<h2>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🏁 The live scoreboard</h3><p>Where these metrics get filled in weekly — with our own predictions on record.</p><a href="race.html">The Race →</a></div>
+  <div class="card"><h3>🟡 The exchange rate</h3><p>Why 50 clean qubits beat 1,000 noisy ones, calculated.</p><a href="logical-qubit.html">What is a logical qubit? →</a></div>
+  <div class="card"><h3>🟢 Below threshold</h3><p>The error-correction result that made logical-qubit counts the honest measure.</p><a href="qec.html">Quantum error correction →</a></div>
+</div>
+
+<footer>Four machines, five trade-offs, no favourites.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  // Structural profiles (1–4 qualitative), NOT this-quarter numbers.
+  var AXES = ['Coherence', 'Gate speed', 'Connectivity', 'Scalability', 'Maturity'];
+  var MODS = [
+    { id: 'sc', name: 'Superconducting', who: 'Google · IBM',
+      v: [2, 4, 2, 3, 4],
+      bet: 'Fast gates and chip-fab scaling win first.',
+      bottleneck: 'Short coherence and nearest-neighbor connectivity.',
+      note: 'Nanosecond gates and lithographic fabrication are its superpowers; qubits decohere quickly and only talk to neighbors, so it leans hardest on error correction and calibration.' },
+    { id: 'ion', name: 'Trapped-ion', who: 'Quantinuum · IonQ',
+      v: [4, 1, 4, 2, 4],
+      bet: 'Pristine, all-to-all qubits win first.',
+      bottleneck: 'Slow gates and scaling traps + optics.',
+      note: 'Coherence ~1,000,000× longer than superconducting and native all-to-all connectivity; gates are microseconds-to-milliseconds slow, and packing more ions into a single trap is an optics-engineering wall — hence the field\'s shift to ion-shuttling (QCCD) and photonic interconnects between modules.' },
+    { id: 'atom', name: 'Neutral-atom', who: 'QuEra · Pasqal · Atom Computing',
+      v: [3, 2, 3, 4, 2],
+      bet: 'Big reconfigurable arrays scale fastest.',
+      bottleneck: 'Younger stack; slower gates than superconducting.',
+      note: 'Optical tweezers hold hundreds-to-thousands of atoms with movable, reconfigurable connectivity and long coherence; the control stack is newer and gate speeds sit between ions and superconductors.' },
+    { id: 'photon', name: 'Photonic', who: 'PsiQuantum · Xanadu',
+      v: [4, 2, 2, 3, 2],
+      bet: 'Photonics manufacturing beats the loss problem.',
+      bottleneck: 'Photons barely interact — probabilistic gates + loss.',
+      note: 'Light barely decoheres, so the enemy is photon loss, not noise — and loss is the one failure mode invisible on these five bars. Because photons hardly interact, two-qubit gates are probabilistic fusion operations that burn many photons and demand near-perfect sources, switches, and detectors; "gate speed" here means effective post-multiplexing throughput, not raw detector bandwidth.' }
+  ];
+  var LEVEL = ['', 'Weak', 'Fair', 'Strong', 'Elite'];
+
+  var tabsEl = document.getElementById('modtabs'),
+      barsEl = document.getElementById('modbars'),
+      betEl = document.getElementById('modbet'),
+      noteEl = document.getElementById('modnote');
+
+  MODS.forEach(function (m, i) {
+    var b = document.createElement('button');
+    b.className = 'preset modtab';
+    b.innerHTML = m.name + '<span class="who">' + m.who + '</span>';
+    b.addEventListener('click', function () { select(i); });
+    tabsEl.appendChild(b);
+    m._btn = b;
+  });
+
+  function select(i) {
+    var m = MODS[i];
+    MODS.forEach(function (o) { o._btn.className = 'preset modtab' + (o === m ? ' on' : ''); });
+    barsEl.innerHTML = AXES.map(function (ax, j) {
+      var pct = m.v[j] / 4 * 100;
+      return '<div class="barrow"><span class="axis">' + ax + '</span>' +
+        '<span class="track"><span class="fill" style="width:' + pct + '%"></span></span></div>';
+    }).join('');
+    betEl.innerHTML = '<span class="k">The bet:</span> ' + m.bet + ' &nbsp; <span class="b">The bottleneck:</span> ' + m.bottleneck;
+    noteEl.textContent = m.note;
+  }
+  select(0);
+})();
+</script>
+</body>
+</html>

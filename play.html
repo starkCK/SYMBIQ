@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Arcade — quantum games, free play</title>
+<meta name="description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, and quantum tic-tac-toe with genuine superposition and collapse. No story, no gates — just the physics doing the judging.">
+<link rel="stylesheet" href="style.css?v=10">
+<script src="save.js"></script>
+<script src="games.js?v=3"></script>
+<script src="nav.js?v=4" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "The Arcade — quantum games, free play",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-21",
+      "dateModified": "2026-07-24",
+      "description": "Five games built on real quantum mechanics and optimisation: Circuit Golf (proven-minimal pars), Grover's Escape (a provable quadratic speedup where over-amplifying loses), Max-Cut (the NP-hard problem that is the Ising ground state), the Annealing Volcano (simulated annealing, scored on your cooling schedule rather than your luck), and quantum tic-tac-toe."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "The Arcade", "item": "play.html"}
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" class="active" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+<h1>The Arcade</h1>
+<p class="tagline">The same five machines you meet on <a href="journey.html">the Solver's Path</a> — but here there is no story, no mentor and no order. Just the games, and the physics doing the judging.</p>
+
+<!-- the door: games are somewhere you go, not a menu you scan -->
+<div class="gate" id="gate" role="button" tabindex="0" aria-controls="floor" aria-expanded="false">
+  <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g class="brick">
+      <rect x="14" y="14" width="106" height="122" rx="10"/>
+      <rect x="140" y="14" width="106" height="122" rx="10"/>
+      <path d="M14 55h106M14 96h106M140 55h106M140 96h106"/>
+    </g>
+    <line class="seam" x1="130" y1="8" x2="130" y2="142"/>
+    <circle class="gnode" cx="130" cy="41" r="3.5"/>
+    <circle class="gnode" cx="130" cy="75" r="4.5"/>
+    <circle class="gnode" cx="130" cy="109" r="3.5"/>
+  </svg>
+  <h3>Push the door</h3>
+  <p>Behind it: five machines that will not let you fake a score. Every par is a proven minimum, every probability is computed rather than chosen, and one of them is rigged to prove that your best strategy is worthless on the wrong problem.</p>
+  <span class="push">Open the arcade ▸</span>
+</div>
+
+<div id="floor" hidden>
+  <h2>Pick a machine</h2>
+  <div class="cabs" id="cabs"></div>
+
+  <div class="stage" id="stage" hidden>
+    <div class="stage-top">
+      <button class="stage-back" id="stage-back">← back to the floor</button>
+      <span style="color:var(--muted);font-size:.86rem" id="stage-mentor"></span>
+    </div>
+    <h2 id="stage-title"></h2>
+    <p id="stage-hook"></p>
+    <div id="stage-about"></div>
+    <div class="card" id="stage-game"></div>
+    <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="stage-honest"></p>
+  </div>
+
+  <h2>Out in the wild</h2>
+  <p>Three more playable things live on the pages they belong to, because each one only makes sense standing next to its explanation.</p>
+  <div class="grid">
+    <div class="card">
+      <h3><a href="qec.html#duel">The Decoder Duel</a></h3>
+      <p>Ten rounds against the textbook matching decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</p>
+    </div>
+    <div class="card">
+      <h3><a href="quantum-mechanics.html#chsh">The CHSH game</a></h3>
+      <p>Beat a limit classical physics cannot beat — 85.4% against a provable ceiling of 75%.</p>
+    </div>
+    <div class="card">
+      <h3><a href="index.html#daily-q">The Daily Question</a></h3>
+      <p>One question a day, answered at three levels, with a streak that forgives a single miss the way a real code corrects a single error.</p>
+    </div>
+  </div>
+
+  <h2>Coming next</h2>
+  <div class="card">
+    <p>A full <strong>board game</strong> for two to four players, on quantum computing and the parts of AI that actually touch it — where knowing more genuinely wins, and the board, pieces and animation are built to be worth looking at. In development. The five machines above are the groundwork: each is a mechanic that will earn its place on that board, or be cut.</p>
+  </div>
+</div>
+
+<footer>Here the physics does the judging.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  var gate = document.getElementById('gate'), floor = document.getElementById('floor');
+  var S = window.SymbiQ && SymbiQ.save, GS = window.SymbiQ && SymbiQ.games;
+  if (!GS) return;
+
+  function openFloor() {
+    if (!floor.hidden) return;
+    floor.hidden = false;
+    gate.classList.add('opened');
+    gate.setAttribute('aria-expanded', 'true');
+    drawCabs();
+  }
+  gate.addEventListener('click', openFloor);
+  gate.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFloor(); }
+  });
+  // it also opens if you simply scroll past it — the door is an invitation, not a wall
+  window.addEventListener('scroll', function () {
+    if (floor.hidden && gate.getBoundingClientRect().bottom < window.innerHeight * 0.55) openFloor();
+  }, { passive: true });
+
+  function drawCabs() {
+    document.getElementById('cabs').innerHTML = GS.list.map(function (g) {
+      var done = S && S.isComplete(g.id);
+      return '<button class="cab" data-g="' + g.id + '">' +
+        (done ? '<span class="cabdone" title="cleared on the Path">✓</span>' : '') +
+        '<span class="cabname">' + g.title + '</span>' +
+        '<span class="cabhook">' + g.hook + '</span>' +
+        '<span class="cabtag">' + g.about.tier + ' · play ▸</span></button>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) {
+      b.addEventListener('click', function () { launch(b.getAttribute('data-g')); });
+    });
+  }
+
+  function launch(id) {
+    var g = GS.get(id), stage = document.getElementById('stage');
+    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) {
+      b.classList.toggle('on', b.getAttribute('data-g') === id);
+    });
+    document.getElementById('stage-title').textContent = g.title;
+    document.getElementById('stage-hook').textContent = g.hook;
+    document.getElementById('stage-mentor').textContent = 'On the Path this is ' + g.mentor + "'s mission";
+    document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
+    document.getElementById('stage-honest').innerHTML = g.honest || '';
+    stage.hidden = false;
+    GS.mount(id, document.getElementById('stage-game'), { mode: 'arcade', onWin: function () { drawCabs(); } });
+    stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.getElementById('stage-back').addEventListener('click', function () {
+    var stage = document.getElementById('stage');
+    stage.hidden = true;
+    document.getElementById('stage-game').innerHTML = '';
+    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) { b.classList.remove('on'); });
+    document.getElementById('cabs').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // deep links still work: play.html#volcano opens the door and the machine
+  var want = (location.hash || '').replace('#', '');
+  if (want && GS.get(want)) { openFloor(); launch(want); }
+})();
+</script>
+</body>
+</html>

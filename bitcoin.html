@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can quantum computers break Bitcoin?</title>
+<meta name="description" content="Not today — the honest numbers: what Shor's algorithm can and can't do to Bitcoin, which coins are exposed, why mining is safe, and an interactive calculator of what it would actually take.">
+<link rel="stylesheet" href="style.css?v=10">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Can quantum computers break Bitcoin?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-14",
+      "dateModified": "2026-07-14",
+      "description": "The honest numbers on quantum computers vs Bitcoin: Shor's algorithm, exposed public keys, mining safety, and resource estimates from the primary literature."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "Can quantum computers break Bitcoin?", "item": "bitcoin.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can a quantum computer break Bitcoin today?",
+          "acceptedAnswer": {"@type": "Answer", "text": "No. Current best estimates (Google Quantum AI / Ethereum Foundation, 2026) put breaking one Bitcoin key at roughly half a million error-corrected physical qubits running for about 20 minutes — down from billions in 2022 estimates. Today's largest machines have a few thousand noisy qubits. The gap is roughly three orders of magnitude of scale plus error correction that is only now leaving the lab — real, but shrinking faster than most people expected."}
+        },
+        {
+          "@type": "Question",
+          "name": "Which bitcoins are most at risk?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Coins whose public key is already visible on-chain: early pay-to-public-key coins (including Satoshi-era coins), reused addresses, and Taproot outputs. Estimates put roughly 25–30% of all BTC (est. 4–6M coins) in exposed-key form, and rising as Taproot adoption grows. Coins behind an unused hashed address only reveal their key for the minutes a spending transaction waits to confirm."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is Bitcoin mining (SHA-256) threatened by quantum computers?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Effectively no. Grover's algorithm gives only a quadratic speedup on hashing, each quantum hash step is drastically slower than an ASIC, and error-correction overhead erases the advantage. Signatures, not mining, are the quantum-relevant part of Bitcoin."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is the fix?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Post-quantum signature schemes — NIST standardized ML-DSA and SLH-DSA in 2024 — added to Bitcoin via a soft fork, plus users moving coins to non-exposed or post-quantum addresses. The hard part is social: coordinating migration, and deciding what happens to exposed coins nobody moves."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" class="active" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>Can quantum computers break Bitcoin?</h1>
+<p class="tagline">Short answer: not today, and not with anything on a public roadmap. Long answer: the interesting one.</p>
+
+<div class="card">
+<h3>The answer in four lines</h3>
+<p>Breaking one Bitcoin key needed <strong>~13 million error-corrected qubits in the 2022 estimates — about half a million in 2026's</strong>. Today's biggest chips have <strong>a few thousand noisy ones</strong> — and a noisy qubit is not a fraction of a corrected one until error rates are low enough. Mining is effectively safe forever. The real story is a <em>migration problem</em> whose deadline keeps moving closer.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2>What a quantum computer could actually steal</h2>
+<p>Your bitcoin is protected by a padlock (your public key) whose combination (your private key) is easy to check and absurdly hard to reverse. Every classical computer on Earth working together couldn't reverse it before the sun burns out. Shor's algorithm — the famous quantum one — reverses exactly this kind of padlock efficiently. So in principle: yes, a big enough quantum computer forges your signature and spends your coins.</p>
+<p>The catch is "big enough." Running Shor's algorithm on a Bitcoin key isn't a bigger version of anything today's machines do — it's like the difference between a paper airplane and a cargo jet. The machine must run <em>flawlessly for many minutes to hours</em>, which requires error correction (<a href="basics.html">the thing AI is helping fix</a> — the subject of this whole site), which multiplies the hardware thousands of times over.</p>
+<p>One more wrinkle: a padlock can only be picked if the attacker can <em>see</em> it. Most Bitcoin addresses keep the padlock hidden behind a hash until the moment you spend. Coins at fresh, unused addresses show attackers nothing useful — but roughly a quarter to a third of all bitcoin, including Satoshi-era coins, sits with its padlock in plain view — and Taproot adoption keeps adding more.</p>
+
+<span class="tier y">🟡 Some math</span>
+<h2>The three attack surfaces, ranked honestly</h2>
+<div class="overflow"><table>
+<tr><th>Target</th><th>Quantum tool</th><th>Verdict</th></tr>
+<tr><td>Signatures (ECDSA/Schnorr, 256-bit)</td><td>Shor — exponential advantage</td><td><strong>Real threat, eventually.</strong> The only one that matters.</td></tr>
+<tr><td>Exposed-key coins (~25–30% of supply, est.)</td><td>Shor, at leisure</td><td>First victims. Attackable whenever hardware arrives — no time pressure.</td></tr>
+<tr><td>Mining (SHA-256)</td><td>Grover — quadratic only</td><td>Effectively safe. √ speedup loses to ASICs + error-correction overhead.</td></tr>
+</table></div>
+<p><strong>The 10-minute window.</strong> Spending from a hashed address reveals your public key while the transaction waits (~10 minutes) to confirm. An attacker would need to run Shor's algorithm <em>inside that window</em> to race you — which is why serious resource estimates ask not just "can it be done" but "can it be done in an hour." That requirement multiplies the machine size — though a 2026 result cut it sharply by precomputing half the algorithm before your transaction even appears (see the calculator below, and the 2026 update in the 🔴 section).</p>
+<p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half — today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps — sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="deep.html">Grover audit</a>: quadratic speedups die in the overhead.</p>
+
+<h2>The calculator: what would it actually take?</h2>
+<p>Drag the sliders. The model is the same one our community uses in <a href="deep.html">Boss Questions</a>: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation — the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
+
+<div class="card" id="shor-widget">
+  <h3>Shor-vs-Bitcoin resource estimator</h3>
+  <p style="margin-bottom:6px"><label>Physical error rate: <strong id="p-val">10⁻³</strong></label><br>
+  <input type="range" id="p-slider" min="0" max="30" value="10" style="width:100%"></p>
+  <p style="margin-bottom:6px"><label>Machine size: <strong id="n-val">1,000</strong> physical qubits</label><br>
+  <input type="range" id="n-slider" min="20" max="100" value="30" style="width:100%"></p>
+  <p style="margin:10px 0 4px">Circuit:
+    <button class="preset mode on" data-mode="2026" aria-pressed="true">2026 state of the art</button>
+    <button class="preset mode" data-mode="2017" aria-pressed="false">2017 textbook</button>
+  </p>
+  <p style="margin:0 0 4px">
+    <button class="preset" data-p="10" data-n="30" data-mode="2026">≈ Today's frontier</button>
+    <button class="preset" data-p="10" data-n="66" data-mode="2026">The 2026 attack machine</button>
+    <button class="preset" data-p="10" data-n="71" data-mode="2017">Webber's 2022 machine</button>
+    <button class="preset" data-p="30" data-n="90" data-mode="2026">Sci-fi</button>
+  </p>
+  <div id="shor-out" class="formula" aria-live="polite"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, order-of-magnitude only: distance-d surface code (2d² qubits/logical), ×3 routing/factory overhead, Toffoli gates executed serially at 1 μs × d per logical cycle. Circuit generations: <strong>2017 textbook</strong> = Roetteler et al. (2,330 logical qubits, 1.26×10¹¹ Toffolis); <strong>2026 state of the art</strong> = arXiv 2603.28846-class (~1,200 logical, ~7×10⁷ Toffolis). Honest caveats: serial execution runs ~30× slower than Webber's parallelized 2022 design at the same scale, and this plain accounting lands ~8× above the 2026 paper's compact layout (~500K qubits) — read outputs as the conservative end. Real machines differ; the orders of magnitude don't.</p>
+</div>
+
+<span class="tier r">🔴 Real math</span>
+<h2>The resource estimates, with receipts</h2>
+<p>Shor's algorithm for the elliptic-curve discrete logarithm on a 256-bit prime-field curve: <strong>2,330 logical qubits</strong> and ≈<strong>1.26×10¹¹ Toffoli gates</strong> (Roetteler, Naehrig, Svore &amp; Lauter, <a href="https://arxiv.org/abs/1706.06752">arXiv:1706.06752</a> — computed for NIST P-256; Bitcoin's secp256k1 is the same size and comparable cost). Later circuit work cuts the Toffoli count substantially (Litinski, <a href="https://arxiv.org/abs/2306.08585">arXiv:2306.08585</a>, ~5×10⁷ Toffolis via active-volume architecture and state-reuse tricks; windowed-arithmetic lines of work cut counts further), which moves the estimates down, not away.</p>
+<p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ 1.9B</strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation — and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
+<p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis — under half a million physical qubits, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong>≈9 minutes</strong> once your transaction appears — inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
+<p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime — magic-state throughput is the real budget (same economics as our magic-state Boss Question); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic — there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once — hardware error rates AND algorithmic Toffoli counts — so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
+<p><em>Verification status: referee-verified — fresh-session hostile-referee pass with fixes applied 2026-07-14, including the March-2026 supersession (arXiv 2603.28846). Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+
+<h2>So when should anyone actually worry?</h2>
+<p>The honest answer is a range, not a date: expert surveys cluster around "a cryptographically relevant machine is plausible in the 2030s, not the 2020s" — and Google planning its own post-quantum migration for <strong>2029</strong> tells you how seriously the people building these machines take the timeline. Bitcoin's real exposure isn't a surprise attack; it's that migrating a decentralized system takes a decade of arguing, and the clock on that has already started. What happens to exposed coins nobody migrates — burn, freeze, or free-for-all — may end up the most contentious debate in Bitcoin's history.</p>
+
+<h2>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🟢 Error correction, no math</h3><p>Why quantum computers need babysitting at all.</p><a href="basics.html">Read →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, decoders, and the Grover audit this page leans on.</p><a href="deep.html">Read →</a></div>
+  <div class="card"><h3>🏁 The Race</h3><p>Who's closest to machines that matter — scored weekly, predictions on record.</p><a href="race.html">Scoreboard →</a></div>
+</div>
+
+<footer>Quantum vs Bitcoin, in numbers — not panic.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  var MODES = { '2017': { L: 2330, TOFF: 1.26e11 }, '2026': { L: 1200, TOFF: 7e7 } };
+  var mode = '2026', OVH = 3, PTH = 0.01, CYCLE = 1e-6, PL = 1e-12;
+  var pS = document.getElementById('p-slider'), nS = document.getElementById('n-slider'),
+      pV = document.getElementById('p-val'), nV = document.getElementById('n-val'),
+      out = document.getElementById('shor-out');
+
+  function pFrom(v) { return Math.pow(10, -2 - (v / 10)); }        // 0→1e-2 … 30→1e-5
+  function nFrom(v) { return Math.pow(10, v / 10); }                // 20→1e2 … 100→1e10
+  function fmtP(p) { var e = Math.log10(p); return '10^' + e.toFixed(1).replace(/\.0$/, ''); }
+  function fmtN(n) {
+    if (n >= 1e9) return (n / 1e9).toPrecision(3) + ' billion';
+    if (n >= 1e6) return (n / 1e6).toPrecision(3) + ' million';
+    return Math.round(n).toLocaleString('en-US');
+  }
+  function fmtT(s) {
+    if (s < 3600) return Math.round(s / 60) + ' minutes';
+    if (s < 172800) return (s / 3600).toPrecision(2) + ' hours';
+    if (s < 63113904) return (s / 86400).toPrecision(2) + ' days';
+    return (s / 31556952).toPrecision(2) + ' years';
+  }
+  function render() {
+    var p = pFrom(+pS.value), N = nFrom(+nS.value);
+    pV.textContent = fmtP(p);
+    nV.textContent = fmtN(N);
+    if (p >= PTH) {
+      out.innerHTML = '<strong>No machine of any size works.</strong> Error rate is at/above the surface-code threshold (~10⁻²): adding qubits makes errors <em>worse</em>, not better. Below threshold is the price of admission.';
+      return;
+    }
+    var k = Math.ceil(-12 / Math.log10(p / PTH));   // (p/pth)^k <= 1e-12
+    var d = 2 * k - 1;
+    var need = MODES[mode].L * 2 * d * d * OVH;
+    var t = MODES[mode].TOFF * d * CYCLE;
+    if (N < need) {
+      var gap = Math.log10(need / N);
+      out.innerHTML = 'Code distance needed: <strong>d = ' + d + '</strong> → ' +
+        '<strong>' + fmtN(need) + '</strong> physical qubits required.<br>' +
+        'This machine is <strong>' + gap.toFixed(1) + ' orders of magnitude</strong> too small. Your bitcoin is safe from it.';
+      return;
+    }
+    var race = t <= 600 ? 'Fast enough to race a transaction inside the ~10-min confirmation window — every coin is exposed the moment it moves.'
+             : t <= 86400 ? 'Too slow to race a live transaction — but exposed-key coins (~25–30% of supply, est.) have no clock. They fall first.'
+             : 'Only exposed-key coins are practical targets at this speed, and slowly.';
+    out.innerHTML = 'Code distance: <strong>d = ' + d + '</strong> · Requires <strong>' + fmtN(need) + '</strong> qubits — this machine qualifies.<br>' +
+      'One key falls in ≈ <strong>' + fmtT(t) + '</strong> (serial execution; parallel factories buy speed with more qubits).<br>' + race;
+  }
+  pS.addEventListener('input', render);
+  nS.addEventListener('input', render);
+  function setMode(m) {
+    mode = m;
+    Array.prototype.forEach.call(document.querySelectorAll('.mode'), function (mb) {
+      var on = mb.getAttribute('data-mode') === m;
+      mb.setAttribute('aria-pressed', on ? 'true' : 'false');
+      mb.className = on ? 'preset mode on' : 'preset mode';
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.mode'), function (b) {
+    b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); render(); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.preset:not(.mode)'), function (b) {
+    b.addEventListener('click', function () {
+      pS.value = b.getAttribute('data-p'); nS.value = b.getAttribute('data-n');
+      setMode(b.getAttribute('data-mode')); render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

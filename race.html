@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Race — SymbiQ</title>
+<meta name="description" content="Weekly scoreboard on the labs racing to fault tolerance, our public prediction record, and an interactive look at the one number the race is actually scored on: the threshold.">
+<link rel="stylesheet" href="style.css?v=10">
+<script src="nav.js?v=4" defer></script>
+<style>
+#thr-svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; height: auto; }
+.bar { transition: height .45s cubic-bezier(.2,.7,.3,1), y .45s cubic-bezier(.2,.7,.3,1), fill .3s ease; }
+.barlab { fill: var(--muted); font-size: 11px; font-family: inherit; text-anchor: middle; }
+.barval { font-size: 10px; font-family: inherit; text-anchor: middle; transition: fill .3s ease; }
+.axis { stroke: var(--border); stroke-width: 1; }
+.thr-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 6px; }
+.thr-controls input[type=range] { flex: 1; min-width: 180px; accent-color: var(--teal); }
+.lam { font-family: "Cambria Math", Georgia, serif; font-size: 1.15rem; font-weight: 700; min-width: 92px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" class="active" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>The Race</h1>
+<p class="tagline">Weekly scoreboard on the labs racing to fault tolerance — and our own prediction record, kept publicly. We keep score on ourselves so you can decide whether to trust us.</p>
+
+<h2>What the race is actually scored on</h2>
+<p>Qubit counts make the headlines. They are close to meaningless on their own. The number that decides whether a machine is in this race at all is <strong>Λ</strong> — how much the logical error rate shrinks each time you make the code bigger.</p>
+<p>The rule, from the scaling law on the <a href="qec.html#red">QEC page</a>: every <strong>two</strong> steps of code distance (d → d+2) divides the logical error rate by Λ. Below threshold Λ &gt; 1 and errors fall off a cliff as you add qubits. Above threshold Λ &lt; 1 and the same extra qubits make the machine <em>worse</em>. Same hardware, same code, opposite direction — and the whole industry is sorted by which side of that line it sits on.</p>
+
+<div class="card" id="threshold">
+  <h3>Drag the line</h3>
+  <div class="thr-controls">
+    <span class="lam" id="thr-lam"></span>
+    <input type="range" id="thr-slider" min="40" max="400" step="2" value="214"
+           aria-label="Lambda: error suppression per two steps of code distance">
+  </div>
+  <p style="margin:0 0 6px">
+    <button class="preset" data-lam="214">Willow (measured Λ=2.14)</button>
+    <button class="preset" data-lam="100">Exactly at threshold</button>
+    <button class="preset" data-lam="60">Above threshold</button>
+  </p>
+  <div class="verdict" id="thr-verdict"></div>
+  <svg id="thr-svg" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg"
+       aria-label="Logical error rate versus code distance, relative to distance 3"></svg>
+  <p class="legend" style="text-align:center">Logical error per round, relative to d=3 — <strong>shorter is better</strong>. Log scale.</p>
+  <dl class="rows" id="thr-rows" style="margin-top:12px"></dl>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">Honest model: this is the standard below-threshold scaling form p<sub>L</sub> ∝ (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, plotted as a <em>ratio</em> to d=3 — which is why no fitted prefactor appears and none is needed. It is the shape of the curve, not a prediction of any specific chip's error rate. Real devices depart from it near threshold, and Λ itself drifts with calibration. One more honest note on Λ: here it is set by the slider as the suppression-per-two-steps directly, and the scaling form above is what ties that to the ratio p/p<sub>th</sub> — in a real device the two agree only as well as the model does. Willow's Λ = 2.14 ± 0.02 is a <em>measured</em> suppression factor for increasing the code distance by two, quoted for the d = 5 → 7 step of a d = 3, 5, 7 series (<a href="https://arxiv.org/abs/2408.13687">arXiv 2408.13687</a>, <em>Nature</em> 638, 920 (2025)).</p>
+</div>
+
+<h2>Scoreboard</h2>
+<div class="overflow">
+<table>
+  <tr><th>Lab</th><th>One-line status</th><th>Last move</th></tr>
+  <tr><td>Google</td><td class="todo">— fill at first weekly update —</td><td>—</td></tr>
+  <tr><td>IBM</td><td class="todo">—</td><td>—</td></tr>
+  <tr><td>IonQ</td><td class="todo">—</td><td>—</td></tr>
+  <tr><td>Quantinuum</td><td class="todo">—</td><td>—</td></tr>
+  <tr><td>Microsoft</td><td class="todo">—</td><td>—</td></tr>
+  <tr><td>PsiQuantum</td><td class="todo">—</td><td>—</td></tr>
+</table>
+</div>
+
+<h2>Our predictions</h2>
+<p>Every prediction we make is falsifiable, dated, and scored when it resolves. No deleting misses.</p>
+<div class="overflow">
+<table>
+  <tr><th>#</th><th>Prediction</th><th>Made</th><th>Resolves by</th><th>Status</th></tr>
+  <tr><td>1</td><td class="todo">— first prediction ships with THE RACE #1 (see weekly prompt, THE CALL) —</td><td>—</td><td>—</td><td>Open</td></tr>
+</table>
+</div>
+
+<footer>The scoreboard nobody else keeps honest.<br>SymbiQ · Updated weekly, Sundays. Record so far: 0 right, 0 wrong, 0 open.</footer>
+</div>
+
+<script>
+(function () {
+  // Below-threshold scaling: p_L(d) ∝ (p/p_th)^⌊(d+1)/2⌋ = Λ^(-⌊(d+1)/2⌋).
+  // Plotted as a ratio to d=3, so the unknown prefactor cancels exactly:
+  //     E(d) = p_L(d)/p_L(3) = Λ^(-(⌊(d+1)/2⌋ - 2))  and for odd d that exponent is (d-3)/2.
+  // One factor of Λ per d→d+2 step — NOT per d→d+1 (adding 1 to an odd d buys nothing).
+  var DS = [3, 5, 7, 9, 11, 13];
+  var svg = document.getElementById('thr-svg');
+  if (!svg) return;
+  var slider = document.getElementById('thr-slider'),
+      lamEl = document.getElementById('thr-lam'),
+      verdict = document.getElementById('thr-verdict'),
+      rows = document.getElementById('thr-rows'),
+      NS = 'http://www.w3.org/2000/svg';
+
+  var W = 520, H = 250, PAD_B = 44, PAD_T = 18, BW = 52;
+  function step(d) { return Math.floor((d + 1) / 2); }
+  function rel(d, lam) { return Math.pow(lam, -(step(d) - step(3))); }
+  function qubits(d) { return 2 * d * d - 1; }
+
+  // log-scale bar height: E=1e-4 -> floor, E=100 -> full
+  function frac(E) {
+    var v = (Math.log(E) / Math.LN10 + 4) / 6;
+    return Math.max(0.012, Math.min(1, v));
+  }
+  function fmt(E) {
+    if (E >= 100) return Math.round(E) + '×';
+    if (E >= 1.5) return E.toFixed(1) + '×';
+    if (E > 0.995 && E < 1.005) return '1×';
+    if (E >= 0.01) return '÷' + (1 / E).toFixed(1);
+    return '÷' + Math.round(1 / E);
+  }
+
+  function el(tag, a) { var n = document.createElementNS(NS, tag); for (var k in a) n.setAttribute(k, a[k]); svg.appendChild(n); return n; }
+  el('line', { 'class': 'axis', x1: 30, y1: H - PAD_B, x2: W - 12, y2: H - PAD_B });
+  var bars = [], vals = [];
+  DS.forEach(function (d, i) {
+    var x = 44 + i * ((W - 66) / DS.length);
+    bars.push(el('rect', { 'class': 'bar', x: x, width: BW, y: H - PAD_B, height: 0, rx: 4 }));
+    vals.push(el('text', { 'class': 'barval', x: x + BW / 2, y: H - PAD_B - 6 }));
+    el('text', { 'class': 'barlab', x: x + BW / 2, y: H - PAD_B + 17 }).textContent = 'd=' + d;
+    el('text', { 'class': 'barlab', x: x + BW / 2, y: H - PAD_B + 31, opacity: .7 }).textContent = qubits(d) + 'q';
+  });
+
+  function draw() {
+    var lam = +slider.value / 100, below = lam > 1.0005, at = Math.abs(lam - 1) <= 0.0005;
+    lamEl.innerHTML = 'Λ = ' + lam.toFixed(2);
+    lamEl.style.color = at ? 'var(--yellow)' : (below ? 'var(--teal)' : 'var(--red)');
+
+    var maxD = DS[DS.length - 1], E = rel(maxD, lam);
+    DS.forEach(function (d, i) {
+      var e = rel(d, lam), f = frac(e), h = (H - PAD_B - PAD_T) * f;
+      bars[i].setAttribute('height', h);
+      bars[i].setAttribute('y', H - PAD_B - h);
+      bars[i].setAttribute('fill', at ? 'var(--yellow)' : (below ? 'var(--teal)' : 'var(--red)'));
+      bars[i].setAttribute('opacity', at ? .55 : (below ? (0.45 + 0.55 * (1 - i / DS.length)) : (0.5 + 0.5 * (i / DS.length))));
+      vals[i].textContent = fmt(e);
+      vals[i].setAttribute('y', H - PAD_B - h - 6);
+      vals[i].setAttribute('fill', at ? 'var(--yellow)' : (below ? 'var(--teal)' : 'var(--red)'));
+    });
+
+    verdict.className = 'verdict ' + (at ? 'split' : (below ? 'good' : 'bad'));
+    if (at) {
+      verdict.textContent = 'Exactly at threshold — adding qubits changes nothing. Every bar the same height: the code is treading water.';
+    } else if (below) {
+      verdict.textContent = 'Below threshold. Growing d=3 → 13 divides the logical error rate by ' +
+        (1 / E).toFixed(1) + '× — for ' + qubits(maxD) + ' physical qubits instead of ' + qubits(3) + '. This is the good side of the line.';
+    } else {
+      verdict.textContent = 'Above threshold. Growing d=3 → 13 makes the logical qubit ' + Math.round(E) +
+        '× WORSE, and costs ' + qubits(maxD) + ' physical qubits to do it. More hardware, worse computer.';
+    }
+
+    rows.innerHTML =
+      '<dt>Per d→d+2 step</dt><dd>logical error ' + (below ? '÷' : '×') + ' ' + (below ? lam.toFixed(2) : (1 / lam).toFixed(2)) + '</dd>' +
+      '<dt>d=3 → 13</dt><dd>five steps → ' + (below ? 'error ÷ ' + (1 / E).toFixed(1) : 'error × ' + Math.round(E)) +
+        ', qubits ' + qubits(3) + ' → ' + qubits(maxD) + '</dd>' +
+      '<dt>Verdict</dt><dd>' + (at ? 'no scaling either way' : (below ? 'in the race' : 'not in the race — no amount of qubits fixes this')) + '</dd>';
+  }
+
+  slider.addEventListener('input', draw);
+  Array.prototype.forEach.call(document.querySelectorAll('#threshold .preset'), function (b) {
+    b.addEventListener('click', function () { slider.value = b.getAttribute('data-lam'); draw(); });
+  });
+  draw();
+})();
+</script>
+</body>
+</html>

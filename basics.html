@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🟢 Basics — SymbiQ</title>
+<link rel="stylesheet" href="style.css?v=10">
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" class="active" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<span class="tier g">🟢 Beginner — no math, no jargon</span>
+<h1>The AI That Babysits Qubits</h1>
+
+<p>A quantum computer is a choir where every singer slowly drifts off key — and looking directly at any singer makes them forget the song. Error correction is a conductor who fixes pitch <em>without ever hearing anyone sing solo</em>: they listen to pairs of neighbors and infer who drifted.</p>
+
+<figure class="fig figchoir figcard">
+  <div class="figscroll"><svg viewBox="0 0 560 226" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Five singers in a row; the middle one has drifted off key. The conductor listens only to neighbouring pairs. The two comparisons that touch the drifting singer both report a mismatch, which pins down who drifted without anyone being heard alone.">
+    <!-- the singers -->
+    <circle class="singer" cx="80"  cy="40" r="21"/>
+    <circle class="singer" cx="175" cy="40" r="21"/>
+    <circle class="singer off" cx="270" cy="40" r="21"/>
+    <circle class="singer" cx="365" cy="40" r="21"/>
+    <circle class="singer" cx="460" cy="40" r="21"/>
+    <g class="lbl" text-anchor="middle">
+      <text x="80"  y="45">♪</text><text x="175" y="45">♪</text>
+      <text class="yellow" x="270" y="45">♪</text>
+      <text x="365" y="45">♪</text><text x="460" y="45">♪</text>
+      <text x="270" y="14" class="yellow lbl-s">this one drifted</text>
+    </g>
+
+    <!-- each comparison reaches up to exactly TWO neighbours, never one -->
+    <g class="listen">
+      <path d="M80 61 V88 H175 V61"/>
+      <path d="M175 61 V100 H270 V61"/>
+      <path d="M270 61 V100 H365 V61"/>
+      <path d="M365 61 V88 H460 V61"/>
+    </g>
+
+    <!-- the verdicts -->
+    <g>
+      <rect x="104" y="98" width="48" height="22" rx="7" fill="var(--panel)" stroke="var(--border)"/>
+      <text class="lbl-s" x="128" y="113" text-anchor="middle">agree</text>
+      <rect x="199" y="110" width="48" height="22" rx="7" fill="rgba(250,204,21,.16)" stroke="var(--yellow)"/>
+      <text class="lbl-s yellow" x="223" y="125" text-anchor="middle">clash!</text>
+      <rect x="294" y="110" width="48" height="22" rx="7" fill="rgba(250,204,21,.16)" stroke="var(--yellow)"/>
+      <text class="lbl-s yellow" x="318" y="125" text-anchor="middle">clash!</text>
+      <rect x="389" y="98" width="48" height="22" rx="7" fill="var(--panel)" stroke="var(--border)"/>
+      <text class="lbl-s" x="413" y="113" text-anchor="middle">agree</text>
+    </g>
+
+    <!-- the conductor, who hears only the four verdicts -->
+    <rect class="conductor" x="170" y="152" width="220" height="40" rx="12"/>
+    <text class="lbl-b teal" x="280" y="171" text-anchor="middle">the conductor</text>
+    <text class="lbl-s" x="280" y="185" text-anchor="middle">hears only these four verdicts</text>
+    <path class="sMuted" d="M223 132 V152 M318 132 V152" stroke-dasharray="3 3"/>
+    <text class="lbl-s" x="280" y="212" text-anchor="middle">two clashes side by side → the drift is the singer between them</text>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>Nobody was ever heard alone.</strong> The conductor only ever asks "do these two match?" — and two neighbouring clashes are enough to pin the culprit. That is not a storytelling trick — it is exactly the rule a real quantum computer follows, because listening to a single qubit destroys the very thing you were trying to protect. (A real machine runs this comparison across a whole grid rather than a single row, but the rule is the same one.) <a href="concepts.html">The same thing with its real name ▸</a></figcaption>
+</figure>
+
+<p>For 30 years, humans wrote the conductor's rulebook by hand. In 2024, Google DeepMind replaced the rulebook with an AI (AlphaQubit) that <em>learned</em> a real choir's specific bad habits from its data. It makes about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest, most careful one — though it's still too slow to conduct live itself; making it fast is the current race.</p>
+
+<p>The thing AI is worst at (being exactly right) is being fixed by the thing quantum is worst at existing without (error correction). That loop is why you're here.</p>
+
+<p>Ready for the version with real terms? <a href="concepts.html">🟡 Concepts →</a></p>
+
+<footer>The green door: no math, no jargon, no gatekeeping.<br>SymbiQ · 🟢 posts are tested on smart friends who studied literature. If one doesn't get it, we rewrite it.</footer>
+</div>
+</body>
+</html>

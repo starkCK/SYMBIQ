@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is quantum error correction?</title>
+<meta name="description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it — with an interactive surface code you can break yourself.">
+<link rel="stylesheet" href="style.css?v=10">
+<style>
+#qec-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
+.pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
+.pq.lit { fill: rgba(250, 204, 21, .22); stroke: var(--yellow); stroke-opacity: 1; animation: alarm 1.6s ease-in-out infinite; }
+@keyframes alarm { 50% { fill: rgba(250, 204, 21, .36); } }
+.px { fill: none; stroke: var(--border); stroke-dasharray: 4 4; }
+.plabel { fill: var(--muted); font-size: 12px; font-family: inherit; pointer-events: none; }
+.dq { fill: var(--bg); stroke: var(--muted); stroke-width: 2; cursor: pointer; transition: fill .15s; }
+.dq:hover, .dq:focus { stroke: var(--teal); outline: none; }
+.dq.flip { fill: var(--red); stroke: var(--red); }
+.fixring { fill: none; stroke: var(--teal); stroke-width: 2.5; stroke-dasharray: 5 4; }
+.legend { font-size: .85rem; color: var(--muted); margin: 10px 0 0; }
+/* --- decoder duel --- */
+#duel-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
+.pickring { fill: none; stroke: var(--teal); stroke-width: 2.5; }
+.decring { fill: none; stroke: var(--violet); stroke-width: 2; stroke-dasharray: 4 3; }
+.dq.armed { stroke: var(--teal); stroke-width: 2.5; }
+.dq.flip.popin { animation: flippop .42s ease-out; transform-box: fill-box; transform-origin: center; }
+#duel-log table { font-size: .85rem; margin-top: 8px; }
+#duel-log td, #duel-log th { padding: 3px 8px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "What is quantum error correction?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-15",
+      "dateModified": "2026-07-21",
+      "description": "Quantum error correction explained at three levels: why qubits fail, how surface codes catch errors without looking at the data, and where AI decoders now out-guess 30 years of hand-written algorithms on accuracy."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "What is quantum error correction?", "item": "qec.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is quantum error correction in simple terms?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Qubits are too fragile to trust individually, and quantum information can't be copied or inspected without destroying it. Quantum error correction spreads one 'logical' qubit's information across many physical qubits, then repeatedly measures parity checks between neighbors — which reveal that something flipped, and roughly where, without reading the data itself. A decoder algorithm infers the most likely error from those checks and undoes it."}
+        },
+        {
+          "@type": "Question",
+          "name": "Why can't quantum computers just copy their data as a backup?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Two theorems forbid the classical tricks. The no-cloning theorem says an unknown quantum state cannot be copied, so triple-redundancy backups are impossible. And measuring a qubit collapses its state, so you can't check it directly either. Error correction has to protect information it is never allowed to read — that is the whole difficulty, and parity checks between neighbors are the workaround."}
+        },
+        {
+          "@type": "Question",
+          "name": "How is AI used in quantum error correction?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Decoding — inferring which error occurred from the pattern of fired parity checks — is pattern recognition, and real hardware noise (correlated errors, leakage, drift) breaks the assumptions hand-written decoders rely on. Google DeepMind's AlphaQubit, a learned decoder trained on simulations and fine-tuned on real chip data, makes roughly 6% fewer logical errors than the best accuracy-focused classical decoders and about 30% fewer than the fast real-time ones. In 2026, neural decoders on FPGAs reached 550 ns latency, fast enough to run inside the error-correction cycle."}
+        },
+        {
+          "@type": "Question",
+          "name": "How many physical qubits does one logical qubit need?",
+          "acceptedAnswer": {"@type": "Answer", "text": "It depends on the hardware error rate and how reliable the logical qubit must be. With surface codes at today's ~10⁻³ physical error rates and a 10⁻¹² logical target (the kind needed for algorithms like Shor's), the code distance lands around d≈23, meaning roughly a thousand physical qubits per logical qubit before routing and magic-state overhead. This overhead is most of the reason estimates for breaking cryptography run from hundreds of thousands to millions of physical qubits."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" class="active" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>What is quantum error correction?</h1>
+<p class="tagline">The reason quantum computers don't work yet, the reason they eventually will, and the exact door AI walked in through.</p>
+
+<div class="card">
+<h3>The answer in four lines</h3>
+<p>One qubit is too fragile to trust, so you weave one <strong>logical qubit</strong> out of many physical ones. You never look at the data — you measure <strong>checks between neighbors</strong>, and a <strong>decoder</strong> infers what went wrong. Done well, errors get exponentially rarer as you add qubits; done badly, adding qubits makes things worse. The inferring is a pattern-recognition problem — which is why an AI now out-guesses thirty years of hand-written algorithms on accuracy, with speed as the remaining fight.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">The problem: a computer that breaks when you look at it</h2>
+<p>A qubit is a singer who slowly drifts off key. Everything nudges it — a warm wire, a stray bit of radiation, the qubit next door. On good hardware, roughly one operation in a thousand goes wrong. That sounds tolerable until you hear that useful algorithms need <em>billions</em> of error-free steps — trillions of physical operations underneath — to land correctly, back to back.</p>
+<p>A classical computer solves this with copies: store the bit three times, take the majority vote. Quantum mechanics slams both doors on that. You <strong>can't copy</strong> an unknown qubit — the no-cloning theorem isn't an engineering limit, it's the law. And you <strong>can't peek</strong> at one to see if it's still right, because measuring a qubit destroys the very superposition you were trying to protect.</p>
+<p>So here's the trick, and it's one of the best ideas physics produced in the last forty years: don't listen to any singer alone — listen to the <em>harmony between neighbors</em>. Ask pairs, "are you two still in tune with each other?" That question is safe: it reveals nothing about the song, only whether someone drifted, and roughly where. A conductor — the <strong>decoder</strong> — collects those harmony reports and works out who went off key, without ever hearing a solo.</p>
+<p>For thirty years, humans wrote that conductor's rulebook by hand, assuming the choir fails in tidy, textbook ways. Real choirs don't. In 2024, Google DeepMind replaced the rulebook with an AI — <strong>AlphaQubit</strong> — that learned a real machine's actual bad habits from its data, and it made fewer wrong calls than every hand-written rulebook it was tested against. (It's still too slow to run live; making learned decoders fast is the current race.) The thing AI is worst at (being exactly right) is fixing the thing quantum computing can't exist without. <a href="index.html">That loop is this site's whole subject.</a></p>
+<p>Real terms for the same picture: <a href="#yellow">🟡 keep going ↓</a></p>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">The machine: surface codes, syndromes, decoders</h2>
+<p>Encode one logical qubit into a grid — a <strong>surface code</strong> — where data qubits are interleaved with measurement qubits. The measurement qubits repeatedly run parity checks (<strong>stabilizers</strong>) on their data-qubit neighbors. A check that fires tells you an odd number of its neighbors flipped; the full pattern of fired checks is the <strong>syndrome</strong>. It's a diagnosis from symptoms: you never see the disease, only which alarms it tripped.</p>
+<div class="overflow"><table>
+<tr><th>Piece</th><th>Job</th><th>Failure mode</th></tr>
+<tr><td>Data qubits</td><td>Hold the encoded information</td><td>Flip and drift, constantly</td></tr>
+<tr><td>Parity checks</td><td>Report "someone here flipped" without reading data</td><td>The measurements themselves are noisy too</td></tr>
+<tr><td>Decoder</td><td>Infer the most likely error from the syndrome</td><td>Guesses wrong when noise breaks its assumptions</td></tr>
+<tr><td>Logical qubit</td><td>The one perfect qubit the whole grid pretends to be</td><td>Fails only when errors slip past all of the above</td></tr>
+</table></div>
+<p>The grid's size is its <strong>code distance d</strong>: a d=3 code corrects any single flip and detects any pair, but a chain of 3 errors crossing the grid is invisible — it changes the logical qubit while every check stays quiet. Bigger d, longer chains needed, safer qubit.</p>
+<p>And the number that rules the whole field: the <strong>threshold</strong>. If the physical error rate is below roughly 1% per operation (model-dependent), enlarging the grid makes the logical qubit <em>exponentially</em> better. Above it, enlarging the grid makes it worse — more qubits, more noise, no rescue. Every headline about qubit quality is really a headline about which side of this line a machine is on. That's also why decoders matter so much: a smarter decoder effectively moves you further below threshold with zero new hardware.</p>
+
+<h2>Break the code yourself</h2>
+<p>This is the real thing — the distance-3 surface code ("surface-17": 9 data + 8 check qubits), the first layout serious superconducting labs build. Click data qubits to flip them. Amber patches are parity checks firing; the dashed teal rings are the decoder's proposed repair. See if you can get an error past it.</p>
+
+<div class="card" id="qec-widget">
+  <h3>Surface-17, live</h3>
+  <svg id="qec-svg" viewBox="0 0 360 330" xmlns="http://www.w3.org/2000/svg" aria-label="Interactive distance-3 surface code: 9 data qubits and 8 parity checks"></svg>
+  <p class="legend">⬤ red = your bit-flip · ◼ amber = a check firing · ◌ teal dashed = the decoder's repair · faded dashed patches = phase-flip checks (idle in this demo)</p>
+  <p style="margin:10px 0 4px">
+    <button class="preset" id="btn-reset">Reset</button>
+    <button class="preset" id="btn-one">One flip</button>
+    <button class="preset" id="btn-pair">A pair that lies</button>
+    <button class="preset" id="btn-chain">The silent chain</button>
+  </p>
+  <div id="qec-out" class="formula" aria-live="polite"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the layout and check structure are exact (the standard d=3 rotated surface code, Tomita &amp; Svore 2014), and the decoder is true minimum-weight inference over all 512 bit-flip patterns. Simplified two ways: only bit-flips are injected (phase-flips behave identically under the faded X checks), and checks here are perfect one-shot measurements — real hardware re-measures them ~a million times per second, and the checks themselves misfire.</p>
+</div>
+
+<h2>The duel: sit in the AI's chair</h2>
+<p>The widget above let you see the error. A real decoder never does. It sees which alarms fired, and nothing else, and it has to bet. So here is the actual job.</p>
+<p>Ten rounds on a chip with a defect: somewhere in this lattice two qubits are coupled, and when one flips its partner tends to flip with it. <strong>Cross-talk</strong> — a real failure mode, and one of the exact things that breaks textbook decoders. Your opponent is <strong>minimum-weight matching</strong>, the hand-written decoder the field has run on since 2001. It is very good, and it is running the textbook noise model it was handed: every qubit fails on its own, every failure equally likely. Nobody told it about this chip. You <em>can</em> hand-fit a correlation back into a matching decoder — that is what “correlated matching” is — but somebody has to know what to fit.</p>
+<p>You can. After every round you see what actually happened — the same kind of device data AlphaQubit was fine-tuned on. Find the defect and you will beat it. That is the whole thesis of this site, played out on a nine-qubit grid.</p>
+
+<div class="card" id="duel">
+  <h3>Decoder Duel</h3>
+  <div class="hud">
+    <div class="hud-side"><span class="hud-label">You</span><span class="hud-score" id="hud-you">0</span></div>
+    <div class="hud-mid" id="hud-round">Round 1 of 10</div>
+    <div class="hud-side right"><span class="hud-label">Matching</span><span class="hud-score" id="hud-dec">0</span></div>
+  </div>
+  <div class="dotrow"><span class="who">You</span><span class="dots" id="dots-you"></span></div>
+  <div class="dotrow"><span class="who">Matching</span><span class="dots" id="dots-dec"></span></div>
+  <svg id="duel-svg" viewBox="0 0 360 330" xmlns="http://www.w3.org/2000/svg" aria-label="Decoder duel: a distance-3 surface code with hidden errors"></svg>
+  <p class="legend">◼ amber = a check firing · <span style="color:var(--teal)">◯ teal ring = your repair (the decoder's colour is violet down here)</span> · <span style="color:var(--violet)">◌ violet dashed = matching's repair</span> · ⬤ red = what actually flipped (revealed after you commit)</p>
+  <p style="margin:10px 0 4px">
+    <button class="preset" id="duel-commit">Commit repair</button>
+    <button class="preset" id="duel-next">Next round</button>
+    <button class="preset" id="duel-clear">Clear picks</button>
+    <button class="preset" id="duel-new">New chip</button>
+  </p>
+  <div id="duel-out" aria-live="polite"></div>
+  <div id="duel-log"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the lattice, the checks and the matching decoder are exact — the same engine as the widget above, true minimum-weight inference over all 512 patterns. The fiction is the defect: one fixed, always-on coupled pair is far more blatant than real chip noise, which is a drifting mess of leakage, cross-talk and correlated readout spread over a d=3 or d=5 patch and 25 measurement rounds, inferred from hundreds of millions of simulated shots and thousands of real ones rather than ten. Some rounds here are also genuinely undecidable — a lone flip and the coupled pair can trip the identical alarm — and nobody wins those reliably. That irreducible residue is the <em>floor</em> under the logical error rate.</p>
+</div>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">The formalism, with receipts</h2>
+<p>Rotated surface code with distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits; the stabilizer group is generated by weight-4 X- and Z-plaquette operators in the bulk and weight-2 operators on the boundaries. Logical operators are X- and Z-strings spanning the lattice between their respective boundaries; the code is [[<em>d</em>², 1, <em>d</em>]]. Decoding is inference over the syndrome volume: given syndrome history σ, return the most probable <em>logical equivalence class</em> of errors — the exact physical error is unrecoverable and irrelevant; any correction in the right class (differing from the truth by a stabilizer) succeeds. The demo above shows this: flip one qubit of a weight-2 check and the decoder may "repair" its partner instead — and that's a win.</p>
+<p>Below threshold, logical error per round scales as</p>
+<div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
+<p>so each two-step increase in distance (d → d+2) multiplies suppression by Λ ≈ p<sub>th</sub>/p. Google's Willow processor was the first hardware demonstration on the right side of the exponent: across a d = 3, 5, 7 series, increasing the distance by two suppressed the logical error rate by Λ = 2.14 ± 0.02 — the quoted figure being the d = 5 → 7 step — with the d=7 logical qubit's lifetime exceeding its best physical qubit's (arXiv 2408.13687, <em>Nature</em> 638, 920 (2025)). The overhead is the price: 2d²−1 physical qubits per logical, so at p ≈ 10⁻³ and a 10⁻¹² logical target, d ≈ 23 → roughly a thousand physical qubits per logical <em>before</em> routing and magic-state factories. The same overhead logic — run at the gentler error budget a real attack circuit needs (~9×10⁷ Toffoli gates → a ~10⁻⁹–10⁻¹⁰ target, not 10⁻¹²) — is how "≈1,200 logical qubits to break a Bitcoin key" (2026 estimate) becomes <a href="bitcoin.html">half a million physical ones</a>: about 400 physical per logical, magic-state factories included.</p>
+<p><strong>Where AI enters.</strong> Minimum-weight perfect matching decodes the graph with edge weights from an assumed independent-Pauli noise model — provably good under that model, degraded by what real chips actually do: correlated errors, leakage, cross-talk, drift. <strong>AlphaQubit</strong> (arXiv 2310.05900, <em>Nature</em> 2024) is a recurrent transformer over per-round syndrome inputs — crucially consuming analog "soft" readout rather than binarized measurements — pretrained on simulated samples and fine-tuned on device data. Reported: ~6% fewer logical errors than tensor-network decoders (near-optimal but far too slow for real time) and ~30% fewer than correlated matching, maintained to d=11 in simulation.</p>
+<p><strong>The real-time constraint.</strong> A decoder slower than the syndrome cycle accumulates backlog and the machine stalls — accuracy without latency is a benchmark, not a decoder. The frontier moved in 2026: an FPGA neural decoder reached 550 ns system latency (124 ns inference) inside a 1.25 μs cycle on superconducting hardware (arXiv 2605.04892). Open problems: scaling learned decoders to large d in real time, and doing it for the multi-logical-qubit patches an actual algorithm needs.</p>
+<p><em>Verification status: fresh-session hostile-referee passes completed 2026-07-15 (page) and 2026-07-21 (Decoder Duel) — all math recomputed exhaustively, all sources fetched; every finding applied same day. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+
+<h2>References</h2>
+<div class="card">
+  <p>• Surface codes, canonical intro: Fowler, Mariantoni, Martinis &amp; Cleland, <a href="https://arxiv.org/abs/1208.0928">arXiv 1208.0928</a> (PRA 2012)<br>
+  • The d=3, 17-qubit layout ("Surface-17" — the name came later): Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv 1404.3747</a><br>
+  • Below-threshold scaling (Willow): Google Quantum AI, <a href="https://arxiv.org/abs/2408.13687">arXiv 2408.13687</a> (<em>Nature</em> 638, 920 (2025); online Dec 2024)<br>
+  • AlphaQubit: <a href="https://arxiv.org/abs/2310.05900">arXiv 2310.05900</a> (<em>Nature</em> 2024) · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
+  • Real-time FPGA neural decoder: <a href="https://arxiv.org/abs/2605.04892">arXiv 2605.04892</a></p>
+</div>
+
+<h2>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>₿ The stakes</h3><p>Error correction is the multiplier in every "quantum breaks Bitcoin" estimate. The honest numbers.</p><a href="bitcoin.html">Can quantum break Bitcoin? →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>The decoder formalism this page compresses, with the derivations.</p><a href="deep.html">Read →</a></div>
+  <div class="card"><h3>🏁 The Race</h3><p>Who's furthest below threshold — scored weekly, predictions on record.</p><a href="race.html">Scoreboard →</a></div>
+</div>
+
+<footer>Error correction — the door AI walked in through.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  // Surface-17: data qubits 0-8 row-major on a 3x3 grid.
+  // Z checks (fire on bit-flips): two bulk plaquettes + two boundary pairs.
+  // X checks (would fire on phase-flips): drawn faded, idle in this demo.
+  var ZS = [[0, 1, 3, 4], [4, 5, 7, 8], [2, 5], [3, 6]];
+  var XS = [[0, 1], [1, 2, 4, 5], [3, 4, 6, 7], [7, 8]];
+  var ZNAME = ['Z₁', 'Z₂', 'Z₃', 'Z₄'];
+  var POS = [[90, 75], [180, 75], [270, 75], [90, 165], [180, 165], [270, 165], [90, 255], [180, 255], [270, 255]];
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  function mask(list) { var m = 0; for (var i = 0; i < list.length; i++) m |= 1 << list[i]; return m; }
+  function weight(e) { var w = 0; while (e) { w += e & 1; e >>= 1; } return w; }
+  var zM = ZS.map(mask), xM = XS.map(mask);
+
+  // Group generated by the X stabilizers: errors in it are logically harmless.
+  var xGroup = {};
+  for (var s = 0; s < 16; s++) {
+    var g = 0;
+    for (var i = 0; i < 4; i++) if (s & (1 << i)) g ^= xM[i];
+    xGroup[g] = true;
+  }
+
+  function synd(e) {
+    var out = 0;
+    for (var i = 0; i < 4; i++) if (weight(e & zM[i]) & 1) out |= 1 << i;
+    return out;
+  }
+
+  // All 512 patterns ordered by weight → exact minimum-weight decoding.
+  var order = [];
+  for (var e = 0; e < 512; e++) order.push(e);
+  order.sort(function (a, b) { return (weight(a) - weight(b)) || (a - b); });
+  function decode(target) {
+    for (var i = 0; i < order.length; i++) if (synd(order[i]) === target) return order[i];
+    return 0;
+  }
+
+  // --- build the SVG ---
+  var svg = document.getElementById('qec-svg'),
+      out = document.getElementById('qec-out');
+  function el(tag, attrs) {
+    var n = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    svg.appendChild(n);
+    return n;
+  }
+  // X plaquettes first (background, faded)
+  el('rect', { 'class': 'px', x: 180, y: 75, width: 90, height: 90 });
+  el('rect', { 'class': 'px', x: 90, y: 165, width: 90, height: 90 });
+  el('path', { 'class': 'px', d: 'M90 75 A45 45 0 0 1 180 75 Z' });
+  el('path', { 'class': 'px', d: 'M180 255 A45 45 0 0 0 270 255 Z' });
+  el('text', { 'class': 'plabel', x: 219, y: 124, opacity: .5 }).textContent = 'X';
+  el('text', { 'class': 'plabel', x: 129, y: 214, opacity: .5 }).textContent = 'X';
+  // Z plaquettes (the live checks)
+  var zEls = [
+    el('rect', { 'class': 'pq', x: 90, y: 75, width: 90, height: 90 }),
+    el('rect', { 'class': 'pq', x: 180, y: 165, width: 90, height: 90 }),
+    el('path', { 'class': 'pq', d: 'M270 75 A45 45 0 0 1 270 165 Z' }),
+    el('path', { 'class': 'pq', d: 'M90 165 A45 45 0 0 0 90 255 Z' })
+  ];
+  var zLbl = [[129, 124], [219, 214], [286, 124], [74, 214]];
+  for (var i = 0; i < 4; i++) {
+    var t = el('text', { 'class': 'plabel', x: zLbl[i][0], y: zLbl[i][1] });
+    t.textContent = ZNAME[i];
+  }
+  // decoder-repair rings (under the qubits' click targets, drawn just before them)
+  var rings = POS.map(function (p) {
+    return el('circle', { 'class': 'fixring', cx: p[0], cy: p[1], r: 24, visibility: 'hidden' });
+  });
+  // data qubits
+  var flips = 0;
+  var qEls = POS.map(function (p, idx) {
+    var c = el('circle', { 'class': 'dq', cx: p[0], cy: p[1], r: 15, tabindex: 0, role: 'button', 'aria-pressed': 'false' });
+    function toggle() { flips ^= 1 << idx; render(); }
+    c.addEventListener('click', toggle);
+    c.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); }
+    });
+    return c;
+  });
+
+  function firedNames(s) {
+    var names = [];
+    for (var i = 0; i < 4; i++) if (s & (1 << i)) names.push(ZNAME[i]);
+    return names.join(', ');
+  }
+
+  function render() {
+    var s = synd(flips);
+    var fix = s ? decode(s) : 0;
+    for (var i = 0; i < 9; i++) {
+      qEls[i].setAttribute('class', (flips & (1 << i)) ? 'dq flip' : 'dq');
+      qEls[i].setAttribute('aria-pressed', (flips & (1 << i)) ? 'true' : 'false');
+      rings[i].setAttribute('visibility', (fix & (1 << i)) ? 'visible' : 'hidden');
+    }
+    for (var j = 0; j < 4; j++) zEls[j].setAttribute('class', (s & (1 << j)) ? 'pq lit' : 'pq');
+
+    if (!flips) {
+      out.innerHTML = 'All four bit-flip checks read clean. The logical qubit is safe. <strong>Click a circle to flip it.</strong>';
+      return;
+    }
+    if (!s) {
+      if (xGroup[flips]) {
+        out.innerHTML = 'Every check reads clean — <strong>correctly</strong>. Your flips form exactly a check operator: something physically happened, and logically nothing changed. The code just ate an error for free ✓';
+      } else {
+        out.innerHTML = '💀 <strong>Silent failure.</strong> Your chain crosses the lattice and no check can see it: the logical qubit flipped while every alarm stayed quiet. This is what "distance" means — d=3 dies to a 3-chain. The fix is bigger d, which is the qubit-count race.';
+      }
+      return;
+    }
+    var net = flips ^ fix;
+    if (!net) {
+      out.innerHTML = 'Checks firing: <strong>' + firedNames(s) + '</strong>. The decoder infers your exact flips and undoes them. <strong>Corrected ✓</strong> — one normal cycle; real machines run this ~a million times per second.';
+    } else if (xGroup[net]) {
+      out.innerHTML = 'Checks firing: <strong>' + firedNames(s) + '</strong>. The decoder repairs <em>different</em> qubits than you flipped — but the difference is a harmless check operator, so the logical qubit comes out identical. <strong>Corrected ✓</strong> Decoders only need the right class of answer, not the exact one.';
+    } else {
+      out.innerHTML = '⚠️ Checks firing: <strong>' + firedNames(s) + '</strong> — but your flips imitate a <em>smaller</em> error, so the decoder’s cheapest explanation is wrong. Its repair completes a chain across the lattice: <strong>logical error ✗</strong> A distance-3 code guarantees only ⌊(d−1)/2⌋ = 1 correctable flip.';
+    }
+  }
+
+  document.getElementById('btn-reset').addEventListener('click', function () { flips = 0; render(); });
+  document.getElementById('btn-one').addEventListener('click', function () { flips = 1 << Math.floor(Math.random() * 9); render(); });
+  document.getElementById('btn-pair').addEventListener('click', function () { flips = (1 << 0) | (1 << 4); render(); });
+  document.getElementById('btn-chain').addEventListener('click', function () { flips = (1 << 0) | (1 << 3) | (1 << 6); render(); });
+  render();
+})();
+</script>
+
+<script>
+(function () {
+  // Decoder Duel — same surface-17 conventions and decoder as the widget above.
+  var ZS = [[0, 1, 3, 4], [4, 5, 7, 8], [2, 5], [3, 6]];
+  var XS = [[0, 1], [1, 2, 4, 5], [3, 4, 6, 7], [7, 8]];
+  var ZNAME = ['Z₁', 'Z₂', 'Z₃', 'Z₄'];
+  var POS = [[90, 75], [180, 75], [270, 75], [90, 165], [180, 165], [270, 165], [90, 255], [180, 255], [270, 255]];
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  // Vertical neighbour pairs only. Verified exhaustively: each of these, firing as a
+  // unit, lands minimum-weight matching in the WRONG logical class every time. The six
+  // horizontal pairs don't — matching survives those, so they'd make a pointless duel.
+  var PAIRS = [[0, 3], [3, 6], [1, 4], [4, 7], [2, 5], [5, 8]];
+  var ROUNDS = 10;
+
+  var svg = document.getElementById('duel-svg');
+  if (!svg) return;
+  var out = document.getElementById('duel-out'),
+      logBox = document.getElementById('duel-log'),
+      hudYou = document.getElementById('hud-you'),
+      hudDec = document.getElementById('hud-dec'),
+      hudRound = document.getElementById('hud-round'),
+      dotsYou = document.getElementById('dots-you'),
+      dotsDec = document.getElementById('dots-dec'),
+      bCommit = document.getElementById('duel-commit'),
+      bNext = document.getElementById('duel-next'),
+      bClear = document.getElementById('duel-clear');
+
+  function mask(l) { var m = 0; for (var i = 0; i < l.length; i++) m |= 1 << l[i]; return m; }
+  function weight(e) { var w = 0; while (e) { w += e & 1; e >>= 1; } return w; }
+  var zM = ZS.map(mask), xM = XS.map(mask);
+  function synd(e) { var o = 0; for (var i = 0; i < 4; i++) if (weight(e & zM[i]) & 1) o |= 1 << i; return o; }
+
+  var xGroup = {};
+  for (var st = 0; st < 16; st++) {
+    var g = 0;
+    for (var gi = 0; gi < 4; gi++) if (st & (1 << gi)) g ^= xM[gi];
+    xGroup[g] = true;
+  }
+  var order = [];
+  for (var p = 0; p < 512; p++) order.push(p);
+  order.sort(function (a, b) { return (weight(a) - weight(b)) || (a - b); });
+  function decode(t) { for (var i = 0; i < order.length; i++) if (synd(order[i]) === t) return order[i]; return 0; }
+  // A repair succeeds when the leftover is a stabilizer: something happened, nothing changed.
+  function held(resid) { return synd(resid) === 0 && !!xGroup[resid]; }
+
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function qlist(e) { var o = []; for (var i = 0; i < 9; i++) if (e & (1 << i)) o.push('q' + i); return o.join(' + '); }
+  function chips(e, kind) {
+    if (!e) return '<span class="chip">nothing</span>';
+    var o = [];
+    for (var i = 0; i < 9; i++) if (e & (1 << i)) o.push('<span class="chip ' + kind + '">q' + i + '</span>');
+    return o.join('');
+  }
+  function fired(s) { var n = []; for (var i = 0; i < 4; i++) if (s & (1 << i)) n.push(ZNAME[i]); return n.length ? n.join(', ') : 'none'; }
+
+  var G = null;
+
+  // 4 ordinary single flips, 4 crosstalk-pair firings, 2 pair-plus-a-stray.
+  // Round 1 is always an ordinary flip so the interface is learned on a fair round.
+  function buildRounds(pair) {
+    var pe = mask(pair), list = [1 << rnd(9)], kinds = [], i;
+    for (i = 0; i < 3; i++) kinds.push('single');
+    for (i = 0; i < 4; i++) kinds.push('pair');
+    for (i = 0; i < 2; i++) kinds.push('both');
+    for (i = kinds.length - 1; i > 0; i--) { var j = rnd(i + 1), t = kinds[i]; kinds[i] = kinds[j]; kinds[j] = t; }
+    kinds.forEach(function (k) {
+      if (k === 'single') list.push(1 << rnd(9));
+      else if (k === 'pair') list.push(pe);
+      else { var x; do { x = rnd(9); } while (pair.indexOf(x) >= 0); list.push(pe | (1 << x)); }
+    });
+    return list;
+  }
+
+  function newChip() {
+    var pair = PAIRS[rnd(PAIRS.length)];
+    G = { pair: pair, rounds: buildRounds(pair), i: 0, pick: 0, revealed: false, done: false, you: 0, dec: 0, log: [] };
+    render();
+  }
+
+  function el(tag, attrs) {
+    var n = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    svg.appendChild(n);
+    return n;
+  }
+  el('rect', { 'class': 'px', x: 180, y: 75, width: 90, height: 90 });
+  el('rect', { 'class': 'px', x: 90, y: 165, width: 90, height: 90 });
+  el('path', { 'class': 'px', d: 'M90 75 A45 45 0 0 1 180 75 Z' });
+  el('path', { 'class': 'px', d: 'M180 255 A45 45 0 0 0 270 255 Z' });
+  var zEls = [
+    el('rect', { 'class': 'pq', x: 90, y: 75, width: 90, height: 90 }),
+    el('rect', { 'class': 'pq', x: 180, y: 165, width: 90, height: 90 }),
+    el('path', { 'class': 'pq', d: 'M270 75 A45 45 0 0 1 270 165 Z' }),
+    el('path', { 'class': 'pq', d: 'M90 165 A45 45 0 0 0 90 255 Z' })
+  ];
+  var zLbl = [[129, 124], [219, 214], [286, 124], [74, 214]];
+  for (var li = 0; li < 4; li++) {
+    el('text', { 'class': 'plabel', x: zLbl[li][0], y: zLbl[li][1] }).textContent = ZNAME[li];
+  }
+  var decRings = POS.map(function (q) { return el('circle', { 'class': 'decring', cx: q[0], cy: q[1], r: 27, visibility: 'hidden' }); });
+  var pickRings = POS.map(function (q) { return el('circle', { 'class': 'pickring', cx: q[0], cy: q[1], r: 21, visibility: 'hidden' }); });
+  var qEls = POS.map(function (q, idx) {
+    var c = el('circle', { 'class': 'dq', cx: q[0], cy: q[1], r: 15, tabindex: 0, role: 'button', 'aria-pressed': 'false' });
+    function toggle() {
+      if (!G || G.revealed || G.done) return;
+      G.pick ^= 1 << idx;
+      render();
+    }
+    c.addEventListener('click', toggle);
+    c.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); }
+    });
+    return c;
+  });
+
+  function render() {
+    var R = G.rounds[G.i], s = synd(R), dec = decode(s), show = G.revealed || G.done;
+    for (var i = 0; i < 9; i++) {
+      var bit = 1 << i, cls = 'dq';
+      if (show && (R & bit)) { cls += ' flip'; if (G.pop) cls += ' popin'; }
+      else if (!show && (G.pick & bit)) cls += ' armed';
+      qEls[i].setAttribute('class', cls);
+      qEls[i].setAttribute('aria-pressed', (G.pick & bit) ? 'true' : 'false');
+      pickRings[i].setAttribute('visibility', (G.pick & bit) ? 'visible' : 'hidden');
+      decRings[i].setAttribute('visibility', (show && (dec & bit)) ? 'visible' : 'hidden');
+    }
+    for (var j = 0; j < 4; j++) zEls[j].setAttribute('class', (s & (1 << j)) ? 'pq lit' : 'pq');
+
+    hudYou.textContent = G.you;
+    hudDec.textContent = G.dec;
+    hudYou.className = 'hud-score' + (G.you > G.dec ? ' lead' : '');
+    hudDec.className = 'hud-score' + (G.dec > G.you ? ' lead' : '');
+    hudRound.textContent = G.done ? 'Final' : 'Round ' + (G.i + 1) + ' of ' + ROUNDS;
+    renderDots();
+
+    bCommit.disabled = G.revealed || G.done;
+    bNext.disabled = !G.revealed || G.done;
+    bClear.disabled = G.revealed || G.done;
+
+    G.pop = false;
+    if (G.done) { finalWord(); return; }
+    if (!G.revealed) {
+      out.innerHTML = 'Checks firing: <strong>' + fired(s) + '</strong>.<br>' +
+        'Click the qubits you would repair, then <strong>Commit repair</strong>. Repairing nothing is a legal bet — sometimes the right one.';
+    }
+    renderLog();
+  }
+
+  function commit() {
+    if (G.revealed || G.done) return;
+    var R = G.rounds[G.i], s = synd(R), dec = decode(s),
+        youOk = held(R ^ G.pick), decOk = held(R ^ dec),
+        stray = synd(G.pick) !== s;
+    if (youOk) G.you++;
+    if (decOk) G.dec++;
+    G.revealed = true;
+    G.log.push({ n: G.i + 1, s: s, R: R, youOk: youOk, decOk: decOk });
+
+    var cls, head;
+    if (youOk && !decOk) { cls = 'good'; head = '★ You held the logical qubit — matching lost it.'; }
+    else if (youOk && decOk) { cls = 'good'; head = 'Both of you held it.'; }
+    else if (!youOk && decOk) { cls = 'bad'; head = 'Matching held it. You lost it.'; }
+    else { cls = 'split'; head = 'Logical error — both of you.'; }
+
+    function tail(okFlag, strayFlag) {
+      if (strayFlag) return 'does not explain the alarms — a detectable error is left behind ✗';
+      return okFlag ? 'residue is a product of checks — logically nothing happened ✓'
+                    : 'residue is a logical operator — the encoded qubit flipped ✗';
+    }
+    var note = '';
+    if (!decOk && (R & mask(G.pair)) === mask(G.pair)) {
+      note = '<p style="margin:8px 0 0;color:var(--muted);font-size:.9rem"><em>Matching bought the cheapest explanation that fits the alarms. On this chip, that was the wrong bet.</em></p>';
+    }
+    out.innerHTML =
+      '<div class="verdict ' + cls + '">' + head + '</div>' +
+      '<dl class="rows">' +
+      '<dt>Actually flipped</dt><dd>' + chips(R, 'err') + '</dd>' +
+      '<dt>Your repair</dt><dd>' + chips(G.pick, 'you') +
+        '<span style="color:var(--muted)">' + tail(youOk, stray) + '</span></dd>' +
+      '<dt>Matching’s repair</dt><dd>' + chips(dec, 'dec') +
+        '<span style="color:var(--muted)">' + tail(decOk, false) + '</span></dd>' +
+      '</dl>' + note;
+    G.pop = true;
+    render();
+  }
+
+  // Two rows of ten dots: the whole story of the game at a glance — and the place
+  // where matching's blind spot becomes visible as a run of red.
+  function renderDots() {
+    function row(el, key) {
+      var h = '';
+      for (var r = 0; r < ROUNDS; r++) {
+        var rec = G.log[r], c = 'dot';
+        if (rec) c += rec[key] ? ' win' : ' lose';
+        if (r === G.i && !G.done) c += ' now';
+        if (rec && r === G.log.length - 1 && G.revealed) c += ' pop';
+        h += '<span class="' + c + '" title="Round ' + (r + 1) + '"></span>';
+      }
+      el.innerHTML = h;
+    }
+    row(dotsYou, 'youOk');
+    row(dotsDec, 'decOk');
+  }
+
+  function renderLog() {
+    if (!G.log.length) { logBox.innerHTML = ''; return; }
+    var h = '<details open><summary>Chip history — your training data (' + G.log.length +
+      ' round' + (G.log.length === 1 ? '' : 's') + ')</summary><div class="overflow"><table>' +
+      '<tr><th>#</th><th>Checks fired</th><th>What actually flipped</th><th>You</th><th>Matching</th></tr>';
+    G.log.forEach(function (r) {
+      h += '<tr><td>' + r.n + '</td><td>' + fired(r.s) + '</td><td>' + (r.R ? qlist(r.R) : '—') +
+        '</td><td>' + (r.youOk ? '✓' : '✗') + '</td><td>' + (r.decOk ? '✓' : '✗') + '</td></tr>';
+    });
+    logBox.innerHTML = h + '</table></div></details>';
+  }
+
+  function finalWord() {
+    var cls, lead;
+    if (G.you > G.dec) {
+      cls = 'good';
+      lead = 'You beat minimum-weight matching, ' + G.you + '–' + G.dec + '. ' +
+        'You did it the only way it can be done: you stopped assuming the chip was textbook and learned what it actually does. ' +
+        'That is exactly AlphaQubit\'s edge — a decoder that reads a real device\'s noise off its own data instead of being handed an idealised model of it. ' +
+        '(The architecture is new too: a recurrent transformer that eats the analog readout signal, not just a 0 or a 1.)';
+    } else if (G.you === G.dec) {
+      cls = 'split';
+      lead = 'Dead heat, ' + G.you + '–' + G.dec + '. Matching is genuinely hard to beat — it is optimal ' +
+        'right up until its noise model is wrong. Run it again and watch which alarms keep lying to you.';
+    } else {
+      cls = 'bad';
+      lead = 'Matching won, ' + G.dec + '–' + G.you + '. No shame: it is a very good algorithm, ' +
+        'and thirty years of the field agreed. The way past it is not to out-think it round by round — it is to notice the pattern it is structurally blind to.';
+    }
+    out.innerHTML = '<div class="verdict ' + cls + '" style="font-weight:400">' + lead + '</div>' +
+      '<p style="margin:0">The defect on this chip: <strong>q' + G.pair[0] + ' ↔ q' + G.pair[1] + '</strong> — coupled neighbours that flipped together. ' +
+      'Matching was handed the textbook noise model, not this chip\'s, so it always bought the single cheapest flip instead — and paid for it in logical errors. ' +
+      'Tell a matching decoder about this pair and it wins most of those rounds back; the whole point is that nobody has to tell a learned decoder. ' +
+      'That is <a href="#red">the whole AI story below</a>. ' +
+      '<strong>New chip</strong> moves the defect.</p>';
+    renderLog();
+  }
+
+  bCommit.addEventListener('click', commit);
+  bNext.addEventListener('click', function () {
+    if (!G.revealed || G.done) return;
+    G.i++;
+    if (G.i >= ROUNDS) { G.i = ROUNDS - 1; G.done = true; render(); return; }
+    G.pick = 0; G.revealed = false;
+    render();
+  });
+  bClear.addEventListener('click', function () { if (!G.revealed && !G.done) { G.pick = 0; render(); } });
+  document.getElementById('duel-new').addEventListener('click', newChip);
+  newChip();
+})();
+</script>
+</body>
+</html>

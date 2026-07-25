@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corrections — SymbiQ</title>
+<link rel="stylesheet" href="style.css?v=10">
+<script src="nav.js?v=4" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" class="active" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+
+
+
+<h1>We got this wrong →</h1>
+<p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
+
+<div class="card">
+  <h3>The log is empty — for now</h3>
+  <p>When it happens (it will), each entry follows the same format: <strong>what we said</strong> → <strong>what's true</strong> → <strong>why we missed it</strong>. Errors caught by community members are credited by name, with the 🏅 "taught it better than us" tag.</p>
+</div>
+
+<h2>How we try to avoid needing this page</h2>
+<p>Every 🔴 post and Boss Question solution gets an independent hostile-referee verification pass before publishing. Facts from secondary coverage get spot-checked against primary sources (arXiv, company blogs). The verification log lives in our internal records with dates and sources.</p>
+
+<figure class="fig figcycle figcard">
+  <div class="figscroll"><svg viewBox="0 0 620 246" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="The path a claim takes: drafted, checked by a hostile referee, published, and if an error still escapes, a reader's catch is verified and published with more prominence than the original.">
+    <defs>
+      <marker id="corrArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--border)"/>
+      </marker>
+    </defs>
+
+    <text class="lbl-s" x="10" y="16">BEFORE IT SHIPS</text>
+    <rect class="box" x="8" y="26" width="128" height="58" rx="12"/>
+    <text class="lbl-b" x="72" y="49" text-anchor="middle">drafted</text>
+    <text class="lbl-s" x="72" y="66" text-anchor="middle">with its sources</text>
+
+    <rect class="box" x="166" y="26" width="128" height="58" rx="12"/>
+    <text class="lbl-b" x="230" y="45" text-anchor="middle">hostile referee</text>
+    <text class="lbl-s" x="230" y="61" text-anchor="middle">a fresh reader paid</text>
+    <text class="lbl-s" x="230" y="73" text-anchor="middle">to attack it</text>
+
+    <rect class="box" x="324" y="26" width="128" height="58" rx="12"/>
+    <text class="lbl-b" x="388" y="49" text-anchor="middle">published</text>
+    <text class="lbl-s" x="388" y="66" text-anchor="middle">sources inline</text>
+
+    <path class="flowline" d="M138 55 H164" marker-end="url(#corrArrow)"/>
+    <path class="flowline" d="M296 55 H322" marker-end="url(#corrArrow)"/>
+    <path class="flowline" d="M254 84 V104 H230" marker-end="url(#corrArrow)" stroke-dasharray="4 4"/>
+    <text class="lbl-s yellow" x="196" y="118" text-anchor="end">sent back</text>
+
+    <!-- and when one still gets through -->
+    <text class="lbl-s teal" x="10" y="150">WHEN ONE GETS THROUGH ANYWAY</text>
+    <rect class="box ai" x="8" y="160" width="128" height="58" rx="12"/>
+    <text class="lbl-b teal" x="72" y="183" text-anchor="middle">you catch it</text>
+    <text class="lbl-s" x="72" y="200" text-anchor="middle">biggest bounty we pay</text>
+
+    <rect class="box" x="166" y="160" width="128" height="58" rx="12"/>
+    <text class="lbl-b" x="230" y="183" text-anchor="middle">verified</text>
+    <text class="lbl-s" x="230" y="200" text-anchor="middle">against the source</text>
+
+    <rect x="324" y="152" width="270" height="74" rx="12" fill="rgba(250,204,21,.10)" stroke="var(--yellow)" stroke-width="2"/>
+    <text class="lbl-b yellow" x="459" y="176" text-anchor="middle">the correction runs LOUDER</text>
+    <text class="lbl-s" x="459" y="194" text-anchor="middle">more prominence than the original claim,</text>
+    <text class="lbl-s" x="459" y="208" text-anchor="middle">credited to you by name 🏅</text>
+
+    <path class="flowline" d="M138 189 H164" marker-end="url(#corrArrow)"/>
+    <path class="flowline" d="M296 189 H322" marker-end="url(#corrArrow)"/>
+    <path class="flowline" d="M388 84 V148" marker-end="url(#corrArrow)" stroke-dasharray="4 4"/>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>The last box is the unusual one.</strong> The convention almost everywhere is that a correction runs smaller and later than the claim it fixes, so the mistake reaches more people than the repair ever does. Here it is inverted: the correction gets <em>more</em> room than the original, and finding one pays the largest reward on the server — because a reader who checks our work is worth far more to us than a reader who trusts it.</figcaption>
+</figure>
+
+<footer>We print our mistakes louder than the original.<br>SymbiQ · Found an error we haven't? Post it in Discord — being corrected by you is the best content we can get.</footer>
+</div>
+</body>
+</html>

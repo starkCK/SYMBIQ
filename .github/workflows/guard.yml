@@ -1,0 +1,54 @@
+name: site guard
+
+# Runs on every push and PR. The site is served straight from main by GitHub
+# Pages, so main IS production -- this is the only gate between an edit and
+# the public URL.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fail if node is missing
+        # The JS parse check is the reason this workflow exists; silently
+        # skipping it would make a green tick meaningless.
+        run: node --version
+
+      - name: Self-test the guard
+        # Prove the checks actually fire before trusting a pass. Reintroduces
+        # the exact bug that took the Solver's Path down on 2026-07-24 -- an
+        # unescaped apostrophe inside a single-quoted JS string -- into a
+        # throwaway copy, and asserts the guard rejects it.
+        run: |
+          cp -r . /tmp/broken
+          python - <<'PY'
+          import io
+          p = '/tmp/broken/journey.html'
+          s = io.open(p, encoding='utf-8').read()
+          needle = 'twelve times this game’s whole budget'
+          assert needle in s, 'fixture text not found -- update the self-test'
+          io.open(p, 'w', encoding='utf-8').write(
+              s.replace(needle, "twelve times this game's whole budget"))
+          PY
+          if python .github/scripts/check_site.py /tmp/broken; then
+            echo "::error::Guard PASSED a file with a known syntax error -- the guard is broken."
+            exit 1
+          fi
+          echo "Self-test OK: the guard rejects the known-bad fixture."
+
+      - name: Check the site
+        run: python .github/scripts/check_site.py

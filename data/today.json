@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "date": "2026-07-19",
-  "qnum": 1,
+  "date": "2026-07-25",
+  "qnum": 2,
   "tier": "g",
   "question": {
-    "text": "You can copy a computer file perfectly, a billion times. Why can't a quantum computer copy a qubit even once?",
+    "text": "Google's AlphaQubit spots errors in a quantum chip more accurately than the hand-written decoders. But it never looks at the qubits doing the actual work. So what is it reading?",
     "options": [
-      "Qubits are physically too small for any read head to grab onto",
-      "Reading an unknown quantum state disturbs it — and you can't copy what you can't fully read",
-      "Copying a qubit would transmit information faster than light",
-      "Quantum computers don't have enough memory to hold two copies"
+      "The data qubits themselves, measured at the end of every correction round",
+      "The control pulses going into the chip, checked for distortion",
+      "Syndrome measurements — parity checks from helper qubits that reveal an error happened without revealing the data",
+      "The final output, compared against a known-correct answer"
     ],
-    "answerIndex": 1,
-    "hint": "The problem isn't the copying. It's the looking.",
+    "answerIndex": 2,
+    "hint": "You can't examine the patient without killing them. So you read the chart instead.",
     "explain": {
-      "g": "The no-cloning theorem. To copy something you first have to read it — but measuring a qubit collapses its superposition, destroying the very information you wanted to copy. You can't look without disturbing, and you can't copy what you can't look at.",
-      "y": "A universal copier would need to duplicate a state it doesn't know. Measurement only extracts one bit from a qubit's continuous (α, β) amplitudes and wrecks the rest. This is exactly why quantum error correction can't just keep backups — and why decoders (including AI ones like AlphaQubit) read indirect syndrome measurements instead of the data qubits themselves.",
-      "r": "Suppose a unitary U clones arbitrary states: U|ψ⟩|0⟩ = |ψ⟩|ψ⟩. For |ψ⟩ = α|0⟩+β|1⟩, linearity gives U|ψ⟩|0⟩ = α U|0⟩|0⟩ + β U|1⟩|0⟩ = α|00⟩ + β|11⟩. But cloning demands |ψ⟩|ψ⟩ = α²|00⟩ + αβ|01⟩ + αβ|10⟩ + β²|11⟩. Equal only when αβ = 0 — the basis states themselves. No universal cloner exists (Wootters & Zurek, Nature 299, 802 (1982); Dieks, Phys. Lett. A 92, 271 (1982))."
+      "g": "Measuring a data qubit destroys the superposition you were trying to protect — so error correction never touches them. Instead, extra 'helper' qubits ask a question that gives nothing away: do these two neighbours still agree? The pattern of yes/no answers is the syndrome, and it tells you that something broke and roughly where, while the data itself stays untouched and unread. AlphaQubit reads that pattern. Symptoms, not the disease.",
+      "y": "Each helper qubit measures a parity check — a joint property of several data qubits, never any single one. Because those checks are chosen to commute with the logical information, learning their outcomes collapses nothing you care about: you find out that an error occurred without finding out what state you were holding. The decoder's job is inverse inference — given this syndrome pattern over many rounds, which physical error most likely produced it? Note what AlphaQubit's win actually is: it is an accuracy win, and it is measured against specific opponents. Roughly 30% versus correlated matching, the fast real-time class; only about 6% versus the most accurate tensor-network decoder. It is also, as published, too slow for the real-time loop.",
+      "r": "The surface code fixes a stabilizer group S of commuting Pauli operators; the codespace is their simultaneous +1 eigenspace. Measuring a generator S_i projects onto its ±1 eigenspace, and because every S_i commutes with the logical operators X̄ and Z̄, that projection leaves the encoded state undisturbed — the syndrome carries information about the error coset, not about the logical state. An error E anticommuting with S_i flips that check, so the syndrome is the map E ↦ (±1)^m, which is many-to-one: distinct errors differing by a stabilizer are indistinguishable and, correctly, need no distinguishing. Decoding is choosing the most likely coset, and it is degenerate maximum-likelihood, not simple error identification. AlphaQubit is a recurrent-transformer decoder pretrained on hundreds of millions of simulated samples and fine-tuned on thousands of experimental samples from a Sycamore processor at distance 3 and 5 (Google DeepMind, Nature 635, 834 (2024); arXiv 2310.05900). Surface-code background: Fowler, Mariantoni, Martinis & Cleland, arXiv 1208.0928."
     }
   },
-  "signal": "Preview build — the daily Signal line starts with the launch batch.",
+  "signal": "AlphaQubit's edge is accuracy, not speed — the real-time decoding problem is being solved separately, by FPGAs (arXiv 2605.04892: 550 ns system latency inside a 1.25 μs cycle).",
   "lattice": { "f": 0, "goal": 3000, "nextD": 4 }
 }

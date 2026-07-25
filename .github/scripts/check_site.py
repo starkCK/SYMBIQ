@@ -245,6 +245,71 @@ if bad_reveal:
 else:
     ok("reveal: not hand-written in any page")
 
+# 7. data/today.json ------------------------------------------------------
+# The homepage Daily Question reads this file. It is rewritten every day by the
+# content pipeline, which makes it the most frequently-changed file on the site
+# and the easiest one to break -- and a malformed feed silently kills the single
+# mechanic the operating plan calls sacred. Validate it like an API payload.
+TODAY = os.path.join(ROOT, "data", "today.json")
+if not os.path.exists(TODAY):
+    warn("today.json", "data/today.json is absent (homepage falls back gracefully)")
+else:
+    try:
+        with open(TODAY, encoding="utf-8") as fh:
+            t = json.load(fh)
+    except Exception as e:
+        t = None
+        fail("today.json", f"does not parse -> {e}")
+    if t is not None:
+        def need(cond, msg):
+            if not cond:
+                fail("today.json", msg)
+
+        need(t.get("schema") == 1, f"schema must be 1, got {t.get('schema')!r}")
+        need(isinstance(t.get("qnum"), int) and t["qnum"] >= 1,
+             f"qnum must be a positive int, got {t.get('qnum')!r}")
+        need(t.get("tier") in ("g", "y", "r"), f"tier must be g|y|r, got {t.get('tier')!r}")
+        need(bool(str(t.get("signal", "")).strip()), "signal is empty")
+
+        d = str(t.get("date", ""))
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", d):
+            fail("today.json", f"date must be YYYY-MM-DD, got {d!r}")
+
+        q = t.get("question") or {}
+        need(bool(str(q.get("text", "")).strip()), "question.text is empty")
+        need(bool(str(q.get("hint", "")).strip()), "question.hint is empty")
+        opts = q.get("options")
+        if not (isinstance(opts, list) and len(opts) == 4):
+            fail("today.json", f"question.options must be exactly 4, got "
+                               f"{len(opts) if isinstance(opts, list) else type(opts).__name__}")
+        else:
+            need(all(str(o).strip() for o in opts), "an option is blank")
+            need(len(set(map(str, opts))) == 4, "two options are identical")
+        ai_ = q.get("answerIndex")
+        need(isinstance(ai_, int) and 0 <= ai_ <= 3,
+             f"answerIndex must be 0-3, got {ai_!r}")
+        ex = q.get("explain") or {}
+        for k in ("g", "y", "r"):
+            need(bool(str(ex.get(k, "")).strip()),
+                 f"explain.{k} is missing or empty (all three tiers are required)")
+
+        lat = t.get("lattice") or {}
+        for k in ("f", "goal", "nextD"):
+            need(isinstance(lat.get(k), (int, float)), f"lattice.{k} must be numeric")
+
+        if not [f for f in FAILS if f.startswith("today.json")]:
+            ok(f"today.json: schema 1 valid (q#{t['qnum']}, tier {t['tier']}, dated {d})")
+        # Staleness is a content problem, not a build problem -- warn, never block
+        # an unrelated push.
+        try:
+            import datetime
+            age = (datetime.date.today() - datetime.date.fromisoformat(d)).days
+            if age > 2:
+                warn("today.json", f"the daily question is {age} days old "
+                                   f"(dated {d}) -- the feed has gone stale")
+        except Exception:
+            pass
+
 # --------------------------------------------------------------------------
 print("=" * 66)
 print(f"SymbiQ site guard -- {len(pages)} pages, {len(js_files())} js files")

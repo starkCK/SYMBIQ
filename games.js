@@ -295,6 +295,28 @@
     },
     honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable.',
     mount: function (root, opts) {
+      // In-world voice. Display strings only — never logic, so the Path and the
+      // Arcade run the identical engine and only the words differ.
+      var mission = opts && opts.mode === 'mission';
+      var VO = mission ? {
+        unit: 'Door', unitLow: 'door', turn: 'turn', turns: 'turns',
+        ask: function (n, name, par) { return 'Door ' + n + ' — the coin must read <strong>' + name +
+          '</strong>. It takes <strong>' + par + '</strong> ' + (par === 1 ? 'turn' : 'turns') + '.'; },
+        par: 'The door opens. Nothing shorter exists — Ada proved that.',
+        over: function (n, par) { return 'It opens, but you took ' + n + ' turns where ' + par + ' would do.'; },
+        lost: 'You are forcing it. <strong>Steady the coin</strong> and turn again.',
+        rowA: 'This door', rowB: 'Doors opened', rowC: 'Turns',
+        allDone: 'every door, the short way'
+      } : {
+        unit: 'Hole', unitLow: 'hole', turn: 'gate', turns: 'gates',
+        ask: function (n, name, par) { return 'Hole ' + n + ' — reach <strong>' + name +
+          '</strong> in <strong>' + par + '</strong> ' + (par === 1 ? 'gate' : 'gates') + '.'; },
+        par: 'Par. Proven optimal — nothing shorter exists.',
+        over: function (n, par) { return n + ' gates against par ' + par + '. There is a shorter route.'; },
+        lost: 'Well over par. <strong>Retry hole</strong> to reset — or keep going.',
+        rowA: 'This hole', rowB: 'Holes done', rowC: 'Total',
+        allDone: 'perfect round'
+      };
       root.innerHTML =
         '<div class="holes" data-r="holes"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
@@ -362,7 +384,7 @@
         vDot.setAttribute('cx', pm[0]); vDot.setAttribute('cy', pm[1]);
         $(root, '[data-r=holes]').innerHTML = HOLES.map(function (h, i) {
           return '<span class="hole' + (i === hi ? ' now' : '') + (done[i] != null ? (done[i] <= h.par ? ' done' : ' over') : '') +
-                 '" data-h="' + i + '" title="Hole ' + (i+1) + ' — par ' + h.par + '">' + (i+1) + '</span>';
+                 '" data-h="' + i + '" title="' + VO.unit + ' ' + (i+1) + ' — par ' + h.par + '">' + (i+1) + '</span>';
         }).join('');
         Array.prototype.forEach.call(root.querySelectorAll('[data-r=holes] .hole'), function (b) {
           b.addEventListener('click', function () { hi = +b.getAttribute('data-h'); cur = Z0; moves = []; render(); });
@@ -370,15 +392,15 @@
         var p = $(root, '[data-r=say]'), hit = same(me, tgt);
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
         else if (hit && moves.length) { p.className = 'verdict good'; p.innerHTML = 'Reached <strong>' + H.name + '</strong>.'; }
-        else { p.className = 'verdict'; p.innerHTML = 'Hole ' + (hi+1) + ' — reach <strong>' + H.name + '</strong> in <strong>' + H.par + '</strong> ' + (H.par === 1 ? 'gate' : 'gates') + '. <span style="color:var(--muted);font-weight:400">' + H.hint + '</span>'; }
+        else { p.className = 'verdict'; p.innerHTML = VO.ask(hi+1, H.name, H.par) + ' <span style="color:var(--muted);font-weight:400">' + H.hint + '</span>'; }
         var totPar = HOLES.reduce(function (a, h) { return a + h.par; }, 0);
         var played = done.filter(function (d) { return d != null; }).length;
         if (played === HOLES.length) win('golf', opts);
         $(root, '[data-r=rows]').innerHTML =
-          '<dt>This hole</dt><dd>' + moves.length + ' / par ' + H.par + (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
-          '<dt>Holes done</dt><dd>' + played + ' of ' + HOLES.length + '</dd>' +
-          '<dt>Total</dt><dd>' + strokes + ' strokes, par ' + totPar +
-            (played === HOLES.length ? (strokes === totPar ? ' — <strong style="color:var(--teal)">perfect round</strong>' : ' — ' + (strokes - totPar) + ' over') : '') + '</dd>';
+          '<dt>' + VO.rowA + '</dt><dd>' + moves.length + ' / par ' + H.par + (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
+          '<dt>' + VO.rowB + '</dt><dd>' + played + ' of ' + HOLES.length + '</dd>' +
+          '<dt>' + VO.rowC + '</dt><dd>' + strokes + ' ' + VO.turns + ', par ' + totPar +
+            (played === HOLES.length ? (strokes === totPar ? ' — <strong style="color:var(--teal)">' + VO.allDone + '</strong>' : ' — ' + (strokes - totPar) + ' over') : '') + '</dd>';
       }
       function play(g) {
         var H = HOLES[hi];
@@ -388,12 +410,12 @@
           done[hi] = moves.length; strokes += moves.length;
           var par = moves.length === H.par;
           render({ k: par ? 'good' : 'split', t: '<strong>' + H.name + ' reached.</strong> ' +
-            (par ? 'Par. Proven optimal — nothing shorter exists.' : moves.length + ' gates against par ' + H.par + '. There is a shorter route.') });
+            (par ? VO.par : VO.over(moves.length, H.par)) });
           var nxt = done.findIndex(function (d, i) { return d == null && i > hi; });
           if (nxt < 0) nxt = done.findIndex(function (d) { return d == null; });
           if (nxt >= 0) setTimeout(function () { hi = nxt; cur = Z0; moves = []; render(); }, 1400);
         } else if (moves.length >= H.par + 4) {
-          render({ k: 'bad', t: 'Well over par. <strong>Retry hole</strong> to reset — or keep going.' });
+          render({ k: 'bad', t: VO.lost });
         } else render();
       }
       Array.prototype.forEach.call(root.querySelectorAll('.gatebtn'), function (b) {
@@ -427,6 +449,24 @@
     },
     honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game.',
     mount: function (root, opts) {
+      // Display-only voice layer (see Circuit Golf). Rue's fixation is timing:
+      // the arcade says "par", the corridor says "the moment to look".
+      var mission = opts && opts.mode === 'mission';
+      var VO = mission ? {
+        ask: function (n, par) { return '<strong>' + n + ' doors</strong>, one way out. Tilt the odds toward it — about <strong>' +
+          par + '</strong> ' + (par === 1 ? 'pass' : 'passes') + ' — then look <em>once</em>.'; },
+        peak: 'Out. You looked at exactly the right moment — that is the whole trick.',
+        early: function (par) { return 'Out, but you looked early (the moment is ' + par + '). The draw was kind.'; },
+        late: 'Out — though you kept tilting past the moment. The draw covered for you.',
+        rowCleared: 'Corridors behind you'
+      } : {
+        ask: function (n, par) { return '<strong>' + n + ' doors.</strong> Amplify toward the peak (about <strong>' +
+          par + '</strong> ' + (par === 1 ? 'round' : 'rounds') + '), then measure.'; },
+        peak: 'Measured right at the <strong>peak</strong> — par.',
+        early: function (par) { return 'Measured <strong>early</strong> (par is ' + par + '), but the draw went your way.'; },
+        late: 'You <strong>over-amplified</strong> past the peak, yet the draw still landed home.',
+        rowCleared: 'Corridors cleared'
+      };
       root.innerHTML =
         '<div class="holes" data-r="corr"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
@@ -469,7 +509,7 @@
         return '<dt>Amplifications</dt><dd>' + k + ' &nbsp;<span style="color:var(--muted)">(par ' + CORR[ci].par + ' = the peak)</span></dd>' +
           '<dt>Exit odds now</dt><dd>' + (pExit(n,k)*100).toFixed(1) + '% &nbsp;<span style="color:var(--muted)">best this run ' + (bestP*100).toFixed(1) + '%</span></dd>' +
           '<dt>Classical vs you</dt><dd>~' + (n/2) + ' doors tried on average · you need √N ≈ ' + Math.round(Math.sqrt(n)) + '</dd>' +
-          '<dt>Corridors cleared</dt><dd>' + solved.filter(function (x) { return x != null; }).length + ' of ' + CORR.length + '</dd>';
+          '<dt>' + VO.rowCleared + '</dt><dd>' + solved.filter(function (x) { return x != null; }).length + ' of ' + CORR.length + '</dd>';
       }
       function render(msg) {
         var n = CORR[ci].n, pm = pExit(n, k);
@@ -479,8 +519,7 @@
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
         else {
           p.className = 'verdict';
-          p.innerHTML = '<strong>' + n + ' doors.</strong> Amplify toward the peak (about <strong>' + CORR[ci].par + '</strong> ' +
-            (CORR[ci].par === 1 ? 'round' : 'rounds') + '), then measure. Exit odds now: <strong>' + Math.round(pm*100) + '%</strong>.';
+          p.innerHTML = VO.ask(n, CORR[ci].par) + ' Exit odds now: <strong>' + Math.round(pm*100) + '%</strong>.';
         }
         $(root, '[data-r=rows]').innerHTML = rowsHTML();
       }
@@ -516,9 +555,7 @@
           win('grover', opts);
           if (solved[ci] == null || k === par) solved[ci] = k;
           p.className = 'verdict good';
-          p.innerHTML = '<strong>Escaped.</strong> ' + (k === par ? 'Measured right at the <strong>peak</strong> — par.'
-            : k < par ? 'Measured <strong>early</strong> (par is ' + par + '), but the draw went your way.'
-            : 'You <strong>over-amplified</strong> past the peak, yet the draw still landed home.') +
+          p.innerHTML = '<strong>Escaped.</strong> ' + (k === par ? VO.peak : k < par ? VO.early(par) : VO.late) +
             ' A classical searcher averages ~' + (n/2) + ' door' + (n/2 === 1 ? '' : 's') + '; you used <strong>' + k + '</strong>.';
         } else {
           p.className = 'verdict bad';

@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "date": "2026-07-25",
-  "qnum": 2,
-  "tier": "g",
+  "date": "2026-07-27",
+  "qnum": 3,
+  "tier": "y",
   "question": {
-    "text": "Google's AlphaQubit spots errors in a quantum chip more accurately than the hand-written decoders. But it never looks at the qubits doing the actual work. So what is it reading?",
+    "text": "Add more qubits to a quantum computer and you usually get MORE errors, not fewer — more parts to fail, more crosstalk. But there's one condition under which adding qubits makes the error rate go DOWN instead. What is it?",
     "options": [
-      "The data qubits themselves, measured at the end of every correction round",
-      "The control pulses going into the chip, checked for distortion",
-      "Syndrome measurements — parity checks from helper qubits that reveal an error happened without revealing the data",
-      "The final output, compared against a known-correct answer"
+      "The physical error rate is already below the error-correction threshold, so grouping qubits into a bigger logical qubit suppresses errors exponentially",
+      "The chip is cooled further below its superconducting critical temperature",
+      "The new qubits are used only as ancillas, never to store data",
+      "The new qubits are pre-entangled with the existing ones before any gates run"
     ],
-    "answerIndex": 2,
-    "hint": "You can't examine the patient without killing them. So you read the chart instead.",
+    "answerIndex": 0,
+    "hint": "It's not about how cold the chip is or how entangled the qubits are — it's about which side of one particular error rate you're standing on.",
     "explain": {
-      "g": "Measuring a data qubit destroys the superposition you were trying to protect — so error correction never touches them. Instead, extra 'helper' qubits ask a question that gives nothing away: do these two neighbours still agree? The pattern of yes/no answers is the syndrome, and it tells you that something broke and roughly where, while the data itself stays untouched and unread. AlphaQubit reads that pattern. Symptoms, not the disease.",
-      "y": "Each helper qubit measures a parity check — a joint property of several data qubits, never any single one. Because those checks are chosen to commute with the logical information, learning their outcomes collapses nothing you care about: you find out that an error occurred without finding out what state you were holding. The decoder's job is inverse inference — given this syndrome pattern over many rounds, which physical error most likely produced it? Note what AlphaQubit's win actually is: it is an accuracy win, and it is measured against specific opponents. Roughly 30% versus correlated matching, the fast real-time class; only about 6% versus the most accurate tensor-network decoder. It is also, as published, too slow for the real-time loop.",
-      "r": "The surface code fixes a stabilizer group S of commuting Pauli operators; the codespace is their simultaneous +1 eigenspace. Measuring a generator S_i projects onto its ±1 eigenspace, and because every S_i commutes with the logical operators X̄ and Z̄, that projection leaves the encoded state undisturbed — the syndrome carries information about the error coset, not about the logical state. An error E anticommuting with S_i flips that check, so the syndrome is the map E ↦ (±1)^m, which is many-to-one: distinct errors differing by a stabilizer are indistinguishable and, correctly, need no distinguishing. Decoding is choosing the most likely coset, and it is degenerate maximum-likelihood, not simple error identification. AlphaQubit is a recurrent-transformer decoder pretrained on hundreds of millions of simulated samples and fine-tuned on thousands of experimental samples from a Sycamore processor at distance 3 and 5 (Google DeepMind, Nature 635, 834 (2024); arXiv 2310.05900). Surface-code background: Fowler, Mariantoni, Martinis & Cleland, arXiv 1208.0928."
+      "g": "More qubits usually means more control lines, more couplings, more chances for one qubit's noise to leak into its neighbour — so bigger usually means noisier. But there's a loophole: if each physical qubit is already reliable enough — below a specific 'threshold' error rate — then grouping many of them into one well-protected logical qubit does the opposite. Every extra layer of protection you add past that point makes the logical qubit MORE reliable, not less. Below the threshold, more qubits buys you safety. Above it, more qubits just buys you more noise. That one word, threshold, is the difference between a quantum computer that scales and one that doesn't.",
+      "y": "Physical qubits fail at some rate p. Encode a logical qubit in a surface code of distance d (built from roughly d² physical qubits), and its logical error rate scales like p_L ∝ (p/p_th)^⌊(d+1)/2⌋, where p_th is the threshold. If p is above p_th, that ratio exceeds 1, so raising d makes p_L explode — bigger codes hurt you. If p is below p_th, the ratio is under 1, and raising d makes p_L shrink exponentially — bigger codes protect you. Same formula, opposite outcome, and the only thing that flipped is which side of p_th you started on. That's why hardware effort goes into pushing p under that line, not just into raw qubit count.",
+      "r": "For a surface code of distance d, the logical error rate below threshold obeys p_L ≈ A(p/p_th)^⌊(d+1)/2⌋ (Fowler, Mariantoni, Martinis & Cleland, arXiv:1208.0928), so d → d+2 buys one more power of (p/p_th) while d → d+1 on an odd d buys none — why surface codes are always quoted at odd distances. Below p_th the exponent grows with d and (p/p_th) < 1, so p_L → 0 as d → ∞ using only d² additional physical qubits — polynomial resource cost for exponential error suppression. Above p_th, the same base exceeds 1 and every added qubit compounds the failure rate instead. Google's Willow chip demonstrated an experimental below-threshold crossing, with error suppression Λ ≈ 2.14 per two-distance step (Acharya et al., Nature 638, 920 (2025)); newer work adds a reinforcement-learning control layer that keeps the physical qubits pinned below that line during a live computation, not just at calibration time (Google Quantum AI, Nature, 2026; arXiv:2511.08493)."
     }
   },
-  "signal": "AlphaQubit's edge is accuracy, not speed — the real-time decoding problem is being solved separately, by FPGAs (arXiv 2605.04892: 550 ns system latency inside a 1.25 μs cycle).",
+  "signal": "Google's RL agent now steers Willow's qubit controls in real time using nothing but error-detection events — no data qubit ever read — cutting the logical error rate a further 20% past expert calibration and making the surface code 3.5× more stable against drift (Google Quantum AI, Nature, 2026; arXiv:2511.08493).",
   "lattice": { "f": 0, "goal": 3000, "nextD": 4 }
 }

@@ -778,3 +778,120 @@ body.latched { overflow: hidden; }
   .orhero h2 { font-size: 1.4rem; }
   .bigplay { width: 100%; padding: 15px 20px; font-size: 1.05rem; }
 }
+
+/* ================================================================
+   OR GAMES — The Feasible Region's two playables.
+   Shares the house game-UI language (.hud/.verdict/.preset) and adds
+   only what the two need: a live feasible region, and a search tree.
+   ================================================================ */
+.orhud {
+  display: flex; align-items: baseline; gap: 8px 16px; flex-wrap: wrap;
+  padding: 12px 16px; margin-bottom: 14px;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: linear-gradient(135deg, rgba(45,212,191,.09), transparent 70%);
+}
+.orhud-k { font-size: .68rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.orhud-v { font-weight: 700; font-variant-numeric: tabular-nums; margin-right: 6px; }
+.orhud-v.big { font-size: 1.45rem; color: var(--teal); }
+
+.orsplit { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 720px) { .orsplit { grid-template-columns: 1fr; } }
+
+.orviz { min-width: 0; }
+.orsvg { display: block; width: 100%; height: auto; overflow: visible; }
+.orregion {
+  fill: rgba(45,212,191,.15); stroke: var(--teal); stroke-width: 2.5;
+  transition: all .5s cubic-bezier(.22,.7,.3,1);
+}
+.orline {
+  fill: none; stroke-width: 1.6; stroke-dasharray: 5 5; opacity: .45;
+  transition: opacity .4s ease, stroke-width .4s ease;
+}
+.orline.tight { stroke-dasharray: none; stroke-width: 2.6; opacity: 1; }
+.oropt {
+  fill: var(--yellow); stroke: var(--bg); stroke-width: 2.5;
+  transition: cx .55s cubic-bezier(.22,.7,.3,1), cy .55s cubic-bezier(.22,.7,.3,1);
+}
+.orax { fill: var(--muted); font-weight: 600; font-size: 11px; }
+.orcap { font-size: .84rem; color: var(--muted); margin: 10px 0 0; }
+.orcap b { color: var(--text); }
+
+.oreyebrow {
+  font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--teal); font-weight: 700; margin: 0 0 10px;
+}
+
+/* the three purchase buttons — each one is a whole argument, so they are
+   cards rather than chips */
+.orbuy {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-left: 3px solid var(--border);
+  border-radius: 11px; padding: 12px 14px; margin: 0 0 10px; font: inherit;
+  transition: border-color .18s cubic-bezier(.22,.7,.3,1), transform .18s cubic-bezier(.22,.7,.3,1);
+}
+.orbuy:hover:not([disabled]) { border-left-color: var(--teal); transform: translateX(3px); }
+.orbuy:active:not([disabled]) { transform: translateX(1px) scale(.995); }
+.orbuy[disabled] { opacity: .5; cursor: default; }
+.orbuy-top { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; }
+.orbuy-top i { width: 10px; height: 10px; border-radius: 99px; flex: 0 0 auto; }
+.orbuy-top em {
+  margin-left: auto; font-style: normal; font-size: .66rem; letter-spacing: .1em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 99px; border: 1px solid var(--border);
+}
+.orbuy-top em.tight { color: var(--teal); border-color: rgba(45,212,191,.5); }
+.orbuy-top em.slack { color: var(--muted); }
+.orbuy-price { display: block; margin-top: 6px; font-size: 1.05rem; font-weight: 700; color: var(--teal); }
+.orbuy[disabled] .orbuy-price, .orbuy-price:empty { color: var(--muted); }
+.orbuy-range { display: block; font-size: .82rem; color: var(--muted); margin-top: 2px; }
+.orbuy-go { display: block; font-size: .84rem; color: var(--muted); margin-top: 7px; }
+.orbuy-go .warn { color: var(--yellow); font-weight: 700; }
+
+.orlog {
+  font-size: .8rem; color: var(--muted); margin: 14px 0 0;
+  padding-top: 10px; border-top: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.orfinal { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--bg); }
+.orfinal.win { border-color: var(--teal); background: linear-gradient(135deg, rgba(45,212,191,.12), transparent 70%); }
+.orfinal-v { font-size: 2rem; font-weight: 800; color: var(--teal); margin: 0 0 8px; font-variant-numeric: tabular-nums; }
+.orfinal-v span { font-size: .85rem; font-weight: 600; color: var(--muted); }
+.orfinal p { font-size: .92rem; }
+.orfinal-note { font-size: .85rem; color: var(--muted); border-left: 2px solid var(--border); padding-left: 12px; }
+.orfinal-note.quantum { border-left-color: var(--violet); }
+.orfinal-note b { color: var(--text); }
+
+/* ---------------- The Prune: the search tree ---------------- */
+.orbar {
+  position: relative; height: 26px; border-radius: 99px; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--border); margin-bottom: 14px;
+}
+.orbar i {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--violet));
+  transition: width .5s cubic-bezier(.22,.7,.3,1);
+}
+.orbar span {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: .76rem; font-weight: 700; color: var(--text); text-shadow: 0 1px 3px var(--bg);
+}
+.ortreewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ortree { display: block; width: 100%; min-width: 320px; height: auto; }
+.oredge { fill: none; stroke: var(--border); stroke-width: 1.5; }
+.oredge.cut, .oredge.heavy { opacity: .3; stroke-dasharray: 3 3; }
+.ornode circle { fill: var(--panel); stroke: var(--border); stroke-width: 2; transition: all .25s cubic-bezier(.22,.7,.3,1); }
+.ornode text { fill: var(--muted); font-weight: 700; font-size: 10px; }
+.ornode.open { cursor: pointer; }
+.ornode.open circle { fill: var(--bg); stroke: var(--teal); stroke-width: 2.5; }
+.ornode.open text { fill: var(--teal); }
+.ornode.open:hover circle, .ornode.open:focus circle { fill: var(--teal); r: 11; }
+.ornode.open:focus { outline: none; }
+.ornode.done circle { fill: var(--border); stroke: var(--border); }
+.ornode.cut circle, .ornode.heavy circle { fill: none; stroke: var(--border); opacity: .45; }
+.ornode.cut text.killed { fill: var(--muted); font-size: 8.5px; font-weight: 600; opacity: .8; }
+.ornode.leaf circle { fill: var(--muted); stroke: none; }
+.ornode.best circle { fill: var(--yellow); stroke: var(--bg); stroke-width: 2; }
+@media (prefers-reduced-motion: reduce) {
+  .orregion, .oropt, .orbar i, .ornode circle { transition: none; }
+}

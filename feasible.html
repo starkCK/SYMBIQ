@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Feasible Region — operations research, and why it decides everything | SymbiQ</title>
 <meta name="description" content="Operations research is the mathematics of deciding well under constraints — the field that routes your parcels, staffs hospitals, and is what quantum computers are most often claimed to be about to revolutionise. Start here.">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
+<script src="save.js"></script>
+<script src="orgames.js?v=2"></script>
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=1" defer></script>
 <script src="forms.js?v=1" defer></script>
@@ -48,6 +50,8 @@
         <section>
           <h4>Optimisation</h4>
           <a href="feasible.html" class="active" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+          <a href="feasible.html#bottleneck" data-k="shadow price dual duality bottleneck linear programming lp resource capacity ranging game play">The Bottleneck<span class="new">NEW</span><span class="sub">Five upgrades. Which resource is actually worth money?</span></a>
+          <a href="feasible.html#prune" data-k="branch and bound knapsack pruning search tree bound relaxation dantzig game play">The Prune<span class="new">NEW</span><span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
         </section>
         <section>
           <h4>Explainers</h4>
@@ -186,6 +190,38 @@ Operations research is the mathematics of deciding well when you can&#39;t have 
 <p>Branch and bound (Land &amp; Doig, 1960) exploits precisely this: solve the LP relaxation, and because its optimum is an upper bound on any integer solution below it, whole subtrees can be discarded without ever being searched. In the example above the relaxation gives 21 and the best known integer solution gives 20, so any branch whose relaxation falls below 20 is provably worthless — that discarded volume is where all the speed comes from. What makes a modern solver fast is not raw search but how aggressively it can prove regions empty.</p>
 <p><strong>The honest position on quantum:</strong> a quantum <em>advantage</em> on general combinatorial optimisation is <span class="orbadge">⟦Heuristic⟧</span>, not proven, and the burden of proof sits with the claimant. Grover-style amplitude amplification gives a quadratic speedup on unstructured search <span class="orbadge">⟦Proven⟧</span> — but real optimisation problems are not unstructured, which is exactly what branch and bound exploits and what Grover cannot. No quantum algorithm is currently known to beat a good classical MILP solver on a problem anyone actually needs solved. That may change. It has not changed yet, and this page will say so on the day it does.</p>
 
+<h2 id="play">Two games where the mathematics does the judging</h2>
+
+<p>Neither of these can be won by feel. Both were built the way everything else here is: the answer was computed offline in exact arithmetic first, and the game only ever reports what that arithmetic says. Par is a proven number, not a designer's guess — so when you beat it, you beat it.</p>
+
+<div class="card" id="bottleneck">
+  <p class="oreyebrow">Game one · duality, made expensive</p>
+  <h3>The Bottleneck</h3>
+  <p class="tagline" style="margin:6px 0 14px">You have inherited a plant that is short of everything, and a board that will fund exactly one upgrade a quarter.</p>
+
+  <p>The old plant manager is certain it's machine time — the machines are always running, everyone can see it. Finance says material, because material is what shows up on the invoice. The union rep wants skilled hours. Three confident people, three different answers, and a meeting that goes nowhere.</p>
+  <p>There is a number that settles it. Every constraint in a linear programme has a <strong>shadow price</strong>: exactly what one more unit of that resource would add to your profit, derived from the same solve that told you what to build. It is not an estimate. It is the answer to "where should the next rupee go", and almost nobody outside this field knows it exists.</p>
+  <p><strong>It also has a trap in it, and the trap is the game.</strong> A shadow price is a <em>slope</em>. It tells you what the next unit is worth — not the next ten. Relieve a bottleneck far enough and it stops being the bottleneck, at which point its price collapses to zero and your money is doing nothing. Buy the resource with the biggest number every quarter and you will finish three short of par. The ledger will tell you how far each price holds, if you think to ask.</p>
+
+  <div id="mount-bottleneck"></div>
+  <div id="about-bottleneck"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="honest-bottleneck"></p>
+</div>
+
+<div class="card" id="prune">
+  <p class="oreyebrow">Game two · how optimisation actually wins</p>
+  <h3>The Prune</h3>
+  <p class="tagline" style="margin:6px 0 14px">Four thousand and ninety-six possible hauls. You will look at about thirty, and prove the rest cannot win.</p>
+
+  <p>Here is the thing people get wrong about optimisation. They imagine a very fast computer checking every option. That is not what happens, and it could never be what happens — real problems have more combinations than there are atoms in anything. What actually happens is stranger and much better: <strong>the solver proves that entire regions cannot contain the answer, and never looks inside them.</strong></p>
+  <p>The instrument is a <strong>bound</strong>. Before opening a branch you ask a deliberately easier question — what if I could take fractions of things? — and the answer to the easy question is provably at least as good as anything the hard question could give you. If even that optimistic figure can't beat a haul you already hold, everything below dies untouched. Not "probably worthless". Provably.</p>
+  <p><strong>Two things will surprise you.</strong> The best opening move is not to explore the most promising branch — it's to grab <em>any</em> good haul quickly, because a strong answer in hand is what makes everything else prunable. And a cut near the top of the tree is worth exponentially more than a cut near the bottom, so the satisfying-looking work down at the leaves is nearly worthless. Play it breadth-first and you will open 1,388 branches. Played well, about thirty-five.</p>
+
+  <div id="mount-prune"></div>
+  <div id="about-prune"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="honest-prune"></p>
+</div>
+
 <h2 id="bridges">Where this touches quantum computing — three real bridges</h2>
 
 <p>These are not analogies. Each one is a place where the same mathematics is load-bearing on both sides, and you can go and play with all three right now.</p>
@@ -316,6 +352,25 @@ Operations research is the mathematics of deciding well when you can&#39;t have 
     { "@type": "ListItem", "position": 2, "name": "The Feasible Region", "item": "feasible.html" }
   ]
 }
+</script>
+
+<script>
+// Mount both OR games. They use the same contract as games.js so that when
+// branch & bound becomes Cordon's mission on the Path (12_GAME_MASTER_PLAN §3.3
+// ability 10), journey.html can mount them with no rewrite here or there.
+(function () {
+  var OG = window.SymbiQ && SymbiQ.orgames;
+  if (!OG) return;
+  ['bottleneck', 'prune'].forEach(function (id) {
+    var host = document.getElementById('mount-' + id);
+    if (!host) return;
+    OG.mount(id, host, { mode: 'arcade' });
+    var about = document.getElementById('about-' + id);
+    if (about) about.innerHTML = OG.aboutHTML(id);
+    var honest = document.getElementById('honest-' + id);
+    if (honest) honest.innerHTML = OG.get(id).honest;
+  });
+})();
 </script>
 
 <footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: the linear program on this page was solved exactly in rational arithmetic, its integer optimum found by exhaustive search, and its shadow prices confirmed against strong duality — 2026-07-29. The prose has not yet had a hostile-referee pass.</footer>

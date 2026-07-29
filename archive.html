@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🟢 Basics — SymbiQ</title>
+<title>The Question Archive — every daily question, with answers | SymbiQ</title>
+<meta name="description" content="Every Daily Question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
 <link rel="stylesheet" href="style.css?v=12">
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=1" defer></script>
@@ -40,7 +41,7 @@
     <div class="lattice-cols">
         <section>
           <h4>Learn</h4>
-          <a href="basics.html" class="active" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
           <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
@@ -75,7 +76,7 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
-          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
+          <a href="archive.html" class="active" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
           <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
@@ -84,68 +85,97 @@
   </div>
 </div>
 
+<h1>The Question Archive</h1>
+<p class="tagline">Every Daily Question we have ever asked, with its answer and the full explanation at all three levels. Nothing is deleted, nothing is quietly edited — if we got one wrong it stays here with the correction attached.</p>
 
+<div class="card" id="arch-summary">
+  <h3>Loading the archive…</h3>
+  <p style="margin-bottom:0">If this does not fill in, the archive file could not be fetched. It lives at <code>data/archive/index.json</code>.</p>
+</div>
 
+<div id="arch-list"></div>
 
-<span class="tier g">🟢 Beginner — no math, no jargon</span>
-<h1>The AI That Babysits Qubits</h1>
+<h2>How the daily question works</h2>
+<p>One question a day, at one of three levels — 🟢 beginner, 🟡 intermediate, 🔴 expert with real mathematics. Every answer carries an explanation at <em>all three</em> levels, so you can always drop down a tier if the explanation loses you, or climb one if it bores you. Expert questions are independently verified before they ship, and the sources are named.</p>
+<p>Today&#39;s live question is <a href="index.html#daily-q">on the homepage</a>, where it also tracks your streak.</p>
 
-<p>A quantum computer is a choir where every singer slowly drifts off key — and looking directly at any singer makes them forget the song. Error correction is a conductor who fixes pitch <em>without ever hearing anyone sing solo</em>: they listen to pairs of neighbors and infer who drifted.</p>
+<script>
+(function () {
+  var listEl = document.getElementById('arch-list');
+  var sumEl  = document.getElementById('arch-summary');
+  var TIER   = { g: '🟢 Beginner', y: '🟡 Intermediate', r: '🔴 Expert' };
 
-<figure class="fig figchoir figcard">
-  <div class="figscroll"><svg viewBox="0 0 560 226" xmlns="http://www.w3.org/2000/svg" role="img"
-       aria-label="Five singers in a row; the middle one has drifted off key. The conductor listens only to neighbouring pairs. The two comparisons that touch the drifting singer both report a mismatch, which pins down who drifted without anyone being heard alone.">
-    <!-- the singers -->
-    <circle class="singer" cx="80"  cy="40" r="21"/>
-    <circle class="singer" cx="175" cy="40" r="21"/>
-    <circle class="singer off" cx="270" cy="40" r="21"/>
-    <circle class="singer" cx="365" cy="40" r="21"/>
-    <circle class="singer" cx="460" cy="40" r="21"/>
-    <g class="lbl" text-anchor="middle">
-      <text x="80"  y="45">♪</text><text x="175" y="45">♪</text>
-      <text class="yellow" x="270" y="45">♪</text>
-      <text x="365" y="45">♪</text><text x="460" y="45">♪</text>
-      <text x="270" y="14" class="yellow lbl-s">this one drifted</text>
-    </g>
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
 
-    <!-- each comparison reaches up to exactly TWO neighbours, never one -->
-    <g class="listen">
-      <path d="M80 61 V88 H175 V61"/>
-      <path d="M175 61 V100 H270 V61"/>
-      <path d="M270 61 V100 H365 V61"/>
-      <path d="M365 61 V88 H460 V61"/>
-    </g>
+  function fail(msg) {
+    sumEl.innerHTML = '<h3>The archive could not be loaded</h3><p style="margin-bottom:0">' + esc(msg) +
+      ' You can still play <a href="index.html#daily-q">today&#39;s question</a>.</p>';
+  }
 
-    <!-- the verdicts -->
-    <g>
-      <rect x="104" y="98" width="48" height="22" rx="7" fill="var(--panel)" stroke="var(--border)"/>
-      <text class="lbl-s" x="128" y="113" text-anchor="middle">agree</text>
-      <rect x="199" y="110" width="48" height="22" rx="7" fill="rgba(250,204,21,.16)" stroke="var(--yellow)"/>
-      <text class="lbl-s yellow" x="223" y="125" text-anchor="middle">clash!</text>
-      <rect x="294" y="110" width="48" height="22" rx="7" fill="rgba(250,204,21,.16)" stroke="var(--yellow)"/>
-      <text class="lbl-s yellow" x="318" y="125" text-anchor="middle">clash!</text>
-      <rect x="389" y="98" width="48" height="22" rx="7" fill="var(--panel)" stroke="var(--border)"/>
-      <text class="lbl-s" x="413" y="113" text-anchor="middle">agree</text>
-    </g>
+  fetch('data/archive/index.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (idx) {
+      var entries = (idx && idx.entries) || [];
+      if (!entries.length) return fail('The archive is empty.');
 
-    <!-- the conductor, who hears only the four verdicts -->
-    <rect class="conductor" x="170" y="152" width="220" height="40" rx="12"/>
-    <text class="lbl-b teal" x="280" y="171" text-anchor="middle">the conductor</text>
-    <text class="lbl-s" x="280" y="185" text-anchor="middle">hears only these four verdicts</text>
-    <path class="sMuted" d="M223 132 V152 M318 132 V152" stroke-dasharray="3 3"/>
-    <text class="lbl-s" x="280" y="212" text-anchor="middle">two clashes side by side → the drift is the singer between them</text>
-  </svg></div>
-  <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>Nobody was ever heard alone.</strong> The conductor only ever asks "do these two match?" — and two neighbouring clashes are enough to pin the culprit. That is not a storytelling trick — it is exactly the rule a real quantum computer follows, because listening to a single qubit destroys the very thing you were trying to protect. (A real machine runs this comparison across a whole grid rather than a single row, but the rule is the same one.) <a href="concepts.html">The same thing with its real name ▸</a></figcaption>
-</figure>
+      entries.sort(function (a, b) { return b.qnum - a.qnum; });   // newest first
 
-<p>For 30 years, humans wrote the conductor's rulebook by hand. In 2024, Google DeepMind replaced the rulebook with an AI (AlphaQubit) that <em>learned</em> a real choir's specific bad habits from its data. It makes about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest, most careful one — though it's still too slow to conduct live itself; making it fast is the current race.</p>
+      sumEl.innerHTML =
+        '<h3>' + entries.length + ' question' + (entries.length === 1 ? '' : 's') + ' so far</h3>' +
+        '<p style="margin-bottom:0">Newest first. Click any question to open the answer and all three explanations. ' +
+        'Numbering runs by question, not by date — a question is #' + entries[0].qnum +
+        ' because it is the ' + entries[0].qnum + 'th we have published, not because of the calendar.</p>';
 
-<p>The thing AI is worst at (being exactly right) is being fixed by the thing quantum is worst at existing without (error correction). That loop is why you're here.</p>
+      listEl.innerHTML = entries.map(function (e) {
+        return '<details class="card archq" data-date="' + esc(e.date) + '">' +
+                 '<summary>' +
+                   '<span class="archq-num">#' + esc(e.qnum) + '</span>' +
+                   '<span class="archq-txt">' + esc(e.question) + '…</span>' +
+                   '<span class="orbadge">' + esc(TIER[e.tier] || e.tier) + '</span>' +
+                   '<span class="orbadge">' + esc(e.date) + '</span>' +
+                 '</summary>' +
+                 '<div class="archq-body"><p class="archq-loading">Opening…</p></div>' +
+               '</details>';
+      }).join('');
 
-<p>Ready for the version with real terms? <a href="concepts.html">🟡 Concepts →</a></p>
+      // Load each question's full record the first time it is opened.
+      listEl.addEventListener('toggle', function (ev) {
+        var d = ev.target;
+        if (d.tagName !== 'DETAILS' || !d.open || d.dataset.loaded) return;
+        d.dataset.loaded = '1';
+        var body = d.querySelector('.archq-body');
+        fetch('data/archive/' + d.dataset.date + '.json', { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+          .then(function (q) {
+            var Q = q.question, opts = Q.options || [];
+            body.innerHTML =
+              '<p class="archq-full">' + esc(Q.text) + '</p>' +
+              '<ol class="archq-opts">' + opts.map(function (o, i) {
+                return '<li' + (i === Q.answerIndex ? ' class="right"' : '') + '>' + esc(o) +
+                       (i === Q.answerIndex ? ' <b>← the answer</b>' : '') + '</li>';
+              }).join('') + '</ol>' +
+              (Q.hint ? '<p class="archq-hint"><b>Hint given on the day:</b> ' + esc(Q.hint) + '</p>' : '') +
+              ['g', 'y', 'r'].map(function (t) {
+                var txt = Q.explain && Q.explain[t];
+                return txt ? '<div class="archq-ex"><h4>' + TIER[t] + '</h4><p>' + esc(txt) + '</p></div>' : '';
+              }).join('') +
+              (q.signal ? '<p class="archq-signal"><b>The Signal that day:</b> ' + esc(q.signal) + '</p>' : '');
+          })
+          .catch(function (err) {
+            body.innerHTML = '<p class="archq-loading">Could not load this one (' + esc(err.message) + ').</p>';
+            d.dataset.loaded = '';
+          });
+      }, true);
+    })
+    .catch(function (err) { fail('Fetch failed: ' + err.message + '.'); });
+})();
+</script>
 
-<footer>The green door: no math, no jargon, no gatekeeping.<br>SymbiQ · 🟢 posts are tested on smart friends who studied literature. If one doesn't get it, we rewrite it.</footer>
+<footer>Nothing is deleted. Nothing is quietly edited.<br>SymbiQ · Found an error in an old answer? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
 </div>
 </body>
 </html>

@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Arcade — quantum games, free play</title>
 <meta name="description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, and quantum tic-tac-toe with genuine superposition and collapse. No story, no gates — just the physics doing the judging.">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <script src="save.js"></script>
-<script src="games.js?v=4"></script>
+<script src="games.js?v=5"></script>
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -68,6 +70,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -79,7 +85,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" class="active" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" class="active" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -94,8 +100,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>
@@ -138,6 +145,7 @@
     <p id="stage-hook"></p>
     <div id="stage-about"></div>
     <div class="card" id="stage-game"></div>
+    <div id="stage-next"></div>
     <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="stage-honest"></p>
   </div>
 
@@ -214,7 +222,40 @@
     document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
     document.getElementById('stage-honest').innerHTML = g.honest || '';
     stage.hidden = false;
-    GS.mount(id, document.getElementById('stage-game'), { mode: 'arcade', onWin: function () { drawCabs(); } });
+    var nextHost = document.getElementById('stage-next');
+    nextHost.innerHTML = '';
+    GS.mount(id, document.getElementById('stage-game'), {
+      mode: 'arcade',
+      onWin: function () {
+        drawCabs();
+        // Same problem the Path had: winning left you at the bottom of a
+        // finished machine with nothing saying where to go. Say it, loudly.
+        var order = GS.list.map(function (g) { return g.id; });
+        var rest  = order.filter(function (k) { return k !== id && !(S && S.isComplete(k)); });
+        var nid   = rest[0];
+        if (nid) {
+          var ng = GS.get(nid);
+          nextHost.innerHTML =
+            '<a class="nextup" href="#" data-g="' + nid + '">' +
+              '<span class="eyebrow">Cleared — next machine</span>' +
+              '<span class="headline">' + ng.title + '</span>' +
+              '<span class="sub">' + ng.hook + '</span>' +
+              '<span class="go">Play it</span>' +
+            '</a>';
+          nextHost.querySelector('.nextup').addEventListener('click', function (ev) {
+            ev.preventDefault(); launch(nid);
+          });
+        } else {
+          nextHost.innerHTML =
+            '<a class="nextup" href="journey.html">' +
+              '<span class="eyebrow">Every machine cleared</span>' +
+              '<span class="headline">Walk them as a story instead</span>' +
+              '<span class="sub">The Solver&#39;s Path gives each of these a mentor, a world and a reason.</span>' +
+              '<span class="go">Enter the Path</span>' +
+            '</a>';
+        }
+      }
+    });
     stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 

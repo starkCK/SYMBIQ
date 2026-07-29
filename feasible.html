@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Feasible Region — operations research, and why it decides everything | SymbiQ</title>
+<meta name="description" content="Operations research is the mathematics of deciding well under constraints — the field that routes your parcels, staffs hospitals, and is what quantum computers are most often claimed to be about to revolutionise. Start here.">
+<link rel="stylesheet" href="style.css?v=12">
+<script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
+    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
+    <span class="latch-key">/</span>
+  </button>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
+  <div class="lattice-inner">
+    <div class="lattice-top">
+      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
+      <button class="lattice-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="lattice-cols">
+        <section>
+          <h4>Learn</h4>
+          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+        </section>
+        <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" class="active" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
+          <h4>Explainers</h4>
+          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
+          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        </section>
+        <section>
+          <h4>Play</h4>
+          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+        </section>
+        <section>
+          <h4>Figures you can touch</h4>
+          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
+          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
+          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
+          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
+          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
+          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
+          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
+        </section>
+        <section>
+          <h4>Track</h4>
+          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
+          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+        </section>
+    </div>
+    <p class="lattice-none" hidden>Nothing here by that name.</p>
+  </div>
+</div>
+
+<h1>The Feasible Region</h1>
+<p class="tagline">Everything that is actually possible. Nothing that isn&#39;t.<br>
+Operations research is the mathematics of deciding well when you can&#39;t have everything — and it is the field quantum computing is most often accused of being about to revolutionise.</p>
+
+<div class="card">
+  <h3>The whole field in four lines</h3>
+  <p><strong>1.</strong> You have a decision to make, and you can&#39;t do everything — there are limits on time, money, people, trucks, machines, beds.<br>
+  <strong>2.</strong> Write the limits down as inequalities. The set of choices that satisfy <em>all</em> of them at once is called the <strong>feasible region</strong>. Everything outside it is fantasy.<br>
+  <strong>3.</strong> Write down what &quot;good&quot; means as a single number to push up or down. That&#39;s the <strong>objective</strong>.<br>
+  <strong>4.</strong> Operations research is the body of mathematics that finds the best point in that region — <em>and proves</em> that nothing better exists.</p>
+  <p style="margin-bottom:0">That last clause is the part people miss, and it is the entire reason the field matters. A heuristic gives you an answer. OR gives you an answer <em>plus a certificate</em> that no better answer exists. <span class="orbadge">⟦Proven⟧</span></p>
+</div>
+
+<h2>Why this deserves a page of its own</h2>
+
+<p>Almost every number in your day was set by one of these models. The route your parcel took. Which nurse is on shift tonight. What your flight cost, and why it changed twice while you were looking at it. Which warehouse your order shipped from. How the grid decided which power station to fire up at 6pm. This is not a niche academic discipline — it is the quiet infrastructure layer under logistics, energy, healthcare, manufacturing, and finance, and it has been running there since the 1940s.</p>
+
+<p>It matters here for a second reason. <strong>When somebody tells you a quantum computer will &quot;solve optimisation problems no classical computer can touch&quot;, this is the field they are making a claim about.</strong> You cannot evaluate that claim — you cannot even understand what is being asserted — without knowing what classical optimisation already does, how fast it already is, and where it genuinely struggles. Most quantum-optimisation hype survives entirely on the reader not knowing that a good MILP solver will chew through a model with hundreds of thousands of variables before lunch.</p>
+
+<p>So the honest order of operations is: <strong>learn what the classical machinery does first.</strong> Then the quantum question becomes answerable instead of atmospheric. That is what this page and everything under it is for — and it is why it sits beside the quantum material rather than inside it.</p>
+
+<h2>The picture the whole field is named after</h2>
+
+<figure class="fig figcard">
+  <div class="figscroll"><svg viewBox="0 0 620 400" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A two-variable linear program drawn to scale. Two constraint lines cut a four-sided feasible region out of the positive quadrant. The best continuous answer sits at the vertex where both constraints bind, at x equals 3 and y equals 1.5, giving 21. The best whole-number answer is a different vertex, at x equals 4 and y equals 0, giving 20.">
+    <!-- grid -->
+    <g stroke="var(--border)" stroke-width="1" opacity=".35">
+      <path d="M140 40 V320 M220 40 V320 M300 40 V320 M380 40 V320 M460 40 V320"/>
+      <path d="M60 250 H460 M60 180 H460 M60 110 H460 M60 40 H460"/>
+    </g>
+
+    <!-- feasible region: (0,0) (4,0) (3,1.5) (0,3) -->
+    <polygon points="60,320 380,320 300,215 60,110"
+             fill="rgba(45,212,191,.13)" stroke="var(--teal)" stroke-width="2.5"/>
+
+    <!-- constraint lines, extended across the chart -->
+    <path d="M166.7 40 L380 320" fill="none" stroke="var(--violet)" stroke-width="2" stroke-dasharray="6 4"/>
+    <path d="M60 110 L460 285"   fill="none" stroke="var(--violet)" stroke-width="2" stroke-dasharray="6 4"/>
+    <text class="lbl-s violet" x="176" y="54">6x + 4y ≤ 24   (machine-hours)</text>
+    <text class="lbl-s violet" x="330" y="278">x + 2y ≤ 6   (material)</text>
+
+    <!-- objective line through the optimum: 5x + 4y = 21 -->
+    <path d="M140 40 L396 320" fill="none" stroke="var(--yellow)" stroke-width="2"/>
+    <text class="lbl-s yellow" x="404" y="316">profit = 21</text>
+
+    <!-- integer lattice points inside the region -->
+    <g fill="var(--muted)">
+      <circle cx="60"  cy="320" r="3"/><circle cx="60"  cy="250" r="3"/><circle cx="60"  cy="180" r="3"/><circle cx="60"  cy="110" r="3"/>
+      <circle cx="140" cy="320" r="3"/><circle cx="140" cy="250" r="3"/><circle cx="140" cy="180" r="3"/>
+      <circle cx="220" cy="320" r="3"/><circle cx="220" cy="250" r="3"/><circle cx="220" cy="180" r="3"/>
+      <circle cx="300" cy="320" r="3"/><circle cx="300" cy="250" r="3"/>
+    </g>
+
+    <!-- the two optima -->
+    <circle cx="300" cy="215" r="7" fill="var(--yellow)" stroke="var(--bg)" stroke-width="2"/>
+    <text class="lbl-b yellow" x="312" y="206">best continuous answer</text>
+    <text class="lbl-s" x="312" y="222">x = 3, y = 1.5 → 21</text>
+
+    <circle cx="380" cy="320" r="7" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+    <text class="lbl-b teal" x="392" y="336">best whole-number answer</text>
+    <text class="lbl-s" x="392" y="352">x = 4, y = 0 → 20</text>
+
+    <!-- axes -->
+    <path d="M60 40 V320 H460" fill="none" stroke="var(--border)" stroke-width="2"/>
+    <text class="lbl-s" x="56" y="336" text-anchor="end">0</text>
+    <text class="lbl-s" x="140" y="336" text-anchor="middle">1</text>
+    <text class="lbl-s" x="220" y="336" text-anchor="middle">2</text>
+    <text class="lbl-s" x="300" y="336" text-anchor="middle">3</text>
+    <text class="lbl-s" x="380" y="336" text-anchor="middle">4</text>
+    <text class="lbl-s" x="460" y="336" text-anchor="middle">5</text>
+    <text class="lbl-s" x="52" y="324" text-anchor="end">0</text>
+    <text class="lbl-s" x="52" y="254" text-anchor="end">1</text>
+    <text class="lbl-s" x="52" y="184" text-anchor="end">2</text>
+    <text class="lbl-s" x="52" y="114" text-anchor="end">3</text>
+    <text class="lbl-b" x="260" y="372" text-anchor="middle">product A, units</text>
+    <text class="lbl-b" x="18" y="180" text-anchor="middle" transform="rotate(-90 18 180)">product B, units</text>
+
+    <text class="lbl-b teal" x="120" y="290">the feasible region</text>
+    <text class="lbl-s" x="120" y="305">every plan you could actually run</text>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>Make two products. Each unit of A takes 6 machine-hours, each unit of B takes 4, and you have 24. A takes 1 unit of material, B takes 2, and you have 6. A earns 5, B earns 4. What do you build?</strong> The teal shape is every plan you could actually run. Push the yellow profit line outward as far as it will go and it leaves the region at a corner — which is the whole secret of linear programming: <em>the best answer always sits at a vertex,</em> so you never have to search the infinitely many points inside. <br><br><strong>Now look at the two marked corners, because this is where intuition fails.</strong> The best continuous answer is 3 of A and 1.5 of B. If you cannot ship half a product, you might reasonably round it — but 3 and 2 is <em>outside</em> the region (it needs 26 machine-hours and you have 24), and 3 and 1 earns only 19. The true best whole-number answer is 4 and 0, earning 20: <strong>a different corner that no amount of rounding will ever reach.</strong> That gap is why integer programming is a separate, and vastly harder, problem — and it is the single most common mistake made by people who have just learned linear programming. <span class="orbadge">⟦Proven⟧</span> — every figure here was solved exactly in rational arithmetic and cross-checked by exhaustive search over the integer points.</figcaption>
+</figure>
+
+<h2 id="tiers">Three doors in</h2>
+
+<h3>🟢 The shape of every one of these problems</h3>
+<p>Once you see the pattern you cannot unsee it. Every problem in this field has exactly three parts: <strong>the choices</strong> (what am I allowed to decide?), <strong>the limits</strong> (what stops me?), and <strong>the goal</strong> (what does better mean, as one number?). Nurse rostering, parcel routing, factory scheduling, portfolio construction and airline crew pairing are the same three questions wearing different clothes.</p>
+<p>The skill that takes longest to learn is not the solving. Solvers are free and someone else wrote them. The skill is <strong>writing the problem down correctly</strong> — noticing that &quot;we should keep customers happy&quot; is not yet a number, that &quot;a driver can&#39;t work 14 hours&quot; is a constraint you forgot, and that the objective everyone agreed on in the meeting quietly rewards the wrong behaviour. Most failed optimisation projects failed here, not in the mathematics.</p>
+
+<h3>🟡 Linear programming, and the cliff behind it</h3>
+<p>If your objective and all your constraints are linear, you have a <strong>linear program</strong>, and you are in unreasonably good shape. The feasible region is a convex polytope, the optimum sits at a vertex, and the simplex method (Dantzig, 1947) walks vertex to vertex, improving every step. It is exponential in the worst case and almost never behaves that way in practice; interior-point methods (Karmarkar, 1984) give genuinely polynomial-time guarantees. Modern solvers handle models with hundreds of thousands of variables routinely. <span class="orbadge">⟦Proven⟧</span></p>
+<p><strong>Then you add one word — &quot;integer&quot; — and the ground gives way.</strong> Force the variables to be whole numbers and the problem becomes <strong>NP-hard</strong> (Karp, 1972). The convexity that made everything work is gone; the feasible set is now a scatter of isolated points, and, as the figure above shows, the answer can jump to a corner the continuous solution never pointed at. This is not a small technicality. It is the difference between &quot;solved before you finish your coffee&quot; and &quot;might not finish this century&quot;, and it is why the entire apparatus of branch and bound, cutting planes and metaheuristics exists.</p>
+<p>One more idea worth carrying away, because it is the most useful output in all of OR and almost nobody outside the field knows it exists: <strong>shadow prices.</strong> Solve the example above and you learn not only what to build but that one extra machine-hour is worth exactly 0.75 and one extra unit of material exactly 0.5. That tells you where to spend money next — which is usually the question the person paying for the model actually had. <span class="orbadge">⟦Proven⟧</span> — checked here against strong duality and confirmed by re-solving with each limit raised by one.</p>
+
+<h3>🔴 What is actually hard, stated precisely</h3>
+<p>Linear programming over the rationals is in <strong>P</strong> (Khachiyan, 1979, via the ellipsoid method; Karmarkar 1984 gave the first practical polynomial algorithm). Integer programming is <strong>NP-hard</strong>, and 0–1 integer programming was one of Karp&#39;s original 21 problems (1972). Strong duality gives every LP a dual whose optimum coincides exactly with the primal&#39;s — that coincidence <em>is</em> the certificate of optimality, and it is what lets a solver claim &quot;proven optimal&quot; rather than &quot;best found&quot;.</p>
+<p>Branch and bound (Land &amp; Doig, 1960) exploits precisely this: solve the LP relaxation, and because its optimum is an upper bound on any integer solution below it, whole subtrees can be discarded without ever being searched. In the example above the relaxation gives 21 and the best known integer solution gives 20, so any branch whose relaxation falls below 20 is provably worthless — that discarded volume is where all the speed comes from. What makes a modern solver fast is not raw search but how aggressively it can prove regions empty.</p>
+<p><strong>The honest position on quantum:</strong> a quantum <em>advantage</em> on general combinatorial optimisation is <span class="orbadge">⟦Heuristic⟧</span>, not proven, and the burden of proof sits with the claimant. Grover-style amplitude amplification gives a quadratic speedup on unstructured search <span class="orbadge">⟦Proven⟧</span> — but real optimisation problems are not unstructured, which is exactly what branch and bound exploits and what Grover cannot. No quantum algorithm is currently known to beat a good classical MILP solver on a problem anyone actually needs solved. That may change. It has not changed yet, and this page will say so on the day it does.</p>
+
+<h2 id="bridges">Where this touches quantum computing — three real bridges</h2>
+
+<p>These are not analogies. Each one is a place where the same mathematics is load-bearing on both sides, and you can go and play with all three right now.</p>
+
+<div class="grid">
+  <div class="card">
+    <h3>QUBO and Ising <span class="orbadge">⟦Proven⟧ formulation</span></h3>
+    <p>Nearly every combinatorial problem can be rewritten as minimising <em>Σ w<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></em> over spins of ±1 — the ground state of a magnet (Lucas, 2014). <strong>This is the format quantum annealers and QAOA actually consume</strong>, so it is the doorway every quantum optimisation claim has to walk through. Max-Cut is the cleanest example, and it is NP-hard.</p>
+    <a href="play.html#maxcut">Play it — Graph City →</a>
+  </div>
+  <div class="card">
+    <h3>Metaheuristics <span class="orbadge">⟦Heuristic⟧</span></h3>
+    <p>Simulated annealing borrowed its cooling schedule from metallurgy and is the classical baseline that <em>quantum</em> annealing is imitating. Knowing how well the classical version does is the only way to judge whether the quantum one is beating anything. The proven cooling schedule is also, provably, uselessly slow.</p>
+    <a href="play.html#volcano">Play it — The Annealing Volcano →</a>
+  </div>
+  <div class="card">
+    <h3>Matching, inside the machine <span class="orbadge">⟦Proven⟧</span></h3>
+    <p>The best one, and almost nobody says it out loud: <strong>a quantum computer&#39;s error correction runs in real time because of an operations research algorithm.</strong> Decoding the surface code is solved as minimum-weight perfect matching — Edmonds&#39; blossom algorithm, 1965. OR is not adjacent to quantum computing here. It is a component inside it.</p>
+    <a href="qec.html#duel">Play it — the Decoder Duel →</a>
+  </div>
+</div>
+
+<h2>Start here, if you want the theory</h2>
+
+<p>Ideas worth meeting first, roughly in the order they build on each other. Each is genuinely beautiful, and none of them needs more than school algebra to <em>understand</em> even if the proofs get heavy.</p>
+
+<div class="grid">
+  <div class="card">
+    <h3>Duality</h3>
+    <p>Every optimisation problem has a shadow twin, and solving one solves the other. The twin of &quot;maximise profit given these limits&quot; is &quot;what are these limits worth?&quot; — and at the optimum, the two answers are the same number. It still feels like a trick after you have proved it.</p>
+  </div>
+  <div class="card">
+    <h3>Max-flow / min-cut</h3>
+    <p>The most water you can push through a pipe network equals the capacity of the cheapest set of pipes you could cut to sever it. Two questions that sound unrelated turn out to be the same question (Ford &amp; Fulkerson, 1956).</p>
+  </div>
+  <div class="card">
+    <h3>Matching</h3>
+    <p>Pairing things up — workers to shifts, organs to patients, syndrome events to errors. Edmonds&#39; 1965 paper on it is also where the modern definition of &quot;efficient algorithm&quot; comes from, which makes it one of the load-bearing papers of computer science.</p>
+  </div>
+  <div class="card">
+    <h3>Branch and bound</h3>
+    <p>How to search a space too large to search: prove most of it cannot contain the answer, and never look there. The bound does the work, not the branching.</p>
+  </div>
+  <div class="card">
+    <h3>Dynamic programming</h3>
+    <p>Bellman&#39;s principle — an optimal plan&#39;s tail is itself optimal. It is the backbone of shortest paths, inventory policy, and, when the world is uncertain, of reinforcement learning. This is the direct bridge from OR into modern AI.</p>
+  </div>
+  <div class="card">
+    <h3>Queueing theory</h3>
+    <p>Why the queue explodes long before the servers are full. Utilisation past roughly 80% makes waiting time climb non-linearly — the reason hospitals, motorways and CPUs all fall over at the same shape of curve.</p>
+  </div>
+</div>
+
+<h2 id="faq">Questions people actually ask</h2>
+
+<h3>Is operations research just applied maths, or a branch of computer science?</h3>
+<p>Historically it is neither — it began in wartime Britain in 1937 with a group of scientists asked to work out how to use radar well, and it kept the habit of starting from a real operation rather than from a theorem. Today it overlaps heavily with combinatorial optimisation in computer science and with parts of economics and statistics, and the boundaries are not worth policing.</p>
+
+<h3>Is OR the same thing as machine learning?</h3>
+<p>No, and the distinction is useful. Machine learning mostly <em>predicts</em>: given data, what will happen? OR mostly <em>decides</em>: given what will happen, what should we do about it, subject to what we cannot change? Real systems chain them — forecast demand with ML, then decide inventory with OR. The confusion is recent and mostly marketing.</p>
+
+<h3>Will quantum computers make this obsolete?</h3>
+<p>Not on any evidence currently available. Quantum optimisation is real research and worth watching, but there is no known quantum algorithm that beats a strong classical solver on a problem anyone actually needs solved, and the quadratic speedup that <em>is</em> proven for unstructured search does not apply to the structured problems where classical methods do their best work. Anyone telling you otherwise should be asked for the resource estimate.</p>
+
+<h3>Do I need to be good at maths to start?</h3>
+<p>To understand the ideas on this page, no — school algebra and a willingness to draw the picture is genuinely enough, which is why the picture is above. To write models professionally, you need linear algebra and comfort with proofs. To invent new algorithms, considerably more. The first step is much smaller than people expect.</p>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is operations research?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Operations research is the mathematics of deciding well under constraints. You write your limits down as inequalities, which carve out a feasible region of choices you could actually make; you write down what 'good' means as a single objective number; and the field's methods find the best point in that region and prove that nothing better exists. That proof of optimality, not just the answer, is what distinguishes it from a heuristic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is integer programming so much harder than linear programming?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Linear programming over the rationals is solvable in polynomial time and its optimum always sits at a vertex of a convex feasible region. Requiring variables to be whole numbers destroys that convexity and makes the problem NP-hard (Karp, 1972). The integer optimum can also sit at a completely different vertex from the continuous one, so rounding the continuous answer is not a reliable strategy and can even produce an infeasible plan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will quantum computers make classical optimisation obsolete?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no current evidence for that. A quantum advantage on general combinatorial optimisation is heuristic rather than proven. Grover-style amplitude amplification gives a proven quadratic speedup on unstructured search, but real optimisation problems are highly structured, which is exactly what classical branch and bound exploits. No known quantum algorithm beats a strong classical MILP solver on a practically needed problem today."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does operations research connect to quantum computing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Through three concrete bridges. First, QUBO and Ising formulations (Lucas, 2014) are the format quantum annealers and QAOA actually consume, so every quantum optimisation claim passes through them. Second, simulated annealing is the classical metaheuristic that quantum annealing imitates, and is the baseline any quantum claim must beat. Third, and most directly, decoding the surface code in real time is solved as minimum-weight perfect matching using Edmonds' blossom algorithm from 1965 — an operations research algorithm running as a component inside a quantum computer."
+      }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Feasible Region — operations research, and why it decides everything",
+  "description": "An introduction to operations research: the feasible region, linear programming, why integer programming is NP-hard, shadow prices, and the three concrete bridges between OR and quantum computing.",
+  "author": { "@type": "Organization", "name": "SymbiQ" },
+  "publisher": { "@type": "Organization", "name": "SymbiQ" },
+  "datePublished": "2026-07-29",
+  "dateModified": "2026-07-29"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "SymbiQ", "item": "index.html" },
+    { "@type": "ListItem", "position": 2, "name": "The Feasible Region", "item": "feasible.html" }
+  ]
+}
+</script>
+
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: the linear program on this page was solved exactly in rational arithmetic, its integer optimum found by exhaustive search, and its shadow prices confirmed against strong duality — 2026-07-29. The prose has not yet had a hostile-referee pass.</footer>
+</div>
+</body>
+</html>

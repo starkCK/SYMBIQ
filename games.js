@@ -57,7 +57,8 @@
       how: 'Twelve times, choose <strong>Cool</strong>, <strong>Hold</strong> or <strong>Stoke</strong>. Each choice runs twenty random steps at that temperature. Hot lets the walker climb out of valleys; cold locks it wherever it stands.',
       inspired: 'Simulated annealing (Kirkpatrick, Gelatt &amp; Vecchi, <em>Science</em> 1983) — metallurgy borrowed as an algorithm, and the classical baseline that quantum annealers are measured against.',
       learn: 'The exploration/exploitation trade-off you can feel in your hands, and why a method that never accepts a worse move can never escape a valley.',
-      link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Heuristic⟧'
+      link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Heuristic⟧',
+      or: 'Simulated annealing is a <b>metaheuristic</b> — operations research’s answer to problems too hard to solve exactly. It is the classical baseline quantum annealing has to beat.'
     },
     honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over tens of thousands of simulated runs: crash-cooling really does freeze in the first ditch it falls into (76–93% of runs, depending on the volcano), and a shaped schedule really does beat it — by six-fold on the gentlest landscape here and forty-fold on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps.',
     // Landscapes verified offline: every global minimum unique; pass marks set
@@ -582,7 +583,8 @@
       how: 'Click a district to flip its colour; <span style="color:var(--yellow)">bright roads</span> are satisfied, dim ones wasted. District 5 hides a trap where no single flip helps — that is the whole lesson.',
       inspired: "Max-Cut, one of Karp's original NP-hard problems (1972), and its Ising form (Lucas 2014) — the exact thing a quantum annealer or QAOA solves.",
       learn: 'How a hard optimisation problem becomes “find the Ising ground state”, and why local search gets stuck — the reason annealing exists.',
-      link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Proven⟧'
+      link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Proven⟧',
+      or: 'Max-Cut is a classic <b>operations research</b> problem — NP-hard since Karp 1972, and the reason the whole QUBO/Ising bridge exists.'
     },
     honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped.',
     mount: function (root, opts) {
@@ -984,7 +986,9 @@
         '<div><span class="lbl v">💡 Inspired by</span> ' + a.inspired + '</div>' +
         '<div><span class="lbl v">🔬 You’ll get a feel for</span> ' + a.learn +
           ' <a href="' + a.link + '">' + a.linkText + '</a> <span class="tier">' + a.tier + '</span></div>' +
-        '</div>';
+        '</div>' +
+        (a.or ? '<a class="orjump" href="feasible.html"><span>◆ ' + a.or +
+                '<span class="arr"> The Feasible Region ▸</span></span></a>' : '');
     },
     mount: function (id, elm, opts) {
       var g = G[id];

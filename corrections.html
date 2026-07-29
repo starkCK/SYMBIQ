@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Corrections — SymbiQ</title>
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -43,6 +45,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -54,7 +60,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -69,8 +75,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" class="active" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" class="active" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>
@@ -87,6 +94,35 @@
   <h3>The log is empty — for now</h3>
   <p>When it happens (it will), each entry follows the same format: <strong>what we said</strong> → <strong>what's true</strong> → <strong>why we missed it</strong>. Errors caught by community members are credited by name, with the 🏅 "taught it better than us" tag.</p>
 </div>
+
+<h2 id="report">Found something wrong? Tell us.</h2>
+<p>This is the single most valuable thing you can send us, and it carries the largest reward on the server — <strong>+150 Fidelity</strong>, more than any question, streak or raid pays. That is deliberate: a reader who checks our work is worth far more to us than a reader who trusts it.</p>
+<p>You don't need to be certain, and you don't need to be polite about it. &quot;This number looks off&quot; is a perfectly good report. If you turn out to be right, the correction runs with your name on it.</p>
+
+<form class="sqform" data-sq="correction">
+  <div class="sqfield">
+    <label for="c-where">Where is it? (page, section, or just paste the sentence)</label>
+    <input type="text" id="c-where" name="where" data-label="where you found it" required
+           placeholder="e.g. qec.html, the 🔴 section — “Λ = 2.14 per step”">
+  </div>
+  <div class="sqfield">
+    <label for="c-what">What's wrong with it?</label>
+    <textarea id="c-what" name="what" data-label="what's wrong" required
+              placeholder="What we said, what you think is actually true, and — if you have one — the source. A link to the paper is gold, but a hunch is welcome too."></textarea>
+  </div>
+  <div class="sqfield">
+    <label for="c-credit">Name to credit you as (optional — leave blank to stay anonymous)</label>
+    <input type="text" id="c-credit" name="credit" placeholder="How you want to be named in the correction">
+  </div>
+  <div class="sqfield">
+    <label for="c-email">Your email (optional — only so we can ask a follow-up)</label>
+    <input type="email" id="c-email" name="email" placeholder="you@example.com">
+  </div>
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+         style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+  <button type="submit">Send the catch →</button>
+</form>
+<p class="sqnote">Read by a human, always. If you'd rather do it in the open, <a href="https://discord.gg/fWKGSb7ZHE">post it in Discord</a> — public catches are just as welcome, and easier for everyone else to learn from.</p>
 
 <h2>How we try to avoid needing this page</h2>
 <p>Every 🔴 post and Boss Question solution gets an independent hostile-referee verification pass before publishing. Facts from secondary coverage get spot-checked against primary sources (arXiv, company blogs). The verification log lives in our internal records with dates and sources.</p>

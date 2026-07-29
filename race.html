@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Race — SymbiQ</title>
 <meta name="description" content="Weekly scoreboard on the labs racing to fault tolerance, our public prediction record, and an interactive look at the one number the race is actually scored on: the threshold.">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 <style>
 #thr-svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; height: auto; }
 .bar { transition: height .45s cubic-bezier(.2,.7,.3,1), y .45s cubic-bezier(.2,.7,.3,1), fill .3s ease; }
@@ -54,6 +56,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -65,7 +71,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -80,8 +86,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" class="active" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>

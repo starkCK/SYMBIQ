@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "date": "2026-07-27",
+  "qnum": 3,
+  "tier": "y",
+  "question": {
+    "text": "Add more qubits to a quantum computer and you usually get MORE errors, not fewer — more parts to fail, more crosstalk. But there's one condition under which adding qubits makes the error rate go DOWN instead. What is it?",
+    "options": [
+      "The physical error rate is already below the error-correction threshold, so grouping qubits into a bigger logical qubit suppresses errors exponentially",
+      "The chip is cooled further below its superconducting critical temperature",
+      "The new qubits are used only as ancillas, never to store data",
+      "The new qubits are pre-entangled with the existing ones before any gates run"
+    ],
+    "answerIndex": 0,
+    "hint": "It's not about how cold the chip is or how entangled the qubits are — it's about which side of one particular error rate you're standing on.",
+    "explain": {
+      "g": "More qubits usually means more control lines, more couplings, more chances for one qubit's noise to leak into its neighbour — so bigger usually means noisier. But there's a loophole: if each physical qubit is already reliable enough — below a specific 'threshold' error rate — then grouping many of them into one well-protected logical qubit does the opposite. Every extra layer of protection you add past that point makes the logical qubit MORE reliable, not less. Below the threshold, more qubits buys you safety. Above it, more qubits just buys you more noise. That one word, threshold, is the difference between a quantum computer that scales and one that doesn't.",
+      "y": "Physical qubits fail at some rate p. Encode a logical qubit in a surface code of distance d (built from roughly d² physical qubits), and its logical error rate scales like p_L ∝ (p/p_th)^⌊(d+1)/2⌋, where p_th is the threshold. If p is above p_th, that ratio exceeds 1, so raising d makes p_L explode — bigger codes hurt you. If p is below p_th, the ratio is under 1, and raising d makes p_L shrink exponentially — bigger codes protect you. Same formula, opposite outcome, and the only thing that flipped is which side of p_th you started on. That's why hardware effort goes into pushing p under that line, not just into raw qubit count.",
+      "r": "For a surface code of distance d, the logical error rate below threshold obeys p_L ≈ A(p/p_th)^⌊(d+1)/2⌋ (Fowler, Mariantoni, Martinis & Cleland, arXiv:1208.0928), so d → d+2 buys one more power of (p/p_th) while d → d+1 on an odd d buys none — why surface codes are always quoted at odd distances. Below p_th the exponent grows with d and (p/p_th) < 1, so p_L → 0 as d → ∞ using only d² additional physical qubits — polynomial resource cost for exponential error suppression. Above p_th, the same base exceeds 1 and every added qubit compounds the failure rate instead. Google's Willow chip demonstrated an experimental below-threshold crossing, with error suppression Λ ≈ 2.14 per two-distance step (Acharya et al., Nature 638, 920 (2025)); newer work adds a reinforcement-learning control layer that keeps the physical qubits pinned below that line during a live computation, not just at calibration time (Google Quantum AI, Nature, 2026; arXiv:2511.08493)."
+    }
+  },
+  "signal": "Google's RL agent now steers Willow's qubit controls in real time using nothing but error-detection events — no data qubit ever read — cutting the logical error rate a further 20% past expert calibration and making the surface code 3.5× more stable against drift (Google Quantum AI, Nature, 2026; arXiv:2511.08493).",
+  "lattice": {
+    "f": 0,
+    "goal": 3000,
+    "nextD": 4
+  }
+}

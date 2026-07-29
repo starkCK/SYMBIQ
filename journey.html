@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Solver's Path — SymbiQ</title>
 <meta name="description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real quantum mechanics, wearing an adventure.">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <script src="save.js"></script>
-<script src="games.js?v=4"></script>
+<script src="coherence.js?v=1"></script>
+<script src="games.js?v=5"></script>
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 <style>
 /* ---------------- The Solver's Path ---------------- */
 .journey { display: grid; grid-template-columns: minmax(0, 330px) 1fr; gap: 24px; align-items: start; margin-top: 6px; }
@@ -43,10 +46,10 @@
 .node.locked { cursor: not-allowed; }
 .node.locked .disc { opacity: .5; }
 .node.soon .disc { stroke-dasharray: 3 3; }
-.node .num { fill: var(--muted); font: 700 12px/1 inherit; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.node .num { fill: var(--muted); font-weight: 700; font-size: 12px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
 .node.complete .num { fill: var(--bg); }
 .node.available .num { fill: var(--teal); }
-.node .lbl { fill: var(--muted); font: 600 10px/1 inherit; pointer-events: none; }
+.node .lbl { fill: var(--muted); font-weight: 600; font-size: 10px; pointer-events: none; }
 /* the one node you can act on right now reads loudest */
 .node.available.pulsed .lbl { fill: var(--teal); font-weight: 800; }
 .node.complete .lbl { fill: var(--muted); }
@@ -120,10 +123,66 @@
   cursor: pointer; font: inherit; font-size: .86rem; transition: all .18s ease; }
 .subtab.on { color: var(--teal); border-color: rgba(45,212,191,.5); background: rgba(45,212,191,.08); }
 .subtab:active { transform: translateY(1px); }
+
+/* ---------------- Coherence — the health bar as the game's thesis ---------------- */
+.coh-mount { margin: 2px 0 14px; }
+.coh-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+.coh-name { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.coh-val { font-weight: 800; color: var(--teal); font-variant-numeric: tabular-nums; transition: color .5s; }
+.coh[data-level="low"] .coh-val { color: var(--yellow); }
+.coh[data-level="static"] .coh-val { color: var(--muted); }
+.coh-track { position: relative; height: 10px; border-radius: 99px; background: var(--border); overflow: hidden; }
+.coh-fill { display: block; height: 100%; width: 0; border-radius: 99px;
+  background: linear-gradient(90deg, var(--teal), var(--violet)); background-size: 200% 100%;
+  transition: width .7s cubic-bezier(.22,.7,.3,1), filter .6s ease; }
+.coh[data-level="high"] .coh-fill { animation: cohshine 3.2s linear infinite; }
+.coh[data-level="low"] .coh-fill { filter: saturate(.45) brightness(.92); }
+.coh[data-level="static"] .coh-fill { filter: saturate(0) brightness(.8); }
+.coh[data-level="static"] { animation: cohjitter 2.4s steps(2) infinite; }
+@keyframes cohshine { 0% { background-position: 0 0; } 100% { background-position: 200% 0; } }
+@keyframes cohjitter { 0%,100% { transform: translateX(0); } 50% { transform: translateX(.6px); } }
+.coh-pips { position: absolute; inset: 0; pointer-events: none; }
+.coh-pip { position: absolute; right: 6px; top: 50%; font-weight: 800; font-size: .8rem; white-space: nowrap;
+  animation: cohpip 1.15s cubic-bezier(.2,.7,.3,1) forwards; }
+.coh-pip.up { color: var(--teal); } .coh-pip.down { color: #f87171; }
+@keyframes cohpip { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); } }
+.coh-note { min-height: 1em; margin-top: 5px; font-size: .76rem; color: var(--muted);
+  opacity: 0; transform: translateY(-2px); transition: opacity .3s, transform .3s; }
+.coh-note.show { opacity: 1; transform: none; }
+
+/* State Vision — Ability I: pay coherence to see the hidden structure */
+.vision-row { margin: 10px 0 2px; }
+.vision-btn { display: inline-flex; align-items: center; gap: 7px; font: inherit; font-size: .86rem; cursor: pointer;
+  padding: 7px 13px; border-radius: 10px; border: 1px solid rgba(167,139,250,.5); background: rgba(167,139,250,.08);
+  color: var(--text); transition: background .18s ease; }
+.vision-btn:hover:not(:disabled) { background: rgba(167,139,250,.16); }
+.vision-btn:disabled { opacity: .5; cursor: not-allowed; }
+.vision-btn .gl { color: var(--violet); font-size: 1rem; }
+.vision-cost { color: var(--muted); font-size: .8rem; }
+.vision-reveal { margin: 10px 0 2px; padding: 10px 14px; border-left: 2px solid var(--violet);
+  background: rgba(167,139,250,.06); border-radius: 0 10px 10px 0; font-size: .9rem; }
+.vision-reveal .gl { color: var(--violet); font-weight: 800; }
+.vision-hint { color: var(--yellow); font-size: .8rem; margin-top: 6px; }
+
+/* Learning claim — affirming you understood restores coherence */
+.wr-claim { margin-top: 12px; }
+.claimbtn { font: inherit; font-size: .82rem; cursor: pointer; padding: 6px 12px; border-radius: 99px;
+  border: 1px solid rgba(45,212,191,.5); background: rgba(45,212,191,.08); color: var(--text); transition: background .18s; }
+.claimbtn:hover { background: rgba(45,212,191,.16); }
+.wr-done { color: var(--teal); font-size: .82rem; font-weight: 700; }
+
+/* the Static creeping in at the edges as coherence falls — decoherence, felt */
+#static-veil { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 1.1s ease;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(8,8,18,.55) 100%); }
+:root[data-coh="low"] #static-veil { opacity: .5; }
+:root[data-coh="static"] #static-veil { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   #intro .script p, .namerow { opacity: 1 !important; animation: none !important; transform: none !important; }
   .avatar, .node .disc { transition: none !important; }
   .avatar .halo, .node.available.pulsed .disc { animation: none !important; }
+  .coh-fill { transition: none !important; }
+  .coh[data-level="high"] .coh-fill, .coh[data-level="static"] { animation: none !important; }
+  #static-veil { transition: none !important; }
 }
 </style>
 <script type="application/ld+json">
@@ -134,6 +193,7 @@
 </script>
 </head>
 <body>
+<div id="static-veil" aria-hidden="true"></div>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -169,6 +229,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -180,7 +244,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" class="active" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -195,8 +259,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>
@@ -221,7 +286,7 @@
   </div>
   <div class="namerow">
     <input id="intro-name" type="text" maxlength="24" placeholder="Name your Solver" autocomplete="off" aria-label="Name your Solver">
-    <button class="preset" id="intro-begin">Begin ▸</button>
+    <button class="bigplay" id="intro-begin">Begin ▸</button>
   </div>
 </div>
 
@@ -230,8 +295,24 @@
   <div class="hud">
     <span class="who" id="hud-who">Solver</span>
     <span class="prog" id="hud-prog"></span>
+    <button class="rst" id="hud-carry" title="Move this progress to another device, or keep a backup">⇄ carry progress</button>
     <button class="rst" id="hud-reset" title="Erase local progress and start over">↺ start over</button>
   </div>
+
+  <!-- Progress lives in this browser only until real accounts exist. That is the
+       honest limit of a static site — but it need not mean progress is fragile. -->
+  <div class="card" id="carrybox" hidden style="margin:10px 0">
+    <h3>Carry your progress</h3>
+    <p style="font-size:.92rem">There are no accounts yet, so everything you have done lives in <em>this browser</em> and would be lost if you cleared its data. This code is your whole history — copy it somewhere safe, or paste it into another device to continue there.</p>
+    <div class="sqform" style="margin-top:6px">
+      <textarea id="carry-code" spellcheck="false" aria-label="Your save code" style="min-height:84px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem"></textarea>
+      <button type="button" id="carry-copy">Copy my code</button>
+      <button type="button" id="carry-load" style="background:transparent;color:var(--teal);border-color:var(--teal)">Load a code</button>
+    </div>
+    <p class="sqmsg" id="carry-msg"></p>
+    <p class="sqnote">Loading a code <strong>merges</strong> — it adds what the code contains and never erases what you already did here. When real accounts arrive, this same code is how you bring your history with you.</p>
+  </div>
+  <div id="coh-meter" class="coh-mount"></div>
   <div class="objective" id="objective" role="status"></div>
   <div class="journey">
     <div class="mapwrap">
@@ -317,6 +398,20 @@
     qttt:  { name:'Entanglement & no-signalling', body:'One system, two bodies: measuring one fixes the other at any distance — yet no message can ride that link.', tier:'analogy' }
   };
 
+  // STATE VISION (Ability I) — what the mentor whispers when you pay to see the
+  // hidden structure. Every line is a true, load-bearing tell, not a spoiler:
+  // it teaches the principle that makes the mission solvable, which is what
+  // "seeing the state" actually means. Once seen it is yours (no repeat cost).
+  var VISION = {
+    golf: 'The dashed target is only a rotation away — never more than a few gates. <strong>H</strong> opens a superposition; <strong>S</strong> and <strong>T</strong> only spin its phase, invisible on the poles. Solve it as a short sequence of turns, not a search.',
+    grover: 'The exit’s odds are a <em>rotation</em>: they climb to a single peak near <strong>√N</strong> steps, then fall. Amplify to the peak the bars show you — then look <strong>once</strong>. One step past it and you are throwing the advantage away.',
+    maxcut: 'District five is a <strong>trap</strong>: every single flip makes the cut worse, yet the right <em>pair</em> of flips escapes it. When no one move helps, the answer is that you must move <strong>two</strong> at once — which is exactly why annealing exists.',
+    volcano: 'You are the temperature, not the walker. Stay <strong>hot</strong> while ridges still separate you from a deeper basin; cool <strong>only</strong> once the walker sits in the deepest valley it can currently reach. Freeze early and you keep the first ditch forever.',
+    qttt: 'A mark lives in two squares until a loop closes — and whoever does <strong>not</strong> close the loop chooses how it collapses. So closing a loop hands your opponent the choice. Make <em>them</em> close it, and the collapse is yours to steer.'
+  };
+
+  var CO = window.SymbiQ && window.SymbiQ.coherence;
+  function idxOf(m) { return MISSIONS.indexOf(m); }
   function done(id) { return !!(S && S.isComplete(id)); }
   function available(i) {
     for (var j = 0; j < i; j++) { if (!MISSIONS[j].soon && !done(MISSIONS[j].id)) return false; }
@@ -386,7 +481,7 @@
         (isDone && !avail ? '<span class="mission-tag">cleared in the Arcade</span>' : '') +
       '</h3>' +
       '<div class="speech"><span class="face">' + (m.face || '?') + '</span>' +
-        '<span class="said"><b>' + m.mentor + (m.or ? '<span class="orbadge">' + m.or + '</span>' : '') + '</b>' +
+        '<span class="said"><b>' + m.mentor + (m.or ? '<a class="orbadge" href="feasible.html" title="This mission sits on the operations-research bridge">◆ ' + m.or + ' ▸</a>' : '') + '</b>' +
         (isDone ? (m.signoff || m.intro) : m.intro) + '</span></div>' +
       '</div>';
 
@@ -400,8 +495,9 @@
       body += '<p style="color:var(--muted)">Sealed by the Static. Mend <strong>' +
         (prev ? prev.world : 'the fracture before this') + '</strong> first — the path opens as you go.</p>';
     } else if (playable && (avail || isDone)) {
-      body += '<button class="preset enter" id="mstart">' + (isDone ? 'Walk it again ▸' : 'Begin the mission ▸') + '</button>';
+      body += '<button class="bigplay enter" id="mstart">' + (isDone ? 'Walk it again ▸' : 'Begin the mission ▸') + '</button>';
     }
+    body += '<div class="vision-row" id="vision-row"></div>';
     if (isDone && CODEX[m.id]) {
       body += '<p style="font-size:.85rem;color:var(--muted);margin-top:10px">Codex unlocked: <strong>' +
         CODEX[m.id].name + '</strong> ' + CODEX[m.id].tier + '</p>';
@@ -409,7 +505,8 @@
     body += '<div id="mgame"></div>';
     if (m.real) {
       body += '<div class="whatsreal"><div class="wr-h">What is actually going on here ' +
-        '<span class="orbadge">' + m.tier + '</span></div>' + m.real + '</div>';
+        '<span class="orbadge">' + m.tier + '</span></div>' + m.real +
+        '<div class="wr-claim" id="wr-claim"></div></div>';
     }
     body += '</div>';
 
@@ -418,7 +515,52 @@
 
     var start = document.getElementById('mstart');
     if (start) start.addEventListener('click', function () { mountMission(m); });
+    renderVision(m); renderClaim(m);
     if (autoplay && playable && avail && !m.soon) mountMission(m);
+  }
+
+  // State Vision (Ability I): spend coherence to see the mission's hidden tell.
+  // Once seen it is free forever — understanding, once earned, is not spent again.
+  function renderVision(m) {
+    var row = document.getElementById('vision-row');
+    if (!row) return;
+    var v = VISION[m.id], avail = available(idxOf(m)), isDone = done(m.id);
+    if (!v || m.soon || !(avail || isDone) || !CO) { row.innerHTML = ''; return; }
+    if (S && S.get('vision.' + m.id, false)) {
+      row.innerHTML = '<div class="vision-reveal"><span class="gl">◈</span> <em>State Vision</em> — ' + v + '</div>';
+      return;
+    }
+    var cost = 12, can = CO.get() >= cost;
+    row.innerHTML = '<button class="vision-btn" id="vbtn"' + (can ? '' : ' disabled') + '>' +
+      '<span class="gl">◈</span> State Vision <span class="vision-cost">see the hidden state · −' + cost + '</span></button>' +
+      (can ? '' : '<div class="vision-hint">Not enough coherence to look. Mend a fracture — understanding is what lets you see.</div>');
+    var b = document.getElementById('vbtn');
+    if (b) b.addEventListener('click', function () {
+      if (CO.get() < cost) return;
+      CO.spend(cost, 'You looked — State Vision');
+      if (S) S.set('vision.' + m.id, true);
+      renderVision(m);
+    });
+  }
+
+  // Learning: affirming you understood the physics restores coherence — the
+  // honest inverse of looking. Once per mission.
+  function renderClaim(m) {
+    var row = document.getElementById('wr-claim');
+    if (!row) return;
+    var avail = available(idxOf(m)), isDone = done(m.id);
+    if (m.soon || !(avail || isDone) || !CO) { row.innerHTML = ''; return; }
+    if (S && S.get('read.' + m.id, false)) {
+      row.innerHTML = '<span class="wr-done">Understood ✓ <span style="color:var(--muted);font-weight:400">— this insight is yours</span></span>';
+      return;
+    }
+    row.innerHTML = '<button class="claimbtn" id="claimbtn">I understand this ✓  (+6 coherence)</button>';
+    var b = document.getElementById('claimbtn');
+    if (b) b.addEventListener('click', function () {
+      CO.restore(6, 'Learning — you took the time to understand');
+      if (S) S.set('read.' + m.id, true);
+      renderClaim(m);
+    });
   }
 
   function mountMission(m) {
@@ -431,6 +573,7 @@
       mode: 'mission',
       onWin: function (id, first) {
         if (!first) return;
+        if (CO) CO.restore(18, 'Insight — a fracture mended');
         refreshHud(); renderCodex(); drawMap();
         var note = document.createElement('div');
         note.className = 'verdict good';
@@ -449,22 +592,39 @@
         // invoking onWin (line 26), so avatarIndex() already reflects this win.
         var ni = avatarIndex(), nm = MISSIONS[ni];
         var step = document.createElement('div');
-        step.className = 'nextstep';
         var inner = '';
         if (completed() >= completable()) {
-          inner = '<span class="lbl">Every fracture is mended. <strong>The Knot</strong> is the finale — it is not open yet.</span>';
+          step.className = 'nextstep';
+          inner = '<span class="lbl">Every fracture is mended. <strong>The Knot</strong> is the finale — it is still being forged.</span>' +
+                  '<button class="backmap" id="mback">↑ back to the map</button>';
         } else if (nm && nm.id !== m.id) {
-          inner = '<span class="lbl">Next fracture unlocked:</span>' +
-                  '<button class="preset" id="mnext">Act ' + nm.num + ' · ' + nm.world + ' ▸</button>';
+          // Deliberately loud, and deliberately a full-width block rather than a
+          // small button: this exact click has now been reported missed twice
+          // (2026-07-25, 2026-07-29). It pulses three times and then rests.
+          step.className = 'nextup';
+          step.setAttribute('role', 'button');
+          step.setAttribute('tabindex', '0');
+          step.id = 'mnext';
+          inner = '<span class="eyebrow">Next fracture unlocked</span>' +
+                  '<span class="headline">Act ' + nm.num + ' · ' + nm.world + '</span>' +
+                  '<span class="sub">' + nm.title + ' — ' + nm.mentor + ' is waiting.</span>' +
+                  '<span class="go">Continue</span>';
+        } else {
+          step.className = 'nextstep';
+          inner = '<button class="backmap" id="mback">↑ back to the map</button>';
         }
-        step.innerHTML = inner + '<button class="backmap" id="mback">↑ back to the map</button>';
+        step.innerHTML = inner;
         host.appendChild(step);
 
-        var nb = document.getElementById('mnext');
-        if (nb) nb.addEventListener('click', function () {
-          openMission(ni, false);            // show the mentor's set-up, don't auto-launch
-          focusPanel(true);
-        });
+        if (step.id === 'mnext') {
+          var go = function () { openMission(ni, false); focusPanel(true); };
+          step.addEventListener('click', go);
+          step.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); }
+          });
+          // Put it in reach of the keyboard and of the eye straight away.
+          try { step.focus({ preventScroll: true }); } catch (e) {}
+        }
         var bb = document.getElementById('mback');
         if (bb) bb.addEventListener('click', function () {
           var w = document.querySelector('.mapwrap');
@@ -519,7 +679,7 @@
       html += '<div class="obj-k">' + (n === 0 ? 'Start here' : 'Up next') + '</div>' +
               '<div class="obj-v">Act ' + m.num + ' · ' + m.world + '</div>' +
               '<div class="obj-s">' + m.title + '</div></div>' +
-              '<button class="preset obj-go" id="obj-go">' +
+              '<button class="bigplay obj-go" id="obj-go">' +
               (n === 0 ? 'Begin ▸' : 'Continue ▸') + '</button>';
     }
     html += '<div class="pmeter" title="' + n + ' of ' + total + ' mended"><i style="width:' +
@@ -546,6 +706,7 @@
     document.getElementById('intro').style.display = 'none';
     document.getElementById('hub').style.display = 'block';
     refreshHud(); renderCast(); renderCodex();
+    if (CO) CO.mountMeter(document.getElementById('coh-meter'));
     drawMap();
     // open the current mission (or the last cleared one) by default
     openMission(avatarIndex());
@@ -584,6 +745,46 @@
     if (S) S.reset();
     sel = -1; location.reload();
   });
+
+  // ---- carry progress between devices (no back end, no account) ----------
+  (function () {
+    var box = document.getElementById('carrybox'),
+        ta  = document.getElementById('carry-code'),
+        msg = document.getElementById('carry-msg');
+    function say(t, ok) { msg.className = 'sqmsg ' + (ok ? 'ok' : 'err'); msg.textContent = t; }
+
+    document.getElementById('hud-carry').addEventListener('click', function () {
+      box.hidden = !box.hidden;
+      if (!box.hidden) {
+        ta.value = S ? S.exportCode() : '';
+        msg.textContent = '';
+        ta.focus(); ta.select();
+      }
+    });
+
+    document.getElementById('carry-copy').addEventListener('click', function () {
+      ta.value = S ? S.exportCode() : '';
+      ta.select();
+      var done = function () { say('Copied. Paste it into this same box on your other device.', true); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ta.value).then(done, function () {
+          say('Could not reach the clipboard — the code is selected above, copy it by hand.', false);
+        });
+      } else {
+        // older browsers: execCommand is deprecated but is the only fallback
+        try { document.execCommand('copy'); done(); }
+        catch (e) { say('Copy it by hand — the code is selected above.', false); }
+      }
+    });
+
+    document.getElementById('carry-load').addEventListener('click', function () {
+      var code = (ta.value || '').trim();
+      if (!code) { say('Paste a save code into the box first.', false); return; }
+      if (!S || !S.importCode(code)) { say('That is not a valid SymbiQ save code.', false); return; }
+      say('Loaded and merged. Your progress is up to date.', true);
+      refreshHud(); renderCast(); renderCodex(); drawMap(); renderObjective();
+    });
+  })();
 
   // react to progress written by a mission in another tab/return
   if (S) S.onchange = function () { refreshHud(); renderCodex(); drawMap(); };

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Will quantum computers make AI more powerful?</title>
 <meta name="description" content="The honest version of the reverse loop: what quantum computing can and can't do for AI, why the data-loading problem kills most of the hype, and the one advantage that's actually real.">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <style>
 #loop-svg { display: block; margin: 0 auto; max-width: 460px; width: 100%; height: auto; }
 .node { transition: filter .18s; cursor: default; }
@@ -77,6 +77,8 @@
 }
 </script>
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -114,6 +116,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -125,7 +131,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -140,8 +146,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>
@@ -213,6 +220,10 @@
 <tr><td>Optimization</td><td>QAOA / annealing explore rugged loss landscapes</td><td>Evidence mixed; classical baselines keep catching up. Trust specific results, not the category.</td></tr>
 <tr><td>Linear algebra</td><td>HHL-style "exponential speedup" for solving the big systems under ML</td><td><strong>Most oversold.</strong> Dies to the data-loading toll, conditioning, and readout (see 🔴).</td></tr>
 </table></div>
+<a class="orjump" href="feasible.html">
+  <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> Before judging whether quantum beats it, it is worth knowing what classical optimisation already does — and how fast.<span class="arr"> The Feasible Region ▸</span></span>
+</a>
+
 <p><strong>The data-loading toll.</strong> To touch <em>N</em> classical numbers a quantum computer must first load them into amplitudes. Without large-scale QRAM — which nobody has built — that costs ~<em>N</em> operations. So an algorithm that's exponentially faster <em>after</em> loading still sits behind an O(<em>N</em>) toll bridge, and the total time is no better than classical. The algorithm is fast; the door is slow.</p>
 <p><strong>Two more dragons.</strong> <em>Dequantization</em>: in 2018 an 18-year-old, Ewin Tang, found a classical algorithm matching a flagship quantum recommendation-system speedup under comparable assumptions — the exponential separation evaporated, and the trick generalized to several others. <em>Barren plateaus</em>: for big random quantum circuits the training gradient's variance vanishes exponentially with qubit count, so the landscape goes flat and gradient descent gets no signal — bigger trains <em>worse</em>, the exact opposite of deep learning. The rule of thumb that survives all of this: <strong>trust quantum-for-AI claims about quantum data; audit everything about classical data.</strong></p>
 

@@ -341,10 +341,10 @@ body.latched { overflow: hidden; }
   transition: border-color .3s ease, box-shadow .3s ease;
 }
 .figcard:hover { border-color: rgba(45,212,191,.35); box-shadow: 0 14px 40px -24px rgba(45,212,191,.45); }
-.fig .lbl   { fill: var(--muted); font: 600 11.5px/1 inherit; }
-.fig .lbl-s { fill: var(--muted); font: 500 10px/1 inherit; }
-.fig .lbl-b { fill: var(--text);  font: 700 13.5px/1 inherit; }
-.fig .num   { fill: var(--text);  font: 700 14.5px/1 inherit; font-variant-numeric: tabular-nums; }
+.fig .lbl   { fill: var(--muted); font-weight: 600; font-size: 11.5px;  line-height: 1; }
+.fig .lbl-s { fill: var(--muted); font-weight: 500; font-size: 10px;    line-height: 1; }
+.fig .lbl-b { fill: var(--text);  font-weight: 700; font-size: 13.5px;  line-height: 1; }
+.fig .num   { fill: var(--text);  font-weight: 700; font-size: 14.5px;  line-height: 1; font-variant-numeric: tabular-nums; }
 .fig .teal  { fill: var(--teal); } .fig .violet { fill: var(--violet); }
 .fig .yellow{ fill: var(--yellow); }
 .fig .sTeal { stroke: var(--teal); fill: none; } .fig .sViolet { stroke: var(--violet); fill: none; }
@@ -529,7 +529,7 @@ body.latched { overflow: hidden; }
 .qthreadpip.X { fill: var(--teal); }
 .qthreadpip.O { fill: var(--violet); }
 .qthreadpip.ring, .qthreadpip.resolving { fill: var(--yellow); }
-.qthreadnum { fill: var(--bg); font: 700 9px/1 inherit; text-anchor: middle; dominant-baseline: central;
+.qthreadnum { fill: var(--bg); font-weight: 700; font-size: 9px; text-anchor: middle; dominant-baseline: central;
               pointer-events: none; }
 @keyframes ringpulse { 50% { opacity: .45; } }
 
@@ -618,4 +618,163 @@ body.latched { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ================================================================
+   ARCHIVE — the question back-catalogue (archive.html)
+   ================================================================ */
+.archq { padding: 0; }
+.archq > summary {
+  list-style: none; cursor: pointer; padding: 16px 22px;
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.archq > summary::-webkit-details-marker { display: none; }
+.archq > summary::after {
+  content: "\25B8"; margin-left: auto; color: var(--muted);
+  transition: transform .18s cubic-bezier(.22,.7,.3,1);
+}
+.archq[open] > summary::after { transform: rotate(90deg); }
+.archq-num { color: var(--teal); font-weight: 700; font-variant-numeric: tabular-nums; }
+.archq-txt { flex: 1 1 260px; min-width: 0; }
+.archq-body { padding: 0 22px 20px; border-top: 1px solid var(--border); margin-top: 2px; }
+.archq-full { font-weight: 600; margin: 16px 0 12px; }
+.archq-opts { margin: 0 0 14px; padding-left: 22px; }
+.archq-opts li { margin: 5px 0; color: var(--muted); }
+.archq-opts li.right { color: var(--text); }
+.archq-opts li.right b { color: var(--teal); }
+.archq-hint, .archq-signal { font-size: .92rem; color: var(--muted); }
+.archq-ex { margin: 14px 0; padding-left: 14px; border-left: 2px solid var(--border); }
+.archq-ex h4 { margin: 0 0 4px; font-size: .9rem; }
+.archq-ex p { margin: 0; }
+.archq-loading { color: var(--muted); margin: 14px 0 0; }
+
+/* ================================================================
+   OR JUMP — the button that appears wherever quantum meets
+   operations research, and sends you to The Feasible Region.
+   ================================================================ */
+.orjump {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, rgba(45,212,191,.10), rgba(167,139,250,.10));
+  border: 1px solid var(--border); border-left: 3px solid var(--teal);
+  border-radius: 10px; padding: 10px 14px; margin: 14px 0;
+  color: var(--text); text-decoration: none; font-size: .92rem;
+  transition: border-color .18s cubic-bezier(.22,.7,.3,1), transform .18s cubic-bezier(.22,.7,.3,1);
+}
+.orjump:hover { border-color: var(--teal); transform: translateY(-2px); }
+.orjump b { color: var(--teal); }
+.orjump .arr { margin-left: 2px; color: var(--muted); }
+
+/* ================================================================
+   FORMS — newsletter signup and the correction/error-bounty report.
+   ================================================================ */
+.sqform { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 6px; }
+.sqform input[type=email], .sqform input[type=text], .sqform textarea {
+  flex: 1 1 220px; min-width: 0;
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; font: inherit; font-size: .95rem;
+  transition: border-color .18s cubic-bezier(.22,.7,.3,1);
+}
+.sqform textarea { flex-basis: 100%; min-height: 130px; resize: vertical; }
+.sqform input:focus, .sqform textarea:focus { outline: none; border-color: var(--teal); }
+.sqform button {
+  background: var(--teal); color: #04211d; border: 1px solid var(--teal);
+  border-radius: 8px; padding: 10px 20px; font: inherit; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  transition: transform .18s cubic-bezier(.22,.7,.3,1), filter .18s ease;
+}
+.sqform button:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.sqform button:active { transform: translateY(1px) scale(.985); }
+.sqform button[disabled] { opacity: .55; cursor: default; transform: none; }
+.sqnote { font-size: .86rem; color: var(--muted); margin: 4px 0 0; }
+.sqmsg { margin: 10px 0 0; font-size: .93rem; }
+.sqmsg.ok  { color: var(--teal); }
+.sqmsg.err { color: var(--red); }
+.sqfield { flex: 1 1 100%; }
+.sqfield label { display: block; font-size: .86rem; color: var(--muted); margin-bottom: 5px; }
+
+/* ================================================================
+   GAME NAVIGATION — the two things a player must never have to hunt
+   for: how to start, and where to go once a stage is over.
+   ================================================================ */
+.bigplay {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(135deg, var(--teal), #22b8a6);
+  color: #04211d; border: none; border-radius: 12px;
+  padding: 16px 34px; font: inherit; font-size: 1.12rem; font-weight: 800;
+  letter-spacing: .01em; cursor: pointer; margin: 6px 0 4px;
+  box-shadow: 0 8px 22px rgba(45,212,191,.22);
+  transition: transform .18s cubic-bezier(.22,.7,.3,1), box-shadow .18s ease, filter .18s ease;
+}
+.bigplay:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(45,212,191,.32); filter: brightness(1.06); }
+.bigplay:active { transform: translateY(1px) scale(.99); }
+.bigplay .kbd { font-size: .8rem; font-weight: 600; opacity: .7; }
+.bigplay.ghost {
+  background: transparent; color: var(--teal);
+  border: 2px solid var(--teal); box-shadow: none;
+}
+.bigplay.ghost:hover { box-shadow: 0 10px 26px rgba(45,212,191,.18); }
+
+/* The completion CTA — deliberately loud, because this is the click
+   players kept failing to find (reported 2026-07-25, again 2026-07-29). */
+.nextup {
+  display: block; margin: 20px 0 6px; padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(45,212,191,.16), rgba(167,139,250,.14));
+  border: 2px solid var(--teal); border-radius: 14px;
+  text-decoration: none; color: var(--text);
+  box-shadow: 0 10px 30px rgba(45,212,191,.16);
+  transition: transform .18s cubic-bezier(.22,.7,.3,1), box-shadow .18s ease;
+}
+.nextup:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(45,212,191,.26); }
+.nextup .eyebrow {
+  display: block; font-size: .76rem; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--teal); font-weight: 700; margin-bottom: 6px;
+}
+.nextup .headline { display: block; font-size: 1.2rem; font-weight: 800; line-height: 1.3; }
+.nextup .sub { display: block; color: var(--muted); font-size: .93rem; margin-top: 5px; }
+.nextup .go {
+  display: inline-block; margin-top: 12px; font-weight: 800; color: var(--teal); font-size: 1.02rem;
+}
+.nextup .go::after { content: " \25B8"; }
+@media (prefers-reduced-motion: no-preference) {
+  .nextup { animation: nextpulse 2.4s cubic-bezier(.22,.7,.3,1) 3; }
+  @keyframes nextpulse {
+    0%, 100% { box-shadow: 0 10px 30px rgba(45,212,191,.16); }
+    50%      { box-shadow: 0 10px 38px rgba(45,212,191,.42); }
+  }
+}
+
+/* ================================================================
+   OR HERO — the homepage's operations-research invitation.
+   ================================================================ */
+.orhero {
+  margin: 34px 0; padding: 30px 32px; border-radius: 16px;
+  background:
+    radial-gradient(120% 140% at 8% 0%, rgba(45,212,191,.12), transparent 62%),
+    radial-gradient(120% 140% at 96% 100%, rgba(167,139,250,.13), transparent 60%),
+    var(--panel);
+  border: 1px solid var(--border); border-top: 3px solid var(--teal);
+}
+.orhero .eyebrow {
+  font-size: .76rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--teal); font-weight: 700; margin: 0 0 10px;
+}
+.orhero h2 { margin: 0 0 12px; font-size: 1.75rem; }
+.orhero h2::before { display: none; }
+.orhero p { margin: 0 0 14px; }
+.orhero .orhero-lede { font-size: 1.06rem; }
+.orhero-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px; margin: 20px 0;
+}
+.orhero-grid div {
+  padding: 14px 16px; border-radius: 10px;
+  background: var(--bg); border: 1px solid var(--border);
+}
+.orhero-grid b { display: block; color: var(--teal); font-size: .92rem; margin-bottom: 4px; }
+.orhero-grid span { font-size: .89rem; color: var(--muted); }
+@media (max-width: 719px) {
+  .orhero { padding: 24px 20px; }
+  .orhero h2 { font-size: 1.4rem; }
+  .bigplay { width: 100%; padding: 15px 20px; font-size: 1.05rem; }
 }

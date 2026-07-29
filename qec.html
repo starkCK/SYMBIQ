@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What is quantum error correction?</title>
 <meta name="description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it — with an interactive surface code you can break yourself.">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <style>
 #qec-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
 .pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
@@ -75,6 +75,8 @@
 }
 </script>
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -112,6 +114,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" class="active" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -123,7 +129,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -138,8 +144,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>
@@ -199,6 +206,10 @@
 <p>The widget above let you see the error. A real decoder never does. It sees which alarms fired, and nothing else, and it has to bet. So here is the actual job.</p>
 <p>Ten rounds on a chip with a defect: somewhere in this lattice two qubits are coupled, and when one flips its partner tends to flip with it. <strong>Cross-talk</strong> — a real failure mode, and one of the exact things that breaks textbook decoders. Your opponent is <strong>minimum-weight matching</strong>, the hand-written decoder the field has run on since 2001. It is very good, and it is running the textbook noise model it was handed: every qubit fails on its own, every failure equally likely. Nobody told it about this chip. You <em>can</em> hand-fit a correlation back into a matching decoder — that is what “correlated matching” is — but somebody has to know what to fit.</p>
 <p>You can. After every round you see what actually happened — the same kind of device data AlphaQubit was fine-tuned on. Find the defect and you will beat it. That is the whole thesis of this site, played out on a nine-qubit grid.</p>
+
+<a class="orjump" href="feasible.html#bridges">
+  <span>◆ <b>This is operations research, running inside a quantum computer.</b> &quot;Minimum-weight matching&quot; is Edmonds&#39; blossom algorithm from 1965 — a graph-optimisation result that predates the field it is now decoding for.<span class="arr"> The Feasible Region ▸</span></span>
+</a>
 
 <div class="card" id="duel">
   <h3>Decoder Duel</h3>

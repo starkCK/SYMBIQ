@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SymbiQ — Two broken geniuses, fixing each other.</title>
 <meta name="description" content="SymbiQ explains the loop between AI and quantum computing — daily, at three levels: no math, some math, real math.">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <script src="nav.js?v=4" defer></script>
+<script src="analytics.js?v=1" defer></script>
+<script src="forms.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -44,6 +46,10 @@
           <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
         </section>
         <section>
+          <h4>Optimisation</h4>
+          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
+        </section>
+        <section>
           <h4>Explainers</h4>
           <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
           <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
@@ -55,7 +61,7 @@
         <section>
           <h4>Play</h4>
           <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="new">NEW</span><span class="sub">Every game, free play, no story</span></a>
+          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
         </section>
         <section>
           <h4>Figures you can touch</h4>
@@ -70,8 +76,9 @@
         <section>
           <h4>Track</h4>
           <a href="index.html" class="active" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
+          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
           <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
         </section>
     </div>
     <p class="lattice-none" hidden>Nothing here by that name.</p>
@@ -141,6 +148,22 @@
   <div class="card"><h3>🔴 Deep</h3><p>Actual formalism, real equations, paper citations. Independently verified before it ships.</p><a href="deep.html">The mathematics →</a></div>
 </div>
 
+<section class="orhero">
+  <p class="eyebrow">The other half of this site</p>
+  <h2>Operations research: the field that already decides your day</h2>
+  <p class="orhero-lede">Every quantum-optimisation headline you have ever read is a claim about <strong>operations research</strong> — the mathematics of deciding well when you cannot have everything. It is not a footnote to quantum computing. It is a century-old discipline that is already running underneath your life, and you cannot judge a single quantum claim without it.</p>
+
+  <div class="orhero-grid">
+    <div><b>It routed your parcel</b><span>And staffed tonight's hospital shift, and priced your flight twice while you looked at it.</span></div>
+    <div><b>It runs inside the quantum computer</b><span>Surface-code decoding is minimum-weight matching — Edmonds, 1965. OR isn't adjacent to the machine. It's a part in it.</span></div>
+    <div><b>It is what the hype is about</b><span>&quot;Quantum will revolutionise optimisation&quot; is a claim about this field. Learn it and the claim becomes checkable.</span></div>
+    <div><b>It is more learnable than it looks</b><span>School algebra and one drawing gets you the core idea. The first step is much smaller than people expect.</span></div>
+  </div>
+
+  <p>So it gets its own front door here rather than being buried inside the quantum pages — a place to learn the theory for its own sake, and the reference point every quantum claim on this site is measured against.</p>
+  <p style="margin-bottom:0"><a class="bigplay" href="feasible.html">Enter The Feasible Region <span class="kbd">the OR track</span></a></p>
+</section>
+
 <h2>Why the timing matters</h2>
 <p>This field does not move at the speed of press releases. Here is the single clearest example, and every number is from a primary paper: how many physical qubits it would take to steal one Bitcoin key <em>inside the ten-minute window</em> before your transaction confirms.</p>
 
@@ -187,12 +210,22 @@
 <p>SymbiQ is edited, not crowdsourced: member submissions are reviewed by the desk, and the best ship to the main feeds with your name on them. Catching an error in <em>our</em> content pays the biggest bounty on the server. A weekly scoreboard tracks the six labs racing to fault tolerance (<a href="race.html">The Race</a>) — including our own prediction record, kept publicly. When we get something wrong, the correction gets <em>more</em> prominence than the mistake (<a href="corrections.html">Corrections</a>).</p>
 
 <h2 id="join-loop">Join the loop</h2>
-<!-- Discord + X are live (2026-07-25). STILL TO DO: when Beehiiv is set up, point
-     #join-newsletter at the real signup URL and restore the "Subscribe →" wording —
-     it currently routes to Discord because the newsletter is not open yet. -->
+<!-- Discord + X are live (2026-07-25). The newsletter is now a real capture form
+     (2026-07-29) rather than a link to Discord: addresses go through forms.js to
+     the relay configured there. When Beehiiv exists, either point the form's
+     action at its embed endpoint or import the collected addresses — but do NOT
+     go back to a card that collects nothing. -->
 <div class="grid">
   <div class="card"><h3>Discord</h3><p>The daily question, the nightly Collapse, weekend Boss Raids. Free, always.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-discord">Join the server →</a></div>
-  <div class="card"><h3>The Symbiosis</h3><p>The weekly newsletter: best meme, the Signals, the Race, the week's credited answers. Not open yet — the sign-up drops in the server first.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-newsletter">Get it first in Discord →</a></div>
+  <div class="card"><h3>The Symbiosis</h3><p>The weekly newsletter: best meme, the Signals, the Race, the week's credited answers. Leave an address and you'll get the first issue — no other mail, ever.</p>
+    <form class="sqform" data-sq="newsletter">
+      <input type="email" name="email" data-label="your email" required placeholder="you@example.com" aria-label="Your email address">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+             style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <button type="submit" id="join-newsletter">Subscribe →</button>
+    </form>
+    <p class="sqnote">One email a week at most. Unsubscribe in one click. We never sell or share the list.</p>
+  </div>
   <div class="card"><h3>Follow</h3><p>The daily meme and headline, wherever you already scroll.</p><a href="https://x.com/symbiq" id="join-x">@symbiq on X →</a></div>
 </div>
 

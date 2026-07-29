@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "date": "2026-07-19",
+  "qnum": 1,
+  "tier": "g",
+  "question": {
+    "text": "You can copy a computer file perfectly, a billion times. Why can't a quantum computer copy a qubit even once?",
+    "options": [
+      "Qubits are physically too small for any read head to grab onto",
+      "Reading an unknown quantum state disturbs it — and you can't copy what you can't fully read",
+      "Copying a qubit would transmit information faster than light",
+      "Quantum computers don't have enough memory to hold two copies"
+    ],
+    "answerIndex": 1,
+    "hint": "The problem isn't the copying. It's the looking.",
+    "explain": {
+      "g": "The no-cloning theorem. To copy something you first have to read it — but measuring a qubit collapses its superposition, destroying the very information you wanted to copy. You can't look without disturbing, and you can't copy what you can't look at.",
+      "y": "A universal copier would need to duplicate a state it doesn't know. Measurement only extracts one bit from a qubit's continuous (α, β) amplitudes and wrecks the rest. This is exactly why quantum error correction can't just keep backups — and why decoders (including AI ones like AlphaQubit) read indirect syndrome measurements instead of the data qubits themselves.",
+      "r": "Suppose a unitary U clones arbitrary states: U|ψ⟩|0⟩ = |ψ⟩|ψ⟩. For |ψ⟩ = α|0⟩+β|1⟩, linearity gives U|ψ⟩|0⟩ = α U|0⟩|0⟩ + β U|1⟩|0⟩ = α|00⟩ + β|11⟩. But cloning demands |ψ⟩|ψ⟩ = α²|00⟩ + αβ|01⟩ + αβ|10⟩ + β²|11⟩. Equal only when αβ = 0 — the basis states themselves. No universal cloner exists (Wootters & Zurek, Nature 299, 802 (1982); Dieks, Phys. Lett. A 92, 271 (1982))."
+    }
+  },
+  "signal": "Preview build — the daily Signal line starts with the launch batch.",
+  "lattice": {
+    "f": 0,
+    "goal": 3000,
+    "nextD": 4
+  }
+}

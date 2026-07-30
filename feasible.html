@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="style.css?v=16">
 <link rel="stylesheet" href="feasible.css?v=1">
 <script src="save.js"></script>
-<script src="orgames.js?v=4"></script>
+<script src="orgames.js?v=5"></script>
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=1" defer></script>
 <script src="forms.js?v=1" defer></script>
@@ -211,7 +211,7 @@ subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
     <div class="layer real">
       <h4>Where it actually runs</h4>
       <p><span class="where">Refinery blending, since 1952</span>
-      The first great industrial application, and still one of the largest. A refinery takes several crude streams with different sulphur, octane and density, and blends them into petrol, diesel and jet fuel that must each meet a specification. Choices: how much of each stream into each product. Limits: the specifications, the tank capacities, the demand. Objective: margin. Every major refinery on earth runs a linear program like this, often hourly, and the margins it finds are the difference between a profitable plant and a closed one.</p>
+      The first great industrial application, and still one of the largest. A refinery takes several crude streams with different sulphur, octane and density, and blends them into petrol, diesel and jet fuel that must each meet a specification. Choices: how much of each stream into each product. Limits: the specifications, the tank capacities, the demand. Objective: margin. Refineries have run linear programs for this since the 1950s, and the margins such a model finds are the difference between a profitable plant and a marginal one.</p>
     </div>
 
     <div class="mod-out">
@@ -262,7 +262,7 @@ subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
       <h4>The intuition</h4>
       <p>Here is the thing that should bother you about the picture in topic 01: the feasible region contains <em>infinitely many</em> points. Any of them could be your plan. So how does anything ever get solved?</p>
       <p>Because you never have to look inside. Push the objective line outward and it leaves the region at a corner. There are finitely many corners, so an infinite search collapses into a finite one. <strong>That collapse is the single most important fact in linear programming</strong>, and it is why a field about continuous quantities is computable at all.</p>
-      <p>The simplex method (Dantzig, 1947) simply walks from corner to neighbouring corner, always uphill, and stops when no neighbour is better. Because the region is convex, no-better-than-any-neighbour means genuinely best — there are no local traps to get stuck in. That is a luxury you lose the moment the problem stops being convex, which is topic 04 and, later, topic 10.</p>
+      <p>The simplex method (Dantzig, 1947) simply walks from corner to neighbouring corner, never downhill, and stops when no neighbour is better. (Never downhill rather than always uphill: when a vertex is <em>degenerate</em> a step can move sideways for no gain, which is why anti-cycling rules exist.) Because the region is convex, no-better-than-any-neighbour means genuinely best — there are no local traps to get stuck in. That is a luxury you lose the moment the problem stops being convex, which is topic 04 and, later, topic 10.</p>
     </div>
 
     <div class="layer maths">
@@ -273,7 +273,7 @@ subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
 
 so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
       <p>A weighted average never exceeds its largest ingredient. So <em>x</em> is never strictly better than both of its neighbours, and you can always slide to an endpoint without losing anything. Repeat and you arrive at a vertex.</p>
-      <p><strong>Complexity, stated honestly.</strong> Simplex is exponential in the worst case (Klee–Minty, 1972, constructed a cube it walks every corner of) and almost never behaves that way in practice. Linear programming <em>as a problem</em> is nonetheless in <strong>P</strong>: Khachiyan (1979) proved it with the ellipsoid method, which was theoretically decisive and practically useless, and Karmarkar (1984) gave the first polynomial algorithm that was also fast. Modern solvers run both simplex and interior-point and pick per instance. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>Complexity, stated honestly.</strong> Simplex is exponential in the worst case (Klee–Minty, 1972, constructed a cube whose every corner it visits under the standard pivot rule) and almost never behaves that way in practice. Linear programming <em>as a problem</em> is nonetheless in <strong>P</strong>: Khachiyan (1979) proved it with the ellipsoid method, which was theoretically decisive and practically useless, and Karmarkar (1984) gave the first polynomial algorithm that was also fast. Modern solvers run both simplex and interior-point and pick per instance. <span class="orbadge">⟦Proven⟧</span></p>
     </div>
 
     <div class="layer real">
@@ -355,7 +355,7 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
     <div class="layer real">
       <h4>Where it actually runs</h4>
       <p><span class="where">Electricity markets, every five minutes</span>
-      Wholesale power markets clear by solving an optimisation: meet demand at every node, respect every transmission line&#39;s capacity and every generator&#39;s ramp rate, at least cost. <strong>The shadow price of the demand constraint at each node is the price you pay for electricity there.</strong> It is not set by a committee; it falls out of the dual of the dispatch problem. When a transmission line binds, prices on either side of it separate — that is congestion, and the price gap is literally the line&#39;s shadow price. Markets in the US, Europe, Australia and India run on this.</p>
+      Wholesale power markets clear by solving an optimisation: meet demand at every node, respect every transmission line&#39;s capacity and every generator&#39;s ramp rate, at least cost. <strong>The shadow price of the demand constraint at each node is the price you pay for electricity there.</strong> It is not set by a committee; it falls out of the dual of the dispatch problem. When a transmission line binds, prices on either side of it separate — that is congestion, and the price gap is literally the line&#39;s shadow price. <em>How finely those prices are reported differs by market:</em> the North American ISOs publish a price per node (locational marginal pricing), while Europe, Australia and India clear on the same kind of optimisation but publish prices per zone or region. The duals are doing the pricing either way; only the granularity changes.</p>
     </div>
 
     <div class="mod-out">
@@ -510,7 +510,7 @@ if U(P) attained by an integral x   z* ← max(z*, cᵀx)
 otherwise           split P and repeat     (branch)</code>
       <p>Correctness rests on one line: <strong>U(P) is an upper bound on everything in P</strong>, so U(P) ≤ z* means nothing in P beats what you already have. Any valid bounding function works; better bounds simply prune more.</p>
       <p>For the 0/1 knapsack the standard choice is the <strong>Dantzig bound</strong>: sort by value per unit weight, fill greedily, and allow a fraction of the last item. Because the fractional problem is a relaxation, its optimum dominates the integral one.</p>
-      <p>The general machinery is Land &amp; Doig (1960). Modern solvers add <strong>cutting planes</strong> — extra valid inequalities that shave fractional vertices off the relaxation without removing any integer point — and the combination, <em>branch and cut</em>, is what actually runs inside every commercial solver. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>The general machinery is Land &amp; Doig (1960). Modern solvers add <strong>cutting planes</strong> — extra valid inequalities that shave fractional vertices off the relaxation without removing any integer point — and the combination, <em>branch and cut</em>, is what runs inside the major commercial and open-source solvers. <span class="orbadge">⟦Proven⟧</span></p>
       <p>Note the asymmetry that makes this honest: branch and bound terminates with a <em>proof</em>. When the list empties, the incumbent is optimal and you can say so. That is a stronger output than any heuristic can offer, and it is what &quot;solved&quot; means in this field.</p>
     </div>
 
@@ -587,7 +587,7 @@ s.t.       f(u,v) ≤ c(u,v)            for every edge
            Σ f(u,v) = Σ f(v,w)        for every v ≠ s,t
            f ≥ 0</code>
       <p><strong>Max-flow min-cut theorem</strong> (Ford &amp; Fulkerson, 1956): the maximum flow value equals the minimum capacity over all source–sink cuts. It is precisely LP duality specialised to this structure — the cut is the dual solution — which is why topics 03 and 06 keep rhyming. <span class="orbadge">⟦Proven⟧</span></p>
-      <p>The <strong>integrality</strong> gift comes from total unimodularity: a network&#39;s incidence matrix is totally unimodular, so with integer capacities every vertex of the feasible polytope is integral, and the LP optimum is automatically a whole-number flow. This is why max-flow is polynomial while its cousin the integer multicommodity flow is NP-hard — remove the structure and the gift goes with it.</p>
+      <p>The <strong>integrality</strong> gift comes from total unimodularity: a network&#39;s incidence matrix is totally unimodular, so with integer capacities every vertex of the feasible polytope is integral — and since simplex returns a vertex, it hands back a whole-number flow with no branching at all. (An interior-point method can land between vertices on a tie, which is why solvers apply a crossover step to finish at one.) This is why max-flow is polynomial while its cousin the integer multicommodity flow is NP-hard — remove the structure and the gift goes with it.</p>
       <p>Algorithms: Ford–Fulkerson (augmenting paths), Edmonds–Karp (O(VE²) by choosing shortest augmenting paths), Dinic&#39;s algorithm, and push-relabel. All are polynomial and all are fast in practice.</p>
     </div>
 
@@ -751,7 +751,7 @@ s.t.      Σⱼ xᵢⱼ = 1     every worker gets exactly one job
       <code class="eq">d(s) = 0
 d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
       <p>Solve it and you get every distance at once. Three standard ways, each with a different assumption:</p>
-      <p><strong>Dijkstra (1959)</strong>, O(E + V log V) with a heap, requires all weights ≥ 0. It settles nodes in increasing distance order, which is only valid if edges cannot reduce a distance you have already finalised. <strong>Bellman–Ford</strong>, O(VE), tolerates negative weights and detects negative cycles — if a distance is still improving after V−1 passes, a negative cycle exists. <strong>Floyd–Warshall</strong>, O(V³), gives all pairs at once in three nested loops. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>Dijkstra (1959)</strong>, O(E + V log V) with a Fibonacci heap — O((V + E) log V) with an ordinary binary one, which is what most implementations actually use — requires all weights ≥ 0. It settles nodes in increasing distance order, which is only valid if edges cannot reduce a distance you have already finalised. <strong>Bellman–Ford</strong>, O(VE), tolerates negative weights and detects negative cycles — if a distance is still improving after V−1 passes, a negative cycle exists. <strong>Floyd–Warshall</strong>, O(V³), gives all pairs at once in three nested loops. <span class="orbadge">⟦Proven⟧</span></p>
       <p>The reach of this idea is much wider than roads. The same recursion is <strong>Viterbi decoding</strong> in communications, <strong>sequence alignment</strong> in genomics, optimal inventory policy in supply chains, and — with an expectation where the min is — the <strong>Bellman optimality equation</strong> at the heart of reinforcement learning. Q-learning is this equation solved by sampling. The bridge from operations research into modern AI runs directly through this box.</p>
     </div>
 
@@ -967,7 +967,7 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 <h2 id="faq"><span class="fr-secnum">Questions</span>What people actually ask</h2>
 
 <h3>Is operations research just applied maths, or a branch of computer science?</h3>
-<p>Historically neither — it began in wartime Britain in 1937 with a group of scientists asked to work out how to use radar well, and it kept the habit of starting from a real operation rather than from a theorem. Today it overlaps heavily with combinatorial optimisation in computer science and with parts of economics and statistics, and the boundaries are not worth policing.</p>
+<p>Historically neither — it began in pre-war Britain in 1937, when a group of scientists was asked not to improve radar but to work out how to <em>use</em> it well — and it expanded enormously once the war started two years later. It kept the habit of starting from a real operation rather than from a theorem. Today it overlaps heavily with combinatorial optimisation in computer science and with parts of economics and statistics, and the boundaries are not worth policing.</p>
 
 <h3>Is OR the same thing as machine learning?</h3>
 <p>No, and the distinction is useful. Machine learning mostly <em>predicts</em>: given data, what will happen? OR mostly <em>decides</em>: given what will happen, what should we do about it, subject to what we cannot change? Real systems chain them — forecast demand with ML, then decide inventory with OR. Topic 08 is where the two genuinely meet.</p>

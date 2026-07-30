@@ -207,6 +207,49 @@
   <figcaption><strong>The same attack got 3,800× cheaper in four years.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at 1.9 billion physical qubits. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million — partly because the first half of Shor's algorithm can be precomputed before your transaction even appears. The gap from today's hardware is now roughly <strong>three</strong> orders of magnitude, not six. Note the axis is logarithmic: that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
 </figure>
 
+<h2 id="what-for">So what would you actually use one for?</h2>
+
+<p>This is the question that gets answered worst. The honest position is that quantum computers are not general accelerators — they are good at a <em>narrow and specific</em> class of things, and the gap between that class and the marketing is where most of the confusion lives. Here is the real list, ranked by how much of it is evidence rather than expectation. Where a genuine operations-research problem sits underneath, there is a door to it.</p>
+
+<div class="grid">
+  <div class="card">
+    <h3>Simulating molecules and materials <span class="orbadge">the strongest case</span></h3>
+    <p>Nature is quantum, so a quantum computer is the natural instrument for it. The standard example is <strong>nitrogenase</strong>: a bacterial enzyme that pulls nitrogen out of the air at ambient temperature and pressure, while the industrial process doing the same job needs enormous heat and pressure. Nobody can compute the enzyme&#39;s active site accurately, because the electron correlations are exactly what classical methods approximate away.</p>
+    <p>The same argument covers battery electrolytes, catalysts and superconductors. <strong>This is the one application where the machine is suited to the problem rather than borrowed for it</strong> — no data-loading toll, because the data is the physics.</p>
+    <p style="margin-bottom:0"><em>Status: needs error-corrected machines that do not exist yet. Credible, not imminent.</em> <span class="orbadge">⟦Frontier⟧</span></p>
+  </div>
+
+  <div class="card">
+    <h3>Breaking — and replacing — today&#39;s encryption <span class="orbadge">⟦Proven⟧ algorithm</span></h3>
+    <p>Shor&#39;s algorithm factors large numbers efficiently, which breaks RSA and elliptic-curve cryptography. The algorithm is proven; the machine is roughly <strong>three orders of magnitude</strong> beyond anything built. But the deadline is real anyway, because encrypted traffic captured today can be decrypted later — so the migration to post-quantum cryptography is happening <em>now</em>, on live systems, and that is a genuine engineering programme rather than a prediction.</p>
+    <p style="margin-bottom:0"><a href="bitcoin.html">The numbers, with caveats →</a></p>
+  </div>
+
+  <div class="card">
+    <h3>Optimisation <span class="orbadge">⟦Heuristic⟧ — most claimed, least shown</span></h3>
+    <p>Routing fleets, scheduling factories, building portfolios. This is the application you will see promised most often and demonstrated least — <strong>there is no known quantum algorithm that beats a strong classical solver on a problem anyone actually needs solved.</strong></p>
+    <p>The reason is worth understanding rather than taking on trust. Grover&#39;s quadratic speedup is proven, but it applies to <em>unstructured</em> search, and real optimisation problems are dense with structure that classical methods exploit ruthlessly. A solver does not search the space; it proves most of it cannot contain the answer.</p>
+    <p style="margin-bottom:0"><a class="orjump" href="feasible.html#t05" style="margin:6px 0 0"><span>◆ <b>This one has real operations research underneath it.</b> To judge the claim you need to know what the classical machinery already does.<span class="arr"> Topic 05: Branch and bound ▸</span></span></a></p>
+  </div>
+
+  <div class="card">
+    <h3>Machine learning <span class="orbadge">mostly oversold</span></h3>
+    <p>The headline speedups mostly die on the <strong>data-loading toll</strong>: to touch <em>N</em> classical numbers the machine must first load them, which costs about <em>N</em> operations and eats the advantage before the algorithm starts. Several flagship claims were later matched by classical algorithms outright.</p>
+    <p style="margin-bottom:0">The surviving exception is the same as the first card: learning from data that was <em>born quantum</em>. <a href="ai.html">Four routes, ranked honestly →</a></p>
+  </div>
+
+  <div class="card">
+    <h3>Error correction, right now <span class="orbadge">⟦Proven⟧ · shipping</span></h3>
+    <p>Not an application of quantum computing so much as the thing standing between us and all of the above — and the one place where the loop this site is named after is already closed. AI decoders read the error patterns; a 1965 graph-matching algorithm does the repair in under a microsecond.</p>
+    <p style="margin-bottom:0"><a class="orjump" href="feasible.html#t07" style="margin:6px 0 0"><span>◆ <b>Operations research, running inside the machine.</b><span class="arr"> Topic 07: Matching ▸</span></span></a></p>
+  </div>
+
+  <div class="card">
+    <h3>Quantum sensing <span class="orbadge">⟦Proven⟧ · deployed</span></h3>
+    <p>Worth naming because it is the quantum technology that already works and nobody argues about. Atomic clocks, magnetometers and gravimeters exploit the same physics without needing a computer at all — used today in navigation, medical imaging and surveying. It is not on this list to pad it out; it is here because <strong>&quot;quantum&quot; delivering real value today mostly means sensing, not computing</strong>, and conflating the two is a common way to be misled.</p>
+  </div>
+</div>
+
 <h2>How it works here</h2>
 <p>A meme a day (the door). A question a day: answers sit in superposition — spoiler-tagged — until the nightly <strong>Collapse</strong>, when the Answer of the Day is named and credited. On weekends the whole community raids the <strong>Boss Question</strong> together: it has hit points, and verified partial results deal damage. Everything you earn grows <strong>The Lattice</strong> — the community's shared code distance, displayed right here as it climbs.</p>
 <p>SymbiQ is edited, not crowdsourced: member submissions are reviewed by the desk, and the best ship to the main feeds with your name on them. Catching an error in <em>our</em> content pays the biggest bounty on the server. A weekly scoreboard tracks the six labs racing to fault tolerance (<a href="race.html">The Race</a>) — including our own prediction record, kept publicly. When we get something wrong, the correction gets <em>more</em> prominence than the mistake (<a href="corrections.html">Corrections</a>).</p>

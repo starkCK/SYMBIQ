@@ -222,8 +222,8 @@
 <tr><td>Optimization</td><td>QAOA / annealing explore rugged loss landscapes</td><td>Evidence mixed; classical baselines keep catching up. Trust specific results, not the category.</td></tr>
 <tr><td>Linear algebra</td><td>HHL-style "exponential speedup" for solving the big systems under ML</td><td><strong>Most oversold.</strong> Dies to the data-loading toll, conditioning, and readout (see 🔴).</td></tr>
 </table></div>
-<a class="orjump" href="feasible.html">
-  <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> Before judging whether quantum beats it, it is worth knowing what classical optimisation already does — and how fast.<span class="arr"> The Feasible Region ▸</span></span>
+<a class="orjump" href="feasible.html#t05">
+  <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> The thing quantum would have to beat is <b>branch and bound</b> — which does not search the space at all, it proves most of it cannot contain the answer. That is exactly the structure Grover is blind to.<span class="arr"> Topic 05: Branch and bound ▸</span></span>
 </a>
 
 <p><strong>The data-loading toll.</strong> To touch <em>N</em> classical numbers a quantum computer must first load them into amplitudes. Without large-scale QRAM — which nobody has built — that costs ~<em>N</em> operations. So an algorithm that's exponentially faster <em>after</em> loading still sits behind an O(<em>N</em>) toll bridge, and the total time is no better than classical. The algorithm is fast; the door is slow.</p>

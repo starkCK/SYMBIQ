@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "count": 3,
+  "count": 4,
   "entries": [
     {
       "date": "2026-07-19",
@@ -19,6 +19,12 @@
       "qnum": 3,
       "tier": "y",
       "question": "Add more qubits to a quantum computer and you usually get MORE errors, not fewer — more parts to fail, more crosstalk. But there's one condition under which add"
+    },
+    {
+      "date": "2026-07-30",
+      "qnum": 4,
+      "tier": "y",
+      "question": "A quantum computer's state decays within microseconds, so its error-correcting decoder has to make a call in about a microsecond too. For years that was the arg"
     }
   ]
 }

@@ -895,3 +895,79 @@ body.latched { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .orregion, .oropt, .orbar i, .ornode circle { transition: none; }
 }
+
+/* ================================================================
+   OR GAMES v2 — levels, always-available controls, and the two
+   things the audit found missing: the recipe, and the crates.
+   ================================================================ */
+.lvbar { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+.lv {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  background: var(--bg); color: var(--muted); font: inherit; font-size: .86rem;
+  border: 1px solid var(--border); border-radius: 10px; padding: 8px 13px;
+  transition: border-color .18s cubic-bezier(.22,.7,.3,1), color .18s ease, transform .18s cubic-bezier(.22,.7,.3,1);
+}
+.lv:hover { transform: translateY(-2px); border-color: var(--teal); }
+.lv.on { border-color: var(--teal); color: var(--text); background: linear-gradient(135deg, rgba(45,212,191,.14), transparent 75%); }
+.lv-n {
+  display: grid; place-items: center; width: 20px; height: 20px; border-radius: 99px;
+  background: var(--border); color: var(--text); font-size: .72rem; font-weight: 800; flex: 0 0 auto;
+}
+.lv.on .lv-n { background: var(--teal); color: #04211d; }
+.lv.done .lv-n { background: var(--teal); color: #04211d; }
+.lv-tick { color: var(--teal); font-weight: 800; }
+.orstory { color: var(--muted); font-size: .92rem; font-style: italic; margin: 0 0 14px; }
+
+.orctl { margin-left: auto; display: flex; gap: 7px; }
+.orsm {
+  background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--muted);
+  font: inherit; font-size: .78rem; padding: 5px 11px; cursor: pointer;
+  transition: border-color .16s ease, color .16s ease;
+}
+.orsm:hover:not([disabled]) { border-color: var(--teal); color: var(--teal); }
+.orsm[disabled] { opacity: .4; cursor: default; }
+
+.orprog { height: 4px; border-radius: 99px; background: var(--border); overflow: hidden; margin: -6px 0 16px; }
+.orprog i {
+  display: block; height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--teal), var(--violet));
+  transition: width .45s cubic-bezier(.22,.7,.3,1);
+}
+
+/* the recipe — what A and B actually earn and consume. The audit found
+   players were asked to optimise two products never described anywhere. */
+.orrec { width: 100%; border-collapse: collapse; font-size: .86rem; margin: 0 0 4px; }
+.orrec th, .orrec td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--border); }
+.orrec thead th { color: var(--muted); font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; }
+.orrec tbody th[scope=row] { text-align: left; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+.orrec tbody th i { width: 9px; height: 9px; border-radius: 99px; flex: 0 0 auto; }
+.orrec .have { font-variant-numeric: tabular-nums; font-weight: 700; }
+.orrec .up { color: var(--teal); font-size: .78rem; font-weight: 700; }
+.orrec .profitrow th, .orrec .profitrow td { border-bottom: none; color: var(--teal); font-weight: 700; }
+
+/* the crates — the blocker fix. You could not see the knapsack you were solving. */
+.orcrates { margin: 16px 0 4px; }
+.capnote { color: var(--muted); font-weight: 600; letter-spacing: 0; text-transform: none; font-size: .78rem; margin-left: 8px; }
+.cratelist { display: flex; flex-wrap: wrap; gap: 6px; }
+.crate {
+  display: inline-flex; flex-direction: column; align-items: center; line-height: 1.15;
+  border: 1px solid var(--border); border-radius: 8px; padding: 5px 9px; min-width: 46px;
+  background: var(--bg); transition: border-color .2s ease, background .2s ease, transform .2s cubic-bezier(.22,.7,.3,1);
+}
+.crate b { font-size: .92rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.crate i { font-style: normal; font-size: .68rem; color: var(--muted); }
+.crate.in {
+  border-color: var(--teal); background: linear-gradient(135deg, rgba(45,212,191,.18), transparent 80%);
+  transform: translateY(-2px);
+}
+.crate.in b { color: var(--teal); }
+
+@media (max-width: 719px) {
+  .orctl { margin-left: 0; width: 100%; }
+  .lv-t { display: none; }
+  .lv { padding: 7px 10px; }
+  .orrec { font-size: .82rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lv, .crate, .orprog i { transition: none; }
+}

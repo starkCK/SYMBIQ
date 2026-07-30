@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SymbiQ — Two broken geniuses, fixing each other.</title>
 <meta name="description" content="SymbiQ explains the loop between AI and quantum computing — daily, at three levels: no math, some math, real math.">
-<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="style.css?v=16">
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=1" defer></script>
 <script src="forms.js?v=1" defer></script>
+<script src="archive.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -142,6 +143,14 @@
   <p style="margin:8px 0 0"><button id="dq-hint" class="preset">Need a hint?</button></p>
   <div id="dq-out" aria-live="polite"></div>
   <p id="dq-lattice" style="color:var(--muted);font-size:.9rem;margin-bottom:0"></p>
+
+  <!-- Previous questions, one click away and never deleted. The archive existed
+       from 2026-07-29 but was reachable only from the Lattice overlay, so from
+       the homepage the questions still appeared to vanish. -->
+  <details class="dq-prev">
+    <summary><span class="dq-prev-x" aria-hidden="true">+</span> Missed one? <b>Every previous question, with its answer</b></summary>
+    <div id="dq-archive"></div>
+  </details>
 </div>
 
 <div class="grid">
@@ -425,6 +434,19 @@
     '.dq-heat .w{display:flex;flex-direction:column;gap:3px}' +
     '.dq-heat i{width:9px;height:9px;border-radius:2px;background:var(--border);display:block}';
   document.head.appendChild(st);
+})();
+</script>
+<script>
+// Mount the shared archive inside the Daily Question card, lazily: the fetch
+// only happens the first time the reader actually opens it.
+(function () {
+  var d = document.querySelector(".dq-prev"), host = document.getElementById("dq-archive");
+  if (!d || !host) return;
+  d.addEventListener("toggle", function once() {
+    if (!d.open) return;
+    d.removeEventListener("toggle", once);
+    if (window.SymbiQ && SymbiQ.archive) SymbiQ.archive.mount(host, { limit: 5 });
+  });
 })();
 </script>
 </body>

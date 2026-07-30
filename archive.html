@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Question Archive — every daily question, with answers | SymbiQ</title>
 <meta name="description" content="Every Daily Question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
-<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="style.css?v=16">
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=1" defer></script>
 <script src="forms.js?v=1" defer></script>
+<script src="archive.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -102,78 +103,15 @@
 <p>Today&#39;s live question is <a href="index.html#daily-q">on the homepage</a>, where it also tracks your streak.</p>
 
 <script>
+// One renderer, two mount points (index.html embeds the same component).
 (function () {
-  var listEl = document.getElementById('arch-list');
-  var sumEl  = document.getElementById('arch-summary');
-  var TIER   = { g: '🟢 Beginner', y: '🟡 Intermediate', r: '🔴 Expert' };
-
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-
-  function fail(msg) {
-    sumEl.innerHTML = '<h3>The archive could not be loaded</h3><p style="margin-bottom:0">' + esc(msg) +
-      ' You can still play <a href="index.html#daily-q">today&#39;s question</a>.</p>';
-  }
-
-  fetch('data/archive/index.json', { cache: 'no-store' })
-    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(function (idx) {
-      var entries = (idx && idx.entries) || [];
-      if (!entries.length) return fail('The archive is empty.');
-
-      entries.sort(function (a, b) { return b.qnum - a.qnum; });   // newest first
-
-      sumEl.innerHTML =
-        '<h3>' + entries.length + ' question' + (entries.length === 1 ? '' : 's') + ' so far</h3>' +
-        '<p style="margin-bottom:0">Newest first. Click any question to open the answer and all three explanations. ' +
-        'Numbering runs by question, not by date — a question is #' + entries[0].qnum +
-        ' because it is the ' + entries[0].qnum + 'th we have published, not because of the calendar.</p>';
-
-      listEl.innerHTML = entries.map(function (e) {
-        return '<details class="card archq" data-date="' + esc(e.date) + '">' +
-                 '<summary>' +
-                   '<span class="archq-num">#' + esc(e.qnum) + '</span>' +
-                   '<span class="archq-txt">' + esc(e.question) + '…</span>' +
-                   '<span class="orbadge">' + esc(TIER[e.tier] || e.tier) + '</span>' +
-                   '<span class="orbadge">' + esc(e.date) + '</span>' +
-                 '</summary>' +
-                 '<div class="archq-body"><p class="archq-loading">Opening…</p></div>' +
-               '</details>';
-      }).join('');
-
-      // Load each question's full record the first time it is opened.
-      listEl.addEventListener('toggle', function (ev) {
-        var d = ev.target;
-        if (d.tagName !== 'DETAILS' || !d.open || d.dataset.loaded) return;
-        d.dataset.loaded = '1';
-        var body = d.querySelector('.archq-body');
-        fetch('data/archive/' + d.dataset.date + '.json', { cache: 'no-store' })
-          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-          .then(function (q) {
-            var Q = q.question, opts = Q.options || [];
-            body.innerHTML =
-              '<p class="archq-full">' + esc(Q.text) + '</p>' +
-              '<ol class="archq-opts">' + opts.map(function (o, i) {
-                return '<li' + (i === Q.answerIndex ? ' class="right"' : '') + '>' + esc(o) +
-                       (i === Q.answerIndex ? ' <b>← the answer</b>' : '') + '</li>';
-              }).join('') + '</ol>' +
-              (Q.hint ? '<p class="archq-hint"><b>Hint given on the day:</b> ' + esc(Q.hint) + '</p>' : '') +
-              ['g', 'y', 'r'].map(function (t) {
-                var txt = Q.explain && Q.explain[t];
-                return txt ? '<div class="archq-ex"><h4>' + TIER[t] + '</h4><p>' + esc(txt) + '</p></div>' : '';
-              }).join('') +
-              (q.signal ? '<p class="archq-signal"><b>The Signal that day:</b> ' + esc(q.signal) + '</p>' : '');
-          })
-          .catch(function (err) {
-            body.innerHTML = '<p class="archq-loading">Could not load this one (' + esc(err.message) + ').</p>';
-            d.dataset.loaded = '';
-          });
-      }, true);
-    })
-    .catch(function (err) { fail('Fetch failed: ' + err.message + '.'); });
+  var host = document.getElementById("arch-list");
+  var sum  = document.getElementById("arch-summary");
+  if (sum) sum.remove();
+  if (window.SymbiQ && SymbiQ.archive) SymbiQ.archive.mount(host, { heading: true });
+  else document.addEventListener("DOMContentLoaded", function () {
+    if (window.SymbiQ && SymbiQ.archive) SymbiQ.archive.mount(host, { heading: true });
+  });
 })();
 </script>
 

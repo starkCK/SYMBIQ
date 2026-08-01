@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "count": 4,
+  "count": 5,
   "entries": [
     {
       "date": "2026-07-19",
@@ -25,6 +25,12 @@
       "qnum": 4,
       "tier": "y",
       "question": "A quantum computer's state decays within microseconds, so its error-correcting decoder has to make a call in about a microsecond too. For years that was the arg"
+    },
+    {
+      "date": "2026-08-01",
+      "qnum": 5,
+      "tier": "g",
+      "question": "Your bank says \"we use encryption, we're safe.\" A quantum-aware friend says \"your data might already be stolen — just not read yet.\" What attack "
     }
   ]
 }

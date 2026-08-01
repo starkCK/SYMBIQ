@@ -4,8 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SymbiQ — Two broken geniuses, fixing each other.</title>
-<meta name="description" content="SymbiQ explains the loop between AI and quantum computing — daily, at three levels: no math, some math, real math.">
-<link rel="stylesheet" href="style.css?v=17">
+<meta name="description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with eight games where the mathematics does the judging.">
+<!-- social:start -->
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/">
+<meta property="og:title" content="SymbiQ — Two broken geniuses, fixing each other.">
+<meta property="og:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with eight games where the mathematics does the judging.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ. Two broken geniuses, fixing each other.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="SymbiQ — Two broken geniuses, fixing each other.">
+<meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with eight games where the mathematics does the judging.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
+<!-- social:end -->
+<link rel="stylesheet" href="style.css?v=18">
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -136,7 +157,7 @@
 </figure>
 
 <div class="card" id="daily-q">
-  <h3>The Daily Question</h3>
+  <h3>The Question</h3>
   <p id="dq-meta"></p>
   <p id="dq-q" style="font-size:1.05rem;font-weight:600"></p>
   <div id="dq-opts"></div>
@@ -153,10 +174,33 @@
   </details>
 </div>
 
+<section class="orhero gamehero">
+  <p class="eyebrow">The part you play</p>
+  <h2>Eight games where you cannot fake a score</h2>
+  <p class="orhero-lede">Most explanations of quantum computing ask you to take their word for it. Here the mathematics does the judging: <strong>every par is an optimum found by exhaustive search, every probability on screen is computed rather than chosen</strong>, and one level is built to prove that your best strategy is worthless on the wrong problem.</p>
+
+  <div class="orhero-grid">
+    <div><b>Grover's Escape</b><span>Sixty-four doors, one exit. Tilt the odds — then look <em>once</em>. Look twice and you lose it, because over-rotation is real.</span></div>
+    <div><b>The Decoder Duel</b><span>Ten rounds against the textbook decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</span></div>
+    <div><b>The Annealing Volcano</b><span>You are not the climber. You are the temperature — and you are scored on your schedule replayed 500 times, never on one lucky run.</span></div>
+    <div><b>The Prune</b><span>Prove which of 4,096 answers is best by opening about thirty-five. Finish holding a certificate, not a guess.</span></div>
+  </div>
+
+  <p>Two ways in. <strong>The Solver's Path</strong> is the story — five fractures, six characters, a map and progress that saves. <strong>The Arcade</strong> is the same machines with no story and no order.</p>
+
+  <p class="gh-row" style="margin-bottom:0">
+    <a class="bigplay" href="journey.html">Play The Solver's Path <span class="kbd">the story</span></a>
+    <a class="bigplay ghost" href="play.html">Enter The Arcade</a>
+  </p>
+  <p class="gh-note">No account, no download, nothing to install. Your progress saves in this browser and you can carry it to another device with a code.</p>
+</section>
+
+<h2>Read it instead</h2>
+<p>The same subject in prose, at whatever depth you want it. These three are one worked example — how AI learned to read a quantum computer's errors — told at three levels, so you can find the one that fits and then read the pillar pages at that level.</p>
 <div class="grid">
-  <div class="card"><h3>🟢 Basics</h3><p>Zero math, zero jargon. Your smartest friend who studied literature gets it.</p><a href="basics.html">Start here →</a></div>
-  <div class="card"><h3>🟡 Concepts</h3><p>Real terms, light math. An engineer follows without googling.</p><a href="concepts.html">Go deeper →</a></div>
-  <div class="card"><h3>🔴 Deep</h3><p>Actual formalism, real equations, paper citations. Independently verified before it ships.</p><a href="deep.html">The mathematics →</a></div>
+  <div class="card"><h3>🟢 Basics</h3><p>The whole thesis in five minutes, with no math and no jargon. Your smartest friend who studied literature gets it.</p><a href="basics.html">Start here →</a></div>
+  <div class="card"><h3>🟡 Concepts</h3><p>The same story with its real names and light math. An engineer follows without googling.</p><a href="concepts.html">The same, with real names →</a></div>
+  <div class="card"><h3>🔴 Deep</h3><p>The same story as formalism: real equations, paper citations, independently refereed before it ships.</p><a href="deep.html">The mathematics →</a></div>
 </div>
 
 <section class="orhero">
@@ -260,7 +304,7 @@
 </div>
 
 <h2>How it works here</h2>
-<p>A meme a day (the door). A question a day: answers sit in superposition — spoiler-tagged — until the nightly <strong>Collapse</strong>, when the Answer of the Day is named and credited. On weekends the whole community raids the <strong>Boss Question</strong> together: it has hit points, and verified partial results deal damage. Everything you earn grows <strong>The Lattice</strong> — the community's shared code distance, displayed right here as it climbs.</p>
+<p>A meme (the door). A question &mdash; every one numbered and dated, so you see the real cadence rather than a promised one. Answers sit in superposition — spoiler-tagged — until the nightly <strong>Collapse</strong>, when the Answer of the Day is named and credited. On weekends the whole community raids the <strong>Boss Question</strong> together: it has hit points, and verified partial results deal damage. Everything you earn grows <strong>The Lattice</strong> — the community's shared code distance, displayed right here as it climbs.</p>
 <p>SymbiQ is edited, not crowdsourced: member submissions are reviewed by the desk, and the best ship to the main feeds with your name on them. Catching an error in <em>our</em> content pays the biggest bounty on the server. A weekly scoreboard tracks the six labs racing to fault tolerance (<a href="race.html">The Race</a>) — including our own prediction record, kept publicly. When we get something wrong, the correction gets <em>more</em> prominence than the mistake (<a href="corrections.html">Corrections</a>).</p>
 
 <h2 id="join-loop">Join the loop</h2>
@@ -270,7 +314,7 @@
      action at its embed endpoint or import the collected addresses — but do NOT
      go back to a card that collects nothing. -->
 <div class="grid">
-  <div class="card"><h3>Discord</h3><p>The daily question, the nightly Collapse, weekend Boss Raids. Free, always.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-discord">Join the server →</a></div>
+  <div class="card"><h3>Discord</h3><p>The Question, the nightly Collapse, weekend Boss Raids. Free, always.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-discord">Join the server →</a></div>
   <div class="card"><h3>The Symbiosis</h3><p>The weekly newsletter: best meme, the Signals, the Race, the week's credited answers. Leave an address and you'll get the first issue — no other mail, ever.</p>
     <form class="sqform" data-sq="newsletter">
       <input type="email" name="email" data-label="your email" required placeholder="you@example.com" aria-label="Your email address">
@@ -303,7 +347,7 @@
     .then(init)
     .catch(function () {
       document.getElementById('dq-out').innerHTML =
-        '<p style="color:var(--muted)">The daily question reads <code>data/today.json</code>, so it needs the site to be served (it will work on the live site; for a local preview run <code>python -m http.server 8642 --directory site</code>).</p>';
+        '<p style="color:var(--muted)">The Question reads <code>data/today.json</code>, so it needs the site to be served (it will work on the live site; for a local preview run <code>python -m http.server 8642 --directory site</code>).</p>';
       document.getElementById('dq-hint').style.display = 'none';
     });
 
@@ -311,7 +355,7 @@
     var s = load(), q = D.question, done = s.history && s.history[D.date];
     document.getElementById('dq-meta').innerHTML =
       '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
-      '<span style="color:var(--muted)"> Daily Question #' + D.qnum + ' · ' + D.date + '</span>';
+      '<span style="color:var(--muted)"> Question #' + D.qnum + ' · ' + D.date + '</span>';
     document.getElementById('dq-q').textContent = q.text;
     var opts = document.getElementById('dq-opts');
     q.options.forEach(function (o, i) {
@@ -437,7 +481,7 @@
 })();
 </script>
 <script>
-// Mount the shared archive inside the Daily Question card, lazily: the fetch
+// Mount the shared archive inside the Question card, lazily: the fetch
 // only happens the first time the reader actually opens it.
 (function () {
   var d = document.querySelector(".dq-prev"), host = document.getElementById("dq-archive");

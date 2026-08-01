@@ -842,10 +842,21 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 }
 .orhero-grid b { display: block; color: var(--teal); font-size: .92rem; margin-bottom: 4px; }
 .orhero-grid span { font-size: .89rem; color: var(--muted); }
+/* The games hero. Added 2026-07-30 after an audit found that the homepage
+   body contained ZERO links to journey.html or play.html — the one thing on
+   this site nobody else has was reachable only from the nav bar. Violet-led,
+   because on this site violet is the quantum half; the OR hero keeps teal. */
+.gamehero { border-top-color: var(--violet); }
+.gamehero .eyebrow { color: var(--violet); }
+.gamehero .orhero-grid b { color: var(--violet); }
+.gamehero .gh-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.gamehero .bigplay.ghost { border-color: var(--violet); color: var(--violet); }
+.gamehero .gh-note { font-size: .87rem; color: var(--muted); margin: 14px 0 0; }
 @media (max-width: 719px) {
   .orhero { padding: 24px 20px; }
   .orhero h2 { font-size: 1.4rem; }
   .bigplay { width: 100%; padding: 15px 20px; font-size: 1.05rem; }
+  .gamehero .gh-row { flex-direction: column; align-items: stretch; }
 }
 
 /* ================================================================

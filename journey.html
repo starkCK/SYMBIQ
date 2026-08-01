@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Solver's Path — SymbiQ</title>
 <meta name="description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real quantum mechanics, wearing an adventure.">
-<link rel="stylesheet" href="style.css?v=16">
+<link rel="stylesheet" href="style.css?v=17">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=5"></script>
+<script src="games.js?v=7"></script>
 <script src="nav.js?v=4" defer></script>
-<script src="analytics.js?v=1" defer></script>
-<script src="forms.js?v=1" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
 <style>
 /* ---------------- The Solver's Path ---------------- */
 .journey { display: grid; grid-template-columns: minmax(0, 330px) 1fr; gap: 24px; align-items: start; margin-top: 6px; }
@@ -568,7 +568,12 @@
   function mountMission(m) {
     var GS = window.SymbiQ && SymbiQ.games, host = document.getElementById('mgame');
     if (!GS || !host) return;
-    host.innerHTML = '<div class="card" id="mgame-card" style="margin-top:14px"></div>';
+    // The Path never showed the rules at all — the mentor's line set the scene
+    // and then you were handed a machine with no instructions (Chinmoy,
+    // 2026-07-30). The same "How to play" panel the Arcade uses now opens
+    // above the game here, automatically on a first visit to each mission.
+    host.innerHTML = (GS.aboutHTML ? GS.aboutHTML(m.id) : '') +
+                     '<div class="card" id="mgame-card" style="margin-top:14px"></div>';
     var btn = document.getElementById('mstart');
     if (btn) btn.style.display = 'none';
     GS.mount(m.id, document.getElementById('mgame-card'), {

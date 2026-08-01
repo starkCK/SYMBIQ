@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Race — SymbiQ</title>
 <meta name="description" content="Weekly scoreboard on the labs racing to fault tolerance, our public prediction record, and an interactive look at the one number the race is actually scored on: the threshold.">
-<link rel="stylesheet" href="style.css?v=16">
+<link rel="stylesheet" href="style.css?v=17">
 <script src="nav.js?v=4" defer></script>
-<script src="analytics.js?v=1" defer></script>
-<script src="forms.js?v=1" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
 <style>
 #thr-svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; height: auto; }
 .bar { transition: height .45s cubic-bezier(.2,.7,.3,1), y .45s cubic-bezier(.2,.7,.3,1), fill .3s ease; }
@@ -105,7 +105,7 @@
 
 <h2>What the race is actually scored on</h2>
 <p>Qubit counts make the headlines. They are close to meaningless on their own. The number that decides whether a machine is in this race at all is <strong>Λ</strong> — how much the logical error rate shrinks each time you make the code bigger.</p>
-<p>The rule, from the scaling law on the <a href="qec.html#red">QEC page</a>: every <strong>two</strong> steps of code distance (d → d+2) divides the logical error rate by Λ. Below threshold Λ &gt; 1 and errors fall off a cliff as you add qubits. Above threshold Λ &lt; 1 and the same extra qubits make the machine <em>worse</em>. Same hardware, same code, opposite direction — and the whole industry is sorted by which side of that line it sits on.</p>
+<p>The rule, from the scaling law on the <a href="qec.html#red">QEC page</a>: raising the code distance by <strong>two</strong> (d → d+2 — one <em>step</em>, and that is what the word means everywhere below) divides the logical error rate by Λ. Raising an odd d by one buys nothing at all. Below threshold Λ &gt; 1 and errors fall away geometrically as you add qubits. Above threshold Λ &lt; 1 and the same extra qubits make the machine <em>worse</em>. Same hardware, same code, opposite direction — and the whole industry is sorted by which side of that line it sits on.</p>
 
 <div class="card" id="threshold">
   <h3>Drag the line</h3>
@@ -122,7 +122,7 @@
   <div class="verdict" id="thr-verdict"></div>
   <svg id="thr-svg" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg"
        aria-label="Logical error rate versus code distance, relative to distance 3"></svg>
-  <p class="legend" style="text-align:center">Logical error per round, relative to d=3 — <strong>shorter is better</strong>. Log scale.</p>
+  <p class="legend" style="text-align:center">Logical error per round, relative to d=3 — <strong>shorter is better</strong>. <strong>Logarithmic scale</strong>: the axis runs from 10⁻⁴ (floor) to 10² (full height), so a bar that is one sixth of the axis shorter than its neighbour is ten times better, and one that is half the axis shorter is a thousand times better. Read the number on the bar, not the picture.</p>
   <dl class="rows" id="thr-rows" style="margin-top:12px"></dl>
   <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">Honest model: this is the standard below-threshold scaling form p<sub>L</sub> ∝ (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, plotted as a <em>ratio</em> to d=3 — which is why no fitted prefactor appears and none is needed. It is the shape of the curve, not a prediction of any specific chip's error rate. Real devices depart from it near threshold, and Λ itself drifts with calibration. One more honest note on Λ: here it is set by the slider as the suppression-per-two-steps directly, and the scaling form above is what ties that to the ratio p/p<sub>th</sub> — in a real device the two agree only as well as the model does. Willow's Λ = 2.14 ± 0.02 is a <em>measured</em> suppression factor for increasing the code distance by two, quoted for the d = 5 → 7 step of a d = 3, 5, 7 series (<a href="https://arxiv.org/abs/2408.13687">arXiv 2408.13687</a>, <em>Nature</em> 638, 920 (2025)).</p>
 </div>
@@ -145,11 +145,11 @@
 <div class="overflow">
 <table>
   <tr><th>#</th><th>Prediction</th><th>Made</th><th>Resolves by</th><th>Status</th></tr>
-  <tr><td>1</td><td class="todo">— first prediction ships with THE RACE #1 (see weekly prompt, THE CALL) —</td><td>—</td><td>—</td><td>Open</td></tr>
+  <tr><td>1</td><td class="todo">— first prediction ships with THE RACE #1 (see weekly prompt, THE CALL) —</td><td>—</td><td>—</td><td>Not yet made</td></tr>
 </table>
 </div>
 
-<footer>The scoreboard nobody else keeps honest.<br>SymbiQ · Updated weekly, Sundays. Record so far: 0 right, 0 wrong, 0 open.</footer>
+<footer>The scoreboard nobody else keeps honest.<br>SymbiQ · <strong>The scoreboard and the prediction ledger below are not filled in yet</strong> — they wait on real weekly data, and inventing lab statuses to fill a table is exactly what this page exists to argue against. Record so far: 0 resolved right, 0 resolved wrong, 0 predictions made.</footer>
 </div>
 
 <script>
@@ -225,8 +225,8 @@
     }
 
     rows.innerHTML =
-      '<dt>Per d→d+2 step</dt><dd>logical error ' + (below ? '÷' : '×') + ' ' + (below ? lam.toFixed(2) : (1 / lam).toFixed(2)) + '</dd>' +
-      '<dt>d=3 → 13</dt><dd>five steps → ' + (below ? 'error ÷ ' + (1 / E).toFixed(1) : 'error × ' + Math.round(E)) +
+      '<dt>Per step (d→d+2)</dt><dd>logical error ' + (below ? '÷' : '×') + ' ' + (below ? lam.toFixed(2) : (1 / lam).toFixed(2)) + '</dd>' +
+      '<dt>d=3 → 13</dt><dd>five such steps → ' + (below ? 'error ÷ ' + (1 / E).toFixed(1) : 'error × ' + Math.round(E)) +
         ', qubits ' + qubits(3) + ' → ' + qubits(maxD) + '</dd>' +
       '<dt>Verdict</dt><dd>' + (at ? 'no scaling either way' : (below ? 'in the race' : 'not in the race — no amount of qubits fixes this')) + '</dd>';
   }

@@ -60,19 +60,19 @@
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Heuristic⟧',
       or: 'Simulated annealing is a <b>metaheuristic</b> — operations research’s answer to problems too hard to solve exactly. It is the classical baseline quantum annealing has to beat.'
     },
-    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over tens of thousands of simulated runs: crash-cooling really does freeze in the first ditch it falls into (76–93% of runs, depending on the volcano), and a shaped schedule really does beat it — by six-fold on the gentlest landscape here and forty-fold on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps.',
+    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps.',
     // Landscapes verified offline: every global minimum unique; pass marks set
     // below the best schedule found by search, above what crash-cooling scores.
     LV: [
       { n: 'The First Ditch', h: [8,6,4,2,3,4,5,4,3,2,1,0,1,2,3], start: 0, T0: 2.0, bar: 0.50, best: 0.71, gmin: 11,
-        note: 'One shallow ditch on the way down, one true floor beyond it. Cool too fast and you will spend the rest of the run in the ditch — that is not a metaphor, it happens in about nine runs in ten.' },
+        note: 'One shallow ditch on the way down, one true floor beyond it. Cool too fast and you will spend the rest of the run in the ditch — that is not a metaphor, it happens in 88% of runs, measured.' },
       { n: 'The Twin Calderas', h: [7,5,3,1,2,3,4,5,4,3,2,1,0,1,2,3,5], start: 0, T0: 2.5, bar: 0.40, best: 0.55, gmin: 12,
         note: 'Two deep basins, and the first one you fall into is the wrong one. The ridge between them is four units tall — the walker can only cross it while it is hot enough to accept climbing.' },
       { n: 'The Comb', h: [8,7,8,6,7,5,6,4,5,3,4,2,3,1,2,0,2], start: 0, T0: 2.0, bar: 0.50, best: 0.66, gmin: 15,
-        note: 'Seven little traps, every one only a single unit deep. No single trap is dangerous. Being cold near any of them is.' },
+        note: 'Seven little traps, every one only a single unit deep. No single trap is dangerous. Being cold near any of them is — crash-cooling ends the run stuck in one of them 98% of the time, and rarely the first.' },
       { n: 'The Salt Flat', h: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,5,5,5,5,5,5,5,5], start: 0, T0: 2.0, bar: 0.50, best: 0.69, gmin: 14,
         flat: true,
-        note: 'A dead flat plain with one hole in it. Every step here is worth exactly as much as every other step, so your temperature changes <em>nothing</em> about your odds of finding it — this level is built to humble the method.' },
+        note: 'A dead flat plain with one hole in it. Out on the plain every move costs exactly nothing, so temperature <em>provably</em> cannot change your odds of stumbling onto the hole. It only decides whether you stay once you fall in — which is why crash-cooling, the worst play on every other volcano, is the best play here. This level is built to humble the method.' },
       { n: 'The Long Descent', h: [9,7,5,3,4,5,6,5,4,2,3,4,3,2,1,0,1,2], start: 0, T0: 3.0, bar: 0.40, best: 0.55, gmin: 15,
         note: 'Two traps, then the floor. Survive the first ridge and the second will take you if you have already gone cold. Shape the whole descent, not just the start.' }
     ],
@@ -977,10 +977,22 @@
       return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
     }),
     get: function (id) { return G[id]; },
+    /* The rules live behind one obvious button rather than a wall of text you
+       must scroll past to reach the game. It opens itself the FIRST time you
+       meet a given machine and stays shut on every return, so a newcomer is
+       never left guessing and a returning player is never made to scroll. */
     aboutHTML: function (id) {
       var a = G[id] && G[id].about;
       if (!a) return '';
-      return '<div class="gameabout">' +
+      var S = window.SymbiQ && SymbiQ.save;
+      var seen = S && S.get ? S.get('rules.seen.' + id, false) : false;
+      if (S && S.set) S.set('rules.seen.' + id, true);
+      return '<details class="gamerules"' + (seen ? '' : ' open') + '>' +
+        '<summary><span class="gr-ico" aria-hidden="true">🕹️</span>' +
+          '<span class="gr-txt"><b>How to play</b>' +
+          '<i>the goal, the rules, and what you will get a feel for</i></span>' +
+          '<span class="gr-x" aria-hidden="true"></span></summary>' +
+        '<div class="gameabout">' +
         '<div><span class="lbl">🎯 The goal</span> ' + a.goal + '</div>' +
         '<div><span class="lbl">🕹️ How to play</span> ' + a.how + '</div>' +
         '<div><span class="lbl v">💡 Inspired by</span> ' + a.inspired + '</div>' +
@@ -988,7 +1000,8 @@
           ' <a href="' + a.link + '">' + a.linkText + '</a> <span class="tier">' + a.tier + '</span></div>' +
         '</div>' +
         (a.or ? '<a class="orjump" href="feasible.html"><span>◆ ' + a.or +
-                '<span class="arr"> The Feasible Region ▸</span></span></a>' : '');
+                '<span class="arr"> The Feasible Region ▸</span></span></a>' : '') +
+        '</details>';
     },
     mount: function (id, elm, opts) {
       var g = G[id];

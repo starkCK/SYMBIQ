@@ -22,7 +22,8 @@
 (function () {
   'use strict';
 
-  var PROVIDER  = '';                    // <-- 'goatcounter' | 'plausible' | 'cloudflare' | ''
+  // Live since 2026-07-30. Dashboard: https://symbiq.goatcounter.com
+  var PROVIDER  = 'goatcounter';         // 'goatcounter' | 'plausible' | 'cloudflare' | ''
   var SITE_CODE = 'symbiq';              // goatcounter subdomain
   var DOMAIN    = 'starkck.github.io';   // plausible
   var CF_TOKEN  = '';                    // cloudflare beacon token

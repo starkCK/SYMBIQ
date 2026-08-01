@@ -568,6 +568,42 @@ body.latched { overflow: hidden; }
 .turnbar .who.on.X { color: var(--teal); border-color: rgba(45,212,191,.5); background: rgba(45,212,191,.1); }
 .turnbar .who.on.O { color: var(--violet); border-color: rgba(167,139,250,.5); background: rgba(167,139,250,.1); }
 
+/* --- "how to play": the rules, behind one obvious button ---------------
+   Chinmoy, 2026-07-30: "rules and how to play are not properly shown, it
+   should be in an expandable button". The panel used to be an always-open
+   grid, and on the Solver's Path it was not shown at all. It is now a
+   <details> that sits ABOVE the game on every surface, opens itself the
+   first time you meet a machine, and stays shut on return. */
+.gamerules { border: 1px solid var(--border); border-radius: 14px; margin: 2px 0 18px; overflow: hidden;
+  background: linear-gradient(135deg, rgba(45,212,191,.05), rgba(167,139,250,.05));
+  transition: border-color .3s ease, box-shadow .3s ease; }
+.gamerules[open] { border-color: rgba(45,212,191,.32); }
+.gamerules:hover { border-color: rgba(45,212,191,.42); box-shadow: 0 10px 34px -18px rgba(45,212,191,.4); }
+.gamerules > summary { display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none;
+  padding: 13px 16px; min-height: 52px; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.gamerules > summary::-webkit-details-marker { display: none; }
+.gamerules > summary:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+.gamerules .gr-ico { font-size: 1.15rem; line-height: 1; flex: none; }
+.gamerules .gr-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1 1 auto; }
+.gamerules .gr-txt b { font-size: 1rem; font-weight: 700; color: var(--teal); letter-spacing: .01em; }
+.gamerules .gr-txt i { font-style: normal; font-size: .82rem; color: var(--muted); line-height: 1.35; }
+.gamerules .gr-x { flex: none; width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--border);
+  position: relative; transition: transform .3s cubic-bezier(.22,.7,.3,1), border-color .3s ease; }
+.gamerules .gr-x::before, .gamerules .gr-x::after { content: ""; position: absolute; inset: 50% 6px auto 6px;
+  height: 2px; background: var(--teal); border-radius: 2px; transform: translateY(-1px); }
+.gamerules .gr-x::after { transform: translateY(-1px) rotate(90deg); transition: opacity .3s ease; }
+.gamerules[open] .gr-x { transform: rotate(180deg); border-color: rgba(45,212,191,.45); }
+.gamerules[open] .gr-x::after { opacity: 0; }
+.gamerules .gameabout { margin: 0; border: 0; border-top: 1px solid var(--border);
+  border-radius: 0; background: none; box-shadow: none; }
+.gamerules .gameabout:hover { border-color: var(--border); box-shadow: none; }
+.gamerules .orjump { margin: 0 16px 16px; }
+@media (max-width: 560px) {
+  .gamerules > summary { padding: 11px 13px; gap: 10px; }
+  .gamerules .gr-txt i { font-size: .78rem; }
+}
+@media (prefers-reduced-motion: reduce) { .gamerules .gr-x { transition: none; } }
+
 /* --- "about this game" panels --- */
 .gameabout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; margin: 2px 0 20px; padding: 16px 20px;
   border: 1px solid var(--border); border-radius: 14px;
@@ -754,6 +790,11 @@ body.latched { overflow: hidden; }
   transition: transform .18s cubic-bezier(.22,.7,.3,1), box-shadow .18s ease;
 }
 .nextup:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(45,212,191,.26); }
+/* It ships as an <a> on some surfaces and a <button> on others (the OR games
+   change level in place rather than navigating). Strip the button chrome so
+   the two are indistinguishable. */
+button.nextup { width: 100%; text-align: left; font: inherit; cursor: pointer; -webkit-appearance: none; appearance: none; }
+button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 .nextup .eyebrow {
   display: block; font-size: .76rem; letter-spacing: .13em; text-transform: uppercase;
   color: var(--teal); font-weight: 700; margin-bottom: 6px;
@@ -990,10 +1031,29 @@ body.latched { overflow: hidden; }
 }
 .crate.in b { color: var(--teal); }
 
+/* Mobile, rebuilt 2026-07-30 ("even in mobile version some inconsistency is
+   there"). The old rule hid `.lv-t` outright, so on a phone the level picker
+   became a row of bare numbers — and because a cleared level still rendered
+   its tick, the chips came out at two different widths (60px vs 42px), which
+   is what read as broken. Names now stay and the row scrolls sideways
+   instead. Tap targets are also brought up to 44px, which none of these
+   controls met (level tabs were 38px, undo/restart 32px). */
 @media (max-width: 719px) {
   .orctl { margin-left: 0; width: 100%; }
-  .lv-t { display: none; }
-  .lv { padding: 7px 10px; }
+  .lvbar {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity; padding-bottom: 4px; margin-bottom: 12px;
+    scrollbar-width: thin;
+  }
+  .lv {
+    padding: 7px 12px; min-height: 44px; flex: 0 0 auto; scroll-snap-align: start;
+    max-width: 46vw;
+  }
+  .lv:hover { transform: none; }               /* no hover state on touch */
+  .lv-t {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+  }
+  .orsm { min-height: 44px; padding: 8px 14px; font-size: .82rem; }
   .orrec { font-size: .82rem; }
 }
 @media (prefers-reduced-motion: reduce) {

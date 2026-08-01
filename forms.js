@@ -19,7 +19,9 @@
 (function () {
   'use strict';
 
-  var ACCESS_KEY = '';                      // <-- paste the Web3Forms key here
+  // Live since 2026-07-30. Public by design — this token identifies the inbox
+  // without revealing it, and it must sit in client-side source to work at all.
+  var ACCESS_KEY = 'e475f594-d5a7-4cc2-a89d-fd4b12deb5ef';
   var ENDPOINT   = 'https://api.web3forms.com/submit';
 
   // Reassembled at runtime so the literal string never appears in the source.

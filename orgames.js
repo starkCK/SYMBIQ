@@ -64,6 +64,40 @@
       }).join('') + '</div>';
   }
 
+  /* The completion CTA. Chinmoy reported (2026-07-25, 07-29 and again on
+     07-30) that after finishing a stage there is nothing telling you where to
+     go next. In these two games there WAS a button, but it sat at the bottom
+     of three paragraphs of explanation, which is the same as not existing.
+     It is now a full-width `.nextup` block directly under the score, it names
+     the level it leads to, and it takes keyboard focus when it appears. */
+  /* Put the caret on the CTA the moment it appears, so a keyboard or screen
+     reader user meets it first rather than last. Guarded: only when the CTA
+     is newly rendered, and never steals focus from a field being typed in. */
+  function focusNext(root) {
+    var cta = root.querySelector('button[data-nextcta]');
+    if (!cta || cta._focused) return;
+    cta._focused = true;
+    var a = document.activeElement;
+    if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+    try { cta.focus({ preventScroll: true }); } catch (e) { try { cta.focus(); } catch (e2) {} }
+  }
+
+  function nextCTA(cleared, last, cur, noun, levels) {
+    if (!cleared) return '';
+    if (last) {
+      return '<div class="nextup" data-nextcta><span class="eyebrow">Every ' + noun +
+        ' cleared</span><span class="headline">You have finished this game</span>' +
+        '<span class="sub">The other game on this page teaches the opposite half of the field.</span>' +
+        '<span class="go">Back to the course</span></div>';
+    }
+    var nx = levels[cur + 1];
+    return '<button class="nextup" data-next data-nextcta>' +
+      '<span class="eyebrow">Cleared &#183; ' + (cur + 2) + ' of ' + levels.length + '</span>' +
+      '<span class="headline">Next ' + noun + ': ' + esc(nx.name) + '</span>' +
+      '<span class="sub">' + esc(nx.story) + '</span>' +
+      '<span class="go">Play it</span></button>';
+  }
+
   var G = {};
 
   /* ==================================================================== *
@@ -89,7 +123,7 @@
       learn: 'Why the most valuable resource is not the scarcest or the dearest, why relieving a bottleneck destroys its own value, and why a shadow price without its range is a trap.',
       link: 'feasible.html#t03', linkText: 'Topic 03: Duality ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: each level is a real linear program, re-solved exactly at every step by enumerating the vertices of the feasible region — the reason an optimum can be found without searching the interior. Shadow prices are the true derivative of the optimum with respect to each right-hand side; the range is found by walking that right-hand side until the price changes, which is exactly what right-hand-side ranging means. Every par was established by exhaustive search over all possible purchase sequences before any of this was drawn. <strong>Level 1</strong> (8 sequences) is a tutorial and both greedy strategies solve it. <strong>Level 2</strong> (243 sequences, par 34.5 reached by 10 of them) is the range trap: a player chasing the largest shadow price scores 31.5, because machine-hours are worth 0.75 each for only 2.25 more units while an upgrade adds 6 — and skilled hours are worthless in <em>every</em> sequence, the best plan touching them scoring 33 against the 34.5 available without. <strong>Level 3</strong> (81 sequences, par 40.5 reached by 6) defeats both greedy strategies at 36, because the right first move is worth nothing on the quarter you make it and only pays through what it unblocks later. That is the honest limit of a shadow price: it is a slope, not a plan.',
+    honest: 'Honest model: each level is a real linear program, re-solved exactly at every step by enumerating the vertices of the feasible region — the reason an optimum can be found without searching the interior. A shadow price here is the <em>right-hand</em> derivative of the optimum with respect to that right-hand side — one-sided on purpose, because the optimal-value function is piecewise linear and has a corner exactly where the binding set changes, which is the whole lesson of level 2. The range is found by walking that right-hand side until the price changes, which is exactly what right-hand-side ranging means. Every par was established by exhaustive search over all possible purchase sequences before any of this was drawn. <strong>Level 1</strong> (8 sequences) is a tutorial and both greedy strategies solve it. <strong>Level 2</strong> (243 sequences, par 34.5 reached by 10 of them) is the range trap — and the trap is more specific than it looks. Simply following the largest shadow price actually <em>wins</em> here (34.5), because after one purchase machine-hours&#39; price collapses and a price-follower correctly moves on. What scores 31.5 is multiplying the price by the size of the upgrade: machine-hours are worth 0.75 each but only for 2.25 more units, so an upgrade of 6 looks like 4.5 and delivers 1.8. A price without its range is what misleads you, not the price. Skilled hours, meanwhile, are worthless in <em>every</em> one of the 243 sequences — the best plan touching them scores 33 against the 34.5 available without. <strong>Level 3</strong> (81 sequences, par 40.5 reached by only 6) is where greedy play runs out: 44 of the 81 sequences score exactly 36 and greedy lands there unless a tie between equal-scoring resources happens to fall its way, in which case it stumbles onto par. The right first move is worth nothing on the quarter you make it and only pays through what it unblocks later. That is the honest limit of a shadow price: it is a slope, not a plan.',
 
     mount: function (root, opts) {
       opts = opts || {};
@@ -277,6 +311,7 @@
         var r = $(root, '[data-restart]'); if (r) r.addEventListener('click', function () { load(lv); });
         var n = $(root, '[data-next]'); if (n) n.addEventListener('click', function () { load(lv + 1); });
         var a = $(root, '[data-again]'); if (a) a.addEventListener('click', function () { load(lv); });
+        focusNext(root);
       }
 
       function undo() {
@@ -315,18 +350,21 @@
         var v = sol.value, hit = v >= L.par - 1e-9, last = lv === LEVELS.length - 1;
         var notes = [
           'Both greedy strategies solve this one — that is why it is first. The habit to take forward: a resource with slack is worth <b>exactly</b> zero, not a little.',
-          '<b>Skilled hours were never worth buying.</b> The best plan that spends anything on them scores 33, below the 34.5 available if you never touch them. And <b>chasing the biggest shadow price scores 31.5</b>: machine-hours are worth 0.75 each, but only for 2.25 more units, and an upgrade buys 6.',
-          'This one defeats greedy play entirely. Buying the best-looking resource every quarter scores <b>36</b>; so does buying the one with the largest true one-step gain. Par needs a purchase that is worth <b>nothing on the quarter you make it</b> and only pays through what it unblocks. A shadow price is a slope, not a plan.'
+          '<b>Skilled hours were never worth buying.</b> The best plan that spends anything on them scores 33, below the 34.5 available if you never touch them. And <b>a price times an upgrade size scores 31.5</b>: machine-hours are worth 0.75 each, but only for 2.25 more units, and an upgrade buys 6 — so it looks like 4.5 and pays 1.8. Following the price itself is fine; multiplying it out is the trap.',
+          'This one runs greedy play out of road. Buying the best-looking resource every quarter lands on <b>36</b>, and so does buying the one with the largest true one-step gain — 44 of the 81 sequences score exactly that, and only 6 reach par. (A greedy player facing a tie between equal-scoring resources can stumble onto 40.5; that is luck, not method.) Par needs a purchase that is worth <b>nothing on the quarter you make it</b> and only pays through what it unblocks. A shadow price is a slope, not a plan.'
         ];
         return '<div class="orfinal ' + (hit ? 'win' : '') + '">' +
           '<p class="oreyebrow">' + esc(L.name) + ' — closed</p>' +
           '<p class="orfinal-v">' + fmt(v) + ' <span>vs par ' + L.par + '</span></p>' +
+          // The next-level CTA goes HERE, directly under the score, not at the
+          // bottom of the explanation. It was being missed because it sat
+          // below three paragraphs of prose.
+          nextCTA(hit, last, lv, 'factory', LEVELS) +
           '<p>' + (hit ? 'That is the maximum available on this factory.'
                        : 'Par is ' + L.par + ', found by checking every possible purchase sequence. You left ' +
                          fmt(L.par - v) + ' on the table.') + '</p>' +
           '<p class="orfinal-note">' + notes[lv] + '</p>' +
-          '<p>' + (hit && !last ? '<button class="bigplay" data-next>Next factory ▸</button> ' : '') +
-                 '<button class="preset" data-again>Play this one again</button></p>' +
+          '<p><button class="preset" data-again>Play this one again</button></p>' +
           '</div>';
       }
 
@@ -351,9 +389,18 @@
    *                                                                       *
    *   lvl items cap  combos  OPT  par  best-bound  dfs   bfs     Grover   *
    *    1    6   40      64   205   14      14        42     29      ~6    *
-   *    2    9   55     512   280   27      27       151    204     ~17    *
-   *    3   12   70   4,096   355   30      38       507  1,388     ~50    *
+   *    2    9   55     512   280   27      27       151    204     ~18    *
+   *    3   12   70   4,096   355   30   35-38        507  1,388     ~50    *
    *    4   16   95  65,536   479   24      36     1,203 19,829    ~201    *
+   *                                                                       *
+   *  Two figures in this table were corrected once and silently restored   *
+   *  by a rewrite, so they are called out: Grover on level 2 is 17.77 and  *
+   *  therefore ~18, NOT ~17 (int() truncation); and best-bound on level 3  *
+   *  is 35-38, not a bare 38 — the spread is only how ties between equal   *
+   *  bounds fall. Do not "tidy" either back. Re-verified 2026-07-30 by an  *
+   *  exact port of expand()/sweep(): best 14/27/38/36, dfs 42/151/507/     *
+   *  1203, bfs 29/204/1388/19829, and killed == 2^n on every level under   *
+   *  every policy, which is the certificate claim.                         *
    *                                                                       *
    *  The arc across the levels is the honest lesson: Grover's ~sqrt(2^n)   *
    *  BEATS branch and bound on level 1 and is beaten five-fold by it on    *
@@ -460,13 +507,17 @@
 
       /* FIXED node spacing and a scrolling wrapper. The old build scaled the
          whole tree to a fixed width, so spacing collapsed as it grew. */
+      /* TOP_PAD must clear the bound label, which is drawn 13px ABOVE the node
+         centre with ~11px of ascender above its own baseline. It was 18, so
+         the root's label was sheared off by the top of the viewBox on every
+         level (reported 2026-07-30 with a screenshot). 28 leaves 4px of air. */
       function drawTree() {
-        var cols = layout(), colW = 30, rowH = 32;
-        var w = Math.max(320, cols * colW + 60), h = (N + 1) * rowH + 26;
+        var cols = layout(), colW = 30, rowH = 32, TOP_PAD = 28;
+        var w = Math.max(320, cols * colW + 60), h = TOP_PAD + N * rowH + 34;
         var g = ['<svg class="ortree" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h +
                  '" xmlns="' + NS + '" role="img" aria-label="The search tree so far. Grey branches were eliminated by a bound without ever being searched.">'];
         function X(n) { return 30 + n.x * colW; }
-        function Y(n) { return 18 + n.y * rowH; }
+        function Y(n) { return TOP_PAD + n.y * rowH; }
         nodes.forEach(function (n) {
           if (!n.parent) return;
           g.push('<path class="oredge ' + n.state + '" d="M' + X(n.parent) + ' ' + Y(n.parent) +
@@ -538,6 +589,7 @@
         var r = $(root, '[data-restart]'); if (r) r.addEventListener('click', function () { load(lv); });
         var a = $(root, '[data-again]');   if (a) a.addEventListener('click', function () { load(lv); });
         var n2 = $(root, '[data-next]');   if (n2) n2.addEventListener('click', function () { load(lv + 1); });
+        focusNext(root);
       }
 
       function finalHTML() {
@@ -546,6 +598,7 @@
         return '<div class="orfinal ' + (proved && tight ? 'win' : '') + '">' +
           '<p class="oreyebrow">The frontier is empty — that is the proof</p>' +
           '<p class="orfinal-v">' + used + ' <span>branches opened · par ' + L.par + '</span></p>' +
+          nextCTA(proved && tight, last, lv, 'load', LEVELS) +
           '<p>All ' + TOTAL.toLocaleString() + ' combinations are accounted for: taken, or ruled out by a bound. ' +
           'The best haul is <strong>' + inc + '</strong>' + (proved ? ', and it is provably the best there is.' : '.') + '</p>' +
           '<p class="orfinal-note">Par is <b>' + L.par + '</b>, and it is a floor rather than a target — exactly ' + L.par +
@@ -563,8 +616,7 @@
               'because it never looks at the structure. The bound is <em>made</em> of that structure, so it barely grows at all.'
             : 'Keep going — the gap moves as the problem grows, and which way it moves is the point of this game.') +
           '</p>' +
-          '<p>' + (proved && tight && !last ? '<button class="bigplay" data-next>Next load ▸</button> ' : '') +
-                 '<button class="preset" data-again>Prove it again, faster</button></p>' +
+          '<p><button class="preset" data-again>Prove it again, faster</button></p>' +
           '</div>';
       }
 
@@ -587,16 +639,26 @@
       return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
     }),
     get: function (id) { return G[id]; },
+    /* Same contract as games.js: rules behind one obvious button, opened
+       automatically the first time you meet this game and shut thereafter. */
     aboutHTML: function (id) {
       var a = G[id] && G[id].about;
       if (!a) return '';
-      return '<div class="gameabout">' +
+      var S = window.SymbiQ && SymbiQ.save;
+      var seen = S && S.get ? S.get('rules.seen.' + id, false) : false;
+      if (S && S.set) S.set('rules.seen.' + id, true);
+      return '<details class="gamerules"' + (seen ? '' : ' open') + '>' +
+        '<summary><span class="gr-ico" aria-hidden="true">🕹️</span>' +
+          '<span class="gr-txt"><b>How to play</b>' +
+          '<i>the goal, the rules, and what you will get a feel for</i></span>' +
+          '<span class="gr-x" aria-hidden="true"></span></summary>' +
+        '<div class="gameabout">' +
         '<div><span class="lbl">🎯 The goal</span> ' + a.goal + '</div>' +
         '<div><span class="lbl">🕹️ How to play</span> ' + a.how + '</div>' +
         '<div><span class="lbl v">💡 Inspired by</span> ' + a.inspired + '</div>' +
         '<div><span class="lbl v">🔬 You’ll get a feel for</span> ' + a.learn +
           ' <a href="' + a.link + '">' + a.linkText + '</a> <span class="tier">' + a.tier + '</span></div>' +
-        '</div>';
+        '</div></details>';
     },
     mount: function (id, elm, opts) {
       var g = G[id];

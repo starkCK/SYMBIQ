@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Feasible Region — a course in operations research | SymbiQ</title>
 <meta name="description" content="Operations research from the top: the feasible region, duality and shadow prices, integer programming, branch and bound, network flow, matching, dynamic programming, queueing and metaheuristics. Every topic taught as a picture, then an intuition, then the mathematics, then a real problem it actually solves.">
-<link rel="stylesheet" href="style.css?v=16">
+<link rel="stylesheet" href="style.css?v=17">
 <link rel="stylesheet" href="feasible.css?v=1">
 <script src="save.js"></script>
-<script src="orgames.js?v=5"></script>
+<script src="orgames.js?v=7"></script>
 <script src="nav.js?v=4" defer></script>
-<script src="analytics.js?v=1" defer></script>
-<script src="forms.js?v=1" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
 </head>
 <body class="fr">
 <div class="wrap">
@@ -98,7 +98,7 @@
   <div class="fr-stats">
     <div><b>10</b><span>topics, each built<br>picture → maths</span></div>
     <div><b>2</b><span>games where the<br>maths does the judging</span></div>
-    <div><b>1937</b><span>the year the field<br>started, with radar</span></div>
+    <div><b>1937</b><span>the year it got its<br>name, at a radar station</span></div>
     <div><b>3</b><span>places it runs inside<br>a quantum computer</span></div>
   </div>
 </header>
@@ -279,7 +279,7 @@ so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
     <div class="layer real">
       <h4>Where it actually runs</h4>
       <p><span class="where">Airline crew pairing</span>
-      An airline must cover every flight with a crew, obeying rest rules, base assignments, licence types and duty-hour limits, at minimum cost. The natural formulation has one variable per legal <em>pairing</em> — a multi-day sequence of flights that starts and ends at a crew base — and there can be billions of them. Nobody enumerates them. Instead the LP is solved over a small subset, and the dual prices from that solve are used to ask &quot;does any pairing we have not generated look attractive?&quot; That is <strong>column generation</strong>, and it is duality (topic 03) used as a search strategy. Crew is typically an airline&#39;s second-largest cost after fuel.</p>
+      An airline must cover every flight with a crew, obeying rest rules, base assignments, licence types and duty-hour limits, at minimum cost. The natural formulation has one variable per legal <em>pairing</em> — a multi-day sequence of flights that starts and ends at a crew base — and there can be billions of them. Nobody enumerates them. Instead the LP is solved over a small subset, and the dual prices from that solve are used to ask &quot;does any pairing we have not generated look attractive?&quot; That is <strong>column generation</strong>, and it is duality (topic 03) used as a search strategy. Crew is one of an airline&#39;s largest controllable costs, which is why a percent found here is worth a great deal.</p>
     </div>
 
     <div class="mod-out">
@@ -483,19 +483,19 @@ s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
           <circle cx="390" cy="95"  r="9"  fill="none" stroke="var(--red)" stroke-width="2.5" stroke-dasharray="4 3"/>
           <text class="lbl-s"    x="294" y="36">bound 360</text>
           <text class="lbl-s or" x="66"  y="228">found: 355</text>
-          <text class="lbl-b" style="fill:var(--red)" x="404" y="92">bound 340</text>
-          <text class="lbl-s" x="404" y="108">340 &lt; 355, so nothing under</text>
+          <text class="lbl-b" style="fill:var(--red)" x="404" y="92">bound 348</text>
+          <text class="lbl-s" x="404" y="108">348 &lt; 355, so nothing under</text>
           <text class="lbl-s" x="404" y="122">here can win. Never opened.</text>
           <text class="lbl-s" x="404" y="142" style="fill:var(--red)">2,048 combinations killed</text>
           <text class="lbl-s" x="404" y="156" style="fill:var(--red)">by one subtraction.</text>
         </svg></div>
-        <figcaption><strong>This is what a solver actually does, and it is not what people imagine.</strong> It does not check every option quickly. It proves that entire regions cannot contain the answer and never looks inside them. One comparison — an optimistic bound of 340 against an answer of 355 already in hand — eliminates half the search space without a single further evaluation.</figcaption>
+        <figcaption><strong>This is what a solver actually does, and it is not what people imagine.</strong> It does not check every option quickly. It proves that entire regions cannot contain the answer and never looks inside them. One comparison — an optimistic bound of 348 against an answer of 355 already in hand — eliminates half the search space without a single further evaluation. Those are the real numbers from level 3 of <a href="#prune">The Prune</a> below: the root's bound is exactly 360, the optimum is exactly 355, and the branch that discards the best-value-per-kilogram crate bounds out at 348. Note how <em>close</em> 348 is. A near miss still kills 2,048 combinations.</figcaption>
       </figure>
     </div>
 
     <div class="layer">
       <h4>The intuition</h4>
-      <p>You cannot enumerate. A 60-item yes/no problem has more combinations than there are atoms in a human body, and no computer will ever be fast enough. So the trick is to stop trying.</p>
+      <p>You cannot enumerate. A 60-item yes/no problem has 2⁶⁰ ≈ 1.15 × 10¹⁸ combinations — roughly two and a half times the number of seconds that have elapsed since the Big Bang — and no computer will ever be fast enough to visit them one at a time. So the trick is to stop trying.</p>
       <p><strong>Branching</strong> splits the problem: either we take this item or we don&#39;t, and each branch is a smaller problem of the same shape. That alone buys nothing — it is just enumeration drawn as a tree.</p>
       <p><strong>Bounding</strong> is where everything happens. Before opening a branch, ask a deliberately easier question — <em>what if I could take fractions of things?</em> — and solve that instead. The easy answer is optimistic by construction, because you relaxed a restriction. So if even the optimistic figure cannot beat an answer you already hold, everything below that branch is provably worthless and you delete it unopened. Not &quot;probably worthless&quot;. Provably.</p>
       <p>Two things surprise people. <strong>The best opening move is not to explore the most promising branch</strong> — it is to grab any decent answer fast, because a strong answer in hand is what makes everything else prunable. And <strong>a cut near the top of the tree is worth exponentially more than one near the bottom</strong>, so the satisfying-looking work down among the leaves is nearly worthless.</p>
@@ -667,7 +667,7 @@ s.t.      Σⱼ xᵢⱼ = 1     every worker gets exactly one job
           Σᵢ xᵢⱼ = 1     every job gets exactly one worker
           xᵢⱼ ∈ {0,1}</code>
       <p>This looks like it should be NP-hard by topic 04&#39;s rule, and it is not — because the constraint matrix is <strong>totally unimodular</strong>. Relax x<sub>ij</sub> ∈ {0,1} to 0 ≤ x<sub>ij</sub> ≤ 1 and the LP&#39;s vertices are already integral (Birkhoff–von Neumann: the extreme points of the doubly-stochastic matrices are exactly the permutation matrices). So you may solve it as a linear program and the answer comes out binary by itself.</p>
-      <p>Algorithms: the <strong>Hungarian method</strong> (Kuhn, 1955; named for Kőnig and Egerváry, whose work it built on) runs in O(n³). For <em>general</em> non-bipartite graphs, where odd cycles ruin the tidy structure, Edmonds&#39; <strong>blossom algorithm</strong> (1965) still solves it in polynomial time by contracting odd cycles into single nodes. Surface-code decoding is the general case, which is why it is blossom and not Hungarian that runs there. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>Algorithms: the <strong>Hungarian method</strong> (Kuhn, 1955; named for Kőnig and Egerváry, whose work it built on) runs in O(n³) in the form everyone now uses — Kuhn&#39;s own version was O(n⁴), and Munkres (1957) with later refinements brought it down. For <em>general</em> non-bipartite graphs, where odd cycles ruin the tidy structure, Edmonds&#39; <strong>blossom algorithm</strong> (1965) still solves it in polynomial time by contracting odd cycles into single nodes. Surface-code decoding is the general case, which is why it is blossom and not Hungarian that runs there. <span class="orbadge">⟦Proven⟧</span></p>
     </div>
 
     <div class="layer real">
@@ -784,7 +784,7 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
       <h4>See it</h4>
       <figure class="modfig">
         <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
-             aria-label="Average waiting time against utilisation. The curve is flat until about seventy percent and then rises almost vertically, going to infinity at one hundred percent.">
+             aria-label="Average time in the system against utilisation. The curve is flat until about seventy percent and then rises almost vertically, going to infinity at one hundred percent.">
           <g stroke="var(--border)" stroke-width="1" opacity=".3">
             <path d="M140 25 V200 M220 25 V200 M300 25 V200 M380 25 V200 M460 25 V200"/>
             <path d="M60 160 H470 M60 120 H470 M60 80 H470 M60 40 H470"/>
@@ -795,22 +795,22 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
           <text class="lbl-s" style="fill:var(--red)" x="456" y="216" text-anchor="middle">100%</text>
           <circle cx="300" cy="170" r="5" fill="var(--or)"/>
           <text class="lbl-s" x="286" y="162" text-anchor="end">50% busy</text>
-          <text class="lbl-s or" x="286" y="176" text-anchor="end">wait = 2</text>
+          <text class="lbl-s or" x="286" y="176" text-anchor="end">in system = 2</text>
           <circle cx="380" cy="140" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
           <text class="lbl-b or" x="368" y="128" text-anchor="end">80% busy</text>
-          <text class="lbl-s"    x="368" y="142" text-anchor="end">wait = 5  (2.5× worse)</text>
+          <text class="lbl-s"    x="368" y="142" text-anchor="end">in system = 5  (2.5× worse)</text>
           <circle cx="440" cy="60" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
           <text class="lbl-b or" x="430" y="52" text-anchor="end">95% busy</text>
-          <text class="lbl-s"    x="430" y="66" text-anchor="end">wait = 20  (4× worse again)</text>
+          <text class="lbl-s"    x="430" y="66" text-anchor="end">in system = 20  (4× worse again)</text>
           <path d="M60 25 V200 H470" fill="none" stroke="var(--border)" stroke-width="2"/>
           <g class="lbl-s" text-anchor="middle">
             <text x="140" y="216">20%</text><text x="220" y="216">40%</text>
             <text x="300" y="216">60%</text><text x="380" y="216">80%</text>
           </g>
           <text class="lbl-b" x="265" y="238" text-anchor="middle">how busy the server is (utilisation)</text>
-          <text class="lbl-b" x="16" y="112" text-anchor="middle" transform="rotate(-90 16 112)">average wait</text>
+          <text class="lbl-b" x="16" y="112" text-anchor="middle" transform="rotate(-90 16 112)">time in the system</text>
         </svg></div>
-        <figcaption><strong>The most expensive graph in operations management, and the least intuitive.</strong> Every point is the exact M/M/1 formula, not a sketch. Going from half-busy to 80% busy multiplies the average wait by <b>2.5×</b>. Going from 80% to 95% multiplies it by <b>4×</b> again. The hospital, the motorway and the CPU all fall over at the same shape of curve, and they all fall over well before they are &quot;full&quot;.</figcaption>
+        <figcaption><strong>The most expensive graph in operations management, and the least intuitive.</strong> Every point is the exact M/M/1 formula, not a sketch. The quantity plotted is <b>time in the system</b> — queueing plus being served, the number a patient or a driver actually experiences — which is W = 1/(μ−λ), or 1/(1−ρ) in units of one service time. Going from half-busy to 80% busy multiplies it by <b>2.5×</b>. Going from 80% to 95% multiplies it by <b>4×</b> again. Queueing time <em>alone</em> is ρ/(1−ρ) and rises even faster than this — 4× and then 4.75× across the same two steps — so the curve you are looking at is the conservative one. The hospital, the motorway and the CPU all fall over at the same shape, and they all fall over well before they are &quot;full&quot;.</figcaption>
       </figure>
     </div>
 
@@ -922,14 +922,14 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 
 <h2 id="play"><span class="fr-secnum">Play</span>Two games where the mathematics does the judging</h2>
 
-<p>Neither can be won by feel. Both were built the way everything else here is: the answer was computed offline in exact arithmetic first, and the game only ever reports what that arithmetic says. Par is a proven number, not a designer&#39;s guess — so when you beat it, you beat it.</p>
+<p>Neither can be won by feel. Both were built the way everything else here is: the answer was computed offline in exact arithmetic first, and the game only ever reports what that arithmetic says. Par is a proven number in both, but it means different things: in The Bottleneck it is the best score reachable, found by enumerating every purchase sequence, so you can hit it. In The Prune it is a <strong>floor</strong> — the count of branches that no strategy on earth could safely skip — and on the larger levels it is provably out of reach, which is why those levels are cleared against a measured target instead.</p>
 
 <div class="card" id="bottleneck">
   <p class="oreyebrow">Game one · topic 03, made expensive</p>
   <h3>The Bottleneck</h3>
   <p class="tagline" style="margin:6px 0 14px">You have inherited a plant that is short of everything, and a board that will fund exactly one upgrade a quarter.</p>
-  <div id="mount-bottleneck"></div>
   <div id="about-bottleneck"></div>
+  <div id="mount-bottleneck"></div>
   <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="honest-bottleneck"></p>
 </div>
 
@@ -937,8 +937,8 @@ otherwise accept with probability  exp(−ΔE / T)</code>
   <p class="oreyebrow">Game two · topic 05, at full scale</p>
   <h3>The Prune</h3>
   <p class="tagline" style="margin:6px 0 14px">Four thousand and ninety-six possible hauls. You will look at about thirty-five, and prove the rest cannot win.</p>
-  <div id="mount-prune"></div>
   <div id="about-prune"></div>
+  <div id="mount-prune"></div>
   <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="honest-prune"></p>
 </div>
 
@@ -1028,7 +1028,7 @@ otherwise accept with probability  exp(−ΔE / T)</code>
       "name": "Why do queues explode before a system is fully utilised?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because of variability. In the standard M/M/1 model the average wait is proportional to 1/(1-p) where p is utilisation, so the wait rises hyperbolically rather than linearly. Going from 50 percent to 80 percent utilisation multiplies the average wait by 2.5 times, and going from 80 to 95 percent multiplies it by 4 times again. Spare capacity is what absorbs random clumps of arrivals, so a system running near 100 percent has nothing left to absorb them with."
+        "text": "Because of variability. In the standard M/M/1 model the average time in the system - queueing plus service - is proportional to 1/(1-p) where p is utilisation, so it rises hyperbolically rather than linearly. Going from 50 percent to 80 percent utilisation multiplies it by 2.5 times, and going from 80 to 95 percent multiplies it by 4 times again. Queueing time on its own is proportional to p/(1-p) and rises faster still, by 4 times and then 4.75 times across the same two steps. Spare capacity is what absorbs random clumps of arrivals, so a system running near 100 percent has nothing left to absorb them with."
       }
     },
     {
@@ -1130,7 +1130,7 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 })();
 </script>
 
-<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The prose has not yet had a hostile-referee pass.</footer>
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. Found another? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
 </div>
 </body>
 </html>

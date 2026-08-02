@@ -26,12 +26,12 @@
 <meta name="twitter:description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=20">
+<link rel="stylesheet" href="style.css?v=21">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=8"></script>
-<script src="scene.js?v=1"></script>
-<script src="missions.js?v=1"></script>
+<script src="games.js?v=9"></script>
+<script src="scene.js?v=2"></script>
+<script src="missions.js?v=2"></script>
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -166,11 +166,11 @@
   <div class="showcase" id="showcase">
     <div class="showcase-lead">
       <span class="showcase-tag">New — rebuilt</span>
-      <h2>Act II · The Locked Corridor</h2>
-      <p>The same verified engine as the machine below, inside the thing we are building instead of a widget in a box: a world that responds to the number the game is actually computing, a mentor whose advice is <strong>wrong at exactly the moment it matters</strong>, and a way to tell her so that you can only find by understanding the curve.</p>
-      <p class="showcase-note">Roughly six minutes. Sound is off until you ask for it.</p>
-      <button type="button" class="bigplay enter" id="showcase-go">Enter the corridor &#9656;</button>
+      <h2>Two acts, rebuilt as scenes</h2>
+      <p>The same verified engines as the machines below, inside the thing we are building instead of a widget in a box: a world that responds to the number the game is actually computing, and mentors whose flaws <em>are</em> the mechanic rather than a paragraph about them.</p>
+      <p class="showcase-note">Five to eight minutes each. Sound is off until you ask for it.</p>
     </div>
+    <div class="showcase-picks" id="showcase-picks"></div>
   </div>
   <div id="mission-host"></div>
 
@@ -313,22 +313,31 @@
      If missions.js or scene.js failed to load, the button simply is not shown
      and the floor below is untouched. */
   (function () {
-    var go = document.getElementById('showcase-go'),
-        card = document.getElementById('showcase'),
+    var card = document.getElementById('showcase'),
+        picks = document.getElementById('showcase-picks'),
         host = document.getElementById('mission-host'),
         MS = window.SymbiQ && SymbiQ.missions;
-    if (!go || !host) return;
+    if (!picks || !host) return;
     if (!MS || !window.SymbiQ.scene) { card.hidden = true; return; }
-    go.addEventListener('click', function () {
-      card.hidden = true;
-      MS.mount('grover', host, {
-        onExit: function () {
-          card.hidden = false;
-          drawCabs();
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+    picks.innerHTML = MS.list.map(function (m) {
+      return '<button type="button" class="pick" data-m="' + m.id + '">' +
+        '<span class="pick-act">' + m.act + ' &middot; ' + m.place + '</span>' +
+        '<span class="pick-title">' + m.title + '</span>' +
+        '<span class="pick-blurb">' + m.blurb + '</span>' +
+        '<span class="pick-go">' + m.mentor + ' is waiting &#9656;</span></button>';
+    }).join('');
+    Array.prototype.forEach.call(picks.querySelectorAll('.pick'), function (b) {
+      b.addEventListener('click', function () {
+        card.hidden = true;
+        MS.mount(b.getAttribute('data-m'), host, {
+          onExit: function () {
+            card.hidden = false;
+            drawCabs();
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+        host.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
-      host.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   })();
 

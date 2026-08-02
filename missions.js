@@ -136,8 +136,12 @@
           onWin: function () { /* scoring stays entirely the engine's business */ },
           onState: function (s) {
             last = s;
-            // the world reads the same number the game reads
-            C.bg.set({ a: s.p, b: s.level / Math.max(1, s.levels - 1) });
+            /* The world reads the same number the game reads. `b` carries how
+               far PAST the peak you are, which is what the corridor needs in
+               order to say "you are chasing a certainty that is not there" —
+               the exit dims, every other door floods back, and the colour
+               drains out of the hall. */
+            C.bg.set({ a: s.p, b: Math.max(0, Math.min(1, (s.k - s.par) / 3)) });
             if (s.phase === 'render') {
               C.tone(s.p);
               if (s.k === s.par && !s.measured && !peakShown && !defied) { peakShown = true; peak(); }
@@ -274,10 +278,325 @@
     }
   };
 
+  /* ==================================================================== *
+   *  ACT I — ADA — THE DOOR YOU TURN                                     *
+   *                                                                      *
+   *  14_ §5: "Stop making it about gates. Make it about the door that    *
+   *  will not open, one physical object you rotate with your hands.      *
+   *  Same six unitaries, same proven-minimum pars, different verb:       *
+   *  TURN, not type."                                                    *
+   *                                                                      *
+   *  So the six lettered buttons become a dial with six detents, and     *
+   *  each detent says what it actually IS -- a half turn about X, an     *
+   *  eighth turn about Z -- which is both more tactile and more true     *
+   *  than the letter was. The engine, its pars and its scoring are       *
+   *  untouched; the dial ends by clicking the engine's own gate button.  *
+   *                                                                      *
+   *  Ada wants to KNOW, and her flaw is that looking costs. Here that    *
+   *  is literal: she will tell you the route, and telling you spends     *
+   *  coherence, and a door opened on her answer is not a door you know   *
+   *  how to open.                                                        *
+   * ==================================================================== */
+
+  /* The six gates, described as the rotations they are. Angles are exact:
+     X, Y, Z are pi about their axis; H is pi about the (x+z)/sqrt2 diagonal;
+     S is pi/2 about z; T is pi/4 about z. */
+  var DETENTS = [
+    { g: 'X', turn: '½ turn', axis: 'about X', note: 'the bit flip' },
+    { g: 'H', turn: '½ turn', axis: 'about the X+Z diagonal', note: 'makes a superposition' },
+    { g: 'Y', turn: '½ turn', axis: 'about Y', note: 'flip, with a phase' },
+    { g: 'Z', turn: '½ turn', axis: 'about Z', note: 'phase only' },
+    { g: 'S', turn: '¼ turn', axis: 'about Z', note: 'a quarter of a phase' },
+    { g: 'T', turn: '⅛ turn', axis: 'about Z', note: 'an eighth — the fine adjustment' }
+  ];
+
+  M.golf = {
+    id: 'golf', engine: 'golf', world: 'realm', mentor: 'Ada',
+    act: 'Act I', place: 'The Quantum Realm',
+    title: 'The Door You Turn',
+    blurb: 'One impossible coin, six ways to turn it, and a door that only opens when it reads exactly right. Every par is a proven minimum.',
+    doors: 3,                                   // a mission is three doors, not all nine
+
+    run: function (C) {
+      var ada = null, looked = 0, cleared = 0, atPar = 0, dial = null, ended = false;
+      var last = { name: '', par: 1, moves: 0, hint: '' };
+
+      function arrival(panel, next) {
+        C.scene.titleCard(C.host, {
+          act: C.mission.act, word: 'THE QUANTUM REALM',
+          line: 'A hall with one object in it, and the object is not showing you a side.',
+          ms: 4200
+        });
+        panel.appendChild(node(
+          '<div class="ms-arrive">' +
+            '<div class="ms-face" data-r="face"></div>' +
+            '<blockquote class="ms-line">I have looked at this coin ten thousand times.' +
+            '<br>Every time I look, it picks a side — and the side it picks is not the thing I wanted to know.</blockquote>' +
+            '<div class="ms-who">Ada · <span>she measures, and it costs her</span></div>' +
+            '<button type="button" class="preset ms-go" data-r="go">Go on &#9656;</button>' +
+          '</div>'));
+        ada = C.scene.portrait(panel.querySelector('[data-r=face]'), 'ada');
+        ada.el.classList.add('scene-face--lg');
+        ada.mood('troubled', 0);
+        panel.querySelector('[data-r=go]').addEventListener('click', function () { C.click(); next(); });
+      }
+
+      function ask(panel, next) {
+        panel.appendChild(node(
+          '<div class="ms-ask">' +
+            '<div class="ms-face" data-r="face"></div>' +
+            '<div class="ms-say">' +
+              '<p>Three doors. Each one is a lock that reads the coin, and it only opens when the coin ' +
+              'is turned to exactly the state written on it.</p>' +
+              '<p>You do not press anything. You <strong>turn</strong> it. There are only six turns that exist — ' +
+              'half a turn about an axis, a quarter, an eighth. That is the whole vocabulary of the world.</p>' +
+            '</div>' +
+            '<p class="ms-cost">I can tell you which turns to make. I always can. But every answer I hand you ' +
+            'costs <strong>coherence</strong> — and a door opened on my answer is not a door you know how to open.</p>' +
+            '<button type="button" class="preset ms-go" data-r="go">Take the coin &#9656;</button>' +
+          '</div>'));
+        ada = C.scene.portrait(panel.querySelector('[data-r=face]'), 'ada');
+        ada.el.classList.add('scene-face--lg');
+        ada.mood('neutral', 0);
+        panel.querySelector('[data-r=go]').addEventListener('click', function () { C.click(); next(); });
+      }
+
+      function work(panel, next) {
+        panel.appendChild(node(
+          '<div class="ms-work">' +
+            '<div class="ms-hud"><div class="ms-face ms-face-sm" data-r="face"></div>' +
+              '<div class="ms-meter" data-r="meter"></div></div>' +
+            '<div class="ms-say ms-say-sm" data-r="voice"></div>' +
+            '<div class="ms-dialwrap" data-r="dial"></div>' +
+            '<div data-r="tell"></div>' +
+            '<div class="card ms-engine" data-r="engine"></div>' +
+          '</div>'));
+        ada = C.scene.portrait(panel.querySelector('[data-r=face]'), 'ada');
+        ada.mood('neutral', 0);
+        var voice = panel.querySelector('[data-r=voice]');
+        var tellHost = panel.querySelector('[data-r=tell]');
+        var engine = panel.querySelector('[data-r=engine]');
+        if (C.coherence) C.coherence.mountMeter(panel.querySelector('[data-r=meter]'));
+
+        C.games.mount(C.mission.engine, engine, {
+          mode: 'mission',
+          onWin: function () {},
+          onState: function (s) {
+            last = s;
+            // the coin in the hall turns with the one in your hands
+            C.bg.set({ a: ((s.moves * 0.17) + s.hi * 0.09) % 1 });
+            if (s.played > cleared) {
+              cleared = s.played;
+              if (s.holeScore != null && s.holeScore <= s.par) atPar++;
+              if (cleared >= C.mission.doors && !ended) { ended = true; setTimeout(next, 1500); }
+            }
+            if (!ended) paintVoice(s);
+          }
+        });
+
+        dial = makeDial(panel.querySelector('[data-r=dial]'), function (g) {
+          C.click();
+          var b = engine.querySelector('[data-g=' + g + ']');
+          if (b) b.click();                       // input, exactly as a finger is
+        });
+
+        function paintVoice(s) {
+          var left = Math.max(0, C.mission.doors - s.played);
+          voice.innerHTML = '<p><strong>Door ' + Math.min(s.played + 1, C.mission.doors) + ' of ' + C.mission.doors +
+            '.</strong> The lock reads <strong>' + s.name + '</strong> &mdash; ' + s.par +
+            ' ' + (s.par === 1 ? 'turn' : 'turns') + '. <span class="ms-hint">' + s.hint + '</span></p>';
+          renderTell(s);
+        }
+        function renderTell(s) {
+          var key = 'told.golf.' + s.hi;
+          if (s.holeDone) { tellHost.innerHTML = ''; return; }
+          if (C.told && C.told[key]) {
+            tellHost.innerHTML = '<div class="ms-told"><span class="gl">◈</span> Ada: &ldquo;' +
+              C.told[key].join(', then ') + '.&rdquo; <em>She does not look at you while she says it.</em></div>';
+            return;
+          }
+          var cost = 10, can = !C.coherence || C.coherence.get() >= cost;
+          tellHost.innerHTML = '<button type="button" class="ms-tell"' + (can ? '' : ' disabled') + ' data-r="tellbtn">' +
+            '<span class="gl">◈</span> Ada, tell me the route' +
+            '<span class="ms-tell-cost">&minus;' + cost + ' coherence</span></button>' +
+            (can ? '' : '<div class="ms-hint">Not enough coherence to ask. Open one yourself.</div>');
+          var b = tellHost.querySelector('[data-r=tellbtn]');
+          if (b) b.addEventListener('click', function () {
+            if (C.coherence && C.coherence.get() < cost) return;
+            if (C.coherence) C.coherence.spend(cost, 'Ada told you — knowing is not the same as being told');
+            looked++;
+            C.told = C.told || {};
+            C.told[key] = routeFor(s.hi);
+            ada.mood('troubled');
+            renderTell(s);
+          });
+        }
+      }
+
+      /* The proven-optimal route for each door, quoted as TURNS rather than
+         letters. These are the engine's own par paths; nothing is recomputed
+         here and nothing is scored on them. */
+      function routeFor(hi) {
+        var g = C.games.get('golf');
+        var paths = [['X'], ['H'], ['X', 'H']];
+        var p = paths[hi] || paths[0];
+        return p.map(function (k) {
+          var d = DETENTS.filter(function (x) { return x.g === k; })[0];
+          return d ? d.turn + ' ' + d.axis : k;
+        });
+      }
+
+      function consequence(panel) {
+        var perfect = looked === 0 && atPar >= C.mission.doors;
+        var head, body, mood, tag = '';
+        if (perfect) {
+          mood = 'softened';
+          head = 'Three doors, and you never asked.';
+          body = '<p class="ms-duo">&ldquo;You did not look at me once.&rdquo;</p>' +
+                 '<p class="ms-duo">&ldquo;I did not need to. You told me what the turns were.&rdquo;</p>' +
+                 '<p class="ms-note">She has spent her life believing that knowing meant looking. It is going to take her a while.</p>';
+          tag = '<div class="ms-codex">Codex entry unlocked &mdash; <strong>The Vocabulary</strong> ' +
+                '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+                '<span>A quantum gate is a <em>rotation</em>, not a switch. The whole one-qubit vocabulary is six of them, ' +
+                'and every par in this hall is a <strong>proven minimum</strong> &mdash; found by breadth-first search over all gate words, ' +
+                'then re-checked exhaustively at every shorter length. &ldquo;Par 3&rdquo; means no two-turn route exists anywhere.</span></div>';
+        } else if (looked === 0) {
+          mood = 'eager';
+          head = 'Three doors, opened your own way.';
+          body = '<p>You never asked her for a route &mdash; you just took more turns than the lock needed. ' +
+                 'Ada is quietly delighted, which is not the same as impressed.</p>' +
+                 '<p class="ms-note">Every par here is a <strong>proven minimum</strong>. If you took more, a shorter route exists, and it is findable.</p>';
+        } else {
+          mood = 'narrowed';
+          head = 'The doors are open.';
+          body = '<p>You asked ' + looked + ' time' + (looked === 1 ? '' : 's') + ', and she answered every time, ' +
+                 'and it cost you <strong>' + (looked * 10) + ' coherence</strong>.</p>' +
+                 '<p class="ms-note">She is not angry. That is the part she cannot explain to you: being asked is the only way ' +
+                 'she knows how to be useful, and it is the thing that empties her out.</p>';
+        }
+        panel.appendChild(node(
+          '<div class="ms-end">' +
+            '<div class="ms-face" data-r="face"></div>' +
+            '<h3 class="ms-endh">' + head + '</h3>' +
+            '<div class="ms-say">' + body + '</div>' + tag +
+            '<div data-r="share"></div>' +
+            '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
+            '<button type="button" class="preset" data-r="exit">Leave the hall</button></p>' +
+          '</div>'));
+        ada = C.scene.portrait(panel.querySelector('[data-r=face]'), 'ada');
+        ada.el.classList.add('scene-face--lg');
+        ada.mood(mood, 0);
+        if (C.coherence && perfect) C.coherence.restore(20, 'Insight — you learned the vocabulary');
+        else if (C.coherence && looked === 0) C.coherence.restore(10, 'Insight — three doors, unaided');
+
+        C.scene.shareCard({
+          eyebrow: 'Act I · The Quantum Realm',
+          title: perfect ? 'Three doors, three proven-minimum routes, no help'
+                         : 'Three doors in the Quantum Realm',
+          stat: atPar + '/' + C.mission.doors,
+          statNote: 'opened at par — and every par here is a proven minimum, not a designer’s guess',
+          line: perfect ? '"You did not look at me once."' : null,
+          tier: '⟦Proven⟧', seed: 'doors 1–3', file: 'symbiq-realm'
+        }).mount(panel.querySelector('[data-r=share]'));
+
+        panel.querySelector('[data-r=again]').addEventListener('click', function () { C.restart(); });
+        panel.querySelector('[data-r=exit]').addEventListener('click', function () { C.exit(); });
+      }
+
+      return { arrival: arrival, ask: ask, work: work, consequence: consequence };
+    }
+  };
+
+  /* THE DIAL. Six detents on a ring; drag it round and it settles into one,
+     or focus a detent and press Enter. Releasing applies that turn by clicking
+     the engine's own gate button, so nothing here can affect a par or a score.
+     Keyboard and pointer both work, because a control you can only drag is a
+     control some people simply cannot use. */
+  function makeDial(host, apply) {
+    if (!host) return null;
+    var NSVG = 'http://www.w3.org/2000/svg';
+    var CX = 120, CY = 120, RING = 84, N = DETENTS.length;
+    var svg = document.createElementNS(NSVG, 'svg');
+    svg.setAttribute('viewBox', '0 0 240 240');
+    svg.setAttribute('class', 'ms-dial');
+    svg.setAttribute('role', 'group');
+    svg.setAttribute('aria-label', 'The turn dial — six rotations');
+    function mk(t, a) { var n = document.createElementNS(NSVG, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
+    svg.appendChild(mk('circle', { cx: CX, cy: CY, r: RING + 18, 'class': 'dial-plate' }));
+    svg.appendChild(mk('circle', { cx: CX, cy: CY, r: RING - 26, 'class': 'dial-hub' }));
+    var needle = mk('line', { x1: CX, y1: CY, x2: CX, y2: CY - (RING - 30), 'class': 'dial-needle' });
+    svg.appendChild(needle);
+    var label = mk('text', { x: CX, y: CY + 4, 'class': 'dial-label' });
+    var sub = mk('text', { x: CX, y: CY + 20, 'class': 'dial-sub' });
+    svg.appendChild(label); svg.appendChild(sub);
+
+    function ang(i) { return (-90 + i * (360 / N)) * Math.PI / 180; }
+    var marks = DETENTS.map(function (d, i) {
+      var a = ang(i), x = CX + RING * Math.cos(a), y = CY + RING * Math.sin(a);
+      var g = mk('g', { 'class': 'dial-detent', tabindex: '0', role: 'button',
+                        'aria-label': d.turn + ' ' + d.axis + ' — ' + d.note });
+      g.appendChild(mk('circle', { cx: x, cy: y, r: 21 }));
+      var t1 = mk('text', { x: x, y: y - 2, 'class': 'dial-g' }); t1.textContent = d.turn;
+      var t2 = mk('text', { x: x, y: y + 11, 'class': 'dial-ax' }); t2.textContent = d.axis.replace('about ', '');
+      g.appendChild(t1); g.appendChild(t2);
+      g.addEventListener('click', function () { choose(i); apply(d.g); });
+      g.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(i); apply(d.g); }
+      });
+      g.addEventListener('mouseenter', function () { preview(i); });
+      svg.appendChild(g);
+      return g;
+    });
+
+    var at = 0;
+    function paint(i) {
+      var a = ang(i);
+      needle.setAttribute('x2', CX + (RING - 30) * Math.cos(a));
+      needle.setAttribute('y2', CY + (RING - 30) * Math.sin(a));
+      label.textContent = DETENTS[i].turn;
+      sub.textContent = DETENTS[i].axis;
+      marks.forEach(function (m, j) { m.classList.toggle('on', j === i); });
+    }
+    function preview(i) { paint(i); }
+    function choose(i) { at = i; paint(i); }
+
+    // drag anywhere on the plate: the dial follows your hand and settles
+    var dragging = false;
+    function idxFromEvent(ev) {
+      var r = svg.getBoundingClientRect();
+      var px = (ev.clientX - r.left) / r.width * 240 - CX;
+      var py = (ev.clientY - r.top) / r.height * 240 - CY;
+      var a = Math.atan2(py, px) * 180 / Math.PI + 90;
+      while (a < 0) a += 360;
+      return Math.round(a / (360 / N)) % N;
+    }
+    svg.addEventListener('pointerdown', function (ev) {
+      if (ev.target.closest && ev.target.closest('.dial-detent')) return;   // a click is a click
+      dragging = true;
+      try { svg.setPointerCapture(ev.pointerId); } catch (e) {}
+      paint(idxFromEvent(ev));
+    });
+    svg.addEventListener('pointermove', function (ev) { if (dragging) paint(idxFromEvent(ev)); });
+    svg.addEventListener('pointerup', function (ev) {
+      if (!dragging) return;
+      dragging = false;
+      var i = idxFromEvent(ev);
+      choose(i); apply(DETENTS[i].g);
+    });
+    svg.addEventListener('pointercancel', function () { dragging = false; paint(at); });
+    svg.addEventListener('mouseleave', function () { if (!dragging) paint(at); });
+
+    host.appendChild(svg);
+    host.appendChild(node('<p class="ms-dialhint">Turn the dial &mdash; drag it round, or tap a detent. ' +
+      'These six rotations are the entire one-qubit gate set.</p>'));
+    paint(0);
+    return { el: svg };
+  }
+
   /* -------------------------------------------------------------------- */
   window.SymbiQ.missions = {
     all: M,
-    list: ['grover'].map(function (k) {
+    list: ['golf', 'grover'].map(function (k) {
       return { id: k, title: M[k].title, act: M[k].act, place: M[k].place,
                mentor: M[k].mentor, blurb: M[k].blurb };
     }),

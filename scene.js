@@ -236,6 +236,7 @@
       '  float mine = mod(di, 11.0);',
       '  float isEx = 1.0 - step(0.5, abs(mine - ex));',
       '  float pa   = clamp(u_a, 0.0, 1.0);',
+      '  float over = clamp(u_b, 0.0, 1.0);',    // how far PAST the peak, 0 at or before it
       /* THE SEE-SAW. Binding only the exit's glow to p made the mechanic real
          in the data and invisible on screen: between 90.7% and 99.7% -- the
          exact range the player lives in -- the door barely changed. So the
@@ -246,13 +247,18 @@
          The exit's own curve is pa^3: still strictly monotone in p, so the
          light never disagrees with the number, but it spends its dynamic
          range near the top where the decision actually happens. */
-      '  col += VIOLET * door * (1.0 - isEx) * (0.030 + 0.200 * (1.0 - pa));',
+      '  col += VIOLET * door * (1.0 - isEx) * (0.030 + 0.200 * (1.0 - pa) + 0.450 * over);',
       '  col += VIOLET * (door - frame) * (1.0 - isEx) * 0.10;',
       '  float breathe = 0.75 + 0.25 * sin(u_time * 1.8);',
-      '  col += TEAL * door * isEx * (0.04 + 2.30 * pa * pa * pa) * breathe;',
-      '  col += TEAL * isEx * door * 0.06;',
+      '  col += TEAL * door * isEx * (0.03 + 2.60 * pow(pa, 5.0)) * breathe * (1.0 - 0.45 * over);',
+      '  col += TEAL * isEx * door * 0.06 * (1.0 - 0.6 * over);',
       '  float fog = exp(-max(z - u_time * 0.42, 0.0) * 0.085);',
       '  col = mix(BG * 0.85, col, clamp(fog, 0.0, 1.0));',
+      /* Chasing certainty past the peak drains the colour out of the corridor.
+         This is the same grammar as the Static -- certainty looks like grey --
+         and it is the loudest honest signal available, because it says the
+         thing the mission is about rather than just dimming a light. */
+      '  col = mix(col, vec3(dot(col, vec3(0.2126, 0.7152, 0.0722))), over * 0.38);',
       '  col = statica(drain(col), uv);',
       '  gl_FragColor = vec4(col, 1.0);',
       '}'

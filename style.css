@@ -1314,3 +1314,72 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   .preset { min-height: 44px; padding-top: 9px; padding-bottom: 9px; }
   .scene-audio { min-height: 44px; }
 }
+
+/* ---- Act I's dial: the six gates as turns, not letters -----------------
+   14_ §5 asked for a different verb — turn, not type. So the lettered
+   buttons become detents on a ring, each saying what it actually is
+   (a half turn about X, an eighth about Z), which is more tactile AND
+   more true than "X" was. Drag it, tap a detent, or focus one and press
+   Enter — a control you can only drag is a control some people cannot
+   use at all. */
+.ms-dialwrap { text-align: center; margin: 2px 0 12px; }
+.ms-dial { width: min(300px, 74vw); height: auto; touch-action: none; cursor: grab; display: inline-block; }
+.ms-dial:active { cursor: grabbing; }
+.dial-plate { fill: rgba(11,15,26,.55); stroke: rgba(148,163,184,.22); stroke-width: 1.5; }
+.dial-hub   { fill: rgba(19,26,43,.92); stroke: rgba(167,139,250,.30); stroke-width: 1.5; }
+.dial-needle { stroke: var(--teal); stroke-width: 3.5; stroke-linecap: round;
+  transition: all .22s cubic-bezier(.22,.7,.3,1); }
+.dial-label { text-anchor: middle; fill: #f1f5fb; font-size: 15px; font-weight: 800; }
+.dial-sub   { text-anchor: middle; fill: #9aa5bd; font-size: 9.5px; }
+.dial-detent circle {
+  fill: rgba(19,26,43,.95); stroke: rgba(148,163,184,.30); stroke-width: 1.5;
+  transition: fill .18s ease, stroke .18s ease;
+}
+.dial-detent { cursor: pointer; }
+.dial-detent:hover circle, .dial-detent.on circle { stroke: var(--teal); fill: rgba(45,212,191,.14); }
+.dial-detent:focus-visible { outline: none; }
+.dial-detent:focus-visible circle { stroke: var(--violet); stroke-width: 3; }
+.dial-g  { text-anchor: middle; fill: #e8ecf6; font-size: 10.5px; font-weight: 800; pointer-events: none; }
+.dial-ax { text-anchor: middle; fill: #9aa5bd; font-size: 8px; pointer-events: none; }
+.ms-dialhint { font-size: .82rem; color: var(--muted); margin: 8px auto 0; max-width: 40ch; }
+
+/* Ada will tell you the route, and being told is not the same as knowing */
+.ms-tell {
+  display: inline-flex; align-items: center; gap: 9px; margin: 0 0 12px; padding: 9px 15px;
+  min-height: 44px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .9rem;
+  color: var(--text); background: rgba(167,139,250,.10); border: 1px solid rgba(167,139,250,.34);
+  transition: border-color .2s ease;
+}
+.ms-tell:hover:not(:disabled) { border-color: var(--violet); }
+.ms-tell:disabled { opacity: .5; cursor: not-allowed; }
+.ms-tell:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.ms-tell .gl { color: var(--violet); }
+.ms-tell-cost { font-size: .8rem; color: var(--muted); }
+.ms-told {
+  margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; font-size: .9rem; line-height: 1.55;
+  background: rgba(167,139,250,.09); border: 1px solid rgba(167,139,250,.26); color: var(--text);
+}
+.ms-told .gl { color: var(--violet); }
+.ms-told em { color: var(--muted); font-size: .86rem; }
+.ms-hint { color: var(--muted); font-weight: 400; }
+
+@media (max-width: 719px) { .ms-dial { width: min(270px, 82vw); } }
+@media (prefers-reduced-motion: reduce) {
+  .dial-needle, .dial-detent circle, .ms-tell { transition: none; }
+}
+
+/* two rebuilt acts, offered side by side above the cabinet floor */
+.showcase-picks { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 18px; }
+.pick {
+  display: flex; flex-direction: column; gap: 5px; text-align: left; padding: 16px 18px;
+  border-radius: 15px; cursor: pointer; font: inherit; color: var(--text);
+  background: rgba(11,15,26,.34); border: 1px solid var(--border);
+  transition: border-color .2s ease, transform .2s cubic-bezier(.22,.7,.3,1);
+}
+.pick:hover { border-color: var(--teal); transform: translateY(-3px); }
+.pick:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+.pick-act { font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; color: var(--violet); font-weight: 800; }
+.pick-title { font-size: 1.12rem; font-weight: 800; line-height: 1.25; }
+.pick-blurb { font-size: .88rem; color: var(--muted); line-height: 1.5; }
+.pick-go { margin-top: 6px; font-size: .84rem; font-weight: 700; color: var(--teal); }
+@media (prefers-reduced-motion: reduce) { .pick { transition: none; } }

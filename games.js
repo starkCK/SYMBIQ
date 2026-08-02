@@ -354,7 +354,17 @@
         { name: 'S H |1⟩',    path: ['X','H','S'], par: 3, hint: 'Same place as hole 6. Try a different route.' },
         { name: 'T T H |0⟩',  path: ['H','S'],     par: 2, hint: 'Two T gates equal one S. Find the short way.' }
       ];
-      var hi = 0, cur = Z0, moves = [], done = [], strokes = 0;
+      /* `done` MUST be pre-filled to full length. It used to start as [] and be
+         written sparsely, so after clearing hole 1 it had length 1 -- and the
+         auto-advance below, which does done.findIndex(d == null && i > hi),
+         could only ever scan index 0. It therefore found nothing and silently
+         left you sitting on the hole you had just finished, forever. Shipped
+         that way since the game was built; found 2026-08-02 by driving the
+         engine from Act I's dial, where nobody clicks a hole chip by hand.
+         Pars, scoring and physics are untouched by this -- it only fixes which
+         hole you are standing on. */
+      var hi = 0, cur = Z0, moves = [], strokes = 0, done = [];
+      for (var _h = 0; _h < HOLES.length; _h++) done.push(null);
       var AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
       function proj(v) {
         return [CX + R * (-v[0]*Math.sin(AZ) + v[1]*Math.cos(AZ)),
@@ -402,6 +412,17 @@
           '<dt>' + VO.rowB + '</dt><dd>' + played + ' of ' + HOLES.length + '</dd>' +
           '<dt>' + VO.rowC + '</dt><dd>' + strokes + ' ' + VO.turns + ', par ' + totPar +
             (played === HOLES.length ? (strokes === totPar ? ' — <strong style="color:var(--teal)">' + VO.allDone + '</strong>' : ' — ' + (strokes - totPar) + ' over') : '') + '</dd>';
+        /* OUTBOUND ONLY — see the note on Grover's emitter. Act I's scene needs
+           to know which door is open and whether it was opened at par; it never
+           writes back, and no par, stroke or scoring path reads a listener. */
+        if (opts && typeof opts.onState === 'function') {
+          try {
+            opts.onState({ phase: 'render', hi: hi, name: H.name, hint: H.hint, par: H.par,
+                           moves: moves.length, route: moves.slice(), strokes: strokes,
+                           played: played, total: HOLES.length,
+                           holeDone: done[hi] != null, holeScore: done[hi] });
+          } catch (e) {}
+        }
       }
       function play(g) {
         var H = HOLES[hi];

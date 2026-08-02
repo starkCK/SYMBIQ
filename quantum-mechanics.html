@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Quantum computing is built entirely on quantum mechanics — same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=21">
+<link rel="stylesheet" href="style.css?v=22">
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -522,10 +522,19 @@
           ((last.x & last.y) ? 'differed' : 'matched') + '.';
     }
     var rate = n ? wins / n : 0;
+    /* The classical strategy's TRUE win rate is exactly 0.75, so a finite
+       sample sits above 0.75 about half the time — 20,000 classical rounds
+       measured 75.24% while testing, and the old wording announced that in
+       teal as "above the classical ceiling", i.e. as beating a provable
+       bound. Require two standard errors before claiming a breach, and name
+       sampling noise otherwise. Found 2026-08-02 while porting this widget
+       into games.js for Act V; both copies now carry the same rule. */
+    var se = n ? Math.sqrt(CLASSICAL * (1 - CLASSICAL) / n) : 0;
+    var realBreach = n > 0 && (rate - CLASSICAL) > 2 * se;
     var verdictLine = !n ? '—'
-      : (rate > CLASSICAL + 1e-9
-          ? '<span style="color:var(--teal)">above the classical ceiling</span>'
-          : 'at or below the classical ceiling');
+      : realBreach ? '<span style="color:var(--teal)">above the classical ceiling — beyond sampling noise</span>'
+      : rate > CLASSICAL ? 'above 75%, but within sampling noise (&plusmn;' + (200 * se).toFixed(1) + ' pts)'
+      : 'at or below the classical ceiling';
     document.getElementById('ch-rows').innerHTML =
       '<dt>Strategy</dt><dd>' + (quantum ? 'entangled pair, optimal angles' : 'best possible classical') + '</dd>' +
       '<dt>Rounds</dt><dd>' + n.toLocaleString('en-US') + '</dd>' +

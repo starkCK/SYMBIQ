@@ -1383,3 +1383,24 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .pick-blurb { font-size: .88rem; color: var(--muted); line-height: 1.5; }
 .pick-go { margin-top: 6px; font-size: .84rem; font-weight: 700; color: var(--teal); }
 @media (prefers-reduced-motion: reduce) { .pick { transition: none; } }
+
+/* Three measured schedules side by side — the Salt Flat's point, shown
+   rather than asserted: the crude schedule beats the clever one. */
+.ms-scores { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 14px 0 6px; }
+.ms-scores > div {
+  flex: 1 1 110px; max-width: 150px; padding: 12px 10px; border-radius: 12px; text-align: center;
+  background: rgba(11,15,26,.45); border: 1px solid var(--border);
+}
+.ms-scores > div.hi { border-color: rgba(45,212,191,.5); background: rgba(45,212,191,.09); }
+.ms-scores b { display: block; font-size: 1.42rem; font-weight: 800; color: var(--text); line-height: 1.1; }
+.ms-scores > div.hi b { color: var(--teal); }
+.ms-scores span { display: block; margin-top: 5px; font-size: .76rem; color: var(--muted); line-height: 1.4; }
+
+/* Kai and Lyra are two portraits, always shown together — they are one pair */
+.ms-face-pair { display: flex; justify-content: center; gap: 6px; }
+.ms-nosig {
+  margin: 4px 0 14px; padding: 14px; border-radius: 14px;
+  background: rgba(11,15,26,.55); border: 1px solid rgba(148,163,184,.26);
+}
+.ms-nosig .ms-scores { margin: 8px 0 4px; }
+.ms-nosig .ms-note { margin: 6px 0 0; text-align: center; }

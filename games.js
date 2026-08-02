@@ -219,7 +219,27 @@
             '<span style="color:var(--muted)">(replayed ' + g.REPLAYS + '×; pass mark ' + Math.round(L.bar * 100) + '%, best we found ' + Math.round(L.best * 100) + '%)</span></dd>');
       }
 
-      function render(msg) { drawChips(); drawTerrain(); drawSched(); drawTherm(); verdict(msg); rows(); }
+      function render(msg) {
+        drawChips(); drawTerrain(); drawSched(); drawTherm(); verdict(msg); rows();
+        /* OUTBOUND ONLY — see Grover's emitter. Act IV's scene draws the
+           landscape ITSELF from `heights`, so the ridge line on screen is the
+           very array this sampler is walking. Nothing here reads back, and no
+           replay, pass mark or acceptance test consults a listener. */
+        if (opts && typeof opts.onState === 'function') {
+          var L = g.LV[li];
+          try {
+            opts.onState({ phase: st.over ? 'finished' : 'render',
+                           li: li, name: L.n, heights: L.h.slice(), gmin: L.gmin,
+                           x: st.x, pos: st.x / Math.max(1, L.h.length - 1),
+                           T: st.T, Tnorm: Math.max(0, Math.min(1, st.T / 4)),
+                           epoch: Math.min(st.e, g.EPOCHS), epochs: g.EPOCHS,
+                           here: L.h[st.x], floor: L.h[L.gmin], best: st.best,
+                           onFloor: L.h[st.x] === L.h[L.gmin],
+                           rate: st.rate, bar: L.bar, over: st.over,
+                           cleared: cleared.filter(Boolean).length, total: g.LV.length });
+          } catch (e) {}
+        }
+      }
 
       function step(mult) {
         if (st.over) return;
@@ -695,6 +715,17 @@
           '<dt>Ising energy</dt><dd>' + energy + ' <span style="color:var(--muted)">(ground state at ' + groundE + ')</span></dd>' +
           '<dt>Districts solved</dt><dd>' + solved.filter(Boolean).length + ' of ' + DIST.length + '</dd>';
         chips();
+        /* OUTBOUND ONLY — see Grover's emitter. Act III's scene needs to know
+           how far the border has been drawn and whether this district is one
+           of the frustrated ones. It never writes back. */
+        if (opts && typeof opts.onState === 'function') {
+          try {
+            opts.onState({ phase: 'render', di: di, name: d.name, n: d.n, roads: W,
+                           cut: cut, par: d.par, optimal: cut === d.par,
+                           energy: energy, groundE: groundE,
+                           solved: solved.filter(Boolean).length, total: DIST.length });
+          } catch (e) {}
+        }
       }
       $(root, '[data-a=invert]').addEventListener('click', function () {
         for (var i = 0; i < DIST[di].n; i++) color[i] = color[i] ? 0 : 1;
@@ -1005,6 +1036,178 @@
         } else b.style.display = 'none';
       });
       reset();
+    }
+  };
+
+  /* ==================================================================== *
+   *  THE CHSH GAME — Kai & Lyra's mission                                *
+   *                                                                      *
+   *  Ported unchanged from quantum-mechanics.html#chsh, which was        *
+   *  verified in Python: S = 2sqrt(2) exactly at the optimal angles,     *
+   *  P(win) = cos^2(pi/8) = 0.853553 matching 1/2 + S/8, the classical   *
+   *  bound brute-forced over all 16 deterministic strategies = exactly   *
+   *  3/4, and both marginals exactly 1/2 (no-signalling, so it cannot    *
+   *  send a message). The arithmetic below is byte-identical to that     *
+   *  widget; only the DOM plumbing changed, because the original was     *
+   *  wired to hard-coded element ids on one page.                        *
+   *                                                                      *
+   *  MARGINALS ARE TRACKED HERE ON PURPOSE. Act V's whole point is that  *
+   *  Kai and Lyra cannot signal, and a scene may only claim that if the  *
+   *  game can show it: Alice's answer distribution must come out the     *
+   *  same whatever Bob chose.                                            *
+   * ==================================================================== */
+  G.chsh = {
+    id: 'chsh', title: 'The CHSH Game', mentor: 'Kai & Lyra',
+    hook: 'Two players who cannot talk, one question each, and a win rate that no classical strategy on earth can reach.',
+    about: {
+      goal: 'Alice and Bob each get a random bit and answer with a bit. You win when <strong>a XOR b = x AND y</strong>. Beat <strong>75%</strong> — the provable classical ceiling.',
+      how: 'Pick a strategy and play rounds. <strong>Best classical</strong> tops out at 75%, provably. <strong>Entangled pair</strong> reaches 85.4% and no further — that limit is Tsirelson’s bound.',
+      inspired: 'The CHSH inequality (Clauser, Horne, Shimony &amp; Holt 1969) — the experiment that won the 2022 Nobel Prize in Physics.',
+      learn: 'That entanglement is <em>provably</em> not just hidden pre-arranged answers — and that it still cannot send a single bit.',
+      link: 'quantum-mechanics.html#chsh', linkText: 'The full explainer ▸', tier: '⟦Proven⟧'
+    },
+    honest: 'Honest model: the quantum side samples the <strong>exact</strong> Bell-state joint distribution P(a,b|x,y) = [1 + (−1)<sup>a+b</sup>cos(α−β)]/4 at the optimal angles, so nothing is scripted — the 85.4% emerges from the arithmetic. The classical side plays the best deterministic strategy, which wins on three of the four input pairs and therefore <strong>cannot</strong> exceed 75%; that bound is brute-forced over all 16 deterministic strategies. The quantum ceiling cos²(π/8) = 85.36% is <strong>Tsirelson’s bound</strong> and is also provable. The honest caveat, computed rather than guessed: over only 20 rounds a classical player beats the quantum <em>rate</em> about 9% of the time, which is exactly why real Bell tests need enormous trial counts. And crucially, <strong>both marginals are exactly 1/2 regardless of the other side’s setting</strong> — so this correlation is <strong>⟦proven⟧</strong> unable to carry a message.',
+    mount: function (root, opts) {
+      var mission = opts && opts.mode === 'mission';
+      var NSVG = NS, W = 480, H = 200, L = 34, Rp = 8, TP = 12, BP = 26;
+      var AA = [0, Math.PI / 2], BB = [Math.PI / 4, -Math.PI / 4];
+      var CLASSICAL = 0.75, QUANTUM = Math.cos(Math.PI / 8) * Math.cos(Math.PI / 8);
+      var quantum = true, n = 0, wins = 0, curve = [];
+      // marginals[y][a] — how often Alice answered a, split by Bob's setting
+      var marg = [[0, 0], [0, 0]], margN = [0, 0];
+
+      root.innerHTML =
+        '<div class="chsh-inputs" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0">' +
+          '<button class="preset on" data-a="q">Entangled pair</button>' +
+          '<button class="preset" data-a="c">Best classical</button></div>' +
+        '<div class="verdict" style="text-align:center" data-r="say"></div>' +
+        '<svg viewBox="0 0 480 200" xmlns="' + NSVG + '" data-r="svg" style="display:block;width:100%;max-width:480px;margin:0 auto;height:auto" aria-label="Running win rate against the classical and quantum bounds"></svg>' +
+        '<p class="legend" style="text-align:center">Alice sees <b data-r="x">—</b> and answers <b data-r="a">—</b> · Bob sees <b data-r="y">—</b> and answers <b data-r="b">—</b></p>' +
+        '<p style="margin:10px 0 4px;text-align:center">' +
+          '<button class="preset" data-a="p1">Play 1</button>' +
+          '<button class="preset" data-a="p100">Play 100</button>' +
+          '<button class="preset" data-a="p1000">Play 1,000</button>' +
+          '<button class="preset" data-a="reset">Reset</button></p>' +
+        '<dl class="rows" data-r="rows"></dl>';
+
+      var svg = $(root, '[data-r=svg]');
+      function ael(tag, a, txt) {
+        var e = document.createElementNS(NSVG, tag);
+        for (var k in a) e.setAttribute(k, a[k]);
+        if (txt != null) e.textContent = txt;
+        svg.appendChild(e); return e;
+      }
+      function yOf(p) { return TP + (H - TP - BP) * (1 - (p - 0.4) / 0.6); }   // axis 0.4 .. 1.0
+
+      ael('line', { x1: L, y1: yOf(0.4), x2: W - Rp, y2: yOf(0.4), stroke: 'var(--border)' });
+      [0.5, 0.6, 0.7, 0.8, 0.9, 1.0].forEach(function (t) {
+        ael('text', { x: L - 6, y: yOf(t) + 3, 'text-anchor': 'end', 'font-size': '9', fill: 'var(--muted)' },
+            Math.round(t * 100) + '%');
+      });
+      ael('line', { x1: L, y1: yOf(CLASSICAL), x2: W - Rp, y2: yOf(CLASSICAL), stroke: 'var(--muted)', 'stroke-dasharray': '4 4' });
+      ael('text', { x: W - Rp, y: yOf(CLASSICAL) - 5, 'text-anchor': 'end', 'font-size': '9', fill: 'var(--muted)' },
+          'classical ceiling 75% — provable');
+      ael('line', { x1: L, y1: yOf(QUANTUM), x2: W - Rp, y2: yOf(QUANTUM), stroke: 'var(--violet)', 'stroke-dasharray': '4 4' });
+      ael('text', { x: W - Rp, y: yOf(QUANTUM) - 5, 'text-anchor': 'end', 'font-size': '9', fill: 'var(--violet)' },
+          'quantum limit 85.4% (Tsirelson)');
+      var wrPath = ael('path', { d: '', fill: 'none', stroke: 'var(--teal)', 'stroke-width': '2' });
+      ael('text', { x: (W + L) / 2, y: H - 6, 'text-anchor': 'middle', 'font-size': '9', fill: 'var(--muted)' }, 'rounds played →');
+
+      function sampleQ(x, y) {
+        var c = Math.cos(AA[x] - BB[y]);
+        var p = [(1 + c) / 4, (1 - c) / 4, (1 - c) / 4, (1 + c) / 4];   // (0,0)(0,1)(1,0)(1,1)
+        var r = Math.random(), acc = 0;
+        for (var i = 0; i < 4; i++) { acc += p[i]; if (r < acc) return [i >> 1, i & 1]; }
+        return [1, 1];
+      }
+      function play() {
+        var x = Math.random() < .5 ? 0 : 1, y = Math.random() < .5 ? 0 : 1;
+        var ab = quantum ? sampleQ(x, y) : [0, 0];
+        var w = (ab[0] ^ ab[1]) === (x & y);
+        n++; if (w) wins++;
+        marg[y][ab[0]]++; margN[y]++;
+        curve.push(wins / n);
+        if (curve.length > 1200) curve = curve.slice(curve.length - 1200);
+        return { x: x, y: y, a: ab[0], b: ab[1], win: w };
+      }
+      function draw(last) {
+        var d = '';
+        if (curve.length) {
+          var step = (W - Rp - L) / Math.max(curve.length - 1, 1);
+          d = curve.map(function (p, i) {
+            return (i ? 'L' : 'M') + (L + i * step).toFixed(1) + ' ' + yOf(Math.max(0.4, Math.min(1, p))).toFixed(1);
+          }).join('');
+        }
+        wrPath.setAttribute('d', d);
+        ['x', 'y', 'a', 'b'].forEach(function (k) {
+          $(root, '[data-r=' + k + ']').textContent = last ? last[k] : '—';
+        });
+        var v = $(root, '[data-r=say]');
+        if (!last) { v.className = 'verdict'; v.textContent = 'Pick a strategy and play a round.'; }
+        else {
+          v.className = 'verdict ' + (last.win ? 'good' : 'bad');
+          v.innerHTML = last.win
+            ? 'Won — answers ' + (last.a === last.b ? 'matched' : 'differed') + ', and both bits were ' +
+              (last.x && last.y ? '1' : 'not both 1') + '.'
+            : 'Lost — answers ' + (last.a === last.b ? 'matched' : 'differed') + ' when they should have ' +
+              ((last.x & last.y) ? 'differed' : 'matched') + '.';
+        }
+        var rate = n ? wins / n : 0;
+        /* A finite sample of a strategy whose TRUE rate is exactly 0.75 sits
+           above 0.75 about half the time. Calling that "above the classical
+           ceiling" says the player beat a provable bound, which is impossible
+           -- 20,000 classical rounds came out at 75.24% while testing this,
+           and the old wording announced it in teal as a breach. Require the
+           excess to clear two standard errors before claiming anything, and
+           name sampling noise when it does not. This is the same lesson the
+           page's own caveat teaches: separation only shows up in the long run,
+           which is why real Bell tests need enormous trial counts. */
+        var se = n ? Math.sqrt(CLASSICAL * (1 - CLASSICAL) / n) : 0;
+        var real = n > 0 && (rate - CLASSICAL) > 2 * se;
+        var line = !n ? '—'
+          : real ? '<span style="color:var(--teal)">above the classical ceiling — beyond sampling noise</span>'
+          : rate > CLASSICAL ? 'above 75%, but within sampling noise (&plusmn;' + (200 * se).toFixed(1) + ' pts)'
+          : 'at or below the classical ceiling';
+        $(root, '[data-r=rows]').innerHTML =
+          '<dt>Strategy</dt><dd>' + (quantum ? 'entangled pair, optimal angles' : 'best possible classical') + '</dd>' +
+          '<dt>Rounds</dt><dd>' + n.toLocaleString('en-US') + '</dd>' +
+          '<dt>Win rate</dt><dd><strong>' + (100 * rate).toFixed(1) + '%</strong>' + (n ? ' — ' + line : '') + '</dd>' +
+          '<dt>Theory says</dt><dd>' + (quantum ? '85.4%' : '75.0%') + '</dd>';
+        if (quantum && real) win('chsh', opts);      // only a real breach counts
+        emit(last, real, se);
+      }
+      function emit(last, real, se) {
+        if (!opts || typeof opts.onState !== 'function') return;
+        try {
+          opts.onState({
+            phase: 'render', quantum: quantum, rounds: n, wins: wins,
+            rate: n ? wins / n : 0, classical: CLASSICAL, tsirelson: QUANTUM,
+            // "beats" means beyond two standard errors, not merely above 0.75
+            beatsClassical: !!real, stderr: se || 0,
+            last: last || null,
+            /* Alice's answer distribution, split by BOB's setting. If these two
+               agree, nothing Bob does changes what Alice sees, and no message
+               can cross. That is no-signalling, measured. */
+            aliceGivenBob0: margN[0] ? marg[0][1] / margN[0] : null,
+            aliceGivenBob1: margN[1] ? marg[1][1] / margN[1] : null,
+            margN: margN.slice()
+          });
+        } catch (e) {}
+      }
+      function batch(k) { var last = null; for (var i = 0; i < k; i++) last = play(); draw(last); }
+      function setMode(q) {
+        quantum = q; n = 0; wins = 0; curve = []; marg = [[0, 0], [0, 0]]; margN = [0, 0];
+        $(root, '[data-a=q]').className = 'preset' + (q ? ' on' : '');
+        $(root, '[data-a=c]').className = 'preset' + (q ? '' : ' on');
+        draw(null);
+      }
+      $(root, '[data-a=q]').addEventListener('click', function () { setMode(true); });
+      $(root, '[data-a=c]').addEventListener('click', function () { setMode(false); });
+      $(root, '[data-a=p1]').addEventListener('click', function () { batch(1); });
+      $(root, '[data-a=p100]').addEventListener('click', function () { batch(100); });
+      $(root, '[data-a=p1000]').addEventListener('click', function () { batch(1000); });
+      $(root, '[data-a=reset]').addEventListener('click', function () { setMode(quantum); });
+      draw(null);
     }
   };
 

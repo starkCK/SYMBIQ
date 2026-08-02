@@ -1093,3 +1093,106 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .archq-count { font-size: .88rem; color: var(--muted); margin: 0 0 10px; }
 .archq-more { margin: 12px 0 0; font-size: .9rem; }
 @media (prefers-reduced-motion: reduce) { .dq-prev-x { transition: none; } }
+
+/* ================================================================
+   THE SCENE KIT  (scene.js — Phase 0 of outputs/14_GAME_REDESIGN.md)
+   ----------------------------------------------------------------
+   A mission stops being a widget in a bordered card and becomes a
+   place. Everything here is the frame AROUND a game mount; nothing
+   in this block is read by any engine, threshold or scoring path.
+
+   Deliberate: a scene keeps its dark palette in light mode too.
+   The rest of the site inverts because it is a document; a world
+   is a world, and a corridor lit like a spreadsheet is not one.
+   So every colour inside .scene-host is stated outright rather
+   than inherited, and contrast is checked against the dark ground.
+   ================================================================ */
+
+:root { --scene-sat: 1; }               /* driven by scene.bindCoherence() */
+
+.scene-host {
+  position: relative; isolation: isolate; overflow: hidden;
+  border-radius: 18px; color: #e5e9f1;
+}
+.scene-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-size: cover; background-position: center;
+  /* Certainty looks like grey: saturation follows the coherence meter. */
+  filter: saturate(var(--scene-sat));
+}
+.scene-canvas { display: block; width: 100%; height: 100%; }
+.scene-host > *:not(.scene-bg) { position: relative; z-index: 1; }
+
+/* The stage sits on the world with just enough veil to stay readable. */
+.scene-stage {
+  position: relative; min-height: 320px; padding: 26px 22px;
+  background: linear-gradient(180deg, rgba(11,15,26,.30), rgba(11,15,26,.72));
+}
+.scene-beat { opacity: 0; transform: translateY(10px); }
+.scene-beat.in { opacity: 1; transform: none; transition: opacity .42s ease, transform .42s cubic-bezier(.22,.7,.3,1); }
+.scene-beat.out { opacity: 0; transform: translateY(-8px); transition: opacity .3s ease, transform .3s ease; position: absolute; inset: 26px 22px auto; }
+
+/* ---- the act card: one enormous word, one thin rule, a long fade ---- */
+.scene-card {
+  position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; text-align: center;
+  padding: 30px; background: rgba(11,15,26,.90); opacity: 0;
+  transition: opacity .7s ease;
+}
+.scene-card.in { opacity: 1; }
+.scene-card.out { opacity: 0; transition: opacity .5s ease; }
+.scene-card .sc-act {
+  font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
+  color: #a78bfa; font-weight: 700;
+}
+.scene-card .sc-word {
+  margin: 0; font-size: clamp(2.1rem, 8vw, 4.4rem); font-weight: 800;
+  letter-spacing: -.02em; line-height: 1.02; color: #f1f5fb; max-width: 14ch;
+}
+.scene-card .sc-rule { display: block; width: 74px; height: 1px; background: rgba(229,233,241,.42); }
+.scene-card .sc-line {
+  margin: 0; max-width: 34ch; font-size: 1.02rem; line-height: 1.55;
+  color: rgba(229,233,241,.82); font-style: italic;
+}
+.scene-card .sc-skip {
+  position: absolute; right: 14px; bottom: 12px; background: none; border: 0;
+  color: rgba(229,233,241,.55); font: inherit; font-size: .84rem; cursor: pointer; padding: 8px 10px;
+}
+.scene-card .sc-skip:hover { color: #2dd4bf; }
+.scene-card .sc-skip:focus-visible { outline: 2px solid #2dd4bf; outline-offset: 2px; border-radius: 6px; }
+
+/* ---- portraits: drawn by code, and they react ---- */
+.scene-face { width: 72px; height: 84px; display: block; flex: none; }
+.scene-face--lg { width: 108px; height: 126px; }
+
+/* ---- the sound toggle: obvious, and off until asked ---- */
+.scene-audio {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px;
+  min-height: 38px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .84rem;
+  background: rgba(11,15,26,.55); border: 1px solid rgba(148,163,184,.28); color: rgba(229,233,241,.8);
+  transition: border-color .2s ease, color .2s ease;
+}
+.scene-audio:hover { border-color: rgba(45,212,191,.5); color: #2dd4bf; }
+.scene-audio[aria-pressed="true"] { border-color: rgba(45,212,191,.55); color: #2dd4bf; }
+.scene-audio[aria-pressed="true"] .sa-ico { color: #2dd4bf; }
+.scene-audio:focus-visible { outline: 2px solid #2dd4bf; outline-offset: 2px; }
+
+/* ---- the share card: the frame worth keeping ---- */
+.sharecard { margin-top: 16px; }
+.sharecard-img {
+  display: block; width: 100%; height: auto; max-width: 560px;
+  border-radius: 12px; border: 1px solid var(--border);
+}
+.sharecard-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0 0; }
+.sharecard-note { font-size: .86rem; color: var(--muted); }
+
+@media (max-width: 719px) {
+  .scene-stage { padding: 20px 14px; min-height: 260px; }
+  .scene-beat.out { inset: 20px 14px auto; }
+  .scene-face { width: 58px; height: 68px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene-beat, .scene-beat.in, .scene-beat.out, .scene-card, .scene-audio { transition: none; }
+  .scene-beat { opacity: 1; transform: none; }
+  .scene-card { opacity: 1; }
+}

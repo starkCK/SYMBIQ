@@ -26,9 +26,12 @@
 <meta name="twitter:description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=19">
+<link rel="stylesheet" href="style.css?v=20">
 <script src="save.js"></script>
-<script src="games.js?v=7"></script>
+<script src="coherence.js?v=1"></script>
+<script src="games.js?v=8"></script>
+<script src="scene.js?v=1"></script>
+<script src="missions.js?v=1"></script>
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -156,6 +159,21 @@
 </div>
 
 <div id="floor" hidden>
+  <!-- The showcase. One mission rebuilt to the new bar, shipped here first so a
+       player meets it as a thing on its own rather than being dropped into a
+       rebuilt Act II after an unchanged Act I. The bare engine is still on the
+       floor below, deliberately: the contrast is the point. -->
+  <div class="showcase" id="showcase">
+    <div class="showcase-lead">
+      <span class="showcase-tag">New — rebuilt</span>
+      <h2>Act II · The Locked Corridor</h2>
+      <p>The same verified engine as the machine below, inside the thing we are building instead of a widget in a box: a world that responds to the number the game is actually computing, a mentor whose advice is <strong>wrong at exactly the moment it matters</strong>, and a way to tell her so that you can only find by understanding the curve.</p>
+      <p class="showcase-note">Roughly six minutes. Sound is off until you ask for it.</p>
+      <button type="button" class="bigplay enter" id="showcase-go">Enter the corridor &#9656;</button>
+    </div>
+  </div>
+  <div id="mission-host"></div>
+
   <h2>Pick a machine</h2>
   <div class="cabs" id="cabs"></div>
 
@@ -289,6 +307,30 @@
     });
     stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  /* The showcase mission. It mounts into its own host and owns everything
+     inside it — the Arcade hands over a bare element and gets it back on exit.
+     If missions.js or scene.js failed to load, the button simply is not shown
+     and the floor below is untouched. */
+  (function () {
+    var go = document.getElementById('showcase-go'),
+        card = document.getElementById('showcase'),
+        host = document.getElementById('mission-host'),
+        MS = window.SymbiQ && SymbiQ.missions;
+    if (!go || !host) return;
+    if (!MS || !window.SymbiQ.scene) { card.hidden = true; return; }
+    go.addEventListener('click', function () {
+      card.hidden = true;
+      MS.mount('grover', host, {
+        onExit: function () {
+          card.hidden = false;
+          drawCabs();
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+      host.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  })();
 
   document.getElementById('stage-back').addEventListener('click', function () {
     var stage = document.getElementById('stage');

@@ -159,22 +159,48 @@
     realm: [
       'void main(){',
       '  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;',
-      '  vec3 col = BG;',
-      '  float floorY = -0.34;',
-      '  float shaft = exp(-pow(abs(uv.x) * 3.1, 2.0)) * smoothstep(0.85, -0.30, uv.y);',
-      '  col += VIOLET * shaft * 0.13;',
-      '  float fl = smoothstep(0.0, -0.55, uv.y - floorY);',
-      '  col = mix(col, BG * 1.9, fl * 0.55);',
+      '  vec3 col = BG * 0.72;',
+      '  float floorY = -0.30;',
+      /* The shaft has to be VOLUMETRIC or it is invisible: a cone that widens
+         as it falls, carrying dust. The first build used a fixed-width gaussian
+         and you could not see it at all. */
+      '  float shaftW = 0.13 + 0.40 * (0.60 - uv.y);',
+      '  float shaft  = exp(-pow(abs(uv.x) / max(shaftW, 0.02), 2.2));',
+      '  shaft *= smoothstep(0.90, -0.18, uv.y);',
+      '  float dust = fbm(vec2(uv.x * 7.0, uv.y * 3.5 - u_time * 0.13));',
+      '  col += VIOLET * shaft * (0.26 + 0.20 * dust);',
+      /* The HALL. Without these three lines the coin floats in undifferentiated
+         black and the scene reads as a medallion on a dark page rather than as
+         a place you are standing in -- which was the whole complaint. A back
+         wall that falls off with height, and a floor that catches the light. */
+      '  col += vec3(0.055, 0.062, 0.098) * smoothstep(1.0, -0.3, uv.y) * (0.55 + 0.45 * fbm(uv * 1.7));',
+      '  float pool = exp(-pow(abs(uv.x) * 1.5, 2.0)) * smoothstep(-0.72, -0.30, uv.y);',
+      '  col += VIOLET * pool * 0.10;',
       '  float ph = (u_a > 0.0 ? u_a * 6.2831 : u_time * 0.55);',
       '  float w  = abs(cos(ph));',                       // the coin turning: edge-on at w=0
-      '  vec2  q  = uv - vec2(0.0, 0.03);',
-      '  float d  = length(vec2(q.x / max(w * 0.20, 0.012), q.y / 0.20));',
-      '  float face = 1.0 - smoothstep(0.94, 1.0, d);',
-      '  vec3  faceCol = mix(TEAL, VIOLET, 0.5 + 0.5 * sin(ph));',   // both faces true
-      '  col = mix(col, faceCol * (0.55 + 0.45 * w), face);',
-      '  col += faceCol * exp(-d * 2.4) * 0.28;',                    // its own light
-      '  float refl = 1.0 - smoothstep(0.0, 0.9, d * 1.3 + (floorY - uv.y) * 2.4);',
-      '  col += faceCol * max(refl, 0.0) * 0.10 * step(uv.y, floorY);',
+      '  vec3  faceCol = mix(TEAL, VIOLET, 0.5 + 0.5 * sin(ph));',
+      '  vec2  q  = uv - vec2(0.0, 0.02);',
+      '  float rx = max(w * 0.19, 0.010);',
+      '  float d  = length(vec2(q.x / rx, q.y / 0.19));',
+      '  float face = 1.0 - smoothstep(0.97, 1.0, d);',
+      '  col = mix(col, faceCol * (0.26 + 0.30 * w), face);',
+      /* Struck detail. Two concentric rings and a bright rim are the whole
+         difference between "a coin" and "an egg" -- the first build had a flat
+         ellipse and read as neither. */
+      '  col += faceCol * smoothstep(0.032, 0.0, abs(d - 0.63)) * face * 0.60;',
+      '  col += faceCol * smoothstep(0.024, 0.0, abs(d - 0.33)) * face * 0.38;',
+      /* The rim FLARES as it turns edge-on: the instant both faces are equally
+         true is the instant the object is brightest. */
+      '  float rim = smoothstep(0.11, 0.0, abs(d - 1.0));',
+      '  col += mix(TEAL, VIOLET, 0.5) * rim * (0.30 + 0.95 * (1.0 - w));',
+      '  col += vec3(1.0) * face * exp(-length(q - vec2(-0.05 * rx, 0.075)) * 13.0) * 0.30 * w;',
+      '  col += faceCol * exp(-d * 2.2) * 0.16;',
+      '  float below = step(uv.y, floorY);',
+      '  col = mix(col, BG * 1.35, below * 0.45);',
+      '  vec2 mq = vec2(q.x, (2.0 * floorY - uv.y) - 0.02);',
+      '  float md = length(vec2(mq.x / rx, mq.y / 0.19));',
+      '  col += faceCol * (1.0 - smoothstep(0.55, 1.05, md)) * below * 0.13;',
+      '  col += vec3(0.16, 0.19, 0.28) * smoothstep(0.010, 0.0, abs(uv.y - floorY));',
       '  col = statica(drain(col), uv);',
       '  gl_FragColor = vec4(col, 1.0);',
       '}'
@@ -205,14 +231,25 @@
       '    * step(abs(hit.y * t / max(t, 1e-4)), 0.62);',
       '  float slab = 0.5 + 0.5 * sin(di * 1.7 + 0.9);',
       '  col += vec3(0.055, 0.070, 0.115) * (0.6 + 0.4 * slab);',
-      '  col += VIOLET * door * 0.055;',
       '  float frame = door * (smoothstep(0.16, 0.20, dz) * smoothstep(0.84, 0.80, dz));',
-      '  col += VIOLET * (door - frame) * 0.10;',
       '  float ex   = floor(u_seed * 9.0) + 2.0;',
       '  float mine = mod(di, 11.0);',
       '  float isEx = 1.0 - step(0.5, abs(mine - ex));',
+      '  float pa   = clamp(u_a, 0.0, 1.0);',
+      /* THE SEE-SAW. Binding only the exit's glow to p made the mechanic real
+         in the data and invisible on screen: between 90.7% and 99.7% -- the
+         exact range the player lives in -- the door barely changed. So the
+         OTHER doors now carry (1 - p), which is not a trick but the literal
+         truth, since every non-exit door holds (1-p)/(N-1) of the amplitude.
+         Over-rotate and you watch the exit fall AND the whole corridor light
+         back up. Contrast reads where absolute brightness does not.
+         The exit's own curve is pa^3: still strictly monotone in p, so the
+         light never disagrees with the number, but it spends its dynamic
+         range near the top where the decision actually happens. */
+      '  col += VIOLET * door * (1.0 - isEx) * (0.030 + 0.200 * (1.0 - pa));',
+      '  col += VIOLET * (door - frame) * (1.0 - isEx) * 0.10;',
       '  float breathe = 0.75 + 0.25 * sin(u_time * 1.8);',
-      '  col += TEAL * door * isEx * clamp(u_a, 0.0, 1.0) * breathe * 1.55;',
+      '  col += TEAL * door * isEx * (0.04 + 2.30 * pa * pa * pa) * breathe;',
       '  col += TEAL * isEx * door * 0.06;',
       '  float fog = exp(-max(z - u_time * 0.42, 0.0) * 0.085);',
       '  col = mix(BG * 0.85, col, clamp(fog, 0.0, 1.0));',
@@ -226,33 +263,57 @@
        u_a: how far the cut has been drawn. u_b: how much is unsatisfiable — the
        odd loop that cannot be cut flares amber and stays flared. */
     city: [
-      'vec3 vor(vec2 p, out float side){',
+      /* Two-nearest Voronoi. Keeping the SECOND distance as well is what gives
+         clean district borders -- the first build glowed radially from each
+         cell centre, which read as a field of dots rather than as a city. */
+      'void cells(vec2 p, out vec2 seed2, out float border, out float toEdge){',
       '  vec2 g = floor(p), f = fract(p);',
-      '  float md = 8.0; vec2 mr = vec2(0.0), mg = vec2(0.0);',
+      '  float d1 = 8.0, d2 = 8.0; vec2 mg = vec2(0.0);',
       '  for (int j = -1; j <= 1; j++) for (int i = -1; i <= 1; i++) {',
       '    vec2 o = vec2(float(i), float(j));',
-      '    vec2 r = o + vec2(hash(g + o), hash(g + o + 17.0)) - f;',
-      '    float d = dot(r, r);',
-      '    if (d < md) { md = d; mr = r; mg = g + o; }',
+      '    vec2 c = o + vec2(hash(g + o), hash(g + o + 17.0));',
+      '    float d = length(c - f);',
+      '    if (d < d1) { d2 = d1; d1 = d; mg = g + o + vec2(hash(g + o), hash(g + o + 17.0)); }',
+      '    else if (d < d2) { d2 = d; }',
       '  }',
-      '  side = step(0.5, hash(mg + 3.7));',
-      '  return vec3(sqrt(md), mr);',
+      '  seed2 = mg;',                       // the cell centre, in p-space
+      '  toEdge = d2 - d1;',
+      '  border = smoothstep(0.085, 0.008, d2 - d1);',
       '}',
       'void main(){',
       '  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;',
-      '  vec2 p  = uv * 5.0 + vec2(u_time * 0.02, 0.0);',
-      '  float side; vec3 v = vor(p, side);',
-      '  vec3 col = BG;',
+      '  vec2 off = vec2(u_seed * 13.0, 7.0);',
+      '  vec2 p = uv * 4.2 + off;',
+      '  vec2 cc; float border, toEdge;',
+      '  cells(p, cc, border, toEdge);',
+      /* THE CUT IS THE THING. A district takes its colour from which side of
+         the seam its centre falls on, so drawing the border genuinely
+         partitions the city -- which is what Max-Cut actually is. The first
+         build coloured cells at random and drew an unrelated arc on top. */
+      '  float progress = clamp(u_a, 0.0, 1.0);',
+      '  float cutX  = -0.86 + 1.72 * progress;',
+      '  float jitter = sin(cc.y * 2.3 + u_seed * 9.0) * 0.05;',
+      '  float cutP  = (cutX + jitter) * 4.2 + off.x;',
+      '  float side  = step(cutP, cc.x);',
+      '  float claimed = step(cc.x, cutX * 4.2 + off.x + 0.9);',   // only what the cut has reached
+      '  vec3 col = BG * 0.9;',
       '  vec3 lit = mix(TEAL, VIOLET, side);',
-      '  float glow = exp(-v.x * 2.6);',
-      '  col += lit * glow * 0.30;',
-      '  float edge = smoothstep(0.06, 0.0, v.x);',
-      '  col += vec3(0.10, 0.12, 0.17) * edge;',
-      '  float seam = abs(uv.y * 1.4 + sin(uv.x * 2.1 + u_seed * 6.0) * 0.16);',
-      '  float cutTo = mix(-0.7, 0.9, clamp(u_a, 0.0, 1.0));',
-      '  float drawn = step(uv.x, cutTo);',
-      '  col += vec3(1.0) * smoothstep(0.030, 0.0, seam) * drawn * 0.55;',
-      '  col += AMBER * smoothstep(0.075, 0.0, seam) * drawn * clamp(u_b, 0.0, 1.0) * 0.9;',
+      '  vec3 unlit = vec3(0.085, 0.098, 0.140);',
+      '  col = mix(col + unlit, col + lit * 0.20, claimed);',
+      '  col += vec3(0.020, 0.024, 0.036) * border * 3.0;',        // roads
+      /* Window lights: a district is made of buildings. High-frequency points
+         inside each cell, twinkling slowly, are what make it read as inhabited. */
+      '  vec2 wq = p * 7.0;',
+      '  float win = step(0.86, hash(floor(wq)));',
+      '  float tw  = 0.55 + 0.45 * sin(u_time * 1.3 + hash(floor(wq) + 5.0) * 30.0);',
+      '  col += mix(vec3(0.85, 0.88, 0.95), lit, 0.55) * win * tw * 0.30 * (1.0 - border);',
+      /* The seam being drawn, and the odd loop that cannot be cut: an amber
+         district flares and STAYS flared, because frustration is a theorem. */
+      '  float seam = abs(uv.x - (cutX + sin(uv.y * 2.3 + u_seed * 9.0) * 0.05));',
+      '  col += vec3(1.0) * smoothstep(0.006, 0.0, seam) * 0.75;',
+      '  col += mix(TEAL, VIOLET, 0.5) * smoothstep(0.030, 0.0, seam) * 0.30;',
+      '  float odd = step(0.93, hash(floor(cc * 3.0))) * clamp(u_b, 0.0, 1.0) * claimed;',
+      '  col += AMBER * odd * (0.22 + 0.16 * sin(u_time * 2.2)) * (1.0 - border);',
       '  col = statica(drain(col), uv);',
       '  gl_FragColor = vec4(col, 1.0);',
       '}'
@@ -297,19 +358,42 @@
     shore: [
       'void main(){',
       '  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;',
-      '  vec3 col = BG;',
-      '  float sep = 0.24 + 0.30 * clamp(u_b, 0.0, 1.0);',
+      '  vec3 col = BG * 0.85;',
       '  float corr = clamp(u_a, 0.0, 1.0);',
-      '  for (int i = 0; i < 2; i++) {',
-      '    float s = (i == 0 ? -1.0 : 1.0);',
-      '    vec2 q = vec2(uv.x - s * sep, uv.y);',
-      '    vec2 w = warp(q * 2.6 + vec2(0.0, u_time * 0.10), 0.55);',
-      '    float tide = fbm(w * 1.7);',
-      '    float band = smoothstep(0.34, 0.62, tide) * exp(-abs(q.x) * 1.5);',
-      '    col += mix(TEAL, VIOLET, float(i)) * band * 0.40;',
-      '  }',
-      '  float link = exp(-pow(abs(uv.y - sin(uv.x * 3.0 + u_time * 0.5) * 0.05) * 9.0, 2.0));',
-      '  col += vec3(1.0) * link * corr * 0.13;',
+      '  float sep  = 0.06 + 0.16 * clamp(u_b, 0.0, 1.0);',
+      '  float ax = abs(uv.x);',
+      /* TWO SHORES, with a real void between them. The first build overlapped
+         two fbm fields and read as one undifferentiated fog -- you could not
+         see that there were two of anything, which is fatal for a scene whose
+         entire job is "separated, and still moving as one". */
+      '  float gap  = smoothstep(sep, sep + 0.025, ax);',
+      '  float x    = ax - sep;',
+      /* The tides are bands stacked up each shore. Both sides read the SAME
+         phase function, so at full correlation their crests line up exactly
+         across the divide. Decorrelation adds a per-band random offset, and
+         the alignment visibly falls apart -- the correlation is the picture. */
+      '  float bandId = floor(uv.y * 7.0 + 3.0);',
+      '  float phase  = uv.y * 7.0 + sin(u_time * 0.40) * 1.1;',
+      '  float dec    = (1.0 - corr) * (hash(vec2(bandId, 3.0)) - 0.5) * 9.0;',
+      /* Roughness must stay SMALL or the bands smear into one cloud and the
+         crests stop being countable -- which is the only reason this scene
+         exists. It was 2.4 and the tides read as fog. */
+      '  float rough  = fbm(vec2(x * 2.2, uv.y * 2.0 + u_time * 0.07)) * 0.75;',
+      '  float mine   = phase + rough + step(0.0, uv.x) * dec;',
+      '  float tide   = sin(mine);',
+      '  float band   = smoothstep(0.55, 0.99, tide) * exp(-max(x, 0.0) * 1.5);',
+      '  vec3  c = mix(TEAL, VIOLET, step(0.0, uv.x));',
+      '  col += c * band * 0.62 * gap;',
+      '  col += c * exp(-max(x, 0.0) * 7.0) * 0.10 * gap;',            // the waterline glow
+      /* The link across the void. It carries no information -- that is Kai and
+         Lyra's whole tragedy -- so it is drawn only where two crests already
+         agree, never as an arrow from one side to the other. */
+      '  float leftT  = sin(phase + rough);',
+      '  float rightT = sin(phase + rough + dec);',
+      '  float agree  = smoothstep(0.55, 1.0, leftT) * smoothstep(0.55, 1.0, rightT);',
+      '  col += vec3(0.92, 0.95, 1.0) * agree * (1.0 - gap) * corr * 0.55;',
+      '  col += vec3(0.92, 0.95, 1.0) * agree * corr * 0.10 * smoothstep(0.32, 0.0, x);',
+      '  col *= 1.0 - 0.55 * (1.0 - gap) * (1.0 - agree * corr);',     // the void stays void
       '  col = statica(drain(col), uv);',
       '  gl_FragColor = vec4(col, 1.0);',
       '}'

@@ -482,6 +482,21 @@
       var barsEl = $(root, '[data-r=bars]');
       var CORR = [{n:4,par:1},{n:8,par:2},{n:16,par:3},{n:32,par:4},{n:64,par:6}];
       var ci = 0, k = 0, mark = 0, measured = false, busy = false, bestP = 0, solved = [];
+
+      /* OUTBOUND ONLY. A narrative layer (scene.js / missions.js) needs to know
+         when the player is standing on the peak so Rue can be wrong out loud.
+         This pushes a snapshot out; nothing here ever reads anything back, and
+         no engine, threshold or scoring path consults a listener. Same contract
+         as onWin, and the same rule as the display-only `mode` flag above. */
+      function emit(phase, extra) {
+        if (!opts || typeof opts.onState !== 'function') return;
+        var n = CORR[ci].n, par = CORR[ci].par;
+        var s = { phase: phase, n: n, k: k, par: par, p: pExit(n, k), best: bestP,
+                  level: ci, levels: CORR.length, measured: measured, busy: busy,
+                  cleared: solved.filter(function (x) { return x != null; }).length };
+        if (extra) for (var key in extra) if (extra.hasOwnProperty(key)) s[key] = extra[key];
+        try { opts.onState(s); } catch (e) {}
+      }
       function theta(n) { return Math.asin(1 / Math.sqrt(n)); }
       function pExit(n, kk) { var s = Math.sin((2*kk + 1) * theta(n)); return s * s; }
       function fresh() { k = 0; measured = false; bestP = pExit(CORR[ci].n, 0); mark = Math.floor(Math.random() * CORR[ci].n); }
@@ -523,6 +538,7 @@
           p.innerHTML = VO.ask(n, CORR[ci].par) + ' Exit odds now: <strong>' + Math.round(pm*100) + '%</strong>.';
         }
         $(root, '[data-r=rows]').innerHTML = rowsHTML();
+        emit('render');
       }
       $(root, '[data-a=amp]').addEventListener('click', function () {
         if (busy || measured) return;
@@ -565,6 +581,7 @@
              : ' — even at the peak it is a weighted draw. Unlucky roll.') + ' <strong>Reset corridor</strong> to try again.';
         }
         $(root, '[data-r=rows]').innerHTML = rowsHTML(); chips();
+        emit('measured', { escaped: landed === mark, landed: landed, atPeak: k === par });
       }
       $(root, '[data-a=reset]').addEventListener('click', function () { if (busy) return; fresh(); render(); });
       fresh(); render();

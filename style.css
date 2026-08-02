@@ -1196,3 +1196,121 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   .scene-beat { opacity: 1; transform: none; }
   .scene-card { opacity: 1; }
 }
+
+/* ================================================================
+   MISSIONS  (missions.js — Phase 1: Act II, Rue, Grover's Escape)
+   ----------------------------------------------------------------
+   A mission is a scene with four beats, not a widget with a
+   paragraph above it. Everything here is chrome around a mounted
+   engine; none of it is read by any engine or scoring path.
+
+   The token block below is deliberate. A mission re-declares the
+   dark palette locally, so the world stays a world in light mode
+   too — and, more practically, so the engine mounted inside it
+   inherits one coherent set of colours instead of a light card
+   sitting in a dark corridor.
+   ================================================================ */
+
+.mission-scene {
+  --bg: #0b0f1a; --panel: #131a2b; --text: #e8ecf6; --muted: #9aa5bd;
+  --violet: #a78bfa; --teal: #2dd4bf; --border: #232d45;
+  --rowhover: rgba(148,163,184,.06); --shadow: rgba(0,0,0,.45);
+  color: var(--text); min-height: 460px;
+}
+.mission-scene .scene-stage { min-height: 460px; }
+
+.ms-arrive, .ms-ask, .ms-end { max-width: 46ch; margin: 0 auto; text-align: center; }
+.ms-arrive { padding-top: 18px; }
+.ms-face { display: flex; justify-content: center; margin-bottom: 10px; }
+.ms-line {
+  margin: 6px 0 10px; padding: 0; border: 0; font-size: clamp(1.05rem, 3.4vw, 1.32rem);
+  line-height: 1.55; font-style: italic; color: #f1f5fb;
+}
+.ms-who { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--violet); font-weight: 700; }
+.ms-who span { color: var(--muted); font-weight: 400; letter-spacing: .04em; text-transform: none; }
+.ms-go { margin-top: 20px; }
+
+.ms-say { font-size: .98rem; line-height: 1.6; }
+.ms-say p { margin: 0 0 10px; }
+.ms-say-sm { font-size: .94rem; text-align: center; margin: 4px 0 12px; min-height: 3.2em; }
+.ms-quiet { color: var(--muted); font-style: italic; }
+.ms-cost {
+  margin: 16px 0 0; padding: 11px 14px; border-radius: 12px; font-size: .87rem; line-height: 1.55;
+  color: var(--muted); background: rgba(167,139,250,.07); border: 1px solid rgba(167,139,250,.22);
+}
+
+.ms-hud { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.ms-face-sm { margin: 0; }
+.ms-meter { flex: 1 1 auto; min-width: 0; }
+.ms-engine { margin-top: 4px; }
+
+/* the moment she is wrong — three ways out, and the game punishes none of them */
+.ms-choice {
+  margin: 4px 0 16px; padding: 14px; border-radius: 14px;
+  background: rgba(11,15,26,.62); border: 1px solid rgba(167,139,250,.34);
+}
+.ms-choice-h {
+  font-size: .76rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--violet); font-weight: 700; margin-bottom: 10px; text-align: center;
+}
+.ms-opt {
+  display: block; width: 100%; text-align: left; margin: 0 0 8px; padding: 11px 14px;
+  min-height: 46px; border-radius: 11px; cursor: pointer; font: inherit; font-size: .95rem;
+  color: var(--text); background: rgba(19,26,43,.9); border: 1px solid var(--border);
+  transition: border-color .2s ease, transform .2s cubic-bezier(.22,.7,.3,1);
+}
+.ms-opt span { display: block; font-size: .8rem; color: var(--muted); margin-top: 2px; }
+.ms-opt:hover { border-color: var(--teal); transform: translateX(3px); }
+.ms-opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.ms-opt-key { border-color: rgba(45,212,191,.42); }
+.ms-opt-key:hover { border-color: var(--teal); }
+
+.ms-endh { margin: 4px 0 12px; font-size: 1.42rem; font-weight: 800; color: #f1f5fb; }
+.ms-duo { margin: 0 0 8px; font-style: italic; font-size: 1.06rem; color: #f1f5fb; }
+.ms-note { color: var(--muted); font-size: .9rem; }
+.ms-codex {
+  margin: 16px 0 0; padding: 13px 15px; border-radius: 13px; text-align: left; font-size: .88rem; line-height: 1.55;
+  background: rgba(45,212,191,.08); border: 1px solid rgba(45,212,191,.30); color: var(--text);
+}
+.ms-codex span { color: var(--muted); }
+.ms-again { margin: 18px 0 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.ms-bar { position: absolute; right: 12px; top: 12px; z-index: 4; }
+
+@media (max-width: 719px) {
+  .mission-scene, .mission-scene .scene-stage { min-height: 420px; }
+  .ms-hud { gap: 10px; }
+  .ms-bar { right: 8px; top: 8px; }
+  .ms-line { font-size: 1.02rem; }
+}
+@media (prefers-reduced-motion: reduce) { .ms-opt { transition: none; } }
+
+/* The Arcade's showcase card — one rebuilt mission, offered before the floor. */
+.showcase {
+  position: relative; margin: 0 0 26px; padding: 26px 24px; border-radius: 18px; overflow: hidden;
+  border: 1px solid rgba(167,139,250,.34);
+  background:
+    radial-gradient(90% 130% at 18% 0%, rgba(167,139,250,.16), transparent 62%),
+    radial-gradient(70% 120% at 88% 100%, rgba(45,212,191,.13), transparent 60%),
+    var(--panel);
+}
+.showcase-lead { max-width: 60ch; }
+.showcase-tag {
+  display: inline-block; margin-bottom: 10px; padding: 4px 11px; border-radius: 999px;
+  font-size: .72rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--violet); background: rgba(167,139,250,.14); border: 1px solid rgba(167,139,250,.34);
+}
+.showcase h2 { margin: 0 0 10px; }
+.showcase h2::after { display: none; }
+.showcase p { margin: 0 0 10px; }
+.showcase-note { font-size: .86rem; color: var(--muted); }
+.showcase .bigplay { margin-top: 8px; }
+@media (max-width: 719px) { .showcase { padding: 20px 16px; } }
+
+/* Touch targets. The 2026-07-30 mobile pass raised `.orsm` and `.lv` to the
+   44px minimum but missed `.preset`, which is the most-used control on the
+   site — it drives every widget on every page and sat at 30px. Found while
+   measuring the rebuilt mission at 375px, 2026-08-02. */
+@media (max-width: 719px) {
+  .preset { min-height: 44px; padding-top: 9px; padding-bottom: 9px; }
+  .scene-audio { min-height: 44px; }
+}

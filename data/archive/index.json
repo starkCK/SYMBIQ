@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "count": 5,
+  "count": 6,
   "entries": [
     {
       "date": "2026-07-19",
@@ -31,6 +31,12 @@
       "qnum": 5,
       "tier": "g",
       "question": "Your bank says \"we use encryption, we're safe.\" A quantum-aware friend says \"your data might already be stolen — just not read yet.\" What attack "
+    },
+    {
+      "date": "2026-08-02",
+      "qnum": 6,
+      "tier": "y",
+      "question": "Quantum computers are worse than classical computers at almost everything classical computers already do well — email, spreadsheets, web browsing, ordinary arit"
     }
   ]
 }

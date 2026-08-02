@@ -388,7 +388,8 @@
             if (s.played > cleared) {
               cleared = s.played;
               if (s.holeScore != null && s.holeScore <= s.par) atPar++;
-              if (cleared >= C.mission.doors && !ended) { ended = true; setTimeout(next, 1500); }
+              // three doors open IS the act — see the note on C.clear
+              if (cleared >= C.mission.doors && !ended) { ended = true; C.clear(); setTimeout(next, 1500); }
             }
             if (!ended) paintVoice(s);
           }
@@ -401,8 +402,12 @@
         });
 
         function paintVoice(s) {
-          var left = Math.max(0, C.mission.doors - s.played);
-          voice.innerHTML = '<p><strong>Door ' + Math.min(s.played + 1, C.mission.doors) + ' of ' + C.mission.doors +
+          /* Number the door you are STANDING at, not the count you have opened.
+             The engine holds you on a cleared door for 1.4 s before it advances
+             (games.js `play`), and counting opened doors made the header read
+             "Door 2 of 3" for that whole beat while it described door 1's lock
+             directly underneath. Caught by driving it, not by reading it. */
+          voice.innerHTML = '<p><strong>Door ' + Math.min(s.hi + 1, C.mission.doors) + ' of ' + C.mission.doors +
             '.</strong> The lock reads <strong>' + s.name + '</strong> &mdash; ' + s.par +
             ' ' + (s.par === 1 ? 'turn' : 'turns') + '. <span class="ms-hint">' + s.hint + '</span></p>';
           renderTell(s);
@@ -1071,12 +1076,17 @@
                        b: s.quantum ? 0.35 : 0.9 });
             if (ended) return;
             if (s.aliceGivenBob0 != null) marg = [s.aliceGivenBob0, s.aliceGivenBob1];
-            if (stage === 0) {
+            /* Stage 0.5 is "the choice is on screen and not yet taken". Keep
+               narrating through it: a player who goes on clicking Play 1,000
+               while the button waits would otherwise read "2,000 rounds" in the
+               line above a panel that says 8,000 — a sentence contradicting the
+               number beside it, which is this project's signature defect. */
+            if (stage === 0 || stage === 0.5) {
               classicalRate = s.rate;
               voice.innerHTML = '<p><strong>Best classical.</strong> ' +
                 (s.rounds ? s.rounds.toLocaleString('en-US') + ' rounds, <strong>' + (s.rate * 100).toFixed(1) + '%</strong>. ' : '') +
                 'Play a few thousand and watch it refuse to climb past 75.</p>';
-              if (s.rounds >= 2000) offerQuantum();
+              if (stage === 0 && s.rounds >= 2000) offerQuantum();
             } else if (stage === 1) {
               quantumRate = s.rate;
               margN = s.margN || margN;
@@ -1334,6 +1344,18 @@
         coherence: window.SymbiQ.coherence || null,
         outcome: null,
         click: function () { S.audio.click(); },
+        /* A mission's objective is the MISSION's business, not the engine's.
+           Four of the five acts finish exactly where their engine already
+           declares a win, so games.js writes the save itself and nothing more
+           is needed here. Act I is the deliberate exception: Circuit Golf
+           scores a full round of nine holes and the act is three doors, so the
+           engine would never mark it and the Path could never open Act II.
+           `completeMission` is idempotent, so a mission that calls this over an
+           engine that already fired costs nothing. */
+        clear: function () {
+          var SV = window.SymbiQ && window.SymbiQ.save;
+          return SV ? SV.completeMission(id) : false;
+        },
         // Grover hears its own mistake: the pitch rises with the amplitude and
         // FALLS on over-rotation, so you hear the error before you read it.
         tone: function (p) { S.audio.tone(220 + 520 * Math.max(0, Math.min(1, p)), 190); },

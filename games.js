@@ -1211,6 +1211,353 @@
     }
   };
 
+  /* ==================================================================== *
+   *  THE DECODER DUEL — the finale's engine (Act VI, The Knot, Halden)   *
+   *                                                                      *
+   *  Ported out of qec.html so the Path and the Arcade can mount the     *
+   *  same machine the explainer runs, exactly as CHSH was ported for     *
+   *  Act V. THE ARITHMETIC IS UNCHANGED — same layout, same check        *
+   *  structure, same exhaustive minimum-weight decoder over all 512      *
+   *  bit-flip patterns, same round mix. Only the DOM plumbing differs:   *
+   *  this copy builds its own markup inside whatever element it is       *
+   *  handed instead of reaching for page ids.                            *
+   *                                                                      *
+   *  Verified independently in Python before the port (a reimplementation *
+   *  written from the physics, not from this code):                      *
+   *    · exactly 6 of the 12 adjacent pairs fool matching — all six      *
+   *      VERTICAL, i.e. along the logical-X direction                    *
+   *    · matching holds 9/9 single flips, 0/6 pure pair firings, and     *
+   *      14/42 pair-plus-stray rounds                                    *
+   *    · expected score over the ten-round structure: matching 4.67,     *
+   *      "always repair the pair" 7.93, informed-optimal 9.26            *
+   *    · the residue is real: one or two of the nine single flips per    *
+   *      chip trip the IDENTICAL alarm as the coupled pair, so even a    *
+   *      perfect player loses those — 81.5% on single rounds             *
+   *                                                                      *
+   *  ONE DELIBERATE ADDITION over the qec.html copy: `onState` carries   *
+   *  matching's proposed repair BEFORE you commit. That is the           *
+   *  opponent's public bet, not the truth — the truth (`truth`) is       *
+   *  emitted only once the round is revealed — and the finale needs it,  *
+   *  because automation bias is only possible when the machine's answer  *
+   *  is available to take. Nothing about scoring consults it.            *
+   * ==================================================================== */
+  G.duel = {
+    id: 'duel', title: 'Decoder Duel', mentor: 'Halden',
+    hook: 'Ten rounds against the decoder the field has run since 2001 — on a chip nobody told it about.',
+    about: {
+      goal: 'Read the alarms, repair what you think flipped, and hold the logical qubit more often than <strong>minimum-weight matching</strong> does over ten rounds.',
+      how: 'Click the qubits you would repair, then <strong>Commit</strong>. The truth is revealed after every round and kept in the history table — that history is your training data.',
+      inspired: 'Minimum-weight matching (Edmonds 1965; Dennis, Kitaev, Landahl &amp; Preskill 2001) against a learned decoder — the AlphaQubit result (Bausch et al., <em>Nature</em> 2024).',
+      learn: 'Why a decoder that was handed an idealised noise model loses to one that reads the device it is actually running on.',
+      link: 'qec.html#duel', linkText: 'The full explainer ▸', tier: '⟦Proven⟧',
+      or: 'Matching is an operations-research algorithm'
+    },
+    honest: 'Honest model: the lattice, the checks and the matching decoder are exact — the standard d=3 rotated surface code (Tomita &amp; Svore 2014) with true minimum-weight inference over all 512 bit-flip patterns. The fiction is the defect: one fixed, always-on coupled pair is far more blatant than real chip noise, which is a drifting mess of leakage, cross-talk and correlated readout spread over a d=3 or d=5 patch and 25 measurement rounds, inferred from hundreds of millions of simulated shots and thousands of real ones rather than ten. Measured over every chip and every round this game can deal: matching holds <strong>9 of 9</strong> single flips, <strong>0 of 6</strong> coupled-pair firings and <strong>14 of 42</strong> pair-plus-stray rounds — an expected <strong>4.7 of 10</strong>. Simply repairing the pair whenever its alarm fires reaches <strong>7.9</strong>; playing every round properly reaches <strong>9.3</strong>, and no further, because on each chip one or two of the nine single flips trip the <em>identical</em> alarm as the pair. Those rounds are genuinely undecidable and nobody wins them reliably — that irreducible residue is the <em>floor</em> under the logical error rate, not a flaw in the game.',
+    mount: function (root, opts) {
+      var mission = !!(opts && opts.mode === 'mission');
+      var OPP = mission ? 'The reading' : 'Matching';
+      // same surface-17 conventions and decoder as qec.html's explorer widget
+      var ZS = [[0, 1, 3, 4], [4, 5, 7, 8], [2, 5], [3, 6]];
+      var XS = [[0, 1], [1, 2, 4, 5], [3, 4, 6, 7], [7, 8]];
+      var ZNAME = ['Z₁', 'Z₂', 'Z₃', 'Z₄'];
+      var POS = [[90, 75], [180, 75], [270, 75], [90, 165], [180, 165], [270, 165], [90, 255], [180, 255], [270, 255]];
+      // Vertical neighbour pairs only. Verified exhaustively: each of these,
+      // firing as a unit, lands minimum-weight matching in the WRONG logical
+      // class every time. The six horizontal ones do not — matching survives
+      // those, so they would make a pointless duel.
+      var PAIRS = [[0, 3], [3, 6], [1, 4], [4, 7], [2, 5], [5, 8]];
+      var ROUNDS = 10;
+
+      function mask(l) { var m = 0; for (var i = 0; i < l.length; i++) m |= 1 << l[i]; return m; }
+      function weight(e) { var w = 0; while (e) { w += e & 1; e >>= 1; } return w; }
+      var zM = ZS.map(mask), xM = XS.map(mask);
+      function synd(e) { var o = 0; for (var i = 0; i < 4; i++) if (weight(e & zM[i]) & 1) o |= 1 << i; return o; }
+
+      var xGroup = {};
+      for (var st = 0; st < 16; st++) {
+        var gg = 0;
+        for (var gi = 0; gi < 4; gi++) if (st & (1 << gi)) gg ^= xM[gi];
+        xGroup[gg] = true;
+      }
+      var order = [];
+      for (var pp = 0; pp < 512; pp++) order.push(pp);
+      order.sort(function (a, b) { return (weight(a) - weight(b)) || (a - b); });
+      function decode(t) { for (var i = 0; i < order.length; i++) if (synd(order[i]) === t) return order[i]; return 0; }
+      // A repair succeeds when the leftover is a stabilizer: something happened, nothing changed.
+      function held(resid) { return synd(resid) === 0 && !!xGroup[resid]; }
+
+      function rnd(n) { return Math.floor(Math.random() * n); }
+      function qlist(e) { var o = []; for (var i = 0; i < 9; i++) if (e & (1 << i)) o.push('q' + i); return o.join(' + '); }
+      function chips(e, kind) {
+        if (!e) return '<span class="chip">nothing</span>';
+        var o = [];
+        for (var i = 0; i < 9; i++) if (e & (1 << i)) o.push('<span class="chip ' + kind + '">q' + i + '</span>');
+        return o.join('');
+      }
+      function fired(s) { var nm = []; for (var i = 0; i < 4; i++) if (s & (1 << i)) nm.push(ZNAME[i]); return nm.length ? nm.join(', ') : 'none'; }
+
+      // 4 ordinary single flips, 4 crosstalk-pair firings, 2 pair-plus-a-stray.
+      // Round 1 is always an ordinary flip so the interface is learned on a fair round.
+      function buildRounds(pair) {
+        var pe = mask(pair), list = [1 << rnd(9)], kinds = [], i;
+        for (i = 0; i < 3; i++) kinds.push('single');
+        for (i = 0; i < 4; i++) kinds.push('pair');
+        for (i = 0; i < 2; i++) kinds.push('both');
+        for (i = kinds.length - 1; i > 0; i--) { var j = rnd(i + 1), t = kinds[i]; kinds[i] = kinds[j]; kinds[j] = t; }
+        kinds.forEach(function (k) {
+          if (k === 'single') list.push(1 << rnd(9));
+          else if (k === 'pair') list.push(pe);
+          else { var x; do { x = rnd(9); } while (pair.indexOf(x) >= 0); list.push(pe | (1 << x)); }
+        });
+        return list;
+      }
+
+      root.innerHTML =
+        '<div class="duelwrap">' +
+          '<div class="hud">' +
+            '<div class="hud-side"><span class="hud-label">You</span><span class="hud-score" data-r="you">0</span></div>' +
+            '<div class="hud-mid" data-r="round">Round 1 of 10</div>' +
+            '<div class="hud-side right"><span class="hud-label">' + OPP + '</span><span class="hud-score" data-r="dec">0</span></div>' +
+          '</div>' +
+          '<div class="dotrow"><span class="who">You</span><span class="dots" data-r="dots-you"></span></div>' +
+          '<div class="dotrow"><span class="who">' + OPP + '</span><span class="dots" data-r="dots-dec"></span></div>' +
+          '<svg class="duelboard" viewBox="0 0 360 330" xmlns="' + NS + '" data-r="svg" ' +
+            'aria-label="Decoder duel: a distance-3 surface code with hidden errors"></svg>' +
+          '<p class="legend">◼ amber = a check firing · <span style="color:var(--teal)">◯ teal ring = your repair</span> · ' +
+            '<span style="color:var(--violet)">◌ violet dashed = the cheapest explanation</span> · ⬤ red = what actually flipped (revealed after you commit)</p>' +
+          '<p class="duelctl">' +
+            '<button type="button" class="preset" data-a="commit">Commit repair</button>' +
+            '<button type="button" class="preset" data-a="next">Next round</button>' +
+            '<button type="button" class="preset" data-a="clear">Clear picks</button>' +
+            '<button type="button" class="preset" data-a="new">New chip</button></p>' +
+          '<div data-r="out" aria-live="polite"></div>' +
+          '<div data-r="log"></div>' +
+        '</div>';
+
+      var svg = $(root, '[data-r=svg]'),
+          out = $(root, '[data-r=out]'),
+          logBox = $(root, '[data-r=log]'),
+          hudYou = $(root, '[data-r=you]'),
+          hudDec = $(root, '[data-r=dec]'),
+          hudRound = $(root, '[data-r=round]'),
+          dotsYou = $(root, '[data-r=dots-you]'),
+          dotsDec = $(root, '[data-r=dots-dec]'),
+          bCommit = $(root, '[data-a=commit]'),
+          bNext = $(root, '[data-a=next]'),
+          bClear = $(root, '[data-a=clear]');
+
+      function sel(tag, attrs) { var n = el(tag, attrs); svg.appendChild(n); return n; }
+      sel('rect', { 'class': 'px', x: 180, y: 75, width: 90, height: 90 });
+      sel('rect', { 'class': 'px', x: 90, y: 165, width: 90, height: 90 });
+      sel('path', { 'class': 'px', d: 'M90 75 A45 45 0 0 1 180 75 Z' });
+      sel('path', { 'class': 'px', d: 'M180 255 A45 45 0 0 0 270 255 Z' });
+      var zEls = [
+        sel('rect', { 'class': 'pq', x: 90, y: 75, width: 90, height: 90 }),
+        sel('rect', { 'class': 'pq', x: 180, y: 165, width: 90, height: 90 }),
+        sel('path', { 'class': 'pq', d: 'M270 75 A45 45 0 0 1 270 165 Z' }),
+        sel('path', { 'class': 'pq', d: 'M90 165 A45 45 0 0 0 90 255 Z' })
+      ];
+      var zLbl = [[129, 124], [219, 214], [286, 124], [74, 214]];
+      for (var li = 0; li < 4; li++) {
+        sel('text', { 'class': 'plabel', x: zLbl[li][0], y: zLbl[li][1] }).textContent = ZNAME[li];
+      }
+      var decRings = POS.map(function (q) { return sel('circle', { 'class': 'decring', cx: q[0], cy: q[1], r: 27, visibility: 'hidden' }); });
+      var pickRings = POS.map(function (q) { return sel('circle', { 'class': 'pickring', cx: q[0], cy: q[1], r: 21, visibility: 'hidden' }); });
+      var qEls = POS.map(function (q, idx) {
+        /* The qubit a player taps is drawn at r=15, which is 30px only when the
+           board is at its full 360. On a phone the board sits at ~258px and that
+           becomes 21px — half the 44px touch minimum, on the primary control of
+           the whole mission. So each qubit carries an INVISIBLE r=31 hit circle
+           (44px rendered at a 256px board, and 62px across against a 90px grid
+           pitch, so no two of them can overlap). The drawn geometry is the
+           referee-verified surface-17 layout and is not touched. */
+        var g = sel('g', { 'class': 'dqwrap' });
+        // data-q is plumbing, not physics: it lets a mission scene drive these
+        // the way a finger does, which is the only channel it is allowed.
+        var c = el('circle', { 'class': 'dq', cx: q[0], cy: q[1], r: 15, tabindex: 0, role: 'button',
+                               'aria-pressed': 'false', 'data-q': idx });
+        var hit = el('circle', { 'class': 'dqhit', cx: q[0], cy: q[1], r: 31 });
+        g.appendChild(c); g.appendChild(hit);
+        function toggle() {
+          if (!Gm || Gm.revealed || Gm.done) return;
+          Gm.pick ^= 1 << idx;
+          render();
+        }
+        g.addEventListener('click', toggle);
+        c.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); }
+        });
+        return c;
+      });
+
+      var Gm = null;
+      function newChip() {
+        var pair = PAIRS[rnd(PAIRS.length)];
+        Gm = { pair: pair, rounds: buildRounds(pair), i: 0, pick: 0, revealed: false, done: false, you: 0, dec: 0, log: [] };
+        render();
+      }
+
+      function emit(extra) {
+        if (!opts || typeof opts.onState !== 'function') return;
+        var R = Gm.rounds[Gm.i], s = synd(R), dec = decode(s), show = Gm.revealed || Gm.done;
+        var o = {
+          phase: Gm.done ? 'finished' : 'render',
+          round: Gm.i + 1, of: ROUNDS, syndrome: s, fired: fired(s),
+          proposal: dec,                       // the opponent's public bet
+          pick: Gm.pick, revealed: Gm.revealed, done: Gm.done,
+          you: Gm.you, dec: Gm.dec, plays: Gm.log.length,
+          truth: show ? R : null,              // never before the reveal
+          pairFired: show ? ((R & mask(Gm.pair)) === mask(Gm.pair)) : null,
+          pair: Gm.done ? Gm.pair.slice() : null,
+          last: Gm.log.length ? Gm.log[Gm.log.length - 1] : null
+        };
+        if (extra) for (var k in extra) o[k] = extra[k];
+        try { opts.onState(o); } catch (e) {}
+      }
+
+      function render() {
+        var R = Gm.rounds[Gm.i], s = synd(R), dec = decode(s), show = Gm.revealed || Gm.done;
+        for (var i = 0; i < 9; i++) {
+          var bit = 1 << i, cls = 'dq';
+          if (show && (R & bit)) { cls += ' flip'; if (Gm.pop) cls += ' popin'; }
+          else if (!show && (Gm.pick & bit)) cls += ' armed';
+          qEls[i].setAttribute('class', cls);
+          qEls[i].setAttribute('aria-pressed', (Gm.pick & bit) ? 'true' : 'false');
+          pickRings[i].setAttribute('visibility', (Gm.pick & bit) ? 'visible' : 'hidden');
+          decRings[i].setAttribute('visibility', (show && (dec & bit)) ? 'visible' : 'hidden');
+        }
+        for (var j = 0; j < 4; j++) zEls[j].setAttribute('class', (s & (1 << j)) ? 'pq lit' : 'pq');
+
+        hudYou.textContent = Gm.you;
+        hudDec.textContent = Gm.dec;
+        hudYou.className = 'hud-score' + (Gm.you > Gm.dec ? ' lead' : '');
+        hudDec.className = 'hud-score' + (Gm.dec > Gm.you ? ' lead' : '');
+        hudRound.textContent = Gm.done ? 'Final' : 'Round ' + (Gm.i + 1) + ' of ' + ROUNDS;
+        renderDots();
+
+        bCommit.disabled = Gm.revealed || Gm.done;
+        bNext.disabled = !Gm.revealed || Gm.done;
+        bClear.disabled = Gm.revealed || Gm.done;
+
+        Gm.pop = false;
+        if (Gm.done) { finalWord(); return; }
+        if (!Gm.revealed) {
+          out.innerHTML = 'Checks firing: <strong>' + fired(s) + '</strong>.<br>' +
+            'Click the qubits you would repair, then <strong>Commit repair</strong>. Repairing nothing is a legal bet — sometimes the right one.';
+        }
+        renderLog();
+        emit();
+      }
+
+      function commit() {
+        if (Gm.revealed || Gm.done) return;
+        var R = Gm.rounds[Gm.i], s = synd(R), dec = decode(s),
+            youOk = held(R ^ Gm.pick), decOk = held(R ^ dec),
+            stray = synd(Gm.pick) !== s;
+        if (youOk) Gm.you++;
+        if (decOk) Gm.dec++;
+        Gm.revealed = true;
+        Gm.log.push({ n: Gm.i + 1, s: s, R: R, youOk: youOk, decOk: decOk });
+
+        var cls, head;
+        if (youOk && !decOk) { cls = 'good'; head = '★ You held the logical qubit — ' + (mission ? 'the reading' : 'matching') + ' lost it.'; }
+        else if (youOk && decOk) { cls = 'good'; head = 'Both of you held it.'; }
+        else if (!youOk && decOk) { cls = 'bad'; head = (mission ? 'The reading' : 'Matching') + ' held it. You lost it.'; }
+        else { cls = 'split'; head = 'Logical error — both of you.'; }
+
+        function tail(okFlag, strayFlag) {
+          if (strayFlag) return 'does not explain the alarms — a detectable error is left behind ✗';
+          return okFlag ? 'residue is a product of checks — logically nothing happened ✓'
+                        : 'residue is a logical operator — the encoded qubit flipped ✗';
+        }
+        var note = '';
+        if (!decOk && (R & mask(Gm.pair)) === mask(Gm.pair)) {
+          note = '<p class="duelnote"><em>It bought the cheapest explanation that fits the alarms. On this chip, that was the wrong bet.</em></p>';
+        }
+        out.innerHTML =
+          '<div class="verdict ' + cls + '">' + head + '</div>' +
+          '<dl class="rows">' +
+          '<dt>Actually flipped</dt><dd>' + chips(R, 'err') + '</dd>' +
+          '<dt>Your repair</dt><dd>' + chips(Gm.pick, 'you') +
+            '<span style="color:var(--muted)">' + tail(youOk, stray) + '</span></dd>' +
+          '<dt>' + (mission ? 'The reading’s repair' : 'Matching’s repair') + '</dt><dd>' + chips(dec, 'dec') +
+            '<span style="color:var(--muted)">' + tail(decOk, false) + '</span></dd>' +
+          '</dl>' + note;
+        Gm.pop = true;
+        render();
+      }
+
+      // Two rows of ten dots: the whole story of the game at a glance — and the
+      // place where the textbook model's blind spot becomes a run of red.
+      function renderDots() {
+        function row(host, key) {
+          var h = '';
+          for (var r = 0; r < ROUNDS; r++) {
+            var rec = Gm.log[r], c = 'dot';
+            if (rec) c += rec[key] ? ' win' : ' lose';
+            if (r === Gm.i && !Gm.done) c += ' now';
+            if (rec && r === Gm.log.length - 1 && Gm.revealed) c += ' pop';
+            h += '<span class="' + c + '" title="Round ' + (r + 1) + '"></span>';
+          }
+          host.innerHTML = h;
+        }
+        row(dotsYou, 'youOk');
+        row(dotsDec, 'decOk');
+      }
+
+      function renderLog() {
+        if (!Gm.log.length) { logBox.innerHTML = ''; return; }
+        var h = '<details open class="duellog"><summary>Chip history — your training data (' + Gm.log.length +
+          ' round' + (Gm.log.length === 1 ? '' : 's') + ')</summary><div class="overflow"><table>' +
+          '<tr><th>#</th><th>Checks fired</th><th>What actually flipped</th><th>You</th><th>' + OPP + '</th></tr>';
+        Gm.log.forEach(function (r) {
+          h += '<tr><td>' + r.n + '</td><td>' + fired(r.s) + '</td><td>' + (r.R ? qlist(r.R) : '—') +
+            '</td><td>' + (r.youOk ? '✓' : '✗') + '</td><td>' + (r.decOk ? '✓' : '✗') + '</td></tr>';
+        });
+        logBox.innerHTML = h + '</table></div></details>';
+      }
+
+      function finalWord() {
+        var cls, lead;
+        if (Gm.you > Gm.dec) {
+          cls = 'good';
+          lead = 'You beat minimum-weight matching, ' + Gm.you + '–' + Gm.dec + '. ' +
+            'You did it the only way it can be done: you stopped assuming the chip was textbook and learned what it actually does. ' +
+            'That is exactly AlphaQubit’s edge — a decoder that reads a real device’s noise off its own data instead of being handed an idealised model of it. ' +
+            '(The architecture is new too: a recurrent transformer that eats the analog readout signal, not just a 0 or a 1.)';
+        } else if (Gm.you === Gm.dec) {
+          cls = 'split';
+          lead = 'Dead heat, ' + Gm.you + '–' + Gm.dec + '. Matching is genuinely hard to beat — it is optimal ' +
+            'right up until its noise model is wrong. Run it again and watch which alarms keep lying to you.';
+        } else {
+          cls = 'bad';
+          lead = 'Matching won, ' + Gm.dec + '–' + Gm.you + '. No shame: it is a very good algorithm, ' +
+            'and the field has agreed with it since 2001. The way past it is not to out-think it round by round — it is to notice the pattern it is structurally blind to.';
+        }
+        out.innerHTML = '<div class="verdict ' + cls + '" style="font-weight:400">' + lead + '</div>' +
+          '<p style="margin:0">The defect on this chip: <strong>q' + Gm.pair[0] + ' ↔ q' + Gm.pair[1] + '</strong> — coupled neighbours that flipped together. ' +
+          'Matching was handed the textbook noise model, not this chip’s, so it always bought the single cheapest flip instead — and paid for it in logical errors. ' +
+          'Tell a matching decoder about this pair and it wins most of those rounds back; the whole point is that nobody has to tell a learned decoder. ' +
+          '<strong>New chip</strong> moves the defect.</p>';
+        renderLog();
+        if (Gm.you > Gm.dec) win('duel', opts);
+        emit();
+      }
+
+      bCommit.addEventListener('click', commit);
+      bNext.addEventListener('click', function () {
+        if (!Gm.revealed || Gm.done) return;
+        Gm.i++;
+        if (Gm.i >= ROUNDS) { Gm.i = ROUNDS - 1; Gm.done = true; render(); return; }
+        Gm.pick = 0; Gm.revealed = false;
+        render();
+      });
+      bClear.addEventListener('click', function () { if (!Gm.revealed && !Gm.done) { Gm.pick = 0; render(); } });
+      $(root, '[data-a=new]').addEventListener('click', newChip);
+      newChip();
+    }
+  };
+
   /* -------------------------------------------------------------------- */
   window.SymbiQ.games = {
     all: G,

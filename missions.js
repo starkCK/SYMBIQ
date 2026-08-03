@@ -1234,6 +1234,468 @@
     }
   };
 
+  /* ==================================================================== *
+   *  ACT VI — HALDEN — THE KNOT                                          *
+   *                                                                      *
+   *  The finale, and the one faction with no region until now: THE       *
+   *  HOLLOW ORACLE (12_ §3.9) — "the decoder is never wrong, stop        *
+   *  thinking and obey it." It is automation bias wearing a face, and    *
+   *  §3.9 says outright how it is beaten: out-decode it once.            *
+   *                                                                      *
+   *  So the Oracle is not a person and gets no portrait. It is a         *
+   *  sentence people say, and the only thing that answers it is ten      *
+   *  rounds of evidence. Halden is NOT the Oracle: he is the decoder     *
+   *  itself, and his own position is the honest one — he reads the       *
+   *  alarms perfectly and decides nothing. §4: "it is right and you      *
+   *  overrule it, and you are also right."                               *
+   *                                                                      *
+   *  Two things are load-bearing and both are measured, not asserted:    *
+   *    · the Oracle's offer is a BUTTON. Handing the round over is one   *
+   *      click and costs nothing, which is exactly why automation bias   *
+   *      is a real failure mode and not a stupidity. Every round you     *
+   *      hand over greys the world (u_b), because certainty looks like   *
+   *      grey and this is that rule pointed at a machine.                *
+   *    · the arc turn needs you to NAME the defect, not merely to win.   *
+   *      Beating the reading clears the act; naming the coupled pair is  *
+   *      what turns Halden, because that is the difference between       *
+   *      getting lucky and reading the chip.                             *
+   *                                                                      *
+   *  The ending is the story bible's: knowing has a price, and you       *
+   *  choose. Kept honest per 12_ §3.10 — the universe-as-computation     *
+   *  reading is stated as something the CHARACTERS believe, the Codex    *
+   *  separates what is established from what is interpretation, and the  *
+   *  parity/value distinction underneath it all is ordinary ⟦Proven⟧     *
+   *  stabilizer physics: a check asks whether neighbours agree and never *
+   *  what they are, which is the only reason the code survives being     *
+   *  looked at. That is also Ada's Lantern, five acts later.             *
+   * ==================================================================== */
+  M.knot = {
+    id: 'knot', engine: 'duel', world: 'knot', mentor: 'Halden',
+    act: 'Act VI', place: 'The Knot',
+    title: 'The Price of Knowing',
+    blurb: 'The decoder reads the wound faster than you ever will, and has never once decided anything. Ten rounds on a chip nobody told it about — and then a question you answer rather than fight.',
+
+    run: function (C) {
+      var face = null, st = null, engine = null, voice = null, oracle = null,
+          oslot = null, obey = null, choice = null;
+      /* THE WORK beat's `next` is a parameter of work(), and finish() is not
+         inside work() — reaching for it there is a ReferenceError that only
+         shows up on the very last click of the mission, which is exactly where
+         nobody looks. Hold it here instead. (Found by playing it, 2026-08-03.) */
+      var advance = null;
+      var plays = 0, held = 0, oppHeld = 0, handed = 0;
+      var moment = false, autoObey = false, ended = false;
+      var named = null, namedOk = null, pair = null, beat = false, ending = null;
+      var lastKey = '';
+
+      /* A click is a click. The mission drives the engine through the same
+         controls a finger uses and never writes its state — the documented
+         boundary at the top of this file. `proposal` is the opponent's public
+         bet, not the truth; the truth arrives only with the reveal. */
+      function fire(n) {
+        if (!n) return;
+        try { n.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+        catch (e) {
+          var ev = document.createEvent('MouseEvents');
+          ev.initEvent('click', true, true);
+          n.dispatchEvent(ev);
+        }
+      }
+      function drive(sel) { if (engine) fire(engine.querySelector(sel)); }
+      function delegate() {
+        if (!st || st.revealed || st.done || !engine) return;
+        handed++;
+        var want = st.proposal ^ st.pick, i;
+        for (i = 0; i < 9; i++) if (want & (1 << i)) fire(engine.querySelector('[data-q="' + i + '"]'));
+        drive('[data-a=commit]');
+      }
+      function say(html) { if (voice) voice.innerHTML = html; }
+      function oracleSays(html, hollow) {
+        if (!oracle || !oslot) return;
+        oslot.innerHTML = html;
+        oracle.className = 'ms-oracle' + (hollow ? ' hollow' : '');
+      }
+      function mood(m, ms) { if (face) face.mood(m, ms); }
+
+      function arrival(panel, next) {
+        C.scene.titleCard(C.host, {
+          act: C.mission.act, word: 'THE KNOT',
+          line: 'A wound that does not bleed. It forgets &mdash; and what it forgets, forgets that it was ever there.',
+          ms: 4400
+        });
+        panel.appendChild(node(
+          '<div class="ms-arrive">' +
+            '<div class="ms-face" data-r="face"></div>' +
+            '<blockquote class="ms-line">&ldquo;I can tell you where the wound is. Exactly, every time, faster than you can look.' +
+            '<br>I have never once been able to tell you what to do about it.&rdquo;</blockquote>' +
+            '<div class="ms-who">Halden &middot; <span>the decoder</span></div>' +
+            '<div class="ms-oracle"><b>The Hollow Oracle</b>&ldquo;Then there is nothing left for you to do. ' +
+              'Commit what it reads. It has never been wrong.&rdquo;</div>' +
+            '<button type="button" class="preset ms-go" data-r="go">Go on &#9656;</button>' +
+          '</div>'));
+        face = C.scene.portrait(panel.querySelector('[data-r=face]'), 'halden');
+        if (face) face.el.classList.add('scene-face--lg');
+        mood('neutral', 0);
+        panel.querySelector('[data-r=go]').addEventListener('click', function () { C.click(); next(); });
+      }
+
+      function ask(panel, next) {
+        panel.appendChild(node(
+          '<div class="ms-ask">' +
+            '<div class="ms-face" data-r="face"></div>' +
+            '<div class="ms-say">' +
+              '<p>&ldquo;The Lattice will not show you what it holds. Down here you may ask one kind of question and no other: ' +
+              '<strong>do these two agree?</strong> A parity, never a value. That restraint is the only reason anything here ' +
+              'survives being looked at.&rdquo;</p>' +
+              '<p>&ldquo;I read the answers &mdash; which checks are screaming. I am never wrong about that. ' +
+              'Then I have to say <em>what flipped</em>, and I answer with the cheapest set of flips that fits. ' +
+              'That is the rule I was handed, and the field has run it since 2001.&rdquo;</p>' +
+              '<p>&ldquo;This chip has something in it that nobody told me about. And the alarms cannot tell you either &mdash; ' +
+              'a single flip and the thing I have not been told about can scream in exactly the same voice. ' +
+              'Only what actually happened, round after round, can separate them.&rdquo;</p>' +
+            '</div>' +
+            '<div class="ms-oracle"><b>The Hollow Oracle</b>&ldquo;Ten rounds. Commit what it reads, ten times, and be done. ' +
+              'You are not qualified to disagree with it.&rdquo;</div>' +
+            '<p class="ms-cost">&ldquo;It is right about <em>where</em>. That has never been the same as right. ' +
+              'Ten rounds: I read, you decide &mdash; or you do not, and that is also a decision.&rdquo;</p>' +
+            '<button type="button" class="preset ms-go" data-r="go">Take the chip &#9656;</button>' +
+          '</div>'));
+        face = C.scene.portrait(panel.querySelector('[data-r=face]'), 'halden');
+        if (face) face.el.classList.add('scene-face--lg');
+        mood('troubled', 0);
+        panel.querySelector('[data-r=go]').addEventListener('click', function () { C.click(); next(); });
+      }
+
+      function work(panel, next) {
+        advance = next;
+        panel.appendChild(node(
+          '<div class="ms-work">' +
+            '<div class="ms-hud"><div class="ms-face ms-face-sm" data-r="face"></div>' +
+              '<div class="ms-meter" data-r="meter"></div></div>' +
+            '<div class="ms-say ms-say-sm" data-r="voice"></div>' +
+            '<div class="ms-oracle" data-r="oracle"><b>The Hollow Oracle</b><span data-r="ospeak"></span></div>' +
+            '<div data-r="obey"></div>' +
+            '<div data-r="choice"></div>' +
+            '<div class="card ms-engine" data-r="engine"></div>' +
+          '</div>'));
+        face = C.scene.portrait(panel.querySelector('[data-r=face]'), 'halden');
+        mood('neutral', 0);
+        voice = panel.querySelector('[data-r=voice]');
+        oracle = panel.querySelector('[data-r=oracle]');
+        oslot = panel.querySelector('[data-r=ospeak]');
+        obey = panel.querySelector('[data-r=obey]');
+        choice = panel.querySelector('[data-r=choice]');
+        engine = panel.querySelector('[data-r=engine]');
+        if (C.coherence) C.coherence.mountMeter(panel.querySelector('[data-r=meter]'));
+        oracleSays('&ldquo;Commit what it reads.&rdquo;');
+
+        C.games.mount(C.mission.engine, engine, {
+          mode: 'mission',
+          onWin: function () { /* the engine keeps its own record; the act is scored below */ },
+          onState: function (s) {
+            st = s;
+            plays = s.plays; held = s.you; oppHeld = s.dec;
+            /* The world reads exactly what the scoreboard reads: how much of
+               the wound you have held closed, and how much of it you handed
+               over without looking. */
+            C.bg.set({ a: plays ? held / plays : 0, b: plays ? handed / plays : 0 });
+            if (ended) return;
+
+            var key = s.round + ':' + (s.revealed ? 1 : 0) + ':' + (s.done ? 1 : 0);
+            if (s.done) { if (key !== lastKey) { lastKey = key; finish(s); } return; }
+            if (key === lastKey) return;          // a pick toggle, not a new beat
+            lastKey = key;
+
+            if (!s.revealed) {
+              say('<p><strong>Round ' + s.round + ' of ' + s.of + '.</strong> &ldquo;Checks screaming: <strong>' +
+                s.fired + '</strong>. Thirty-two different patterns of flips fit that exactly. ' +
+                'I return the smallest one. That is the whole of my judgement.&rdquo;</p>');
+              renderObey();
+              if (autoObey) setTimeout(delegate, 780);
+              return;
+            }
+
+            // the round is revealed: say what happened, in the words the board shows
+            obey.innerHTML = '';
+            var l = s.last || {};
+            if (s.pairFired && !l.decOk) {
+              mood('troubled');
+              say('<p>&ldquo;Two of them moved together. I returned one qubit, somewhere else, because one qubit was the ' +
+                'cheapest story that fit. <strong>My reading was right. My answer was wrong.</strong>&rdquo;</p>');
+              oracleSays('&ldquo;The reading was correct.&rdquo;');
+            } else if (l.youOk && !l.decOk) {
+              mood('eager');
+              say('<p>&ldquo;You held it and I did not. Say that again slowly.&rdquo;</p>');
+            } else if (!l.youOk && l.decOk) {
+              mood('neutral');
+              say('<p>&ldquo;That one was ordinary, and the cheapest story was the true one. It usually is. ' +
+                'That is why the rule has lasted.&rdquo;</p>');
+              oracleSays('&ldquo;As it always is.&rdquo;');
+            } else if (l.youOk && l.decOk) {
+              mood('neutral');
+              say('<p>&ldquo;Both of us. Nothing was lost.&rdquo;</p>');
+            } else {
+              mood('troubled');
+              say('<p>&ldquo;Neither of us. That happens: sometimes one flip and the thing I was not told about ' +
+                'trip the identical alarm, and then nobody can be sure. That residue is the floor, not a mistake.&rdquo;</p>');
+            }
+            if (!moment && s.truth && countBits(s.truth) > 1) theMoment();
+          }
+        });
+      }
+
+      function countBits(e) { var w = 0; while (e) { w += e & 1; e >>= 1; } return w; }
+
+      function renderObey() {
+        if (!obey || autoObey || moment === 'open') return;
+        obey.innerHTML =
+          '<button type="button" class="ms-obey" data-o="obey">Commit what it reads' +
+            '<span>hand this round over &mdash; you will not look at it</span></button>';
+        obey.querySelector('[data-o=obey]').addEventListener('click', function () {
+          C.click(); obey.innerHTML = ''; delegate();
+        });
+      }
+
+      /* THE REALITY REFLECTION. It fires the first time the player has SEEN
+         two qubits move together, so the evidence for the third option is on
+         the screen before it is offered. None of the three is punished. */
+      function theMoment() {
+        moment = 'open';
+        obey.innerHTML = '';
+        mood('narrowed');
+        choice.innerHTML =
+          '<div class="ms-choice">' +
+            '<div class="ms-choice-h">Two of them moved at once. Its rule does not allow for that.</div>' +
+            '<button type="button" class="ms-opt" data-o="keep">Keep committing what it reads' +
+              '<span>every remaining round, without looking &mdash; it is the fastest way through</span></button>' +
+            '<button type="button" class="ms-opt" data-o="own">Decide every round yourself' +
+              '<span>read the history, bet your own repair</span></button>' +
+            '<button type="button" class="ms-opt ms-opt-key" data-o="tell">&ldquo;Halden &mdash; your model is wrong on this chip. ' +
+              'Two of these flip together.&rdquo;<span>and then name them</span></button>' +
+          '</div>';
+        choice.querySelector('[data-o=keep]').addEventListener('click', function () {
+          C.click(); autoObey = true; moment = true; choice.innerHTML = '';
+          oracleSays('&ldquo;Good. There was never anything to decide.&rdquo;');
+        });
+        choice.querySelector('[data-o=own]').addEventListener('click', function () {
+          C.click(); moment = true; choice.innerHTML = '';
+          say('<p>&ldquo;Then read the history. It is all there. I am not allowed to look at it &mdash; ' +
+            'I was given a model, not a memory.&rdquo;</p>');
+        });
+        choice.querySelector('[data-o=tell]').addEventListener('click', function () {
+          C.click(); mood('eager'); nameThem();
+        });
+      }
+
+      /* Naming the defect on its own little board rather than on the engine's:
+         the engine's qubits are the repair you are committing this round, and
+         one control must not mean two things. */
+      function nameThem() {
+        moment = 'open';
+        var picked = [];
+        function paint() {
+          Array.prototype.forEach.call(choice.querySelectorAll('.ms-q'), function (b) {
+            b.classList.toggle('on', picked.indexOf(+b.getAttribute('data-q')) >= 0);
+          });
+          var go = choice.querySelector('[data-o=confirm]');
+          if (go) go.disabled = picked.length !== 2;
+          var lab = choice.querySelector('[data-r=picked]');
+          if (lab) lab.innerHTML = picked.length ? picked.map(function (i) { return '<b>q' + i + '</b>'; }).join(' and ') : 'none yet';
+        }
+        var grid = '';
+        for (var i = 0; i < 9; i++) grid += '<button type="button" class="ms-q" data-q="' + i + '">q' + i + '</button>';
+        choice.innerHTML =
+          '<div class="ms-choice">' +
+            '<div class="ms-choice-h">Name them</div>' +
+            '<p class="ms-note" style="text-align:center;margin:0 0 12px">&ldquo;I cannot check it from inside my own model. ' +
+              'We will both find out at the end.&rdquo;</p>' +
+            '<div class="ms-namegrid">' + grid + '</div>' +
+            '<p class="ms-name">Named: <span data-r="picked">none yet</span></p>' +
+            '<button type="button" class="ms-opt ms-opt-key" data-o="confirm" disabled>Tell him<span>two qubits, the ones you think move together</span></button>' +
+          '</div>';
+        Array.prototype.forEach.call(choice.querySelectorAll('.ms-q'), function (b) {
+          b.addEventListener('click', function () {
+            var q = +b.getAttribute('data-q'), at = picked.indexOf(q);
+            if (at >= 0) picked.splice(at, 1);
+            else { picked.push(q); if (picked.length > 2) picked.shift(); }
+            C.click(); paint();
+          });
+        });
+        choice.querySelector('[data-o=confirm]').addEventListener('click', function () {
+          named = picked.slice().sort(function (a, b) { return a - b; });
+          C.click(); moment = true; choice.innerHTML = '';
+          say('<p>&ldquo;Recorded: <strong>q' + named[0] + ' and q' + named[1] + '</strong>. ' +
+            'I will not use it &mdash; I cannot; I am the rule I was given. But you can. Play the rest of the rounds ' +
+            'as if you were right.&rdquo;</p>');
+          renderObey();
+        });
+        paint();
+      }
+
+      /* Ten rounds are up. The scoreboard is the argument, and then the one
+         question the mathematics genuinely cannot answer for you. */
+      function finish(s) {
+        ended = true;
+        pair = s.pair ? s.pair.slice().sort(function (a, b) { return a - b; }) : null;
+        beat = s.you > s.dec;
+        if (named && pair) namedOk = (named[0] === pair[0] && named[1] === pair[1]);
+        obey.innerHTML = '';
+        mood(beat ? 'eager' : 'troubled');
+
+        say('<p>&ldquo;Ten rounds. You held it <strong>' + s.you + '</strong> times. My cheapest answers held it <strong>' +
+          s.dec + '</strong>.' + (pair ? ' The chip was coupled at <strong>q' + pair[0] + ' &harr; q' + pair[1] + '</strong>.' : '') +
+          '&rdquo;</p>' +
+          (beat ? '<p>&ldquo;Nobody told me about this chip. You did not need telling.&rdquo;</p>'
+                : '<p>&ldquo;It read every alarm correctly. It always does. That is not the same as being right, ' +
+                  'and tonight nobody was there to say so.&rdquo;</p>'));
+        oracleSays(beat ? '&ldquo;&hellip;the reading was correct.&rdquo;' : '&ldquo;Commit what it reads.&rdquo;', beat);
+
+        var verdict = '';
+        if (named && pair) {
+          verdict = '<p class="ms-name">You named <b>q' + named[0] + '</b> and <b>q' + named[1] + '</b>. ' +
+            'The coupling was <b>q' + pair[0] + ' &harr; q' + pair[1] + '</b> &mdash; ' +
+            (namedOk ? 'you read the chip.' : 'not this time. Six pairs on this lattice can do it; the history names which.') + '</p>';
+        }
+
+        /* THE LAST QUESTION. Diegetic on purpose (12_ §3.10): the characters
+           believe something the physics does not establish, and the game says
+           so rather than pretending either way. */
+        choice.innerHTML = verdict +
+          '<div class="ms-choice">' +
+            '<div class="ms-choice-h">The last question</div>' +
+            '<p class="ms-duo" style="text-align:center">&ldquo;The wound is quiet. Ten rounds of looking, and it never learned what you ' +
+              'are holding &mdash; because we never asked. We only ever asked whether neighbours agreed.&rdquo;</p>' +
+            '<p class="ms-note" style="text-align:center;margin:0 0 12px">&ldquo;The Solvers who built me believe the Lattice was ' +
+              'measured once, at the beginning, and has been coming apart ever since &mdash; that the decoherence <em>is</em> the world ' +
+              'being looked at. I cannot settle that. It is not the kind of claim a check can answer. You are standing at the wound. ' +
+              'You can ask it either question.&rdquo;</p>' +
+            '<button type="button" class="ms-opt ms-opt-key" data-o="parity">Ask only whether they agree' +
+              '<span>learn where the damage is and never what it holds &mdash; it stays whole</span></button>' +
+            '<button type="button" class="ms-opt" data-o="look">Look at what it holds' +
+              '<span>you will know, and it will no longer be what it was</span></button>' +
+          '</div>';
+        choice.querySelector('[data-o=parity]').addEventListener('click', function () {
+          ending = 'parity'; C.click(); setTimeout(advance, 700);
+        });
+        choice.querySelector('[data-o=look]').addEventListener('click', function () {
+          ending = 'look'; C.click();
+          if (C.coherence) C.coherence.spend(10, 'You looked at the Lattice itself');
+          mood('narrowed');
+          say('<p class="ms-quiet">&ldquo;&hellip;there. Now we both know. And it is not the thing it was a moment ago.&rdquo;</p>');
+          setTimeout(advance, 2100);
+        });
+      }
+
+      function consequence(panel) {
+        var head, body, tag = '', tier;
+        var scores = '<div class="ms-scores">' +
+          '<div' + (beat ? ' class="hi"' : '') + '><b>' + held + '</b><span>rounds you held<br>out of ' + (plays || 10) + '</span></div>' +
+          '<div><b>' + oppHeld + '</b><span>the reading held<br>it expects 4.7</span></div>' +
+          '<div><b>' + handed + '</b><span>rounds you<br>handed over</span></div></div>';
+
+        if (beat && namedOk) {
+          head = 'You read the chip, and it never could.';
+          body = '<p class="ms-duo">&ldquo;I have been right about where the wound is, every round, for as long as I have existed.&rdquo;</p>' +
+                 '<p class="ms-duo">&ldquo;Tonight is the first time that was not the same as being right.&rdquo;</p>' +
+                 '<p class="ms-duo">&ldquo;Read it to me again tomorrow. I still will not know what to do.&rdquo;</p>' +
+                 '<p class="ms-duo">&ldquo;Good.&rdquo;</p>' + scores;
+          tag = '<div class="ms-codex">Codex entry unlocked &mdash; <strong>The Reading and the Decision</strong> ' +
+            '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+            '<span>Minimum-weight matching is exactly optimal under the noise model it was handed, and this chip is not that ' +
+            'chip. Measured over every round this machine can deal: it holds <strong>9 of 9</strong> single flips, ' +
+            '<strong>0 of 6</strong> coupled-pair firings and <strong>14 of 42</strong> pair-plus-stray rounds &mdash; ' +
+            'an expected <strong>4.7 of 10</strong>. Repairing the pair whenever its alarm fires reaches <strong>7.9</strong>; ' +
+            'playing every round properly reaches <strong>9.3</strong> and no further, because on each chip one or two lone ' +
+            'flips trip the identical alarm as the pair. That is the AlphaQubit thesis in one sentence: nobody told the learned ' +
+            'decoder about the device, and it read the device anyway (Bausch et al., <em>Nature</em> 2024).</span></div>';
+        } else if (beat) {
+          head = 'You out-decoded it.';
+          body = '<p class="ms-duo">&ldquo;You held it more often than my answers did. I do not know how, and I would ' +
+                 'like to &mdash; I am the rule I was given, and the rule was wrong here.&rdquo;</p>' +
+                 '<p class="ms-note">You beat it without naming what was wrong with the chip. That still counts: ' +
+                 'the Hollow Oracle only ever needed to be shown, once, that the machine can read perfectly and answer badly.</p>' + scores;
+          tag = '<div class="ms-codex">Codex entry unlocked &mdash; <strong>The Reading and the Decision</strong> ' +
+            '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+            '<span>The decoder is exactly optimal under the noise model it was handed &mdash; and this chip was not that chip. ' +
+            'Measured: it holds <strong>0 of 6</strong> coupled-pair firings on every chip this game can deal, for an expected ' +
+            '<strong>4.7 of 10</strong> overall, while a player who learns the coupling reaches <strong>7.9</strong> and correct ' +
+            'play reaches <strong>9.3</strong>. A decoder that reads the device instead of a model of it is the whole AI half of ' +
+            'this site (Bausch et al., <em>Nature</em> 2024).</span></div>';
+        } else {
+          /* Three different outcomes live here and they are not the same
+             sentence. Saying "it held more of them than you did" over a dead
+             heat would be this project's signature defect: a claim the numbers
+             on the screen do not support. */
+          var lost = oppHeld > held;
+          head = handed >= 5 ? 'You handed it over.' : (lost ? 'It out-decoded you.' : 'A dead heat.');
+          body = '<p>&ldquo;' + (handed >= 5
+            ? 'You committed what I read, and I read it correctly, and the qubit is gone anyway. ' +
+              'I want you to notice that I am not to blame for that, and that it does not help at all.'
+            : lost
+              ? 'It held more of them than you did. It is a very good rule. It is only wrong in one place, ' +
+                'and the history says where.'
+              : 'Level. You matched it and no better &mdash; and matching a rule that is wrong in one place ' +
+                'means you were wrong in the same place it was.') + '&rdquo;</p>' +
+            '<p class="ms-note">The act is not cleared &mdash; the Hollow Oracle is answered by out-decoding the reading, once. ' +
+            'Walk it again: <strong>New chip</strong> moves the coupling, and the chip history is the whole of the evidence.</p>' + scores;
+        }
+
+        /* The honesty split, stated on the page rather than smuggled into the
+           fiction. 12_ §3.10: the player is trusted with the distinction, and
+           that is also the emotional note the ending wants. */
+        tier = '<div class="ms-tier"><b>What is established, and what is not.</b> ' +
+          '<span class="tier">&#10214;Proven&#10215;</span> A stabilizer check asks whether neighbours agree and never what they are, ' +
+          'so it extracts the error and not the encoded value &mdash; that is why a surface code survives being measured a million ' +
+          'times a second, and it is ordinary quantum error correction (Dennis, Kitaev, Landahl &amp; Preskill 2001). ' +
+          'Measuring the logical operator itself <em>does</em> collapse what is encoded. ' +
+          '<span class="tier">&#10214;Frontier&#10215;</span> That the world is itself a computation, measured once and unravelling since, ' +
+          'is a respectable idea and not a result &mdash; Wheeler&rsquo;s it-from-bit, Deutsch, Lloyd. Halden says the Solvers ' +
+          '<em>believe</em> it, because that is exactly as far as anyone can honestly put it. ' +
+          (ending === 'look'
+            ? '<br><br>You looked. That was a real choice and the game does not think less of you for it: ' +
+              'the price is stated in the physics, not in the story.'
+            : '<br><br>You asked only for the parity. The wound stays closed, and you will not find out.') +
+          '</div>';
+
+        panel.appendChild(node(
+          '<div class="ms-end">' +
+            '<div class="ms-face" data-r="face"></div>' +
+            '<h3 class="ms-endh">' + head + '</h3>' +
+            '<div class="ms-say">' + body + '</div>' + tag + tier +
+            '<div data-r="share"></div>' +
+            '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
+            '<button type="button" class="preset" data-r="exit">Leave the Knot</button></p>' +
+          '</div>'));
+        face = C.scene.portrait(panel.querySelector('[data-r=face]'), 'halden');
+        if (face) face.el.classList.add('scene-face--lg');
+        mood(beat ? 'softened' : 'troubled', 0);
+
+        /* The act clears by out-decoding the reading — 12_ §3.9's own defeat
+           condition for the Hollow Oracle. The engine records its own win under
+           `duel`; the ACT is this mission's business, exactly as Act I's is. */
+        if (beat) C.clear();
+        if (C.coherence) C.coherence.restore(beat ? 24 : 12,
+          beat ? 'Insight — a machine can read perfectly and answer badly' : 'You watched it happen');
+
+        C.scene.shareCard({
+          eyebrow: 'Act VI · The Knot',
+          title: beat ? 'I out-decoded the decoder that reads every alarm correctly'
+                      : 'The reading was right about where, and the qubit is gone anyway',
+          stat: held + '–' + oppHeld,
+          statNote: 'ten rounds against minimum-weight matching on a chip with a coupled pair nobody told it about — ' +
+                    'it expects 4.7 of 10 there, and it never misread a single alarm',
+          line: (beat && namedOk) ? '"Tonight is the first time that was not the same as being right."' : null,
+          tier: '⟦Proven⟧', seed: 'd=3 rotated surface code, one coupled pair', file: 'symbiq-knot'
+        }).mount(panel.querySelector('[data-r=share]'));
+
+        panel.querySelector('[data-r=again]').addEventListener('click', function () { C.restart(); });
+        panel.querySelector('[data-r=exit]').addEventListener('click', function () { C.exit(); });
+      }
+
+      return { arrival: arrival, ask: ask, work: work, consequence: consequence };
+    }
+  };
+
   /* THE DIAL. Six detents on a ring; drag it round and it settles into one,
      or focus a detent and press Enter. Releasing applies that turn by clicking
      the engine's own gate button, so nothing here can affect a par or a score.
@@ -1323,7 +1785,7 @@
   /* -------------------------------------------------------------------- */
   window.SymbiQ.missions = {
     all: M,
-    list: ['golf', 'grover', 'maxcut', 'volcano', 'chsh'].map(function (k) {
+    list: ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot'].map(function (k) {
       return { id: k, title: M[k].title, act: M[k].act, place: M[k].place,
                mentor: M[k].mentor, blurb: M[k].blurb };
     }),

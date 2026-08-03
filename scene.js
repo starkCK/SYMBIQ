@@ -406,18 +406,39 @@
     ].join('\n'),
 
     /* THE KNOT — the finale. A single wound in the lattice, folding inward.
-       The only scene that breaks the palette. */
+       The only scene that breaks the palette.
+
+       u_a — the share of rounds you have HELD the logical qubit. The fold
+             weakens, the light-eating mouth closes, and the off-palette red
+             comes back toward violet: the wound stops taking.
+       u_b — the share of rounds you HANDED OVER to the reading without
+             looking. It greys the world, because certainty looks like grey
+             (14_ §6.4) and automation bias is certainty wearing a machine.
+
+       At u_a = u_b = 0 this is pixel-identical to the shader shipped in
+       Phase 0 — the finale only ever adds response, never a new default. */
     knot: [
       'void main(){',
       '  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;',
-      '  float r = length(uv), a = atan(uv.y, uv.x);',
-      '  vec2 inv = uv / max(r * r, 0.02);',                 // circle inversion: folding inward
-      '  vec2 q = warp(inv * 0.9 + vec2(u_time * 0.04, 0.0), 0.9);',
-      '  float f = fbm(q * 1.6 + a * 0.3);',
+      '  float r = length(uv);',
+      /* The shipped Phase 0 shader fed atan(uv.y,uv.x) straight into the noise,
+         and atan JUMPS BY 2*PI across the negative x-axis — so a hard horizontal
+         seam ran from the left edge to the centre of every frame. Only visible
+         by rendering one and looking at it. The unit radial direction carries
+         the same angular modulation and is continuous everywhere. */
+      '  vec2 dir = r > 0.0001 ? uv / r : vec2(1.0, 0.0);',
+      '  float mend = clamp(u_a, 0.0, 1.0);',
+      '  float obey = clamp(u_b, 0.0, 1.0);',
+      '  vec2 inv = uv / max(r * r * mix(1.0, 2.4, mend), 0.02);',   // circle inversion: folding inward
+      '  vec2 q = warp(inv * 0.9 + vec2(u_time * 0.04, 0.0), 0.9 - 0.35 * mend);',
+      '  float f = fbm(q * 1.6 + dir * 0.3);',
+      '  vec3 wound = mix(vec3(0.95, 0.35, 0.45), VIOLET, mend);',
       '  vec3 col = BG;',
-      '  col += mix(VIOLET, vec3(0.95, 0.35, 0.45), f) * smoothstep(0.30, 0.85, f) * 0.45;',
-      '  col *= smoothstep(0.02, 0.35, r);',                 // the wound itself takes no light
-      '  col += vec3(1.0, 0.85, 0.9) * exp(-r * 14.0) * 0.35;',
+      '  col += mix(VIOLET, wound, f) * smoothstep(0.30, 0.85, f) * 0.45;',
+      '  col *= smoothstep(0.02, 0.35 * (1.0 - 0.62 * mend), r);',   // the wound itself takes no light
+      '  col += vec3(1.0, 0.85, 0.9) * exp(-r * (14.0 + 10.0 * mend)) * (0.35 + 0.25 * mend);',
+      '  float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));',
+      '  col = mix(col, vec3(lum), obey * 0.72);',
       '  col = statica(col, uv);',                           // no drain: the Knot is past that
       '  gl_FragColor = vec4(col, 1.0);',
       '}'

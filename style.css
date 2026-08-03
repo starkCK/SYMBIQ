@@ -1156,7 +1156,10 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 }
 .scene-card .sc-skip {
   position: absolute; right: 14px; bottom: 12px; background: none; border: 0;
-  color: rgba(229,233,241,.55); font: inherit; font-size: .84rem; cursor: pointer; padding: 8px 10px;
+  color: rgba(229,233,241,.55); font: inherit; font-size: .84rem; cursor: pointer;
+  /* it shipped at 38px in Phase 1 — every mission opens on it, so it is one of
+     the most-tapped controls in the game */
+  min-height: 44px; padding: 8px 12px;
 }
 .scene-card .sc-skip:hover { color: #2dd4bf; }
 .scene-card .sc-skip:focus-visible { outline: 2px solid #2dd4bf; outline-offset: 2px; border-radius: 6px; }
@@ -1404,3 +1407,90 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 }
 .ms-nosig .ms-scores { margin: 8px 0 4px; }
 .ms-nosig .ms-note { margin: 6px 0 0; text-align: center; }
+
+/* ================================================================
+   THE DECODER DUEL, mounted anywhere (games.js `duel`)
+   ----------------------------------------------------------------
+   qec.html has drawn this board since 2026-07-20 from its own page
+   <style>. The engine now also runs inside the Path and the Arcade,
+   so the board's own rules have to travel with it — scoped under
+   .duelwrap so they cannot reach any other .dq/.pq on the site
+   (the figure code blocks use those class names too).
+   The shared kit (.hud, .dot, .verdict, .rows, .chip) is already
+   global above and is reused unchanged.
+   ================================================================ */
+.duelwrap .duelboard { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
+@keyframes alarm { 50% { fill: rgba(250,204,21,.36); } }
+.duelwrap .pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
+.duelwrap .pq.lit { fill: rgba(250,204,21,.22); stroke: var(--yellow); stroke-opacity: 1; animation: alarm 1.6s ease-in-out infinite; }
+.duelwrap .px { fill: none; stroke: var(--border); stroke-dasharray: 4 4; }
+.duelwrap .plabel { fill: var(--muted); font-size: 12px; font-family: inherit; pointer-events: none; }
+.duelwrap .dq { fill: var(--bg); stroke: var(--muted); stroke-width: 2; cursor: pointer; transition: fill .15s; }
+.duelwrap .dq:focus, .duelwrap .dqwrap:hover .dq { stroke: var(--teal); outline: none; }
+/* the 44px touch target, invisible, sitting over a 21px drawn qubit */
+.duelwrap .dqhit { fill: transparent; stroke: none; cursor: pointer; }
+.duelwrap .dq.armed { stroke: var(--teal); stroke-width: 2.5; }
+.duelwrap .dq.flip { fill: var(--red); stroke: var(--red); }
+.duelwrap .dq.flip.popin { animation: flippop .42s ease-out; transform-box: fill-box; transform-origin: center; }
+.duelwrap .pickring { fill: none; stroke: var(--teal); stroke-width: 2.5; }
+.duelwrap .decring { fill: none; stroke: var(--violet); stroke-width: 2; stroke-dasharray: 4 3; }
+.duelwrap .duelctl { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.duelwrap .duelnote { margin: 8px 0 0; color: var(--muted); font-size: .9rem; }
+.duelwrap .duellog table { font-size: .85rem; margin-top: 8px; }
+.duelwrap .duellog td, .duelwrap .duellog th { padding: 3px 8px; }
+@media (prefers-reduced-motion: reduce) {
+  .duelwrap .pq.lit, .duelwrap .dq.flip.popin { animation: none; }
+}
+
+/* ================================================================
+   ACT VI — THE KNOT  (missions.js `knot`)
+   ----------------------------------------------------------------
+   The Hollow Oracle has no face on purpose. It is not a person; it
+   is a sentence people say. So it gets a voice with no portrait,
+   set in the one register the rest of the scene never uses — flat,
+   grey, certain. Certainty looks like grey (14_ §6.4), and this is
+   that rule applied to a character.
+   ================================================================ */
+.ms-oracle {
+  margin: 4px 0 12px; padding: 11px 15px; border-radius: 4px; text-align: left;
+  background: rgba(148,163,184,.07); border-left: 3px solid rgba(148,163,184,.5);
+  color: #c3cad9; font-size: .93rem; line-height: 1.55; letter-spacing: .01em;
+}
+.ms-oracle b {
+  display: block; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+  color: #8b95a9; font-weight: 700; margin-bottom: 4px;
+}
+.ms-oracle.hollow { opacity: .5; border-left-color: rgba(148,163,184,.22); font-style: italic; }
+.ms-obey {
+  display: block; width: 100%; margin: 0 0 10px; padding: 10px 14px; min-height: 46px;
+  border-radius: 4px; cursor: pointer; font: inherit; font-size: .92rem; text-align: left;
+  color: #c3cad9; background: rgba(148,163,184,.08); border: 1px solid rgba(148,163,184,.3);
+  transition: border-color .2s ease, color .2s ease;
+}
+.ms-obey span { display: block; font-size: .78rem; color: var(--muted); margin-top: 2px; }
+.ms-obey:hover { border-color: rgba(148,163,184,.6); color: var(--text); }
+.ms-obey:focus-visible { outline: 2px solid var(--muted); outline-offset: 2px; }
+.ms-obey[disabled] { opacity: .4; cursor: default; }
+/* naming the defect. Its own little board, because the engine's qubits already
+   mean "the repair I am committing this round" and one control must not mean
+   two things at once. */
+.ms-namegrid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  max-width: 190px; margin: 0 auto 10px;
+}
+.ms-q {
+  min-height: 46px; border-radius: 10px; cursor: pointer; font: inherit; font-size: .9rem;
+  color: var(--text); background: rgba(19,26,43,.9); border: 1px solid var(--border);
+  transition: border-color .18s ease, background .18s ease;
+}
+.ms-q:hover { border-color: rgba(45,212,191,.5); }
+.ms-q:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.ms-q.on { border-color: var(--teal); background: rgba(45,212,191,.14); color: var(--teal); font-weight: 700; }
+.ms-name { margin: 0 0 10px; font-size: .9rem; color: var(--muted); text-align: center; }
+.ms-name b { color: var(--teal); font-weight: 700; }
+.ms-tier {
+  margin: 12px 0 0; padding: 12px 14px; border-radius: 12px; font-size: .86rem; line-height: 1.6;
+  color: var(--muted); background: rgba(11,15,26,.55); border: 1px solid rgba(148,163,184,.24); text-align: left;
+}
+.ms-tier b { color: #dbe2ef; }
+.ms-tier .tier { white-space: nowrap; }

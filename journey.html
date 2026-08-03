@@ -26,12 +26,12 @@
 <meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=22">
+<link rel="stylesheet" href="style.css?v=23">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=10"></script>
-<script src="scene.js?v=2"></script>
-<script src="missions.js?v=4"></script>
+<script src="games.js?v=11"></script>
+<script src="scene.js?v=3"></script>
+<script src="missions.js?v=5"></script>
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -469,13 +469,13 @@
       signoff:'“So we will always know, and never be told.” “Yes.” “…that is almost the same thing.”',
       real:'<p>This is the <strong>CHSH game</strong> (Clauser, Horne, Shimony &amp; Holt 1969). Kai and Lyra each get a random bit and each answer with one bit, with no communication; the pair wins when a&nbsp;XOR&nbsp;b&nbsp;=&nbsp;x&nbsp;AND&nbsp;y. If their answers were decided in advance — any pre-agreed table, any shared notes — they could win at most <strong>75%</strong> of the time. That ceiling is not an estimate: it is brute-forced over all sixteen deterministic strategies, and no mixture of them can beat the best one.</p><p>Sharing an entangled pair and measuring at the right angles wins <strong>cos²(π/8) = 85.36%</strong>, and not one point more — <em>Tsirelson’s bound</em>, also provable. Beating 75% is therefore a proof that what they share is not pre-arranged answers. The experiments that closed the loopholes on exactly this won the <strong>2022 Nobel Prize in Physics</strong>.</p><p>And the other half, which is the half they care about: each twin’s own statistics come out exactly 1/2 whatever the far side chose. That is <strong>no-signalling</strong> — the correlation cannot carry a single bit, so entanglement never breaks relativity. Here it is not asserted, it is measured on screen. The honest caveat is sample size: over a short run either side can look like it is winning by luck, which is why real Bell tests need enormous trial counts.</p>',
       tier:'⟦Proven⟧' },
-    { id:'knot', num:'✦', world:'The Knot', title:'The Price of Knowing', mentor:'Halden', face:'H', pos:[180,62], soon:true, finale:true,
-      region:'knot', held:'oracle',
+    { id:'knot', num:'✦', world:'The Knot', title:'The Price of Knowing', mentor:'Halden', face:'H', pos:[180,62], finale:true,
+      region:'knot', held:'oracle', engine:'duel',
       place:'A single wound in the Lattice, folding inward. It is the only place here that does not obey the palette.',
       intro:'“I can read where the wound is faster than any Solver alive. I have never once been able to tell you what it is worth. That part was always yours.”',
-      soonNote:'The central wound. You and the decoder, together. This finale opens once the five fractures are mended.',
-      real:'<p>Halden is the honest version of the AI half of SymbiQ’s thesis: a learned <strong>decoder</strong> reads the error syndrome coming off a quantum chip faster and more accurately than the hand-written algorithm does — and it still does not decide anything. You can play its proving ground now in <a href="qec.html#duel">the Decoder Duel</a>.</p>',
-      tier:'⟦Frontier⟧' }
+      signoff:'“I have been right about where the wound is for as long as I have existed. That was the first time it was not the same as being right.”',
+      real:'<p>Halden is the honest half of SymbiQ’s own thesis. A <strong>decoder</strong> reads the error syndrome coming off a quantum chip — which checks fired — and infers what flipped. Reading is the part it does perfectly. Deciding is not a thing it does at all.</p><p>His rule is <strong>minimum-weight matching</strong>: of the thirty-two flip patterns that fit any given set of alarms on this lattice, return the smallest. That is genuinely optimal — under the noise model it was handed. This chip has a coupled pair in it that the model does not contain, and the alarms cannot give it away, because a lone flip and the pair can trip the identical check. Measured over every chip and round the machine can deal: matching holds <strong>9 of 9</strong> single flips, <strong>0 of 6</strong> coupled-pair firings and <strong>14 of 42</strong> pair-plus-stray rounds — an expected <strong>4.7 of 10</strong>. Learning the coupling takes you to <strong>7.9</strong>; playing every round properly reaches <strong>9.3</strong> and no further, because that residue is genuinely undecidable and nobody wins it reliably.</p><p>That gap is the entire AI story of this site: a decoder that reads the device it is actually running on beats one that was handed an idealised model of it, and nobody has to tell it what is wrong with the chip (AlphaQubit — Bausch et al., <em>Nature</em> 2024). The same machine, without the story around it, is <a href="qec.html#duel">the Decoder Duel</a>.</p><p>The ending is the one thing here the mathematics cannot settle for you, and it is marked as such on the page.</p>',
+      tier:'⟦Proven⟧ · ⟦Frontier⟧ ending' }
   ];
 
   /* THE FOUR FACTIONS — 12_GAME_MASTER_PLAN.md §3.9, written 2026-07-24 and
@@ -506,7 +506,7 @@
     chsh:    { says:'“They move together at any distance, so a word can ride that link.”',
                broken:'Beat 75% and the correlation is provably not pre-arranged. Then read one side alone: exactly 1/2, whatever the far side chose. Not one bit crosses.' },
     knot:    { says:'“The decoder reads the wound faster than you ever will. Stop thinking and obey it.”',
-               broken:'Not yet — this act is still being forged. Its proving ground is already open: <a href="qec.html#duel">the Decoder Duel</a>.' }
+               broken:'It read every alarm correctly and lost the qubit anyway. Measured on this lattice: the cheapest explanation holds <strong>0 of 6</strong> coupled-pair firings, an expected 4.7 rounds of 10 — and a Solver who reads the chip&rsquo;s own history reaches 9.3. Reading is not deciding.' }
   };
 
   var CAST = [
@@ -523,7 +523,11 @@
     grover:{ name:'Grover search', body:'Unstructured search costs √N, not N. Amplify, then measure at the peak — over-rotate and the odds fall again.', tier:'⟦Proven⟧' },
     maxcut:{ name:'Max-Cut = Ising ground state', body:'Maximising a cut is minimising Σ wᵢⱼsᵢsⱼ. NP-hard, and the exact bridge from operations research to quantum optimisation.', tier:'⟦Proven⟧ formulation' },
     volcano:{ name:'Simulated annealing', body:'Cool slowly to escape local optima; accept the occasional worse move. No method wins on every problem (No Free Lunch).', tier:'⟦Heuristic⟧' },
-    chsh:  { name:'Correlation is not communication', body:'Beating 75% proves the correlation is not pre-agreed answers (CHSH 1969); the quantum ceiling is cos²(π/8) = 85.36%, Tsirelson’s bound. Both are provable — and each side read alone is exactly 1/2 whatever the far side chose, so not one bit can cross.', tier:'⟦Proven⟧' }
+    chsh:  { name:'Correlation is not communication', body:'Beating 75% proves the correlation is not pre-agreed answers (CHSH 1969); the quantum ceiling is cos²(π/8) = 85.36%, Tsirelson’s bound. Both are provable — and each side read alone is exactly 1/2 whatever the far side chose, so not one bit can cross.', tier:'⟦Proven⟧' },
+    /* The finale's entry carries both tiers on purpose (12_ §3.10): the player
+       is trusted with the difference between a measured result and a respectable
+       idea, and being trusted with it is the ending's whole emotional note. */
+    knot:  { name:'The reading and the decision', body:'A check asks only whether neighbours <em>agree</em> — a parity, never a value — which is the only reason a code survives being measured a million times a second; measuring what is encoded really does collapse it. The decoder is right about <em>where</em>, always, and deciding is not a thing it does: on a chip with one coupled pair its cheapest answers hold 0 of 6 pair firings, 4.7 rounds of 10, while a Solver who reads that chip’s own history reaches 9.3 ⟦Proven, measured⟧. That the world is itself a computation, measured once and unravelling since, is Wheeler, Deutsch and Lloyd — a serious idea, not a result ⟦Frontier⟧, and Halden only ever says the Solvers <em>believe</em> it.', tier:'⟦Proven⟧ + ⟦Frontier⟧' }
   };
 
   /* Kept, not confiscated. Act V was Quantum Tic-Tac-Toe until 2026-08-02; an
@@ -542,6 +546,7 @@
     grover: 'The exit’s odds are a <em>rotation</em>: they climb to a single peak near <strong>√N</strong> steps, then fall. Amplify to the peak the bars show you — then look <strong>once</strong>. One step past it and you are throwing the advantage away.',
     maxcut: 'District five is a <strong>trap</strong>: every single flip makes the cut worse, yet the right <em>pair</em> of flips escapes it. When no one move helps, the answer is that you must move <strong>two</strong> at once — which is exactly why annealing exists.',
     volcano: 'You are the temperature, not the walker. Stay <strong>hot</strong> while ridges still separate you from a deeper basin; cool <strong>only</strong> once the walker sits in the deepest valley it can currently reach. Freeze early and you keep the first ditch forever.',
+    knot: 'Any set of alarms on this lattice is fitted by <strong>exactly thirty-two</strong> patterns of flips, and the decoder always returns the smallest one — which is right until the chip contains something its model does not. Watch the history for a round where <strong>two qubits moved together</strong>: it is the <em>same</em> two every time, and those are precisely the rounds the cheapest answer loses. Beat the reading once and the Hollow Oracle has nothing left to say.',
     chsh: 'The classical ceiling is <strong>exactly</strong> 75%, so a short run creeps above it by luck about half the time — only <strong>thousands</strong> of rounds separate the two strategies honestly. And the thing the twins are hunting is already on the table: read <em>one</em> side alone, split by what the far side chose, and it sits at 1/2 either way. The correlation is real; the channel is not there.'
   };
 
@@ -556,8 +561,17 @@
     for (var i = 0; i < MISSIONS.length; i++) { if (!MISSIONS[i].soon && available(i) && !done(MISSIONS[i].id)) return i; }
     return MISSIONS.length - 1;
   }
-  function completed() { var n = 0; MISSIONS.forEach(function (m) { if (!m.soon && done(m.id)) n++; }); return n; }
+  /* The five FRACTURES and the finale are counted separately, and were even
+     before the Knot existed. "3 of 5 mended" must keep meaning the acts that
+     mend a region — the Knot is not a sixth fracture, it is the wound they all
+     lead to, so clearing it must never read as 6 of 5. */
+  function completed() { var n = 0; MISSIONS.forEach(function (m) { if (!m.finale && !m.soon && done(m.id)) n++; }); return n; }
   function completable() { var n = 0; MISSIONS.forEach(function (m) { if (!m.finale) n++; }); return n; }
+  /* A mission's ENGINE and a mission's ID are not the same thing: the Knot is
+     the act, `duel` is the machine inside it (and that machine also stands on
+     qec.html under its own name). Everything that reaches into games.js has to
+     ask for the engine. */
+  function engineOf(m) { return m.engine || m.id; }
 
   var NS = 'http://www.w3.org/2000/svg';
   function el(t, a) { var n = document.createElementNS(NS, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
@@ -631,7 +645,7 @@
   function openMission(i, autoplay) {
     sel = i; drawMap();
     var m = MISSIONS[i], p = document.getElementById('mpanel'), isDone = done(m.id), avail = available(i);
-    var GS = window.SymbiQ && SymbiQ.games, playable = GS && GS.get(m.id);
+    var GS = window.SymbiQ && SymbiQ.games, playable = GS && GS.get(engineOf(m));
 
     var head = '<div class="regionband" id="regionband"></div>' +
       '<div class="mission-head">' +
@@ -784,13 +798,19 @@
     // and then you were handed a machine with no instructions (Chinmoy,
     // 2026-07-30). The same "How to play" panel the Arcade uses now opens
     // above the game here, automatically on a first visit to each mission.
-    host.innerHTML = (GS.aboutHTML ? GS.aboutHTML(m.id) : '') +
+    host.innerHTML = (GS.aboutHTML ? GS.aboutHTML(engineOf(m)) : '') +
                      '<div class="card" id="mgame-card" style="margin-top:14px"></div>';
     var btn = document.getElementById('mstart');
     if (btn) btn.style.display = 'none';
-    GS.mount(m.id, document.getElementById('mgame-card'), {
+    GS.mount(engineOf(m), document.getElementById('mgame-card'), {
       mode: 'mission',
       onWin: function (id, first) {
+        /* The engine records itself under its OWN name, which is not the act's
+           name when the two differ (the Knot runs `duel`, and that machine also
+           stands on qec.html). Without this the finale's engine could declare a
+           win that the Path never wrote down — the same shape of bug as Act I's
+           in the scene path, one layer down. */
+        if (id !== m.id && S && S.completeMission) first = S.completeMission(m.id) || first;
         if (!first) return;
         if (CO) CO.restore(18, 'Insight — a fracture mended');
         refreshHud(); renderCodex(); drawMap();
@@ -812,9 +832,9 @@
         var ni = avatarIndex(), nm = MISSIONS[ni];
         var step = document.createElement('div');
         var inner = '';
-        if (completed() >= completable()) {
+        if (completed() >= completable() && done('knot')) {
           step.className = 'nextstep';
-          inner = '<span class="lbl">Every fracture is mended. <strong>The Knot</strong> is the finale — it is still being forged.</span>' +
+          inner = '<span class="lbl">Every fracture is mended, and the Knot is answered. The Lattice holds.</span>' +
                   '<button class="backmap" id="mback">↑ back to the map</button>';
         } else if (nm && nm.id !== m.id) {
           // Deliberately loud, and deliberately a full-width block rather than a
@@ -871,6 +891,10 @@
   var GLYPHS = '⟒⌇⟟⋔⊑⏃⌰⎅⋉⍜⏁⌿⊐⟊⍾⌁⏚⋏';
   function scramble(s) {
     var out = '', h = 0x2f1b;
+    // Damaged TEXT, not damaged markup: an entry with <em> in it would otherwise
+    // scramble the tag names and render "<⎅⊐>", which reads as a broken page
+    // rather than as something the Static took.
+    s = String(s).replace(/<[^>]+>/g, '');
     for (var i = 0; i < s.length; i++) {
       h = (h * 31 + s.charCodeAt(i)) & 0xffff;
       out += /[0-9A-Za-zÀ-ɏͰ-Ͽ]/.test(s.charAt(i)) ? GLYPHS.charAt(h % GLYPHS.length) : s.charAt(i);
@@ -920,18 +944,16 @@
     var bar = document.getElementById('objective');
     if (!bar) return;
     var n = completed(), total = completable();
-    var ai = avatarIndex(), m = MISSIONS[ai], allDone = n >= total;
+    // "Done" now means the five fractures AND the wound they lead to. Until the
+    // Knot is answered the bar keeps pointing at it, like any other next act.
+    var ai = avatarIndex(), m = MISSIONS[ai], allDone = n >= total && done('knot');
     var html = '<div class="obj-txt">';
     if (allDone) {
-      // Deliberately NOT the finale's soonNote here: that reads "opens once the
-      // five fractures are mended", which contradicts itself at exactly this point.
-      // The Knot is sealed because it is not built yet — say so.
       html += '<div class="obj-k">The Lattice holds</div>' +
-              '<div class="obj-v">All ' + total + ' fractures mended</div>' +
-              '<div class="obj-s">The Knot — the finale — is still being forged. ' +
-              'Replay any mission from the map, or read your Codex below.</div></div>';
+              '<div class="obj-v">All ' + total + ' fractures mended, and the Knot answered</div>' +
+              '<div class="obj-s">Replay any mission from the map, or read your Codex below.</div></div>';
     } else {
-      html += '<div class="obj-k">' + (n === 0 ? 'Start here' : 'Up next') + '</div>' +
+      html += '<div class="obj-k">' + (n === 0 ? 'Start here' : (m.finale ? 'The last one' : 'Up next')) + '</div>' +
               '<div class="obj-v">Act ' + m.num + ' · ' + m.world + '</div>' +
               '<div class="obj-s">' + m.title + '</div></div>' +
               '<button class="bigplay obj-go" id="obj-go">' +

@@ -1324,7 +1324,8 @@
           '<svg class="duelboard" viewBox="0 0 360 330" xmlns="' + NS + '" data-r="svg" ' +
             'aria-label="Decoder duel: a distance-3 surface code with hidden errors"></svg>' +
           '<p class="legend">◼ amber = a check firing · <span style="color:var(--teal)">◯ teal ring = your repair</span> · ' +
-            '<span style="color:var(--violet)">◌ violet dashed = the cheapest explanation</span> · ⬤ red = what actually flipped (revealed after you commit)</p>' +
+            '<span style="color:var(--violet)">◌ violet dashed = ' + (mission ? 'the cheapest explanation' : 'matching&rsquo;s repair') +
+            '</span> · ⬤ red = what actually flipped (revealed after you commit)</p>' +
           '<p class="duelctl">' +
             '<button type="button" class="preset" data-a="commit">Commit repair</button>' +
             '<button type="button" class="preset" data-a="next">Next round</button>' +

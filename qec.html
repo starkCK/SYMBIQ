@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it — with an interactive surface code you can break yourself.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=23">
+<link rel="stylesheet" href="style.css?v=24">
 <style>
 #qec-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
 .pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
@@ -39,15 +39,12 @@
 .dq.flip { fill: var(--red); stroke: var(--red); }
 .fixring { fill: none; stroke: var(--teal); stroke-width: 2.5; stroke-dasharray: 5 4; }
 .legend { font-size: .85rem; color: var(--muted); margin: 10px 0 0; }
-/* --- decoder duel --- */
-#duel-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
-.pickring { fill: none; stroke: var(--teal); stroke-width: 2.5; }
-.decring { fill: none; stroke: var(--violet); stroke-width: 2; stroke-dasharray: 4 3; }
-.dq.armed { stroke: var(--teal); stroke-width: 2.5; }
-.dq.flip.popin { animation: flippop .42s ease-out; transform-box: fill-box; transform-origin: center; }
-#duel-log table { font-size: .85rem; margin-top: 8px; }
-#duel-log td, #duel-log th { padding: 3px 8px; }
+/* The duel's own styling left this file on 2026-08-03: the engine moved into
+   games.js, so its board rules live in style.css under .duelwrap and travel
+   with it. What is left above belongs to the surface-17 explorer widget. */
 </style>
+<script src="save.js"></script>
+<script src="games.js?v=11"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -236,24 +233,12 @@
 
 <div class="card" id="duel">
   <h3>Decoder Duel</h3>
-  <div class="hud">
-    <div class="hud-side"><span class="hud-label">You</span><span class="hud-score" id="hud-you">0</span></div>
-    <div class="hud-mid" id="hud-round">Round 1 of 10</div>
-    <div class="hud-side right"><span class="hud-label">Matching</span><span class="hud-score" id="hud-dec">0</span></div>
-  </div>
-  <div class="dotrow"><span class="who">You</span><span class="dots" id="dots-you"></span></div>
-  <div class="dotrow"><span class="who">Matching</span><span class="dots" id="dots-dec"></span></div>
-  <svg id="duel-svg" viewBox="0 0 360 330" xmlns="http://www.w3.org/2000/svg" aria-label="Decoder duel: a distance-3 surface code with hidden errors"></svg>
-  <p class="legend">◼ amber = a check firing · <span style="color:var(--teal)">◯ teal ring = your repair (the decoder's colour is violet down here)</span> · <span style="color:var(--violet)">◌ violet dashed = matching's repair</span> · ⬤ red = what actually flipped (revealed after you commit)</p>
-  <p style="margin:10px 0 4px">
-    <button class="preset" id="duel-commit">Commit repair</button>
-    <button class="preset" id="duel-next">Next round</button>
-    <button class="preset" id="duel-clear">Clear picks</button>
-    <button class="preset" id="duel-new">New chip</button>
-  </p>
-  <div id="duel-out" aria-live="polite"></div>
-  <div id="duel-log"></div>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the lattice, the checks and the matching decoder are exact — the same engine as the widget above, true minimum-weight inference over all 512 patterns. The fiction is the defect: one fixed, always-on coupled pair is far more blatant than real chip noise, which is a drifting mess of leakage, cross-talk and correlated readout spread over a d=3 or d=5 patch and 25 measurement rounds, inferred from hundreds of millions of simulated shots and thousands of real ones rather than ten. Some rounds here are also genuinely undecidable — a lone flip and the coupled pair can trip the identical alarm — and nobody wins those reliably. That irreducible residue is the <em>floor</em> under the logical error rate.</p>
+  <!-- The engine lives in games.js and is mounted here. It used to be a second
+       inline copy on this page, which meant every fix had to be made twice —
+       and the referee fix of 2026-07-30 was in fact made twice. One engine now,
+       three surfaces: this page, the Arcade, and Act VI of the Solver's Path. -->
+  <div id="duel-mount"></div>
+  <p id="duel-honest" style="font-size:0.85rem;color:var(--muted);margin-bottom:0"></p>
 </div>
 
 <span class="tier r">🔴 Real math</span>
@@ -415,257 +400,18 @@
 
 <script>
 (function () {
-  // Decoder Duel — same surface-17 conventions and decoder as the widget above.
-  var ZS = [[0, 1, 3, 4], [4, 5, 7, 8], [2, 5], [3, 6]];
-  var XS = [[0, 1], [1, 2, 4, 5], [3, 4, 6, 7], [7, 8]];
-  var ZNAME = ['Z₁', 'Z₂', 'Z₃', 'Z₄'];
-  var POS = [[90, 75], [180, 75], [270, 75], [90, 165], [180, 165], [270, 165], [90, 255], [180, 255], [270, 255]];
-  var SVGNS = 'http://www.w3.org/2000/svg';
-  // Vertical neighbour pairs only. Verified exhaustively: each of these, firing as a
-  // unit, lands minimum-weight matching in the WRONG logical class every time. The six
-  // horizontal pairs don't — matching survives those, so they'd make a pointless duel.
-  var PAIRS = [[0, 3], [3, 6], [1, 4], [4, 7], [2, 5], [5, 8]];
-  var ROUNDS = 10;
-
-  var svg = document.getElementById('duel-svg');
-  if (!svg) return;
-  var out = document.getElementById('duel-out'),
-      logBox = document.getElementById('duel-log'),
-      hudYou = document.getElementById('hud-you'),
-      hudDec = document.getElementById('hud-dec'),
-      hudRound = document.getElementById('hud-round'),
-      dotsYou = document.getElementById('dots-you'),
-      dotsDec = document.getElementById('dots-dec'),
-      bCommit = document.getElementById('duel-commit'),
-      bNext = document.getElementById('duel-next'),
-      bClear = document.getElementById('duel-clear');
-
-  function mask(l) { var m = 0; for (var i = 0; i < l.length; i++) m |= 1 << l[i]; return m; }
-  function weight(e) { var w = 0; while (e) { w += e & 1; e >>= 1; } return w; }
-  var zM = ZS.map(mask), xM = XS.map(mask);
-  function synd(e) { var o = 0; for (var i = 0; i < 4; i++) if (weight(e & zM[i]) & 1) o |= 1 << i; return o; }
-
-  var xGroup = {};
-  for (var st = 0; st < 16; st++) {
-    var g = 0;
-    for (var gi = 0; gi < 4; gi++) if (st & (1 << gi)) g ^= xM[gi];
-    xGroup[g] = true;
+  /* Mount the shared engine. If games.js failed to load, say so plainly rather
+     than leaving an empty card where a game used to be. */
+  var host = document.getElementById('duel-mount');
+  var G = window.SymbiQ && window.SymbiQ.games;
+  if (!host) return;
+  if (!G || !G.get('duel')) {
+    host.innerHTML = '<p style="color:var(--muted)">The duel could not load. Reload the page.</p>';
+    return;
   }
-  var order = [];
-  for (var p = 0; p < 512; p++) order.push(p);
-  order.sort(function (a, b) { return (weight(a) - weight(b)) || (a - b); });
-  function decode(t) { for (var i = 0; i < order.length; i++) if (synd(order[i]) === t) return order[i]; return 0; }
-  // A repair succeeds when the leftover is a stabilizer: something happened, nothing changed.
-  function held(resid) { return synd(resid) === 0 && !!xGroup[resid]; }
-
-  function rnd(n) { return Math.floor(Math.random() * n); }
-  function qlist(e) { var o = []; for (var i = 0; i < 9; i++) if (e & (1 << i)) o.push('q' + i); return o.join(' + '); }
-  function chips(e, kind) {
-    if (!e) return '<span class="chip">nothing</span>';
-    var o = [];
-    for (var i = 0; i < 9; i++) if (e & (1 << i)) o.push('<span class="chip ' + kind + '">q' + i + '</span>');
-    return o.join('');
-  }
-  function fired(s) { var n = []; for (var i = 0; i < 4; i++) if (s & (1 << i)) n.push(ZNAME[i]); return n.length ? n.join(', ') : 'none'; }
-
-  var G = null;
-
-  // 4 ordinary single flips, 4 crosstalk-pair firings, 2 pair-plus-a-stray.
-  // Round 1 is always an ordinary flip so the interface is learned on a fair round.
-  function buildRounds(pair) {
-    var pe = mask(pair), list = [1 << rnd(9)], kinds = [], i;
-    for (i = 0; i < 3; i++) kinds.push('single');
-    for (i = 0; i < 4; i++) kinds.push('pair');
-    for (i = 0; i < 2; i++) kinds.push('both');
-    for (i = kinds.length - 1; i > 0; i--) { var j = rnd(i + 1), t = kinds[i]; kinds[i] = kinds[j]; kinds[j] = t; }
-    kinds.forEach(function (k) {
-      if (k === 'single') list.push(1 << rnd(9));
-      else if (k === 'pair') list.push(pe);
-      else { var x; do { x = rnd(9); } while (pair.indexOf(x) >= 0); list.push(pe | (1 << x)); }
-    });
-    return list;
-  }
-
-  function newChip() {
-    var pair = PAIRS[rnd(PAIRS.length)];
-    G = { pair: pair, rounds: buildRounds(pair), i: 0, pick: 0, revealed: false, done: false, you: 0, dec: 0, log: [] };
-    render();
-  }
-
-  function el(tag, attrs) {
-    var n = document.createElementNS(SVGNS, tag);
-    for (var k in attrs) n.setAttribute(k, attrs[k]);
-    svg.appendChild(n);
-    return n;
-  }
-  el('rect', { 'class': 'px', x: 180, y: 75, width: 90, height: 90 });
-  el('rect', { 'class': 'px', x: 90, y: 165, width: 90, height: 90 });
-  el('path', { 'class': 'px', d: 'M90 75 A45 45 0 0 1 180 75 Z' });
-  el('path', { 'class': 'px', d: 'M180 255 A45 45 0 0 0 270 255 Z' });
-  var zEls = [
-    el('rect', { 'class': 'pq', x: 90, y: 75, width: 90, height: 90 }),
-    el('rect', { 'class': 'pq', x: 180, y: 165, width: 90, height: 90 }),
-    el('path', { 'class': 'pq', d: 'M270 75 A45 45 0 0 1 270 165 Z' }),
-    el('path', { 'class': 'pq', d: 'M90 165 A45 45 0 0 0 90 255 Z' })
-  ];
-  var zLbl = [[129, 124], [219, 214], [286, 124], [74, 214]];
-  for (var li = 0; li < 4; li++) {
-    el('text', { 'class': 'plabel', x: zLbl[li][0], y: zLbl[li][1] }).textContent = ZNAME[li];
-  }
-  var decRings = POS.map(function (q) { return el('circle', { 'class': 'decring', cx: q[0], cy: q[1], r: 27, visibility: 'hidden' }); });
-  var pickRings = POS.map(function (q) { return el('circle', { 'class': 'pickring', cx: q[0], cy: q[1], r: 21, visibility: 'hidden' }); });
-  var qEls = POS.map(function (q, idx) {
-    var c = el('circle', { 'class': 'dq', cx: q[0], cy: q[1], r: 15, tabindex: 0, role: 'button', 'aria-pressed': 'false' });
-    function toggle() {
-      if (!G || G.revealed || G.done) return;
-      G.pick ^= 1 << idx;
-      render();
-    }
-    c.addEventListener('click', toggle);
-    c.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); }
-    });
-    return c;
-  });
-
-  function render() {
-    var R = G.rounds[G.i], s = synd(R), dec = decode(s), show = G.revealed || G.done;
-    for (var i = 0; i < 9; i++) {
-      var bit = 1 << i, cls = 'dq';
-      if (show && (R & bit)) { cls += ' flip'; if (G.pop) cls += ' popin'; }
-      else if (!show && (G.pick & bit)) cls += ' armed';
-      qEls[i].setAttribute('class', cls);
-      qEls[i].setAttribute('aria-pressed', (G.pick & bit) ? 'true' : 'false');
-      pickRings[i].setAttribute('visibility', (G.pick & bit) ? 'visible' : 'hidden');
-      decRings[i].setAttribute('visibility', (show && (dec & bit)) ? 'visible' : 'hidden');
-    }
-    for (var j = 0; j < 4; j++) zEls[j].setAttribute('class', (s & (1 << j)) ? 'pq lit' : 'pq');
-
-    hudYou.textContent = G.you;
-    hudDec.textContent = G.dec;
-    hudYou.className = 'hud-score' + (G.you > G.dec ? ' lead' : '');
-    hudDec.className = 'hud-score' + (G.dec > G.you ? ' lead' : '');
-    hudRound.textContent = G.done ? 'Final' : 'Round ' + (G.i + 1) + ' of ' + ROUNDS;
-    renderDots();
-
-    bCommit.disabled = G.revealed || G.done;
-    bNext.disabled = !G.revealed || G.done;
-    bClear.disabled = G.revealed || G.done;
-
-    G.pop = false;
-    if (G.done) { finalWord(); return; }
-    if (!G.revealed) {
-      out.innerHTML = 'Checks firing: <strong>' + fired(s) + '</strong>.<br>' +
-        'Click the qubits you would repair, then <strong>Commit repair</strong>. Repairing nothing is a legal bet — sometimes the right one.';
-    }
-    renderLog();
-  }
-
-  function commit() {
-    if (G.revealed || G.done) return;
-    var R = G.rounds[G.i], s = synd(R), dec = decode(s),
-        youOk = held(R ^ G.pick), decOk = held(R ^ dec),
-        stray = synd(G.pick) !== s;
-    if (youOk) G.you++;
-    if (decOk) G.dec++;
-    G.revealed = true;
-    G.log.push({ n: G.i + 1, s: s, R: R, youOk: youOk, decOk: decOk });
-
-    var cls, head;
-    if (youOk && !decOk) { cls = 'good'; head = '★ You held the logical qubit — matching lost it.'; }
-    else if (youOk && decOk) { cls = 'good'; head = 'Both of you held it.'; }
-    else if (!youOk && decOk) { cls = 'bad'; head = 'Matching held it. You lost it.'; }
-    else { cls = 'split'; head = 'Logical error — both of you.'; }
-
-    function tail(okFlag, strayFlag) {
-      if (strayFlag) return 'does not explain the alarms — a detectable error is left behind ✗';
-      return okFlag ? 'residue is a product of checks — logically nothing happened ✓'
-                    : 'residue is a logical operator — the encoded qubit flipped ✗';
-    }
-    var note = '';
-    if (!decOk && (R & mask(G.pair)) === mask(G.pair)) {
-      note = '<p style="margin:8px 0 0;color:var(--muted);font-size:.9rem"><em>Matching bought the cheapest explanation that fits the alarms. On this chip, that was the wrong bet.</em></p>';
-    }
-    out.innerHTML =
-      '<div class="verdict ' + cls + '">' + head + '</div>' +
-      '<dl class="rows">' +
-      '<dt>Actually flipped</dt><dd>' + chips(R, 'err') + '</dd>' +
-      '<dt>Your repair</dt><dd>' + chips(G.pick, 'you') +
-        '<span style="color:var(--muted)">' + tail(youOk, stray) + '</span></dd>' +
-      '<dt>Matching’s repair</dt><dd>' + chips(dec, 'dec') +
-        '<span style="color:var(--muted)">' + tail(decOk, false) + '</span></dd>' +
-      '</dl>' + note;
-    G.pop = true;
-    render();
-  }
-
-  // Two rows of ten dots: the whole story of the game at a glance — and the place
-  // where matching's blind spot becomes visible as a run of red.
-  function renderDots() {
-    function row(el, key) {
-      var h = '';
-      for (var r = 0; r < ROUNDS; r++) {
-        var rec = G.log[r], c = 'dot';
-        if (rec) c += rec[key] ? ' win' : ' lose';
-        if (r === G.i && !G.done) c += ' now';
-        if (rec && r === G.log.length - 1 && G.revealed) c += ' pop';
-        h += '<span class="' + c + '" title="Round ' + (r + 1) + '"></span>';
-      }
-      el.innerHTML = h;
-    }
-    row(dotsYou, 'youOk');
-    row(dotsDec, 'decOk');
-  }
-
-  function renderLog() {
-    if (!G.log.length) { logBox.innerHTML = ''; return; }
-    var h = '<details open><summary>Chip history — your training data (' + G.log.length +
-      ' round' + (G.log.length === 1 ? '' : 's') + ')</summary><div class="overflow"><table>' +
-      '<tr><th>#</th><th>Checks fired</th><th>What actually flipped</th><th>You</th><th>Matching</th></tr>';
-    G.log.forEach(function (r) {
-      h += '<tr><td>' + r.n + '</td><td>' + fired(r.s) + '</td><td>' + (r.R ? qlist(r.R) : '—') +
-        '</td><td>' + (r.youOk ? '✓' : '✗') + '</td><td>' + (r.decOk ? '✓' : '✗') + '</td></tr>';
-    });
-    logBox.innerHTML = h + '</table></div></details>';
-  }
-
-  function finalWord() {
-    var cls, lead;
-    if (G.you > G.dec) {
-      cls = 'good';
-      lead = 'You beat minimum-weight matching, ' + G.you + '–' + G.dec + '. ' +
-        'You did it the only way it can be done: you stopped assuming the chip was textbook and learned what it actually does. ' +
-        'That is exactly AlphaQubit\'s edge — a decoder that reads a real device\'s noise off its own data instead of being handed an idealised model of it. ' +
-        '(The architecture is new too: a recurrent transformer that eats the analog readout signal, not just a 0 or a 1.)';
-    } else if (G.you === G.dec) {
-      cls = 'split';
-      lead = 'Dead heat, ' + G.you + '–' + G.dec + '. Matching is genuinely hard to beat — it is optimal ' +
-        'right up until its noise model is wrong. Run it again and watch which alarms keep lying to you.';
-    } else {
-      cls = 'bad';
-      lead = 'Matching won, ' + G.dec + '–' + G.you + '. No shame: it is a very good algorithm, ' +
-        'and thirty years of the field agreed. The way past it is not to out-think it round by round — it is to notice the pattern it is structurally blind to.';
-    }
-    out.innerHTML = '<div class="verdict ' + cls + '" style="font-weight:400">' + lead + '</div>' +
-      '<p style="margin:0">The defect on this chip: <strong>q' + G.pair[0] + ' ↔ q' + G.pair[1] + '</strong> — coupled neighbours that flipped together. ' +
-      'Matching was handed the textbook noise model, not this chip\'s, so it always bought the single cheapest flip instead — and paid for it in logical errors. ' +
-      'Tell a matching decoder about this pair and it wins most of those rounds back; the whole point is that nobody has to tell a learned decoder. ' +
-      'That is <a href="#red">the whole AI story below</a>. ' +
-      '<strong>New chip</strong> moves the defect.</p>';
-    renderLog();
-  }
-
-  bCommit.addEventListener('click', commit);
-  bNext.addEventListener('click', function () {
-    if (!G.revealed || G.done) return;
-    G.i++;
-    if (G.i >= ROUNDS) { G.i = ROUNDS - 1; G.done = true; render(); return; }
-    G.pick = 0; G.revealed = false;
-    render();
-  });
-  bClear.addEventListener('click', function () { if (!G.revealed && !G.done) { G.pick = 0; render(); } });
-  document.getElementById('duel-new').addEventListener('click', newChip);
-  newChip();
+  G.mount('duel', host, { mode: 'arcade' });
+  var note = document.getElementById('duel-honest');
+  if (note) note.innerHTML = G.get('duel').honest;
 })();
 </script>
 </body>

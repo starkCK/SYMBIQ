@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=23">
+<link rel="stylesheet" href="style.css?v=24">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
 <script src="games.js?v=11"></script>
@@ -61,6 +61,7 @@
 .trail { fill: none; stroke: var(--border); stroke-width: 3; stroke-dasharray: 2 7; stroke-linecap: round; opacity: .7; }
 .trail-done { fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: round; opacity: .9; }
 .node { cursor: pointer; }
+.node .nodehit { fill: transparent; stroke: none; }
 .node .disc { fill: var(--bg); stroke: var(--border); stroke-width: 2.5; transition: transform .22s cubic-bezier(.2,.7,.3,1), stroke .25s, fill .25s; transform-box: fill-box; transform-origin: center; }
 .node:hover .disc { transform: scale(1.14); }
 .node.available .disc { stroke: var(--teal); }
@@ -88,7 +89,7 @@
 .hud { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
 .hud .who { font-weight: 700; color: var(--text); }
 .hud .prog { color: var(--muted); font-size: .9rem; }
-.hud .rst { margin-left: auto; font-size: .8rem; color: var(--muted); background: none; border: none; cursor: pointer; text-decoration: underline; }
+.hud .rst { margin-left: auto; min-height: 44px; padding: 0 8px; font-size: .8rem; color: var(--muted); background: none; border: none; cursor: pointer; text-decoration: underline; }
 .mpanel { min-height: 120px; }
 .eyebrow { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .mentorline { color: var(--muted); font-style: italic; border-left: 2px solid var(--teal); padding-left: 12px; margin: 10px 0; }
@@ -597,6 +598,12 @@
       var left = m.pos[0] < 150;
       var lbl = el('text', { 'class': 'lbl', x: m.pos[0] + (left ? 26 : -26), y: m.pos[1] + 4, 'text-anchor': left ? 'start' : 'end' });
       lbl.textContent = m.world; g.appendChild(lbl);
+      /* A node's disc is r=17 and the whole group measures 37px tall on a
+         phone — under the 44px touch minimum, on the map that IS the game's
+         navigation. An invisible rect over the disc and its label carries the
+         tap; the drawn node is unchanged. Appended last so it sits on top. */
+      g.appendChild(el('rect', { 'class': 'nodehit', x: m.pos[0] + (left ? -22 : -118), y: m.pos[1] - 22,
+                                 width: 140, height: 44 }));
       g.addEventListener('click', function () { openMission(i); focusPanel(); });
       g.addEventListener('keypress', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openMission(i); focusPanel(); } });
       map.insertBefore(g, av || null); // nodes below the avatar

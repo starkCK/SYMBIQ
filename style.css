@@ -84,12 +84,18 @@ nav {
     -webkit-backdrop-filter: blur(10px);
   }
 }
-nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--text); margin-right: auto; }
+/* The three controls in the bar are on every one of the 16 pages and were the
+   last things on the site under the 44px touch minimum (brand 30px, latch 39px,
+   the Path link ~20px). The brand and the latch simply grow; the Path link
+   cannot, because its active-state underline has to stay tight to the text — so
+   it keeps its box and grows an invisible 44px band inside itself instead. */
+nav .brand { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--text); margin-right: auto; }
 nav .brand svg { width: 30px; height: 30px; transition: transform 0.5s ease; }
 nav .brand:hover svg { transform: rotate(90deg); }
 nav .brand svg circle:nth-of-type(2) { animation: qpulse 3.6s ease-in-out infinite; }
 nav .brand svg circle:nth-of-type(3) { animation: qpulse 3.6s ease-in-out 1.8s infinite; }
-nav a.link { color: var(--muted); text-decoration: none; font-size: 0.92rem; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: color 0.15s ease, border-color 0.15s ease; }
+nav a.link { position: relative; color: var(--muted); text-decoration: none; font-size: 0.92rem; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: color 0.15s ease, border-color 0.15s ease; }
+nav a.link::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
 nav a.link:hover { color: var(--text); }
 nav a.link.active { color: var(--text); border-bottom-color: var(--teal); }
 h1 {
@@ -170,7 +176,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-
    (merely hidden), so crawlability and internal linking are unchanged.
    ================================================================ */
 nav .latch {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px;
   background: var(--panel); color: var(--text);
   border: 1px solid var(--border); border-radius: 99px;
   padding: 7px 14px 7px 10px; font: inherit; font-size: .9rem; cursor: pointer;

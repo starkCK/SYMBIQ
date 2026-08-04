@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "count": 6,
+  "count": 7,
   "entries": [
     {
       "date": "2026-07-19",
@@ -37,6 +37,12 @@
       "qnum": 6,
       "tier": "y",
       "question": "Quantum computers are worse than classical computers at almost everything classical computers already do well — email, spreadsheets, web browsing, ordinary arit"
+    },
+    {
+      "date": "2026-08-04",
+      "qnum": 7,
+      "tier": "r",
+      "question": "A surface code has distance d, running below the physical error threshold p_th. As you increase d, how does the logical error rate p_L actually "
     }
   ]
 }

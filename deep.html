@@ -26,8 +26,9 @@
 <meta name="twitter:description" content="Quantum error correction at the formal level: the d=3 rotated surface code drawn exactly, stabilizer commutation, minimum logical weight, and the learned-decoder results with citations.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -113,8 +114,38 @@
 
 <span class="tier r">🔴 Expert — formalism, equations, citations. Independently verified 2026-07-13.</span>
 <h1>The AI That Babysits Qubits</h1>
+<div class="tbar tbar-links">
+  <span class="tbar-lab">Read this at</span>
+  <div class="tbar-btns">
+    <a class="tbtn t-g" href="basics.html"><span class="tbtn-chip">🟢</span><span class="tbtn-name">Plain</span></a>
+    <a class="tbtn t-y" href="concepts.html"><span class="tbtn-chip">🟡</span><span class="tbtn-name">Working</span></a>
+    <span class="tbtn t-r is-on" aria-current="page"><span class="tbtn-chip">🔴</span><span class="tbtn-name">Formal</span></span>
+  </div>
+  <span class="tbar-blurb">Derivations, sources, open problems.</span>
+</div>
 
-<p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits; stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding = inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors.</p>
+<p class="tier-lede">Formalism, one derivation carried through, primary sources, and the problems that are actually open. Assumes stabilizer formalism. The 🟡 tier carries the same content without the algebra.</p>
+
+<p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits, so a patch costs 2<em>d</em>²−1 physical qubits. Stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding is inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors — <em>not</em> the most probable error, which is a different and worse objective.</p>
+
+<h2>Where the exponent comes from</h2>
+
+<p>The scaling law quoted everywhere is worth deriving once, because the exponent is where the recurring off-by-one in this field lives.</p>
+
+<p>A distance-<em>d</em> code corrects any error of weight <em>t</em> = ⌊(<em>d</em>−1)/2⌋. So the lowest-order event the decoder cannot fix requires <strong><em>t</em>+1 = ⌊(<em>d</em>+1)/2⌋</strong> physical faults. Below threshold each independent fault carries probability ∝ <em>p</em>, and the number of weight-(<em>t</em>+1) fault patterns is a binomial prefactor in the patch size. Summing the lowest-order term:</p>
+
+<div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
+
+<p>with <em>A</em> and <em>p</em><sub>th</sub> absorbing the combinatorics and the decoder's quality. Two consequences follow immediately, and both are routinely stated wrong:</p>
+
+<ul>
+  <li><strong>Raising an odd <em>d</em> by one buys nothing.</strong> ⌊(<em>d</em>+1)/2⌋ is unchanged from <em>d</em> = 23 to <em>d</em> = 24. This is why the literature always steps <em>d</em> → <em>d</em>+2, and why "distance" and "step" must never be used interchangeably in the same paragraph.</li>
+  <li><strong>Λ is defined per two-distance step.</strong> Λ ≡ p<sub>L</sub>(<em>d</em>) / p<sub>L</sub>(<em>d</em>+2). Google's measured Λ = 2.14 ± 0.02 on Willow is quoted for the <em>d</em> = 5 → <em>d</em> = 7 step (<em>Nature</em> <strong>638</strong>, 920 (2025)) — it is not a per-unit-distance figure, and it is not an average over 3 → 5 → 7.</li>
+</ul>
+
+<p>Working the exchange rate the other way: buying 10³ suppression at Λ = 2.14 needs log(10³)/log(2.14) ≈ 9.08 steps, so nine steps gives 2.14<sup>9</sup> ≈ 941×, taking <em>d</em> = 5 → 23 and one logical qubit to 2(23²)−1 = <strong>1,057 physical qubits</strong>. The million-fold suppression a billion-operation algorithm actually needs costs roughly double that distance again.</p>
+
+<p>Note what the ratio construction buys you: expressing everything relative to <em>d</em> = 3 cancels the unknown prefactor <em>A</em> exactly, so the suppression curve is a parameter-free prediction rather than a fit. Real devices depart from it near threshold, where the lowest-order truncation stops being the whole story.</p>
 
 <figure class="fig figcode figcard">
   <div class="figscroll"><svg viewBox="0 0 566 286" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -177,21 +208,54 @@
   <figcaption><strong>d = 3, drawn exactly.</strong> Nine data qubits, eight stabilizers — four weight-4 plaquettes in the bulk, four weight-2 checks on the boundary, alternating X and Z so that every pair overlaps in an even number of qubits and commutes. The yellow chain is a logical X̄ operator: it commutes with all eight stabilizers, so it is <em>undetectable</em> — and the shortest such chain has weight 3, which is precisely why this code is called distance 3. Verified by exhaustive search over all 2⁹ Pauli supports: no nontrivial logical operator of weight 1 or 2 exists. Layout per Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a>; the same lattice drives <a href="qec.html#qec-widget">the interactive decoder</a>.</figcaption>
 </figure>
 
-<p>MWPM solves this on a decoder graph with edge weights from an assumed independent-Pauli + phenomenological noise model — provably good under that model, degraded under correlated noise, leakage, cross-talk, and non-Markovian drift.</p>
+<h2>Decoders</h2>
 
-<p><strong>AlphaQubit:</strong> recurrent transformer over per-round syndrome inputs (including analog "soft" readout information rather than binarized measurements — a key advantage), pretrained on hundreds of millions of simulated samples, fine-tuned on thousands of experimental samples from a Sycamore processor. Reported ~6% fewer logical errors than tensor-network decoders (near-optimal but too slow for real time) and ~30% fewer than correlated matching, maintained up to <em>d</em>=11 (241 qubits) in simulation.</p>
+<p>MWPM solves the inference on a decoder graph with edge weights drawn from an assumed independent-Pauli plus phenomenological noise model — provably good under that model, degraded under correlated noise, leakage, cross-talk and non-Markovian drift. The failure is structural rather than computational: the model has no term for the thing that is happening.</p>
 
-<div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
+<p><strong>AlphaQubit:</strong> recurrent transformer over per-round syndrome inputs, including analog "soft" readout rather than binarized measurements — which is a genuine information advantage, not merely a bigger model. Pretrained on hundreds of millions of simulated samples, fine-tuned on thousands of experimental samples from a Sycamore processor. Reported ~6% fewer logical errors than tensor-network decoders (near-optimal, far too slow for real time) and ~30% fewer than correlated matching. <strong>The real-device data is <em>d</em> = 3 and <em>d</em> = 5; the <em>d</em> = 11 result is simulation only</strong> — a distinction frequently lost in secondary coverage, and one we got wrong here once (see <a href="corrections.html">Corrections</a>).</p>
 
-<p>Below threshold, a decoder that effectively raises p<sub>th</sub> or sharpens the exponent compounds through every future distance increase — decoder quality is hardware you don't have to build.</p>
+<p>Below threshold, a decoder that effectively raises p<sub>th</sub> or sharpens the exponent compounds through every future distance increase. Decoder quality is hardware you do not have to build — which is the entire economic argument for this site's thesis.</p>
 
-<p><strong>The real-time frontier:</strong> "NN decoders are too slow for the ~1 μs cycle" is no longer simply true — an FPGA neural decoder achieved 550 ns system latency (124 ns network inference) inside a 1.25 μs QEC cycle on superconducting hardware (May 2026). Scaling learned decoders to large <em>d</em> in real time remains open.</p>
+<h2>What is actually open</h2>
 
-<h2>References</h2>
-<div class="card">
-  <p>• AlphaQubit: <a href="https://arxiv.org/abs/2310.05900">arXiv 2310.05900</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
-  • Below-threshold surface code (Willow): Google Quantum AI, <em>Nature</em> 2024<br>
-  • Real-time FPGA neural decoder: <a href="https://arxiv.org/abs/2605.04892">arXiv 2605.04892</a></p>
+<p>Stated as problems rather than as a roadmap, because the honest answer to most of these is that nobody knows.</p>
+
+<ol class="openq">
+  <li><strong>Real-time decoding at scale.</strong> "NN decoders are too slow for the ~1 μs cycle" is no longer simply true — an FPGA neural decoder hit 550 ns system latency (124 ns inference) inside a 1.25 μs cycle on superconducting hardware (<a href="https://arxiv.org/abs/2605.04892">arXiv:2605.04892</a>, May 2026). But that is small <em>d</em>. Latency and bandwidth both grow with patch size while the cycle budget does not, and no published learned decoder runs in real time at the distances fault tolerance requires.</li>
+  <li><strong>Whether the learned margin survives scale.</strong> Every reported advantage for learned decoders is measured at small distance. There is no result showing the ~30% margin holds at <em>d</em> = 25 or beyond, and there is no theory saying it must.</li>
+  <li><strong>Leakage and non-Markovian noise.</strong> Both sit outside the Pauli model that the threshold theorem's guarantees are stated in. Leakage-reduction units exist and cost cycles; the accounting for how much they cost at scale is not settled.</li>
+  <li><strong>Magic states dominate the real bill.</strong> Clifford operations are the easy half — they are essentially free under the code. Non-Clifford gates need distilled magic states, and T-count, not qubit count, sets the wall-clock time for any real algorithm. Resource estimates move by orders of magnitude when distillation architectures change, which is exactly what happened to the Bitcoin numbers between 2022 and 2026.</li>
+  <li><strong>Threshold versus pseudo-threshold.</strong> The single number "p<sub>th</sub> ≈ 1%" is model-, decoder- and geometry-dependent. Quoting it without those three qualifiers is the most common way this field's own literature is misread.</li>
+</ol>
+
+<h2>Primary sources</h2>
+<div class="card refs">
+  <p>• <strong>AlphaQubit</strong> — Bausch et al., "Learning high-accuracy error decoding for quantum processors," <em>Nature</em> <strong>635</strong>, 834 (2024). <a href="https://arxiv.org/abs/2310.05900">arXiv:2310.05900</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
+  • <strong>Below-threshold surface code (Willow)</strong> — Google Quantum AI, "Quantum error correction below the surface code threshold," <em>Nature</em> <strong>638</strong>, 920 (2025). <a href="https://arxiv.org/abs/2408.13687">arXiv:2408.13687</a> — source of Λ = 2.14 ± 0.02, measured <em>d</em> = 5 → 7<br>
+  • <strong>Rotated surface-code layout</strong> — Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a> — the <em>d</em> = 3 lattice drawn above<br>
+  • <strong>Surface codes, practical</strong> — Fowler et al., <a href="https://arxiv.org/abs/1208.0928">arXiv:1208.0928</a> — the standard reference for thresholds and the d→d+2 convention<br>
+  • <strong>Topological memory</strong> — Dennis, Kitaev, Landahl &amp; Preskill, <a href="https://arxiv.org/abs/quant-ph/0110143">quant-ph/0110143</a> (2001) — where matching-based decoding of the surface code begins<br>
+  • <strong>Real-time FPGA neural decoder</strong> — <a href="https://arxiv.org/abs/2605.04892">arXiv:2605.04892</a> (2026) — 550 ns system latency inside a 1.25 μs cycle</p>
+</div>
+
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A team raises the code distance from <em>d</em> = 23 to <em>d</em> = 24. What happens to the lowest-order failure exponent?</p>
+  <div class="cyu-opts">
+    <button data-opt>It rises by one.</button>
+    <button data-opt>It does not move.</button>
+    <button data-opt>It roughly doubles.</button>
+    <button data-opt>It falls by one, because larger patches carry more faults.</button>
+  </div>
+  <p class="cyu-why">The exponent is ⌊(<em>d</em>+1)/2⌋, and ⌊24/2⌋ = ⌊25/2⌋ = <strong>12</strong>. A distance-<em>d</em> code corrects ⌊(<em>d</em>−1)/2⌋ errors, so the smallest uncorrectable fault set only grows when <em>d</em> grows by <strong>two</strong>. This is why the literature always steps <em>d</em> → <em>d</em>+2, and why "we increased the code distance" is not on its own a claim about error suppression. It is also the single most common off-by-one in secondary coverage of this field.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+<div class="pathway">
+  <a href="qec.html"><span class="pw-k">The pillar</span><span class="pw-t">What is error correction?</span><span class="pw-s">The same formalism with a surface code you can break by hand.</span></a>
+  <a href="qec.html#duel"><span class="pw-k">Sit in the decoder’s seat</span><span class="pw-t">The Decoder Duel</span><span class="pw-s">Matching against a defect its noise model cannot express.</span></a>
+  <a href="corrections.html"><span class="pw-k">Where we were wrong</span><span class="pw-t">Corrections</span><span class="pw-s">Twenty-one logged errors, including two on this page.</span></a>
 </div>
 
 <footer>The deep end: formalism, citations, a hostile referee.<br>SymbiQ · Every 🔴 post passes an independent hostile-referee verification before it ships. Find an error anyway? It goes on the <a href="corrections.html">Corrections</a> page with more prominence than the original.</footer>

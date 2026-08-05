@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it — with an interactive surface code you can break yourself.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <style>
 #qec-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
 .pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
@@ -93,10 +93,11 @@
 }
 </script>
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
-<body>
+<body data-tiers>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -205,7 +206,7 @@
 <p>The grid's size is its <strong>code distance d</strong>: a d=3 code corrects any single flip and detects any pair, but a chain of 3 errors crossing the grid is invisible — it changes the logical qubit while every check stays quiet. Bigger d, longer chains needed, safer qubit.</p>
 <p>And the number that rules the whole field: the <strong>threshold</strong>. If the physical error rate is below roughly 1% per operation (model-dependent), enlarging the grid makes the logical qubit <em>exponentially</em> better. Above it, enlarging the grid makes it worse — more qubits, more noise, no rescue. Every headline about qubit quality is really a headline about which side of this line a machine is on. That's also why decoders matter so much: a smarter decoder effectively moves you further below threshold with zero new hardware.</p>
 
-<h2>Break the code yourself</h2>
+<h2 data-tier-keep>Break the code yourself</h2>
 <p>This is the real thing — the distance-3 surface code ("surface-17": 9 data + 8 check qubits), the first layout serious superconducting labs build. Click data qubits to flip them. Amber patches are parity checks firing; the dashed teal rings are the decoder's proposed repair. See if you can get an error past it.</p>
 
 <div class="card" id="qec-widget">
@@ -222,7 +223,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the layout and check structure are exact (the standard d=3 rotated surface code, Tomita &amp; Svore 2014), and the decoder is true minimum-weight inference over all 512 bit-flip patterns. Simplified two ways: only bit-flips are injected (phase-flips behave identically under the faded X checks), and checks here are perfect one-shot measurements — real hardware re-measures them ~a million times per second, and the checks themselves misfire.</p>
 </div>
 
-<h2>The duel: sit in the AI's chair</h2>
+<h2 data-tier-keep>The duel: sit in the AI's chair</h2>
 <p>The widget above let you see the error. A real decoder never does. It sees which alarms fired, and nothing else, and it has to bet. So here is the actual job.</p>
 <p>Ten rounds on a chip with a defect: somewhere in this lattice two qubits are coupled, and when one flips its partner tends to flip with it. <strong>Cross-talk</strong> — a real failure mode, and one of the exact things that breaks textbook decoders. Your opponent is <strong>minimum-weight matching</strong>, the hand-written decoder the field has run on since 2001. It is very good, and it is running the textbook noise model it was handed: every qubit fails on its own, every failure equally likely. Nobody told it about this chip. You <em>can</em> hand-fit a correlation back into a matching decoder — that is what “correlated matching” is — but somebody has to know what to fit.</p>
 <p>You can. After every round you see what actually happened — the same kind of device data AlphaQubit was fine-tuned on. Find the defect and you will beat it. That is the whole thesis of this site, played out on a nine-qubit grid.</p>
@@ -260,7 +261,22 @@
   • Real-time FPGA neural decoder: <a href="https://arxiv.org/abs/2605.04892">arXiv 2605.04892</a></p>
 </div>
 
-<h2>Go deeper</h2>
+<div class="cyu" data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A parity check measures whether two neighbouring qubits agree. Why does that not destroy the logical state?</p>
+  <div class="cyu-opts">
+    <button data-opt>It does destroy it, but the decoder rebuilds it afterwards.</button>
+    <button data-opt>The measurement is too weak to collapse anything.</button>
+    <button data-opt>It asks only whether they agree, never what either one is — so it learns nothing about the encoded value.</button>
+    <button data-opt>The check qubits are classical, so they are exempt.</button>
+  </div>
+  <p class="cyu-why">A stabilizer measurement returns a <em>parity</em>, and parity is exactly the information that is orthogonal to the encoded value. The check learns that something flipped without learning what the logical qubit is, which is why a surface code survives being measured a million times a second. This is ordinary ⟦Proven⟧ stabilizer physics, and it is the single idea the whole field rests on.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>₿ The stakes</h3><p>Error correction is the multiplier in every "quantum breaks Bitcoin" estimate. The honest numbers.</p><a href="bitcoin.html">Can quantum break Bitcoin? →</a></div>
   <div class="card"><h3>🔴 The math floor</h3><p>The decoder formalism this page compresses, with the derivations.</p><a href="deep.html">Read →</a></div>

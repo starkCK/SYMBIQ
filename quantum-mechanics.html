@@ -26,8 +26,9 @@
 <meta name="twitter:description" content="Quantum computing is built entirely on quantum mechanics — same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <style>
@@ -106,7 +107,7 @@
 }
 </script>
 </head>
-<body>
+<body data-tiers>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -207,7 +208,7 @@
 
 <p>One thing worth saying plainly, because the word is so abused: in "quantum computing," <strong>quantum</strong> means quantum. It is the same word physicists use, pointing at the same phenomena in a real refrigerated chip. It is not true of "quantum healing" or a quantum-branded shampoo, where the word is pure decoration. "Quantum leap" is the interesting middle case: it <em>does</em> come from something real — an electron jumping between energy levels — but popular use inverted the meaning into "an enormous change," when the actual jump is the <em>smallest</em> change that system is able to make — discrete and indivisible, which is what "quantum" meant in the first place. Quantum computing is the case where the label stayed literal.</p>
 
-<h2>One state, two questions</h2>
+<h2 data-tier-keep>One state, two questions</h2>
 <p>Here is the whole relationship in a single object. Below is a <strong>Bloch sphere</strong> — the standard picture of one qubit. Every possible state of a single qubit is a point on that surface, and every quantum gate is a <em>rotation</em> of it.</p>
 <p>Press the gates and watch the arrow move. Then read the two panels underneath: the same state, described the way a physicist would and the way a programmer would. Neither panel is a translation of the other — they are the same fact, asked about differently.</p>
 
@@ -259,7 +260,7 @@
 <p><strong>So what <em>did</em> quantum computing add?</strong> Three things, none of them physical laws. First, the <strong>circuit model</strong>: a discipline of building any evolution out of a small reusable gate set. Second, <strong>complexity</strong> — the machinery for asking how the cost of a computation grows with problem size, which is a computer-science question that physics simply had never posed about physical systems. Third, and most usefully, <strong>error correction</strong>: the realisation that a fragile quantum state can be protected by encoding it across many physical carriers. That last one has since become a physics tool in its own right.</p>
 <p>Where does interference come in? A quantum computer is not a machine that "tries every answer at once" — that phrasing is the most common way the subject is oversold. Superposition alone gets you nothing, because measurement hands back a single random outcome. The work is done by <strong>interference</strong>: a good algorithm arranges the amplitudes of wrong answers to cancel and the right ones to reinforce, so that the final measurement is likely to land where you want. Designing that cancellation is the actual craft, and it is why useful quantum algorithms are rare and hard to find rather than automatic.</p>
 
-<h2>The part the sphere cannot draw</h2>
+<h2 data-tier-keep>The part the sphere cannot draw</h2>
 <p>The widget above is one qubit, and one qubit is the honest limit of that picture. Entanglement needs two, and it is where the difference between quantum mechanics and any classical story stops being a matter of interpretation and becomes something you can <strong>win a bet with</strong>.</p>
 <p>Here is that bet, in its cleanest form — the <strong>CHSH game</strong>, from Clauser, Horne, Shimony and Holt in 1969. Two players, Alice and Bob, are separated and cannot communicate. A referee sends each of them a random bit. Each must answer with a bit of their own. They win the round if their two answers differ <em>only</em> when both received a 1.</p>
 <p>They may agree on any strategy beforehand. Here is the theorem: if the world is <strong>local and classical</strong> — if Alice's answer depends only on her own bit and whatever they agreed in advance — then no strategy on earth wins more than <strong>75%</strong> of rounds. That is not a limit of cleverness; it is a proof. Sharing an entangled pair lifts the ceiling to <strong>85.4%</strong>. Play both and watch.</p>
@@ -314,7 +315,22 @@
   • Standard text: Nielsen &amp; Chuang, <em>Quantum Computation and Quantum Information</em> (CUP, 10th anniv. ed. 2010)</p>
 </div>
 
-<h2>Go deeper</h2>
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Why is a 2ⁿ-dimensional state space <em>not</em> on its own a reason quantum computers are hard to simulate?</p>
+  <div class="cyu-opts">
+    <button data-opt>Because 2ⁿ is smaller than it looks for realistic n.</button>
+    <button data-opt>Because stabilizer circuits occupy the same exponential space and simulate efficiently.</button>
+    <button data-opt>Because classical computers also use exponential space.</button>
+    <button data-opt>It is the reason — that is the standard argument.</button>
+  </div>
+  <p class="cyu-why">The Gottesman–Knill theorem is the counterexample: stabilizer circuits live in the same 2ⁿ-dimensional space and are simulable in polynomial time on a classical machine. So exponential dimension is <strong>necessary but not sufficient</strong>. Whatever makes quantum computation hard to simulate, it is not the size of the vector alone — which is worth knowing, because "2ⁿ amplitudes" is the most common hand-wave in popular coverage. This page used to make that slip; it is <a href="corrections.html">logged</a>.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>🟢 Start clean</h3><p>The same ideas with no formalism at all, in plain language.</p><a href="basics.html">Basics →</a></div>
   <div class="card"><h3>🛡️ The hard part</h3><p>Why fragile quantum states need protecting, and how a code does it.</p><a href="qec.html">Error correction →</a></div>

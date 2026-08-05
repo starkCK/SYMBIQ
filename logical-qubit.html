@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits — what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <style>
 .preset { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; margin: 0 6px 6px 0; cursor: pointer; font-size: .85rem; transition: border-color .15s, color .15s, transform .15s; }
 .preset:hover { border-color: var(--teal); transform: translateY(-1px); }
@@ -81,10 +81,11 @@
 }
 </script>
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
-<body>
+<body data-tiers>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -236,7 +237,7 @@
   <figcaption><strong>Both squares are one logical qubit.</strong> Their areas are drawn in true proportion, using this page's ≈2d² convention: d = 13 costs 338 and d = 59 costs 6,962, a factor of 20.6. (The exact rotated-code count is 2d²−1 — the 49 drawn on the left — and the rounding changes that factor by 0.3%, which is why the convention is harmless here.) Nothing about the algorithm changed between them; only the hardware's error rate did. This is why a company quoting raw qubit counts is quoting the wrong number, and why "quality first" is an engineering position rather than a slogan. <a href="#lq-widget">Set your own error rate in the calculator ▸</a></figcaption>
 </figure>
 
-<h2>The calculator: physical qubits → logical qubits</h2>
+<h2 data-tier-keep>The calculator: physical qubits → logical qubits</h2>
 <p>This is the exact model our community uses in <a href="deep.html">Boss Question #3</a>. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.</p>
 
 <div class="card" id="lq-widget">
@@ -267,7 +268,22 @@
 <p>The same arithmetic is why cryptographic targets look so expensive: push the target to 10⁻¹² or below and every machine's required <em>d</em> jumps, the patches balloon, and the logical count collapses — which is exactly the multiplier behind the <a href="bitcoin.html">"half a million physical qubits to break a key"</a> headline.</p>
 <p><em>Verification status: fresh-session hostile-referee pass completed 2026-07-15 — the calculator was reimplemented from scratch and every number (incl. B wins 29 vs 14) reproduced exactly; all findings applied same day. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
-<h2>Go deeper</h2>
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Machine A runs at p/p<sub>th</sub> = 1/2 and needs <em>d</em> = 59. Machine B runs at 1/20 and needs <em>d</em> = 13. B has ten times fewer physical qubits. Which fits more logical qubits?</p>
+  <div class="cyu-opts">
+    <button data-opt>Machine A — it has ten times the hardware.</button>
+    <button data-opt>Machine B, comfortably: 29 logical against A’s 14.</button>
+    <button data-opt>They tie, which is why qubit count is quoted instead.</button>
+    <button data-opt>Neither — below <em>d</em> = 25 no logical qubit exists.</button>
+  </div>
+  <p class="cyu-why">A patch costs ~2<em>d</em>² physical qubits, and <em>d</em> is driven by how far below threshold you are — so error rate beats raw size, badly. B fits <strong>29</strong> logical qubits to A’s <strong>14</strong> while holding a tenth of the hardware. This is the referee-verified Q21 answer, and the calculator above reproduces it exactly. It is also why "1,000 qubits!" is the wrong headline.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>🟢 How the correcting works</h3><p>The error-correction machinery a logical qubit is built from — with a code you can break yourself.</p><a href="qec.html">Quantum error correction →</a></div>
   <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, distance, and the threshold theorem in full formalism.</p><a href="deep.html">Read →</a></div>

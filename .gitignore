@@ -1,0 +1,7 @@
+# Test scaffolding — never ships to the public site repo.
+# jsdom is installed locally to drive tiers.js through a real DOM; the site
+# itself has zero dependencies and must stay that way.
+node_modules/
+package.json
+package-lock.json
+_t.js

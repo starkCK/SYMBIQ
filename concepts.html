@@ -26,8 +26,9 @@
 <meta name="twitter:description" content="Quantum error correction with its real names and light math: syndromes, parity checks, code distance, and why a learned decoder beats a hand-written rulebook on a real chip.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -113,10 +114,39 @@
 
 <span class="tier y">🟡 Intermediate — real terms, light math</span>
 <h1>The AI That Babysits Qubits</h1>
+<div class="tbar tbar-links">
+  <span class="tbar-lab">Read this at</span>
+  <div class="tbar-btns">
+    <a class="tbtn t-g" href="basics.html"><span class="tbtn-chip">🟢</span><span class="tbtn-name">Plain</span></a>
+    <span class="tbtn t-y is-on" aria-current="page"><span class="tbtn-chip">🟡</span><span class="tbtn-name">Working</span></span>
+    <a class="tbtn t-r" href="deep.html"><span class="tbtn-chip">🔴</span><span class="tbtn-name">Formal</span></a>
+  </div>
+  <span class="tbar-blurb">Mechanism, and a worked number.</span>
+</div>
 
-<p>Physical qubits fail constantly (~1 error per 1,000 operations on good hardware). The fix: encode one <em>logical</em> qubit across many physical ones — a <strong>surface code</strong>, a grid where data qubits are interleaved with measurement qubits.</p>
+<p class="tier-lede">The mechanism, one worked number, and the picture you should have in your head. No derivations — those are in <a href="deep.html">🔴 Deep</a>.</p>
 
-<p>The measurement qubits run parity checks called <strong>syndrome measurements</strong>: they tell you something flipped, and roughly where, without touching the data. A <strong>decoder</strong> then infers the most likely error pattern from the syndrome history — like a doctor diagnosing from symptoms.</p>
+<h2>The mechanism</h2>
+
+<p>Physical qubits fail constantly — roughly <strong>1 error per 1,000 operations</strong> on good hardware. The fix is not a better qubit; it is redundancy with a twist. You encode one <em>logical</em> qubit across many physical ones in a <strong>surface code</strong>, then never measure the data at all.</p>
+
+<p>Instead, extra <strong>measurement qubits</strong> sitting between the data qubits run parity checks — <strong>syndrome measurements</strong>. Each one asks only whether its neighbours <em>agree</em>, never what they are. That distinction is the entire trick: a parity check extracts the fact that something flipped without extracting the value that would collapse the superposition. A <strong>decoder</strong> then infers the most likely error pattern from the history of those checks, the way a doctor diagnoses from symptoms rather than by opening the patient.</p>
+
+<h2>The picture to hold in your head</h2>
+
+<p>Draw a checkerboard. Every <em>corner</em> is a data qubit, holding part of your one logical qubit. Every <em>square</em> is a measurement qubit that watches the four corners touching it and reports a single bit: <em>even</em> or <em>odd</em>. The squares alternate between two flavours — one watches for bit flips, the other for phase flips — because a qubit can fail in two independent ways and you need to catch both.</p>
+
+<p>Run every square once and you get a snapshot: mostly zeros, with a few squares lit up. A single flipped data qubit lights the squares around it. A <em>chain</em> of flips lights only the two squares at its <strong>ends</strong> — everything in the middle cancels. So the decoder never sees the error; it sees a scattering of endpoints and has to guess the cheapest set of chains that would produce exactly those endpoints. That is why decoding is a matching problem, and why a 1965 graph algorithm ended up inside a quantum computer.</p>
+
+<h2>The number that explains the whole overhead</h2>
+
+<p>Here is the one calculation worth doing by hand, because it explains every "1,000 qubits to make 1" headline you have read.</p>
+
+<p>A useful algorithm runs on the order of a <strong>billion</strong> logical operations. For fewer than one expected failure across the whole run, you need a logical error rate below about <strong>10<sup>−9</sup></strong>. You are starting from a physical error rate of <strong>10<sup>−3</sup></strong>. So the code has to buy you <strong>six orders of magnitude</strong>.</p>
+
+<p>It buys them in steps. Each increase of the code distance <em>d</em> by two multiplies the suppression by a factor Λ — and Google measured Λ = <strong>2.14</strong> on Willow, going from <em>d</em> = 5 to <em>d</em> = 7. So a factor of 1,000 costs about nine of those steps: 2.14<sup>9</sup> ≈ <strong>941</strong>.</p>
+
+<p>Nine steps takes you from <em>d</em> = 5 to <em>d</em> = 23. A rotated surface-code patch at distance <em>d</em> costs 2<em>d</em>² − 1 physical qubits, so that one logical qubit now occupies <strong>1,057 physical qubits</strong> — and you have bought roughly 1,000×, not the full million. <strong>That is the exchange rate.</strong> It is also why Λ is the single most important number in the field: it is the interest rate on every qubit you will ever build.</p>
 
 <figure class="fig figcycle figcard">
   <div class="figscroll"><svg viewBox="0 0 620 214" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -159,9 +189,33 @@
   <figcaption><strong>Step 3 is the whole story.</strong> Steps 1, 2 and 4 are physics and plumbing; step 3 is <em>inference</em> — and inference is what machine learning is for. There is a hard constraint hiding in that return arrow: the decoder has to finish inside the lap. Fall behind and the backlog grows forever, which is why an accurate decoder that is too slow does not count. <a href="qec.html">How the checks actually work ▸</a></figcaption>
 </figure>
 
-<p>The classic algorithm (minimum-weight perfect matching) assumes errors are independent and simple. Real hardware isn't: errors correlate, leak, and drift. <strong>AlphaQubit</strong> is a recurrent transformer trained first on simulations, then fine-tuned on the real chip's data — so it learns the <em>actual</em> noise, not the idealized model. Result: ~30% fewer logical errors than the best real-time classical decoders on Google's hardware.</p>
+<h2>Where the AI walked in</h2>
 
-<p>Simpler version: <a href="basics.html">🟢 Basics</a> · Full formalism with citations: <a href="deep.html">🔴 Deep</a></p>
+<p>The classic decoder — <strong>minimum-weight perfect matching</strong> — assumes errors are independent and simple. Real hardware is not: errors correlate across neighbours, qubits leak out of the computational space entirely, and the noise drifts between calibrations. Matching cannot express any of that, because its model has no vocabulary for it.</p>
+
+<p><strong>AlphaQubit</strong> is a recurrent transformer trained first on hundreds of millions of simulated samples, then fine-tuned on thousands of samples from the real chip — so it learns the <em>actual</em> noise rather than the idealised model, and it reads the analog "soft" readout signal instead of a hard 0/1. Result: about 30% fewer logical errors than correlated matching, the fast class you can actually run live.</p>
+
+<p>The catch is the return arrow in the diagram above. The decoder has to finish inside the cycle, or the backlog grows forever — so an accurate decoder that is too slow does not count. That, not accuracy, is the open engineering problem.</p>
+
+<div class="cyu" data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Willow measured Λ = 2.14. You are at code distance <em>d</em> = 5 and you need 1,000× fewer logical errors. Roughly what distance do you need?</p>
+  <div class="cyu-opts">
+    <button data-opt>d = 7 — one step is enough.</button>
+    <button data-opt>d = 11.</button>
+    <button data-opt>d = 23.</button>
+    <button data-opt>d = 2,140 — the distance scales with Λ directly.</button>
+  </div>
+  <p class="cyu-why">Each step of <em>d</em> → <em>d</em>+2 divides the logical error rate by Λ, so 1,000× needs log(1000)/log(2.14) ≈ 9.08 steps. Nine steps buys 2.14<sup>9</sup> ≈ <strong>941×</strong> and takes you from <em>d</em> = 5 to <strong><em>d</em> = 23</strong> — which is 2<em>d</em>²−1 = <strong>1,057 physical qubits</strong> for that one logical qubit. Note the trap in the wording: raising <em>d</em> from 5 to 6 would buy you nothing at all, because the exponent only moves when the distance moves by two.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+<div class="pathway">
+  <a href="deep.html"><span class="pw-k">Next, same topic</span><span class="pw-t">🔴 Deep</span><span class="pw-s">Where that exponent comes from, and what is still open.</span></a>
+  <a href="logical-qubit.html"><span class="pw-k">The exchange rate</span><span class="pw-t">What is a logical qubit?</span><span class="pw-s">A calculator that turns an error rate into a real qubit count.</span></a>
+  <a href="race.html#threshold"><span class="pw-k">The race it decides</span><span class="pw-t">The threshold</span><span class="pw-s">Drag Λ and watch the cliff flip into a climb.</span></a>
+</div>
 
 <footer>Real terms, light math, nothing hand-waved.<br>SymbiQ · 🟡 posts should be followable by an engineer without googling. Tell us in Discord if one isn't.</footer>
 </div>

@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="The four qubit technologies — superconducting, trapped-ion, neutral-atom, photonic — and why you can't compare their qubit counts. A field guide to the metrics that actually decide the race.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <style>
 .modtabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 16px; }
 .modtab { flex: 1 1 auto; min-width: 120px; text-align: left; }
@@ -88,10 +88,11 @@
 }
 </script>
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
-<body>
+<body data-tiers>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -185,7 +186,7 @@
 <p>Two reasons. First, <strong>qubits vary wildly in quality</strong>: a noisy qubit that forgets its state in a microsecond is not interchangeable with a pristine one that holds for seconds, and <a href="logical-qubit.html">error correction spends the noisy ones at a brutal exchange rate</a>. Fifty excellent qubits routinely beat a thousand sloppy ones.</p>
 <p>Second — and this is what <em>this</em> page is about — <strong>different companies aren't even building the same kind of qubit</strong>. There are four main technologies, each running on different physics, each with a completely different personality. Counting one against another is like comparing a sprinter's top speed to a marathoner's and declaring a winner. Below, click through the four and see what each is really betting on.</p>
 
-<h2>The four technologies, side by side</h2>
+<h2 data-tier-keep>The four technologies, side by side</h2>
 <p>Click a technology. The bars are <em>structural</em> strengths and weaknesses — the physics tendencies of each approach, not this quarter's numbers (those live on <a href="race.html">The Race</a>). There's real variation between companies within each camp.</p>
 
 <div class="card" id="mod-widget">
@@ -217,7 +218,22 @@
 <p>The deep reason the field's scoreboard shifted from physical to logical counts around 2024–25 is that below-threshold error correction stopped being hypothetical (<a href="qec.html">the Willow-class demonstrations</a>). Once error correction provably works, the meaningful unit of progress becomes error-corrected qubits — so a company reporting a few high-distance logical qubits is further along than one reporting thousands of raw physical qubits with no correction story. When you read <a href="race.html">The Race</a>, that's the number to hunt for.</p>
 <p><em>Verification status: referee-verified — fresh-session hostile-referee pass 2026-07-15 (VERIFY_COMPARE_PILLAR.md: no Critical/Major; every modality claim, company attribution, and Λ/error-correction statement verified against primary sources), fixes applied 2026-07-19. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
-<h2>Go deeper</h2>
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Two companies announce chips the same week. Which single number tells you most about which is further along?</p>
+  <div class="cyu-opts">
+    <button data-opt>Total physical qubit count.</button>
+    <button data-opt>The error suppression factor Λ between two code distances.</button>
+    <button data-opt>Gate speed in nanoseconds.</button>
+    <button data-opt>The number of qubits that can be entangled at once.</button>
+  </div>
+  <p class="cyu-why"><strong>Λ</strong> — the factor by which logical errors fall when you raise the code distance by two — is the only one of these that tells you whether the machine is <em>below threshold</em>. Below threshold, adding qubits helps; above it, adding qubits makes things worse, and a bigger chip is a bigger liability. Qubit count comes last on this page’s 🔴 list for exactly that reason.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>🏁 The live scoreboard</h3><p>Where these metrics get filled in weekly — with our own predictions on record.</p><a href="race.html">The Race →</a></div>
   <div class="card"><h3>🟡 The exchange rate</h3><p>Why 50 clean qubits beat 1,000 noisy ones, calculated.</p><a href="logical-qubit.html">What is a logical qubit? →</a></div>

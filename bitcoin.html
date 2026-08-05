@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Not today — the honest numbers: what Shor's algorithm can and can't do to Bitcoin, which coins are exposed, why mining is safe, and an interactive calculator of what it would actually take.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -75,10 +75,11 @@
 }
 </script>
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
-<body>
+<body data-tiers>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -183,7 +184,7 @@
 <p><strong>The 10-minute window.</strong> Spending from a hashed address reveals your public key while the transaction waits (~10 minutes) to confirm. An attacker would need to run Shor's algorithm <em>inside that window</em> to race you — which is why serious resource estimates ask not just "can it be done" but "can it be done in an hour." That requirement multiplies the machine size — though a 2026 result cut it sharply by precomputing half the algorithm before your transaction even appears (see the calculator below, and the 2026 update in the 🔴 section).</p>
 <p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half — today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps — sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="deep.html">Grover audit</a>: quadratic speedups die in the overhead.</p>
 
-<h2>The calculator: what would it actually take?</h2>
+<h2 data-tier-keep>The calculator: what would it actually take?</h2>
 <p>Drag the sliders. The model is the same one our community uses in <a href="deep.html">Boss Questions</a>: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation — the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
 
 <div class="card" id="shor-widget">
@@ -214,7 +215,22 @@
 <p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime — magic-state throughput is the real budget (same economics as our magic-state Boss Question); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic — there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once — hardware error rates AND algorithmic Toffoli counts — so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
 <p><em>Verification status: referee-verified — fresh-session hostile-referee pass with fixes applied 2026-07-14, including the March-2026 supersession (arXiv 2603.28846). Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
-<h2>So when should anyone actually worry?</h2>
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">The 2022 estimate for a racing attack was 1.9 billion physical qubits. The 2026 estimate is about 500,000. What mostly closed that gap?</p>
+  <div class="cyu-opts">
+    <button data-opt>Physical qubits got roughly 3,800 times cheaper to build.</button>
+    <button data-opt>Better algorithms and architectures cut the work, and half of Shor’s run turned out to be precomputable.</button>
+    <button data-opt>The Bitcoin protocol changed, shrinking the attack surface.</button>
+    <button data-opt>The 2022 estimate was simply a mistake.</button>
+  </div>
+  <p class="cyu-why">Both estimates are careful and neither is wrong. The collapse came from the <em>algorithm</em> side — active-volume architectures, windowed arithmetic and far lower Toffoli counts — plus the observation in <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a> that the first half of Shor’s algorithm can be precomputed from public curve parameters, before your transaction even exists. That is the honest lesson: <strong>a correctly-cited number can go stale by three orders of magnitude in four years</strong>, and this page got that wrong once — it is <a href="corrections.html">logged</a>.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+
+<h2 data-tier-stop>So when should anyone actually worry?</h2>
 <p>The honest answer is a range, not a date: expert surveys cluster around "a cryptographically relevant machine is plausible in the 2030s, not the 2020s" — and Google planning its own post-quantum migration for <strong>2029</strong> tells you how seriously the people building these machines take the timeline. Bitcoin's real exposure isn't a surprise attack; it's that migrating a decentralized system takes a decade of arguing, and the clock on that has already started. What happens to exposed coins nobody migrates — burn, freeze, or free-for-all — may end up the most contentious debate in Bitcoin's history.</p>
 
 <h2>Go deeper</h2>

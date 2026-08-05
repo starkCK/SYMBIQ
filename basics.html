@@ -26,8 +26,9 @@
 <meta name="twitter:description" content="Quantum error correction with no math and no jargon: a choir where every singer drifts off key, a conductor who never hears anyone solo, and the AI that learned one real machine's bad habits.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -113,8 +114,23 @@
 
 <span class="tier g">🟢 Beginner — no math, no jargon</span>
 <h1>The AI That Babysits Qubits</h1>
+<div class="tbar tbar-links">
+  <span class="tbar-lab">Read this at</span>
+  <div class="tbar-btns">
+    <span class="tbtn t-g is-on" aria-current="page"><span class="tbtn-chip">🟢</span><span class="tbtn-name">Plain</span></span>
+    <a class="tbtn t-y" href="concepts.html"><span class="tbtn-chip">🟡</span><span class="tbtn-name">Working</span></a>
+    <a class="tbtn t-r" href="deep.html"><span class="tbtn-chip">🔴</span><span class="tbtn-name">Formal</span></a>
+  </div>
+  <span class="tbar-blurb">One analogy. No equations.</span>
+</div>
 
-<p>A quantum computer is a choir where every singer slowly drifts off key — and looking directly at any singer makes them forget the song. Error correction is a conductor who fixes pitch <em>without ever hearing anyone sing solo</em>: they listen to pairs of neighbors and infer who drifted.</p>
+<p class="tier-lede">One analogy, no equations, about two minutes. If you want the machinery, the 🟡 tier builds it; if you want the derivation, 🔴 has it.</p>
+
+<p>A quantum computer is a choir where every singer slowly drifts off key — and looking directly at any singer to check on them makes that singer forget the song entirely.</p>
+
+<p>That is the whole problem, and it is worth sitting with for a second: <strong>you cannot fix what you are not allowed to look at.</strong></p>
+
+<p>Error correction is a conductor who never hears anyone sing solo. They only ever ask neighbouring pairs a single question — <em>do you two match?</em> Nobody is ever heard alone, so nobody forgets the song. And yet two clashes side by side are enough to point straight at the singer who drifted.</p>
 
 <figure class="fig figchoir figcard">
   <div class="figscroll"><svg viewBox="0 0 560 226" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -163,11 +179,33 @@
   <figcaption><strong>Nobody was ever heard alone.</strong> The conductor only ever asks "do these two match?" — and two neighbouring clashes are enough to pin the culprit. That is not a storytelling trick — it is exactly the rule a real quantum computer follows, because listening to a single qubit destroys the very thing you were trying to protect. (A real machine runs this comparison across a whole grid rather than a single row, but the rule is the same one.) <a href="concepts.html">The same thing with its real name ▸</a></figcaption>
 </figure>
 
-<p>For 30 years, humans wrote the conductor's rulebook by hand. In 2024, Google DeepMind replaced the rulebook with an AI (AlphaQubit) that <em>learned</em> a real choir's specific bad habits from its data. It makes about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest, most careful one — though it's still too slow to conduct live itself; making it fast is the current race.</p>
+<p>For thirty years, people wrote that conductor's rulebook by hand. In 2024, Google DeepMind replaced the rulebook with an AI — AlphaQubit — that <em>learned</em> one real choir's particular bad habits from its own recordings. It makes about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one. It is still too slow to conduct in real time. Making it fast is the current race.</p>
 
-<p>The thing AI is worst at (being exactly right) is being fixed by the thing quantum is worst at existing without (error correction). That loop is why you're here.</p>
+<div class="sowhat">
+  <h3>So what?</h3>
+  <p>Every promise you have ever read about quantum computers — breaking encryption, designing drugs, cracking optimisation — sits downstream of this one unglamorous job. None of it happens on a machine that forgets its own state halfway through.</p>
+  <p>And the thing finally making that job work is not better physics. It is a machine-learning model doing the one thing it is genuinely good at: spotting a pattern nobody wrote down. <strong>The thing AI is worst at — being exactly right — is being fixed by the thing quantum computers cannot exist without.</strong> That loop is the whole reason this site exists.</p>
+</div>
 
-<p>Ready for the version with real terms? <a href="concepts.html">🟡 Concepts →</a></p>
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">The conductor never listens to a single singer on their own. Why not?</p>
+  <div class="cyu-opts">
+    <button data-opt>Listening to them one at a time would simply take too long.</button>
+    <button data-opt>Listening to a single singer destroys the very thing being protected.</button>
+    <button data-opt>Singers only ever drift off key in pairs.</button>
+    <button data-opt>The conductor is too far away to hear any individual.</button>
+  </div>
+  <p class="cyu-why"><strong>Measuring one qubit on its own collapses its superposition</strong> — the property that made it worth having. A parity check dodges this by asking only <em>do these two agree?</em>, which reveals that something flipped without revealing what either one is. That single constraint is why quantum error correction looks so strange next to the classical kind: you are repairing a thing you are never allowed to inspect.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+</div>
+<div class="pathway">
+  <a href="concepts.html"><span class="pw-k">Next, same topic</span><span class="pw-t">🟡 Concepts</span><span class="pw-s">The mechanism, and the one number that explains the whole overhead.</span></a>
+  <a href="qec.html"><span class="pw-k">The full explainer</span><span class="pw-t">What is error correction?</span><span class="pw-s">The pillar page, with a surface code you can break yourself.</span></a>
+  <a href="qec.html#duel"><span class="pw-k">Or play it</span><span class="pw-t">The Decoder Duel</span><span class="pw-s">Ten rounds against the textbook decoder, on a chip it was never told about.</span></a>
+</div>
 
 <footer>The green door: no math, no jargon, no gatekeeping.<br>SymbiQ · 🟢 posts are tested on smart friends who studied literature. If one doesn't get it, we rewrite it.</footer>
 </div>

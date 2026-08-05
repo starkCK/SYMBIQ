@@ -26,8 +26,9 @@
 <meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with eight games where the mathematics does the judging.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script src="nav.js?v=4" defer></script>
+<script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <script src="archive.js?v=1" defer></script>
@@ -196,11 +197,11 @@
 </section>
 
 <h2>Read it instead</h2>
-<p>The same subject in prose, at whatever depth you want it. These three are one worked example — how AI learned to read a quantum computer's errors — told at three levels, so you can find the one that fits and then read the pillar pages at that level.</p>
+<p>One worked example — how AI learned to read a quantum computer's errors — at three depths that differ in <em>kind</em>, not in length. Pick the one that fits, then read the explainer pages at that depth using the toggle at the top of each.</p>
 <div class="grid">
-  <div class="card"><h3>🟢 Basics</h3><p>The whole thesis in five minutes, with no math and no jargon. Your smartest friend who studied literature gets it.</p><a href="basics.html">Start here →</a></div>
-  <div class="card"><h3>🟡 Concepts</h3><p>The same story with its real names and light math. An engineer follows without googling.</p><a href="concepts.html">The same, with real names →</a></div>
-  <div class="card"><h3>🔴 Deep</h3><p>The same story as formalism: real equations, paper citations, independently refereed before it ships.</p><a href="deep.html">The mathematics →</a></div>
+  <div class="card"><h3>🟢 Plain</h3><p><strong>Two minutes, one analogy, zero equations</strong> — and a straight answer to "so what?". A choir where nobody may be heard singing alone.</p><a href="basics.html">Start here →</a></div>
+  <div class="card"><h3>🟡 Working</h3><p><strong>The mechanism, plus one number worked by hand</strong> — why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.</p><a href="concepts.html">How it actually works →</a></div>
+  <div class="card"><h3>🔴 Formal</h3><p><strong>The derivation carried through</strong>, primary sources, and five problems that are genuinely open. Independently refereed before it ships.</p><a href="deep.html">The mathematics →</a></div>
 </div>
 
 <section class="orhero">
@@ -370,7 +371,10 @@
     hint.addEventListener('click', function () {
       hint.outerHTML = '<p style="color:var(--muted)"><em>Hint: ' + esc(q.hint) + '</em></p>';
     });
-    if (D.lattice) {
+    // A progress bar reading zero signals "abandoned", not "early" — so the
+    // Lattice line stays off until it has something true to report. Flagged in
+    // the 2026-07-30 audit; do not restore the always-on version.
+    if (D.lattice && D.lattice.f > 0) {
       document.getElementById('dq-lattice').innerHTML =
         'The Lattice: <strong>' + D.lattice.f.toLocaleString('en-US') + ' F</strong> of ' +
         D.lattice.goal.toLocaleString('en-US') + ' to reach code distance d=' + D.lattice.nextD +

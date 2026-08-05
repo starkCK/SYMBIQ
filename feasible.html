@@ -27,9 +27,10 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=25">
-<link rel="stylesheet" href="feasible.css?v=1">
+<link rel="stylesheet" href="feasible.css?v=3">
 <script src="save.js"></script>
 <script src="orgames.js?v=7"></script>
+<script src="methods.js?v=1"></script>
 <script src="nav.js?v=4" defer></script>
 <script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
@@ -83,6 +84,7 @@
           <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
           <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
           <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+          <a href="pqc.html" data-k="post-quantum pqc migration ml-kem mlkem kyber ml-dsa dilithium slh-dsa sphincs tls handshake certificate size cliff mtu nist fips 203 204 205 cnsa harvest now decrypt later cbom">What post-quantum costs on the wire<span class="new">NEW</span><span class="sub">Measured in your browser, with real keys</span></a>
           <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
         </section>
         <section>
@@ -92,6 +94,7 @@
         </section>
         <section>
           <h4>Figures you can touch</h4>
+          <a href="pqc.html#cliff" data-k="size cliff handshake bytes mtu packet measure">The Size Cliff<span class="new">NEW</span><span class="sub">Real PQC keys, measured on the wire</span></a>
           <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
           <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
           <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
@@ -964,6 +967,23 @@ otherwise accept with probability  exp(−ΔE / T)</code>
   <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="honest-prune"></p>
 </div>
 
+<h2 id="verdict"><span class="fr-secnum">The verdict</span>Can quantum beat classical on optimisation?</h2>
+
+<p>The question has no answer in the abstract and a perfectly good one on a named instance. So here is a named instance — the same crates you just loaded — attacked five ways, with the column that almost every comparison leaves out: <strong>what each method can actually prove when it stops.</strong></p>
+
+<p>That column is the whole argument. A number without a certificate is a claim. Four of these five finish holding a claim, and one of the four is the quantum one.</p>
+
+<div class="card" id="verdict-widget">
+  <p class="oreyebrow">The Verdict · five methods, one problem</p>
+  <div id="mount-verdict"><p style="color:var(--muted)">This table computes itself in your browser. It needs JavaScript.</p></div>
+</div>
+
+<p><strong>Watch what happens as you move up the instances.</strong> On the first two, Grover&rsquo;s query count sits <em>below</em> branch and bound&rsquo;s node count — 6 against 14, then 18 against 27. Quantum genuinely wins those rows and the table says so plainly. <strong>The verdict flips at the third</strong>, where 50 queries meets 31 nodes, and by the fourth it is 201 against 29. Greedy, meanwhile, goes from exactly optimal to 23 short, and annealing stops without ever knowing which of those two it did.</p>
+
+<p>It flips because the problem acquired structure, not because the quantum method got worse. Grover is doing precisely what it always does — and that is the point. Its speedup is quadratic but still exponential, and identical whether the haystack is a knapsack or pure noise, because it never reads the structure. The bound is <em>made</em> of that structure, so it barely grows at all.</p>
+
+<p>This is the honest shape of nearly every quantum-optimisation claim you will read: true on an instance small enough that you did not need a quantum computer, and untested at the size where you would.</p>
+
 <h2 id="bridges"><span class="fr-secnum">The overlap</span>Where this touches quantum computing — three real bridges</h2>
 
 <p>These are not analogies. Each is a place where the same mathematics is load-bearing on both sides.</p>
@@ -1149,6 +1169,19 @@ otherwise accept with probability  exp(−ΔE / T)</code>
     var honest = document.getElementById('honest-' + id);
     if (honest) honest.innerHTML = OG.get(id).honest;
   });
+})();
+</script>
+
+<script>
+// The Verdict table. Same mount contract again, and deliberately generic in
+// methods.js: it takes any {items, cap} instance, so the PQC migration
+// sequencer can mount this identical engine on a real estate later — an
+// asset's value is its risk reduction, its weight is its migration cost.
+(function () {
+  var M = window.SymbiQ && SymbiQ.methods;
+  var host = document.getElementById('mount-verdict');
+  if (!M || !host) return;
+  M.mount(host, { level: 2 });
 })();
 </script>
 

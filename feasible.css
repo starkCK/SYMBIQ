@@ -216,3 +216,40 @@ body.fr h2::before { background: var(--or) !important; }
 @media (prefers-reduced-motion: reduce) {
   .mod, .mod-x, .mod-out a { transition: none; }
 }
+
+/* ── The Verdict: five methods, one problem ────────────────────────────────
+   Page-local because only feasible.html mounts it. The colour law holds:
+   teal = classical/shipping, violet = the quantum column, amber = this page's
+   own accent, muted = scaffolding.                                          */
+.vm-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.vm-pick .preset { display: inline-flex; flex-direction: column; align-items: flex-start;
+                   line-height: 1.25; text-align: left; }
+.vm-pick .preset em { font-style: normal; font-size: .68rem; color: var(--muted); font-weight: 400; }
+.vm-pick .preset.on em { color: inherit; opacity: .82; }
+.vm-scroll { overflow-x: auto; margin: 14px 0 0; }
+table.vm { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 620px; }
+table.vm th, table.vm td { text-align: left; padding: 10px 12px 10px 0; vertical-align: top;
+                           border-bottom: 1px solid rgba(148,163,184,.18); }
+table.vm thead th { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em;
+                    color: var(--muted); font-weight: 600; border-bottom-width: 2px; }
+/* global `th` uppercases row headers; method names read as shouting next to
+   their lowercase sub-labels, so opt out here too. */
+table.vm tbody th { font-weight: 700; white-space: nowrap; padding-right: 18px; text-transform: none; }
+table.vm tbody th em { display: block; font-style: normal; font-weight: 400; font-size: .72rem;
+                       color: var(--muted); white-space: normal; max-width: 210px; margin-top: 2px; }
+.vm-ans { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.vm-ans s { color: var(--muted); font-weight: 400; margin-left: 6px; }
+.vm-eff { font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.vm-cert { max-width: 340px; }
+.vm-opt { font-size: .64rem; text-transform: uppercase; letter-spacing: .06em;
+          background: rgba(45,212,191,.15); color: var(--teal); padding: 2px 6px;
+          border-radius: 4px; margin-left: 4px; }
+.vm-na { color: var(--muted); font-style: italic; font-weight: 400; }
+.vm-badge { display: inline-block; font-size: .62rem; text-transform: uppercase;
+            letter-spacing: .06em; padding: 2px 6px; border-radius: 4px; margin-right: 6px; }
+.vm-badge.yes { background: rgba(45,212,191,.15); color: var(--teal); }
+.vm-badge.no { background: rgba(248,113,113,.13); color: var(--red); }
+tr.vm-ex { background: rgba(45,212,191,.05); }
+tr.vm-q th { color: var(--violet); }
+.vm-note { font-size: .84rem; color: var(--muted); margin-top: 14px; }
+@media (max-width: 560px) { .vm-pick .preset { width: 100%; } }

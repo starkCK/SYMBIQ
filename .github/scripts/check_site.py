@@ -94,13 +94,27 @@ def html_files():
 
 
 def js_files():
-    return sorted(f for f in os.listdir(ROOT) if f.endswith(".js"))
+    """Top-level .js and .mjs, plus the vendored post-quantum ESM tree. The
+    vendored files are third-party and minified, which is exactly why they
+    should be parse-checked rather than assumed good."""
+    out = sorted(f for f in os.listdir(ROOT) if f.endswith((".js", ".mjs")))
+    vend = os.path.join(ROOT, "vendor", "pq")
+    if os.path.isdir(vend):
+        out += sorted(os.path.join("vendor", "pq", f)
+                      for f in os.listdir(vend) if f.endswith(".mjs"))
+    return out
 
 
-def node_check(source, label):
+def node_check(source, label, module=False):
     """Parse-check JS. `node --check` compiles without executing, so it is a
-    pure syntax test -- no DOM, no side effects."""
-    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False,
+    pure syntax test -- no DOM, no side effects.
+
+    The temp file's EXTENSION decides how node parses it: a .js file is treated
+    as CommonJS, where a top-level `import` is a syntax error. So ES modules
+    must be written to .mjs or the guard fails valid code. This bit us on
+    sizecliff.mjs and on pqc.html's inline <script type="module">."""
+    with tempfile.NamedTemporaryFile("w", suffix=".mjs" if module else ".js",
+                                     delete=False,
                                      encoding="utf-8") as fh:
         fh.write(source)
         tmp = fh.name
@@ -139,7 +153,7 @@ else:
     n = 0
     for f in js_files():
         with open(os.path.join(ROOT, f), encoding="utf-8") as fh:
-            if node_check(fh.read(), f):
+            if node_check(fh.read(), f, module=f.endswith(".mjs")):
                 n += 1
     for f, (p, _) in pages.items():
         inline = [(t, c) for (t, s, c) in p.scripts if s is None]
@@ -152,7 +166,7 @@ else:
                 except Exception as e:
                     fail("json-ld", f"{label} does not parse -> {e}")
             elif typ in ("", "text/javascript", "module"):
-                if node_check(content, label):
+                if node_check(content, label, module=(typ == "module")):
                     n += 1
     ok(f"scripts: {n} script/JSON-LD blocks parse")
 

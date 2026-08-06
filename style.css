@@ -767,15 +767,24 @@ body.latched { overflow: hidden; }
 }
 .sqform textarea { flex-basis: 100%; min-height: 130px; resize: vertical; }
 .sqform input:focus, .sqform textarea:focus { outline: none; border-color: var(--teal); }
+/* Was a flat solid-teal fill -- the one button on the site with no gradient,
+   next to "Load a code" which already got the nicer ghost treatment. Brought
+   in line with .bigplay's gradient language (Chinmoy, 2026-08-06: "some of
+   the buttons are ugly, no gradient, single shade bright color"). */
 .sqform button {
-  background: var(--teal); color: #04211d; border: 1px solid var(--teal);
-  border-radius: 8px; padding: 10px 20px; font: inherit; font-weight: 700;
-  cursor: pointer; white-space: nowrap;
-  transition: transform .18s cubic-bezier(.22,.7,.3,1), filter .18s ease;
+  background: linear-gradient(135deg, var(--teal), #22b8a6); color: #04211d; border: none;
+  border-radius: 8px; padding: 10px 20px; min-height: 44px; font: inherit; font-weight: 700;
+  cursor: pointer; white-space: nowrap; box-shadow: 0 6px 16px rgba(45,212,191,.22);
+  transition: transform .18s cubic-bezier(.22,.7,.3,1), box-shadow .18s ease, filter .18s ease;
 }
-.sqform button:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.sqform button:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(45,212,191,.3); filter: brightness(1.06); }
 .sqform button:active { transform: translateY(1px) scale(.985); }
 .sqform button[disabled] { opacity: .55; cursor: default; transform: none; }
+@media (prefers-color-scheme: light) {
+  .sqform button { background: linear-gradient(135deg, #0f766e, #115e59); color: #ffffff;
+    box-shadow: 0 6px 16px rgba(17,94,89,.22); }
+  .sqform button:hover { box-shadow: 0 10px 22px rgba(17,94,89,.3); }
+}
 .sqnote { font-size: .86rem; color: var(--muted); margin: 4px 0 0; }
 .sqmsg { margin: 10px 0 0; font-size: .93rem; }
 .sqmsg.ok  { color: var(--teal); }
@@ -1208,7 +1217,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 /* ---- the sound toggle: obvious, and off until asked ---- */
 .scene-audio {
   display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px;
-  min-height: 38px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .84rem;
+  min-height: 44px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .84rem;
   background: rgba(11,15,26,.55); border: 1px solid rgba(148,163,184,.28); color: rgba(229,233,241,.8);
   transition: border-color .2s ease, color .2s ease;
 }
@@ -1314,12 +1323,24 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 }
 .ms-codex span { color: var(--muted); }
 .ms-again { margin: 18px 0 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-.ms-bar { position: absolute; right: 12px; top: 12px; z-index: 4; }
+.ms-bar { position: absolute; right: 12px; top: 12px; z-index: 4; display: flex; align-items: center; gap: 8px; }
+
+/* Every beat needs a way out, not just the one after you win — a mission
+   with no exit until the end is a trap, and it was one until this button
+   existed. Matches .scene-audio's pill so the two read as one control group. */
+.ms-leave {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px;
+  min-height: 44px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .84rem;
+  background: rgba(11,15,26,.55); border: 1px solid rgba(148,163,184,.28); color: rgba(229,233,241,.8);
+  transition: border-color .2s ease, color .2s ease;
+}
+.ms-leave:hover { border-color: rgba(248,113,113,.5); color: #f87171; }
+.ms-leave:focus-visible { outline: 2px solid #2dd4bf; outline-offset: 2px; }
 
 @media (max-width: 719px) {
   .mission-scene, .mission-scene .scene-stage { min-height: 420px; }
   .ms-hud { gap: 10px; }
-  .ms-bar { right: 8px; top: 8px; }
+  .ms-bar { right: 8px; top: 8px; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
   .ms-line { font-size: 1.02rem; }
 }
 @media (prefers-reduced-motion: reduce) { .ms-opt { transition: none; } }
@@ -1352,7 +1373,6 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
    measuring the rebuilt mission at 375px, 2026-08-02. */
 @media (max-width: 719px) {
   .preset { min-height: 44px; padding-top: 9px; padding-bottom: 9px; }
-  .scene-audio { min-height: 44px; }
 }
 
 /* ---- Act I's dial: the six gates as turns, not letters -----------------

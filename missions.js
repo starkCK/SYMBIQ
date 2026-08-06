@@ -400,6 +400,21 @@
           var b = engine.querySelector('[data-g=' + g + ']');
           if (b) b.click();                       // input, exactly as a finger is
         });
+        // The dial drives the engine's own X/Y/Z/H/S/T buttons by clicking
+        // them (above) -- it never replaced them, so the mission showed BOTH
+        // a turn-dial AND a plain letter row doing the identical six things.
+        // Undo / Retry hole are not dial functions and stay visible.
+        Array.prototype.forEach.call(engine.querySelectorAll('.gatebtn'), function (b) {
+          b.hidden = true;
+        });
+        // The shared "How to play" text says "tap gates" -- true in the
+        // Arcade, where those buttons are what you have. Here they are
+        // hidden and the dial is the only control, so the one line that
+        // names the interaction needs to say the interaction that exists.
+        var howEl = panel.querySelector('[data-f=how]');
+        if (howEl) howEl.innerHTML = '<span class="lbl">&#127918; How to play</span> ' +
+          'Turn the dial above until your <span style="color:var(--teal)">solid arrow</span> lands on the ' +
+          '<span style="color:var(--violet)">dashed target</span>. <strong>Par is a proven minimum</strong> — no shorter route exists anywhere.';
 
         function paintVoice(s) {
           /* Number the door you are STANDING at, not the count you have opened.
@@ -1802,7 +1817,31 @@
       S.bindCoherence();
 
       var C = {
-        mission: m, host: host, scene: S, games: GS, bg: bg,
+        mission: m, host: host, scene: S,
+        // Every work() beat mounts the verified engine through C.games.mount,
+        // never GS.mount directly (14_ §9's rule), which means wrapping it
+        // HERE gives all six missions the Arcade's "How to play" panel at
+        // once instead of six separate edits. It was built (GS.aboutHTML)
+        // but only ever wired into journey.html's missions.js-failed
+        // fallback — so under normal play nobody ever saw it, and a mission
+        // handed you a machine with the narrative as its only instructions
+        // (Chinmoy, 2026-08-06: "vague explanation for a beginner"). Same
+        // <details>, so it still opens once per game and stays out of the
+        // way after (games.js tracks `rules.seen.<id>` in the save).
+        games: (function () {
+          if (!GS.aboutHTML) return GS;
+          var wrapped = {};
+          for (var k in GS) wrapped[k] = GS[k];
+          wrapped.mount = function (gid, container, o) {
+            if (container && container.parentNode && !container.parentNode.querySelector('.gamerules')) {
+              var about = node(GS.aboutHTML(gid));
+              if (about) container.parentNode.insertBefore(about, container);
+            }
+            return GS.mount(gid, container, o);
+          };
+          return wrapped;
+        })(),
+        bg: bg,
         coherence: window.SymbiQ.coherence || null,
         outcome: null,
         click: function () { S.audio.click(); },
@@ -1833,10 +1872,20 @@
       var seq = S.sequence(host, beats, { onEnd: function () {} });
       seq.start();
 
-      // a sound toggle, off until asked, parked where it does not shout
+      // A way out that does not wait for the ending. Every beat had one
+      // AFTER a win ("Leave the corridor" etc.) and none before it, so
+      // starting a mission and changing your mind meant hunting for the
+      // small nav link at the top of the page. This is always here.
       var bar = document.createElement('div');
       bar.className = 'ms-bar';
       host.appendChild(bar);
+      var leave = document.createElement('button');
+      leave.type = 'button';
+      leave.className = 'ms-leave';
+      leave.setAttribute('aria-label', 'Leave this mission and return to the map');
+      leave.innerHTML = '<span aria-hidden="true">&#10005;</span><span class="ms-leave-t">Leave</span>';
+      leave.addEventListener('click', function () { C.exit(); });
+      bar.appendChild(leave);
       S.audio.mountToggle(bar);
       return true;
     }

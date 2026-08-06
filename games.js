@@ -1583,7 +1583,7 @@
           '<span class="gr-x" aria-hidden="true"></span></summary>' +
         '<div class="gameabout">' +
         '<div><span class="lbl">🎯 The goal</span> ' + a.goal + '</div>' +
-        '<div><span class="lbl">🕹️ How to play</span> ' + a.how + '</div>' +
+        '<div data-f="how"><span class="lbl">🕹️ How to play</span> ' + a.how + '</div>' +
         '<div><span class="lbl v">💡 Inspired by</span> ' + a.inspired + '</div>' +
         '<div><span class="lbl v">🔬 You’ll get a feel for</span> ' + a.learn +
           ' <a href="' + a.link + '">' + a.linkText + '</a> <span class="tier">' + a.tier + '</span></div>' +

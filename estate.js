@@ -175,8 +175,23 @@
     };
   }
 
+  /* A live estate has exactly one true future -- there is no per-page reason
+   * for a second tool (the Odds, below) to make you re-type it. Every render()
+   * publishes the current {assets, cap, policy, dlYear} to anyone listening,
+   * late subscribers included, so mount order between the two tools never
+   * matters. */
+  var listeners = [], lastState = null;
+  function publish(state) {
+    lastState = state;
+    listeners.forEach(function (fn) { try { fn(state); } catch (e) {} });
+  }
+  function subscribe(fn) {
+    listeners.push(fn);
+    if (lastState) fn(lastState);
+  }
+
   SymbiQ.estate = { ALGS: ALGS, TEMPLATE: TEMPLATE, plan: plan, assess: assess,
-                    feasibility: feasibility, depth: depth };
+                    feasibility: feasibility, depth: depth, subscribe: subscribe };
 
   /* ================================ the UI ================================ */
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
@@ -194,11 +209,15 @@
     { y: 2033, label: 'CNSA 2.0 — exclusive use', short: '2033' },
     { y: 2035, label: 'NIST IR 8547 — disallowed', short: '2035' }
   ];
+  // The Odds (below) tests specific years against these same real deadlines --
+  // one list, so a date fixed here can never drift out of sync with there.
+  SymbiQ.estate.DEADLINES = DEADLINES;
+  SymbiQ.estate.quartersUntil = quartersUntil;
 
   SymbiQ.estate.mount = function (root, opts) {
     opts = opts || {};
     var assets = JSON.parse(JSON.stringify(TEMPLATE));
-    var cap = 3, policy = 'risk-first', dlYear = 2030, source = 'example';
+    var cap = 3, policy = 'risk-first', dlYear = 2030, source = 'example', scenarioLabel = '';
 
     function ids() { return assets.map(function (a) { return a.id; }); }
 
@@ -208,11 +227,17 @@
      * it. Capacity, deadline and policy survive the load deliberately: you are
      * dropping a new estate into a plan you have already been tuning. */
     function banner() {
-      if (source !== 'inventory') return '';
-      return '<p class="es-from"><b>This estate was read from your artefacts, not typed.</b> ' +
-        'Dependency edges come from the certificate chain — anything whose issuer is also in the paste waits for it. ' +
-        'Signing keys arrived with a confidentiality lifetime of 0, because a signature cannot be forged backwards; ' +
-        'raise it by hand for any key that also protects data. Effort is a placeholder in every row — only you know that number.</p>';
+      if (source === 'inventory') {
+        return '<p class="es-from"><b>This estate was read from your artefacts, not typed.</b> ' +
+          'Dependency edges come from the certificate chain — anything whose issuer is also in the paste waits for it. ' +
+          'Signing keys arrived with a confidentiality lifetime of 0, because a signature cannot be forged backwards; ' +
+          'raise it by hand for any key that also protects data. Effort is a placeholder in every row — only you know that number.</p>';
+      }
+      if (source === 'scenario') {
+        return '<p class="es-from"><b>Loaded the ' + esc(scenarioLabel) + ' scenario.</b> ' +
+          'Illustrative, not audited — a starting shape for a plausible estate, not a real one. Edit any row to make it yours.</p>';
+      }
+      return '';
     }
 
     function editor() {
@@ -329,15 +354,37 @@
             : '') + '</p>';
     }
 
+    function publishNow() {
+      publish({ assets: JSON.parse(JSON.stringify(assets)), cap: cap, policy: policy, dlYear: dlYear });
+    }
+
     function render() {
       root.innerHTML = '<div class="es-wrap">' + banner() + controls() + editor() +
         '<div class="es-out">' + results() + '</div></div>';
+      publishNow();
     }
 
     SymbiQ.estate.load = function (next) {
       if (!next || !next.length) return false;
       assets = JSON.parse(JSON.stringify(next));
       source = 'inventory';
+      render();
+      return true;
+    };
+
+    /* A separate door from `load` on purpose -- that one's banner claims the
+     * estate was READ from real artefacts, which would be a lie for a canned
+     * scenario. Capacity and policy are left alone (same reasoning as load);
+     * the deadline is scenario-specific because "when do I actually need to
+     * be done" is part of what makes a scenario a scenario. */
+    SymbiQ.estate.loadScenario = function (next, opts) {
+      if (!next || !next.length) return false;
+      opts = opts || {};
+      assets = JSON.parse(JSON.stringify(next));
+      source = 'scenario';
+      scenarioLabel = opts.label || '';
+      if (opts.dlYear) dlYear = opts.dlYear;
+      if (opts.policy) policy = opts.policy;
       render();
       return true;
     };
@@ -353,6 +400,7 @@
       else a[f] = t.value;
       // keep focus: only the results need redrawing on a field edit
       root.querySelector('.es-out').innerHTML = results();
+      publishNow();
     });
 
     root.addEventListener('change', function (e) {

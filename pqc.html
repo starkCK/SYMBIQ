@@ -31,7 +31,8 @@
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <script src="cbom.js?v=1" defer></script>
-<script src="estate.js?v=2" defer></script>
+<script src="estate.js?v=4" defer></script>
+<script src="odds.js?v=2" defer></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
    without a cache bump across all sixteen. */
@@ -181,6 +182,44 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
   .cb-tag { background: rgba(15,23,42,.07); }
 }
 @media (max-width: 560px) { .cb-btns .preset { width: 100%; } }
+
+/* ── the odds ──────────────────────────────────────────────────────────── */
+/* This tool gets its own visual weight rather than another plain .card --
+   three tools already look like instruments; this one is the payoff, so it
+   is dressed like one. Same gradient recipe as .gameabout (the site's one
+   existing "premium panel" language) rather than inventing a second one. */
+.od-spotlight { border: 1px solid var(--border); border-radius: 16px; padding: 22px clamp(16px,4vw,30px) 26px;
+  background: linear-gradient(160deg, rgba(45,212,191,.07), rgba(167,139,250,.08));
+  box-shadow: 0 22px 60px -34px rgba(139,92,246,.35);
+  transition: border-color .35s ease, box-shadow .35s ease; }
+.od-spotlight:hover { border-color: rgba(45,212,191,.4); box-shadow: 0 26px 70px -30px rgba(45,212,191,.32); }
+.od-eyebrow { display: inline-flex; align-items: center; gap: 7px; font-size: .68rem; text-transform: uppercase;
+  letter-spacing: .1em; font-weight: 700; color: var(--teal); margin-bottom: 6px; }
+.od-eyebrow::before { content: "🎲"; font-size: .95rem; }
+/* Placed AFTER the base rule on purpose -- same lesson already logged on
+   .verdict.warn above: a light-mode override placed BEFORE the rule it
+   overrides loses at identical specificity, silently, and only measuring
+   getComputedStyle catches it. var(--teal) alone measures 3.58:1 here,
+   under the 4.5:1 small bold text needs; darkened locally. */
+@media (prefers-color-scheme: light) { .od-eyebrow { color: #0f766e; } }
+.od-p { font-size: .88rem; color: var(--muted); margin: 10px 0; }
+.od-p b { color: inherit; }
+.od-opt { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.od-scale { display: flex; justify-content: space-between; gap: 10px; font-size: .74rem;
+            color: var(--muted); margin: 4px 0 0; }
+@media (max-width: 480px) { .od-scale { flex-direction: column; gap: 2px; } }
+.od-chartwrap { margin: 16px 0 4px; border: 1px solid var(--border); border-radius: 12px; padding: 10px 6px 4px;
+  background: rgba(255,255,255,.02); }
+.od-svg { display: block; width: 100%; height: auto; }
+.od-svg path[stroke="var(--teal)"] { transition: d .4s ease; }
+.od-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .68rem; color: var(--muted);
+  margin: 8px 2px 18px; }
+.od-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.od-sw { width: 13px; height: 13px; border-radius: 3px; display: inline-block; flex: none; }
+.od-sw.dash { background: none; border: 2px dashed; border-radius: 0; width: 0; height: 13px; }
+.od-sw.dot { border-radius: 50%; width: 9px; height: 9px; }
+.preset.bigger { font-size: .92rem; font-weight: 700; padding: 12px 18px; }
+@media (prefers-reduced-motion: reduce) { .od-svg path[stroke="var(--teal)"] { transition: none; } }
 </style>
 </head>
 <body>
@@ -196,6 +235,7 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
     </svg>
     symbiq
   </a>
+  <a class="link" href="basics.html">Learn</a>
   <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
     <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
     <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
@@ -268,10 +308,11 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 <!-- Three tools on one long page. Without this the sequencer sits 7,000px down,
      which is the same "buried the thing they came for" problem the homepage
      hero had. Plain anchors, so it works with scripts off. -->
-<p class="pq-jump"><span>Three tools:</span>
+<p class="pq-jump"><span>Four tools:</span>
   <a href="#cliff">The Size Cliff</a><em>what PQ costs on the wire</em>
   <a href="#inventory">The Inventory</a><em>read your own artefacts</em>
   <a href="#estate">The Sequencer</a><em>when you can actually finish</em>
+  <a href="#odds">The Odds</a><em>against 32 real forecasts</em>
 </p>
 
 <div class="card">
@@ -357,6 +398,22 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
   <li><b>Nothing leaves your browser.</b> Export writes a file locally. There is no analytics on what you type, because there is no request.</li>
 </ul>
 
+<h2 id="odds">The Odds</h2>
+
+<p>The Sequencer above gives every exposed asset a <b>breakevenZ</b> — the year a quantum computer would have to exist before your plan stopped protecting it. That number is exact arithmetic sitting next to a number nobody has: nobody knows when a cryptographically relevant quantum computer (CRQC) will actually exist. Reading "15.75 years" as a verdict is exactly the mistake the rest of this page exists to catch — so this tool puts a real distribution behind it instead of leaving you to supply your own gut feeling, and lets you test it against the estate a hospital, a bank or a utility would actually recognise.</p>
+
+<p>The <a href="https://globalriskinstitute.org/publication/2024-quantum-threat-timeline-report/">Global Risk Institute's Quantum Threat Timeline Report 2024</a> (Mosca &amp; Piani, December 2024) asked <b>32 named experts</b> for a likelihood range at five time horizons, from 5 to 30 years. Their answers — read straight off the report's own chart, not re-estimated — are the only five numbers this tool trusts. Everything between them is <b>linear interpolation, stated as a modelling choice</b>, the same way the Size Cliff above states what it measured versus what it modelled. Past 30 years the survey stops, and so does this tool's precision: it reports a <b>floor</b> on your risk rather than inventing a tail nobody surveyed.</p>
+
+<div class="od-spotlight">
+  <span class="od-eyebrow">Calibrated to 32 real forecasts</span>
+  <div id="odds-mount"><p class="sc-wait">This tool computes in your browser. It needs JavaScript, and it reads the plan you build in the Sequencer above — nothing here is typed twice.</p></div>
+</div>
+
+<h3>What "roll the dice" actually means</h3>
+<p>There is <b>one true future, not one per asset</b>. Every line in your estate is judged against the <em>same</em> drawn year, because that is what "nobody knows Z" really means — Z is a single unknown shared by everything you own, not an independent coin flip on every row. So "your whole plan is breached" always works out to exactly the odds of your single riskiest asset, and shrinking that one number by reordering the plan is the same game the Sequencer above already had you playing. This tool just prices it, against opinions 32 people were willing to put their names to.</p>
+<p>Test a specific year and the answer is plain arithmetic — no distribution required, because a chosen year either beats an asset's breakevenZ or it doesn't. The distribution only earns its keep when you ask a harder question: not "am I safe if it happens in 2035," but "how worried should I actually be." Two thousand rolls answer that the honest way — by counting, not by asserting — and the running tally converges on the same number the curve gives you exactly, which is the whole point of running both: if the dice and the formula ever disagreed, one of them would be broken.</p>
+<p>And a probability is not a plan. The tool sweeps all four migration orderings and a capacity increase behind the scenes and tells you which single change actually moves the number — usually free (reorder) before it is ever paid (hire) — then writes the whole thing out as a plain-text briefing you can hand to someone who was not in this browser tab.</p>
+
 <h2>Why this has a date on it</h2>
 <p>This stopped being a research question. Each of these is a published instrument with a number in it:</p>
 <ul>
@@ -403,6 +460,11 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
     if (S.estate && eHost) { try { S.estate.mount(eHost, {}); } catch (e) {} }
     var cHost = document.getElementById('cbom-mount');
     if (S.cbom && cHost) { try { S.cbom.mount(cHost, {}); } catch (e) {} }
+    // The Odds subscribes to the Sequencer rather than taking a hand-off, so
+    // mount order relative to it never matters -- it will replay the current
+    // plan the moment it mounts, and every future edit after that.
+    var oHost = document.getElementById('odds-mount');
+    if (S.odds && oHost) { try { S.odds.mount(oHost, {}); } catch (e) {} }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else go();

@@ -819,6 +819,7 @@
     paint();
     host.appendChild(svg);
 
+    var busy = false, curEyes = e.eyes, gen = 0;
     var api = {
       el: svg,
       /* Drive this from game state, not from a script. Ada narrows her eyes
@@ -831,14 +832,17 @@
           mouth: o && o.mouth != null ? Math.max(-1, Math.min(1, o.mouth)) : e.mouth
         };
         var dur = reduce ? 0 : (ms == null ? 420 : ms), t0 = performance.now();
-        if (!dur) { e = to; paint(); return api; }
+        var myGen = ++gen;                    // supersedes any running blink tween
+        busy = true;
+        if (!dur) { e = to; paint(); busy = false; return api; }
         (function step(now) {
+          if (myGen !== gen) return;          // a newer mood/blink took over mid-flight
           var k = clamp01((now - t0) / dur), s = k * k * (3 - 2 * k);
           e.brow  = from.brow  + (to.brow  - from.brow)  * s;
           e.eyes  = from.eyes  + (to.eyes  - from.eyes)  * s;
           e.mouth = from.mouth + (to.mouth - from.mouth) * s;
           paint();
-          if (k < 1) requestAnimationFrame(step);
+          if (k < 1) { requestAnimationFrame(step); } else { busy = false; }
         })(t0);
         return api;
       },
@@ -851,9 +855,43 @@
           narrowed: { brow: -0.3, eyes: 0.16, mouth: -0.15 },
           softened: { brow: 0.15, eyes: 0.55, mouth: 0.35 }
         };
-        return api.express(M[name] || M.neutral, ms);
+        var target = M[name] || M.neutral;
+        curEyes = target.eyes;
+        return api.express(target, ms);
       }
     };
+    /* A face that only moves when the script tells it to is a photograph
+       between beats -- and most of a mission is spent reading, not clicking,
+       with the portrait doing nothing. One held-still trick sells "alive"
+       for free: a blink. Eyelid-only, layered on top of whatever mood is
+       current, never fights an in-flight mood change (skips if `busy`), and
+       stops itself the moment its own svg leaves the document -- no cleanup
+       call for a mission to forget. */
+    function tween(myGen, from, to, dur, onDone) {
+      var t0 = performance.now();
+      (function step(now) {
+        if (myGen !== gen) return;            // a mood change took over mid-blink
+        var k = clamp01((now - t0) / dur);
+        e.eyes = from + (to - from) * k;
+        paint();
+        if (k < 1) requestAnimationFrame(step); else onDone();
+      })(t0);
+    }
+    function scheduleBlink() {
+      if (reduce) return;
+      setTimeout(function () {
+        if (!svg.isConnected) return;                 // this face's scene ended
+        if (!busy) {
+          busy = true;
+          var myGen = ++gen, openEyes = curEyes;
+          tween(myGen, openEyes, 0.05, 90, function () {
+            tween(myGen, 0.05, openEyes, 110, function () { busy = false; });
+          });
+        }
+        scheduleBlink();
+      }, 3400 + Math.random() * 3200);
+    }
+    scheduleBlink();
     return api;
   }
 

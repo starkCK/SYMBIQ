@@ -30,9 +30,7 @@
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script src="cbom.js?v=1" defer></script>
-<script src="estate.js?v=4" defer></script>
-<script src="odds.js?v=2" defer></script>
+<script type="module" src="pqc-tools.js?v=1"></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
    without a cache bump across all sixteen. */
@@ -436,26 +434,27 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 
 <p class="tagline" style="margin-top:26px">Found an error on this page? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>, and the correction runs louder than the original.</p>
 
-<script type="module">
-  import { mount } from './sizecliff.mjs?v=1';
-  const host = document.getElementById('cliff-mount');
-  try { mount(host, { kex: 'x25519', sig: 'p256', depth: 2, scts: true }); }
-  catch (e) {
-    host.innerHTML = '<p class="sc-wait">The figure could not start in this browser. ' +
-      'It needs ES modules and WebCrypto. The page text above stands without it.</p>';
-  }
-</script>
-
 <script>
-// The estate model. Plain script, not a module -- it needs no cryptography,
-// only arithmetic, so it must keep working even where the PQC module cannot.
+// All four tools now live in one module, pqc-tools.js (merged 2026-08-07 --
+// they never appeared anywhere else, so four files was fragmentation, not
+// modularity). This plain script just mounts them; the readyState guard is
+// what makes it safe regardless of whether it runs before or after that
+// deferred module has executed.
 (function () {
   function go() {
     var S = window.SymbiQ || {};
-    /* Mount the sequencer FIRST. The inventory's hand-off calls into it, so if
-     * these ever swapped order a fast click could reach a loader that does not
-     * exist yet. Each mount is independently guarded: neither tool can take
-     * the other down. */
+    var clHost = document.getElementById('cliff-mount');
+    if (S.sizecliff && clHost) {
+      try { S.sizecliff.mount(clHost, { kex: 'x25519', sig: 'p256', depth: 2, scts: true }); }
+      catch (e) {
+        clHost.innerHTML = '<p class="sc-wait">The figure could not start in this browser. ' +
+          'It needs ES modules and WebCrypto. The page text above stands without it.</p>';
+      }
+    }
+    /* Mount the sequencer before the inventory. The inventory's hand-off calls
+     * into it, so if these ever swapped order a fast click could reach a
+     * loader that does not exist yet. Each mount is independently guarded:
+     * no one tool can take another down. */
     var eHost = document.getElementById('estate-mount');
     if (S.estate && eHost) { try { S.estate.mount(eHost, {}); } catch (e) {} }
     var cHost = document.getElementById('cbom-mount');

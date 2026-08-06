@@ -49,15 +49,6 @@
 .readout h4 { font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
 .ket { font-family: "Cambria Math", Georgia, serif; font-size: 1.02rem; }
 .circuit { font-family: "Cambria Math", Georgia, serif; font-size: .95rem; word-break: break-all; min-height: 1.4em; }
-/* --- CHSH game --- */
-#chsh-svg { display: block; width: 100%; max-width: 480px; margin: 0 auto; height: auto; }
-.bound { stroke-dasharray: 4 4; stroke-width: 1.5; fill: none; }
-.boundlab { font-size: 10px; font-family: inherit; }
-.wr { fill: none; stroke: var(--teal); stroke-width: 2; }
-.chsh-inputs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
-.qbox { border: 1px solid var(--border); border-radius: 9px; padding: 8px 14px; text-align: center; min-width: 92px; background: var(--bg); }
-.qbox .lab { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-.qbox .v { font-family: "Cambria Math", Georgia, serif; font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
 </style>
 <script type="application/ld+json">
 {
@@ -269,26 +260,10 @@
 
 <div class="card" id="chsh">
   <h3>The CHSH game</h3>
-  <p style="margin:0 0 8px">
-    <button class="preset" id="ch-mode-c">Classical (best possible)</button>
-    <button class="preset on" id="ch-mode-q">Quantum (entangled pair)</button>
-  </p>
-  <div class="chsh-inputs">
-    <div class="qbox"><span class="lab">Alice gets</span><span class="v" id="ch-x">—</span></div>
-    <div class="qbox"><span class="lab">Bob gets</span><span class="v" id="ch-y">—</span></div>
-    <div class="qbox"><span class="lab">Alice says</span><span class="v" id="ch-a">—</span></div>
-    <div class="qbox"><span class="lab">Bob says</span><span class="v" id="ch-b">—</span></div>
-  </div>
-  <div class="verdict" id="ch-verdict" style="text-align:center">Pick a strategy and play a round.</div>
-  <svg id="chsh-svg" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" aria-label="Running win rate against the classical and quantum bounds"></svg>
-  <p style="margin:10px 0 4px;text-align:center">
-    <button class="preset" id="ch-1">Play 1 round</button>
-    <button class="preset" id="ch-100">Play 100</button>
-    <button class="preset" id="ch-1000">Play 1,000</button>
-    <button class="preset" id="ch-reset">Reset</button>
-  </p>
-  <dl class="rows" id="ch-rows"></dl>
-  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">Honest model: the quantum side samples the exact joint distribution of measuring the Bell state (|00⟩+|11⟩)/√2 at the optimal CHSH angles — P(a,b) = [1 + (−1)<sup>a+b</sup>cos(α−β)]/4 — so the 85.4% is real arithmetic, not a scripted result. Both marginals stay exactly 50/50, which is why this <strong>cannot</strong> be used to send a message. The classical side plays the provably optimal deterministic strategy. Note the honest caveat: over a handful of rounds, luck dominates — a classical player beats the quantum <em>rate</em> in about 9% of 20-round runs. Only the long run separates them, which is exactly why real Bell tests take enormous numbers of trials.</p>
+  <!-- The engine lives in games.js and is mounted here. It used to be a second
+       inline copy; the same fix as qec.html (255 lines deleted there). -->
+  <div id="chsh-mount"></div>
+  <p id="chsh-honest" style="font-size:0.85rem;color:var(--muted);margin:12px 0 0"></p>
 </div>
 
 <span class="tier r">🔴 Real math</span>
@@ -342,6 +317,7 @@
 <footer>The same laws as a cooling coffee — asked a harder question.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
 </div>
 
+<script src="games.js?v=11"></script>
 <script>
 (function () {
   // One qubit: |psi> = a|0> + b|1>, complex a,b as [re,im].
@@ -467,114 +443,15 @@
 })();
 
 (function () {
-  // CHSH game. Quantum side samples the exact Bell-state joint distribution
-  //   P(a,b | alpha,beta) = [1 + (-1)^(a+b) cos(alpha-beta)] / 4
-  // at the optimal angles; classical side plays the provably optimal deterministic
-  // strategy (always answer 0), which brute force confirms wins exactly 3/4.
-  var svg = document.getElementById('chsh-svg');
-  if (!svg) return;
-  var NS = 'http://www.w3.org/2000/svg', W = 480, H = 200, L = 34, Rp = 8, T = 12, B = 26;
-  var A = [0, Math.PI / 2], Bq = [Math.PI / 4, -Math.PI / 4];
-  var CLASSICAL = 0.75, QUANTUM = Math.cos(Math.PI / 8) * Math.cos(Math.PI / 8);
-  var quantum = true, n = 0, wins = 0, curve = [];
-
-  function el(tag, a, txt) {
-    var e = document.createElementNS(NS, tag);
-    for (var k in a) e.setAttribute(k, a[k]);
-    if (txt != null) e.textContent = txt;
-    svg.appendChild(e); return e;
+  var host = document.getElementById('chsh-mount');
+  var G = window.SymbiQ && window.SymbiQ.games;
+  if (!G || !G.get('chsh')) {
+    if (host) host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
+    return;
   }
-  function yOf(p) { return T + (H - T - B) * (1 - (p - 0.4) / 0.6); }   // axis 0.4 .. 1.0
-
-  el('line', { x1: L, y1: yOf(0.4), x2: W - Rp, y2: yOf(0.4), stroke: 'var(--border)' });
-  [0.5, 0.6, 0.7, 0.8, 0.9, 1.0].forEach(function (t) {
-    el('text', { x: L - 6, y: yOf(t) + 3, 'text-anchor': 'end', 'class': 'boundlab', fill: 'var(--muted)' },
-       Math.round(t * 100) + '%');
-  });
-  el('line', { 'class': 'bound', x1: L, y1: yOf(CLASSICAL), x2: W - Rp, y2: yOf(CLASSICAL), stroke: 'var(--muted)' });
-  el('text', { x: W - Rp, y: yOf(CLASSICAL) - 5, 'text-anchor': 'end', 'class': 'boundlab', fill: 'var(--muted)' },
-     'classical ceiling 75% — provable');
-  el('line', { 'class': 'bound', x1: L, y1: yOf(QUANTUM), x2: W - Rp, y2: yOf(QUANTUM), stroke: 'var(--violet)' });
-  el('text', { x: W - Rp, y: yOf(QUANTUM) - 5, 'text-anchor': 'end', 'class': 'boundlab', fill: 'var(--violet)' },
-     'quantum limit 85.4% (Tsirelson)');
-  var wrPath = el('path', { 'class': 'wr', d: '' });
-  el('text', { x: (W + L) / 2, y: H - 6, 'text-anchor': 'middle', 'class': 'boundlab', fill: 'var(--muted)' }, 'rounds played →');
-
-  function sampleQ(x, y) {
-    var c = Math.cos(A[x] - Bq[y]);
-    var p = [(1 + c) / 4, (1 - c) / 4, (1 - c) / 4, (1 + c) / 4]; // (0,0)(0,1)(1,0)(1,1)
-    var r = Math.random(), acc = 0;
-    for (var i = 0; i < 4; i++) { acc += p[i]; if (r < acc) return [i >> 1, i & 1]; }
-    return [1, 1];
-  }
-  function play() {
-    var x = Math.random() < .5 ? 0 : 1, y = Math.random() < .5 ? 0 : 1;
-    var ab = quantum ? sampleQ(x, y) : [0, 0];
-    var win = (ab[0] ^ ab[1]) === (x & y);
-    n++; if (win) wins++;
-    curve.push(wins / n);
-    if (curve.length > 1200) curve = curve.slice(curve.length - 1200);
-    return { x: x, y: y, a: ab[0], b: ab[1], win: win };
-  }
-  function draw(last) {
-    var d = '';
-    if (curve.length) {
-      var step = (W - Rp - L) / Math.max(curve.length - 1, 1);
-      d = curve.map(function (p, i) {
-        return (i ? 'L' : 'M') + (L + i * step).toFixed(1) + ' ' + yOf(Math.max(0.4, Math.min(1, p))).toFixed(1);
-      }).join('');
-    }
-    wrPath.setAttribute('d', d);
-
-    ['x', 'y', 'a', 'b'].forEach(function (k) {
-      document.getElementById('ch-' + k).textContent = last ? last[k] : '—';
-    });
-    var v = document.getElementById('ch-verdict');
-    if (!last) { v.className = 'verdict'; v.textContent = 'Pick a strategy and play a round.'; }
-    else {
-      v.className = 'verdict ' + (last.win ? 'good' : 'bad');
-      v.innerHTML = last.win
-        ? 'Won — answers ' + (last.a === last.b ? 'matched' : 'differed') + ', and both bits were ' +
-          (last.x && last.y ? '1' : 'not both 1') + '.'
-        : 'Lost — answers ' + (last.a === last.b ? 'matched' : 'differed') + ' when they should have ' +
-          ((last.x & last.y) ? 'differed' : 'matched') + '.';
-    }
-    var rate = n ? wins / n : 0;
-    /* The classical strategy's TRUE win rate is exactly 0.75, so a finite
-       sample sits above 0.75 about half the time — 20,000 classical rounds
-       measured 75.24% while testing, and the old wording announced that in
-       teal as "above the classical ceiling", i.e. as beating a provable
-       bound. Require two standard errors before claiming a breach, and name
-       sampling noise otherwise. Found 2026-08-02 while porting this widget
-       into games.js for Act V; both copies now carry the same rule. */
-    var se = n ? Math.sqrt(CLASSICAL * (1 - CLASSICAL) / n) : 0;
-    var realBreach = n > 0 && (rate - CLASSICAL) > 2 * se;
-    var verdictLine = !n ? '—'
-      : realBreach ? '<span style="color:var(--teal)">above the classical ceiling — beyond sampling noise</span>'
-      : rate > CLASSICAL ? 'above 75%, but within sampling noise (&plusmn;' + (200 * se).toFixed(1) + ' pts)'
-      : 'at or below the classical ceiling';
-    document.getElementById('ch-rows').innerHTML =
-      '<dt>Strategy</dt><dd>' + (quantum ? 'entangled pair, optimal angles' : 'best possible classical') + '</dd>' +
-      '<dt>Rounds</dt><dd>' + n.toLocaleString('en-US') + '</dd>' +
-      '<dt>Win rate</dt><dd><strong>' + (100 * rate).toFixed(1) + '%</strong>' +
-        (n ? ' — ' + verdictLine : '') + '</dd>' +
-      '<dt>Theory says</dt><dd>' + (quantum ? '85.4%' : '75.0%') + '</dd>';
-  }
-  function batch(k) { var last = null; for (var i = 0; i < k; i++) last = play(); draw(last); }
-
-  function setMode(q) {
-    quantum = q; n = 0; wins = 0; curve = [];
-    document.getElementById('ch-mode-q').className = 'preset' + (q ? ' on' : '');
-    document.getElementById('ch-mode-c').className = 'preset' + (q ? '' : ' on');
-    draw(null);
-  }
-  document.getElementById('ch-mode-q').addEventListener('click', function () { setMode(true); });
-  document.getElementById('ch-mode-c').addEventListener('click', function () { setMode(false); });
-  document.getElementById('ch-1').addEventListener('click', function () { batch(1); });
-  document.getElementById('ch-100').addEventListener('click', function () { batch(100); });
-  document.getElementById('ch-1000').addEventListener('click', function () { batch(1000); });
-  document.getElementById('ch-reset').addEventListener('click', function () { setMode(quantum); });
-  draw(null);
+  G.mount('chsh', host, { mode: 'arcade' });
+  var note = document.getElementById('chsh-honest');
+  if (note) note.innerHTML = G.get('chsh').honest;
 })();
 </script>
 </body>

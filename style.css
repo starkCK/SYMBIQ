@@ -37,6 +37,17 @@
     --h1-b: #7c3aed;
     --h1-c: #0d9488;
     --rowhover: rgba(15, 23, 42, 0.04);
+    /* The three semantic colours were never given light-mode values, so on a
+       light background they measured green 1.67:1, yellow 1.46:1 and red
+       2.64:1 against #f8fafc — all far under the 4.5:1 minimum, and the first
+       two effectively invisible. That is the 🟢🟡🔴 tier system, which is the
+       brand's central teaching device, unreadable for every visitor whose
+       device is set to light. Measured, then replaced with the darkest
+       versions that still read as the same colour: 4.79 / 4.80 / 6.18:1.
+       Dark mode is untouched — these live only inside this media query. */
+    --green: #15803d;
+    --yellow: #b45309;
+    --red: #b91c1c;
   }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -148,9 +159,29 @@ code { background: var(--panel); border: 1px solid var(--border); border-radius:
 .preset {
   background: var(--panel); color: var(--text); border: 1px solid var(--border);
   border-radius: 8px; padding: 6px 12px; margin: 0 6px 6px 0; cursor: pointer; font-size: 0.85rem;
+  /* The 44px minimum. Most .preset buttons clear it on padding alone, which is
+     why it was never noticed that the single-character gate buttons on the
+     Bloch sphere are 40px WIDE and the PQC tool rows 30px TALL. A control that
+     clears the minimum by accident of its label is not a control that clears
+     the minimum, so it is stated as a rule. */
+  min-height: 44px; min-width: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
   transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 .preset:hover { border-color: var(--teal); transform: translateY(-1px); }
+/* Every range slider on the site rendered at the browser default of 16px tall.
+   The estate model set its own height and nothing else did. */
+input[type=range] { height: 44px; cursor: pointer; accent-color: var(--teal); }
+/* The standalone call to action at the foot of a card -- "Start here →",
+   "The mathematics →". 26 of them across 8 pages, all 22px tall. Prose links
+   inside a sentence are deliberately NOT touched: they are text, not targets,
+   and giving them a 44px box would wreck the typography. */
+.card > a { display: inline-flex; align-items: center; min-height: 44px; }
+/* Same job, different shape: a call to action that is the entire paragraph.
+   `p > a:only-child` would have been wrong -- :only-child ignores text
+   siblings, so it also matches a link inside a sentence. Marked in the markup
+   instead, which cannot misfire. */
+.cta { display: inline-flex; align-items: center; min-height: 44px; }
 .preset.on { border-color: var(--teal); color: var(--teal); font-weight: 600; }
 ::selection { background: rgba(139, 92, 246, 0.4); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
@@ -1523,7 +1554,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .tbtn { display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
   font: inherit; font-size: .85rem; font-weight: 600; color: var(--muted);
   background: transparent; border: 1px solid var(--border); border-radius: 99px;
-  padding: 7px 14px; min-height: 40px; transition: color .18s, border-color .18s, background .18s; }
+  padding: 7px 14px; min-height: 44px; transition: color .18s, border-color .18s, background .18s; }
 .tbtn:hover { color: var(--text); border-color: var(--muted); }
 .tbtn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 .tbtn-chip { font-size: .95em; line-height: 1; }
@@ -1608,7 +1639,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .corr-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 26px 0 18px; }
 .corr-f { font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer;
   color: var(--muted); background: transparent; border: 1px solid var(--border);
-  border-radius: 99px; padding: 8px 14px; min-height: 40px; transition: color .18s, border-color .18s; }
+  border-radius: 99px; padding: 8px 14px; min-height: 44px; transition: color .18s, border-color .18s; }
 .corr-f:hover { color: var(--text); border-color: var(--muted); }
 .corr-f:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 .corr-f.is-on { color: var(--text); border-color: var(--teal); background: rgba(45,212,191,.10); }

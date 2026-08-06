@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Every mistake SymbiQ has made, published more prominently than the original claim and credited to whoever caught it. Finding an error here pays the largest reward on the server.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=25">
+<link rel="stylesheet" href="style.css?v=26">
 <script src="nav.js?v=4" defer></script>
 <script src="tiers.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
@@ -121,22 +121,61 @@
   <h3>21 corrections, and not one of them was caught by a reader yet</h3>
   <p>Everything below was found by us — usually by a fresh reviewer paid to attack work that had already passed its own author. That is the system working, and it is also the system’s limit: <strong>a referee only catches what somebody thought to question.</strong> The reader slot is open, and it pays the most.</p>
   <div class="corr-stats">
-    <div><b>9</b><span>arithmetic or stale figures</span></div>
+    <div><b>10</b><span>arithmetic or stale figures</span></div>
     <div><b>7</b><span>right number, wrong words</span></div>
-    <div><b>5</b><span>code that broke or did nothing</span></div>
+    <div><b>7</b><span>code that broke or did nothing</span></div>
     <div><b>0</b><span>caught by a reader <em>so far</em></span></div>
   </div>
   <p class="corr-lesson"><strong>The pattern, stated because it keeps repeating:</strong> in six consecutive verification passes, almost nothing was a formula error. The failures were an input invented for a correct equation, a quantity labelled as its neighbour, a measurement generalised past what it measured, and a citation that was accurate on the day it was written and stale eighteen months later. We publish that pattern because knowing your own failure mode is worth more than any individual fix.</p>
 </div>
 
 <div class="corr-filters" role="group" aria-label="Filter corrections by kind">
-  <button class="corr-f is-on" data-k="all" aria-pressed="true">All 21</button>
-  <button class="corr-f k-num" data-k="number" aria-pressed="false">An arithmetic or a stale figure · 9</button>
+  <button class="corr-f is-on" data-k="all" aria-pressed="true">All 24</button>
+  <button class="corr-f k-num" data-k="number" aria-pressed="false">An arithmetic or a stale figure · 10</button>
   <button class="corr-f k-lab" data-k="label" aria-pressed="false">The number was right, the words were wrong · 7</button>
-  <button class="corr-f k-code" data-k="code" aria-pressed="false">Code that broke, or silently did nothing · 5</button>
+  <button class="corr-f k-code" data-k="code" aria-pressed="false">Code that broke, or silently did nothing · 7</button>
 </div>
 
 <ol class="corr-log">
+<li class="corr k-code" data-k="code">
+  <div class="corr-head">
+    <time datetime="2026-08-06">2026-08-06</time>
+    <span class="corr-where">Light mode, every page &mdash; <code>style.css</code></span>
+    <span class="corr-kind">Code that broke, or silently did nothing</span>
+  </div>
+  <dl>
+    <dt>What we said</dt><dd>Nothing, out loud &mdash; which is the problem. The 🟢🟡🔴 tiers are this site&rsquo;s central teaching device, and we shipped them for a year without ever checking them on a light background.</dd>
+    <dt>What&rsquo;s true</dt><dd>The light-mode palette overrode the violet and the teal and left the other three alone, so against the light background green measured <strong>1.67:1</strong>, yellow <strong>1.46:1</strong> and red <strong>2.64:1</strong>. The minimum for body text is 4.5:1. Yellow at 1.46:1 is not &ldquo;low contrast&rdquo;; it is invisible. Every tier chip, every warning and every &ldquo;look here&rdquo; marker on the site was unreadable for any visitor whose device is set to light.</dd>
+    <dt>Why we missed it</dt><dd>The palette was fixed by hand, colour by colour, and three of them were simply never revisited. Nobody looked at the site in light mode, and no check measured it &mdash; a colour that is wrong still <em>renders</em>, so it never fails anything. The fix is measured, not eyeballed: the darkest versions that still read as the same colour, at 4.53&ndash;5.73:1 composited over their own tinted backgrounds. Dark mode is byte-identical.</dd>
+  </dl>
+  <p class="corr-caught"><span>Caught by</span> Our own audit, while measuring something else on the same page.</p>
+</li>
+<li class="corr k-code" data-k="code">
+  <div class="corr-head">
+    <time datetime="2026-08-06">2026-08-06</time>
+    <span class="corr-where">Tap targets &mdash; the tier toggle, the corrections filter, every slider</span>
+    <span class="corr-kind">Code that broke, or silently did nothing</span>
+  </div>
+  <dl>
+    <dt>What we said</dt><dd>On 2026-08-03 we recorded that the 44-pixel touch-target debt was &ldquo;fully paid&rdquo; and that the last controls under the minimum had been fixed.</dd>
+    <dt>What&rsquo;s true</dt><dd>It was paid, and then re-broken twice within three days by new work. The tier toggle and the corrections filter each carried an explicit <code>min-height: 40px</code> &mdash; deliberately set, four pixels short of our own rule. Every range slider on the site rendered at the browser default of <strong>16px</strong>. Thirty-four card links, the Bloch gate buttons and seven contents-rail links also missed. Sixty-odd controls across nine pages.</dd>
+    <dt>Why we missed it</dt><dd>We measured the wrong thing, and then stopped measuring. A control clears the minimum for one of two reasons: because a rule says so, or because its label happens to wrap to two lines. Several of ours cleared it the second way, which made the rest look deliberate. The check now hit-tests the <em>target</em> rather than the box, at 375px, on all seventeen pages &mdash; that distinction matters, because a control given an invisible 44px band has a small box and a correct target.</dd>
+  </dl>
+  <p class="corr-caught"><span>Caught by</span> Our own audit, after a new page inherited the same defect.</p>
+</li>
+<li class="corr k-num" data-k="number">
+  <div class="corr-head">
+    <time datetime="2026-08-05">2026-08-05</time>
+    <span class="corr-where">The Size Cliff &mdash; <code>pqc.html</code></span>
+    <span class="corr-kind">An arithmetic or a stale figure</span>
+  </div>
+  <dl>
+    <dt>What we said</dt><dd>Nothing &mdash; but a great many published sources say an ML-DSA-65 signature is <strong>3,293 bytes</strong>, and had we built the page the usual way we would have repeated it.</dd>
+    <dt>What&rsquo;s true</dt><dd><strong>3,309 bytes</strong>, which is what FIPS 204 specifies. 3,293 appears to be round-3 Dilithium3, the pre-standardisation parameter set, still circulating as though it were the final one.</dd>
+    <dt>Why we missed it</dt><dd>We did not, and that is the entry. The page signs a real message and measures the result rather than reading a table, so it cannot inherit a wrong constant &mdash; and within an hour of being built it disagreed with its own sources and turned out to be right. We log it because it is the clearest evidence we have for why the measuring is worth the effort.</dd>
+  </dl>
+  <p class="corr-caught"><span>Caught by</span> The widget itself, disagreeing with the literature.</p>
+</li>
 <li class="corr k-num" data-k="number">
   <div class="corr-head">
     <time datetime="2026-07-24">2026-07-24</time>

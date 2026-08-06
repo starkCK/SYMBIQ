@@ -26,11 +26,12 @@
 <meta name="twitter:description" content="Every byte on this page is measured from a key your browser just generated. Not one number is copied from a table.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=25">
+<link rel="stylesheet" href="style.css?v=26">
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script src="estate.js?v=1" defer></script>
+<script src="cbom.js?v=1" defer></script>
+<script src="estate.js?v=2" defer></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
    without a cache bump across all sixteen. */
@@ -106,6 +107,80 @@ table.es tbody th { font-weight: 600; text-transform: none; }
 .sc-tag.mod { background: rgba(148,163,184,.16); color: var(--muted); }
 .sc-split { font-size: .85rem; color: var(--muted); margin-top: 12px; }
 @media (max-width: 560px) { .sc-limit span { font-size: .6rem; } .sc-h { flex-direction: column; gap: 2px; } }
+
+/* ── the jump bar ─────────────────────────────────────────────────────── */
+.pq-jump { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px;
+           margin: 18px 0 26px; padding: 14px 0; font-size: .84rem;
+           border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.pq-jump span { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+.pq-jump a { font-weight: 600; display: inline-flex; align-items: center; min-height: 44px; }
+.pq-jump em { font-style: normal; color: var(--muted); font-size: .78rem; margin-left: -8px; }
+@media (max-width: 560px) { .pq-jump { flex-direction: column; gap: 0; } .pq-jump em { margin: -6px 0 4px; } }
+
+/* ── the inventory ────────────────────────────────────────────────────── */
+.cb-lab { display: block; font-size: .78rem; color: var(--muted); margin-bottom: 8px; }
+.cb-in { width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14);
+         color: inherit; border-radius: 8px; padding: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+         font-size: .74rem; line-height: 1.5; resize: vertical; }
+.cb-in:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+.cb-btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+.cb-priv { font-size: .76rem; color: var(--muted); margin: 10px 0 0; }
+.cb-out { margin-top: 20px; }
+.cb-scroll { overflow-x: auto; margin: 10px 0; }
+table.cb { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 720px; }
+table.cb th, table.cb td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid rgba(255,255,255,.07); vertical-align: top; }
+table.cb thead th { font-size: .66rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+/* Same reason as the estate table: these row headers are the reader's own
+   artefact names, and the global `th` uppercase rule would shout them back. */
+table.cb tbody th { font-weight: 600; text-transform: none; }
+.cb-src { display: block; font-size: .62rem; text-transform: uppercase; letter-spacing: .06em;
+          color: var(--muted); font-weight: 400; margin-top: 2px; }
+.cb-tag { font-size: .6rem; text-transform: uppercase; letter-spacing: .06em; padding: 2px 6px;
+          border-radius: 4px; background: rgba(148,163,184,.16); color: var(--muted); white-space: nowrap; }
+.cb-tag.ok { background: rgba(45,212,191,.14); color: var(--teal); }
+.cb-tag.bad { background: rgba(248,113,113,.16); color: var(--red); }
+.cb-retro { color: var(--red); }
+.cb-ok { color: var(--teal); }
+.cb-na { color: var(--muted); opacity: .6; }
+.cb-n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cb-h { margin: 22px 0 10px; font-size: .95rem; }
+.cb-fs { list-style: none; padding: 0; margin: 0; }
+.cb-f { border-left: 3px solid rgba(148,163,184,.4); padding: 9px 0 9px 13px; margin-bottom: 11px; }
+.cb-f b { display: block; margin-bottom: 3px; }
+.cb-f span { font-size: .86rem; color: var(--muted); }
+.cb-f.cb-split { border-left-color: var(--violet); }
+.cb-f.cb-date  { border-left-color: var(--yellow, #fbbf24); }
+.cb-f.cb-ca    { border-left-color: var(--violet); }
+.cb-f.cb-now   { border-left-color: var(--red); }
+.cb-f.cb-gap   { border-left-color: var(--red); }
+.cb-f.cb-ask   { border-left-color: var(--yellow, #fbbf24); }
+.cb-f.cb-ok    { border-left-color: var(--teal); }
+.cb-err { font-size: .8rem; color: var(--red); margin: 10px 0 0; }
+.cb-note { font-size: .8rem; color: var(--muted); margin-top: 12px; }
+.es-from { font-size: .82rem; color: var(--muted); border-left: 3px solid var(--teal);
+           padding: 9px 0 9px 13px; margin: 0 0 16px; }
+.es-from b { color: inherit; }
+/* The 44px tap minimum, which this page had quietly broken. The deadline and
+   algorithm buttons only clear it by accident — they carry a second line of
+   text, and two lines happen to measure 44. Every single-line control here was
+   30–31px: the four ordering buttons, the three table controls, and all five
+   of the inventory's. Stated as a rule rather than left to the copy length. */
+/* style.css ships good / bad / split. The inventory needs a fourth reading —
+   "this is what you are holding", which is neither a pass nor a failure.
+   It sits ABOVE the light-mode block on purpose: same specificity, so source
+   order decides, and having it below silently cancelled the override. */
+.verdict.warn { background: rgba(250,204,21,.10); border-color: rgba(250,204,21,.42); color: var(--yellow); }
+
+/* Light mode. The colour half of this was a site-wide bug and is now fixed at
+   source: style.css gives --green / --yellow / --red real light-mode values,
+   so everything here that reads a var inherits it. What is left is genuinely
+   page-local — at rgba(255,255,255,.04) on a white page there is no visible
+   field to type into, and these two are the primary input of both tools. */
+@media (prefers-color-scheme: light) {
+  .cb-in, .es-in { background: #ffffff; border-color: #cbd5e1; }
+  .cb-tag { background: rgba(15,23,42,.07); }
+}
+@media (max-width: 560px) { .cb-btns .preset { width: 100%; } }
 </style>
 </head>
 <body>
@@ -190,6 +265,15 @@ table.es tbody th { font-weight: 600; text-transform: none; }
 <h1>What does post-quantum cryptography cost on the wire?</h1>
 <p class="tagline">Not in theory. In bytes, measured in this browser, from keys generated a moment ago.</p>
 
+<!-- Three tools on one long page. Without this the sequencer sits 7,000px down,
+     which is the same "buried the thing they came for" problem the homepage
+     hero had. Plain anchors, so it works with scripts off. -->
+<p class="pq-jump"><span>Three tools:</span>
+  <a href="#cliff">The Size Cliff</a><em>what PQ costs on the wire</em>
+  <a href="#inventory">The Inventory</a><em>read your own artefacts</em>
+  <a href="#estate">The Sequencer</a><em>when you can actually finish</em>
+</p>
+
 <div class="card">
   <h3>The answer, in four lines</h3>
   <p><b>Post-quantum TLS is not slow because the mathematics is slow.</b> ML-KEM is fast — thousands of key generations a second in JavaScript. It is expensive because the <em>objects are large</em>, and the network was built around the assumption that they are small.</p>
@@ -218,6 +302,33 @@ table.es tbody th { font-weight: 600; text-transform: none; }
 <p>Set the signature to <b>SLH-DSA-128s</b>. Its public key is 32 bytes — smaller than ML-DSA-65's 1,952, and exactly the same size as Ed25519's. By the metric most people reach for first, it is the compact choice.</p>
 <p>Its signature is <b>7,856 bytes</b>. A chain carries more signatures than public keys, so the scheme with the smallest key produces by far the largest handshake. SLH-DSA earns that cost honestly — it rests only on the security of a hash function, with no lattice assumption to be wrong about — but the trade is the opposite of the one the key size advertises.</p>
 
+<h2 id="inventory">The Inventory</h2>
+
+<p>The tool below this one plans a migration across whatever estate you describe. Its own honest-limits list says the obvious thing about that: <b>it discovers nothing.</b> A migration programme lives or dies on the inventory, and the inventory is the hard part.</p>
+
+<p>So start here instead. Paste the artefacts you already have — a certificate chain, the contents of an <code>authorized_keys</code> file, a JWKS document — and this reads them. Not pattern-matches them: <b>reads them</b>, decoding the ASN.1 byte by byte, the same structure <code>openssl x509</code> walks. Every field in the table is taken out of the artefact. Nothing is entered by you, and nothing is looked up in a table of what a key of that name is supposed to be.</p>
+
+<p><b>And the parse is checked against a second implementation.</b> For every key your browser's own WebCrypto can import, we hand it the exact bytes and read the algorithm back from the browser rather than from us. Agreement earns the row a <span class="cb-tag ok">CONFIRMED</span> tag. Where WebCrypto has no algorithm at all — ML-DSA and SLH-DSA today, Ed25519 on older browsers — the row says <span class="cb-tag">PARSED</span>, which means our decoder alone read it and nothing independent has checked it. The tag names which quantity was checked, not how confident we feel.</p>
+
+<div class="card">
+  <div id="cbom-mount"><p class="sc-wait">This tool parses in your browser. It needs JavaScript. Nothing you paste is transmitted — there is no server to transmit it to.</p></div>
+</div>
+
+<h3>The finding that is worth the whole tool</h3>
+<p><b>A certificate contains two algorithms, not one.</b> There is the key it carries, and there is the algorithm its issuer used to sign it. They are usually different, and they usually belong to different people. An inventory with one algorithm column per certificate silently loses half the estate — and the half it loses is the half you may not control.</p>
+<p>Load the example and look at <code>api.example.com</code>: an ECDSA P-256 key, signed <code>sha256WithRSAEncryption</code>. Rotating that leaf to ML-DSA changes nothing about the RSA signature above it. If that issuer is your own internal CA, it is a prerequisite and the sequencer below will schedule it as one. If it is a public CA, it is not an engineering task at all — it is a procurement conversation, on somebody else's timetable.</p>
+
+<h3>And the one it will not let you miss</h3>
+<p><b>Your harvest-now-decrypt-later exposure is not in any of these files.</b> In TLS 1.3 the certificate key <em>signs</em>; it never encrypts. The key exchange that actually protects the traffic is an ephemeral ECDHE or X25519 share negotiated per connection, and it appears in no certificate, no <code>authorized_keys</code> file and no certificate-derived CBOM.</p>
+<p>That distinction decides which risks are retroactive. A signature algorithm broken in 2032 cannot forge a 2026 handshake after the fact — forgery only works forwards. A key exchange broken in 2032 decrypts every recording anybody made of it in 2026. So the asset with the worst exposure in most estates is the one no file will hand you, and the tool tells you to add it by hand rather than quietly scoring you on what it happened to be able to read.</p>
+
+<h3>What comes out</h3>
+<ul>
+  <li><b>A CycloneDX 1.6 CBOM.</b> The field names and enumerated values come from the published 1.6 JSON schema, and each certificate is emitted as three linked components — the certificate, the algorithm of the key it carries, and the algorithm it was signed with — because that is the split the format was built to express. Validate it with <code>cyclonedx-cli</code> before you file it anywhere that matters; we cannot run the official validator inside a page with no network.</li>
+  <li><b>The dependency edges, read off the chain.</b> Any certificate whose issuer is also in your paste becomes dependent on it. That is the input the sequencer below needs and the input nobody enjoys typing.</li>
+  <li><b>A confidentiality lifetime of zero on every signing key</b>, with the reason stated rather than assumed. Padding an inventory is the commonest way one of these programmes ends up looking bigger than it is, and a signing key that cannot be forged backwards has no confidentiality lifetime to overstate.</li>
+</ul>
+
 <h2 id="estate">Your estate, not ours</h2>
 
 <p>The figure above measures a decision. This one measures <em>you</em>. Describe what you actually run — the rows below start from a realistic example, and every one of them is editable — and it will tell you which of your assets are already past saving, in what order to migrate, and whether your deadline is reachable at all.</p>
@@ -240,7 +351,7 @@ table.es tbody th { font-weight: 600; text-transform: none; }
 
 <h3>Honest limits on this one</h3>
 <ul>
-  <li><b>It discovers nothing.</b> You type your estate in. It is exactly as good as what you type, and a real inventory is the hard part of this work — that is what a CBOM is for, and CISA must publish the minimum elements by roughly 19 December 2026.</li>
+  <li><b>It still discovers nothing by itself.</b> You type your estate in, and it is exactly as good as what you type — unless you fill it from <a href="#inventory">the Inventory above</a>, which reads real artefacts and hands the rows down with the dependency edges already in place. Even then the effort column is yours: nothing in a certificate knows how long your migration takes.</li>
   <li><b>Effort in quarters is a planning fiction</b>, the same one every roadmap uses. It is useful for comparing orderings against each other and poor for predicting a calendar date.</li>
   <li><b>One dependency per asset</b> in this version. Real estates have several; the engine handles the general case, the editor does not yet.</li>
   <li><b>Nothing leaves your browser.</b> Export writes a file locally. There is no analytics on what you type, because there is no request.</li>
@@ -283,10 +394,15 @@ table.es tbody th { font-weight: 600; text-transform: none; }
 // only arithmetic, so it must keep working even where the PQC module cannot.
 (function () {
   function go() {
-    var E = window.SymbiQ && SymbiQ.estate;
-    var host = document.getElementById('estate-mount');
-    if (!E || !host) return;
-    E.mount(host, {});
+    var S = window.SymbiQ || {};
+    /* Mount the sequencer FIRST. The inventory's hand-off calls into it, so if
+     * these ever swapped order a fast click could reach a loader that does not
+     * exist yet. Each mount is independently guarded: neither tool can take
+     * the other down. */
+    var eHost = document.getElementById('estate-mount');
+    if (S.estate && eHost) { try { S.estate.mount(eHost, {}); } catch (e) {} }
+    var cHost = document.getElementById('cbom-mount');
+    if (S.cbom && cHost) { try { S.cbom.mount(cHost, {}); } catch (e) {} }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else go();

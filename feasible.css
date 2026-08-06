@@ -97,6 +97,7 @@ body.fr h2::before { background: var(--or) !important; }
 .fr-toc a {
   display: flex; gap: 10px; align-items: baseline; padding: 7px 8px; border-radius: 8px;
   text-decoration: none; color: var(--text); font-size: .92rem;
+  min-height: 44px;
 }
 .fr-toc a::before {
   content: counter(t, decimal-leading-zero); color: var(--or); font-weight: 700;
@@ -201,6 +202,7 @@ body.fr h2::before { background: var(--or) !important; }
   background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--muted);
   font: inherit; font-size: .82rem; padding: 6px 12px; cursor: pointer;
   transition: border-color .18s ease, color .18s ease;
+  min-height: 44px;
 }
 .fr-allctl button:hover { border-color: var(--or); color: var(--or); }
 .fr-allctl .count { font-size: .82rem; color: var(--muted); margin-left: auto; }

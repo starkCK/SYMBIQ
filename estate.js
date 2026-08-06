@@ -30,16 +30,27 @@
    * AES-256 absorbs — so it is NOT a migration item, and pretending otherwise
    * is the most common way these inventories get padded. */
   var ALGS = {
+    'RSA-1024':    { vuln: true,  why: 'Shor — and already below the classical floor' },
     'RSA-2048':    { vuln: true,  why: 'Shor — broken outright' },
     'RSA-3072':    { vuln: true,  why: 'Shor — broken outright' },
     'RSA-4096':    { vuln: true,  why: 'Shor — broken outright' },
     'ECDSA P-256': { vuln: true,  why: 'Shor — broken outright' },
+    'ECDSA P-384': { vuln: true,  why: 'Shor — broken outright' },
+    'ECDSA P-521': { vuln: true,  why: 'Shor — broken outright' },
     'ECDH P-256':  { vuln: true,  why: 'Shor — broken outright' },
+    'Ed25519':     { vuln: true,  why: 'Shor — broken outright' },
+    'X25519':      { vuln: true,  why: 'Shor — broken outright' },
+    'DSA-2048':    { vuln: true,  why: 'Shor — broken outright' },
     'DH-2048':     { vuln: true,  why: 'Shor — broken outright' },
+    'Other — Shor-breakable': { vuln: true, why: 'Shor — broken outright' },
     'AES-256':     { vuln: false, why: 'Grover halves it to 128-bit — still safe' },
     'SHA-256':     { vuln: false, why: 'Grover/BHT gives no practical break' },
     'ML-KEM-768':  { vuln: false, why: 'already post-quantum' },
-    'ML-DSA-65':   { vuln: false, why: 'already post-quantum' }
+    'ML-DSA-44':   { vuln: false, why: 'already post-quantum' },
+    'ML-DSA-65':   { vuln: false, why: 'already post-quantum' },
+    'ML-DSA-87':   { vuln: false, why: 'already post-quantum' },
+    'SLH-DSA-128s':{ vuln: false, why: 'already post-quantum' },
+    'Other — post-quantum': { vuln: false, why: 'already post-quantum' }
   };
 
   /* A realistic starting estate. Nobody engages with a blank page, and the
@@ -187,9 +198,22 @@
   SymbiQ.estate.mount = function (root, opts) {
     opts = opts || {};
     var assets = JSON.parse(JSON.stringify(TEMPLATE));
-    var cap = 3, policy = 'risk-first', dlYear = 2030;
+    var cap = 3, policy = 'risk-first', dlYear = 2030, source = 'example';
 
     function ids() { return assets.map(function (a) { return a.id; }); }
+
+    /* The inventory above hands its findings down to here. Everything else on
+     * the page keeps working if that never happens — this is an entry point,
+     * not a dependency, so a broken parser can never take the sequencer with
+     * it. Capacity, deadline and policy survive the load deliberately: you are
+     * dropping a new estate into a plan you have already been tuning. */
+    function banner() {
+      if (source !== 'inventory') return '';
+      return '<p class="es-from"><b>This estate was read from your artefacts, not typed.</b> ' +
+        'Dependency edges come from the certificate chain — anything whose issuer is also in the paste waits for it. ' +
+        'Signing keys arrived with a confidentiality lifetime of 0, because a signature cannot be forged backwards; ' +
+        'raise it by hand for any key that also protects data. Effort is a placeholder in every row — only you know that number.</p>';
+    }
 
     function editor() {
       return '<div class="es-scroll"><table class="es"><thead><tr>' +
@@ -293,13 +317,30 @@
         '<p class="es-cmp"><b>Ordering is worth ' +
           (worstPol.worst - best.worst).toFixed(2) + ' years here.</b> Worst-case breakeven by policy: ' +
           cmp.map(function (c) { return esc(c.p) + ' <b>' + c.worst.toFixed(2) + '</b>'; }).join(' · ') +
-          '. Same capacity, same constraints — only the order changes.</p>';
+          '. Same capacity, same constraints — only the order changes.' +
+          /* A zero spread is a real result, not a broken widget, and it has a
+           * cause worth naming: sequencing buys nothing when every asset is
+           * exposed for the same reason. Estates read from certificates land
+           * here by default, because signing keys all carry a lifetime of 0. */
+          ((worstPol.worst - best.worst) === 0
+            ? ' <b>Zero is a finding.</b> Ordering only moves exposure when your assets differ in how long they must stay secret — ' +
+              'and when every line here is an authentication key, they do not. Set a real confidentiality lifetime on anything that ' +
+              'protects data rather than proving identity, and the spread appears.'
+            : '') + '</p>';
     }
 
     function render() {
-      root.innerHTML = '<div class="es-wrap">' + controls() + editor() +
+      root.innerHTML = '<div class="es-wrap">' + banner() + controls() + editor() +
         '<div class="es-out">' + results() + '</div></div>';
     }
+
+    SymbiQ.estate.load = function (next) {
+      if (!next || !next.length) return false;
+      assets = JSON.parse(JSON.stringify(next));
+      source = 'inventory';
+      render();
+      return true;
+    };
 
     root.addEventListener('input', function (e) {
       var t = e.target;
@@ -333,7 +374,7 @@
                       shelf: 5, effort: 2, deps: [], owned: true });
         render();
       }
-      else if (b.id === 'es-reset') { assets = JSON.parse(JSON.stringify(TEMPLATE)); render(); }
+      else if (b.id === 'es-reset') { assets = JSON.parse(JSON.stringify(TEMPLATE)); source = 'example'; render(); }
       else if (b.id === 'es-export') {
         var blob = new Blob([JSON.stringify({ estate: assets, capacity: cap, policy: policy,
           deadlineYear: dlYear }, null, 2)], { type: 'application/json' });

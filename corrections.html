@@ -118,10 +118,10 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>21 corrections, and not one of them was caught by a reader yet</h3>
+  <h3>25 corrections, and not one of them was caught by a reader yet</h3>
   <p>Everything below was found by us — usually by a fresh reviewer paid to attack work that had already passed its own author. That is the system working, and it is also the system’s limit: <strong>a referee only catches what somebody thought to question.</strong> The reader slot is open, and it pays the most.</p>
   <div class="corr-stats">
-    <div><b>10</b><span>arithmetic or stale figures</span></div>
+    <div><b>11</b><span>arithmetic or stale figures</span></div>
     <div><b>7</b><span>right number, wrong words</span></div>
     <div><b>7</b><span>code that broke or did nothing</span></div>
     <div><b>0</b><span>caught by a reader <em>so far</em></span></div>
@@ -130,13 +130,26 @@
 </div>
 
 <div class="corr-filters" role="group" aria-label="Filter corrections by kind">
-  <button class="corr-f is-on" data-k="all" aria-pressed="true">All 24</button>
-  <button class="corr-f k-num" data-k="number" aria-pressed="false">An arithmetic or a stale figure · 10</button>
+  <button class="corr-f is-on" data-k="all" aria-pressed="true">All 25</button>
+  <button class="corr-f k-num" data-k="number" aria-pressed="false">An arithmetic or a stale figure · 11</button>
   <button class="corr-f k-lab" data-k="label" aria-pressed="false">The number was right, the words were wrong · 7</button>
   <button class="corr-f k-code" data-k="code" aria-pressed="false">Code that broke, or silently did nothing · 7</button>
 </div>
 
 <ol class="corr-log">
+<li class="corr k-num" data-k="number">
+  <div class="corr-head">
+    <time datetime="2026-08-06">2026-08-06</time>
+    <span class="corr-where">The PQC deadline table &mdash; <code>pqc.html</code></span>
+    <span class="corr-kind">An arithmetic or a stale figure</span>
+  </div>
+  <dl>
+    <dt>What we said</dt><dd>Executive Order 14412 requires CISA to publish CBOM guidance <strong>within 180 days</strong> — about 19 December 2026. We also included a note criticising other sources for reporting the deadline as 270 days.</dd>
+    <dt>What&rsquo;s true</dt><dd>The order gives CISA and NIST <strong>270 days</strong> — about <strong>20 March 2027</strong>. The sources we dismissed were correct.</dd>
+    <dt>Why we missed it</dt><dd>A misread of the order&rsquo;s deadlines, compounded by writing a correction note that confidently challenged accurate sources. The note locked in the error and made it harder to catch.</dd>
+  </dl>
+  <p class="corr-caught"><span>Caught by</span> Fresh-session hostile-referee pass, 2026-08-06.</p>
+</li>
 <li class="corr k-code" data-k="code">
   <div class="corr-head">
     <time datetime="2026-08-06">2026-08-06</time>

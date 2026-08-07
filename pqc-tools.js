@@ -1479,6 +1479,7 @@ function mount(root, opts) {
       }
     });
     if (opts.example) { root.querySelector('#cb-in').value = EXAMPLE; read(EXAMPLE); }
+    else if (opts.restoreText) { root.querySelector('#cb-in').value = opts.restoreText; read(opts.restoreText); }
   };
 })();
 
@@ -1702,6 +1703,17 @@ function mount(root, opts) {
     var assets = JSON.parse(JSON.stringify(TEMPLATE));
     var cap = 3, policy = 'risk-first', dlYear = 2030, source = 'example', scenarioLabel = '';
 
+    /* Restoring a saved session is a separate door from `load`/`loadScenario`
+     * for the same reason those two are separate from each other -- the
+     * banner text must tell the truth about where the estate came from. */
+    if (opts.restore && opts.restore.assets && opts.restore.assets.length) {
+      assets = JSON.parse(JSON.stringify(opts.restore.assets));
+      if (opts.restore.cap) cap = opts.restore.cap;
+      if (opts.restore.policy) policy = opts.restore.policy;
+      if (opts.restore.dlYear) dlYear = opts.restore.dlYear;
+      source = 'restored';
+    }
+
     function ids() { return assets.map(function (a) { return a.id; }); }
 
     /* The inventory above hands its findings down to here. Everything else on
@@ -1719,6 +1731,11 @@ function mount(root, opts) {
       if (source === 'scenario') {
         return '<p class="es-from"><b>Loaded the ' + esc(scenarioLabel) + ' scenario.</b> ' +
           'Illustrative, not audited — a starting shape for a plausible estate, not a real one. Edit any row to make it yours.</p>';
+      }
+      if (source === 'restored') {
+        return '<p class="es-from"><b>Restored from your last visit on this device.</b> ' +
+          'Nothing was sent anywhere to do this — it was saved in this browser\'s own local storage.</p>' +
+          '<p class="es-add"><button type="button" class="preset" id="es-restclr">Clear it and start fresh</button></p>';
       }
       return '';
     }
@@ -1906,6 +1923,11 @@ function mount(root, opts) {
         render();
       }
       else if (b.id === 'es-reset') { assets = JSON.parse(JSON.stringify(TEMPLATE)); source = 'example'; render(); }
+      else if (b.id === 'es-restclr') {
+        assets = JSON.parse(JSON.stringify(TEMPLATE)); source = 'example';
+        if (SymbiQ.pqPersist) SymbiQ.pqPersist.clear();
+        render();
+      }
       else if (b.id === 'es-export') {
         var blob = new Blob([JSON.stringify({ estate: assets, capacity: cap, policy: policy,
           deadlineYear: dlYear }, null, 2)], { type: 'application/json' });
@@ -2398,4 +2420,354 @@ function mount(root, opts) {
 
     render();
   };
+})();
+
+/* ── 5 · LIVE DOMAIN LOOKUP ────────────────────────────────────────────────
+ * The one thing on this page that contacts anything outside the browser.
+ * There is no way for page JS to read the certificate actually presented on
+ * a live TLS connection — browsers deliberately do not expose that to
+ * scripts, CORS or not. The only client-side path to "what certs does this
+ * domain have" is a public Certificate Transparency log, which is HISTORY
+ * (every certificate ever logged for the name), not proof of what is live
+ * right now. That distinction is stated on the page, not buried here.
+ *
+ * crt.sh is the obvious first choice and was tested live during planning:
+ * it returned 502 (it runs on a single, often-overloaded Postgres instance)
+ * and has no reliable CORS story for browser JS. SSLMate's Cert Spotter
+ * (api.certspotter.com) was tested live instead — 200 OK,
+ * Access-Control-Allow-Origin: *, and `expand=cert` returns the actual
+ * certificate as base64 DER. That is what this section wraps, and it hands
+ * the result to the already-verified Inventory parser rather than reading
+ * any field itself — this section's only job is "get PEM text," nothing
+ * downstream trusts it more than a hand-pasted paste. */
+(function () {
+  var SymbiQ = window.SymbiQ = window.SymbiQ || {};
+  var API = 'https://api.certspotter.com/v1/issuances';
+
+  function toPEM(b64) {
+    var lines = [];
+    for (var i = 0; i < b64.length; i += 64) lines.push(b64.slice(i, i + 64));
+    return '-----BEGIN CERTIFICATE-----\n' + lines.join('\n') + '\n-----END CERTIFICATE-----';
+  }
+
+  /* Resolves to { pem, entries, error } — never rejects. A network failure, a
+   * CORS failure, a rate limit and "nothing logged" are all reported through
+   * `error` rather than thrown, because the caller's whole job is to show
+   * something honest, not to catch an exception. */
+  function lookupDomain(domain) {
+    domain = String(domain || '').trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+    if (!domain || domain.indexOf('.') < 0 || /\s/.test(domain)) {
+      return Promise.resolve({ pem: '', entries: [],
+        error: 'That does not look like a domain name — try "example.com", not a full URL.' });
+    }
+    var url = API + '?domain=' + encodeURIComponent(domain) + '&include_subdomains=false&expand=cert';
+    return fetch(url).then(function (r) {
+      if (r.status === 429) throw new Error('rate-limited');
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    }).then(function (list) {
+      if (!Array.isArray(list) || !list.length) {
+        return { pem: '', entries: [], error:
+          'No certificates found for "' + domain + '" in public CT logs. That can mean the domain has never had ' +
+          'a publicly-trusted certificate, or it is too new for the logs to have caught up. You can still read its ' +
+          'chain yourself: openssl s_client -connect ' + domain + ':443 -showcerts' };
+      }
+      // Most-recent, not-revoked first. CT logs are append-only and not
+      // recency-ordered, so this is a sort, not a filter — a revoked cert is
+      // still a real artefact worth reading, just not the one to lead with.
+      list.sort(function (a, b) {
+        if (!!a.revoked !== !!b.revoked) return a.revoked ? 1 : -1;
+        return new Date(b.not_before) - new Date(a.not_before);
+      });
+      var top = list.slice(0, 8).filter(function (e) { return e.cert && e.cert.data; });
+      var pem = top.map(function (e) { return toPEM(e.cert.data); }).join('\n\n');
+      return { pem: pem, entries: top,
+        error: pem ? '' : 'Certificates were found but this browser could not read their bytes.' };
+    }).catch(function (e) {
+      var msg = (e && e.message === 'rate-limited')
+        ? 'The public lookup service is rate-limiting this browser right now. Wait a moment, or paste the certificate manually below.'
+        : 'The live lookup did not work in this browser (network error, or the service refused the request). ' +
+          'Paste the certificate manually instead — get it with: openssl s_client -connect ' + domain + ':443 -showcerts';
+      return { pem: '', entries: [], error: msg };
+    });
+  }
+
+  SymbiQ.cbom = SymbiQ.cbom || {};
+  SymbiQ.cbom.lookupDomain = lookupDomain;
+})();
+
+/* ── 6 · QUICK CHECK ─────────────────────────────────────────────────────
+ * The front door for someone who wants one answer, not four instruments.
+ * Two ways in — paste what you have, or look up a domain — both funnel
+ * through the exact same Inventory parser and the exact same hand-off to
+ * the Sequencer that the Inventory's own "send to sequencer" button uses.
+ * Deliberately renders no verdict of its own: the moment it hands assets to
+ * the Sequencer, the live Scorecard directly below it (subscribed to the
+ * same estate.publish() this hand-off triggers) already shows the answer —
+ * one render path, not two that could quietly disagree. */
+(function () {
+  var SymbiQ = window.SymbiQ = window.SymbiQ || {};
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  SymbiQ.quickcheck = {};
+  SymbiQ.quickcheck.mount = function (root, opts) {
+    opts = opts || {};
+    var mode = 'paste';
+
+    function shell() {
+      return '<div class="qc-wrap">' +
+        '<div class="qc-tabs" role="tablist">' +
+          '<button type="button" class="preset qc-tab on" data-m="paste" role="tab" aria-selected="true">Paste what you have</button>' +
+          '<button type="button" class="preset qc-tab" data-m="domain" role="tab" aria-selected="false">Look up a domain</button>' +
+        '</div>' +
+        '<div id="qc-paste">' +
+          '<label class="cb-lab" for="qc-in">Paste a certificate, an SSH public key, or a JWKS.</label>' +
+          '<textarea id="qc-in" class="cb-in" spellcheck="false" rows="4" placeholder="-----BEGIN CERTIFICATE-----&#10;MIIF..."></textarea>' +
+          '<p class="es-add"><button type="button" class="preset on" id="qc-go">Check it</button>' +
+          '<button type="button" class="preset" id="qc-eg">Try an example estate instead</button></p>' +
+        '</div>' +
+        '<div id="qc-domain" hidden>' +
+          '<label class="cb-lab" for="qc-dom">A domain name. <b>This is the one control on this page that contacts anything ' +
+          'outside your browser</b> — it queries a public Certificate Transparency log, not your server or ours, so it can only see ' +
+          'certificates that were already publicly logged, which is usually but not provably what is live right now.</label>' +
+          '<p class="qc-domrow"><input type="text" id="qc-dom" class="es-in" placeholder="example.com" autocomplete="off" spellcheck="false">' +
+          '<button type="button" class="preset on" id="qc-look">Look it up</button></p>' +
+        '</div>' +
+        '<div id="qc-out" class="qc-out"></div>' +
+      '</div>';
+    }
+
+    function run(text, sourceLabel) {
+      var out = root.querySelector('#qc-out');
+      if (!SymbiQ.cbom || !SymbiQ.cbom.parse) return;
+      var r = SymbiQ.cbom.parse(text || '');
+      if (!r.records.length) {
+        out.innerHTML = '<div class="verdict bad"><b>Nothing readable in that.</b> ' +
+          (r.errors.length ? esc(r.errors[0]) : 'Expecting a PEM certificate, an OpenSSH public-key line, or a JWKS document.') + '</div>';
+        return;
+      }
+      var assets = SymbiQ.cbom.toEstate(r.records);
+      var vuln = r.records.filter(function (x) { return !x.pq; }).length;
+      out.innerHTML = '<div class="verdict ' + (vuln ? 'warn' : 'good') + '">' +
+        '<b>' + r.records.length + ' artefact' + (r.records.length > 1 ? 's' : '') + ' read' + sourceLabel + '.</b> ' +
+        (vuln ? vuln + ' of them rest on a problem Shor\'s algorithm solves — your result is below.'
+              : 'None of them do — already post-quantum.') +
+        (assets.length ? ' <a href="#pq-score">See your result ↓</a>' : '') + '</div>';
+      if (assets.length && SymbiQ.estate && SymbiQ.estate.load) {
+        SymbiQ.estate.load(assets);
+        var score = document.getElementById('pq-score');
+        if (score) score.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    root.innerHTML = shell();
+    root.addEventListener('click', function (e) {
+      var tab = e.target.closest('[data-m]');
+      if (tab) {
+        mode = tab.dataset.m;
+        root.querySelectorAll('.qc-tab').forEach(function (b) {
+          var on = b.dataset.m === mode;
+          b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on));
+        });
+        root.querySelector('#qc-paste').hidden = mode !== 'paste';
+        root.querySelector('#qc-domain').hidden = mode !== 'domain';
+        return;
+      }
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.id === 'qc-go') run(root.querySelector('#qc-in').value, '');
+      else if (b.id === 'qc-eg') {
+        var eg = SymbiQ.cbom.EXAMPLE;
+        root.querySelector('#qc-in').value = eg; run(eg, '');
+      }
+      else if (b.id === 'qc-look') {
+        if (!SymbiQ.cbom.lookupDomain) return;
+        var dom = root.querySelector('#qc-dom').value;
+        var out = root.querySelector('#qc-out');
+        out.innerHTML = '<p class="sc-wait">Looking up ' + esc(dom) + '…</p>';
+        b.disabled = true;
+        SymbiQ.cbom.lookupDomain(dom).then(function (res) {
+          b.disabled = false;
+          if (!res.pem) { out.innerHTML = '<div class="verdict warn"><b>Could not read it.</b> ' + esc(res.error) + '</div>'; return; }
+          run(res.pem, ' from public CT logs for ' + esc(dom));
+        });
+      }
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target && e.target.id === 'qc-dom') {
+        e.preventDefault();
+        var look = root.querySelector('#qc-look'); if (look) look.click();
+      }
+    });
+  };
+})();
+
+/* ── 7 · LIVE SCORECARD, COMPLIANCE & REPORTS ───────────────────────────────
+ * Pure orchestration over already-verified functions — assess(),
+ * feasibility() and DEADLINES are all unchanged. This section's only job is
+ * turning "the current published estate state" into three things worth
+ * showing without re-typing anything: a scorecard strip, a per-deadline
+ * compliance checklist, and a downloadable report. All three subscribe to
+ * SymbiQ.estate.subscribe — a late mount replays the last known state
+ * immediately (estate.js's own documented behaviour), so mount order
+ * relative to the Sequencer never matters, exactly like the Odds tool. */
+(function () {
+  var SymbiQ = window.SymbiQ = window.SymbiQ || {};
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  function headline(state) {
+    var dq = SymbiQ.estate.quartersUntil(state.dlYear);
+    var f = SymbiQ.estate.feasibility(state.assets, state.cap, state.policy, dq);
+    var r = f.assess;
+    var vulnCount = r.rows.filter(function (x) { return x.vuln; }).length;
+    var status = (f.deadlocked || f.capacityBound || f.chainBound) ? { t: 'Infeasible', c: 'bad' } : { t: 'Feasible', c: 'good' };
+    if (f.deadlocked) status.t = 'Deadlocked';
+    return { state: state, f: f, r: r, total: state.assets.length, vuln: vulnCount, worst: r.worst, status: status };
+  }
+
+  function complianceRows(state) {
+    return (SymbiQ.estate.DEADLINES || []).map(function (d) {
+      var dq = SymbiQ.estate.quartersUntil(d.y);
+      var f = SymbiQ.estate.feasibility(state.assets, state.cap, state.policy, dq);
+      return { d: d, f: f, on: f.feasible };
+    });
+  }
+
+  function reportText(h, comp) {
+    var L = [];
+    L.push('SYMBIQ — POST-QUANTUM MIGRATION ASSESSMENT');
+    L.push('Generated client-side in your browser: ' + new Date().toISOString());
+    L.push('');
+    L.push('PLAN: capacity ' + h.state.cap + ' quarter-unit(s)/quarter · policy "' + h.state.policy + '" · deadline ' + h.state.dlYear + '.');
+    L.push('Assets tracked: ' + h.total + '. Exposed (pre-quantum): ' + h.vuln + '. Worst-case breakeven: ' +
+      (h.worst ? h.worst.toFixed(2) + ' years' : 'n/a') + '. Plan status: ' + h.status.t + '.');
+    L.push('');
+    L.push('PER-ASSET:');
+    h.r.rows.filter(function (x) { return x.vuln; }).sort(function (a, b) { return b.breakevenZ - a.breakevenZ; })
+      .forEach(function (x) {
+        L.push('  - ' + x.a.name + ' (' + x.a.alg + '): secret for ' + x.a.shelf + 'y, migrated ' +
+          (x.quarter == null ? 'never (stuck)' : 'Q' + x.quarter) + ', exposed unless a quantum computer is further off than ' +
+          (x.breakevenZ == null ? 'n/a' : x.breakevenZ + 'y') + '.');
+      });
+    L.push('');
+    L.push('COMPLIANCE AGAINST NAMED DEADLINES:');
+    comp.forEach(function (c) {
+      L.push('  - ' + c.d.label + ' (' + c.d.y + '): ' + (c.on ? 'on track' : 'will not make it as currently sequenced') + '.');
+    });
+    L.push('');
+    L.push('This is arithmetic over what you typed or looked up, not a certified audit — see symbiq\'s pqc.html for the full method and honest limits.');
+    return L.join('\n');
+  }
+
+  function reportJSON(h, comp) {
+    return {
+      generatedAt: new Date().toISOString(),
+      plan: { capacity: h.state.cap, policy: h.state.policy, deadlineYear: h.state.dlYear },
+      assetsTracked: h.total, exposed: h.vuln, worstBreakevenYears: h.worst, status: h.status.t,
+      assets: h.r.rows.filter(function (x) { return x.vuln; }).map(function (x) {
+        return { name: x.a.name, algorithm: x.a.alg, secretForYears: x.a.shelf,
+                 migratedQuarter: x.quarter, breakevenYears: x.breakevenZ, stuck: !!x.stuck };
+      }),
+      compliance: comp.map(function (c) { return { deadline: c.d.label, year: c.d.y, onTrack: c.on }; }),
+      note: 'Client-side estimate from the SymbiQ PQC tools, not a certified audit.'
+    };
+  }
+
+  function fireDownload(name, contents, type) {
+    var blob = new Blob([contents], { type: type });
+    var url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = name; a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  /* ------------------------------------------------------------ scorecard */
+  SymbiQ.scorecard = {};
+  SymbiQ.scorecard.mount = function (root, opts) {
+    opts = opts || {};
+    var last = null;
+    function render(state) {
+      if (!state || !state.assets || !state.assets.length) {
+        root.innerHTML = '<p class="sc-wait">Nothing tracked yet — paste something in Quick Check above, or edit the Sequencer below.</p>';
+        last = null;
+        return;
+      }
+      var h = headline(state); last = h;
+      root.innerHTML =
+        '<div class="pq-score">' +
+          '<div class="pq-stat"><span class="hud-label">Assets tracked</span><span class="hud-score">' + h.total + '</span></div>' +
+          '<div class="pq-stat"><span class="hud-label">Exposed now</span><span class="hud-score' + (h.vuln ? ' warn' : '') + '">' + h.vuln + '</span></div>' +
+          '<div class="pq-stat"><span class="hud-label">Worst breakeven</span><span class="hud-score">' + (h.worst ? h.worst.toFixed(1) + 'y' : '—') + '</span></div>' +
+          '<div class="pq-stat"><span class="hud-label">Plan</span><span class="hud-score' + (h.status.c === 'bad' ? ' bad' : '') + '">' + h.status.t + '</span></div>' +
+        '</div>' +
+        (opts.compact ? '' :
+          '<p class="es-add"><button type="button" class="preset" id="pq-dltxt">⤓ Download full report (text)</button>' +
+          '<button type="button" class="preset" id="pq-dljson">⤓ Download as JSON</button>' +
+          '<button type="button" class="preset" id="pq-clearsaved">Clear saved data</button></p>');
+    }
+    SymbiQ.estate.subscribe(render);
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.id === 'pq-clearsaved') {
+        if (SymbiQ.pqPersist) SymbiQ.pqPersist.clear();
+        location.reload();
+        return;
+      }
+      if (!last) return;
+      var comp = complianceRows(last.state);
+      if (b.id === 'pq-dltxt') fireDownload('symbiq-pqc-assessment.txt', reportText(last, comp), 'text/plain');
+      else if (b.id === 'pq-dljson') fireDownload('symbiq-pqc-assessment.json', JSON.stringify(reportJSON(last, comp), null, 2), 'application/json');
+    });
+  };
+
+  /* ----------------------------------------------------------- compliance */
+  SymbiQ.compliance = {};
+  SymbiQ.compliance.mount = function (root, opts) {
+    function render(state) {
+      if (!state || !state.assets || !state.assets.length) {
+        root.innerHTML = '<p class="sc-wait">Build a plan above to see it checked against these deadlines.</p>';
+        return;
+      }
+      var comp = complianceRows(state);
+      root.innerHTML = '<ul class="pq-comp">' + comp.map(function (c) {
+        return '<li class="pq-comp-row"><span class="cb-tag ' + (c.on ? 'ok' : 'bad') + '">' +
+          (c.on ? 'ON TRACK' : 'AT RISK') + '</span><b>' + esc(c.d.label) + '</b>' +
+          '<span class="sc-rl">by ' + c.d.y + '</span></li>';
+      }).join('') + '</ul>';
+    }
+    SymbiQ.estate.subscribe(render);
+  };
+})();
+
+/* ── 8 · SESSION PERSISTENCE ─────────────────────────────────────────────
+ * Nothing on this page has ever left the browser; this section does not
+ * change that. It writes into this browser's own localStorage, namespaced
+ * the same way save.js already does elsewhere on the site, so a refreshed
+ * tab does not throw away what was typed. Reading it back is opt-in and
+ * visible — pqc.html's own mount script decides whether to pass it to
+ * estate.mount/cbom.mount as opts.restore/opts.restoreText, and the
+ * Sequencer's own banner says plainly when an estate was restored rather
+ * than typed, with a one-click way to clear it. */
+(function () {
+  var SymbiQ = window.SymbiQ = window.SymbiQ || {};
+  var KEY = 'symbiq.pqc.v1';
+
+  function read() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function write(next) {
+    try {
+      var cur = read() || {};
+      var merged = Object.assign({}, cur, next);
+      localStorage.setItem(KEY, JSON.stringify(merged));
+    } catch (e) { /* private browsing / storage disabled — fail silent, nothing else breaks */ }
+  }
+  function clear() {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  }
+
+  SymbiQ.pqPersist = { read: read, write: write, clear: clear };
 })();

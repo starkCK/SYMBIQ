@@ -30,7 +30,7 @@
 <script src="nav.js?v=4" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script type="module" src="pqc-tools.js?v=1"></script>
+<script type="module" src="pqc-tools.js?v=2"></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
    without a cache bump across all sixteen. */
@@ -178,6 +178,14 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 @media (prefers-color-scheme: light) {
   .cb-in, .es-in { background: #ffffff; border-color: #cbd5e1; }
   .cb-tag { background: rgba(15,23,42,.07); }
+  /* Found measuring the new compliance checklist, which reuses this same
+     chip: var(--teal) text on its own pale-teal chip background composites
+     to 3.41:1 in light mode, under the 4.5:1 floor for text this size --
+     same shape as the .verdict.warn / .od-eyebrow fixes above, and it
+     predates this session (the Inventory's own CONFIRMED tag uses the
+     identical colour pair). Darkened to the same #0f766e already used for
+     .od-eyebrow; re-measures at 5.7:1+. */
+  .cb-tag.ok { color: #0f766e; }
 }
 @media (max-width: 560px) { .cb-btns .preset { width: 100%; } }
 
@@ -218,6 +226,62 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 .od-sw.dot { border-radius: 50%; width: 9px; height: 9px; }
 .preset.bigger { font-size: .92rem; font-weight: 700; padding: 12px 18px; }
 @media (prefers-reduced-motion: reduce) { .od-svg path[stroke="var(--teal)"] { transition: none; } }
+
+/* ── quick check ───────────────────────────────────────────────────────── */
+.qc-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.qc-domrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+.qc-domrow input { flex: 1 1 220px; min-height: 44px; }
+.qc-out:empty { margin: 0; }
+.qc-out { margin-top: 14px; }
+.qc-out a { color: var(--teal); font-weight: 600; }
+@media (prefers-color-scheme: light) { .qc-out a { color: #0f766e; } }
+@media (max-width: 480px) { .qc-domrow button { width: 100%; } }
+
+/* ── eyebrows — the same icon+label language as the Odds' own, generalised
+   with data-icon so one rule serves every section instead of one class per
+   icon. Same light-mode fix already applied to .od-eyebrow: var(--teal)
+   alone measures under 4.5:1 on white, so light mode gets a darkened value. */
+.pq-eyebrow { display: inline-flex; align-items: center; gap: 7px; font-size: .68rem; text-transform: uppercase;
+  letter-spacing: .1em; font-weight: 700; color: var(--teal); margin: 26px 0 4px; }
+.pq-eyebrow::before { content: attr(data-icon); font-size: .95rem; }
+@media (prefers-color-scheme: light) { .pq-eyebrow { color: #0f766e; } }
+h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top: 0; }
+
+/* ── the live scorecard ───────────────────────────────────────────────── */
+.pq-scorewrap { margin: 16px 0 26px; }
+.pq-score { display: flex; flex-wrap: wrap; gap: 18px 30px; padding: 16px clamp(14px,3vw,22px);
+  border: 1px solid var(--border); border-radius: 12px; background: var(--panel); }
+.pq-stat { display: flex; flex-direction: column; gap: 3px; }
+.pq-score .hud-score.warn { color: var(--yellow, #fbbf24); }
+.pq-score .hud-score.bad { color: var(--red); }
+@media (prefers-color-scheme: light) { .pq-score .hud-score.warn { color: #92400e; } }
+
+/* ── compliance checklist ─────────────────────────────────────────────── */
+.pq-comp { list-style: none; margin: 12px 0 0; padding: 0; }
+.pq-comp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06); min-height: 44px; }
+
+/* ── file drop zone for the inventory ─────────────────────────────────── */
+.cb-drop { border: 1.5px dashed rgba(255,255,255,.18); border-radius: 8px; padding: 10px 12px;
+  font-size: .78rem; color: var(--muted); margin-bottom: 10px; transition: border-color .2s ease, background .2s ease; }
+.cb-drop.cb-drop-on { border-color: var(--teal); background: rgba(45,212,191,.06); }
+.cb-filelab { color: var(--teal); font-weight: 600; cursor: pointer; text-decoration: underline; min-height: 44px; display: inline-flex; align-items: center; }
+@media (prefers-color-scheme: light) { .cb-drop { border-color: #cbd5e1; } .cb-filelab { color: #0f766e; } }
+
+/* ── executive/technical disclosure ───────────────────────────────────── */
+.pq-fold { margin: 16px 0; }
+.pq-fold > summary { cursor: pointer; font-weight: 700; padding: 10px 0; min-height: 44px;
+  display: flex; align-items: center; list-style: revert; }
+.pq-fold > summary::marker { color: var(--teal); }
+.pq-fold[open] > summary { margin-bottom: 4px; }
+
+/* ── sticky jump bar at desktop widths — same recipe tiers.js's .tbar
+   already uses site-wide (position:sticky, blur, var(--panel)), just
+   applied to this page's own tool-jump bar instead of a new element. */
+@media (min-width: 720px) {
+  .pq-jump { position: sticky; top: 60px; z-index: 20; background: var(--panel);
+    backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); border-radius: 0 0 10px 10px; }
+}
 </style>
 </head>
 <body>
@@ -303,10 +367,25 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 <h1>What does post-quantum cryptography cost on the wire?</h1>
 <p class="tagline">Not in theory. In bytes, measured in this browser, from keys generated a moment ago.</p>
 
-<!-- Three tools on one long page. Without this the sequencer sits 7,000px down,
+<h2 id="quickcheck">Quick Check</h2>
+<p>One paste, or one domain name — this is the fast path. It reads what you give it with the same parser as the
+   full Inventory below, then hands it straight to the Sequencer for a live verdict. If you already know the four
+   instruments on this page, skip straight past this to <a href="#cliff">the Size Cliff</a>.</p>
+<div class="od-spotlight">
+  <p class="pq-eyebrow" data-icon="⚡" style="margin-top:0">Check your own system</p>
+  <div id="quickcheck-mount"><p class="sc-wait">This needs JavaScript — it runs entirely in your browser. Nothing you paste or look up is sent anywhere except, if you choose the domain tab, a public certificate-transparency log.</p></div>
+</div>
+
+<div class="pq-scorewrap" id="pq-score">
+  <p class="pq-eyebrow" data-icon="📊" style="margin-top:0">Your current position</p>
+  <div id="score-mount"><p class="sc-wait">Nothing tracked yet.</p></div>
+</div>
+
+<!-- Five tools on one long page. Without this the sequencer sits 7,000px down,
      which is the same "buried the thing they came for" problem the homepage
      hero had. Plain anchors, so it works with scripts off. -->
-<p class="pq-jump"><span>Four tools:</span>
+<p class="pq-jump"><span>Five tools:</span>
+  <a href="#quickcheck">Quick Check</a><em>one paste, one answer</em>
   <a href="#cliff">The Size Cliff</a><em>what PQ costs on the wire</em>
   <a href="#inventory">The Inventory</a><em>read your own artefacts</em>
   <a href="#estate">The Sequencer</a><em>when you can actually finish</em>
@@ -321,6 +400,7 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
   <p style="margin-bottom:0"><b>And the obvious metric misleads.</b> Pick a signature scheme by public-key size and you will choose the one with an eight-kilobyte signature. Move the controls below and watch which choice actually breaks.</p>
 </div>
 
+<p class="pq-eyebrow" data-icon="📏">Instrument 1 of 4 · measured, not modelled</p>
 <h2 id="cliff">The Size Cliff</h2>
 <p>Every cryptographic number below is the length of a real object — a key, a ciphertext, or a signature — that your browser generated when you clicked. Nothing is read from a table. <b>That is the point of building it this way:</b> a lookup table inherits whatever error was in its source, and this one caught a live example. Several published sources state that an ML-DSA-65 signature is 3,293 bytes. Sign something and measure it and the answer is <b>3,309</b>, which is what FIPS 204 specifies. The widget cannot make that mistake, because it never looks anything up.</p>
 
@@ -328,7 +408,8 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
   <div id="cliff-mount"><p class="sc-wait">This figure needs JavaScript — it generates real post-quantum keys in your browser. Nothing is sent anywhere.</p></div>
 </div>
 
-<h3>What is measured, and what is modelled</h3>
+<details class="pq-fold" open>
+<summary>What is measured, and what is modelled ▸</summary>
 <p>The distinction is stated on every row rather than averaged away, because mixing the two is how confident wrong numbers get published.</p>
 <ul>
   <li><b>Measured</b> — key shares, ciphertexts, public keys and signatures. Exact, from real ML-KEM, ML-DSA and SLH-DSA operations, plus X25519 and ECDSA from your browser's own WebCrypto.</li>
@@ -336,11 +417,13 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 </ul>
 <p><b>So the absolute totals are a model; the differences between two choices are exact.</b> The framing is identical on both sides of any comparison, so it cancels — and the difference is the whole subject. When the widget says a hybrid key share costs 1,184 bytes more than X25519, that number is measured, not assumed.</p>
 <p>The limits it is measured against are real: a 1,460-byte TCP payload is what fits in one packet on a standard 1,500-byte Ethernet MTU, and the initial congestion window has defaulted to ten segments since Linux 2.6.39 (<a href="https://www.rfc-editor.org/rfc/rfc6928">RFC 6928</a>). A server flight past 14,600 bytes waits for an acknowledgement before it can finish.</p>
+</details>
 
 <h3>The trap worth failing once</h3>
 <p>Set the signature to <b>SLH-DSA-128s</b>. Its public key is 32 bytes — smaller than ML-DSA-65's 1,952, and exactly the same size as Ed25519's. By the metric most people reach for first, it is the compact choice.</p>
 <p>Its signature is <b>7,856 bytes</b>. A chain carries more signatures than public keys, so the scheme with the smallest key produces by far the largest handshake. SLH-DSA earns that cost honestly — it rests only on the security of a hash function, with no lattice assumption to be wrong about — but the trade is the opposite of the one the key size advertises.</p>
 
+<p class="pq-eyebrow" data-icon="🔍">Instrument 2 of 4 · discover what you actually run</p>
 <h2 id="inventory">The Inventory</h2>
 
 <p>The tool below this one plans a migration across whatever estate you describe. Its own honest-limits list says the obvious thing about that: <b>it discovers nothing.</b> A migration programme lives or dies on the inventory, and the inventory is the hard part.</p>
@@ -350,6 +433,9 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 <p><b>And the parse is checked against a second implementation.</b> For every key your browser's own WebCrypto can import, we hand it the exact bytes and read the algorithm back from the browser rather than from us. Agreement earns the row a <span class="cb-tag ok">CONFIRMED</span> tag. Where WebCrypto has no algorithm at all — ML-DSA and SLH-DSA today, Ed25519 on older browsers — the row says <span class="cb-tag">PARSED</span>, which means our decoder alone read it and nothing independent has checked it. The tag names which quantity was checked, not how confident we feel.</p>
 
 <div class="card">
+  <p class="cb-drop" id="cb-drop">📎 Drop <code>.pem</code>/<code>.crt</code>/<code>.cer</code>/<code>.pub</code>/<code>.json</code> files here, or
+    <label for="cb-file" class="cb-filelab">choose files</label><input type="file" id="cb-file" accept=".pem,.crt,.cer,.pub,.json,.txt" multiple hidden>
+    — read straight into the box below, alongside anything already pasted.</p>
   <div id="cbom-mount"><p class="sc-wait">This tool parses in your browser. It needs JavaScript. Nothing you paste is transmitted — there is no server to transmit it to.</p></div>
 </div>
 
@@ -361,13 +447,16 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 <p><b>Your harvest-now-decrypt-later exposure is not in any of these files.</b> In TLS 1.3 the certificate key <em>signs</em>; it never encrypts. The key exchange that actually protects the traffic is an ephemeral ECDHE or X25519 share negotiated per connection, and it appears in no certificate, no <code>authorized_keys</code> file and no certificate-derived CBOM.</p>
 <p>That distinction decides which risks are retroactive. A signature algorithm broken in 2032 cannot forge a 2026 handshake after the fact — forgery only works forwards. A key exchange broken in 2032 decrypts every recording anybody made of it in 2026. So the asset with the worst exposure in most estates is the one no file will hand you, and the tool tells you to add it by hand rather than quietly scoring you on what it happened to be able to read.</p>
 
-<h3>What comes out</h3>
+<details class="pq-fold" open>
+<summary>What comes out ▸</summary>
 <ul>
   <li><b>A CycloneDX 1.6 CBOM.</b> The field names and enumerated values come from the published 1.6 JSON schema, and each certificate is emitted as three linked components — the certificate, the algorithm of the key it carries, and the algorithm it was signed with — because that is the split the format was built to express. Validate it with <code>cyclonedx-cli</code> before you file it anywhere that matters; we cannot run the official validator inside a page with no network.</li>
   <li><b>The dependency edges, read off the chain.</b> Any certificate whose issuer is also in your paste becomes dependent on it. That is the input the sequencer below needs and the input nobody enjoys typing.</li>
   <li><b>A confidentiality lifetime of zero on every signing key</b>, with the reason stated rather than assumed. Padding an inventory is the commonest way one of these programmes ends up looking bigger than it is, and a signing key that cannot be forged backwards has no confidentiality lifetime to overstate.</li>
 </ul>
+</details>
 
+<p class="pq-eyebrow" data-icon="🧮">Instrument 3 of 4 · sequence the migration</p>
 <h2 id="estate">Your estate, not ours</h2>
 
 <p>The figure above measures a decision. This one measures <em>you</em>. Describe what you actually run — the rows below start from a realistic example, and every one of them is editable — and it will tell you which of your assets are already past saving, in what order to migrate, and whether your deadline is reachable at all.</p>
@@ -387,6 +476,12 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
   <li><b>AES-256 is not migration work</b> and the tool refuses to count it. Grover halves symmetric strength, which AES-256 absorbs. Padding an inventory with symmetric crypto is the most common way these programmes look bigger than they are.</li>
   <li><b>A vendor asset is marked, not solved.</b> If you do not control it, your migration date is theirs. The tool schedules it because your exposure is real either way — but the lever is procurement, not engineering.</li>
 </ul>
+
+<h3>Are you actually compliant?</h3>
+<p>The same plan, checked against the four regulatory deadlines named at the bottom of this page. Nothing new is computed here — this is the sequencer's own <code>feasibility()</code> run once per deadline instead of once against whichever one you last clicked above.</p>
+<div class="card">
+  <div id="compliance-mount"><p class="sc-wait">Build a plan above to see it checked here.</p></div>
+</div>
 
 <h3>Honest limits on this one</h3>
 <ul>
@@ -435,14 +530,18 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
 <p class="tagline" style="margin-top:26px">Found an error on this page? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>, and the correction runs louder than the original.</p>
 
 <script>
-// All four tools now live in one module, pqc-tools.js (merged 2026-08-07 --
+// All four instruments live in one module, pqc-tools.js (merged 2026-08-07 --
 // they never appeared anywhere else, so four files was fragmentation, not
-// modularity). This plain script just mounts them; the readyState guard is
-// what makes it safe regardless of whether it runs before or after that
-// deferred module has executed.
+// modularity), plus Quick Check, the live scorecard, the compliance checklist,
+// domain lookup and session persistence, added in the same file the same way.
+// This plain script just mounts them; the readyState guard is what makes it
+// safe regardless of whether it runs before or after that deferred module has
+// executed.
 (function () {
   function go() {
     var S = window.SymbiQ || {};
+    var saved = (S.pqPersist && S.pqPersist.read()) || {};
+
     var clHost = document.getElementById('cliff-mount');
     if (S.sizecliff && clHost) {
       try { S.sizecliff.mount(clHost, { kex: 'x25519', sig: 'p256', depth: 2, scts: true }); }
@@ -451,14 +550,90 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
           'It needs ES modules and WebCrypto. The page text above stands without it.</p>';
       }
     }
-    /* Mount the sequencer before the inventory. The inventory's hand-off calls
-     * into it, so if these ever swapped order a fast click could reach a
-     * loader that does not exist yet. Each mount is independently guarded:
-     * no one tool can take another down. */
+    /* Mount the sequencer before the inventory and quick check. Their hand-offs
+     * call into it, so if these ever swapped order a fast click could reach a
+     * loader that does not exist yet. Each mount is independently guarded: no
+     * one tool can take another down. */
     var eHost = document.getElementById('estate-mount');
-    if (S.estate && eHost) { try { S.estate.mount(eHost, {}); } catch (e) {} }
+    if (S.estate && eHost) { try { S.estate.mount(eHost, { restore: saved.estate }); } catch (e) {} }
+
+    // Persist the live plan on real edits only -- estate.subscribe() replays
+    // the state synchronously the moment it is called, and that first replay
+    // is just whatever mount() started with (the example template, or the
+    // restore above), not a user action. Writing that back would make every
+    // fresh visit claim to be "restored" even when nothing happened yet.
+    if (S.estate && S.estate.subscribe && S.pqPersist) {
+      var sawFirst = false;
+      S.estate.subscribe(function (state) {
+        if (!sawFirst) { sawFirst = true; return; }
+        S.pqPersist.write({ estate: state });
+      });
+    }
+
+    var qcHost = document.getElementById('quickcheck-mount');
+    if (S.quickcheck && qcHost) { try { S.quickcheck.mount(qcHost, {}); } catch (e) {} }
+
+    var scoreHost = document.getElementById('score-mount');
+    if (S.scorecard && scoreHost) { try { S.scorecard.mount(scoreHost, {}); } catch (e) {} }
+
+    var compHost = document.getElementById('compliance-mount');
+    if (S.compliance && compHost) { try { S.compliance.mount(compHost, {}); } catch (e) {} }
+
     var cHost = document.getElementById('cbom-mount');
-    if (S.cbom && cHost) { try { S.cbom.mount(cHost, {}); } catch (e) {} }
+    if (S.cbom && cHost) {
+      try { S.cbom.mount(cHost, { restoreText: saved.cbomText }); } catch (e) {}
+      // Persist what was pasted, debounced, and independently of the drop
+      // zone below -- both write into the same #cb-in the mount just built.
+      var cbIn = document.getElementById('cb-in');
+      if (cbIn && S.pqPersist) {
+        var pt;
+        cbIn.addEventListener('input', function () {
+          clearTimeout(pt);
+          pt = setTimeout(function () { S.pqPersist.write({ cbomText: cbIn.value }); }, 600);
+        });
+      }
+      // Drag-and-drop / file-picker for the inventory -- purely additive: it
+      // appends read text into the same box paste already fills, then clicks
+      // the tool's own "Read them" button so dropping a file behaves like
+      // pasting and reading it.
+      var dropZone = document.getElementById('cb-drop'), fileInput = document.getElementById('cb-file');
+      function ingestFiles(files) {
+        var box = document.getElementById('cb-in');
+        if (!box || !files || !files.length) return;
+        var readers = Array.prototype.map.call(files, function (f) {
+          return new Promise(function (resolve) {
+            var fr = new FileReader();
+            fr.onload = function () { resolve(String(fr.result || '')); };
+            fr.onerror = function () { resolve(''); };
+            fr.readAsText(f);
+          });
+        });
+        Promise.all(readers).then(function (texts) {
+          var joined = texts.filter(Boolean).join('\n\n');
+          if (!joined) return;
+          box.value = (box.value ? box.value + '\n\n' : '') + joined;
+          // setting .value programmatically fires no 'input' event, and the
+          // persistence listener above is attached to exactly that event --
+          // without this, a dropped file would parse and hand off correctly
+          // but silently not survive a refresh, unlike anything typed or pasted.
+          box.dispatchEvent(new Event('input', { bubbles: true }));
+          var goBtn = document.getElementById('cb-go');
+          if (goBtn) goBtn.click();
+        });
+      }
+      if (dropZone) {
+        ['dragenter', 'dragover'].forEach(function (ev) {
+          dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.add('cb-drop-on'); });
+        });
+        ['dragleave', 'drop'].forEach(function (ev) {
+          dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.remove('cb-drop-on'); });
+        });
+        dropZone.addEventListener('drop', function (e) {
+          if (e.dataTransfer && e.dataTransfer.files) ingestFiles(e.dataTransfer.files);
+        });
+      }
+      if (fileInput) fileInput.addEventListener('change', function () { ingestFiles(fileInput.files); fileInput.value = ''; });
+    }
     // The Odds subscribes to the Sequencer rather than taking a hand-off, so
     // mount order relative to it never matters -- it will replay the current
     // plan the moment it mounts, and every future edit after that.

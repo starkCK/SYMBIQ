@@ -746,7 +746,7 @@
     hook: 'Tic-tac-toe, but every move lands in two squares at once — until reality is forced to pick one.',
     about: {
       goal: 'Get three <strong>real</strong> marks in a line, after the collapses shake out. Two players, one board.',
-      how: 'Each turn, place your mark in <strong>two</strong> squares at once. When your moves close a loop, that tangle is <strong>measured</strong> and collapses — and your opponent chooses which way it falls.',
+      how: 'Each turn, place your mark in <strong>two</strong> squares at once. When your moves close a <strong>loop</strong>, that tangle is <strong>measured</strong> and collapses — a loop always forces this, because a chain of pushes that closes on itself has to agree with itself, and only two arrangements can — and your opponent chooses which way it falls.',
       inspired: 'Allan Goff’s <em>Quantum Tic-Tac-Toe</em> (<em>Am. J. Phys.</em> <strong>74</strong>, 962, 2006) — a real teaching game used in classrooms.',
       learn: 'Superposition, entanglement and measurement-collapse — as a faithful <em>analogy</em>, not a literal qubit simulation.',
       link: 'quantum-mechanics.html#chsh', linkText: 'Real entanglement ▸', tier: 'analogy'
@@ -765,8 +765,7 @@
           'A thread is entanglement you can see — and when the threads close a <em>ring</em>, reality has to choose.</p>' +
         '<div class="verdict" style="text-align:center;margin-top:14px" data-r="say"></div>' +
         '<p style="margin:8px 0 4px;text-align:center">' +
-          '<button class="preset" data-a="new">New game</button><button class="preset" data-a="rules">Rules</button></p>' +
-        '<div data-r="rulesbox" style="display:none"></div>' +
+          '<button class="preset" data-a="new">New game</button></p>' +
         '<dl class="rows" data-r="rows"></dl>';
 
       var grid = $(root, '[data-r=grid]');
@@ -1017,24 +1016,6 @@
         draw('Collapsed. The ghosts in that tangle are now real. Play on.', 'good');
       }
       $(root, '[data-a=new]').addEventListener('click', reset);
-      $(root, '[data-a=rules]').addEventListener('click', function () {
-        var b = $(root, '[data-r=rulesbox]');
-        if (b.style.display === 'none') {
-          b.style.display = 'block';
-          b.innerHTML = '<div class="formula" style="font-family:inherit">' +
-            '<strong>How to play</strong><br>' +
-            '1. On your turn, place your mark in <strong>two</strong> empty squares. A <strong>thread</strong> appears between them: the mark is in both, and neither is real yet.<br>' +
-            '2. Squares can hold any number of faint marks. Faint = undecided.<br>' +
-            '3. When the threads close a <strong>ring</strong>, that ring is <strong>measured</strong> and every square on it becomes real at once.<br>' +
-            '4. A ring has exactly <strong>two</strong> consistent outcomes, and they are opposites — <em>the player who did not close it</em> chooses. Hover a glowing mark to see the whole outcome before you commit.<br>' +
-            '5. Real marks are big and solid. Three real marks in a line wins.<br>' +
-            '6. If one collapse makes two lines, the line finished with the lower move number scores 1, the other 0.5.<br><br>' +
-            '<strong>Why the ring forces a measurement</strong><br>' +
-            'Follow a chain of threads: if mark 1 lands <em>here</em>, mark 2 is pushed <em>there</em>, which pushes mark 3, and so on. In an open chain the pushing runs off the end and nothing is forced. In a <em>ring</em> it comes back to where it started — so the whole ring has to agree with itself, and only two arrangements can. That is the entire mechanic, and it is why closing a loop is the move that collapses things.<br><br>' +
-            '<strong>What is real physics here, and what is not</strong><br>' +
-            'Real: a mark in two places until measured; measuring one square deciding distant squares instantly; exactly two consistent outcomes. Not real: <em>choosing</em> the outcome — nature draws it at random, and Goff made it a player decision to keep the game strategic. Also not real: this is a teaching analogy on nine squares, not a simulation of nine qubits.</div>';
-        } else b.style.display = 'none';
-      });
       reset();
     }
   };

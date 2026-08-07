@@ -26,9 +26,9 @@
 <meta name="twitter:description" content="Every mistake SymbiQ has made, published more prominently than the original claim and credited to whoever caught it. Finding an error here pays the largest reward on the server.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=27">
-<script src="nav.js?v=4" defer></script>
-<script src="tiers.js?v=1" defer></script>
+<link rel="stylesheet" href="style.css?v=28">
+<script src="nav.js?v=5" defer></script>
+<script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -45,71 +45,77 @@
     </svg>
     symbiq
   </a>
-  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
-    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
-    <span class="latch-key">/</span>
-  </button>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="explainers">
+      <summary>Explainers</summary>
+      <div class="navpanel">
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <a href="pqc.html" class="navmain">What post-quantum costs on the wire<span class="sub">Measured in your browser, with real keys</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">Real PQC keys, measured on the wire</span></a>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, from the top</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="track">
+      <summary>Track</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The daily question + the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain active">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
 </nav>
-
-<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
-  <div class="lattice-inner">
-    <div class="lattice-top">
-      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
-             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
-      <button class="lattice-close" aria-label="Close">&#10005;</button>
-    </div>
-    <div class="lattice-cols">
-        <section>
-          <h4>Learn</h4>
-          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-        </section>
-        <section>
-          <h4>Optimisation</h4>
-          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
-          <a href="feasible.html#bottleneck" data-k="shadow price dual duality bottleneck linear programming lp resource capacity ranging game play">The Bottleneck<span class="new">NEW</span><span class="sub">Five upgrades. Which resource is actually worth money?</span></a>
-          <a href="feasible.html#prune" data-k="branch and bound knapsack pruning search tree bound relaxation dantzig game play">The Prune<span class="new">NEW</span><span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
-        </section>
-        <section>
-          <h4>Explainers</h4>
-          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
-          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
-          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
-          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
-          <a href="bitcoin.html" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
-          <a href="pqc.html" data-k="post-quantum pqc migration ml-kem mlkem kyber ml-dsa dilithium slh-dsa sphincs tls handshake certificate size cliff mtu nist fips 203 204 205 cnsa harvest now decrypt later cbom">What post-quantum costs on the wire<span class="new">NEW</span><span class="sub">Measured in your browser, with real keys</span></a>
-          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
-        </section>
-        <section>
-          <h4>Play</h4>
-          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
-        </section>
-        <section>
-          <h4>Figures you can touch</h4>
-          <a href="pqc.html#cliff" data-k="size cliff handshake bytes mtu packet measure">The Size Cliff<span class="new">NEW</span><span class="sub">Real PQC keys, measured on the wire</span></a>
-          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
-          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
-          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
-          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
-          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
-          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
-          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
-        </section>
-        <section>
-          <h4>Track</h4>
-          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
-          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
-          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" class="active" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
-        </section>
-    </div>
-    <p class="lattice-none" hidden>Nothing here by that name.</p>
-  </div>
-</div>
 
 
 
@@ -118,350 +124,19 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>25 corrections, and not one of them was caught by a reader yet</h3>
-  <p>Everything below was found by us — usually by a fresh reviewer paid to attack work that had already passed its own author. That is the system working, and it is also the system’s limit: <strong>a referee only catches what somebody thought to question.</strong> The reader slot is open, and it pays the most.</p>
+  <h3>0 corrections — the count starts at launch</h3>
+  <p>SymbiQ hasn&rsquo;t launched yet. Everything caught before launch is just editing — drafted, attacked by a fresh hostile referee, fixed before anyone outside the desk ever saw it — and that isn&rsquo;t what this page is for. <strong>This log counts only what a reader catches, after the fact, once the site is actually live.</strong> That is the real test: not whether we can find our own mistakes, but whether one gets past us into something you read.</p>
   <div class="corr-stats">
-    <div><b>11</b><span>arithmetic or stale figures</span></div>
-    <div><b>7</b><span>right number, wrong words</span></div>
-    <div><b>7</b><span>code that broke or did nothing</span></div>
-    <div><b>0</b><span>caught by a reader <em>so far</em></span></div>
+    <div><b>0</b><span>corrections since launch</span></div>
+    <div><b>0</b><span>caught by a reader</span></div>
   </div>
-  <p class="corr-lesson"><strong>The pattern, stated because it keeps repeating:</strong> in six consecutive verification passes, almost nothing was a formula error. The failures were an input invented for a correct equation, a quantity labelled as its neighbour, a measurement generalised past what it measured, and a citation that was accurate on the day it was written and stale eighteen months later. We publish that pattern because knowing your own failure mode is worth more than any individual fix.</p>
 </div>
 
-<div class="corr-filters" role="group" aria-label="Filter corrections by kind">
-  <button class="corr-f is-on" data-k="all" aria-pressed="true">All 25</button>
-  <button class="corr-f k-num" data-k="number" aria-pressed="false">An arithmetic or a stale figure · 11</button>
-  <button class="corr-f k-lab" data-k="label" aria-pressed="false">The number was right, the words were wrong · 7</button>
-  <button class="corr-f k-code" data-k="code" aria-pressed="false">Code that broke, or silently did nothing · 7</button>
+<div class="card corr-empty">
+  <p><strong>Nothing here yet, and that&rsquo;s expected.</strong> The first entry on this page will be the first mistake a reader finds after we launch. It will run louder than whatever we got wrong, and it will carry your name if you want it there — see below.</p>
 </div>
 
-<ol class="corr-log">
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-08-06">2026-08-06</time>
-    <span class="corr-where">The PQC deadline table &mdash; <code>pqc.html</code></span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Executive Order 14412 requires CISA to publish CBOM guidance <strong>within 180 days</strong> — about 19 December 2026. We also included a note criticising other sources for reporting the deadline as 270 days.</dd>
-    <dt>What&rsquo;s true</dt><dd>The order gives CISA and NIST <strong>270 days</strong> — about <strong>20 March 2027</strong>. The sources we dismissed were correct.</dd>
-    <dt>Why we missed it</dt><dd>A misread of the order&rsquo;s deadlines, compounded by writing a correction note that confidently challenged accurate sources. The note locked in the error and made it harder to catch.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Fresh-session hostile-referee pass, 2026-08-06.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-08-06">2026-08-06</time>
-    <span class="corr-where">Light mode, every page &mdash; <code>style.css</code></span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Nothing, out loud &mdash; which is the problem. The 🟢🟡🔴 tiers are this site&rsquo;s central teaching device, and we shipped them for a year without ever checking them on a light background.</dd>
-    <dt>What&rsquo;s true</dt><dd>The light-mode palette overrode the violet and the teal and left the other three alone, so against the light background green measured <strong>1.67:1</strong>, yellow <strong>1.46:1</strong> and red <strong>2.64:1</strong>. The minimum for body text is 4.5:1. Yellow at 1.46:1 is not &ldquo;low contrast&rdquo;; it is invisible. Every tier chip, every warning and every &ldquo;look here&rdquo; marker on the site was unreadable for any visitor whose device is set to light.</dd>
-    <dt>Why we missed it</dt><dd>The palette was fixed by hand, colour by colour, and three of them were simply never revisited. Nobody looked at the site in light mode, and no check measured it &mdash; a colour that is wrong still <em>renders</em>, so it never fails anything. The fix is measured, not eyeballed: the darkest versions that still read as the same colour, at 4.53&ndash;5.73:1 composited over their own tinted backgrounds. Dark mode is byte-identical.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Our own audit, while measuring something else on the same page.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-08-06">2026-08-06</time>
-    <span class="corr-where">Tap targets &mdash; the tier toggle, the corrections filter, every slider</span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>On 2026-08-03 we recorded that the 44-pixel touch-target debt was &ldquo;fully paid&rdquo; and that the last controls under the minimum had been fixed.</dd>
-    <dt>What&rsquo;s true</dt><dd>It was paid, and then re-broken twice within three days by new work. The tier toggle and the corrections filter each carried an explicit <code>min-height: 40px</code> &mdash; deliberately set, four pixels short of our own rule. Every range slider on the site rendered at the browser default of <strong>16px</strong>. Thirty-four card links, the Bloch gate buttons and seven contents-rail links also missed. Sixty-odd controls across nine pages.</dd>
-    <dt>Why we missed it</dt><dd>We measured the wrong thing, and then stopped measuring. A control clears the minimum for one of two reasons: because a rule says so, or because its label happens to wrap to two lines. Several of ours cleared it the second way, which made the rest look deliberate. The check now hit-tests the <em>target</em> rather than the box, at 375px, on all seventeen pages &mdash; that distinction matters, because a control given an invisible 44px band has a small box and a correct target.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Our own audit, after a new page inherited the same defect.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-08-05">2026-08-05</time>
-    <span class="corr-where">The Size Cliff &mdash; <code>pqc.html</code></span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Nothing &mdash; but a great many published sources say an ML-DSA-65 signature is <strong>3,293 bytes</strong>, and had we built the page the usual way we would have repeated it.</dd>
-    <dt>What&rsquo;s true</dt><dd><strong>3,309 bytes</strong>, which is what FIPS 204 specifies. 3,293 appears to be round-3 Dilithium3, the pre-standardisation parameter set, still circulating as though it were the final one.</dd>
-    <dt>Why we missed it</dt><dd>We did not, and that is the entry. The page signs a real message and measures the result rather than reading a table, so it cannot inherit a wrong constant &mdash; and within an hour of being built it disagreed with its own sources and turned out to be right. We log it because it is the clearest evidence we have for why the measuring is worth the effort.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> The widget itself, disagreeing with the literature.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-24">2026-07-24</time>
-    <span class="corr-where">The Annealing Volcano — <code>games.js</code>, journey.html</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Logarithmic cooling “needs about 22,000 steps — ninety times this game’s budget.”</dd>
-    <dt>What’s true</dt><dd>About <strong>3,000</strong> steps, which is <strong>twelve</strong> times the 240-step budget. (Reaching T = 0.2 really does take ~500 million.)</dd>
-    <dt>Why we missed it</dt><dd>Geman &amp; Geman’s bound takes the deepest barrier in the landscape as its constant. We used c = 5. No landscape in the game has a barrier deeper than <strong>4</strong> — the Twin Calderas ridge. A correct formula with an invented input, which is this project’s signature failure. The honest numbers are more persuasive at low temperature, so the correction improved the argument.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Our own self-referee pass, the day it shipped.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-30">2026-07-30</time>
-    <span class="corr-where">The Feasible Region — topic 09, queueing</span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>A curve labelled <em>“average wait”</em>, reporting 2× / 5× / 20× at 50 / 80 / 95% utilisation — repeated in the axis, three point labels, the alt text, the caption and the FAQ schema.</dd>
-    <dt>What’s true</dt><dd>1/(1−ρ) is time <em>in the system</em> — queueing <em>plus</em> service. The average wait <em>in the queue</em> is ρ/(1−ρ) = 1, 4, 19. So the true waiting multipliers are <strong>4× and 4.75×</strong>, not 2.5× and 4×.</dd>
-    <dt>Why we missed it</dt><dd>The figure contradicted its own mathematics box two paragraphs below it — and it <em>understated</em> the effect the whole topic exists to teach. The number was right; the noun attached to it was wrong.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-30">2026-07-30</time>
-    <span class="corr-where">The Bottleneck — <code>orgames.js</code></span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>“A player chasing the largest shadow price scores 31.5.”</dd>
-    <dt>What’s true</dt><dd>Greedy on the largest shadow price scores <strong>34.5 — par</strong>. It <em>wins</em>. The strategy that actually scores 31.5 is greedy on price × step.</dd>
-    <dt>Why we missed it</dt><dd>Measured over all 243 purchase sequences in exact rational arithmetic, then reproduced by driving the shipped game. The arithmetic was right and bolted to the wrong strategy. The real lesson is sharper: the trap is not following the shadow price, it is forgetting to multiply it by how far it holds.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-30">2026-07-30</time>
-    <span class="corr-where">The Feasible Region — topic 05, branch and bound</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>“A 60-item yes/no problem has more combinations than there are atoms in a human body.”</dd>
-    <dt>What’s true</dt><dd>2<sup>60</sup> = 1.15×10<sup>18</sup>. A human body holds roughly 7×10<sup>27</sup> atoms — about <strong>ten orders of magnitude</strong> more. You would need a 93-item problem.</dd>
-    <dt>Why we missed it</dt><dd>An unchecked intuition pump, wrong in the direction that flattered our own argument. Replaced with a comparison that is true and checkable: 2<sup>60</sup> is about two and a half times the number of seconds since the Big Bang.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-30">2026-07-30</time>
-    <span class="corr-where">The Prune — a figure on The Feasible Region</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>A branch-and-bound diagram showing a pruned sibling node at <strong>bound 340</strong>.</dd>
-    <dt>What’s true</dt><dd>That instance’s real Dantzig bound is <strong>348</strong> — computed offline, then read straight out of the shipped engine, which labels its two root children 360 and 348.</dd>
-    <dt>Why we missed it</dt><dd>The page’s own verification line claimed “every figure on this page was computed before it was drawn.” One number was not. The honest version is the better one anyway: a bound only <em>seven</em> short of the optimum still kills half the search space.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-07-29">2026-07-29</time>
-    <span class="corr-where">Every figure on the site — <code>style.css</code></span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Nothing, out loud. Figure labels were specified at 10–13.5 px after a “legibility fix”.</dd>
-    <dt>What’s true</dt><dd><code>font: 600 10px/1.2 inherit</code> is an <strong>invalid shorthand</strong>, and a browser drops the whole declaration. Every figure label on the site had been rendering at 16 px for a week. The legibility fix never did anything at all.</dd>
-    <dt>Why we missed it</dt><dd>The rule looked deliberate in the source, and the pages looked fine. Only <code>getComputedStyle</code> catches this class of bug: a rule can be half-applied and still look intentional.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A computed-style audit.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-07-25">2026-07-25</time>
-    <span class="corr-where">The Solver’s Path — journey.html</span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Nothing. The page was dead on the live site for about a day.</dd>
-    <dt>What’s true</dt><dd>An unescaped apostrophe in the prose <em>“this game’s whole budget”</em>, inside a single-quoted JavaScript string, threw a SyntaxError. The 20 KB inline script never ran, so visitors got the cold open and no way into the game.</dd>
-    <dt>Why we missed it</dt><dd>It was introduced by a verification pass that checked all the arithmetic and never reloaded the page. <strong>A prose edit inside a code string is a code edit.</strong> Every script on the site is now parsed by CI on every push, and that check is self-tested — the build deliberately re-breaks this exact bug and fails if the guard accepts it.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A routine link check. Now caught automatically.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-08-02">2026-08-02</time>
-    <span class="corr-where">Circuit Golf — <code>games.js</code></span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Nothing. The game silently left you on the hole you had just cleared, forever.</dd>
-    <dt>What’s true</dt><dd>The <code>done</code> array was written sparsely, so auto-advance could only ever scan index 0.</dd>
-    <dt>Why we missed it</dt><dd>Shipped since the game was built and invisible until a new input path — an act with no hole chips — surfaced it. Numbers never find this class of bug; using the thing does.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Playing it, not reading it.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-07-24">2026-07-24</time>
-    <span class="corr-where">The Knot — <code>scene.js</code></span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Nothing. A shader that was supposed to be smooth.</dd>
-    <dt>What’s true</dt><dd><code>atan</code> jumps by 2π across the negative x-axis, so every frame carried a hard horizontal seam from the left edge to the centre of the screen.</dd>
-    <dt>Why we missed it</dt><dd>It shipped in the first build of that world. No numerical check would ever have caught it.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Rendering one frame and looking at it.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-21">2026-07-21</time>
-    <span class="corr-where">🔴 Deep — deep.html</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>AlphaQubit was “pretrained on <strong>billions</strong> of simulated samples.”</dd>
-    <dt>What’s true</dt><dd><strong>Hundreds of millions</strong> — per Google’s own announcement. The fine-tuning half is thousands of experimental samples from a Sycamore processor.</dd>
-    <dt>Why we missed it</dt><dd>A remembered number that was never checked against the source it was attributed to.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Re-fetching the primary source.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-21">2026-07-21</time>
-    <span class="corr-where">🟢 Basics — basics.html</span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>AlphaQubit makes about <strong>30% fewer</strong> wrong calls than “the best hand-written rulebook.”</dd>
-    <dt>What’s true</dt><dd>30% is the margin against <em>correlated matching</em> — the fast, real-time class. Against the best and most careful decoder (tensor-network, far too slow to run live) the margin is about <strong>6%</strong>.</dd>
-    <dt>Why we missed it</dt><dd>Two different baselines collapsed into one sentence. Both numbers were real; the comparison was not.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A cross-page claim audit.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-21">2026-07-21</time>
-    <span class="corr-where">What is error correction? · The Race</span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Willow’s Λ = 2.14 “per step, over d = 3 → 5 → 7.”</dd>
-    <dt>What’s true</dt><dd>Λ = 2.14 ± 0.02 is the error suppression from increasing the code distance <strong>by two</strong>, and the paper quotes it for the <strong>d = 5 → d = 7</strong> step. (<em>Nature</em> <strong>638</strong>, 920 (2025).)</dd>
-    <dt>Why we missed it</dt><dd>This is the most-repeated number on the site, and attribution — not arithmetic — is where this project fails. It has been re-checked against the paper on every pass since.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Re-fetching the primary source.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-21">2026-07-21</time>
-    <span class="corr-where">The Decoder Duel — qec.html</span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>The textbook decoder “cannot learn otherwise.”</dd>
-    <dt>What’s true</dt><dd>It can. Correlated matching expresses exactly this defect, and on this toy code every coupled pair lights a single check — an ordinary boundary edge. A device-calibrated matching decoder scores <strong>87.8%</strong> against the naive 46.7%, which is about 95% of the available headroom.</dd>
-    <dt>Why we missed it</dt><dd>We wanted the game’s thesis to be stronger than it was. Reframed to <em>“nobody told it about this chip”</em> — which is both true and the actual AlphaQubit argument. The mathematics underneath the duel came back flawless; only the sentence was wrong.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-21">2026-07-21</time>
-    <span class="corr-where">The Decoder Duel — qec.html</span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Results at code distance 11, attributed to real chip noise.</dd>
-    <dt>What’s true</dt><dd>AlphaQubit’s real Sycamore data is d = 3 and d = 5. The d = 11 result is <strong>simulation only</strong>, and the leakage / cross-talk / analog-readout trio is the paper’s description of the <em>simulated</em> noise model, not the measured one.</dd>
-    <dt>Why we missed it</dt><dd>Two results from one paper, one sentence, no separation between what was measured and what was modelled.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-lab" data-k="label">
-  <div class="corr-head">
-    <time datetime="2026-07-30">2026-07-30</time>
-    <span class="corr-where">The Arcade — play.html</span>
-    <span class="corr-kind">The number was right, the words were wrong</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>“Every par is a proven minimum.”</dd>
-    <dt>What’s true</dt><dd>True of <strong>three</strong> games out of five. Circuit Golf, Grover’s Escape and Max-Cut have pars found by exhaustive search. The Annealing Volcano has no par — it has a pass mark set below the best schedule search could find, which is a threshold, not a proof. Quantum Tic-Tac-Toe has no par at all.</dd>
-    <dt>Why we missed it</dt><dd>A claim measured on three things and then written across five. The corrected sentence is more interesting, because it has to explain what the Volcano is scored on instead.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-14">2026-07-14</time>
-    <span class="corr-where">Can quantum break Bitcoin? — bitcoin.html</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Breaking one Bitcoin key needs “<strong>millions</strong> of error-corrected qubits”; the racing attack needs 1.9 billion; the gap from today’s hardware is about <strong>six orders of magnitude</strong>.</dd>
-    <dt>What’s true</dt><dd>A Google Quantum AI / Ethereum Foundation / Stanford estimate (<a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, March 2026) puts it at under 1,200 logical qubits, under 90M Toffoli gates, and <strong>≈500,000 physical qubits</strong> — roughly nine minutes from a primed state, because the first half of Shor’s algorithm can be precomputed from public curve parameters. The gap is about <strong>three</strong> orders of magnitude, not six.</dd>
-    <dt>Why we missed it</dt><dd>Every source on the page was transcribed correctly, and a newer primary source superseded all of them. Our own footnote had predicted this exact compounding — improvements arriving on the hardware and algorithm axes at once — and we never applied it to our own headline. <strong>Being correctly cited is not the same as being current.</strong></dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee, checking for staleness.</p>
-</li>
-<li class="corr k-code" data-k="code">
-  <div class="corr-head">
-    <time datetime="2026-07-14">2026-07-14</time>
-    <span class="corr-where">The Shor resource estimator — bitcoin.html</span>
-    <span class="corr-kind">Code that broke, or silently did nothing</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>A preset button labelled <em>“Webber’s 1-day machine”</em> that printed <strong>“≈ 34 days”</strong>.</dd>
-    <dt>What’s true</dt><dd>The toy model executed Toffoli gates strictly serially; Webber’s one-day figure comes from a parallelised design. Worse: <strong>two of the widget’s three race verdicts were unreachable</strong> — the ten-minute-window branch could not fire at any slider setting, so the interactive silently contradicted the page’s central narrative.</dd>
-    <dt>Why we missed it</dt><dd>Found by sweeping the whole input domain in code rather than by clicking around in the browser. A widget can be arithmetically correct and still be unable to say the true thing.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> Exhaustive recomputation over the full slider domain.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-14">2026-07-14</time>
-    <span class="corr-where">Week 3 — Boss Question #3</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Part (b): about <strong>6 years</strong>.</dd>
-    <dt>What’s true</dt><dd>About <strong>2.5 years</strong>.</dd>
-    <dt>Why we missed it</dt><dd>Plain arithmetic, re-derived from scratch rather than from the answer key. This is why the key never grades itself.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-14">2026-07-14</time>
-    <span class="corr-where">Week 3 — Q21</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>Machine B placed on the wrong side of the code-distance boundary, and the comparison drawn the wrong way round.</dd>
-    <dt>What’s true</dt><dd>At p/p<sub>th</sub> = 1/20, Machine B needs d = 13 and fits <strong>29</strong> logical qubits, against Machine A’s <strong>14</strong> at d = 59. <strong>B wins — with ten times fewer physical qubits.</strong></dd>
-    <dt>Why we missed it</dt><dd>A boundary case in a ceiling, and the whole point of the question inverted by it. The corrected answer is now the calculator on the logical-qubit page, so the widget and the key cannot drift apart again.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-14">2026-07-14</time>
-    <span class="corr-where">Week 2 — Q14 (Grover crossover)</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>A grading rule: “accept ± a factor of 2 for the N/2 convention.”</dd>
-    <dt>What’s true</dt><dd>The factor of 2 sits inside √N, so it <strong>squares to a factor of 4</strong> in N. The two conventions give 6.2×10<sup>11</sup> and 2.5×10<sup>12</sup>. A student using the average-case convention lands 4× from the key — outside the band we published.</dd>
-    <dt>Why we missed it</dt><dd>The published answer was right and the published <em>grading rule</em> would have marked correct work wrong. Both now ship, with the convention stated.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
-<li class="corr k-num" data-k="number">
-  <div class="corr-head">
-    <time datetime="2026-07-14">2026-07-14</time>
-    <span class="corr-where">Week 4 — HOW IT WORKS #4</span>
-    <span class="corr-kind">An arithmetic or a stale figure</span>
-  </div>
-  <dl>
-    <dt>What we said</dt><dd>A garbled version of the Gidney–Ekerå estimate for RSA-2048.</dd>
-    <dt>What’s true</dt><dd>20 million noisy qubits for 8 hours (2019) — and <strong>superseded in 2025</strong> by an estimate under 1 million (<a href="https://arxiv.org/abs/2505.15917">arXiv:2505.15917</a>).</dd>
-    <dt>Why we missed it</dt><dd>A famous number quoted from memory instead of from the paper, and then left to go stale on top of it.</dd>
-  </dl>
-  <p class="corr-caught"><span>Caught by</span> A fresh-session hostile referee.</p>
-</li>
+<ol class="corr-log" hidden>
 </ol>
 
 <p class="corr-format">Every entry follows the same three lines — <strong>what we said</strong> → <strong>what’s true</strong> → <strong>why we missed it</strong>. Corrections found by readers are credited by name with the 🏅 <em>“taught it better than us”</em> tag, and run with more room than the claim they fix.</p>
@@ -497,7 +172,7 @@
 <p class="sqnote">Read by a human, always. If you'd rather do it in the open, <a href="https://discord.gg/fWKGSb7ZHE">post it in Discord</a> — public catches are just as welcome, and easier for everyone else to learn from.</p>
 
 <h2>How we try to avoid needing this page</h2>
-<p>Every 🔴 post and Boss Question solution gets an independent hostile-referee verification pass before publishing. Facts from secondary coverage get spot-checked against primary sources (arXiv, company blogs). It is not a formality: those passes have returned <strong>hundreds of findings</strong> across the site, and the ones that reached a reader are the log above. The rest were caught before publication, which is the entire point of paying someone to attack your own work.</p>
+<p>Every 🔴 post and Boss Question solution gets an independent hostile-referee verification pass before publishing. Facts from secondary coverage get spot-checked against primary sources (arXiv, company blogs). It is not a formality: those passes have already returned hundreds of findings, all fixed pre-launch — which is why the log above starts at zero rather than where our own editing left off. Publication-time catches were never the point of this page; a reader's catch is.</p>
 
 <figure class="fig figcycle figcard">
   <div class="figscroll"><svg viewBox="0 0 620 246" xmlns="http://www.w3.org/2000/svg" role="img"

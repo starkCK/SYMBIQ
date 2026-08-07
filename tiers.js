@@ -22,10 +22,14 @@
   'use strict';
 
   var TIERS = ['g', 'y', 'r'];
+  /* Names match the inline .tier chip text used inline on every pillar page
+     ("No math" / "Some math" / "Real math") -- this toggle used to say
+     "Plain / Working / Formal" instead, a second, unexplained name for the
+     same three depths sitting right above the chip that names them properly. */
   var META = {
-    g: { chip: '🟢', name: 'Plain',   blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Working', blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Formal',  blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '🟢', name: 'No math',   blurb: 'One analogy. No equations.' },
+    y: { chip: '🟡', name: 'Some math', blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '🔴', name: 'Real math', blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }

@@ -1,88 +1,58 @@
-/* SymbiQ — the Lattice launcher.
+/* SymbiQ — the structured nav (replaces the Lattice launcher, 2026-08-07).
  *
- * Replaces the old six-dropdown menu bar. One trigger opens a full-screen field
- * of destinations you can also type to filter, with arrow-key + Enter selection.
- * Every link is a real <a> already present in the page HTML (the overlay is only
- * hidden), so nothing here affects crawlability or internal linking.
+ * Five visible categories (native <details class="navcat">), each its own
+ * dropdown at desktop width and its own accordion section at mobile width --
+ * the SAME markup serves both, only the CSS positioning changes per
+ * breakpoint. <summary> already opens/closes its <details> with no JS at
+ * all; everything below is enhancement on top of that native behaviour:
+ * only one dropdown open at a time on desktop, Escape/outside-click closes,
+ * and a single mobile "Menu" trigger shows/hides the whole category list so
+ * five triggers don't have to fit in one row on a phone. If this script
+ * fails to load or throws, every <details> still opens on click/tap and
+ * every link is still a real, crawlable <a> -- nothing here is required for
+ * the nav to work, only for it to behave like one coordinated menu.
  */
 (function () {
   try {
-    var pad = document.getElementById('lattice');
-    var trig = document.getElementById('latch');
-    if (!pad || !trig) return;
+    var cats = [].slice.call(document.querySelectorAll('.navcat'));
+    var navtrig = document.getElementById('navtrig');
+    var navcats = document.getElementById('navcats');
 
-    var find = pad.querySelector('.lattice-find');
-    var closeBtn = pad.querySelector('.lattice-close');
-    var links = [].slice.call(pad.querySelectorAll('a'));
-    var sects = [].slice.call(pad.querySelectorAll('section'));
-    var none = pad.querySelector('.lattice-none');
-    var cursor = -1;
-
-    function visible() { return links.filter(function (a) { return !a.hidden; }); }
-
-    function mark(i) {
-      links.forEach(function (a) { a.classList.remove('cursor'); });
-      var v = visible();
-      if (!v.length) { cursor = -1; return; }
-      cursor = (i + v.length) % v.length;
-      v[cursor].classList.add('cursor');
-      v[cursor].scrollIntoView({ block: 'nearest' });
-    }
-
-    function filter(q) {
-      q = (q || '').trim().toLowerCase();
-      links.forEach(function (a) {
-        // data-k carries invisible aliases, so searching "grover" or "annealing"
-        // still lands you on the Arcade even though the games are not listed here
-        var hay = (a.textContent + ' ' + (a.getAttribute('data-k') || '')).toLowerCase();
-        a.hidden = !!q && hay.indexOf(q) < 0;
+    // Only one category dropdown open at a time.
+    cats.forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (!d.open) return;
+        cats.forEach(function (o) { if (o !== d) o.open = false; });
       });
-      // hide a whole section once every one of its links is filtered out
-      sects.forEach(function (s) {
-        s.hidden = !s.querySelector('a:not([hidden])');
-      });
-      if (none) none.hidden = !!visible().length;
-      cursor = -1;
-      if (q) mark(0);
-    }
-
-    function open() {
-      pad.hidden = false;
-      document.body.classList.add('latched');
-      trig.setAttribute('aria-expanded', 'true');
-      if (find) { find.value = ''; filter(''); setTimeout(function () { find.focus(); }, 30); }
-    }
-    function close() {
-      pad.hidden = true;
-      document.body.classList.remove('latched');
-      trig.setAttribute('aria-expanded', 'false');
-      cursor = -1;
-    }
-
-    trig.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (pad.hidden) open(); else close();
     });
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    pad.addEventListener('click', function (e) { if (e.target === pad) close(); });
-    if (find) find.addEventListener('input', function () { filter(find.value); });
 
+    function closeAll() { cats.forEach(function (d) { d.open = false; }); }
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('nav')) closeAll();
+    });
     document.addEventListener('keydown', function (e) {
-      // "/" or Ctrl/Cmd-K opens it from anywhere you are not already typing
-      var typing = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName || ''));
-      if (pad.hidden && !typing && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
-        e.preventDefault(); open(); return;
-      }
-      if (pad.hidden) return;
-      if (e.key === 'Escape') { e.preventDefault(); close(); trig.focus(); }
-      else if (e.key === 'ArrowDown') { e.preventDefault(); mark(cursor + 1); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); mark(cursor - 1); }
-      else if (e.key === 'Enter') {
-        var v = visible();
-        if (cursor >= 0 && v[cursor]) { e.preventDefault(); v[cursor].click(); }
+      if (e.key !== 'Escape') return;
+      closeAll();
+      if (navcats && navcats.classList.contains('open')) {
+        navcats.classList.remove('open');
+        if (navtrig) { navtrig.setAttribute('aria-expanded', 'false'); navtrig.focus(); }
       }
     });
-  } catch (err) { /* nav is progressive enhancement — a failure must never hide content */ }
+
+    // Mobile: one "Menu" button shows/hides the whole category list.
+    if (navtrig && navcats) {
+      navtrig.addEventListener('click', function () {
+        var open = navcats.classList.toggle('open');
+        navtrig.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (!open) closeAll();
+      });
+      // picking a link closes the mobile panel behind it
+      navcats.addEventListener('click', function (e) {
+        if (e.target.closest('a')) { navcats.classList.remove('open'); navtrig.setAttribute('aria-expanded', 'false'); }
+      });
+    }
+  } catch (err) { /* nav is progressive enhancement -- a failure must never hide content */ }
 })();
 
 /* Scroll reveal: fade + rise as sections enter view.

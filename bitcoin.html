@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Not today — the honest numbers: what Shor's algorithm can and can't do to Bitcoin, which coins are exposed, why mining is safe, and an interactive calculator of what it would actually take.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=27">
+<link rel="stylesheet" href="style.css?v=28">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -74,8 +74,8 @@
   ]
 }
 </script>
-<script src="nav.js?v=4" defer></script>
-<script src="tiers.js?v=1" defer></script>
+<script src="nav.js?v=5" defer></script>
+<script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -92,71 +92,77 @@
     </svg>
     symbiq
   </a>
-  <button class="latch" id="latch" aria-expanded="false" aria-controls="lattice" aria-haspopup="dialog">
-    <span class="latch-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-    <span class="latch-txt">Explore<span class="longword"> the Lattice</span></span>
-    <span class="latch-key">/</span>
-  </button>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="explainers">
+      <summary>Explainers</summary>
+      <div class="navpanel">
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain active">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <a href="pqc.html" class="navmain">What post-quantum costs on the wire<span class="sub">Measured in your browser, with real keys</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">Real PQC keys, measured on the wire</span></a>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, from the top</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="track">
+      <summary>Track</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The daily question + the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
 </nav>
-
-<div class="lattice" id="lattice" hidden role="dialog" aria-modal="true" aria-label="Everything on SymbiQ">
-  <div class="lattice-inner">
-    <div class="lattice-top">
-      <input class="lattice-find" type="text" autocomplete="off" spellcheck="false"
-             placeholder="Type to jump — qubit, Grover, Bitcoin, error correction…" aria-label="Filter destinations">
-      <button class="lattice-close" aria-label="Close">&#10005;</button>
-    </div>
-    <div class="lattice-cols">
-        <section>
-          <h4>Learn</h4>
-          <a href="basics.html" data-k="beginner start simple intro explain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-          <a href="concepts.html" data-k="intermediate middle">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-          <a href="deep.html" data-k="expert advanced math papers">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-        </section>
-        <section>
-          <h4>Optimisation</h4>
-          <a href="feasible.html" data-k="or operations research optimisation optimization linear programming lp milp integer simplex constraints scheduling logistics supply chain routing duality shadow price">◆ The Feasible Region<span class="new">NEW</span><span class="sub">Operations research — the whole field, from the top</span></a>
-          <a href="feasible.html#bottleneck" data-k="shadow price dual duality bottleneck linear programming lp resource capacity ranging game play">The Bottleneck<span class="new">NEW</span><span class="sub">Five upgrades. Which resource is actually worth money?</span></a>
-          <a href="feasible.html#prune" data-k="branch and bound knapsack pruning search tree bound relaxation dantzig game play">The Prune<span class="new">NEW</span><span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
-        </section>
-        <section>
-          <h4>Explainers</h4>
-          <a href="quantum-mechanics.html" data-k="physics postulates superposition bell qm">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
-          <a href="qec.html" data-k="qec surface code decoder alphaqubit noise threshold">What is error correction?<span class="sub">The door AI walked in through</span></a>
-          <a href="logical-qubit.html" data-k="physical qubits overhead distance">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
-          <a href="ai.html" data-k="machine learning qml hhl speedup optimisation optimization">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
-          <a href="bitcoin.html" class="active" data-k="shor crypto rsa factoring security keys">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
-          <a href="pqc.html" data-k="post-quantum pqc migration ml-kem mlkem kyber ml-dsa dilithium slh-dsa sphincs tls handshake certificate size cliff mtu nist fips 203 204 205 cnsa harvest now decrypt later cbom">What post-quantum costs on the wire<span class="new">NEW</span><span class="sub">Measured in your browser, with real keys</span></a>
-          <a href="compare.html" data-k="ibm google ionq quantinuum superconducting trapped ion photonic neutral atom">How the companies compare<span class="sub">Five structural trade-offs</span></a>
-        </section>
-        <section>
-          <h4>Play</h4>
-          <a href="journey.html" data-k="game story adventure missions ada rue cordon vesh kai lyra halden codex avatar">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
-          <a href="play.html" data-k="games arcade circuit golf grover escape search max-cut maxcut graph city annealing volcano simulated annealing quantum tic-tac-toe tictactoe ising qubo">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
-        </section>
-        <section>
-          <h4>Figures you can touch</h4>
-          <a href="pqc.html#cliff" data-k="size cliff handshake bytes mtu packet measure">The Size Cliff<span class="new">NEW</span><span class="sub">Real PQC keys, measured on the wire</span></a>
-          <a href="quantum-mechanics.html#bloch" data-k="gates hadamard rotation state">The Bloch sphere<span class="sub">Turn a qubit with real gates</span></a>
-          <a href="qec.html#qec-widget" data-k="stabiliser stabilizer syndrome surface-17">The surface code<span class="sub">Flip qubits, watch checks fire</span></a>
-          <a href="race.html#threshold" data-k="lambda willow suppression distance">The threshold<span class="sub">The line that decides the race</span></a>
-          <a href="ai.html#loop-widget" data-k="symbiosis diagram">The AI ↔ quantum loop<span class="sub">Both directions, honestly drawn</span></a>
-          <a href="bitcoin.html#shor-widget" data-k="calculator qubits time factoring">Shor resource estimator<span class="sub">How big a machine, how long</span></a>
-          <a href="logical-qubit.html#lq-widget" data-k="calculator distance patch overhead">Logical-qubit calculator<span class="sub">Error rate in, real qubits out</span></a>
-          <a href="compare.html#mod-widget" data-k="hardware modality bars">Modality comparison<span class="sub">Four technologies, five axes</span></a>
-        </section>
-        <section>
-          <h4>Track</h4>
-          <a href="index.html" data-k="daily question streak quiz front page">Home<span class="sub">The daily question + the loop</span></a>
-          <a href="archive.html" data-k="past questions previous back catalogue history answers archive">The Question Archive<span class="new">NEW</span><span class="sub">Every question we've ever asked</span></a>
-          <a href="race.html" data-k="scoreboard predictions leaderboard progress">The Race<span class="sub">Who is actually ahead</span></a>
-          <a href="corrections.html" data-k="errata mistakes bounty report">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
-        </section>
-    </div>
-    <p class="lattice-none" hidden>Nothing here by that name.</p>
-  </div>
-</div>
 
 
 
@@ -170,13 +176,13 @@
 </div>
 
 <span class="tier g">🟢 No math</span>
-<h2>What a quantum computer could actually steal</h2>
+<h2 id="green">What a quantum computer could actually steal</h2>
 <p>Your bitcoin is protected by a padlock (your public key) whose combination (your private key) is easy to check and absurdly hard to reverse. Every classical computer on Earth working together couldn't reverse it before the sun burns out. Shor's algorithm — the famous quantum one — reverses exactly this kind of padlock efficiently. So in principle: yes, a big enough quantum computer forges your signature and spends your coins.</p>
 <p>The catch is "big enough." Running Shor's algorithm on a Bitcoin key isn't a bigger version of anything today's machines do — it's like the difference between a paper airplane and a cargo jet. The machine must run <em>flawlessly for many minutes to hours</em>, which requires error correction (<a href="basics.html">the thing AI is helping fix</a> — the subject of this whole site), which multiplies the hardware thousands of times over.</p>
 <p>One more wrinkle: a padlock can only be picked if the attacker can <em>see</em> it. Most Bitcoin addresses keep the padlock hidden behind a hash until the moment you spend. Coins at fresh, unused addresses show attackers nothing useful — but roughly a quarter to a third of all bitcoin, including Satoshi-era coins, sits with its padlock in plain view — and Taproot adoption keeps adding more.</p>
 
 <span class="tier y">🟡 Some math</span>
-<h2>The three attack surfaces, ranked honestly</h2>
+<h2 id="yellow">The three attack surfaces, ranked honestly</h2>
 <div class="overflow"><table>
 <tr><th>Target</th><th>Quantum tool</th><th>Verdict</th></tr>
 <tr><td>Signatures (ECDSA/Schnorr, 256-bit)</td><td>Shor — exponential advantage</td><td><strong>Real threat, eventually.</strong> The only one that matters.</td></tr>
@@ -210,7 +216,7 @@
 </div>
 
 <span class="tier r">🔴 Real math</span>
-<h2>The resource estimates, with receipts</h2>
+<h2 id="red">The resource estimates, with receipts</h2>
 <p>Shor's algorithm for the elliptic-curve discrete logarithm on a 256-bit prime-field curve: <strong>2,330 logical qubits</strong> and ≈<strong>1.26×10¹¹ Toffoli gates</strong> (Roetteler, Naehrig, Svore &amp; Lauter, <a href="https://arxiv.org/abs/1706.06752">arXiv:1706.06752</a> — computed for NIST P-256; Bitcoin's secp256k1 is the same size and comparable cost). Later circuit work cuts the Toffoli count substantially (Litinski, <a href="https://arxiv.org/abs/2306.08585">arXiv:2306.08585</a>, ~5×10⁷ Toffolis via active-volume architecture and state-reuse tricks; windowed-arithmetic lines of work cut counts further), which moves the estimates down, not away.</p>
 <p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ 1.9B</strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation — and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
 <p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis — under half a million physical qubits, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong>≈9 minutes</strong> once your transaction appears — inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>

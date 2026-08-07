@@ -95,11 +95,11 @@ nav {
     -webkit-backdrop-filter: blur(10px);
   }
 }
-/* The three controls in the bar are on every one of the 16 pages and were the
-   last things on the site under the 44px touch minimum (brand 30px, latch 39px,
-   the Path link ~20px). The brand and the latch simply grow; the Path link
-   cannot, because its active-state underline has to stay tight to the text — so
-   it keeps its box and grows an invisible 44px band inside itself instead. */
+/* Historical note: the brand and the old Lattice trigger (now the category
+   dropdowns/#navtrig) were once under the 44px touch minimum; the Path link
+   still can't just grow, because its active-state underline has to stay
+   tight to the text — so it keeps its box and grows an invisible 44px band
+   inside itself instead. */
 nav .brand { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--text); margin-right: auto; }
 nav .brand svg { width: 30px; height: 30px; transition: transform 0.5s ease; }
 nav .brand:hover svg { transform: rotate(90deg); }
@@ -190,9 +190,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-
   nav a.link { font-size: 0.86rem; }
   nav .brand { font-size: 1.02rem; }
   nav .brand svg { width: 26px; height: 26px; }
-  nav .latch { padding: 6px 11px 6px 9px; font-size: .84rem; gap: 8px; }
-  .latch-key { display: none; }
-  .lattice { padding: 16px 14px 50px; }
 }
 /* keep the bar on ONE row on a phone: shed the optional words, not the meaning */
 @media (max-width: 460px) {
@@ -201,76 +198,78 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-
 }
 
 /* ================================================================
-   THE LATTICE LAUNCHER — replaces the six dropdown menus.
-   One trigger opens a full-screen field of destinations you can also
-   type to filter. Every link is still a real <a> in the page HTML
-   (merely hidden), so crawlability and internal linking are unchanged.
+   STRUCTURED NAV (2026-08-07) — replaces the Lattice launcher.
+   Five visible categories, native <details class="navcat">: a real dropdown
+   at desktop width, an accordion section at mobile width, same markup
+   either way. No search box — the categories ARE the navigation. Every
+   link is still a real <a>, so crawlability is unchanged.
    ================================================================ */
-nav .latch {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 44px;
-  background: var(--panel); color: var(--text);
-  border: 1px solid var(--border); border-radius: 99px;
-  padding: 7px 14px 7px 10px; font: inherit; font-size: .9rem; cursor: pointer;
-  transition: border-color .2s ease, box-shadow .25s ease, transform .15s ease;
-}
-nav .latch:hover { border-color: rgba(45,212,191,.55); box-shadow: 0 8px 26px -12px rgba(45,212,191,.5); }
-nav .latch:active { transform: translateY(1px); }
-.latch-grid { display: grid; grid-template-columns: repeat(3, 3px); gap: 2px; }
-.latch-grid i { width: 3px; height: 3px; border-radius: 50%; background: var(--muted); display: block;
-                transition: background .25s ease, transform .25s ease; }
-nav .latch:hover .latch-grid i { background: var(--teal); }
-nav .latch:hover .latch-grid i:nth-child(2n) { transform: scale(1.5); }
-.latch-key { font-size: .68rem; color: var(--muted); border: 1px solid var(--border);
-             border-radius: 4px; padding: 0 5px; line-height: 1.5; }
+nav { position: relative; }
 nav .link.pathlink { color: var(--violet); font-weight: 600; }
 nav .link.pathlink:hover { color: var(--violet); }
 
-.lattice[hidden] { display: none; }
-.lattice {
-  position: fixed; inset: 0; z-index: 90;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  overflow-y: auto; padding: 22px 20px 60px;
-  animation: latfade .26s cubic-bezier(.22,.7,.3,1) both;
+#navtrig { display: none; }
+#navcats { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
+
+.navcat { position: relative; }
+.navcat > summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+  min-height: 44px; padding: 6px 11px; border-radius: 8px; color: var(--muted);
+  font-size: .9rem; font-weight: 600;
+  transition: color .15s ease, background .15s ease;
 }
-.lattice::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1;
-  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
-  background-size: 22px 22px;
+.navcat > summary::-webkit-details-marker { display: none; }
+.navcat > summary::after { content: "\25BE"; font-size: .62rem; opacity: .65; }
+.navcat > summary:hover { color: var(--text); background: var(--rowhover); }
+.navcat[open] > summary, .navcat.navcat-cur > summary { color: var(--teal); background: var(--rowhover); }
+
+.navpanel {
+  position: absolute; top: 100%; left: 0; margin-top: 6px; min-width: 250px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+  padding: 8px; box-shadow: 0 16px 40px -20px var(--shadow); z-index: 45;
 }
-.lattice-inner { max-width: 900px; margin: 0 auto; }
-.lattice-top { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
-.lattice-find {
-  flex: 1 1 auto; min-width: 0; background: var(--panel); color: var(--text);
-  border: 1px solid var(--border); border-radius: 12px; padding: 13px 16px; font: inherit;
+.navrow { margin: 1px 0; }
+.navmain {
+  display: flex; flex-direction: column; justify-content: center; min-height: 44px;
+  padding: 7px 10px; border-radius: 8px; text-decoration: none; color: var(--text);
+  font-size: .89rem; line-height: 1.3;
+  transition: background .14s ease;
 }
-.lattice-find:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
-.lattice-close {
-  background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 10px;
-  width: 42px; height: 42px; flex: none; cursor: pointer; font-size: 1.1rem; font-family: inherit;
-  transition: color .18s ease, border-color .18s ease;
+.navmain:hover { background: var(--rowhover); }
+.navmain.active { color: var(--teal); font-weight: 700; }
+.navmain .sub { display: block; font-size: .74rem; color: var(--muted); font-weight: 400; margin-top: 1px; }
+.navchip {
+  display: inline-flex; align-items: center; min-height: 44px; margin-left: 6px;
+  font-size: .76rem; color: var(--teal); text-decoration: none; padding: 4px 8px;
+  border-radius: 99px; border: 1px solid var(--border);
 }
-.lattice-close:hover { color: var(--text); border-color: var(--teal); }
-.lattice-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px 22px; }
-.lattice section { display: block; }
-.lattice h4 {
-  font-size: .68rem; text-transform: uppercase; letter-spacing: .13em; color: var(--muted);
-  margin: 14px 0 8px; font-weight: 700;
+.navchip:hover { border-color: var(--teal); }
+/* Light mode's teal (#0d9488) is dark enough that plain var(--teal) text
+   fails 4.5:1 here -- measured 3.30/3.74/3.74:1 on the active summary, the
+   current-page link and the widget chips. Same shape as every other
+   teal-on-light-background miss this project keeps finding: darkened to the
+   same #0f766e already used elsewhere on the site, re-measures 5.1-5.5:1. */
+@media (prefers-color-scheme: light) {
+  .navcat[open] > summary, .navcat.navcat-cur > summary,
+  .navmain.active, .navchip { color: #0f766e; }
 }
-.lattice a {
-  display: block; padding: 8px 11px; border-radius: 9px; text-decoration: none; color: var(--text);
-  font-size: .92rem; line-height: 1.3; border: 1px solid transparent;
-  transition: background .14s ease, border-color .14s ease, transform .14s ease;
+
+@media (max-width: 719px) {
+  #navtrig {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    padding: 7px 14px 7px 10px; background: var(--panel); color: var(--text);
+    border: 1px solid var(--border); border-radius: 99px; font: inherit; font-size: .86rem; cursor: pointer;
+  }
+  #navcats {
+    display: none; flex-direction: column; gap: 1px; width: 100%;
+    position: absolute; left: 0; right: 0; top: 100%; margin-top: 8px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 10px;
+    box-shadow: 0 16px 40px -20px var(--shadow); z-index: 45; max-height: 72vh; overflow-y: auto;
+  }
+  #navcats.open { display: flex; }
+  .navcat { position: static; }
+  .navpanel { position: static; margin: 2px 0 6px 6px; border: none; box-shadow: none; padding: 0; background: none; }
 }
-.lattice a:hover, .lattice a.cursor { background: var(--rowhover); border-color: var(--border); transform: translateX(3px); }
-.lattice a.active { color: var(--teal); font-weight: 600; }
-.lattice a .sub { display: block; font-size: .76rem; color: var(--muted); margin-top: 1px; }
-.lattice a .new { color: var(--violet); font-size: .64rem; font-weight: 700; letter-spacing: .06em; margin-left: 5px; vertical-align: 2px; }
-.lattice a[hidden] { display: none; }
-.lattice section[hidden] { display: none; }
-.lattice-none { color: var(--muted); font-size: .9rem; padding: 10px 11px; }
-@keyframes latfade { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: none; } }
-body.latched { overflow: hidden; }
 
 /* ================================================================
    THE ARCADE — games live behind a door, not in a nav menu
@@ -384,7 +383,6 @@ body.latched { overflow: hidden; }
 .fig .num   { fill: var(--text);  font-weight: 700; font-size: 14.5px;  line-height: 1; font-variant-numeric: tabular-nums; }
 .fig .teal  { fill: var(--teal); } .fig .violet { fill: var(--violet); }
 .fig .yellow{ fill: var(--yellow); }
-.fig .sTeal { stroke: var(--teal); fill: none; } .fig .sViolet { stroke: var(--violet); fill: none; }
 .fig .sMuted{ stroke: var(--border); fill: none; }
 
 /* the symbiosis loop */
@@ -796,18 +794,24 @@ body.latched { overflow: hidden; }
    GAME NAVIGATION — the two things a player must never have to hunt
    for: how to start, and where to go once a stage is over.
    ================================================================ */
+/* 2026-08-07: dialled back on Chinmoy's "too flashy and too big". Both
+   classes were deliberately enlarged/animated on 2026-07-25 and 2026-07-29
+   after real reports of visitors missing them -- so this keeps them a clear
+   primary control (filled, bordered, still >=44px) while dropping the size,
+   weight and motion that made them shout. If discoverability regresses,
+   that history is why -- flag it rather than re-inflating silently. */
 .bigplay {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   background: linear-gradient(135deg, var(--teal), #22b8a6);
-  color: #04211d; border: none; border-radius: 12px;
-  padding: 16px 34px; font: inherit; font-size: 1.12rem; font-weight: 800;
+  color: #04211d; border: none; border-radius: 10px;
+  padding: 12px 22px; font: inherit; font-size: .98rem; font-weight: 700;
   letter-spacing: .01em; cursor: pointer; margin: 6px 0 4px;
-  box-shadow: 0 8px 22px rgba(45,212,191,.22);
-  transition: transform .18s cubic-bezier(.22,.7,.3,1), box-shadow .18s ease, filter .18s ease;
+  box-shadow: 0 4px 12px rgba(45,212,191,.16);
+  transition: box-shadow .18s ease, filter .18s ease;
 }
-.bigplay:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(45,212,191,.32); filter: brightness(1.06); }
-.bigplay:active { transform: translateY(1px) scale(.99); }
-.bigplay .kbd { font-size: .8rem; font-weight: 600; opacity: .82; }
+.bigplay:hover { box-shadow: 0 6px 16px rgba(45,212,191,.22); filter: brightness(1.04); }
+.bigplay:active { filter: brightness(.97); }
+.bigplay .kbd { font-size: .78rem; font-weight: 600; opacity: .82; }
 /* Light mode needs its own pairing, measured rather than guessed. The dark
    theme's bright teal takes near-black text at 9.09:1, but light mode's teal
    is dark (#0d9488), where the same text scores a marginal 4.52 and white
@@ -815,49 +819,42 @@ body.latched { overflow: hidden; }
    5.47:1 at the light end, 7.58:1 at the dark end. */
 @media (prefers-color-scheme: light) {
   .bigplay { background: linear-gradient(135deg, #0f766e, #115e59); color: #ffffff;
-             box-shadow: 0 8px 22px rgba(17,94,89,.26); }
-  .bigplay:hover { box-shadow: 0 14px 32px rgba(17,94,89,.34); }
+             box-shadow: 0 4px 12px rgba(17,94,89,.2); }
+  .bigplay:hover { box-shadow: 0 6px 16px rgba(17,94,89,.26); }
   .bigplay.ghost { background: transparent; color: #0f766e; border-color: #0f766e; }
 }
 .bigplay.ghost {
   background: transparent; color: var(--teal);
-  border: 2px solid var(--teal); box-shadow: none;
+  border: 1.5px solid var(--teal); box-shadow: none;
 }
-.bigplay.ghost:hover { box-shadow: 0 10px 26px rgba(45,212,191,.18); }
+.bigplay.ghost:hover { box-shadow: 0 4px 12px rgba(45,212,191,.14); }
 
-/* The completion CTA — deliberately loud, because this is the click
-   players kept failing to find (reported 2026-07-25, again 2026-07-29). */
+/* The completion CTA. Still visually distinct (border, tint, an arrow) so it
+   is not missed, but no longer animated or oversized. */
 .nextup {
-  display: block; margin: 20px 0 6px; padding: 20px 24px;
-  background: linear-gradient(135deg, rgba(45,212,191,.16), rgba(167,139,250,.14));
-  border: 2px solid var(--teal); border-radius: 14px;
+  display: block; margin: 16px 0 6px; padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(45,212,191,.1), rgba(167,139,250,.08));
+  border: 1px solid var(--teal); border-radius: 12px;
   text-decoration: none; color: var(--text);
-  box-shadow: 0 10px 30px rgba(45,212,191,.16);
-  transition: transform .18s cubic-bezier(.22,.7,.3,1), box-shadow .18s ease;
+  box-shadow: 0 4px 14px rgba(45,212,191,.1);
+  transition: border-color .18s ease, box-shadow .18s ease;
 }
-.nextup:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(45,212,191,.26); }
+.nextup:hover { border-color: rgba(45,212,191,.75); box-shadow: 0 6px 18px rgba(45,212,191,.16); }
 /* It ships as an <a> on some surfaces and a <button> on others (the OR games
    change level in place rather than navigating). Strip the button chrome so
    the two are indistinguishable. */
 button.nextup { width: 100%; text-align: left; font: inherit; cursor: pointer; -webkit-appearance: none; appearance: none; }
 button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
 .nextup .eyebrow {
-  display: block; font-size: .76rem; letter-spacing: .13em; text-transform: uppercase;
-  color: var(--teal); font-weight: 700; margin-bottom: 6px;
+  display: block; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--teal); font-weight: 700; margin-bottom: 5px;
 }
-.nextup .headline { display: block; font-size: 1.2rem; font-weight: 800; line-height: 1.3; }
-.nextup .sub { display: block; color: var(--muted); font-size: .93rem; margin-top: 5px; }
+.nextup .headline { display: block; font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+.nextup .sub { display: block; color: var(--muted); font-size: .89rem; margin-top: 4px; }
 .nextup .go {
-  display: inline-block; margin-top: 12px; font-weight: 800; color: var(--teal); font-size: 1.02rem;
+  display: inline-block; margin-top: 10px; font-weight: 700; color: var(--teal); font-size: .95rem;
 }
 .nextup .go::after { content: " \25B8"; }
-@media (prefers-reduced-motion: no-preference) {
-  .nextup { animation: nextpulse 2.4s cubic-bezier(.22,.7,.3,1) 3; }
-  @keyframes nextpulse {
-    0%, 100% { box-shadow: 0 10px 30px rgba(45,212,191,.16); }
-    50%      { box-shadow: 0 10px 38px rgba(45,212,191,.42); }
-  }
-}
 
 /* ================================================================
    OR HERO — the homepage's operations-research invitation.
@@ -901,7 +898,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 @media (max-width: 719px) {
   .orhero { padding: 24px 20px; }
   .orhero h2 { font-size: 1.4rem; }
-  .bigplay { width: 100%; padding: 15px 20px; font-size: 1.05rem; }
+  .bigplay { width: 100%; padding: 12px 18px; font-size: .96rem; }
   .gamehero .gh-row { flex-direction: column; align-items: stretch; }
 }
 
@@ -1584,9 +1581,6 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .tbtn.t-r.is-on { color: var(--red);    border-color: rgba(248,113,113,.55); background: rgba(248,113,113,.10); }
 .tbtn.t-all.is-on { color: var(--teal); border-color: rgba(45,212,191,.55);  background: rgba(45,212,191,.10); }
 
-.tsec[hidden] { display: none; }
-.tsec { animation: tfade .22s ease both; }
-@keyframes tfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 /* --- "so what" panel, 🟢 only -------------------------------------------- */
 .sowhat { border: 1px solid rgba(74,222,128,.32); background: rgba(74,222,128,.06);

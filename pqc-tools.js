@@ -2771,3 +2771,722 @@ function mount(root, opts) {
 
   SymbiQ.pqPersist = { read: read, write: write, clear: clear };
 })();
+
+/* ── 9 · THE HARVEST CLOCK ────────────────────────────────────────────────
+ * Every other tool on this page positions, discovers or sequences. This one
+ * plays the single sentence "Why this has a date on it" states in prose:
+ * Mosca's inequality, X + Y > Z, made playable rather than read once and
+ * forgotten. It is deliberately the simplest tool on the page -- three
+ * sliders, one verdict -- and it is deliberately NOT a replacement for the
+ * Sequencer (which sequences your real estate) or the Odds (which turns Z
+ * into a real distribution from 32 named experts instead of one guess).
+ * It says so on screen, with a link to each, rather than quietly competing
+ * with tools that already do this more rigorously.
+ *
+ * X and Y are the visitor's own numbers -- never claimed as ours. Z is a
+ * single slider standing in for a whole distribution, so it is labelled
+ * ⟦Heuristic⟧ and sourced on screen, and its default sits on 15 years --
+ * the Global Risk Institute report's own middle surveyed horizon, the same
+ * number the Odds tool's anchor table above already anchors to, so the two
+ * tools never quietly disagree about which year counts as "the middle".
+ *
+ * Verified in Python first (see outputs/VERIFY_MOSCA.md): a 51x21x31 sweep
+ * of every (X,Y,Z) integer triple in the sliders' full range confirms all
+ * three verdict bands are reachable and the X+Y==Z boundary (441 of the
+ * 33,201 triples) always renders as its own third state -- never silently
+ * folded into "late" or "safe" by a stray > vs >=. */
+(function () {
+  var SymbiQ = window.SymbiQ = window.SymbiQ || {};
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  var PRESETS = [
+    { id: 'bank',     label: 'A bank',            x: 15, note: 'account records, regulator-driven retention' },
+    { id: 'hospital', label: 'A hospital record', x: 30, note: 'a diagnosis outlives the system that recorded it' },
+    { id: 'tls',      label: 'A TLS session',      x: 0,  note: 'gone when the connection closes -- unless someone logged it' },
+    { id: 'state',    label: 'A state secret',     x: 50, note: 'the harvest-now case the inequality was written for' }
+  ];
+
+  // The arithmetic itself: ⟦Proven⟧, and nothing more than an inequality.
+  function verdict(x, y, z) {
+    var gap = x + y - z;
+    if (gap > 0) return { state: 'late', gap: gap };
+    if (gap === 0) return { state: 'exact', gap: gap };
+    return { state: 'safe', gap: gap };
+  }
+
+  function banner(v) {
+    if (v.state === 'late') {
+      return '<div class="verdict bad"><b>Already late.</b> Data you encrypt today is readable by an adversary for ' +
+        '<b>' + v.gap + ' year' + (v.gap === 1 ? '' : 's') + '</b> before you finish migrating -- assuming Z arrives ' +
+        'when you guessed.</div>';
+    }
+    if (v.state === 'exact') {
+      return '<div class="verdict warn"><b>Zero margin.</b> You finish migrating the same year Z arrives, if it ' +
+        'arrives when you guessed. That is not a safety margin -- it is a coin flip dressed as a plan.</div>';
+    }
+    return '<div class="verdict good"><b>Not yet, under these numbers.</b> You finish migrating <b>' + (-v.gap) +
+      ' year' + (-v.gap === 1 ? '' : 's') + '</b> before Z, if Z arrives when you guessed. That margin is only as ' +
+      'trustworthy as the Z slider -- move it and watch the margin disappear.</div>';
+  }
+
+  SymbiQ.mosca = { verdict: verdict }; // verdict exported for the in-browser cross-check against the Python sweep
+
+  SymbiQ.mosca.mount = function (root, opts) {
+    opts = opts || {};
+    var x = 15, y = 5, z = 15, activePreset = 'bank';
+
+    function render() {
+      var v = verdict(x, y, z);
+      root.innerHTML =
+        '<div class="es-opts" role="group" aria-label="Presets">' +
+        PRESETS.map(function (p) {
+          return '<button type="button" class="preset' + (p.id === activePreset ? ' on' : '') + '" data-preset="' +
+            p.id + '">' + esc(p.label) + '<em>' + esc(p.note) + '</em></button>';
+        }).join('') + '</div>' +
+        '<div class="es-ctl"><label class="es-lab">X -- years this data must stay secret: <b>' + x + '</b> ' +
+          '<span class="cb-tag">your input</span></label>' +
+          '<input type="range" id="mo-x" min="0" max="50" step="1" value="' + x + '" aria-label="X, years data must stay secret"></div>' +
+        '<div class="es-ctl"><label class="es-lab">Y -- years your migration takes: <b>' + y + '</b> ' +
+          '<span class="cb-tag">your input</span></label>' +
+          '<input type="range" id="mo-y" min="0" max="20" step="1" value="' + y + '" aria-label="Y, years migration takes"></div>' +
+        '<div class="es-ctl"><label class="es-lab">Z -- years until a cryptographically relevant quantum computer: <b>' + z + '</b> ' +
+          '<span class="cb-tag">⟦Heuristic⟧ estimate</span></label>' +
+          '<input type="range" id="mo-z" min="0" max="30" step="1" value="' + z + '" aria-label="Z, years until a cryptographically relevant quantum computer"></div>' +
+        '<div class="es-out">' + banner(v) + '</div>' +
+        '<p class="cb-note">This tells you <b>when</b> you are late. It never tells you <b>what</b> to deploy -- that ' +
+        'answer depends on your protocol, your hardware and your threat model, not on three sliders. X and Y are your ' +
+        'own numbers, not a claim of ours -- move them to match your actual estate. Z is not a measurement: the ' +
+        'default (15) is the middle of the five horizons ' +
+        '<a href="https://globalriskinstitute.org/publication/2024-quantum-threat-timeline-report/">the Global Risk ' +
+        'Institute\'s Quantum Threat Timeline Report 2024</a> (Mosca &amp; Piani, 32 named experts) actually surveyed ' +
+        '-- an opinion, not physics. For the full distribution behind that one guess, use <a href="#odds">the Odds ' +
+        'above</a>; for the hardware-side resource estimates behind how far off a real machine looks, see ' +
+        '<a href="bitcoin.html">the Bitcoin page</a>.</p>';
+    }
+
+    root.addEventListener('input', function (e) {
+      var t = e.target;
+      if (t.id === 'mo-x') x = +t.value;
+      else if (t.id === 'mo-y') y = +t.value;
+      else if (t.id === 'mo-z') z = +t.value;
+      else return;
+      activePreset = null;
+      render();
+    });
+
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-preset]'); if (!b) return;
+      var p = PRESETS.filter(function (p) { return p.id === b.dataset.preset; })[0];
+      if (!p) return;
+      x = p.x; activePreset = p.id;
+      render();
+    });
+
+    render();
+  };
+})();
+
+/* ── 8 · THE PROOF ────────────────────────────────────────────────────────
+ * Everything above this point on the page is a measurement or a model. The
+ * Size Cliff measures bytes, the Inventory reads artefacts, the Sequencer
+ * models a schedule, the Odds models a distribution, the Harvest Clock is
+ * arithmetic. Not one of them ever runs the cryptography end to end — so
+ * "post-quantum cryptography works" has been an assertion on this page,
+ * carried entirely by citation. This section runs it instead.
+ *
+ * Three acts, all of them in the visitor's own browser:
+ *   1. A real ML-KEM-768 exchange, both sides, the two shared secrets
+ *      compared byte for byte — then deliberately broken.
+ *   2. A real ML-DSA-65 or SLH-DSA-128s signature over text the visitor
+ *      supplies, followed by five attacks on it, each one expected to be
+ *      rejected, and shown being rejected.
+ *   3. What all of that costs in milliseconds on the machine reading the page.
+ *
+ * WHY THE TAMPERING IS THE POINT, AND THE HAPPY PATH IS NEARLY WORTHLESS.
+ * Watching a signature verify proves almost nothing: a function that returned
+ * true unconditionally would look identical on screen. The evidence lives in
+ * the rejections. Flip one bit of a 3,309-byte signature, or one bit of the
+ * message, and verification must fail. That asymmetry IS the security
+ * property, and it is observable in a browser in about twenty milliseconds.
+ * So this tool never shows an accept without also showing the refusals that
+ * make it mean something.
+ *
+ * ONE FINDING WORTH THE WHOLE SECTION — and it is not what most people expect.
+ * A tampered ML-KEM ciphertext does NOT raise an error. FIPS 203 specifies
+ * implicit rejection: decapsulating a malformed ciphertext returns a
+ * different shared secret, deterministically derived from a rejection value
+ * stored inside the private key, and returns it silently. The KEM never says
+ * "this was tampered with." Both sides simply end up holding different keys,
+ * and the handshake dies later, somewhere that looks unrelated. Anyone
+ * building on a KEM while expecting an exception is building on a
+ * misunderstanding. Measured here rather than described: the tampered secret
+ * comes back the same 32 bytes long, with roughly half its bits different.
+ *
+ * SECURITY, RESTATED BECAUSE THIS SECTION GENERATES REAL KEYS. The vendored
+ * @noble/post-quantum tree is not independently audited and has no
+ * side-channel protection. Every key here exists for one click and is dropped
+ * on the next. Nothing typed into this section is transmitted — there is no
+ * server to transmit it to.
+ *
+ * WHAT THIS PROVES AND WHAT IT DOES NOT. It demonstrates that this
+ * implementation obeys the behaviour FIPS 203/204/205 specify, on this
+ * machine, today. It says nothing about whether the schemes are secure — that
+ * is a mathematical question no browser can settle — and nothing whatsoever
+ * about whether the visitor's own systems are migrated. Both limits are
+ * printed in the UI, not buried here.
+ * ─────────────────────────────────────────────────────────────────────── */
+(function () {
+  window.SymbiQ = window.SymbiQ || {};
+
+  var esc = function (s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  };
+  var n = function (x) { return Number(x).toLocaleString('en-GB'); };
+
+  /* performance.now() is deliberately coarsened by browsers as a Spectre
+   * mitigation -- typically to 100us, and cross-origin-isolated pages get
+   * better resolution than this one will. A single measurement of a 0.4ms
+   * operation is therefore mostly quantisation noise, which is why nothing
+   * below ever reports one: every timing is a median over many runs, after
+   * warm-up runs that are thrown away. */
+  var perf = function () {
+    return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+  };
+
+  /* Bytes as hex for display. The full value is never the interesting part --
+   * what matters is whether two of them are the same -- so we show enough to
+   * make a difference obvious at a glance and say how many were hidden. */
+  function hex(u8, take) {
+    take = take || 12;
+    var out = [];
+    for (var i = 0; i < Math.min(take, u8.length); i++) out.push(('0' + u8[i].toString(16)).slice(-2));
+    return out.join(' ') + (u8.length > take ? ' … (+' + n(u8.length - take) + ' more)' : '');
+  }
+
+  function bytesEqual(a, b) {
+    if (a.length !== b.length) return false;
+    var diff = 0;
+    for (var i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+    return diff === 0;
+  }
+
+  /* How many bits actually changed between two equal-length buffers. Used on
+   * the two shared secrets: a good KEM's rejection path is a hash, so a
+   * one-bit change to the ciphertext should flip about half the output bits,
+   * not a few. Reporting the real count makes that checkable instead of
+   * claimed. */
+  function bitsDiffering(a, b) {
+    var count = 0;
+    for (var i = 0; i < Math.min(a.length, b.length); i++) {
+      var x = a[i] ^ b[i];
+      while (x) { count += x & 1; x >>= 1; }
+    }
+    return count;
+  }
+
+  /* Flip exactly one bit, at a named index, on a copy. Returning the copy
+   * rather than mutating matters: the caller still needs the untouched
+   * original to verify against, and an in-place flip here was the obvious way
+   * to write it and would have quietly made every subsequent check operate on
+   * damaged input. */
+  function flipBit(u8, byteIndex, bitIndex) {
+    var copy = Uint8Array.from(u8);
+    copy[byteIndex] ^= (1 << bitIndex);
+    return copy;
+  }
+
+  /* Let the browser paint before a long synchronous operation. SLH-DSA-128s
+   * signing takes seconds (measured, see the timing act) and blocks the main
+   * thread solid while it runs -- without a yield here the "working…" state
+   * would never appear on screen, and the page would look frozen with no
+   * explanation. */
+  function yieldToPaint() {
+    return new Promise(function (resolve) {
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(function () { setTimeout(resolve, 0); });
+      } else { setTimeout(resolve, 0); }
+    });
+  }
+
+  var SIGALGS = {
+    mldsa65: {
+      label: 'ML-DSA-65', alg: function () { return ml_dsa65; },
+      note: 'lattice — the likely default', slow: false,
+      spec: 'FIPS 204', pk: 1952, sig: 3309,
+    },
+    slhdsa: {
+      label: 'SLH-DSA-128s', alg: function () { return slh_dsa_sha2_128s; },
+      note: 'hash-based — conservative, and slow', slow: true,
+      spec: 'FIPS 205', pk: 32, sig: 7856,
+    },
+  };
+
+  /* =========================================================================
+   * ACT 1 — the exchange, run for real, then broken on purpose.
+   * ====================================================================== */
+  function runKem() {
+    var t0 = perf();
+    var k = ml_kem768.keygen();
+    var tKeygen = perf() - t0;
+
+    var t1 = perf();
+    var e = ml_kem768.encapsulate(k.publicKey);
+    var tEncap = perf() - t1;
+
+    var t2 = perf();
+    var received = ml_kem768.decapsulate(e.cipherText, k.secretKey);
+    var tDecap = perf() - t2;
+
+    /* The tamper: one bit, in one byte, of a 1,088-byte ciphertext. */
+    var byteIndex = 7, bitIndex = 0;
+    var tamperedCt = flipBit(e.cipherText, byteIndex, bitIndex);
+    var tamperedResult, tamperThrew = null;
+    try {
+      tamperedResult = ml_kem768.decapsulate(tamperedCt, k.secretKey);
+    } catch (err) {
+      tamperThrew = err && err.message ? err.message : String(err);
+    }
+
+    return {
+      pk: k.publicKey.length, sk: k.secretKey.length,
+      ct: e.cipherText.length,
+      sent: e.sharedSecret, received: received,
+      agree: bytesEqual(e.sharedSecret, received),
+      tKeygen: tKeygen, tEncap: tEncap, tDecap: tDecap,
+      tamper: {
+        byteIndex: byteIndex, bitIndex: bitIndex,
+        before: e.cipherText[byteIndex], after: tamperedCt[byteIndex],
+        threw: tamperThrew,
+        result: tamperedResult,
+        sameLength: tamperedResult ? tamperedResult.length === e.sharedSecret.length : null,
+        equal: tamperedResult ? bytesEqual(tamperedResult, e.sharedSecret) : null,
+        bitsChanged: tamperedResult ? bitsDiffering(tamperedResult, e.sharedSecret) : null,
+        totalBits: e.sharedSecret.length * 8,
+      },
+    };
+  }
+
+  function renderKem(r) {
+    if (r.error) {
+      return '<p class="verdict bad">The exchange could not run in this browser: ' + esc(r.error) + '</p>';
+    }
+    var agreeRow = r.agree
+      ? '<p class="verdict good">Both sides derived the same 32 bytes. That is the whole point of a key ' +
+        'encapsulation mechanism, and it just happened in this tab.</p>'
+      : '<p class="verdict bad">The two secrets do not match. That is a real failure — please report it via ' +
+        'the corrections page, because it should be impossible.</p>';
+
+    var t = r.tamper;
+    var tamperBlock;
+    if (t.threw) {
+      /* Kept deliberately, even though it did not fire on any browser tested:
+       * an implementation that throws here is not wrong, it is just not doing
+       * what FIPS 203 describes, and silently rendering the expected story
+       * instead of what happened is exactly the failure this page exists to
+       * avoid. */
+      tamperBlock = '<p class="verdict split">This implementation <b>threw</b> on the tampered ciphertext: ' +
+        esc(t.threw) + '. FIPS 203 describes silent implicit rejection instead — worth knowing about ' +
+        'whichever library you deploy, because the two behaviours need different error handling.</p>';
+    } else {
+      tamperBlock = '<p class="verdict split">No error. No exception. No warning. Decapsulation returned ' +
+        (t.sameLength ? 'a perfectly well-formed 32-byte secret' : 'a secret of a different length') +
+        ' — just <b>not the same one</b>: ' + n(t.bitsChanged) + ' of its ' + n(t.totalBits) +
+        ' bits differ (' + Math.round((t.bitsChanged / t.totalBits) * 100) + '%, and about half is what a ' +
+        'hash-derived rejection value should look like).</p>' +
+        '<p class="cb-note">This is <b>implicit rejection</b>, and it is specified behaviour, not a bug: the ' +
+        'private key carries a secret rejection value, and a ciphertext that fails its internal re-encryption ' +
+        'check gets a secret derived from that instead. The receiver cannot tell the difference. Your handshake ' +
+        'fails later, in a decrypt step that looks unrelated to the real cause. <b>If you are integrating a KEM ' +
+        'and your error path waits for an exception, it will wait forever.</b></p>';
+    }
+
+    return '' +
+      '<dl class="rows">' +
+      '<dt>Public key</dt><dd>' + n(r.pk) + ' bytes <span class="cb-tag ok">measured</span></dd>' +
+      '<dt>Private key</dt><dd>' + n(r.sk) + ' bytes</dd>' +
+      '<dt>Ciphertext</dt><dd>' + n(r.ct) + ' bytes — what crosses the wire</dd>' +
+      '<dt>Sender derived</dt><dd><code class="pf-hex">' + esc(hex(r.sent)) + '</code></dd>' +
+      '<dt>Receiver derived</dt><dd><code class="pf-hex">' + esc(hex(r.received)) + '</code></dd>' +
+      '</dl>' +
+      agreeRow +
+      '<p class="pf-step">Now break it. One bit, flipped in byte ' + n(t.byteIndex) + ' of ' + n(r.ct) +
+      ' (0x' + ('0' + t.before.toString(16)).slice(-2) + ' → 0x' + ('0' + t.after.toString(16)).slice(-2) +
+      '), and decapsulate again:</p>' +
+      tamperBlock;
+  }
+
+  /* =========================================================================
+   * ACT 2 — a signature over the visitor's own text, then five attacks.
+   *
+   * Every attack states, before it runs, what SHOULD happen. The table then
+   * reports what DID happen and whether the two agree, so a row can fail
+   * loudly rather than being quietly re-described as a success.
+   * ====================================================================== */
+  function runSignature(text, algId) {
+    var conf = SIGALGS[algId] || SIGALGS.mldsa65;
+    var alg = conf.alg();
+    var msg = new TextEncoder().encode(text);
+    if (!msg.length) msg = new TextEncoder().encode(' ');
+
+    var t0 = perf();
+    var k = alg.keygen();
+    var tKeygen = perf() - t0;
+
+    var t1 = perf();
+    var sig = alg.sign(msg, k.secretKey);
+    var tSign = perf() - t1;
+
+    /* verify() returns a boolean for a well-formed input and throws for a
+     * malformed one (wrong length). Both count as a rejection; they are
+     * reported differently because they are different, and a caller has to
+     * handle both. */
+    function attempt(signature, message, publicKey) {
+      try { return { accepted: alg.verify(signature, message, publicKey) === true, threw: null }; }
+      catch (err) { return { accepted: false, threw: err && err.message ? err.message : String(err) }; }
+    }
+
+    var t2 = perf();
+    var clean = attempt(sig, msg, k.publicKey);
+    var tVerify = perf() - t2;
+
+    /* Pick a flip site inside the message that a reader can actually see. */
+    var msgByte = Math.min(msg.length - 1, Math.floor(msg.length / 2));
+    var flippedMsg = flipBit(msg, msgByte, 0);
+    var sigByte = Math.min(sig.length - 1, 100);
+    var other = alg.keygen();
+
+    var checks = [
+      { id: 'clean', what: 'Nothing touched', detail: 'The signature exactly as produced.',
+        expect: true, got: clean },
+      { id: 'msgbit', what: 'One bit flipped in the message',
+        detail: 'Byte ' + n(msgByte) + ' of ' + n(msg.length) + ': 0x' +
+          ('0' + msg[msgByte].toString(16)).slice(-2) + ' → 0x' +
+          ('0' + flippedMsg[msgByte].toString(16)).slice(-2) + charNote(msg[msgByte], flippedMsg[msgByte]),
+        expect: false, got: attempt(sig, flippedMsg, k.publicKey) },
+      { id: 'sigbit', what: 'One bit flipped in the signature',
+        detail: 'Byte ' + n(sigByte) + ' of ' + n(sig.length) + ', message untouched.',
+        expect: false, got: attempt(flipBit(sig, sigByte, 0), msg, k.publicKey) },
+      { id: 'wrongkey', what: 'A different signer’s public key',
+        detail: 'Valid signature, valid message, wrong identity — the impersonation case.',
+        expect: false, got: attempt(sig, msg, other.publicKey) },
+      { id: 'truncated', what: 'Signature truncated by one byte',
+        detail: 'Malformed input rather than wrong input — the parser’s problem, not the maths’.',
+        expect: false, got: attempt(sig.slice(0, sig.length - 1), msg, k.publicKey) },
+    ];
+
+    var passed = checks.filter(function (c) { return c.got.accepted === c.expect; }).length;
+
+    return {
+      conf: conf, msgLen: msg.length, pk: k.publicKey.length, sig: sig.length,
+      tKeygen: tKeygen, tSign: tSign, tVerify: tVerify,
+      checks: checks, passed: passed, total: checks.length,
+      sigHex: hex(sig, 16),
+    };
+  }
+
+  function charNote(before, after) {
+    var printable = function (b) { return b >= 32 && b <= 126; };
+    if (!printable(before)) return '';
+    return ' — the character “' + String.fromCharCode(before) + '” became ' +
+      (printable(after) ? '“' + String.fromCharCode(after) + '”' : 'unprintable');
+  }
+
+  function renderSignature(r) {
+    if (r.error) return '<p class="verdict bad">Signing could not run in this browser: ' + esc(r.error) + '</p>';
+
+    var rows = r.checks.map(function (c) {
+      var ok = c.got.accepted === c.expect;
+      var outcome = c.got.accepted ? 'ACCEPTED' : (c.got.threw ? 'REJECTED (refused to parse)' : 'REJECTED');
+      return '<tr class="' + (ok ? '' : 'pf-bad') + '">' +
+        '<td><b>' + esc(c.what) + '</b><br><span class="pf-detail">' + esc(c.detail) + '</span></td>' +
+        '<td class="pf-expect">' + (c.expect ? 'must accept' : 'must reject') + '</td>' +
+        '<td class="pf-got ' + (c.got.accepted ? 'yes' : 'no') + '">' + outcome + '</td>' +
+        '<td class="pf-ok">' + (ok ? '✓' : '✗') + '</td>' +
+      '</tr>';
+    }).join('');
+
+    var allGood = r.passed === r.total;
+    var verdict = allGood
+      ? '<p class="verdict good">' + r.passed + ' of ' + r.total + ' behaved exactly as ' + esc(r.conf.spec) +
+        ' requires. One accept, four refusals — and the four refusals are the evidence.</p>'
+      : '<p class="verdict bad">' + r.passed + ' of ' + r.total + ' behaved as specified. A row marked ✗ is a ' +
+        'real finding — please <a href="corrections.html#report">report it</a>.</p>';
+
+    return '' +
+      '<dl class="rows">' +
+      '<dt>Scheme</dt><dd>' + esc(r.conf.label) + ' <span class="cb-tag ok">' + esc(r.conf.spec) + '</span></dd>' +
+      '<dt>Your message</dt><dd>' + n(r.msgLen) + ' bytes</dd>' +
+      '<dt>Public key</dt><dd>' + n(r.pk) + ' bytes</dd>' +
+      '<dt>Signature</dt><dd>' + n(r.sig) + ' bytes — <code class="pf-hex">' + esc(r.sigHex) + '</code></dd>' +
+      '</dl>' +
+      verdict +
+      '<div class="pf-scroll"><table class="cb pf-table"><thead><tr>' +
+      '<th scope="col">What was done to it</th><th scope="col">Should</th>' +
+      '<th scope="col">Did</th><th scope="col">✓</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="cb-note">Signature sizes here are the ones <a href="#cliff">the Size Cliff</a> charges you for ' +
+      'on the wire. This is the same operation, on your text, with the result checked instead of tabulated.</p>';
+  }
+
+  /* =========================================================================
+   * ACT 3 — what it costs on the machine reading the page.
+   *
+   * The honest comparison problem: the post-quantum work below is synchronous
+   * JavaScript, and the classical baseline is asynchronous native code behind
+   * WebCrypto. Their measured times are not like for like -- the classical
+   * figure carries promise scheduling the PQ figure does not, and the PQ
+   * figure carries the interpreter's overhead the classical one does not.
+   * Both distortions are stated in the UI, and the baseline is offered anyway,
+   * because "will this slow us down" is the actual question and refusing to
+   * answer it is worse than answering it with the caveat attached.
+   * ====================================================================== */
+  function medianOf(fn, runs, warmup) {
+    var i;
+    /* `warmup || 3` would have turned an explicit 0 into 3 -- and for SLH-DSA,
+     * whose sign is measured in seconds, three discarded warm-up runs is ten
+     * seconds of frozen tab that nobody asked for. Explicit undefined check. */
+    warmup = (warmup === undefined) ? 3 : warmup;
+    for (i = 0; i < warmup; i++) fn();               // JIT warm-up, discarded
+    var samples = [];
+    for (i = 0; i < runs; i++) {
+      var t0 = perf();
+      fn();
+      samples.push(perf() - t0);
+    }
+    samples.sort(function (a, b) { return a - b; });
+    return samples[Math.floor(samples.length / 2)];
+  }
+
+  function timePq(includeSlow) {
+    var msg = new TextEncoder().encode('The quick brown fox jumps over the lazy dog. '.repeat(5));
+    var out = [];
+
+    var kk = ml_kem768.keygen();
+    var ke = ml_kem768.encapsulate(kk.publicKey);
+    out.push({ group: 'ML-KEM-768', op: 'keygen', ms: medianOf(function () { ml_kem768.keygen(); }, 25) });
+    out.push({ group: 'ML-KEM-768', op: 'encapsulate', ms: medianOf(function () { ml_kem768.encapsulate(kk.publicKey); }, 25) });
+    out.push({ group: 'ML-KEM-768', op: 'decapsulate', ms: medianOf(function () { ml_kem768.decapsulate(ke.cipherText, kk.secretKey); }, 25) });
+
+    var dk = ml_dsa65.keygen();
+    var dsig = ml_dsa65.sign(msg, dk.secretKey);
+    out.push({ group: 'ML-DSA-65', op: 'keygen', ms: medianOf(function () { ml_dsa65.keygen(); }, 15) });
+    out.push({ group: 'ML-DSA-65', op: 'sign', ms: medianOf(function () { ml_dsa65.sign(msg, dk.secretKey); }, 15) });
+    out.push({ group: 'ML-DSA-65', op: 'verify', ms: medianOf(function () { ml_dsa65.verify(dsig, msg, dk.publicKey); }, 15) });
+
+    if (includeSlow) {
+      /* One run, not twenty-five. On the machine this was written against,
+       * one SLH-DSA-128s signature took 2.9 SECONDS -- twenty-five would be a
+       * minute and a quarter of frozen tab, and even three is nine seconds.
+       * So: one run, and the UI says "single run" rather than hiding a
+       * sample of one behind the same word "median" as the rest. */
+      var sk = slh_dsa_sha2_128s.keygen();
+      var ssig = slh_dsa_sha2_128s.sign(msg, sk.secretKey);
+      out.push({ group: 'SLH-DSA-128s', op: 'keygen', ms: medianOf(function () { slh_dsa_sha2_128s.keygen(); }, 1, 0), small: true });
+      out.push({ group: 'SLH-DSA-128s', op: 'sign', ms: medianOf(function () { slh_dsa_sha2_128s.sign(msg, sk.secretKey); }, 1, 0), small: true });
+      out.push({ group: 'SLH-DSA-128s', op: 'verify', ms: medianOf(function () { slh_dsa_sha2_128s.verify(ssig, msg, sk.publicKey); }, 3, 1), small: true });
+    }
+    return out;
+  }
+
+  /* The classical baseline, via WebCrypto. Every step is guarded: Ed25519 is
+   * not universally available, and a browser without it must lose one row, not
+   * the whole act. */
+  async function timeClassical() {
+    var msg = new TextEncoder().encode('The quick brown fox jumps over the lazy dog. '.repeat(5));
+    var out = [];
+
+    async function medianAsync(fn, runs) {
+      try {
+        for (var w = 0; w < 2; w++) await fn();
+        var s = [];
+        for (var i = 0; i < runs; i++) { var t0 = perf(); await fn(); s.push(perf() - t0); }
+        s.sort(function (a, b) { return a - b; });
+        return s[Math.floor(s.length / 2)];
+      } catch (e) { return null; }
+    }
+
+    try {
+      var p256 = await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
+      var p256sig = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, p256.privateKey, msg);
+      var st = await medianAsync(function () { return crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, p256.privateKey, msg); }, 15);
+      var vt = await medianAsync(function () { return crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, p256.publicKey, p256sig, msg); }, 15);
+      if (st !== null) out.push({ group: 'ECDSA P-256', op: 'sign', ms: st, classical: true });
+      if (vt !== null) out.push({ group: 'ECDSA P-256', op: 'verify', ms: vt, classical: true });
+    } catch (e) { /* no P-256: drop the rows, keep the act */ }
+
+    try {
+      var x = await crypto.subtle.generateKey({ name: 'X25519' }, true, ['deriveBits']);
+      var y = await crypto.subtle.generateKey({ name: 'X25519' }, true, ['deriveBits']);
+      var dt = await medianAsync(function () {
+        return crypto.subtle.deriveBits({ name: 'X25519', public: y.publicKey }, x.privateKey, 256);
+      }, 15);
+      if (dt !== null) out.push({ group: 'X25519', op: 'derive shared secret', ms: dt, classical: true });
+    } catch (e) { /* no X25519 here: it is genuinely absent in some browsers */ }
+
+    return out;
+  }
+
+  function fmtMs(ms) {
+    if (ms >= 1000) return (ms / 1000).toFixed(2) + ' s';
+    if (ms >= 10) return ms.toFixed(0) + ' ms';
+    if (ms >= 1) return ms.toFixed(1) + ' ms';
+    return ms.toFixed(2) + ' ms';
+  }
+
+  function renderTiming(rows) {
+    if (!rows.length) return '<p class="verdict bad">No timings could be taken in this browser.</p>';
+
+    var body = rows.map(function (r) {
+      var perSec = r.ms > 0 ? Math.round(1000 / r.ms) : null;
+      return '<tr class="' + (r.classical ? 'pf-classical' : '') + '">' +
+        '<td>' + esc(r.group) + (r.classical ? ' <span class="pf-detail">(native, async)</span>' : '') + '</td>' +
+        '<td>' + esc(r.op) + '</td>' +
+        '<td class="pf-num">' + fmtMs(r.ms) + (r.small ? ' <span class="pf-detail">single run</span>' : '') + '</td>' +
+        '<td class="pf-num">' + (perSec !== null ? n(perSec) + '/s' : '—') + '</td>' +
+      '</tr>';
+    }).join('');
+
+    var slow = rows.filter(function (r) { return r.group === 'SLH-DSA-128s' && r.op === 'sign'; })[0];
+    var slowNote = slow
+      ? '<p class="verdict split">SLH-DSA-128s signing took <b>' + fmtMs(slow.ms) + '</b> here. That is not a ' +
+        'defect and it is not the browser being slow — it is what a hash-based signature costs. The usual ' +
+        'objection to SLH-DSA is its 7,856-byte signature; the number above is the one that actually decides ' +
+        'whether you can put it on a busy signing path. Verification, meanwhile, stayed fast — so this is a ' +
+        'scheme you can afford to check constantly and can barely afford to produce.</p>'
+      : '';
+
+    return '' +
+      '<div class="pf-scroll"><table class="cb pf-table"><thead><tr>' +
+      '<th scope="col">Scheme</th><th scope="col">Operation</th>' +
+      '<th scope="col">Median</th><th scope="col">Throughput</th></tr></thead><tbody>' + body + '</tbody></table></div>' +
+      slowNote +
+      '<p class="cb-note"><b>Read these as ceilings, and read the ratios, not the absolutes.</b> This is portable ' +
+      'JavaScript on one main thread in your browser. A server runs a native, vectorised implementation and is ' +
+      'substantially quicker. The classical rows are worse than that: WebCrypto is native code behind a promise, ' +
+      'so their figures carry scheduling overhead these post-quantum rows do not, and the post-quantum rows carry ' +
+      'interpreter overhead the classical rows do not. Neither distortion is small enough to ignore, so treat the ' +
+      'classical numbers as orientation rather than a benchmark. What survives all of that: ML-KEM is cheap ' +
+      'everywhere, ML-DSA is affordable, and SLH-DSA is a different order of thing.</p>';
+  }
+
+  SymbiQ.proof = {
+    runKem: runKem, runSignature: runSignature, timePq: timePq,
+    bytesEqual: bytesEqual, bitsDiffering: bitsDiffering, flipBit: flipBit,
+    SIGALGS: SIGALGS,
+  };
+
+  /* Shell built once, three result regions updated independently. Re-rendering
+   * the whole tool on every action would wipe the textarea the visitor is
+   * typing in -- the same shape as the bug the Odds tool hit mid-drag on its
+   * trust slider, and fixed there the same way. */
+  SymbiQ.proof.mount = function (root, opts) {
+    opts = opts || {};
+    var algId = 'mldsa65';
+
+    var DEFAULT_TEXT = 'Payment instruction 2026-08-10: release 250,000 EUR to supplier account on delivery.';
+
+    root.innerHTML = '' +
+      '<div class="pf-act">' +
+        '<h3 class="pf-h">1 · The exchange, actually performed</h3>' +
+        '<p class="pf-lead">ML-KEM-768: generate a keypair, encapsulate a secret to the public key, decapsulate ' +
+        'it with the private one, and compare what the two sides ended up holding. Then flip a single bit of ' +
+        'the ciphertext and watch what a broken exchange really looks like.</p>' +
+        '<p><button type="button" class="preset pf-run" id="pf-kem-go">Run a real ML-KEM-768 exchange</button></p>' +
+        '<div id="pf-kem-out"></div>' +
+      '</div>' +
+
+      '<div class="pf-act">' +
+        '<h3 class="pf-h">2 · The signature, accepted — and refused</h3>' +
+        '<p class="pf-lead">Put your own text in. It is signed in this tab, then attacked five ways. Four of ' +
+        'those attacks must fail, and the failures are the only part that proves anything.</p>' +
+        '<label class="pf-lab" for="pf-msg">Text to sign</label>' +
+        '<textarea id="pf-msg" class="pf-ta" rows="2" spellcheck="false">' + esc(DEFAULT_TEXT) + '</textarea>' +
+        '<p class="pf-chips">' +
+          Object.keys(SIGALGS).map(function (id) {
+            return '<button type="button" class="preset' + (id === algId ? ' on' : '') + '" data-alg="' + id + '">' +
+              esc(SIGALGS[id].label) + '<em>' + esc(SIGALGS[id].note) + '</em></button>';
+          }).join('') +
+        '</p>' +
+        '<p><button type="button" class="preset pf-run" id="pf-sig-go">Sign it, then try to break it</button></p>' +
+        '<div id="pf-sig-out"></div>' +
+      '</div>' +
+
+      '<div class="pf-act">' +
+        '<h3 class="pf-h">3 · What it costs on this machine</h3>' +
+        '<p class="pf-lead">Not a specification table — the actual cost, measured here, on whatever you are ' +
+        'reading this on. Medians over many runs, warm-up discarded.</p>' +
+        '<p><button type="button" class="preset pf-run" id="pf-time-go">Time it on this machine</button> ' +
+        '<button type="button" class="preset" id="pf-time-slow">Include SLH-DSA-128s (takes seconds)</button></p>' +
+        '<div id="pf-time-out"></div>' +
+      '</div>' +
+
+      '<p class="cb-note pf-foot"><b>What this does and does not settle.</b> It shows this implementation behaving ' +
+      'the way FIPS 203, 204 and 205 say it must, on your hardware, right now. It is not evidence that the schemes ' +
+      'are secure — no browser can settle that — and it is not evidence that anything you own has been migrated. ' +
+      'For that, start with <a href="#inventory">the Inventory</a>. Keys generated here are thrown away on the ' +
+      'next click and never leave the tab.</p>';
+
+    var kemOut = root.querySelector('#pf-kem-out');
+    var sigOut = root.querySelector('#pf-sig-out');
+    var timeOut = root.querySelector('#pf-time-out');
+
+    function busy(el, msg) { el.innerHTML = '<p class="sc-wait pf-busy">' + esc(msg) + '</p>'; }
+
+    root.addEventListener('click', function (ev) {
+      var algBtn = ev.target.closest('button[data-alg]');
+      if (algBtn) {
+        algId = algBtn.dataset.alg;
+        Array.prototype.forEach.call(root.querySelectorAll('button[data-alg]'), function (b) {
+          b.classList.toggle('on', b.dataset.alg === algId);
+        });
+        return;
+      }
+
+      var btn = ev.target.closest('button');
+      if (!btn) return;
+
+      if (btn.id === 'pf-kem-go') {
+        busy(kemOut, 'Generating a keypair and running the exchange…');
+        yieldToPaint().then(function () {
+          var r;
+          try { r = runKem(); } catch (e) { r = { error: e && e.message ? e.message : String(e) }; }
+          kemOut.innerHTML = renderKem(r);
+        });
+        return;
+      }
+
+      if (btn.id === 'pf-sig-go') {
+        var ta = root.querySelector('#pf-msg');
+        var text = ta ? ta.value : DEFAULT_TEXT;
+        var conf = SIGALGS[algId];
+        busy(sigOut, conf.slow
+          ? 'Signing with ' + conf.label + '. This one genuinely takes several seconds — that is the finding, not a fault…'
+          : 'Signing with ' + conf.label + ', then attacking it five ways…');
+        yieldToPaint().then(function () {
+          var r;
+          try { r = runSignature(text, algId); } catch (e) { r = { error: e && e.message ? e.message : String(e) }; }
+          sigOut.innerHTML = renderSignature(r);
+        });
+        return;
+      }
+
+      if (btn.id === 'pf-time-go' || btn.id === 'pf-time-slow') {
+        var slow = btn.id === 'pf-time-slow';
+        busy(timeOut, slow
+          ? 'Timing everything including SLH-DSA-128s. The tab will freeze for a few seconds — that is the point…'
+          : 'Timing ML-KEM-768 and ML-DSA-65 on this machine…');
+        yieldToPaint().then(function () {
+          var pq;
+          try { pq = timePq(slow); } catch (e) { pq = []; }
+          return timeClassical().then(function (cl) {
+            timeOut.innerHTML = renderTiming(pq.concat(cl));
+          }, function () {
+            timeOut.innerHTML = renderTiming(pq);
+          });
+        });
+      }
+    });
+  };
+})();

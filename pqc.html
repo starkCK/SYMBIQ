@@ -30,7 +30,7 @@
 <script src="nav.js?v=5" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script type="module" src="pqc-tools.js?v=2"></script>
+<script type="module" src="pqc-tools.js?v=4"></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
    without a cache bump across all sixteen. */
@@ -186,6 +186,16 @@ table.cb tbody th { font-weight: 600; text-transform: none; }
      identical colour pair). Darkened to the same #0f766e already used for
      .od-eyebrow; re-measures at 5.7:1+. */
   .cb-tag.ok { color: #0f766e; }
+  /* Found building the Harvest Clock, which reuses the site-wide .verdict.good
+     class unchanged: var(--teal) text on its own pale-teal verdict background
+     composites to 3.45:1 in light mode -- under the 4.5:1 floor, same shape
+     and same root cause as .cb-tag.ok above (var(--teal) was never re-checked
+     against a tinted background, only against plain page background). This
+     class is also used by the Sequencer's "Feasible" banner and the Size
+     Cliff's "Everything fits" banner, so the fix helps both, not just this
+     widget. Same darkened value already used three times on this page;
+     re-measures at 4.98:1. */
+  .verdict.good { color: #0f766e; }
 }
 @media (max-width: 560px) { .cb-btns .preset { width: 100%; } }
 
@@ -281,6 +291,63 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 @media (min-width: 720px) {
   .pq-jump { position: sticky; top: 60px; z-index: 20; background: var(--panel);
     backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); border-radius: 0 0 10px 10px; }
+}
+
+/* ── THE PROOF ─────────────────────────────────────────────────────────────
+   Three acts in one card, each an independent experiment, so they read as a
+   sequence rather than one dense panel. Reuses the shared kit (.preset,
+   .verdict, .rows, .cb table, .cb-note) — everything below is only what the
+   kit does not already provide. */
+.pf-act { padding: 18px 0 4px; border-top: 1px solid var(--border); }
+.pf-act:first-child { padding-top: 2px; border-top: 0; }
+.pf-h { font-size: 1rem; margin: 0 0 6px; letter-spacing: .01em; }
+.pf-lead { font-size: .88rem; color: var(--muted); margin: 0 0 12px; max-width: 62ch; }
+.pf-step { font-size: .88rem; margin: 16px 0 8px; }
+.pf-lab { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--muted); margin-bottom: 5px; }
+.pf-ta { width: 100%; box-sizing: border-box; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .88rem;
+  font-family: inherit; resize: vertical; min-height: 60px; }
+.pf-ta:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+.pf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+/* The run buttons are the whole point of the tool, so they carry weight the
+   option chips do not — and they clear 44px on padding alone. */
+.pf-run { font-weight: 600; border-color: rgba(45,212,191,.5); }
+.pf-busy { font-style: italic; }
+
+/* Hex is the one place on this page where a difference must be visible at a
+   glance, so it gets a monospace face and does not wrap mid-byte. */
+.pf-hex { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .8rem; word-break: break-all; color: var(--violet); }
+
+/* A table with five verdict rows overflows a 375px screen no matter how it is
+   styled; the .figscroll precedent already established that scrolling beats
+   shrinking below legibility. */
+.pf-scroll { overflow-x: auto; margin: 12px 0; }
+.pf-table { min-width: 520px; }
+.pf-detail { font-size: .76rem; color: var(--muted); font-weight: 400; }
+.pf-expect { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+.pf-got { font-weight: 700; font-size: .8rem; white-space: nowrap; }
+/* Green for a refusal, red for an acceptance: on this table an ACCEPT is only
+   ever correct in row one, and colouring by literal outcome would tell the
+   reader the opposite of what the row means. The ✓ column carries the verdict;
+   these two only say which way the function answered. */
+.pf-got.no { color: var(--green); }
+.pf-got.yes { color: var(--violet); }
+.pf-ok { font-size: 1.1rem; text-align: center; }
+.pf-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pf-bad { background: rgba(248,113,113,.10); }
+.pf-bad .pf-ok { color: var(--red); }
+.pf-classical td { color: var(--muted); }
+.pf-foot { margin-top: 18px; }
+@media (prefers-color-scheme: light) {
+  /* Same failure the rest of this page has already had three times: a palette
+     var chosen against the page background, reused on a tinted one. Both are
+     re-measured at 4.5:1+ rather than assumed. */
+  .pf-hex { color: #6d28d9; }
+  .pf-got.no { color: #15803d; }
+  .pf-got.yes { color: #6d28d9; }
+  .pf-ta { background: #fff; }
 }
 </style>
 </head>
@@ -389,12 +456,14 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <!-- Five tools on one long page. Without this the sequencer sits 7,000px down,
      which is the same "buried the thing they came for" problem the homepage
      hero had. Plain anchors, so it works with scripts off. -->
-<p class="pq-jump"><span>Five tools:</span>
+<p class="pq-jump"><span>Seven tools:</span>
   <a href="#quickcheck">Quick Check</a><em>one paste, one answer</em>
   <a href="#cliff">The Size Cliff</a><em>what PQ costs on the wire</em>
   <a href="#inventory">The Inventory</a><em>read your own artefacts</em>
   <a href="#estate">The Sequencer</a><em>when you can actually finish</em>
   <a href="#odds">The Odds</a><em>against 32 real forecasts</em>
+  <a href="#mosca">The Harvest Clock</a><em>Mosca's inequality, played</em>
+  <a href="#proof">The Proof</a><em>run the cryptography yourself</em>
 </p>
 
 <div class="card">
@@ -520,8 +589,25 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>CNSA 2.0</b> — quantum-resistant algorithms required for new national security system acquisitions from <b>2027</b>, exclusive use by <b>2033</b>.</li>
   <li><b>The EU coordinated roadmap</b> — member states to hold cryptographic inventories by <b>end of 2026</b>, high-risk systems migrated by <b>2030</b>.</li>
 </ul>
-<p>And the reason none of those dates can simply be waited out: <b>harvest now, decrypt later</b>. Traffic captured today is decrypted whenever the capability arrives, so the exposure is retroactive. Michele Mosca's inequality states it in one line — if <b>X</b> (how long your data must stay secret) plus <b>Y</b> (how long your migration takes) exceeds <b>Z</b> (how long until a cryptographically relevant quantum computer), you are already late. <span class="chip">⟦Proven⟧ the arithmetic; ⟦Frontier⟧ the value of Z</span> Nobody knows Z. That is exactly why X and Y are the only two you control.</p>
+<p>And the reason none of those dates can simply be waited out: <b>harvest now, decrypt later</b>. Traffic captured today is decrypted whenever the capability arrives, so the exposure is retroactive. Michele Mosca's inequality states it in one line — if <b>X</b> (how long your data must stay secret) plus <b>Y</b> (how long your migration takes) exceeds <b>Z</b> (how long until a cryptographically relevant quantum computer), you are already late. <span class="chip">⟦Proven⟧ the arithmetic; ⟦Heuristic⟧ the value of Z</span> Nobody knows Z. That is exactly why X and Y are the only two you control.</p>
 <p>What a machine capable of this would actually have to be is a separate question, answered with resource estimates rather than adjectives, on <a href="bitcoin.html">the Bitcoin page</a>.</p>
+
+<p class="pq-eyebrow" data-icon="⏳">The inequality, played</p>
+<h2 id="mosca" data-tier-keep>The Harvest Clock</h2>
+<p>Nothing above is new — this is the same inequality, made playable instead of read once and left as a paragraph. Move the three sliders. Most starting positions come back <b>already late</b>, on purpose: for the great majority of X, they are.</p>
+<div class="card">
+  <div id="mosca-mount"><p class="sc-wait">This needs JavaScript — it is plain arithmetic, run in your browser. Nothing you move here is sent anywhere.</p></div>
+</div>
+<p class="cb-note">This is deliberately the simplest instrument on the page. For a real estate instead of a guess, use <a href="#estate">the Sequencer</a>; for a real distribution behind Z instead of one slider, use <a href="#odds">the Odds</a> above. This one exists to make the inequality itself click in ten seconds.</p>
+
+<p class="pq-eyebrow" data-icon="🔬">Stop citing it, run it</p>
+<h2 id="proof" data-tier-keep>The Proof</h2>
+<p>Every tool above this one measures or models. None of them ever runs the cryptography end to end, which means that up to this point <em>“post-quantum cryptography works”</em> has been an assertion on this page, carried by citation. So: run it. Real ML-KEM-768 and ML-DSA-65, in this tab, on your text, with the results checked rather than tabulated.</p>
+<p>The part that matters is not the signature verifying. A function that returned <code>true</code> unconditionally would look identical on screen. The evidence is in the <b>refusals</b> — flip one bit of a 3,309-byte signature and verification has to fail. <span class="chip">⟦Proven⟧ the byte lengths and the accept/reject behaviour, measured here</span></p>
+<div class="card">
+  <div id="proof-mount"><p class="sc-wait">This needs JavaScript and ES modules — it generates real post-quantum keys in your browser. Nothing you type here is sent anywhere; there is no server to send it to.</p></div>
+</div>
+<p class="cb-note">One thing worth staying for, in act one: a tampered ML-KEM ciphertext raises <b>no error</b>. FIPS 203 specifies implicit rejection, so decapsulation quietly returns a different 32-byte secret instead of complaining. The handshake then dies later, somewhere that looks unrelated. If you are integrating a KEM and your error path is waiting for an exception, it will wait forever.</p>
 
 <h2>Honest limits</h2>
 <p>Stated plainly, because a page about cryptography that oversells itself is worse than useless.</p>
@@ -530,7 +616,11 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>The cryptographic library here is not independently audited</b> and has no side-channel protection. It is <a href="https://codeberg.org/paulmillr/noble-post-quantum">@noble/post-quantum</a>, MIT-licensed, vendored into this site so no third party is contacted when you load the page. <b>It must never be used to protect a real secret, and it never handles one here</b> — every key it generates is discarded on the next click. We verified it the only way that means anything: 28 checks against the byte lengths fixed by FIPS 203, 204 and 205, plus encapsulate/decapsulate agreement and signature accept-and-reject.</li>
   <li><b>Nothing you do on this page leaves your browser.</b> There is no server. Key generation, measurement and rendering all happen locally.</li>
   <li><b>The framing model is ours</b>, and a real deployment will differ. The numbers to trust here are the differences, not the totals.</li>
+  <li><b>The Proof proves conformance, not security.</b> It shows this implementation behaving the way FIPS 203, 204 and 205 say it must, on your hardware, today. Whether the underlying schemes are secure is a mathematical question no browser can settle — and none of it is evidence that anything <em>you</em> own has been migrated.</li>
+  <li><b>Its timings are ceilings, and the ratios travel better than the absolutes.</b> This is portable JavaScript on one main thread; a server runs native, vectorised code and is substantially quicker. The classical baseline is worse still as a comparison — WebCrypto is native code behind a promise, so it carries scheduling overhead the post-quantum rows do not, while they carry interpreter overhead it does not. Both distortions are printed next to the table rather than averaged away.</li>
 </ul>
+
+<p><em>Verification status: the page's original four instruments (Size Cliff, Inventory, Sequencer, Odds) cleared a fresh-session hostile-referee pass 2026-08-06 (<a href="corrections.html">one confirmed error found and fixed</a>). The Harvest Clock was verified with a full Python sweep of the slider domain plus an independent in-browser reimplementation. The Proof is new — verified against the byte lengths fixed by FIPS 203/204/205, 25 consecutive encapsulate/decapsulate agreements, 40 tamper trials measuring the rejection-path avalanche, and its five accept/reject checks driven across five message shapes including empty, Unicode and 5 KB inputs. <b>None of the tools added after 2026-08-06 has yet had a fresh-session hostile-referee pass of its own</b> — that is open debt, and it covers The Proof, the Harvest Clock, Quick Check, the scorecard, the compliance checklist and the domain lookup.</em></p>
 
 <p class="tagline" style="margin-top:26px">Found an error on this page? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>, and the correction runs louder than the original.</p>
 
@@ -644,6 +734,23 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
     // plan the moment it mounts, and every future edit after that.
     var oHost = document.getElementById('odds-mount');
     if (S.odds && oHost) { try { S.odds.mount(oHost, {}); } catch (e) {} }
+
+    var moHost = document.getElementById('mosca-mount');
+    if (S.mosca && moHost) { try { S.mosca.mount(moHost, {}); } catch (e) {} }
+
+    // The Proof takes no hand-off and subscribes to nothing -- it generates
+    // its own keys per click and reads only its own textarea -- so its mount
+    // order is genuinely free. Guarded like every other one: this section does
+    // real cryptography, and if it cannot start, the six tools above it and
+    // the page text must all still work.
+    var pfHost = document.getElementById('proof-mount');
+    if (S.proof && pfHost) {
+      try { S.proof.mount(pfHost, {}); }
+      catch (e) {
+        pfHost.innerHTML = '<p class="sc-wait">This tool could not start in this browser. It needs ES modules ' +
+          'and WebCrypto. Everything else on the page stands without it.</p>';
+      }
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else go();

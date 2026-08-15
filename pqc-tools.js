@@ -1687,11 +1687,22 @@ function mount(root, opts) {
     var now = new Date(), end = new Date(year, 11, 31);
     return Math.max(1, Math.round((end - now) / (1000 * 60 * 60 * 24 * 365.25) * 4));
   }
+  /* Four distinct YEARS to test, not four instruments -- EO 14412 supplies two
+   * of them, and 2030 is independently the CNSA 2.0 exclusive-use date for
+   * signing and networking and the EU roadmap's high-risk date. Labels name
+   * every instrument that actually binds at that year, because a compliance row
+   * that under-names its year lets a reader plan against the wrong one.
+   * CNSA 2.0 exclusive use is NOT a single date: signing and traditional
+   * networking are 2030, web/cloud/OS are 2033. Collapsing it to 2033 (as this
+   * list did until the 2026-08-14 referee pass) understates the binding date by
+   * three years for anyone who signs code. Do not add a fifth row at 2030 --
+   * this array also drives the Sequencer's deadline buttons and the Odds tool's
+   * test-year chips, so a duplicate year renders as two identical controls. */
   var DEADLINES = [
-    { y: 2030, label: 'EO 14412 — key establishment', short: '2030' },
+    { y: 2030, label: 'EO 14412 key establishment · CNSA 2.0 signing & networking', short: '2030' },
     { y: 2031, label: 'EO 14412 — digital signatures', short: '2031' },
-    { y: 2033, label: 'CNSA 2.0 — exclusive use', short: '2033' },
-    { y: 2035, label: 'NIST IR 8547 — disallowed', short: '2035' }
+    { y: 2033, label: 'CNSA 2.0 — web, cloud & OS exclusive', short: '2033' },
+    { y: 2035, label: 'NIST IR 8547 (still a draft) — disallowed', short: '2035' }
   ];
   // The Odds (below) tests specific years against these same real deadlines --
   // one list, so a date fixed here can never drift out of sync with there.

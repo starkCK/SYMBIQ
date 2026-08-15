@@ -5,6 +5,12 @@
   --muted: #9aa5bd;
   --violet: #a78bfa;
   --teal: #2dd4bf;
+  /* Links get their OWN token rather than borrowing --teal. In dark mode the
+     two are the same value; in light mode --teal has to stay bright enough to
+     work as an accent on bars, gradients and borders, while a link has to clear
+     4.5:1 as body text. One variable cannot do both jobs, and making --teal
+     dark enough for text would drag the brand accent down with it site-wide. */
+  --link: #2dd4bf;
   --border: #232d45;
   --green: #4ade80;
   --yellow: #facc15;
@@ -26,7 +32,27 @@
     --text: #0f172a;
     --muted: #526180;
     --violet: #7c3aed;
-    --teal: #0d9488;
+    /* teal-600 #0d9488 measured 3.58:1 on --bg and 3.74:1 on --panel. Both are
+       under the 4.5:1 minimum for body text, and a light-mode sweep of every
+       text node on all 17 pages found 88 elements failing on exactly this one
+       value -- h4 headings, bold runs, active .preset buttons, em, eyebrows,
+       measurement tags, the archive question numbers. One variable, 88
+       failures, thirteen pages.
+       teal-700 is one step darker, still unmistakably the same colour, and
+       measures 5.23:1 on --bg and 5.47:1 on --panel. It is also the exact value
+       pqc.html had already been patching in page-locally three separate times,
+       so this promotes a proven local fix to source rather than inventing a new
+       one. Non-text uses (accent bars, borders, focus rings, accent-color) only
+       get darker, which on a light background is neutral-to-better.
+       --h1-c and --glow2 are separate tokens and are deliberately untouched.
+       DARK MODE IS UNCHANGED -- this lives only inside the light media query. */
+    --teal: #0f766e;
+    /* Links keep their OWN token even though it currently equals --teal in both
+       modes. --teal is the brand accent and may legitimately be brightened
+       later for bars and glows; link text may not, because it carries a hard
+       4.5:1 floor. Splitting them now means that future change cannot silently
+       reintroduce this bug. */
+    --link: #0f766e;
     --border: #dbe2ef;
     --nav-bg: rgba(248, 250, 252, 0.85);
     --dot: rgba(124, 58, 237, 0.06);
@@ -137,8 +163,34 @@ p { margin-bottom: 14px; }
 }
 .card:hover { transform: translateY(-3px); border-color: rgba(45, 212, 191, 0.45); box-shadow: 0 10px 28px var(--shadow); }
 .card h3 { margin-bottom: 8px; font-size: 1.05rem; }
-a { color: var(--teal); text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 0.15s ease; }
-a:hover { text-decoration-color: var(--teal); }
+a { color: var(--link); text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 0.15s ease; }
+a:hover { text-decoration-color: currentColor; }
+
+/* WCAG 1.4.1: when colour is the ONLY thing separating a link from the text
+   around it, it needs 3:1 against that text. Measured, this site failed badly
+   in dark mode -- #2dd4bf against body #e8ecf6 is 1.57:1, so a link and a
+   sentence are near-identical in luminance and only hue tells them apart. Any
+   reader with a colour-vision deficiency, or any greyscale display, loses them
+   entirely. Underlining prose links removes the dependency on colour outright,
+   which is the fix WCAG actually asks for; the light-mode --link darkening
+   above handles 1.4.3 separately.
+
+   Scoped to bare <a> inside prose blocks, because `a` is global here and
+   underlining nav items, cards and CTA buttons would wreck them. The site's
+   convention makes this exact: every inline prose link is a bare <a>, and
+   everything button-like carries a class (.bigplay, .cta, .herocta-alt,
+   .orjump). Verified across all 17 pages -- 125 bare prose links, and the only
+   classed ones are those four CTA kinds. If a future prose link needs a class,
+   underline it explicitly rather than widening this selector. */
+:is(p, li, dd, td, figcaption, blockquote) a:not([class]) {
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-decoration-thickness: 1px;
+}
+:is(p, li, dd, td, figcaption, blockquote) a:not([class]):hover {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+}
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }
 .grid .card { animation: fadeUp 0.5s ease-out both; }
 .grid .card:nth-child(2) { animation-delay: 0.08s; }

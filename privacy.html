@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — SymbiQ</title>
+<meta name="description" content="What SymbiQ stores, measures and never collects. No accounts, no advertising cookies, cookieless analytics, and progress kept on your own device.">
+<!-- social:start -->
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/privacy.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/privacy.html">
+<meta property="og:title" content="Privacy — SymbiQ">
+<meta property="og:description" content="What SymbiQ stores, measures and never collects. No accounts, no advertising cookies, cookieless analytics, and progress kept on your own device.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="Privacy — SymbiQ">
+<meta name="twitter:description" content="What SymbiQ stores, measures and never collects. No accounts, no advertising cookies, cookieless analytics, and progress kept on your own device.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<!-- social:end -->
+<link rel="stylesheet" href="style.css?v=29">
+<script src="nav.js?v=5" defer></script>
+<script src="tiers.js?v=2" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="explainers">
+      <summary>Explainers</summary>
+      <div class="navpanel">
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <a href="pqc.html" class="navmain">What post-quantum costs on the wire<span class="sub">Measured in your browser, with real keys</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">Real PQC keys, measured on the wire</span></a>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, from the top</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="track">
+      <summary>Track</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The daily question + the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+
+
+
+<h1>Privacy</h1>
+<p class="lede">The short version: SymbiQ has no accounts, sets no advertising cookies, and stores your progress on your own device. The long version is below, and it is the whole of it.</p>
+
+<h2>What is stored on your device, not ours</h2>
+<p>Your progress through The Solver's Path, your Daily Question streak, and any depth preference you set are held in your browser's <strong>localStorage</strong>. That data never leaves your machine and we cannot read it. Clearing your browser data deletes it permanently — there is no server copy to restore from, which is the trade-off for not asking you to make an account.</p>
+
+<h2>What we measure</h2>
+<p>We use <a href="https://www.goatcounter.com/">GoatCounter</a> for analytics. It is cookieless and does not track individuals across sites. It records the page requested, the referring page, a coarse country, and a browser and screen-size category. It does not store IP addresses after processing and does not build a profile of you. This is why the site shows no cookie banner: there is no consent to collect, because there is nothing being set on your device for us.</p>
+
+<h2>What you choose to send us</h2>
+<p>Two forms exist on this site: the newsletter signup and the correction report. Both are delivered to our inbox through <a href="https://web3forms.com/">Web3Forms</a>, which passes the message on and does not retain it for other purposes. We only ever receive what you type into the form. An email address given for the newsletter is used to send the newsletter and for nothing else — it is never sold, rented, or shared, and every issue carries an unsubscribe link.</p>
+
+<h2>Where the site is served from</h2>
+<p>The site is static and hosted on <strong>GitHub Pages</strong>. Like any web host, GitHub processes the network requests needed to serve pages to you; their handling is covered by <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. We do not run a server of our own and hold no server-side logs.</p>
+
+<h2>Community spaces</h2>
+<p>Our Discord server is operated by Discord and governed by <a href="https://discord.com/privacy">their privacy policy</a> in addition to our own rules. What you post there is visible to other members. Nothing you do on this website is linked to your Discord identity.</p>
+
+<h2>Children</h2>
+<p>SymbiQ is written for a general audience and is not directed at children under 13. We do not knowingly collect personal data from children. If you believe a child has sent us personal data, write to us and we will delete it.</p>
+
+<h2>Your rights</h2>
+<p>Depending on where you live — under India's Digital Personal Data Protection Act, the UK/EU GDPR, or similar law — you may have the right to ask what personal data we hold about you, to have it corrected, to have it deleted, or to withdraw consent. In practice we hold almost nothing: an email address if you subscribed, and whatever you typed into a form. Write to the address below and we will act on any such request, and in any case within 30 days.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes materially we will say so on the site rather than quietly editing the page. The date below is the last substantive change.</p>
+
+<h2>Contact</h2>
+<p>Questions about privacy, or a request about your data: <strong>[FILL: contact email]</strong>.</p>
+<p class="verif">Last updated: [FILL: date]. Operated by [FILL: name or registered entity], [FILL: city, country].</p>
+<footer>SymbiQ &middot; No accounts, no ad cookies, no profile of you. <a href="terms.html">Terms</a></footer>
+</div>
+</body>
+</html>

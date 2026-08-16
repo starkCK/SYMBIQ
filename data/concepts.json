@@ -1,0 +1,639 @@
+{
+  "schema": 1,
+  "generated": "2026-08-16",
+  "note": "The concept index. Maps every idea SymbiQ already teaches to the page and anchor that teaches it. Used by the news pipeline to auto-link stories, by the site for internal linking, and to derive the editorial backlog (a concept a story needs that is NOT in here is a topic we owe). Every entry's anchor and coverage is checked by tools/check_concepts.py -- do not hand-edit without re-running it.",
+  "fields": {
+    "id": "stable slug, never reused",
+    "term": "canonical display name",
+    "aliases": "other surface forms the matcher should catch",
+    "page": "target page in site/",
+    "anchor": "fragment id on that page, or empty for page root",
+    "tier": "depth it is taught at: g plain / y working / r formal / '' n-a",
+    "kind": "concept | tool | game",
+    "generic": "true = too common to auto-link inline; appears in the concepts card only",
+    "blurb": "one line, used on the 'Concepts in this story' card"
+  },
+  "concepts": [
+    {
+      "id": "quantum-error-correction",
+      "term": "quantum error correction",
+      "aliases": ["QEC", "error correction", "error-corrected", "quantum error-correction"],
+      "page": "qec.html",
+      "anchor": "green",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "Spreading one fragile qubit across many so the machine can find mistakes without ever looking at the answer."
+    },
+    {
+      "id": "surface-code",
+      "term": "surface code",
+      "aliases": ["surface codes", "rotated surface code", "surface-17", "toric code"],
+      "page": "qec.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The error-correcting code almost every hardware roadmap is built on -- a grid where only neighbours are ever compared."
+    },
+    {
+      "id": "syndrome",
+      "term": "syndrome",
+      "aliases": ["syndromes", "syndrome extraction", "parity check", "parity checks", "stabilizer measurement"],
+      "page": "qec.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The alarm pattern a code emits. It says whether neighbours disagree, never what they are -- which is why measuring it does not destroy the data."
+    },
+    {
+      "id": "stabilizer",
+      "term": "stabilizer",
+      "aliases": ["stabilizers", "stabiliser", "stabilizer formalism", "stabilizer code"],
+      "page": "qec.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The algebra underneath every surface code: operators the encoded state is required to be a +1 eigenstate of."
+    },
+    {
+      "id": "decoder",
+      "term": "decoder",
+      "aliases": ["decoders", "decoding", "real-time decoder"],
+      "page": "qec.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The software that reads the alarms and guesses what actually went wrong. This is the seat AI is currently taking."
+    },
+    {
+      "id": "mwpm",
+      "term": "minimum-weight perfect matching",
+      "aliases": ["MWPM", "matching decoder", "minimum weight matching", "correlated matching"],
+      "page": "qec.html",
+      "anchor": "duel",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The standard hand-written decoder: pair up the alarms using the cheapest explanation. Optimal under uniform noise, and only under uniform noise."
+    },
+    {
+      "id": "code-distance",
+      "term": "code distance",
+      "aliases": ["distance d", "code distance d", "distance-d", "d=3", "d=5", "d=7", "distance-3", "distance-5", "distance-7", "distance-11"],
+      "page": "logical-qubit.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "How many single failures a code can absorb before the logical bit flips. Raising it by two buys one more power of suppression; raising an odd d by one buys nothing."
+    },
+    {
+      "id": "logical-qubit",
+      "term": "logical qubit",
+      "aliases": ["logical qubits", "logical error rate"],
+      "page": "logical-qubit.html",
+      "anchor": "",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "One reliable qubit built out of many unreliable ones. The only qubit count that means anything."
+    },
+    {
+      "id": "physical-qubit",
+      "term": "physical qubit",
+      "aliases": ["physical qubits"],
+      "page": "logical-qubit.html",
+      "anchor": "green",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "The actual hardware qubit. Thousands of them may be spent to make a single logical one."
+    },
+    {
+      "id": "error-threshold",
+      "term": "error threshold",
+      "aliases": ["threshold", "below threshold", "p_th", "above threshold"],
+      "page": "race.html",
+      "anchor": "threshold",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The line the whole field is racing to stay under. Below it, more qubits compound into reliability; above it, more qubits make things worse."
+    },
+    {
+      "id": "lambda-suppression",
+      "term": "Lambda suppression factor",
+      "aliases": ["suppression factor", "Willow", "below-threshold demonstration"],
+      "page": "race.html",
+      "anchor": "threshold",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "How much the error rate falls per two steps of code distance. Google's Willow measured 2.14 for the d=5 to d=7 step."
+    },
+    {
+      "id": "superposition",
+      "term": "superposition",
+      "aliases": ["superposed", "in superposition"],
+      "page": "quantum-mechanics.html",
+      "anchor": "bloch",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "A qubit holding a definite state that is not one of the answers you can read out."
+    },
+    {
+      "id": "entanglement",
+      "term": "entanglement",
+      "aliases": ["entangled", "entangled pair", "Bell pair", "Bell state"],
+      "page": "quantum-mechanics.html",
+      "anchor": "chsh",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Correlations two particles share that no classical strategy can fake -- and which still cannot carry a message."
+    },
+    {
+      "id": "bell-inequality",
+      "term": "Bell inequality",
+      "aliases": ["CHSH", "Bell test", "Bell's theorem", "Tsirelson bound", "Tsirelson"],
+      "page": "quantum-mechanics.html",
+      "anchor": "chsh",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "The experiment that proves entanglement is real: play it and watch the win rate cross a ceiling classical physics cannot pass."
+    },
+    {
+      "id": "bloch-sphere",
+      "term": "Bloch sphere",
+      "aliases": ["Bloch"],
+      "page": "quantum-mechanics.html",
+      "anchor": "bloch",
+      "tier": "g",
+      "kind": "tool",
+      "blurb": "One qubit drawn as a point on a sphere. Six real gates rotate it live."
+    },
+    {
+      "id": "bqp",
+      "term": "BQP",
+      "aliases": ["complexity class", "BPP", "P vs NP"],
+      "page": "quantum-mechanics.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The class of problems a quantum computer solves efficiently. None of its containments is proven strict."
+    },
+    {
+      "id": "gottesman-knill",
+      "term": "Gottesman-Knill theorem",
+      "aliases": ["Gottesman-Knill", "stabilizer simulation"],
+      "page": "quantum-mechanics.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Why exponential state space is not the reason quantum computers are hard to simulate -- stabilizer circuits have it too and simulate efficiently."
+    },
+    {
+      "id": "shors-algorithm",
+      "term": "Shor's algorithm",
+      "aliases": ["Shor", "Shor's", "factoring algorithm"],
+      "page": "bitcoin.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The algorithm that breaks RSA and elliptic-curve cryptography, given a large enough error-corrected machine."
+    },
+    {
+      "id": "grovers-algorithm",
+      "term": "Grover's algorithm",
+      "aliases": ["Grover", "Grover search", "quadratic speedup"],
+      "page": "play.html",
+      "anchor": "grover",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "Quantum search: a quadratic speedup, not an exponential one -- and one step too many makes it worse."
+    },
+    {
+      "id": "ecdsa",
+      "term": "ECDSA",
+      "aliases": ["elliptic curve", "elliptic-curve cryptography", "ECC", "secp256k1"],
+      "page": "bitcoin.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The signature scheme protecting Bitcoin -- and the one Shor's algorithm actually targets."
+    },
+    {
+      "id": "post-quantum-cryptography",
+      "term": "post-quantum cryptography",
+      "aliases": ["PQC", "quantum-safe", "quantum-resistant", "post quantum"],
+      "page": "pqc.html",
+      "anchor": "",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Cryptography designed to survive a quantum computer -- already standardised, already deployable, and not free on the wire."
+    },
+    {
+      "id": "ml-kem",
+      "term": "ML-KEM",
+      "aliases": ["Kyber", "CRYSTALS-Kyber", "FIPS 203", "ML-KEM-768"],
+      "page": "pqc.html",
+      "anchor": "cliff",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The standardised post-quantum key exchange. Bigger than what it replaces, and that size has a measurable cost."
+    },
+    {
+      "id": "ml-dsa",
+      "term": "ML-DSA",
+      "aliases": ["Dilithium", "CRYSTALS-Dilithium", "FIPS 204", "ML-DSA-65"],
+      "page": "pqc.html",
+      "anchor": "cliff",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The standardised post-quantum signature scheme."
+    },
+    {
+      "id": "slh-dsa",
+      "term": "SLH-DSA",
+      "aliases": ["SPHINCS+", "SPHINCS", "FIPS 205", "hash-based signature"],
+      "page": "pqc.html",
+      "anchor": "proof",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The conservative hash-based signature. Its real cost is not the 7,856-byte signature -- it is the seconds it takes to produce one."
+    },
+    {
+      "id": "harvest-now-decrypt-later",
+      "term": "harvest now, decrypt later",
+      "aliases": ["harvest-now-decrypt-later", "HNDL", "store now decrypt later", "retrospective decryption"],
+      "page": "pqc.html",
+      "anchor": "mosca",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Traffic recorded today, decrypted whenever a quantum computer arrives. It is why key exchange is urgent and signatures are not."
+    },
+    {
+      "id": "moscas-inequality",
+      "term": "Mosca's inequality",
+      "aliases": ["Mosca", "X + Y > Z"],
+      "page": "pqc.html",
+      "anchor": "mosca",
+      "tier": "y",
+      "kind": "tool",
+      "blurb": "The one-line test for whether you are already late: secrecy lifetime plus migration time against time-to-quantum."
+    },
+    {
+      "id": "crqc",
+      "term": "cryptographically relevant quantum computer",
+      "aliases": ["CRQC", "Q-Day", "Y2Q"],
+      "page": "pqc.html",
+      "anchor": "odds",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A machine big enough to break real cryptography. Nobody knows the date, so the honest treatment is a probability curve, not a year."
+    },
+    {
+      "id": "cbom",
+      "term": "cryptographic bill of materials",
+      "aliases": ["CBOM", "CycloneDX", "crypto inventory"],
+      "page": "pqc.html",
+      "anchor": "inventory",
+      "tier": "y",
+      "kind": "tool",
+      "blurb": "A machine-readable list of every algorithm in your estate. Paste certificates and the page decodes the ASN.1 itself."
+    },
+    {
+      "id": "cnsa-2",
+      "term": "CNSA 2.0",
+      "aliases": ["CNSA", "Commercial National Security Algorithm Suite"],
+      "page": "pqc.html",
+      "anchor": "estate",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The NSA's post-quantum timetable. Not one date: software signing and networking are 2030, not 2033."
+    },
+    {
+      "id": "hybrid-key-exchange",
+      "term": "hybrid key share",
+      "aliases": ["hybrid key exchange", "X25519MLKEM768", "X25519", "hybrid group", "hybrid TLS"],
+      "page": "pqc.html",
+      "anchor": "cliff",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Running a classical and a post-quantum key exchange together, so breaking one is not enough."
+    },
+    {
+      "id": "quantum-machine-learning",
+      "term": "quantum machine learning",
+      "aliases": ["QML", "quantum AI", "quantum neural network"],
+      "page": "ai.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The most-claimed and least-shown application. The honest near-term win is quantum-grown data, not faster training."
+    },
+    {
+      "id": "hhl",
+      "term": "HHL algorithm",
+      "aliases": ["HHL", "quantum linear systems"],
+      "page": "ai.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The exponential-speedup headline that dies on its own fine print: sparsity, conditioning, and getting the answer out."
+    },
+    {
+      "id": "barren-plateaus",
+      "term": "barren plateaus",
+      "aliases": ["barren plateau"],
+      "page": "ai.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Gradients that vanish exponentially with qubit count, so the variational circuit has nothing to descend."
+    },
+    {
+      "id": "dequantization",
+      "term": "dequantization",
+      "aliases": ["dequantized", "Tang", "quantum-inspired algorithm"],
+      "page": "ai.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Classical algorithms that matched several claimed quantum speedups once the same data assumptions were granted."
+    },
+    {
+      "id": "data-loading-problem",
+      "term": "data-loading problem",
+      "aliases": ["input problem", "data loading", "state preparation"],
+      "page": "ai.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The toll that kills most quantum-ML speedups: getting classical data into the machine costs what the speedup saved."
+    },
+    {
+      "id": "ai-quantum-loop",
+      "term": "the AI-quantum loop",
+      "aliases": ["symbiosis", "AI fixes quantum", "quantum supercharges AI"],
+      "page": "ai.html",
+      "anchor": "loop-widget",
+      "tier": "g",
+      "kind": "tool",
+      "blurb": "SymbiQ's whole thesis in one diagram: one direction is shipping now, the other is mostly ahead."
+    },
+    {
+      "id": "superconducting-qubits",
+      "term": "superconducting qubits",
+      "aliases": ["superconducting", "transmon", "transmons"],
+      "page": "compare.html",
+      "anchor": "mod-widget",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Fast gates, short coherence, fabrication that scales like chips. Google and IBM's bet."
+    },
+    {
+      "id": "trapped-ion",
+      "term": "trapped ion",
+      "aliases": ["trapped ions", "ion trap", "trapped-ion"],
+      "page": "compare.html",
+      "anchor": "mod-widget",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Long coherence and all-to-all connectivity, paid for in gate speed."
+    },
+    {
+      "id": "neutral-atom",
+      "term": "neutral atom",
+      "aliases": ["neutral atoms", "Rydberg"],
+      "page": "compare.html",
+      "anchor": "mod-widget",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Optical tweezers holding thousands of identical atoms, with rearrangeable geometry."
+    },
+    {
+      "id": "photonic-qubits",
+      "term": "photonic qubits",
+      "aliases": ["photonic", "photonics", "photonic quantum"],
+      "page": "compare.html",
+      "anchor": "mod-widget",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Room temperature and natural networking, fighting loss as the central enemy."
+    },
+    {
+      "id": "coherence-time",
+      "term": "coherence time",
+      "aliases": ["coherence", "decoherence", "T1", "T2"],
+      "page": "compare.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "How long a qubit holds its state before the environment scrambles it."
+    },
+    {
+      "id": "gate-fidelity",
+      "term": "gate fidelity",
+      "aliases": ["two-qubit fidelity", "gate error", "fidelity"],
+      "page": "compare.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The metric that actually beats qubit count when you are reading a hardware announcement."
+    },
+    {
+      "id": "operations-research",
+      "term": "operations research",
+      "aliases": ["OR", "operational research", "mathematical optimisation", "mathematical optimization"],
+      "page": "feasible.html",
+      "anchor": "",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "The field that already decides your delivery route, your shift roster and your power grid -- and the classical baseline quantum optimisation has to beat."
+    },
+    {
+      "id": "linear-programming",
+      "term": "linear programming",
+      "aliases": ["LP", "simplex", "simplex method", "vertex theorem"],
+      "page": "feasible.html",
+      "anchor": "t02",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Why you can skip infinitely many points and only check the corners."
+    },
+    {
+      "id": "duality",
+      "term": "duality",
+      "aliases": ["shadow price", "shadow prices", "dual problem"],
+      "page": "feasible.html",
+      "anchor": "t03",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Every optimisation problem has a shadow twin that tells you where the next rupee should go."
+    },
+    {
+      "id": "integer-programming",
+      "term": "integer programming",
+      "aliases": ["MILP", "mixed-integer", "integer program"],
+      "page": "feasible.html",
+      "anchor": "t04",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Why demanding whole numbers turns an easy problem hard."
+    },
+    {
+      "id": "branch-and-bound",
+      "term": "branch and bound",
+      "aliases": ["branch-and-bound"],
+      "page": "feasible.html",
+      "anchor": "t05",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "How to search a space too big to search, by proving whole regions cannot contain the answer."
+    },
+    {
+      "id": "network-flow",
+      "term": "network flow",
+      "aliases": ["max-flow", "min-cut", "max-flow min-cut", "maximum flow"],
+      "page": "feasible.html",
+      "anchor": "t06",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "How much you can push through a network -- and the bottleneck that answers the same question backwards."
+    },
+    {
+      "id": "matching",
+      "term": "matching",
+      "aliases": ["assignment problem", "bipartite matching", "Hungarian algorithm"],
+      "page": "feasible.html",
+      "anchor": "t07",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Pairing things up without being greedy. The same algorithm runs inside a quantum decoder."
+    },
+    {
+      "id": "dynamic-programming",
+      "term": "dynamic programming",
+      "aliases": ["shortest path", "shortest paths", "Dijkstra", "Bellman"],
+      "page": "feasible.html",
+      "anchor": "t08",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Why the direct road is not the fastest route, and how optimal tails make the search tractable."
+    },
+    {
+      "id": "queueing-theory",
+      "term": "queueing theory",
+      "aliases": ["queuing theory", "queueing", "Little's law"],
+      "page": "feasible.html",
+      "anchor": "t09",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Why systems collapse well before they are full."
+    },
+    {
+      "id": "metaheuristics",
+      "term": "metaheuristics",
+      "aliases": ["metaheuristic", "local search", "tabu search", "genetic algorithm"],
+      "page": "feasible.html",
+      "anchor": "t10",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "What you do when proof is out of reach and you still need a good answer today."
+    },
+    {
+      "id": "qubo-ising",
+      "term": "QUBO",
+      "aliases": ["Ising", "Ising model", "quadratic unconstrained binary optimisation", "QUBO formulation"],
+      "page": "feasible.html",
+      "anchor": "bridges",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The encoding every quantum optimisation claim rests on: turn your problem into a magnet and find its ground state."
+    },
+    {
+      "id": "simulated-annealing",
+      "term": "simulated annealing",
+      "aliases": ["annealing", "cooling schedule", "quantum annealing"],
+      "page": "play.html",
+      "anchor": "volcano",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "Hot early to cross ridges, cold late to settle. Play the cooling schedule, not the climber."
+    },
+    {
+      "id": "max-cut",
+      "term": "Max-Cut",
+      "aliases": ["maximum cut", "MaxCut", "graph partitioning"],
+      "page": "play.html",
+      "anchor": "maxcut",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "The NP-hard problem that is the standard proving ground for quantum optimisation."
+    },
+    {
+      "id": "quantum-gates",
+      "term": "quantum gates",
+      "aliases": ["quantum gate", "circuit model", "quantum circuit"],
+      "page": "play.html",
+      "anchor": "golf",
+      "tier": "g",
+      "kind": "game",
+      "blurb": "Reach a target state in as few gates as possible. Every par is a proven minimum."
+    },
+    {
+      "id": "decoder-duel",
+      "term": "Decoder Duel",
+      "aliases": ["decoder duel"],
+      "page": "qec.html",
+      "anchor": "duel",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "Sit in the AI's chair and out-decode minimum-weight matching on a chip with a defect it cannot express."
+    },
+    {
+      "id": "solvers-path",
+      "term": "The Solver's Path",
+      "aliases": ["the campaign", "the six acts"],
+      "page": "journey.html",
+      "anchor": "",
+      "tier": "",
+      "kind": "game",
+      "blurb": "Six acts where the character's flaw is the mechanic, and the physics does the judging."
+    },
+    {
+      "id": "daily-question",
+      "term": "The Question",
+      "aliases": ["daily question", "the daily question"],
+      "page": "index.html",
+      "anchor": "daily-q",
+      "tier": "",
+      "kind": "game",
+      "blurb": "One question a day, at three depths, with a fault-tolerant streak."
+    },
+    {
+      "id": "corrections",
+      "term": "corrections",
+      "aliases": ["error bounty", "correction log"],
+      "page": "corrections.html",
+      "anchor": "",
+      "tier": "",
+      "kind": "concept",
+      "blurb": "Every mistake we have made, run louder than the original claim."
+    },
+    {
+      "id": "qubit",
+      "term": "qubit",
+      "aliases": ["qubits"],
+      "page": "basics.html",
+      "anchor": "",
+      "tier": "g",
+      "kind": "concept",
+      "generic": true,
+      "blurb": "The quantum bit: the unit everything else is counted in."
+    },
+    {
+      "id": "fault-tolerance",
+      "term": "fault tolerance",
+      "aliases": ["fault-tolerant", "fault tolerant quantum computing", "FTQC"],
+      "page": "deep.html",
+      "anchor": "",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Computing reliably out of unreliable parts -- the regime the whole roadmap is aimed at."
+    }
+  ]
+}

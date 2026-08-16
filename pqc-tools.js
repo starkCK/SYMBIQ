@@ -2478,10 +2478,20 @@ function mount(root, opts) {
       return r.json();
     }).then(function (list) {
       if (!Array.isArray(list) || !list.length) {
+        // Verified against the live API (2026-08-16): querying "example.com" with
+        // include_subdomains=false DOES match a cert whose SAN lists BOTH
+        // example.com and www.example.com -- multi-SAN certs are not missed.
+        // What IS missed is the less common case where the live site's cert has
+        // no SAN entry for the exact name typed at all (e.g. it only covers
+        // www.example.com, with the bare domain served by something else). The
+        // first two reasons below were the only ones named; this is the third,
+        // and it is the one most likely to make a real, working site read as
+        // "no certificate" here.
         return { pem: '', entries: [], error:
           'No certificates found for "' + domain + '" in public CT logs. That can mean the domain has never had ' +
-          'a publicly-trusted certificate, or it is too new for the logs to have caught up. You can still read its ' +
-          'chain yourself: openssl s_client -connect ' + domain + ':443 -showcerts' };
+          'a publicly-trusted certificate, it is too new for the logs to have caught up, or its certificate covers ' +
+          'a different exact name (try "www.' + domain + '" if you typed the bare domain, or vice versa). You can ' +
+          'still read its chain yourself: openssl s_client -connect ' + domain + ':443 -showcerts' };
       }
       // Most-recent, not-revoked first. CT logs are append-only and not
       // recency-ordered, so this is a sort, not a filter — a revoked cert is

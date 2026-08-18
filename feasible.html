@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Feasible Region — a course in operations research | SymbiQ</title>
-<meta name="description" content="Operations research from the top: the feasible region, duality and shadow prices, integer programming, branch and bound, network flow, matching, dynamic programming, queueing and metaheuristics. Every topic taught as a picture, then an intuition, then the mathematics, then a real problem it actually solves.">
+<meta name="description" content="Operations research from the top: the feasible region, duality and shadow prices, integer programming, branch and bound, network flow, matching, dynamic programming, queueing, metaheuristics, and a full module on game theory. Every topic taught as a picture, then an intuition, then the mathematics, then a real problem it actually solves.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/feasible.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/feasible.html">
 <meta property="og:title" content="The Feasible Region — a course in operations research | SymbiQ">
-<meta property="og:description" content="Operations research from the top: the feasible region, duality and shadow prices, integer programming, branch and bound, network flow, matching, dynamic programming, queueing and metaheuristics.…">
+<meta property="og:description" content="Operations research from the top: the feasible region, duality, integer programming, network flow, matching, queueing, metaheuristics, and a full module on game theory — Nash equilibrium, auctions, and the Shapley value.…">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="The Feasible Region — a course in operations research | SymbiQ">
-<meta name="twitter:description" content="Operations research from the top: the feasible region, duality and shadow prices, integer programming, branch and bound, network flow, matching, dynamic programming, queueing and metaheuristics.…">
+<meta name="twitter:description" content="Operations research from the top: the feasible region, duality, integer programming, network flow, matching, queueing, metaheuristics, and a full module on game theory — Nash equilibrium, auctions, and the Shapley value.…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=29">
@@ -127,7 +127,7 @@
   <p class="fr-lede">Everything that is actually possible. Nothing that isn&#39;t.</p>
   <p class="fr-sub">Operations research is the mathematics of deciding well when you cannot have everything. It routed your parcel, staffed tonight&#39;s hospital shift, and priced your flight twice while you were looking at it — and it is the field quantum computing is most often accused of being about to revolutionise. This is a course in it, from the top.</p>
   <div class="fr-stats">
-    <div><b>10</b><span>topics, each built<br>picture → maths</span></div>
+    <div><b>15</b><span>topics, each built<br>picture → maths</span></div>
     <div><b>2</b><span>games where the<br>maths does the judging</span></div>
     <div><b>1937</b><span>the year it got its<br>name, at a radar station</span></div>
     <div><b>3</b><span>places it runs inside<br>a quantum computer</span></div>
@@ -151,7 +151,7 @@
 
 <p>So the honest order is: <strong>learn what the classical machinery does first.</strong> Then the quantum question becomes answerable instead of atmospheric. That is what this page is for, and why it sits beside the quantum material rather than inside it.</p>
 
-<h2 id="course"><span class="fr-secnum">The course</span>Ten topics, each taught four ways</h2>
+<h2 id="course"><span class="fr-secnum">The course</span>Fifteen topics, each taught four ways</h2>
 
 <div class="fr-toc">
   <h3>How each topic is built</h3>
@@ -167,11 +167,16 @@
     <li><a href="#t08">Shortest paths &amp; DP<em>optimal tails</em></a></li>
     <li><a href="#t09">Queueing<em>why systems fall over</em></a></li>
     <li><a href="#t10">Metaheuristics<em>when exact methods die</em></a></li>
+    <li><a href="#t11">Nash equilibrium<em>when your best move depends on theirs</em></a></li>
+    <li><a href="#t12">Zero-sum &amp; minimax<em>why bluffing has to be random</em></a></li>
+    <li><a href="#t13">Cooperative games &amp; Shapley value<em>splitting credit fairly</em></a></li>
+    <li><a href="#t14">Mechanism design &amp; auctions<em>designing the rules, not the play</em></a></li>
+    <li><a href="#t15">Evolutionary game theory<em>when strategies breed</em></a></li>
   </ol>
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all ten</button>
+  <button type="button" id="fr-open">Open all fifteen</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -963,7 +968,371 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 
     <div class="mod-out">
       <a class="q" href="play.html#volcano">Play the annealing game ▸</a>
-      <a href="#bridges">The three bridges to quantum ▸</a>
+      <a href="#t11">Next: when your opponent gets a vote too ▸</a>
+    </div>
+  </div>
+</details>
+
+<h2 id="game-theory"><span class="fr-secnum">The flagship</span>Game theory: when the thing you&#39;re optimising against is also deciding</h2>
+
+<p>Every topic above assumes one decision-maker facing fixed limits — machine-hours, a network, a queue. <strong>Game theory drops that assumption.</strong> The moment another party is also choosing, and choosing in response to you, the ground shifts: your best plan depends on theirs, which depends on yours. There is no longer a single answer to compute — there is an <em>equilibrium</em> to find, and sometimes to prove doesn&#39;t exist in the form you hoped.</p>
+
+<p>It gets the most room of any module here because it underwrites more of daily life than any other single idea in this course: markets clear through auctions, machine-learning predictions get explained through a 70-year-old fairness theorem, security proofs are written as games between an adversary and a defender, and populations — of animals, of cancer cells, of bidders — settle into stable mixes of strategy rather than one &quot;best&quot; move. Five topics, the same four-layer treatment as everything above.</p>
+
+<!-- ================= 11 ================= -->
+<details class="mod" id="t11">
+  <summary>
+    <span class="mod-n">11</span>
+    <span class="mod-t">Nash equilibrium</span>
+    <span class="mod-q">What happens when your best move depends on theirs?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A two by two payoff grid for two suspects who can stay silent or confess. Both silent scores three and three, the best joint outcome. Both confess scores one and one, worse for both, but it is the only cell neither player can improve by switching alone -- the Nash equilibrium.">
+          <text class="lbl-b" x="255" y="30" text-anchor="middle">B: silent</text>
+          <text class="lbl-b" x="425" y="30" text-anchor="middle">B: confess</text>
+          <text class="lbl-b" x="60" y="118" text-anchor="middle" transform="rotate(-90 60 118)">A: silent</text>
+          <text class="lbl-b" x="60" y="208" text-anchor="middle" transform="rotate(-90 60 208)">A: confess</text>
+          <rect x="170" y="70" width="170" height="90" rx="8" fill="rgba(245,158,11,.10)" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="340" y="70" width="170" height="90" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="170" y="160" width="170" height="90" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="340" y="160" width="170" height="90" rx="8" fill="rgba(245,158,11,.14)" stroke="var(--or)" stroke-width="3"/>
+          <text class="lbl-b" x="255" y="108" text-anchor="middle">3, 3</text>
+          <text class="lbl-s" x="255" y="126" text-anchor="middle">best for both — but unstable</text>
+          <text class="lbl-b" x="425" y="108" text-anchor="middle">0, 5</text>
+          <text class="lbl-b" x="255" y="198" text-anchor="middle">5, 0</text>
+          <text class="lbl-b or" x="425" y="198" text-anchor="middle">1, 1</text>
+          <text class="lbl-s or" x="425" y="216" text-anchor="middle">the Nash equilibrium</text>
+          <path d="M255 160 L255 118" class="sMut" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#fa11)"/>
+          <text class="lbl-s" x="270" y="140">A deviates alone: 3 → 5</text>
+          <path d="M340 108 L298 108" class="sMut" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#fa11)"/>
+          <text class="lbl-s" x="330" y="96" text-anchor="end">B deviates alone: 3 → 5</text>
+          <defs><marker id="fa11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+        </svg></div>
+        <figcaption><strong>The best joint outcome is not where the game settles.</strong> From (silent, silent) each player alone can improve by switching to confess (3 → 5), so it unravels. From (confess, confess), switching alone only makes things worse (1 → 0), so nobody moves — even though both would rather be back at (3, 3) together. That is the whole trap in one grid.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>A <strong>Nash equilibrium</strong> is a set of choices, one per player, where nobody can do better by unilaterally switching — given what everyone else is doing. Not &quot;the best outcome.&quot; Not &quot;fair.&quot; Just <em>stable</em>: no individual has a reason to move.</p>
+      <p>The figure is the classic Prisoner&#39;s Dilemma, and its whole point is that <strong>stable and good are different properties.</strong> (Silent, silent) is better for both players than (confess, confess) — 3 beats 1 — but it is not an equilibrium, because each player, reasoning selfishly about their own payoff alone, always prefers to confess regardless of what the other does. That preference holds player by player even though it makes the group worse off. Nothing in the structure of the game pulls it back toward the good outcome; only external enforcement (a binding agreement neither can break alone) would.</p>
+      <p>This is the pattern that recurs across the rest of this module: individually rational choices, made independently, landing somewhere nobody would have chosen on purpose.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>Formally, a strategy profile s* = (s₁*, …, sₙ*) is a Nash equilibrium if, for every player i and every alternative strategy sᵢ available to them:</p>
+      <code class="eq">uᵢ(sᵢ*, s₋ᵢ*)  ≥  uᵢ(sᵢ, s₋ᵢ*)</code>
+      <p>— your actual payoff is at least as good as any unilateral deviation, holding everyone else&#39;s strategy fixed. <strong>Existence</strong> (Nash, 1950): every finite game — finitely many players, each with finitely many strategies — has at least one equilibrium, though it may require <em>mixed</em> strategies (randomising over pure choices) rather than a single deterministic one. The proof applies Kakutani&#39;s fixed-point theorem to the best-response correspondence: the map from &quot;what everyone else is doing&quot; to &quot;my best replies&quot; is continuous enough that it must have a fixed point, and a fixed point of best-response <em>is</em> an equilibrium by definition. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>The same idea shows up under a different name the moment a game has many small, interchangeable players instead of two named ones: a <strong>Wardrop equilibrium</strong>, in a network of drivers choosing routes, is reached when no driver can reduce their own travel time by switching — exactly the Nash condition, applied to routing. Worked on the standard textbook network (Roughgarden): two routes from S to T, each combining one road with travel time <em>x</em>/100 (<em>x</em> = drivers on it) and one fixed 45-minute road. With 4,000 drivers split evenly, each route carries 2,000 and costs 2000/100 + 45 = <strong>65</strong> minutes — the equilibrium, because neither route is faster to switch to. Now add a free connector between the two roads&#39; midpoints. Every driver can strictly improve by routing through it, so the <em>only</em> equilibrium left has all 4,000 drivers on the combined path, each paying 4000/100 + 0 + 4000/100 = <strong>80</strong> minutes — about 23% <em>worse</em> for everyone, from a road that could only ever help. That is Braess&#39;s paradox: adding capacity to a selfishly-routed network can make every single user worse off, because the new equilibrium is stable, not good.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Seoul, 2003</span>
+      In July 2003, Seoul closed a six-lane elevated expressway carrying roughly 168,000 vehicles a day, as part of restoring the Cheonggyecheon stream buried underneath it. City officials expected worse congestion. Traffic around the city instead <em>sped up</em> — now one of the most widely cited real demonstrations that removing road capacity from a selfishly-routed network can improve the equilibrium everyone actually experiences, the mirror image of Braess&#39;s paradox above. The general phenomenon is studied quantitatively as the &quot;price of anarchy&quot; — how much worse the selfish equilibrium is than the coordinated optimum — across real transportation networks (Youn, Gastner &amp; Jeong, <em>Physical Review Letters</em> 101, 128701 (2008)).</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t08">Where this rhymes with shortest paths ▸</a>
+      <a href="#t12">Next: when there is nothing to agree on ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 12 ================= -->
+<details class="mod" id="t12">
+  <summary>
+    <span class="mod-n">12</span>
+    <span class="mod-t">Zero-sum games and minimax</span>
+    <span class="mod-q">Why does bluffing have to be random to work?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Matching pennies. Two by two grid, player one wins plus one if the coins match, player two wins plus one if they differ. No cell is stable: from any cell, one player always wants to flip. The only equilibrium is both players choosing heads or tails with fifty percent probability each.">
+          <text class="lbl-b" x="255" y="30" text-anchor="middle">B: heads</text>
+          <text class="lbl-b" x="425" y="30" text-anchor="middle">B: tails</text>
+          <text class="lbl-b" x="60" y="118" text-anchor="middle" transform="rotate(-90 60 118)">A: heads</text>
+          <text class="lbl-b" x="60" y="208" text-anchor="middle" transform="rotate(-90 60 208)">A: tails</text>
+          <rect x="170" y="70"  width="170" height="90" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="340" y="70"  width="170" height="90" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="170" y="160" width="170" height="90" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="340" y="160" width="170" height="90" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.5"/>
+          <text class="lbl-b or" x="255" y="108" text-anchor="middle">A: +1</text>
+          <text class="lbl-s" x="255" y="126" text-anchor="middle">match — A wins</text>
+          <text class="lbl-b tl" x="425" y="108" text-anchor="middle">B: +1</text>
+          <text class="lbl-s" x="425" y="126" text-anchor="middle">differ — B wins</text>
+          <text class="lbl-b tl" x="255" y="198" text-anchor="middle">B: +1</text>
+          <text class="lbl-s" x="255" y="216" text-anchor="middle">differ — B wins</text>
+          <text class="lbl-b or" x="425" y="198" text-anchor="middle">A: +1</text>
+          <text class="lbl-s" x="425" y="216" text-anchor="middle">match — A wins</text>
+          <path d="M170 70 L510 250 M170 160 L340 70" class="sMut" stroke-width="1.2" stroke-dasharray="3 3" opacity=".5"/>
+          <text class="lbl-s" x="285" y="255" text-anchor="middle">every cell: the loser wants to flip. There is no stable pure cell.</text>
+        </svg></div>
+        <figcaption><strong>No cell is an equilibrium.</strong> Whatever pure choice each player commits to, the other can exploit it by predicting it — so from every cell, someone wants to move. The only Nash equilibrium here is both players choosing heads or tails with probability exactly one half, at random, every time.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Topic 11&#39;s Prisoner&#39;s Dilemma had a stable outcome. <strong>Matching Pennies has none</strong> — not because it is more complicated, but because it is <em>zero-sum</em>: every point one player gains, the other loses, exactly. That structure guarantees the two players&#39; interests never align on a resting point.</p>
+      <p>Say A always plays heads. B, knowing this, always plays tails and wins forever. So A cannot commit to any single pure choice without being exploited — the only way to stop being predictable is to genuinely randomise, and the only randomisation an opponent cannot exploit is fifty-fifty. This is the honest reason poker players, penalty takers and cryptographers all reach for randomness on purpose: not for variety, but because <strong>any predictable rule is a rule your opponent can play against.</strong></p>
+      <p>Von Neumann&#39;s <strong>minimax theorem</strong> (1928) — years before Nash generalised equilibrium to games where interests are not purely opposed — says every finite zero-sum game has a well-defined <em>value</em>: the amount the best defensive play guarantees you, whichever side you defend. Matching Pennies&#39; value is exactly 0. Neither player can do better against a competent opponent, and neither has to accept doing worse.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>For a finite two-player zero-sum game with payoff matrix M (to the row player; the column player receives −M), von Neumann&#39;s theorem states:</p>
+      <code class="eq">max over row strategies p  min over column strategies q   pᵀMq
+  =
+min over column strategies q  max over row strategies p   pᵀMq
+  =  v   (the value of the game)</code>
+      <p>Guaranteeing yourself at least v by defending first, and guaranteeing your opponent no more than v by attacking first, land on the exact same number — there is no advantage to moving first or second once both play optimally. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>This is topic 03, again.</strong> Finding a zero-sum game&#39;s optimal mixed strategy <em>is</em> a linear program — maximise the guaranteed value subject to the strategy being a valid probability distribution — and von Neumann&#39;s minimax theorem is exactly LP strong duality applied to that program: the row player&#39;s LP and the column player&#39;s LP are duals of each other, and strong duality is precisely the claim that their optimal values coincide. Dantzig, who built the simplex method, credited conversations with von Neumann for recognising the connection. Two fields that look unrelated turn out to share a proof.</p>
+      <p>Solved on the figure&#39;s own game: by symmetry the value is 0, achieved at p = q = (½, ½). Perturb either player off one-half in either direction and the opponent has a pure best response that beats 0 — which is exactly why one-half is the unique equilibrium, not merely <em>a</em> reasonable choice.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Penalty kicks, tested on real data</span>
+      A striker and goalkeeper choosing sides simultaneously is Matching Pennies with unequal payoffs. Chiappori, Levitt &amp; Groseclose (<em>American Economic Review</em> 92(4), 1138–1151 (2002)) tested professional penalty-kick data against the mixed-strategy prediction and found it a good fit — real, high-stakes, adversarial behaviour matching what the theorem says a genuinely unexploitable strategy must look like.</p>
+      <p><span class="where">And in security proofs</span>
+      Modern cryptography, including the post-quantum schemes covered on <a href="pqc.html">this site&#39;s PQC pages</a>, states its guarantees as a <em>game</em> between a challenger and an adversary: the scheme is secure if no adversary&#39;s winning probability can be pushed above a negligible bound, whatever strategy they run. It is the same minimax vocabulary — the defender wants to minimise the adversary&#39;s advantage, the adversary wants to maximise it — used in earnest rather than for sport.</p>
+    </div>
+
+    <div class="mod-out">
+      <a class="q" href="pqc.html">Security games, on the PQC pages ▸</a>
+      <a href="#t13">Next: splitting the winnings fairly ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 13 ================= -->
+<details class="mod" id="t13">
+  <summary>
+    <span class="mod-n">13</span>
+    <span class="mod-t">Cooperative games and the Shapley value</span>
+    <span class="mod-q">If a team earns money together, who earned how much of it?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Three players. Player one holds a left glove, players two and three each hold a right glove. A matched pair is worth one dollar; any single glove is worth nothing. Only one pair can ever be sold, so the coalition of all three is worth exactly one dollar, the same as either two-player pair that includes player one.">
+          <circle cx="120" cy="70"  r="30" fill="var(--panel)" stroke="var(--or)" stroke-width="2.5"/>
+          <text class="lbl-b" x="120" y="65" text-anchor="middle">1</text>
+          <text class="lbl-s" x="120" y="82" text-anchor="middle">🧤L</text>
+          <circle cx="280" cy="70"  r="30" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+          <text class="lbl-b" x="280" y="65" text-anchor="middle">2</text>
+          <text class="lbl-s" x="280" y="82" text-anchor="middle">🧤R</text>
+          <circle cx="440" cy="70"  r="30" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+          <text class="lbl-b" x="440" y="65" text-anchor="middle">3</text>
+          <text class="lbl-s" x="440" y="82" text-anchor="middle">🧤R</text>
+          <g class="lbl-s" text-anchor="middle">
+            <text x="120" y="150">v(1) = 0</text>
+            <text x="280" y="150">v(2) = 0</text>
+            <text x="440" y="150">v(3) = 0</text>
+          </g>
+          <text class="lbl-b or" x="200" y="180" text-anchor="middle">v(1,2) = $1</text>
+          <text class="lbl-b or" x="330" y="200" text-anchor="middle">v(1,3) = $1</text>
+          <text class="lbl-s" x="440" y="180" text-anchor="middle">v(2,3) = 0</text>
+          <text class="lbl-b" x="280" y="222" text-anchor="middle">v(1, 2, 3) = $1 — only one pair is ever sellable</text>
+        </svg></div>
+        <figcaption><strong>The &quot;glove game.&quot;</strong> Player 1 holds the scarce half of every deal. A pair sells for $1; a lone glove sells for nothing; the grand coalition is worth exactly $1, no more, because a third glove of the same hand adds nothing. The Shapley value below computes exactly how that dollar should split — and it is not an even three-way share.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Topics 11 and 12 asked what stable, non-cooperative play looks like. <strong>Cooperative game theory asks a different question: given that a group creates value <em>together</em>, how should the value be split fairly among them?</strong> Cost-sharing a shared warehouse, splitting a startup&#39;s equity, dividing a prize a whole team won — all the same question with a different noun.</p>
+      <p>The Shapley value (Shapley, 1953) answers it by asking, for each player, <em>&quot;across every possible order in which people could have joined this coalition, how much did adding me change the total value, on average?&quot;</em> A player who is essential wherever they arrive gets a large share. A player who never changes the outcome — a spare wheel — gets exactly zero, however friendly the room is.</p>
+      <p>What makes it worth naming after one person is that it is not merely <em>a</em> reasonable split. Shapley proved it is the <strong>unique</strong> split satisfying four properties nearly everyone agrees a fair split should have — stated precisely below. Reasonable-sounding fairness rules turn out to pin down one specific formula.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>For a coalitional game with value function v (v(S) = the worth of any subset S of the n players, v(∅) = 0), player i&#39;s Shapley value averages their marginal contribution over every possible arrival order:</p>
+      <code class="eq">φᵢ = (1/n!) · Σ over all orderings π   [ v(Pᵢ(π) ∪ {i}) − v(Pᵢ(π)) ]</code>
+      <p>where P<sub>i</sub>(π) is the set of players arriving before i in ordering π. <strong>Uniqueness</strong> (Shapley, 1953): φ is the only allocation rule satisfying <em>efficiency</em> (the whole value v(N) gets fully distributed), <em>symmetry</em> (two players who contribute identically get identical shares), the <em>dummy/null player</em> property (a player who adds zero value in every coalition gets zero), and <em>additivity</em> (the value of two combined games is the sum of the two separate allocations). <span class="orbadge">⟦Proven⟧</span></p>
+      <p>Worked exactly on the glove game (6 orderings of 3 players, player 1&#39;s marginal contribution in each):</p>
+      <code class="eq">order 1,2,3: v(1)−v(∅)=0        order 2,1,3: v(1,2)−v(2)=1
+order 1,3,2: v(1)−v(∅)=0        order 2,3,1: v(1,2,3)−v(2,3)=1
+order 3,1,2: v(1,3)−v(3)=1      order 3,2,1: v(1,2,3)−v(2,3)=1
+
+φ₁ = (0+0+1+1+1+1)/6 = 4/6 = 2/3</code>
+      <p>By symmetry, players 2 and 3 must split the remainder equally: φ₂ = φ₃ = (1 − 2/3)/2 = <strong>1/6</strong> each. Check: 2/3 + 1/6 + 1/6 = 1, exactly v(1,2,3). Player 1, the scarce resource, takes four times either partner&#39;s share — computed from the coalition structure alone, not asserted.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Explaining machine-learning predictions</span>
+      <strong>SHAP</strong> (SHapley Additive exPlanations) — one of the standard tools for explaining what a machine-learning model actually did — is the Shapley value applied to a model&#39;s <em>input features</em> as if they were players in a coalition, and the model&#39;s prediction as the value they jointly produced. &quot;How much did this feature move the prediction?&quot; is answered the same way &quot;how much did this player earn?&quot; is answered above: average its marginal effect over every possible order features could be revealed in. Lundberg &amp; Lee, &quot;A Unified Approach to Interpreting Model Predictions,&quot; <em>NeurIPS</em> (2017) — one of the most cited papers in applied machine learning, precisely because it gave an ad hoc practice a 1953 game-theoretic proof of uniqueness.</p>
+      <p><span class="where">And older: airport landing fees</span>
+      Cost-sharing a runway sized for the largest aircraft that uses it, fairly, among airlines flying very different aircraft, is a textbook cooperative-game application dating to the 1970s — the same marginal-contribution logic, applied to cost instead of profit.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t14">Next: designing the rules instead of playing them ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 14 ================= -->
+<details class="mod" id="t14">
+  <summary>
+    <span class="mod-n">14</span>
+    <span class="mod-t">Mechanism design and auctions</span>
+    <span class="mod-q">Can you design the rules so honesty is the winning move?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Three sealed bids for an item: nine dollars, seven dollars, and four dollars. The nine dollar bidder wins, but pays the second highest bid, seven dollars, not their own. That gap between what you bid and what you pay is what makes bidding your true value the safe, dominant choice.">
+          <g stroke="var(--border)" stroke-width="1" opacity=".3">
+            <path d="M60 180 H500"/>
+          </g>
+          <rect x="80"  y="60"  width="70" height="120" fill="var(--panel)" stroke="var(--or)" stroke-width="2.5"/>
+          <rect x="220" y="88"  width="70" height="92"  fill="rgba(45,212,191,.14)" stroke="var(--teal)" stroke-width="2"/>
+          <rect x="360" y="124" width="70" height="56"  fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+          <text class="lbl-b or" x="115" y="52" text-anchor="middle">bids $9</text>
+          <text class="lbl-b tl" x="255" y="80" text-anchor="middle">bids $7</text>
+          <text class="lbl-s"    x="395" y="116" text-anchor="middle">bids $4</text>
+          <path d="M80 60 L150 60" class="sOr" stroke-width="3" stroke-dasharray="5 4"/>
+          <path d="M80 88 L150 88" class="sTl" stroke-width="3"/>
+          <text class="lbl-b" x="115" y="196" text-anchor="middle">winner</text>
+          <text class="lbl-b tl" x="115" y="214" text-anchor="middle">pays $7 — the runner-up&#39;s bid</text>
+          <text class="lbl-s" x="115" y="70" text-anchor="middle">wins here</text>
+          <text class="lbl-s tl" x="255" y="98" text-anchor="middle">pays here</text>
+        </svg></div>
+        <figcaption><strong>The winner never pays their own bid.</strong> In a second-price (Vickrey) auction the $9 bidder wins but pays the second-highest bid, $7 — the teal gap is money the winner keeps. That gap is precisely what makes bidding your honest value the safe move: bid higher and you only risk overpaying above what you actually wanted; bid lower and you only risk losing a deal you&#39;d have profited from.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Every topic so far in this module <strong>analyses</strong> a game whose rules are already fixed. <strong>Mechanism design runs the logic backwards: choose the rules so that self-interested play produces the outcome you actually want.</strong> It is game theory used as an engineering discipline rather than a diagnostic one.</p>
+      <p>The clearest example is an auction where honesty just wins. In a first-price sealed-bid auction, bidding your true value is a mistake — you should bid below it, since you pay whatever you bid. That forces everyone into a guessing game about everyone else&#39;s guesses. A <strong>second-price (Vickrey) auction</strong> removes the guessing entirely: the highest bidder wins but pays the <em>second</em>-highest bid, not their own. Suddenly there is no reason to shade your bid at all — bidding your honest value is always at least as good as any alternative, whatever anyone else does.</p>
+      <p>That property has a name — <strong>strategy-proofness</strong>, or incentive compatibility — and it is the central design goal of the whole field: build a mechanism where the strategically smart move and the honest move are the same move, so nobody has to out-think anybody else to get a good outcome.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>Claim.</strong> In a second-price sealed-bid auction, bidding your true value v is a weakly dominant strategy — at least as good as any other bid b, against any bids from opponents.</p>
+      <p><strong>Proof.</strong> Let m be the highest bid among your opponents. Compare bidding v against any other b:</p>
+      <code class="eq">if m &lt; v :  bidding v wins, profit = v − m &gt; 0.
+             bidding b &lt; m loses, profit = 0 — strictly worse.
+             any winning b gives the same profit v − m — no better.
+
+if m &gt; v :  bidding v loses, profit = 0.
+             bidding b &gt; m wins but pays m &gt; v, profit &lt; 0 — strictly worse.
+
+if m = v :  every choice ties at profit 0.</code>
+      <p>In every case, truthful bidding is never beaten and is sometimes strictly better — the definition of weak dominance. Nothing about the other bidders&#39; strategies enters the argument, which is exactly what makes it strategy-proof: it works whether opponents are rational, irrational, or colluding. <span class="orbadge">⟦Proven⟧</span> (Vickrey, 1961; generalised to multi-item settings as the Vickrey–Clarke–Groves mechanism.)</p>
+      <p>The honest caveat: strategy-proofness is not free. The <strong>revenue-equivalence theorem</strong> shows first-price and second-price auctions yield the same <em>expected</em> revenue under standard assumptions — the seller is not sacrificing money for honesty, but neither format is a free lunch over the other, and real auctions add reserve prices, budget limits and collusion risk that break the clean theory in specific, well-studied ways.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Selling public airwaves</span>
+      Government spectrum auctions are mechanism design at national scale: badly designed auctions have historically left billions of dollars unclaimed or handed licenses to the wrong bidders. The FCC&#39;s 2017 broadcast incentive auction — a two-sided design (reverse auction to buy spectrum back from broadcasters, forward auction to sell it to carriers) — raised <strong>$19.8 billion</strong>, with just over $10 billion paid to broadcasters and more than $7 billion going to the U.S. Treasury. Paul Milgrom and Robert Wilson won the 2020 Nobel Memorial Prize in Economic Sciences &quot;for improvements to auction theory and inventions of new auction formats,&quot; work whose formats are now used for spectrum, electricity and airport landing slots worldwide. (William Vickrey himself won the Nobel in 1996, three days after his death, for the theory the field still starts from.)</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t07">The matching-market cousin: kidney exchange ▸</a>
+      <a href="#t15">Next: when strategies breed instead of reason ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 15 ================= -->
+<details class="mod" id="t15">
+  <summary>
+    <span class="mod-n">15</span>
+    <span class="mod-t">Evolutionary game theory</span>
+    <span class="mod-q">What happens when strategies reproduce instead of reasoning?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Payoff to playing hawk and payoff to playing dove, plotted against the fraction of the population playing hawk. The two lines cross at fifty percent hawk. Below that point hawk earns more and spreads; above it dove earns more and spreads; the population is pulled back to the crossing point from either side.">
+          <g stroke="var(--border)" stroke-width="1" opacity=".3">
+            <path d="M140 20 V190 M220 20 V190 M300 20 V190 M380 20 V190 M460 20 V190"/>
+          </g>
+          <path d="M60 60 L460 180" class="sOr" stroke-width="3"/>
+          <path d="M60 130 L460 60" class="sTl" stroke-width="3"/>
+          <circle cx="260" cy="120" r="7" fill="var(--text)" stroke="var(--bg)" stroke-width="2"/>
+          <text class="lbl-b" x="272" y="112">the ESS: p = 0.5</text>
+          <path d="M120 66 L120 100" class="sMut" stroke-width="1.4" stroke-dasharray="3 3" marker-end="url(#fa15)"/>
+          <text class="lbl-s or" x="126" y="80">below 0.5: hawk earns more → spreads</text>
+          <path d="M400 174 L400 140" class="sMut" stroke-width="1.4" stroke-dasharray="3 3" marker-end="url(#fa15)"/>
+          <text class="lbl-s tl" x="330" y="188">above 0.5: dove earns more → spreads</text>
+          <defs><marker id="fa15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+          <path d="M60 20 V190 H460" fill="none" stroke="var(--border)" stroke-width="2"/>
+          <text class="lbl-b or" x="30" y="64" text-anchor="end">hawk</text>
+          <text class="lbl-b tl" x="30" y="134" text-anchor="end">dove</text>
+          <g class="lbl-s" text-anchor="middle">
+            <text x="60"  y="206">0%</text><text x="260" y="206">50%</text><text x="460" y="206">100%</text>
+          </g>
+          <text class="lbl-b" x="260" y="222" text-anchor="middle">fraction of the population playing hawk</text>
+        </svg></div>
+        <figcaption><strong>The population is pulled toward the crossing point from either side, not away from it.</strong> Whichever strategy is currently rarer earns more and spreads, which is exactly what makes 50% hawk / 50% dove a stable mix — an evolutionarily stable strategy — rather than one strategy driving the other extinct.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Every topic above assumes a rational player choosing a strategy by reasoning about payoffs. <strong>Evolutionary game theory removes the reasoning entirely.</strong> Strategies are not chosen; they are inherited or copied, and whichever strategy currently earns more simply becomes more common next round — through literal reproduction in biology, or through imitation, learning and market share anywhere else. The question shifts from &quot;what should a rational player do?&quot; to &quot;what mix of strategies, once reached, resists being invaded?&quot;</p>
+      <p>The classic setting is the <strong>Hawk–Dove game</strong> (Maynard Smith &amp; Price, 1973): contest a resource aggressively (Hawk) or back down (Dove). All-Hawk is not stable — constant injury costs more than the resource is worth, so a rare Dove, who never fights, does better than average and spreads. All-Dove is not stable either — a single Hawk walks in and wins every contest uncontested. The population is pulled toward a specific <em>mixture</em> from both directions, which is precisely what &quot;evolutionarily stable&quot; means: a strategy mix that, once established, cannot be invaded by any rare alternative.</p>
+      <p>The bridge back into this course is direct: <strong>genetic algorithms (topic 10) are this idea, deliberately engineered.</strong> Breeding a population of candidate solutions and keeping the fitter half is evolutionary game dynamics run on purpose as a search method, rather than observed in nature.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>Payoffs for the Hawk–Dove game, resource value V, cost of injury C, with C &gt; V (losing a fight costs more than the resource is worth — the interesting case):</p>
+      <code class="eq">Hawk vs Hawk:  (V − C) / 2 each     (fight; winner takes V, loser pays C, 50/50)
+Hawk vs Dove:  Hawk gets V, Dove gets 0
+Dove vs Dove:  V / 2 each</code>
+      <p>Let p be the fraction of the population playing Hawk. The <strong>evolutionarily stable strategy</strong> (ESS) is the p where Hawk&#39;s average payoff exactly equals Dove&#39;s — the crossing point in the figure, where neither strategy has an edge and the mix stops changing:</p>
+      <code class="eq">payoff(Hawk) = p·(V−C)/2 + (1−p)·V   =   payoff(Dove) = p·0 + (1−p)·V/2
+
+solving:  p* = V / C</code>
+      <p>Worked with V = 2, C = 4 (a fight costs twice what the resource is worth): p* = 2/4 = <strong>0.5</strong>, matching the figure exactly. Check by substitution: payoff(Hawk) at p=0.5 is 0.5·(−1) + 0.5·2 = 0.5; payoff(Dove) is 0.5·0 + 0.5·1 = 0.5. Equal, confirming the crossing point. <span class="orbadge">⟦Proven⟧</span> If C &lt; V instead, fighting is worth it outright and all-Hawk becomes the stable strategy — the mixed equilibrium only exists because injury is assumed to cost more than the prize.</p>
+      <p>The population-level version of &quot;strategies that do better spread&quot; is the <strong>replicator equation</strong>: ẋᵢ = xᵢ · (fᵢ(x) − f̄(x)), where xᵢ is strategy i&#39;s population share, fᵢ its current payoff, and f̄ the population&#39;s average payoff. A strategy grows exactly when it beats the average — the continuous-time engine that pulls the population toward an ESS from either side, as drawn above.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Treating cancer as an evolving population</span>
+      Standard chemotherapy hits a tumour at maximum tolerated dose, which kills drug-<em>sensitive</em> cells fast and — precisely because it removes their competition — hands the field to drug-<em>resistant</em> cells, which then take over and the treatment fails. <strong>Adaptive therapy</strong> treats the tumour as competing strategies in an evolutionary game instead: dose just enough to control the sensitive population while deliberately leaving it around to keep out-competing the resistant cells for space and resources, rather than trying to eliminate everything at once. Zhang, Cunningham, Brown &amp; Gatenby, &quot;Integrating evolutionary dynamics into treatment of metastatic castrate-resistant prostate cancer,&quot; <em>Nature Communications</em> 8 (2017): in a real clinical trial, standard continuous dosing drove rapid selection for resistant cells and treatment failure, while adaptive, evolution-aware dosing suppressed the resistant population&#39;s growth for substantially longer. The mathematics is the Hawk–Dove machinery above, with tumour cell lines standing in for Hawks and Doves.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t10">Where this rhymes with metaheuristics ▸</a>
+      <a href="#bridges">The bridges to quantum ▸</a>
     </div>
   </div>
 </details>
@@ -1007,7 +1376,7 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 
 <p>This is the honest shape of nearly every quantum-optimisation claim you will read: true on an instance small enough that you did not need a quantum computer, and untested at the size where you would.</p>
 
-<h2 id="bridges"><span class="fr-secnum">The overlap</span>Where this touches quantum computing — three real bridges</h2>
+<h2 id="bridges"><span class="fr-secnum">The overlap</span>Where this touches quantum computing — four real bridges</h2>
 
 <p>These are not analogies. Each is a place where the same mathematics is load-bearing on both sides.</p>
 
@@ -1027,6 +1396,11 @@ otherwise accept with probability  exp(−ΔE / T)</code>
     <p>The best one, and almost nobody says it out loud: <strong>a quantum computer&#39;s error correction runs in real time because of an operations research algorithm.</strong> Decoding the surface code is minimum-weight perfect matching — Edmonds, 1965. See topic 07.</p>
     <a href="qec.html#duel">Play it — the Decoder Duel →</a>
   </div>
+  <div class="card">
+    <h3>Security games <span class="orbadge">⟦Proven⟧ vocabulary</span></h3>
+    <p>Every post-quantum security proof on this site is stated as a game between a challenger and an adversary — exactly topic 12&#39;s minimax framing, used in earnest. &quot;Secure&quot; means no adversary&#39;s winning probability can be pushed above a negligible bound, whatever strategy they run.</p>
+    <a href="pqc.html">See it on the PQC pages →</a>
+  </div>
 </div>
 
 <h2 id="faq"><span class="fr-secnum">Questions</span>What people actually ask</h2>
@@ -1036,6 +1410,9 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 
 <h3>Is OR the same thing as machine learning?</h3>
 <p>No, and the distinction is useful. Machine learning mostly <em>predicts</em>: given data, what will happen? OR mostly <em>decides</em>: given what will happen, what should we do about it, subject to what we cannot change? Real systems chain them — forecast demand with ML, then decide inventory with OR. Topic 08 is where the two genuinely meet.</p>
+
+<h3>How is game theory different from the rest of this course?</h3>
+<p>Topics 01–10 all assume one decision-maker facing fixed limits — a machine-hour cap, a network, a queue. However hard the problem, there is one objective to optimise and the world does not react to your choice. Game theory (topics 11–15) is what you need the moment a <em>second</em> decision-maker is also choosing, in response to you: your best move now depends on theirs, which depends on yours, and there is no longer a single number to compute — only an equilibrium to find, a value to guarantee, or a fair split to prove unique.</p>
 
 <h3>Will quantum computers make this obsolete?</h3>
 <p>Not on any evidence currently available. Quantum optimisation is real research and worth watching, but there is no known quantum algorithm that beats a strong classical solver on a problem anyone actually needs solved, and the quadratic speedup that <em>is</em> proven for unstructured search does not apply to the structured problems where classical methods do their best work — as topic 05 shows. Anyone telling you otherwise should be asked for the resource estimate.</p>
@@ -1101,7 +1478,15 @@ otherwise accept with probability  exp(−ΔE / T)</code>
       "name": "How does operations research connect to quantum computing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Through three concrete bridges. First, QUBO and Ising formulations (Lucas, 2014) are the format quantum annealers and QAOA actually consume, so every quantum optimisation claim passes through them. Second, simulated annealing is the classical metaheuristic that quantum annealing imitates, and is the baseline any quantum claim must beat. Third, and most directly, decoding the surface code in real time is solved as minimum-weight perfect matching using Edmonds' blossom algorithm from 1965 — an operations research algorithm running as a component inside a quantum computer."
+        "text": "Through four concrete bridges. First, QUBO and Ising formulations (Lucas, 2014) are the format quantum annealers and QAOA actually consume, so every quantum optimisation claim passes through them. Second, simulated annealing is the classical metaheuristic that quantum annealing imitates, and is the baseline any quantum claim must beat. Third, decoding the surface code in real time is solved as minimum-weight perfect matching using Edmonds' blossom algorithm from 1965 — an operations research algorithm running as a component inside a quantum computer. Fourth, post-quantum security proofs are stated as games between a challenger and an adversary, the same minimax vocabulary game theory formalised for zero-sum games."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is game theory different from the rest of operations research?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The rest of this course assumes one decision-maker facing fixed limits, with no second party reacting to the choice. Game theory covers what happens once another decision-maker is also choosing in response to you: your best move depends on theirs, which depends on yours, so there is no longer a single answer to compute -- only an equilibrium to find, a guaranteed value to prove, or a fair split to derive uniquely."
       }
     }
   ]
@@ -1113,16 +1498,17 @@ otherwise accept with probability  exp(−ΔE / T)</code>
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "The Feasible Region — operations research from the top",
-  "description": "A ten-topic course in operations research. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
+  "description": "A fifteen-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
   "provider": { "@type": "Organization", "name": "SymbiQ" },
   "hasCourseInstance": {
     "@type": "CourseInstance",
     "courseMode": "online",
-    "courseWorkload": "PT3H"
+    "courseWorkload": "PT4H30M"
   },
   "about": ["Operations research", "Linear programming", "Integer programming", "Duality",
             "Branch and bound", "Network flow", "Matching", "Dynamic programming",
-            "Queueing theory", "Metaheuristics"]
+            "Queueing theory", "Metaheuristics", "Game theory", "Nash equilibrium",
+            "Shapley value", "Mechanism design", "Evolutionary game theory"]
 }
 </script>
 
@@ -1240,7 +1626,7 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 })();
 </script>
 
-<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. Found another? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. Found another? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
 </div>
 </body>
 </html>

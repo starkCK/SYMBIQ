@@ -535,6 +535,56 @@
       "blurb": "What you do when proof is out of reach and you still need a good answer today."
     },
     {
+      "id": "nash-equilibrium",
+      "term": "Nash equilibrium",
+      "aliases": ["Nash equilibria", "equilibrium point", "Wardrop equilibrium", "Braess's paradox"],
+      "page": "feasible.html",
+      "anchor": "t11",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The outcome nobody can improve on alone -- even when everyone would rather be somewhere else together."
+    },
+    {
+      "id": "zero-sum-minimax",
+      "term": "zero-sum games",
+      "aliases": ["minimax", "minimax theorem", "mixed strategy", "von Neumann minimax"],
+      "page": "feasible.html",
+      "anchor": "t12",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Why bluffing only works if it's genuinely random -- and why solving it is a linear program in disguise."
+    },
+    {
+      "id": "shapley-value",
+      "term": "Shapley value",
+      "aliases": ["cooperative game theory", "SHAP", "coalition game"],
+      "page": "feasible.html",
+      "anchor": "t13",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The one fair way to split credit a group earned together -- proven unique in 1953, now explaining ML predictions."
+    },
+    {
+      "id": "mechanism-design",
+      "term": "mechanism design",
+      "aliases": ["auction theory", "Vickrey auction", "second-price auction", "VCG mechanism"],
+      "page": "feasible.html",
+      "anchor": "t14",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Designing the rules of a game so that honesty becomes the winning move."
+    },
+    {
+      "id": "evolutionary-game-theory",
+      "term": "evolutionary game theory",
+      "aliases": ["Hawk-Dove game", "evolutionarily stable strategy", "ESS", "replicator dynamics"],
+      "page": "feasible.html",
+      "anchor": "t15",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "What happens when strategies spread by succeeding, not by being reasoned about -- from animal contests to cancer treatment."
+    },
+    {
       "id": "qubo-ising",
       "term": "QUBO",
       "aliases": ["Ising", "Ising model", "quadratic unconstrained binary optimisation", "QUBO formulation"],
@@ -674,6 +724,36 @@
       "tier": "r",
       "kind": "concept",
       "blurb": "A four-line proof that no machine can copy an unknown quantum state -- the reason QEC can't just keep a backup."
+    },
+    {
+      "id": "quantum-teleportation",
+      "term": "quantum teleportation",
+      "aliases": ["teleportation", "teleport a qubit", "Bell measurement"],
+      "page": "formalism.html",
+      "anchor": "f05",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Moving an unknown qubit's state using a shared entangled pair and two classical bits -- no quantum channel, no cloning, no faster-than-light signal."
+    },
+    {
+      "id": "superdense-coding",
+      "term": "superdense coding",
+      "aliases": ["dense coding", "two bits one qubit"],
+      "page": "formalism.html",
+      "anchor": "f06",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Sending two classical bits by physically transmitting just one qubit, spending a pre-shared entangled pair -- teleportation's mirror image."
+    },
+    {
+      "id": "schmidt-decomposition",
+      "term": "Schmidt decomposition",
+      "aliases": ["Schmidt rank", "Schmidt coefficients", "how entangled is a state"],
+      "page": "formalism.html",
+      "anchor": "f07",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The one basis pair in which any two-part quantum state collapses to a short matched list -- the honest, basis-independent measure of how entangled it is."
     }
   ]
 }

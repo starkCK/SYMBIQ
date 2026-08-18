@@ -49,8 +49,9 @@ import { slh_dsa_sha2_128s } from './vendor/pq/slh-dsa.mjs';
 /* A 1500-byte Ethernet MTU less 20 bytes IPv4 and 20 bytes TCP leaves 1460
  * bytes of payload. A ClientHello past that is split across two packets — the
  * boundary a generation of middleboxes silently assumed would never be crossed.
- * initcwnd 10 is the Linux default since kernel 2.6.39 (RFC 6928): ten segments
- * before the server must wait for an ACK. A server flight past it costs a
+ * initcwnd 10 is the Linux default since kernel 2.6.39 (May 2011); the IETF
+ * standardized the same value two years later as RFC 6928 (April 2013): ten
+ * segments before the server must wait for an ACK. A server flight past it costs a
  * round trip on EVERY new connection, which is the expensive kind of cost. */
 const MSS = 1460;
 const INITCWND = 10 * MSS;   // 14,600 bytes

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Formalism — the real machinery of quantum computing | SymbiQ</title>
+<meta name="description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices and mixed states, measurement done properly, and the no-cloning theorem — with proofs, not just claims.">
+<!-- social:start -->
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/formalism.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/formalism.html">
+<meta property="og:title" content="The Formalism — the real machinery of quantum computing | SymbiQ">
+<meta property="og:description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices, measurement, and the no-cloning theorem — with proofs, not just claims.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="The Formalism — the real machinery of quantum computing | SymbiQ">
+<meta name="twitter:description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices, measurement, and the no-cloning theorem — with proofs, not just claims.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<!-- social:end -->
+<link rel="stylesheet" href="style.css?v=29">
+<link rel="stylesheet" href="feasible.css?v=4">
+<script src="save.js"></script>
+<script src="nav.js?v=5" defer></script>
+<script src="depth.js" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
+</head>
+<body class="fr">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
+      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
+      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      <a href="formalism.html" class="navmain active">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="explainers">
+      <summary>Explainers</summary>
+      <div class="navpanel">
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <a href="pqc.html" class="navmain">What post-quantum costs on the wire<span class="sub">Measured in your browser, with real keys</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">Real PQC keys, measured on the wire</span></a>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, from the top</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="track">
+      <summary>Track</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The daily question + the loop</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop, human-approved</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<header class="fr-mast">
+  <span class="fr-kicker">Quantum computing, in full</span>
+  <h1>The Formalism</h1>
+  <p class="fr-lede">The machinery every algorithm on this site actually runs on.</p>
+  <p class="fr-sub">Basics, Concepts and Deep teach the ideas at three depths on one flowing page each. This is the fourth thing: not a deeper <em>tier</em> of the same explanations, but the actual mathematical objects — state spaces, density matrices, measurement operators — that a real course builds before it lets you near Shor&#39;s algorithm. Nothing here is hand-waved. Every claim either has a proof or says plainly that it doesn&#39;t.</p>
+  <div class="fr-stats">
+    <div><b>4</b><span>topics live<br>of 15 planned</span></div>
+    <div><b>1</b><span>module built<br>of 5</span></div>
+    <div><b>0</b><span>claims without<br>a proof or a source</span></div>
+  </div>
+</header>
+
+<div class="card">
+  <h3>Why this page exists, separately</h3>
+  <p>Every quantum claim on this site — Shor&#39;s algorithm breaks ECDSA, a surface code suppresses errors exponentially, a decoder reads a syndrome — rests on the same handful of mathematical facts: what a quantum state <em>is</em>, how it evolves, what happens when you measure it, and what you provably cannot do to it. Those facts are usually asserted on the page that needs them and moved past quickly, because that page has its own job. This page is where they get built properly, once, so every other page can point back here instead of re-deriving them.</p>
+  <p style="margin-bottom:0">This is <strong>module 2 of the planned five</strong> (postulates → protocols → building-block algorithms → the Fourier transform → information theory). The other four aren&#39;t built yet — see <span class="mono">outputs/19_CURRICULUM_TREE_BUILD_PLAN.md</span> for the sequencing. What&#39;s below is real, not a preview.</p>
+</div>
+
+<h2 id="course"><span class="fr-secnum">Module 2 · The Formal Framework</span>Four topics, each taught four ways</h2>
+
+<div class="fr-toc">
+  <h3>How each topic is built</h3>
+  <p>Same shape as <a href="feasible.html">The Feasible Region</a>: <strong>a picture</strong> before any notation · <strong>the intuition</strong> in plain language · <strong>the mathematics</strong>, worked or proved · and <strong>where it actually matters</strong> elsewhere on this site. Nothing is locked.</p>
+  <ol>
+    <li><a href="#f01">The postulates<em>what a quantum state even is</em></a></li>
+    <li><a href="#f02">Density matrices &amp; mixed states<em>describing half of an entangled pair</em></a></li>
+    <li><a href="#f03">Measurement, properly<em>projective vs. POVM</em></a></li>
+    <li><a href="#f04">The no-cloning theorem<em>proved, not just claimed</em></a></li>
+  </ol>
+</div>
+
+<div class="fr-allctl">
+  <button type="button" id="fr-open">Open all four</button>
+  <button type="button" id="fr-shut">Collapse all</button>
+  <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
+  <span class="count" id="fr-count"></span>
+</div>
+
+<!-- ================= F01 ================= -->
+<details class="mod" id="f01">
+  <summary>
+    <span class="mod-n">01</span>
+    <span class="mod-t">The postulates of quantum mechanics, for computing</span>
+    <span class="mod-q">What does it mean for a system to "be" in a quantum state?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Two arrows drawn from the origin of a plane. One labeled zero points up. One labeled one points right. A third arrow, the state, points between them at an angle, drawn as their weighted sum.">
+          <path d="M60 190 H500" stroke="var(--border)" stroke-width="1.5"/>
+          <path d="M60 190 V20" stroke="var(--border)" stroke-width="1.5"/>
+          <path d="M60 190 L60 40" class="sOr" stroke-width="3" marker-end="url(#af1)"/>
+          <text class="lbl-b or" x="44" y="35" text-anchor="middle">|0⟩</text>
+          <path d="M60 190 L340 190" class="sTl" stroke-width="3" marker-end="url(#af1)"/>
+          <text class="lbl-b tl" x="352" y="196">|1⟩</text>
+          <path d="M60 190 L260 60" stroke="var(--text)" stroke-width="3" marker-end="url(#af1)"/>
+          <text class="lbl-b" x="272" y="58">|ψ⟩ = α|0⟩ + β|1⟩</text>
+          <path d="M120 178 A 80 80 0 0 1 175 145" fill="none" stroke="var(--muted)" stroke-width="1.4"/>
+          <defs><marker id="af1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+        </svg></div>
+        <figcaption><strong>A qubit's state is a vector, not a switch.</strong> |0⟩ and |1⟩ are two perpendicular directions; the actual state |ψ⟩ can point anywhere in between, and α and β are complex numbers that say how much of each. This is the object every postulate below is a rule <em>about</em>.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Four rules, and everything else in quantum computing is a consequence of them. Together they answer four questions: <em>what</em> is a state, <em>how</em> does it change on its own, <em>what</em> happens when you look at it, and <em>what</em> happens when you put several together.</p>
+      <p><strong>State.</strong> An isolated system's state is a vector of unit length. For one qubit that vector lives in a two-dimensional space; the two perpendicular directions are the two classical outcomes 0 and 1, and superposition is just what it means for a vector to point somewhere between them.</p>
+      <p><strong>Evolution.</strong> Left alone, a quantum state doesn't decay or blur — it rotates. Every closed-system operation a quantum computer performs is reversible: run it backwards and you land exactly where you started. This is the deep reason a quantum computer cannot simply "try every answer and keep the right one" — there is no step in the model that throws information away.</p>
+      <p><strong>Measurement</strong> is the one place the rules stop being reversible, and it's covered on its own two topics below because it deserves the space.</p>
+      <p><strong>Composite systems.</strong> Put two qubits together and their combined state space isn't the sum of the two — it's the <em>product</em>. That single fact is why n qubits carry 2ⁿ complex amplitudes instead of 2n, and it's the entire reason simulating a quantum computer classically gets hard so fast.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>1. State space.</strong> The state of an isolated quantum system is a unit vector |ψ⟩ in a complex Hilbert space. For a single qubit, that space is ℂ²:</p>
+      <code class="eq">|ψ⟩ = α|0⟩ + β|1⟩ ,   α, β ∈ ℂ ,   |α|² + |β|² = 1</code>
+      <p><strong>2. Evolution.</strong> The state of a closed system evolves by a unitary transformation: |ψ&#39;⟩ = U|ψ⟩, where U†U = I. Unitarity is what guarantees reversibility (U⁻¹ = U† always exists) and preserves the normalisation |α|²+|β|²=1 — a quantum gate can never make total probability exceed or fall short of 1.</p>
+      <p><strong>3. Measurement</strong> is described by a set of measurement operators {M<sub>m</sub>} satisfying Σ<sub>m</sub> M<sub>m</sub>†M<sub>m</sub> = I. Outcome m occurs with probability ⟨ψ|M<sub>m</sub>†M<sub>m</sub>|ψ⟩, and the state collapses to M<sub>m</sub>|ψ⟩ divided by the square root of that probability. Topic 03 unpacks the two special cases — projective measurement and POVMs — that this general rule contains.</p>
+      <p><strong>4. Composite systems.</strong> The state space of a system built from components 1..n is the tensor product of the component spaces: ℋ = ℋ₁ ⊗ ℋ₂ ⊗ ... ⊗ ℋₙ. A basis vector of an n-qubit system is written |b₁b₂...bₙ⟩, and a general state is a superposition over all 2ⁿ of them — which is exactly where the exponential state space that makes quantum simulation hard, and quantum computation potentially powerful, comes from. <span class="orbadge">⟦Proven⟧</span></p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Every other page on this site</span>
+      <a href="quantum-mechanics.html#bloch">The Bloch sphere</a> is postulate 1 drawn as a picture. Every gate on <a href="play.html#golf">the golf game</a> is postulate 2 in action. <a href="qec.html">Syndrome measurement</a> is postulate 3, deliberately designed to extract only the information needed without collapsing the data. And the reason a <a href="logical-qubit.html">logical qubit</a> needs so many physical ones is postulate 4 — the state space you're trying to protect is exponentially large from the very first two qubits onward.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#f02">Next: describing part of an entangled system ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= F02 ================= -->
+<details class="mod" id="f02">
+  <summary>
+    <span class="mod-n">02</span>
+    <span class="mod-t">Density matrices &amp; mixed states</span>
+    <span class="mod-q">How do you describe half of an entangled pair, honestly?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A single arrow labeled pure state on the left. On the right, a small cloud of arrows in different directions, each with a probability, labeled mixed state -- genuine uncertainty about which pure state it is.">
+          <path d="M60 170 H500" stroke="var(--border)" stroke-width="1.5"/>
+          <path d="M60 170 V30" stroke="var(--border)" stroke-width="1.5"/>
+          <path d="M90 170 L190 60" stroke="var(--text)" stroke-width="3" marker-end="url(#af2)"/>
+          <text class="lbl-b" x="70" y="188" text-anchor="middle">pure |ψ⟩</text>
+          <defs><marker id="af2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+          <path d="M320 170 L300 60" class="sTl" stroke-width="2.4" opacity=".85" marker-end="url(#af3)"/>
+          <path d="M320 170 L420 55" class="sOr" stroke-width="2.4" opacity=".85" marker-end="url(#af3)"/>
+          <path d="M320 170 L400 100" stroke="var(--muted)" stroke-width="2.4" opacity=".85" marker-end="url(#af3)"/>
+          <defs><marker id="af3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+          <text class="lbl-s" x="300" y="45" text-anchor="middle">p=0.5</text>
+          <text class="lbl-s or" x="420" y="42" text-anchor="middle">p=0.3</text>
+          <text class="lbl-s" x="400" y="115" text-anchor="middle">p=0.2</text>
+          <text class="lbl-b" x="330" y="188" text-anchor="middle">mixed ρ</text>
+        </svg></div>
+        <figcaption><strong>A pure state is one arrow. A mixed state is genuine not-knowing which arrow.</strong> Not superposition — superposition is still one definite vector. A mixed state means the system really is in |ψ₁⟩ with probability 0.5, |ψ₂⟩ with probability 0.3, and so on, and you don't know which.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Topic 01 described an isolated system with a single vector |ψ⟩. That stops working the moment two systems interact and you only have access to one of them — which is the normal situation for a qubit sitting inside a noisy chip, or one half of an entangled pair.</p>
+      <p>Take a Bell pair. The two qubits together are in a perfectly well-defined pure state. But ask "what is the state of qubit A, ignoring B entirely?" and there is no single vector that answers that — qubit A's measurement statistics, considered alone, look exactly like a classical coin flip. Not because anything is uncertain about the pair. Because the question itself doesn't have a vector-shaped answer.</p>
+      <p>The <strong>density matrix</strong> is the object that does answer it. It generalises "state" from a vector to an operator, and it can represent both an honest pure state and this new situation — a system whose own state is entangled with something you can't see.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>A pure state |ψ⟩ has density matrix ρ = |ψ⟩⟨ψ|. A <strong>mixed state</strong> — genuine classical uncertainty over which pure state, with probabilities p<sub>i</sub> summing to 1 — is:</p>
+      <code class="eq">ρ = Σᵢ pᵢ |ψᵢ⟩⟨ψᵢ⟩</code>
+      <p>Purity is testable in one number: Tr(ρ²) = 1 for a pure state, and Tr(ρ²) &lt; 1 for a mixed one (down to 1/d for the maximally mixed state on a d-dimensional space — total ignorance).</p>
+      <p><strong>The partial trace</strong> is how you get from "the pair's state" to "qubit A's state, ignoring B": ρ<sub>A</sub> = Tr<sub>B</sub>(ρ<sub>AB</sub>). Apply it to a Bell pair's density matrix and the result is the maximally mixed state on qubit A alone — confirming exactly the claim above: a perfectly pure joint state can have an honestly, provably mixed reduced state.</p>
+      <p><strong>Purification</strong> runs the logic in reverse: any mixed state ρ on system A can be written as the reduced state of some pure state |Ψ⟩ on a larger system AB. This isn't just a trick — it says every source of classical uncertainty can be modelled as entanglement with something outside your view, which is exactly how a noisy qubit is treated when the "something else" is the uncontrolled environment. <span class="orbadge">⟦Proven⟧</span></p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Decoherence and the entropy topics ahead</span>
+      Every real qubit is mixed, not pure — the density matrix is the only honest way to describe a qubit that has been sitting in a noisy environment for any length of time, which is the entire subject of <a href="qec.html">quantum error correction</a>. It's also the object von Neumann entropy is computed from (a later module on this page), and the reason <a href="quantum-mechanics.html#chsh">entanglement</a> can be verified statistically even though neither qubit alone shows anything unusual on its own.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#f03">Next: what "measuring" actually means ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= F03 ================= -->
+<details class="mod" id="f03">
+  <summary>
+    <span class="mod-n">03</span>
+    <span class="mod-t">Measurement, properly</span>
+    <span class="mod-q">Projective, or POVM — and why the difference is the whole security argument behind QKD</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Two arrows drawn close together at a small angle, labeled psi and phi, not perpendicular. A dashed circle around both marked cannot always tell these apart.">
+          <path d="M60 170 H500" stroke="var(--border)" stroke-width="1.5"/>
+          <path d="M60 170 V30" stroke="var(--border)" stroke-width="1.5"/>
+          <path d="M60 170 L220 55" stroke="var(--text)" stroke-width="3" marker-end="url(#af4)"/>
+          <text class="lbl-b" x="232" y="53">|ψ⟩</text>
+          <path d="M60 170 L260 75" class="sOr" stroke-width="3" marker-end="url(#af4)"/>
+          <text class="lbl-b or" x="272" y="80">|φ⟩</text>
+          <defs><marker id="af4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+          <path d="M240 65 A 190 190 0 0 1 60 170 A 190 190 0 0 1 220 55" fill="none" stroke="var(--muted)" stroke-width="1.3" stroke-dasharray="4 4"/>
+          <text class="lbl-s" x="330" y="140">not perpendicular →</text>
+          <text class="lbl-s" x="330" y="154">no measurement tells them apart for certain</text>
+        </svg></div>
+        <figcaption><strong>Two non-orthogonal states are, provably, not perfectly distinguishable.</strong> No measurement — projective, POVM, or anything quantum mechanics allows — can tell |ψ⟩ from |φ⟩ with certainty unless they are perpendicular. This single fact is the entire security argument behind quantum key distribution.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Postulate 3 (topic 01) stated the general rule for measurement. Two special cases of it come up constantly, and they answer different questions.</p>
+      <p><strong>Projective measurement</strong> is the textbook case: measuring &quot;along&quot; some observable, getting one of its eigenvalues as the outcome, and the state collapsing onto the corresponding eigenspace. It's precise, but it forces the state onto one of a fixed set of directions — which is sometimes more than you actually need.</p>
+      <p><strong>POVMs</strong> (positive operator-valued measures) generalise this: instead of a fixed orthogonal basis, you can measure with a set of operators that overlap, don't need to be orthogonal, and don't need to correspond to a clean post-measurement state. They're the right tool whenever the question is only &quot;what's the probability of each outcome,&quot; not &quot;what state does the system end up in.&quot;</p>
+      <p>Both obey the same hard limit: <strong>you cannot reliably distinguish two non-orthogonal states</strong>, by any measurement quantum mechanics permits. That is not a limitation of current technology. It follows directly from the postulates, and quantum key distribution turns it into a security guarantee: an eavesdropper measuring a qubit prepared in one of two non-orthogonal bases cannot both learn its value and leave it undisturbed.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>Projective measurement</strong> is specified by an observable — a Hermitian operator M with spectral decomposition M = Σ<sub>m</sub> m P<sub>m</sub>, where {P<sub>m</sub>} are orthogonal projectors (P<sub>m</sub>P<sub>m&#39;</sub>=0 for m≠m&#39;, Σ P<sub>m</sub>=I). Outcome m occurs with probability ⟨ψ|P<sub>m</sub>|ψ⟩, and the post-measurement state is P<sub>m</sub>|ψ⟩ normalised.</p>
+      <p><strong>POVM measurement</strong> is specified by a set of positive operators {E<sub>m</sub>} with Σ<sub>m</sub> E<sub>m</sub> = I — no orthogonality required, and E<sub>m</sub> need not even be a projector. Outcome m occurs with probability ⟨ψ|E<sub>m</sub>|ψ⟩. Every projective measurement is a POVM with E<sub>m</sub>=P<sub>m</sub>; the converse doesn't hold, which is exactly why POVMs are strictly more general.</p>
+      <p><strong>Distinguishability.</strong> Two pure states |ψ⟩ and |φ⟩ can be perfectly distinguished by some measurement if and only if ⟨ψ|φ⟩ = 0. If ⟨ψ|φ⟩ ≠ 0, no measurement — projective or POVM — can identify which one you were handed with zero error probability; the best achievable success probability for a single copy is bounded by the Helstrom bound, ½(1 + √(1−|⟨ψ|φ⟩|²)), which is strictly less than 1 whenever the states overlap. <span class="orbadge">⟦Proven⟧</span></p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Quantum key distribution</span>
+      BB84 encodes a bit in one of two non-orthogonal bases on purpose. An eavesdropper who measures in the wrong basis necessarily disturbs the state — the distinguishability limit above, made into a security protocol. This is the topic <a href="pqc.html">post-quantum cryptography</a> is most often confused with: PQC is classical mathematics designed to survive a quantum <em>computer</em>; QKD is physics that uses exactly this measurement limit to detect an eavesdropper. They solve the same problem — safe key exchange — by entirely different means.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#f04">Next: the theorem that makes the last topic&#39;s limit airtight ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= F04 ================= -->
+<details class="mod" id="f04">
+  <summary>
+    <span class="mod-n">04</span>
+    <span class="mod-t">The no-cloning theorem</span>
+    <span class="mod-q">Why can't you just copy a qubit and check the copy later?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A box labeled proposed universal cloner. An arrow labeled unknown state goes in. Two identical arrows labeled copy one and copy two come out. A red cross marks the box, labeled no unitary U does this for every input.">
+          <rect x="220" y="60" width="120" height="70" rx="10" fill="var(--panel)" stroke="var(--red)" stroke-width="2.5"/>
+          <text class="lbl-b" x="280" y="100" text-anchor="middle">U</text>
+          <path d="M60 95 H210" stroke="var(--text)" stroke-width="3" marker-end="url(#af5)"/>
+          <text class="lbl-s" x="130" y="80" text-anchor="middle">unknown |ψ⟩</text>
+          <defs><marker id="af5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+          <path d="M350 80 H480" class="sOr" stroke-width="3" marker-end="url(#af6)"/>
+          <path d="M350 112 H480" class="sOr" stroke-width="3" marker-end="url(#af6)"/>
+          <defs><marker id="af6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+          <text class="lbl-s" x="490" y="84">|ψ⟩</text>
+          <text class="lbl-s" x="490" y="116">|ψ⟩</text>
+          <path d="M255 45 L305 95 M305 45 L255 95" stroke="var(--red)" stroke-width="3"/>
+          <text class="lbl-b" x="280" y="150" text-anchor="middle">no such U exists, for every |ψ⟩</text>
+        </svg></div>
+        <figcaption><strong>Not "hasn't been built." Provably impossible.</strong> The proof takes four lines and doesn't depend on engineering at all.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Classical data has no problem with this: copy a file a billion times, verify each copy independently, keep the majority answer. It's the basis of essentially all classical error correction.</p>
+      <p>A qubit in an unknown state cannot be copied that way, for reasons that have nothing to do with current technology. If it could, quantum key distribution would be trivially breakable (intercept, clone, measure one copy, forward the other undisturbed) — and quantum error correction would look completely different, built on backup copies instead of the far stranger trick it actually uses (spreading information across entangled qubits so that no single qubit alone ever holds the answer).</p>
+      <p>The catch, and it matters: this only forbids cloning an <em>unknown</em> state with a <em>single, universal</em> procedure. If you already know what state you're preparing, you can obviously prepare it twice. What you can't do is hand a machine one copy of a state nobody told it, and get two.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>Claim.</strong> There is no unitary U and fixed blank state |0⟩ such that U(|ψ⟩⊗|0⟩) = |ψ⟩⊗|ψ⟩ for <em>every</em> state |ψ⟩.</p>
+      <p><strong>Proof.</strong> Suppose such a U exists, and suppose it works for two states |ψ⟩ and |φ⟩:</p>
+      <code class="eq">U(|ψ⟩⊗|0⟩) = |ψ⟩⊗|ψ⟩
+U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
+      <p>Unitary operators preserve inner products, so taking the inner product of the left-hand sides must equal the inner product of the right-hand sides:</p>
+      <code class="eq">⟨ψ|φ⟩ · ⟨0|0⟩  =  ⟨ψ|φ⟩ · ⟨ψ|φ⟩
+        ⟨ψ|φ⟩  =  ⟨ψ|φ⟩²</code>
+      <p>Let x = ⟨ψ|φ⟩. The equation x = x² has exactly two solutions: x = 0 or x = 1 — that is, |ψ⟩ and |φ⟩ must be either orthogonal or identical. So a single U can clone at most one direction&#39;s worth of states, never two genuinely different, non-orthogonal ones. No universal cloner exists. <span class="orbadge">⟦Proven⟧</span> (Wootters &amp; Zurek, <em>Nature</em> 299 (1982); independently, Dieks, <em>Physics Letters A</em> 92 (1982).)</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Two things this site already teaches, both explained by this proof</span>
+      <a href="qec.html">Quantum error correction</a> cannot work the way classical error correction does — no backup copy is possible — which is exactly why it instead spreads one logical qubit's information across many physical ones via entanglement (topic 02 above is the tool that makes precise what that spreading even means). And quantum key distribution's security (topic 03) has a second leg to stand on beyond distinguishability: even if an eavesdropper somehow captured a qubit in transit, they cannot clone it to measure at leisure while forwarding an undisturbed original — they get exactly one shot, on the one photon that exists.</p>
+    </div>
+
+    <div class="mod-out">
+      <span style="color:var(--muted);font-size:.85rem">Modules 3–5, 8 (protocols, building-block algorithms, the Fourier transform, information theory) are scoped in <span class="mono">outputs/19_CURRICULUM_TREE_BUILD_PLAN.md</span> and not yet built.</span>
+    </div>
+  </div>
+</details>
+
+<footer>The Formalism is under construction: 1 of 5 planned modules, 4 of 15 planned topics. Every topic above is complete and verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "SymbiQ", "item": "index.html" },
+    { "@type": "ListItem", "position": 2, "name": "The Formalism", "item": "formalism.html" }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  var mods = [].slice.call(document.querySelectorAll('.mod'));
+  var count = document.getElementById('fr-count');
+
+  function tally() {
+    var n = mods.filter(function (m) { return m.open; }).length;
+    count.textContent = n === 0 ? mods.length + ' topics' : n + ' of ' + mods.length + ' open';
+  }
+  mods.forEach(function (m) { m.addEventListener('toggle', tally); });
+  tally();
+
+  document.getElementById('fr-open').addEventListener('click', function () {
+    mods.forEach(function (m) { m.open = true; }); tally();
+  });
+  document.getElementById('fr-shut').addEventListener('click', function () {
+    mods.forEach(function (m) { m.open = false; }); tally();
+  });
+
+  (function () {
+    var mathLayers = [].slice.call(document.querySelectorAll('.layer.maths'));
+    var btn = document.getElementById('fr-mathtoggle');
+    if (!mathLayers.length || !btn) return;
+
+    function apply(hide) {
+      mathLayers.forEach(function (el) { el.hidden = hide; });
+      btn.textContent = hide ? 'Show the math' : 'Hide the math';
+      btn.setAttribute('aria-pressed', hide ? 'true' : 'false');
+    }
+    function initFromPref() {
+      var pref = (window.SymbiQ && SymbiQ.depth) ? SymbiQ.depth.get() : null;
+      apply(pref === 'light');
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFromPref);
+    } else {
+      initFromPref();
+    }
+
+    btn.addEventListener('click', function () {
+      var hiding = mathLayers.length && !mathLayers[0].hidden;
+      apply(hiding);
+      if (window.SymbiQ && SymbiQ.depth) SymbiQ.depth.set(hiding ? 'light' : 'deep');
+    });
+  })();
+
+  function openTarget(hash) {
+    var t = hash && document.getElementById(hash.slice(1));
+    if (!t) return;
+    var m = t.closest ? t.closest('.mod') : null;
+    if (m) { m.open = true; tally(); }
+    else if (t.classList && t.classList.contains('mod')) { t.open = true; tally(); }
+  }
+  openTarget(location.hash);
+  window.addEventListener('hashchange', function () { openTarget(location.hash); });
+})();
+</script>
+</body>
+</html>

@@ -27,6 +27,53 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=29">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "What does post-quantum cryptography cost on the wire?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-08-06",
+      "dateModified": "2026-08-18",
+      "description": "Post-quantum TLS is not slower because the maths is slow. It is slower because the keys and signatures are large. Measure the real byte cost in your own browser, with real ML-KEM and ML-DSA keys."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "What does post-quantum cryptography cost on the wire?", "item": "pqc.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does post-quantum cryptography cost on the wire?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Not the mathematics — ML-KEM generates thousands of keys a second in JavaScript. The cost is that the objects are large, and the network was built around the assumption that they are small. The key exchange pushes the ClientHello past one packet, a one-time cost browsers already handle. The bigger problem is the signature: a certificate chain carries several, and a post-quantum signature is roughly fifty times larger than the one it replaces."}
+        },
+        {
+          "@type": "Question",
+          "name": "Why is the signature the real cost, not the key exchange?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A hybrid key share is a one-time cost per connection that browsers already work around. A certificate chain's signatures are not: past a threshold, a server's reply no longer fits the TCP initial congestion window (ten segments, 14,600 bytes on a standard MTU), and every new connection pays an extra round trip — not just the first one."}
+        },
+        {
+          "@type": "Question",
+          "name": "Are the numbers on this page measured or estimated?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Measured, not looked up. Every key, ciphertext and signature is generated live in the visitor's own browser from real ML-KEM, ML-DSA and SLH-DSA operations, plus X25519/ECDSA from WebCrypto. A lookup table inherits whatever error is in its source — several published sources state an ML-DSA-65 signature is 3,293 bytes; sign one and measure it and the answer is 3,309, which is what FIPS 204 actually specifies."}
+        },
+        {
+          "@type": "Question",
+          "name": "Does a smaller public key mean a smaller handshake?",
+          "acceptedAnswer": {"@type": "Answer", "text": "No — the opposite can be true. SLH-DSA-128s has a 32-byte public key, smaller than ML-DSA-65's 1,952 bytes and the same size as Ed25519's. But its signature is 7,856 bytes, and a certificate chain carries more signatures than public keys, so the scheme with the smallest key can produce by far the largest handshake."}
+        }
+      ]
+    }
+  ]
+}
+</script>
 <script src="nav.js?v=5" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -372,6 +419,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
       <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
       <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
       <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="explainers">
@@ -491,7 +539,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>Modelled</b> — TLS record and handshake framing, and the non-key parts of an X.509 certificate. Real handshakes vary with client, server and extension set.</li>
 </ul>
 <p><b>So the absolute totals are a model; the differences between two choices are exact.</b> The framing is identical on both sides of any comparison, so it cancels — and the difference is the whole subject. When the widget says a hybrid key share costs 1,184 bytes more than X25519, that number is measured, not assumed.</p>
-<p>The limits it is measured against are real: a 1,460-byte TCP payload is what fits in one packet on a standard 1,500-byte Ethernet MTU, and the initial congestion window has defaulted to ten segments since Linux 2.6.39 (<a href="https://www.rfc-editor.org/rfc/rfc6928">RFC 6928</a>). A server flight past 14,600 bytes waits for an acknowledgement before it can finish.</p>
+<p>The limits it is measured against are real: a 1,460-byte TCP payload is what fits in one packet on a standard 1,500-byte Ethernet MTU, and the initial congestion window has defaulted to ten segments since Linux 2.6.39 (May 2011); the IETF standardized the same value two years later as <a href="https://www.rfc-editor.org/rfc/rfc6928">RFC 6928</a> (April 2013). A server flight past 14,600 bytes waits for an acknowledgement before it can finish.</p>
 </details>
 
 <h3>The trap worth failing once</h3>

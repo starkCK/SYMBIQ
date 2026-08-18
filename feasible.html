@@ -29,9 +29,9 @@
 <link rel="stylesheet" href="style.css?v=29">
 <link rel="stylesheet" href="feasible.css?v=4">
 <script src="save.js"></script>
-<script src="orgames.js?v=7"></script>
-<script src="methods.js?v=1"></script>
+<script src="feasible-tools.js?v=1"></script>
 <script src="nav.js?v=5" defer></script>
+<script src="depth.js" defer></script>
 <script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -57,6 +57,7 @@
       <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
       <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
       <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="explainers">
@@ -174,6 +175,7 @@
 <div class="fr-allctl">
   <button type="button" id="fr-open">Open all ten</button>
   <button type="button" id="fr-shut">Collapse all</button>
+  <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
 </div>
 
@@ -382,6 +384,10 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
       <p><strong>Weak duality</strong> says any feasible <em>y</em> gives a ceiling on any feasible <em>x</em>: cᵀx ≤ yᵀAx ≤ bᵀy. <strong>Strong duality</strong> says that at the optimum the two are <em>equal</em> — and that equality is the certificate. A solver can hand you a plan and a set of dual prices, and you can check optimality yourself in one multiplication, without trusting the solver at all.</p>
       <p>Worked on the figure&#39;s own instance: the duals are y = (3/4, 1/2, 0), giving a dual objective of 24(3/4) + 6(1/2) + 12(0) = <strong>21</strong>, exactly the primal optimum. Verified.</p>
       <p><strong>Complementary slackness</strong> makes the zero rigorous: for each constraint, either it binds or its dual price is zero — never both nonzero. And <strong>right-hand-side ranging</strong> is the missing half nobody quotes: a shadow price is a one-sided derivative valid only while the same set of constraints stays binding. Report a price without its range and you have told half the truth. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>Lagrangian relaxation</strong> is what you reach for when a model has a few &quot;hard&quot; constraints sitting on top of an otherwise easy problem. Instead of solving the whole thing at once, move the hard constraints <em>Dx ≤ e</em> into the objective with a penalty:</p>
+      <code class="eq">L(λ) = max  cᵀx + λᵀ(e − Dx)
+       s.t.  Ax ≤ b, x ≥ 0</code>
+      <p>For any λ ≥ 0 this is easier to solve than the original — the hard constraints are gone, only the easy ones (<em>Ax ≤ b</em>) remain — and its value L(λ) is <em>always</em> at least as good as the true optimum, exactly the same weak-duality logic as above, just applied to a hand-picked subset of constraints instead of all of them. Minimising L(λ) over λ ≥ 0 (the <strong>Lagrangian dual</strong>) gives the tightest bound this decomposition can produce. This is precisely how branch &amp; bound (topic 05) gets a bound sharp enough to prune large integer programs in practice, when solving the full LP relaxation at every node would be too slow.</p>
     </div>
 
     <div class="layer real">
@@ -462,6 +468,11 @@ s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
       <p>Dropping the last condition gives the <strong>LP relaxation</strong>, whose optimum z_LP satisfies z_IP ≤ z_LP for a maximisation. The difference is the <strong>integrality gap</strong> — 1.0 in the figure above, since 21 − 20 = 1.</p>
       <p><strong>Complexity.</strong> Integer programming is <strong>NP-hard</strong>; 0–1 integer programming is one of Karp&#39;s original 21 NP-complete problems (Karp, 1972). Unless P = NP there is no polynomial algorithm. This is not a statement about current technology — it is a statement about the problem. <span class="orbadge">⟦Proven⟧</span></p>
       <p>What makes real instances tractable anyway is that <em>some</em> integer programs are secretly easy. If the constraint matrix is <strong>totally unimodular</strong> — every square submatrix has determinant 0, +1 or −1 — then the LP relaxation&#39;s vertices are already integral, and you get the integer answer for free from a polynomial-time solve. Network flow and bipartite matching (topics 06 and 07) are exactly this case, which is why they are the two corners of combinatorial optimisation that behave beautifully.</p>
+      <p>Most integer programs that show up in practice are one of three named shapes, distinguished by what the constraint <em>means</em>, not what it looks like:</p>
+      <code class="eq">COVERING            PACKING              PARTITIONING
+Σ x_j ≥ 1 per i     Σ x_j ≤ 1 per i      Σ x_j = 1 per i
+"cover everything"  "never overlap"      "split exactly"</code>
+      <p><strong>Covering</strong> — every requirement met by at least one chosen item, e.g. crew scheduling: every flight covered by some crew. <strong>Packing</strong> — chosen items never conflict, e.g. selecting non-overlapping intervals, or an independent set in a graph. <strong>Partitioning</strong> — every element assigned to exactly one group, e.g. districting, or splitting a workforce into non-overlapping shifts. The three differ by one inequality sign, and almost every scheduling, routing or districting problem you meet is a covering, packing or partitioning problem wearing a domain-specific name.</p>
     </div>
 
     <div class="layer real">
@@ -621,6 +632,7 @@ s.t.       f(u,v) ≤ c(u,v)            for every edge
       <p><strong>Max-flow min-cut theorem</strong> (Ford &amp; Fulkerson, 1956): the maximum flow value equals the minimum capacity over all source–sink cuts. It is precisely LP duality specialised to this structure — the cut is the dual solution — which is why topics 03 and 06 keep rhyming. <span class="orbadge">⟦Proven⟧</span></p>
       <p>The <strong>integrality</strong> gift comes from total unimodularity: a network&#39;s incidence matrix is totally unimodular, so with integer capacities every vertex of the feasible polytope is integral — and since simplex returns a vertex, it hands back a whole-number flow with no branching at all. (An interior-point method can land between vertices on a tie, which is why solvers apply a crossover step to finish at one.) This is why max-flow is polynomial while its cousin the integer multicommodity flow is NP-hard — remove the structure and the gift goes with it.</p>
       <p>Algorithms: Ford–Fulkerson (augmenting paths), Edmonds–Karp (O(VE²) by choosing shortest augmenting paths), Dinic&#39;s algorithm, and push-relabel. All are polynomial and all are fast in practice.</p>
+      <p>Everything above assumes the network already exists and asks how much flows through it. <strong>Network design</strong> asks the harder question one level up — which edges should even get <em>built</em> — and the nice structure vanishes the moment you ask it. The cleanest version, the <strong>Steiner tree problem</strong> (connect a given set of terminal nodes at minimum total edge cost, allowed to use other nodes as waypoints), is NP-hard, unlike the max-flow problem it superficially resembles. The practical version, <strong>fixed-charge network design</strong>, pays a fixed cost to open each edge before any flow can use it at all — which destroys the total-unimodularity that made ordinary flow easy, and is exactly why building a telecom backbone or expanding a road network is a genuinely harder planning problem than routing traffic through one that already exists.</p>
     </div>
 
     <div class="layer real">
@@ -935,6 +947,12 @@ otherwise accept with probability  exp(−ΔE / T)</code>
       <p>At high T almost anything is accepted and the search wanders freely. As T → 0 only improvements survive and it becomes plain hill-climbing. The <strong>cooling schedule</strong> — how T falls — is the entire design problem.</p>
       <p>There <em>is</em> a schedule with a convergence proof. Geman &amp; Geman (1984) showed that cooling as T<sub>k</sub> = c / log(k + 2), with c at least the depth of the deepest local basin, converges to the global optimum with probability 1. <span class="orbadge">⟦Proven⟧</span></p>
       <p>And it is useless. Logarithmic cooling is so slow as to be unusable: on the landscapes in this project&#39;s own annealing game, where the deepest barrier is 4, that schedule needs roughly <strong>3,000 steps to reach T = 0.5</strong> — twelve times the entire budget — and about <strong>500 million</strong> to reach T = 0.2. It converges precisely because it refuses to cool. Every schedule anyone actually uses is geometric, has no proof, and works. That gap between what is provable and what is practical is the honest character of this whole topic. <span class="orbadge">⟦Heuristic⟧</span></p>
+      <p>Simulated annealing is one metaheuristic among several, chosen here because it is playable. The others solve the same basic problem — search a space too large to enumerate, no gradient to follow, no certificate at the end — with a different source of &quot;accept something worse sometimes&quot;:</p>
+      <p><strong>Genetic / evolutionary algorithms</strong> keep a whole <em>population</em> of candidate solutions at once instead of one. Encode each as a string (a &quot;chromosome&quot;), score it, and breed the next generation from the fitter half: <strong>crossover</strong> splices two parents&#39; encodings together, <strong>mutation</strong> flips a few entries at random so the population doesn&#39;t stagnate. Worked example: encode a delivery order as a permutation of 10 stops, breed a population of 50 routes for a few hundred generations, and the population&#39;s best converges toward the same answer branch &amp; bound would certify — without ever proving it. Paper: Holland, <em>Adaptation in Natural and Artificial Systems</em>, University of Michigan Press (1975).</p>
+      <p><strong>Tabu search</strong> is plain hill-climbing with a memory. It always takes the best neighbouring move available — including a worsening one, unlike a method that only ever improves — but keeps a short <strong>tabu list</strong> of recently-used moves it refuses to repeat for a fixed number of iterations, specifically so the search can&#39;t just walk straight back to the local optimum it was trying to escape. An <strong>aspiration criterion</strong> overrides the tabu status when a forbidden move would beat the best solution found so far. Worked example: job-shop scheduling, where the &quot;neighbour&quot; of a schedule is the same schedule with two operations swapped. Paper: Glover, &quot;Tabu Search — Part I,&quot; <em>ORSA Journal on Computing</em> 1(3) (1989).</p>
+      <p><strong>Particle swarm optimisation</strong> runs many candidate solutions (&quot;particles&quot;) at once through the solution space, each with a position and a velocity. Every particle&#39;s velocity is nudged, each step, toward two things: the best position <em>it</em> has personally found, and the best position <em>anyone in the swarm</em> has found — so the population behaves like a flock converging on good territory without any particle knowing the objective&#39;s shape in advance. Worked example: minimising a two-dimensional test function, watched live as the swarm visibly contracts onto the minimum over a few dozen iterations. Paper: Kennedy &amp; Eberhart, &quot;Particle Swarm Optimization,&quot; <em>Proceedings of IEEE ICNN</em> (1995).</p>
+      <p><strong>Ant colony optimisation</strong> has artificial &quot;ants&quot; construct solutions one step at a time, biased by a <strong>pheromone trail</strong> left on the graph by earlier ants — more pheromone on an edge means more ants choose it next round — while all pheromone slowly <strong>evaporates</strong>, so trails that stop being reinforced by good solutions fade out instead of trapping the search forever. Worked example: the travelling-salesman problem, the field&#39;s own standard demonstration, where after enough rounds the pheromone map itself becomes a visible picture of the good tour. Paper: Dorigo, Maniezzo &amp; Colorni, &quot;Ant System: Optimization by a Colony of Cooperating Agents,&quot; <em>IEEE Transactions on Systems, Man, and Cybernetics</em> 26(1) (1996).</p>
+      <p style="color:var(--muted);font-size:.85rem">[FILL: verified reference-implementation link for each algorithm above — each one actually run against its worked example before linking, per this project's own verification rule.]</p>
     </div>
 
     <div class="layer real">
@@ -1143,6 +1161,42 @@ otherwise accept with probability  exp(−ΔE / T)</code>
     mods.forEach(function (m) { m.open = false; }); tally();
   });
 
+  // ---- the light/deep math toggle -------------------------------------
+  // Default is SHOW (current behaviour, unchanged) unless the reader has
+  // explicitly recorded a "light" preference (depth.js) -- failure mode
+  // stays "shows too much", same rule tiers.js follows for the same reason.
+  (function () {
+    var mathLayers = [].slice.call(document.querySelectorAll('.layer.maths'));
+    var btn = document.getElementById('fr-mathtoggle');
+    if (!mathLayers.length || !btn) return;
+
+    function apply(hide) {
+      mathLayers.forEach(function (el) { el.hidden = hide; });
+      btn.textContent = hide ? 'Show the math' : 'Hide the math';
+      btn.setAttribute('aria-pressed', hide ? 'true' : 'false');
+    }
+
+    // This inline script runs at parse time, before deferred scripts (depth.js
+    // included) have executed -- reading SymbiQ.depth here would always see it
+    // undefined. Wait for DOMContentLoaded, which fires after every deferred
+    // script has run, same ordering tiers.js relies on for its own boot().
+    function initFromPref() {
+      var pref = (window.SymbiQ && SymbiQ.depth) ? SymbiQ.depth.get() : null;
+      apply(pref === 'light');
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFromPref);
+    } else {
+      initFromPref();
+    }
+
+    btn.addEventListener('click', function () {
+      var hiding = mathLayers.length && !mathLayers[0].hidden;
+      apply(hiding);
+      if (window.SymbiQ && SymbiQ.depth) SymbiQ.depth.set(hiding ? 'light' : 'deep');
+    });
+  })();
+
   // A link to #t07 should OPEN topic 7, not scroll to a closed strip.
   function openTarget(hash) {
     var t = hash && document.getElementById(hash.slice(1));
@@ -1161,34 +1215,30 @@ otherwise accept with probability  exp(−ΔE / T)</code>
 </script>
 
 <script>
-// Mount both OR games. They use the same contract as games.js so that when
-// branch & bound becomes Cordon's mission on the Path (12_GAME_MASTER_PLAN §3.3
-// ability 10), journey.html can mount them with no rewrite here or there.
+// Mount everything feasible-tools.js provides. Same mount contract throughout
+// (games.js's pattern) so that when branch & bound becomes Cordon's mission on
+// the Path (12_GAME_MASTER_PLAN §3.3 ability 10), journey.html can mount it
+// with no rewrite here or there — and methods.js is deliberately generic for
+// the same reason: it takes any {items, cap} instance, so the PQC migration
+// sequencer can mount this identical engine on a real estate later, where an
+// asset's value is its risk reduction and its weight is its migration cost.
 (function () {
   var OG = window.SymbiQ && SymbiQ.orgames;
-  if (!OG) return;
-  ['bottleneck', 'prune'].forEach(function (id) {
-    var host = document.getElementById('mount-' + id);
-    if (!host) return;
-    OG.mount(id, host, { mode: 'arcade' });
-    var about = document.getElementById('about-' + id);
-    if (about) about.innerHTML = OG.aboutHTML(id);
-    var honest = document.getElementById('honest-' + id);
-    if (honest) honest.innerHTML = OG.get(id).honest;
-  });
-})();
-</script>
+  if (OG) {
+    ['bottleneck', 'prune'].forEach(function (id) {
+      var host = document.getElementById('mount-' + id);
+      if (!host) return;
+      OG.mount(id, host, { mode: 'arcade' });
+      var about = document.getElementById('about-' + id);
+      if (about) about.innerHTML = OG.aboutHTML(id);
+      var honest = document.getElementById('honest-' + id);
+      if (honest) honest.innerHTML = OG.get(id).honest;
+    });
+  }
 
-<script>
-// The Verdict table. Same mount contract again, and deliberately generic in
-// methods.js: it takes any {items, cap} instance, so the PQC migration
-// sequencer can mount this identical engine on a real estate later — an
-// asset's value is its risk reduction, its weight is its migration cost.
-(function () {
   var M = window.SymbiQ && SymbiQ.methods;
-  var host = document.getElementById('mount-verdict');
-  if (!M || !host) return;
-  M.mount(host, { level: 2 });
+  var vhost = document.getElementById('mount-verdict');
+  if (M && vhost) M.mount(vhost, { level: 2 });
 })();
 </script>
 

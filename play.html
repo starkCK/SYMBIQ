@@ -33,6 +33,7 @@
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=8"></script>
 <script src="nav.js?v=5" defer></script>
+<script src="depth.js" defer></script>
 <script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -80,6 +81,7 @@
       <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
       <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
       <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="explainers">
@@ -150,6 +152,11 @@
 <h1>The Arcade</h1>
 <p class="tagline">The same five machines you meet on <a href="journey.html">the Solver's Path</a> — but here there is no story, no mentor and no order. Just the games, and the physics doing the judging.</p>
 
+<!-- BROWSE: the selection floor. Hidden in full whenever a game or mission
+     is open, so playing something is a dedicated view, not a scroll stop
+     inside a longer page -- see the router at the bottom of this file. -->
+<div id="browse">
+
 <!-- the door: games are somewhere you go, not a menu you scan -->
 <div class="gate" id="gate" role="button" tabindex="0" aria-controls="floor" aria-expanded="false">
   <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -182,23 +189,9 @@
     </div>
     <div class="showcase-picks" id="showcase-picks"></div>
   </div>
-  <div id="mission-host"></div>
 
   <h2>Pick a machine</h2>
   <div class="cabs" id="cabs"></div>
-
-  <div class="stage" id="stage" hidden>
-    <div class="stage-top">
-      <button class="stage-back" id="stage-back">← back to the floor</button>
-      <span style="color:var(--muted);font-size:.86rem" id="stage-mentor"></span>
-    </div>
-    <h2 id="stage-title"></h2>
-    <p id="stage-hook"></p>
-    <div id="stage-about"></div>
-    <div class="card" id="stage-game"></div>
-    <div id="stage-next"></div>
-    <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="stage-honest"></p>
-  </div>
 
   <h2>Out in the wild</h2>
   <p>Five more playable things live on the pages they belong to, because each one only makes sense standing next to its explanation.</p>
@@ -231,13 +224,37 @@
   </div>
 </div>
 
+</div><!-- /#browse -->
+
+<!-- GAME VIEW: one machine, full page, its own #play/<id> route -->
+<div class="stage" id="stage" hidden>
+  <div class="stage-top">
+    <button class="stage-back" id="stage-back">← back to the Arcade</button>
+    <span style="color:var(--muted);font-size:.86rem" id="stage-mentor"></span>
+  </div>
+  <h2 id="stage-title"></h2>
+  <p id="stage-hook"></p>
+  <div id="stage-about"></div>
+  <div class="card" id="stage-game"></div>
+  <div id="stage-next"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="stage-honest"></p>
+</div>
+
+<!-- MISSION VIEW: a showcased Solver's Path scene, its own #mission/<id> route.
+     missions.js draws its own "Leave" control inside this host. -->
+<div id="mission-host" hidden></div>
+
 <footer>Here the physics does the judging.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
 </div>
 
 <script>
 (function () {
+  var browse = document.getElementById('browse');
   var gate = document.getElementById('gate'), floor = document.getElementById('floor');
+  var stage = document.getElementById('stage');
+  var missionHost = document.getElementById('mission-host');
   var S = window.SymbiQ && SymbiQ.save, GS = window.SymbiQ && SymbiQ.games;
+  var MS = window.SymbiQ && SymbiQ.missions;
   if (!GS) return;
 
   function openFloor() {
@@ -253,6 +270,7 @@
   });
   // it also opens if you simply scroll past it — the door is an invitation, not a wall
   window.addEventListener('scroll', function () {
+    if (browse.hidden) return;
     if (floor.hidden && gate.getBoundingClientRect().bottom < window.innerHeight * 0.55) openFloor();
   }, { passive: true });
 
@@ -266,68 +284,95 @@
         '<span class="cabtag">' + g.about.tier + ' · play ▸</span></button>';
     }).join('');
     Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) {
-      b.addEventListener('click', function () { launch(b.getAttribute('data-g')); });
+      b.addEventListener('click', function () { showStage(b.getAttribute('data-g')); });
     });
   }
 
-  function launch(id) {
-    var g = GS.get(id), stage = document.getElementById('stage');
-    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) {
-      b.classList.toggle('on', b.getAttribute('data-g') === id);
-    });
+  /* ---------------------------------------------------------------------
+   * ROUTER. Each game and each showcased mission gets its own dedicated,
+   * full-page view and its own URL (#play/<id> / #mission/<id>) — opening
+   * one hides the entire selection floor rather than expanding inline
+   * inside it, and the URL change means the browser's own Back button (as
+   * well as the in-page one) returns you to the selection screen.
+   * ------------------------------------------------------------------- */
+  function showBrowse(push) {
+    stage.hidden = true;
+    document.getElementById('stage-game').innerHTML = '';
+    missionHost.hidden = true;
+    missionHost.innerHTML = '';
+    browse.hidden = false;
+    openFloor(); // once you've navigated once, always land on the open floor, not the door
+    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) { b.classList.remove('on'); });
+    if (push !== false) history.pushState(null, '', location.pathname + location.search);
+    window.scrollTo(0, 0);
+  }
+
+  function showStage(id, push) {
+    var g = GS.get(id);
+    if (!g) { showBrowse(false); return; }
+    browse.hidden = true;
+    missionHost.hidden = true;
+    missionHost.innerHTML = '';
     document.getElementById('stage-title').textContent = g.title;
     document.getElementById('stage-hook').textContent = g.hook;
     document.getElementById('stage-mentor').textContent = 'On the Path this is ' + g.mentor + "'s mission";
     document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
     document.getElementById('stage-honest').innerHTML = g.honest || '';
+    document.getElementById('stage-next').innerHTML = '';
     stage.hidden = false;
-    var nextHost = document.getElementById('stage-next');
-    nextHost.innerHTML = '';
-    GS.mount(id, document.getElementById('stage-game'), {
-      mode: 'arcade',
-      onWin: function () {
-        drawCabs();
-        // Same problem the Path had: winning left you at the bottom of a
-        // finished machine with nothing saying where to go. Say it, loudly.
-        var order = GS.list.map(function (g) { return g.id; });
-        var rest  = order.filter(function (k) { return k !== id && !(S && S.isComplete(k)); });
-        var nid   = rest[0];
-        if (nid) {
-          var ng = GS.get(nid);
-          nextHost.innerHTML =
-            '<a class="nextup" href="play.html#' + nid + '" data-g="' + nid + '">' +
-              '<span class="eyebrow">Cleared — next machine</span>' +
-              '<span class="headline">' + ng.title + '</span>' +
-              '<span class="sub">' + ng.hook + '</span>' +
-              '<span class="go">Play it</span>' +
-            '</a>';
-          nextHost.querySelector('.nextup').addEventListener('click', function (ev) {
-            ev.preventDefault(); launch(nid);
-          });
-        } else {
-          nextHost.innerHTML =
-            '<a class="nextup" href="journey.html">' +
-              '<span class="eyebrow">Every machine cleared</span>' +
-              '<span class="headline">Walk them as a story instead</span>' +
-              '<span class="sub">The Solver&#39;s Path gives each of these a mentor, a world and a reason.</span>' +
-              '<span class="go">Enter the Path</span>' +
-            '</a>';
-        }
-      }
-    });
-    stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    GS.mount(id, document.getElementById('stage-game'), { mode: 'arcade', onWin: function () { onGameWin(id); } });
+    if (push !== false) history.pushState(null, '', '#play/' + id);
+    window.scrollTo(0, 0);
   }
 
-  /* The showcase mission. It mounts into its own host and owns everything
-     inside it — the Arcade hands over a bare element and gets it back on exit.
-     If missions.js or scene.js failed to load, the button simply is not shown
-     and the floor below is untouched. */
+  function showMission(id, push) {
+    if (!MS || !window.SymbiQ.scene || !MS.get(id)) { showBrowse(false); return; }
+    browse.hidden = true;
+    stage.hidden = true;
+    document.getElementById('stage-game').innerHTML = '';
+    missionHost.hidden = false;
+    MS.mount(id, missionHost, { onExit: function () { showBrowse(); } });
+    if (push !== false) history.pushState(null, '', '#mission/' + id);
+    window.scrollTo(0, 0);
+  }
+
+  function onGameWin(id) {
+    drawCabs();
+    // Same problem the Path had: winning left you at the bottom of a
+    // finished machine with nothing saying where to go. Say it, loudly.
+    var order = GS.list.map(function (g) { return g.id; });
+    var rest  = order.filter(function (k) { return k !== id && !(S && S.isComplete(k)); });
+    var nid   = rest[0];
+    var nextHost = document.getElementById('stage-next');
+    if (nid) {
+      var ng = GS.get(nid);
+      nextHost.innerHTML =
+        '<a class="nextup" href="#play/' + nid + '" data-g="' + nid + '">' +
+          '<span class="eyebrow">Cleared — next machine</span>' +
+          '<span class="headline">' + ng.title + '</span>' +
+          '<span class="sub">' + ng.hook + '</span>' +
+          '<span class="go">Play it</span>' +
+        '</a>';
+      nextHost.querySelector('.nextup').addEventListener('click', function (ev) {
+        ev.preventDefault(); showStage(nid);
+      });
+    } else {
+      nextHost.innerHTML =
+        '<a class="nextup" href="journey.html">' +
+          '<span class="eyebrow">Every machine cleared</span>' +
+          '<span class="headline">Walk them as a story instead</span>' +
+          '<span class="sub">The Solver&#39;s Path gives each of these a mentor, a world and a reason.</span>' +
+          '<span class="go">Enter the Path</span>' +
+        '</a>';
+    }
+  }
+
+  /* The showcase mission picks. If missions.js or scene.js failed to load,
+     the card simply is not shown and the floor below is untouched. */
   (function () {
     var card = document.getElementById('showcase'),
-        picks = document.getElementById('showcase-picks'),
-        host = document.getElementById('mission-host'),
-        MS = window.SymbiQ && SymbiQ.missions;
-    if (!picks || !host) return;
+        picks = document.getElementById('showcase-picks');
+    if (!picks) return;
     if (!MS || !window.SymbiQ.scene) { card.hidden = true; return; }
     picks.innerHTML = MS.list.map(function (m) {
       return '<button type="button" class="pick" data-m="' + m.id + '">' +
@@ -337,31 +382,28 @@
         '<span class="pick-go">' + m.mentor + ' is waiting &#9656;</span></button>';
     }).join('');
     Array.prototype.forEach.call(picks.querySelectorAll('.pick'), function (b) {
-      b.addEventListener('click', function () {
-        card.hidden = true;
-        MS.mount(b.getAttribute('data-m'), host, {
-          onExit: function () {
-            card.hidden = false;
-            drawCabs();
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        });
-        host.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      b.addEventListener('click', function () { showMission(b.getAttribute('data-m')); });
     });
   })();
 
-  document.getElementById('stage-back').addEventListener('click', function () {
-    var stage = document.getElementById('stage');
-    stage.hidden = true;
-    document.getElementById('stage-game').innerHTML = '';
-    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) { b.classList.remove('on'); });
-    document.getElementById('cabs').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
+  document.getElementById('stage-back').addEventListener('click', function () { showBrowse(); });
 
-  // deep links still work: play.html#volcano opens the door and the machine
-  var want = (location.hash || '').replace('#', '');
-  if (want && GS.get(want)) { openFloor(); launch(want); }
+  /* Route from the current hash — runs on load and on browser Back/Forward.
+     Deep links keep working exactly as before: play.html#volcano still
+     opens straight to that machine (no door/floor detour), just as a
+     dedicated full-page view instead of a scroll target. */
+  function route() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (!h) { showBrowse(false); return; }
+    var mm = h.match(/^mission\/(.+)$/);
+    if (mm) { showMission(decodeURIComponent(mm[1]), false); return; }
+    var pm = h.match(/^play\/(.+)$/);
+    var gid = pm ? decodeURIComponent(pm[1]) : h;
+    if (GS.get(gid)) { showStage(gid, false); return; }
+    showBrowse(false);
+  }
+  window.addEventListener('popstate', route);
+  route();
 })();
 </script>
 </body>

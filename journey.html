@@ -33,6 +33,7 @@
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=8"></script>
 <script src="nav.js?v=5" defer></script>
+<script src="depth.js" defer></script>
 <script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
@@ -287,6 +288,7 @@
       <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
       <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
       <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
+      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="explainers">
@@ -372,6 +374,17 @@
     <input id="intro-name" type="text" maxlength="24" placeholder="Name your Solver" autocomplete="off" aria-label="Name your Solver">
     <button class="bigplay" id="intro-begin">Begin ▸</button>
   </div>
+</div>
+
+<!-- DEPTH CHOICE -->
+<div class="card" id="depth-ask" style="display:none">
+  <p class="lead">One more thing before the map.</p>
+  <p>Some Solvers want the whole mechanism — the real mathematics, the proofs, the sources. Others want the shape of the idea without the notation. Both walk the same Path; this only decides how deep each page opens by default. Change it any time, per page.</p>
+  <div class="namerow">
+    <button class="bigplay" id="depth-light">Get the intuition ▸</button>
+    <button class="bigplay" id="depth-deep">Go deep ▸</button>
+  </div>
+  <p style="margin:10px 0 0"><button type="button" class="rst" id="depth-skip">Decide later</button></p>
 </div>
 
 <!-- HUB -->
@@ -1008,6 +1021,25 @@
     if (!reduce) { var a = map.querySelector('.avatar'); if (a) { a.style.transform = a.getAttribute('transform'); } }
   }
 
+  // Asked once, right after naming, before the map ever renders. Skippable,
+  // and never re-asked once a choice (including "decide later") is recorded --
+  // this only sets tiers.js/feasible.html's DEFAULT depth, never forces it.
+  function showDepthAsk() {
+    var already = (window.SymbiQ && SymbiQ.depth) ? SymbiQ.depth.get() : null;
+    if (already || !(window.SymbiQ && SymbiQ.depth)) { showHub(); return; }
+    document.getElementById('intro').style.display = 'none';
+    var ask = document.getElementById('depth-ask');
+    ask.style.display = 'block';
+    function choose(pref) {
+      if (pref) SymbiQ.depth.set(pref);
+      ask.style.display = 'none';
+      showHub();
+    }
+    document.getElementById('depth-light').addEventListener('click', function () { choose('light'); });
+    document.getElementById('depth-deep').addEventListener('click', function () { choose('deep'); });
+    document.getElementById('depth-skip').addEventListener('click', function () { choose(null); });
+  }
+
   function showIntro() {
     var intro = document.getElementById('intro');
     intro.style.display = 'block';
@@ -1017,7 +1049,7 @@
       var v = (input.value || '').trim();
       if (!v) { input.focus(); input.style.borderColor = 'var(--yellow)'; return; }
       if (S) S.setAvatar(v);
-      showHub();
+      showDepthAsk();
     }
     begin.addEventListener('click', go);
     input.addEventListener('keypress', function (e) { if (e.key === 'Enter') go(); });

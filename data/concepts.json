@@ -634,6 +634,46 @@
       "tier": "r",
       "kind": "concept",
       "blurb": "Computing reliably out of unreliable parts -- the regime the whole roadmap is aimed at."
+    },
+    {
+      "id": "postulates-of-qm",
+      "term": "postulates of quantum mechanics",
+      "aliases": ["postulates", "state space", "unitary evolution"],
+      "page": "formalism.html",
+      "anchor": "f01",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The four rules everything else in quantum computing follows from: state, evolution, measurement, composite systems."
+    },
+    {
+      "id": "density-matrix",
+      "term": "density matrix",
+      "aliases": ["density matrices", "mixed state", "mixed states", "partial trace", "purification"],
+      "page": "formalism.html",
+      "anchor": "f02",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The object that honestly describes a qubit entangled with something you can't see -- genuinely mixed, not just uncertain."
+    },
+    {
+      "id": "povm",
+      "term": "POVM",
+      "aliases": ["positive operator-valued measure", "projective measurement", "Helstrom bound"],
+      "page": "formalism.html",
+      "anchor": "f03",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The general form of quantum measurement -- and the reason two non-orthogonal states can never be told apart for certain."
+    },
+    {
+      "id": "no-cloning-theorem",
+      "term": "no-cloning theorem",
+      "aliases": ["no cloning", "quantum no-cloning", "cannot be cloned"],
+      "page": "formalism.html",
+      "anchor": "f04",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "A four-line proof that no machine can copy an unknown quantum state -- the reason QEC can't just keep a backup."
     }
   ]
 }

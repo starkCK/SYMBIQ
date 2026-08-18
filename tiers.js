@@ -179,7 +179,16 @@
     }
     if (!start) {
       var want = hashGet('depth');
-      start = (want && (want === 'all' || present.indexOf(want) > -1)) ? want : present[0];
+      if (want && (want === 'all' || present.indexOf(want) > -1)) {
+        start = want;
+      } else {
+        // No hash, no anchor: fall back to the reader's remembered light/deep
+        // choice (depth.js), if one exists and this page actually has that
+        // tier. Still just a default -- an explicit hash above always won.
+        var pref = (window.SymbiQ && SymbiQ.depth) ? SymbiQ.depth.get() : null;
+        var prefTier = pref === 'deep' ? 'r' : pref === 'light' ? 'g' : null;
+        start = (prefTier && present.indexOf(prefTier) > -1) ? prefTier : present[0];
+      }
     }
     pick(start, false);
 

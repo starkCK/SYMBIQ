@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🟢 Basics — SymbiQ</title>
-<meta name="description" content="Quantum error correction with no math and no jargon: a choir where every singer drifts off key, a conductor who never hears anyone solo, and the AI that learned one real machine's bad habits.">
+<title>The AI That Babysits Qubits — SymbiQ</title>
+<meta name="description" content="Quantum error correction and the AI decoder now beating thirty years of hand-written rulebooks — no math, real terms and light math, or full formalism with citations. Pick your depth, on one page.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/basics.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -14,16 +14,16 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/basics.html">
-<meta property="og:title" content="🟢 Basics — SymbiQ">
-<meta property="og:description" content="Quantum error correction with no math and no jargon: a choir where every singer drifts off key, a conductor who never hears anyone solo, and the AI that learned one real machine's bad habits.">
+<meta property="og:title" content="The AI That Babysits Qubits — SymbiQ">
+<meta property="og:description" content="Quantum error correction and the AI decoder now beating thirty years of hand-written rulebooks — no math, real terms and light math, or full formalism with citations. Pick your depth, on one page.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="🟢 Basics — SymbiQ">
-<meta name="twitter:description" content="Quantum error correction with no math and no jargon: a choir where every singer drifts off key, a conductor who never hears anyone solo, and the AI that learned one real machine's bad habits.">
+<meta name="twitter:title" content="The AI That Babysits Qubits — SymbiQ">
+<meta name="twitter:description" content="Quantum error correction and the AI decoder now beating thirty years of hand-written rulebooks — no math, real terms and light math, or full formalism with citations. Pick your depth, on one page.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=29">
@@ -33,7 +33,7 @@
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
-<body>
+<body data-tiers>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -51,10 +51,8 @@
     <details class="navcat navcat-cur" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain active">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
+      <a href="basics.html" class="navmain active">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
+      <a href="formalism.html" class="navmain">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="explainers">
@@ -120,21 +118,10 @@
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
 </nav>
 
-
-
-
-<span class="tier g">🟢 Beginner — no math, no jargon</span>
 <h1>The AI That Babysits Qubits</h1>
-<div class="tbar tbar-links">
-  <span class="tbar-lab">Read this at</span>
-  <div class="tbar-btns">
-    <span class="tbtn t-g is-on" aria-current="page"><span class="tbtn-chip">🟢</span><span class="tbtn-name">No math</span></span>
-    <a class="tbtn t-y" href="concepts.html"><span class="tbtn-chip">🟡</span><span class="tbtn-name">Some math</span></a>
-    <a class="tbtn t-r" href="deep.html"><span class="tbtn-chip">🔴</span><span class="tbtn-name">Real math</span></a>
-  </div>
-  <span class="tbar-blurb">One analogy. No equations.</span>
-</div>
+<p class="tagline">The pattern-recognition problem hiding under every "quantum computers don't work yet" headline — and the AI that's now winning it. Pick your depth below; the toggle remembers nothing, so a link always opens at the depth it was sent at.</p>
 
+<span class="tier g" id="green">🟢 No math</span>
 <p class="tier-lede">One analogy, no equations, about two minutes. If you want the machinery, the 🟡 tier builds it; if you want the derivation, 🔴 has it.</p>
 
 <p>A quantum computer is a choir where every singer slowly drifts off key — and looking directly at any singer to check on them makes that singer forget the song entirely. <em>(Singer = qubit, the machine's basic unit of information. Off-key = the tiny error every qubit picks up just by existing. That's the only two words you need.)</em></p>
@@ -187,7 +174,7 @@
     <text class="lbl-s" x="280" y="212" text-anchor="middle">two clashes side by side → the drift is the singer between them</text>
   </svg></div>
   <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>Nobody was ever heard alone.</strong> The conductor only ever asks "do these two match?" — and two neighbouring clashes are enough to pin the culprit. That is not a storytelling trick — it is exactly the rule a real quantum computer follows, because listening to a single qubit destroys the very thing you were trying to protect. (A real machine runs this comparison across a whole grid rather than a single row, but the rule is the same one.) <a href="concepts.html">The same thing with its real name ▸</a></figcaption>
+  <figcaption><strong>Nobody was ever heard alone.</strong> The conductor only ever asks "do these two match?" — and two neighbouring clashes are enough to pin the culprit. That is not a storytelling trick — it is exactly the rule a real quantum computer follows, because listening to a single qubit destroys the very thing you were trying to protect. (A real machine runs this comparison across a whole grid rather than a single row, but the rule is the same one.) <a href="#yellow">The same thing with its real name ▸</a></figcaption>
 </figure>
 
 <p>For thirty years, people wrote that conductor's rulebook by hand. In 2024, Google DeepMind replaced the rulebook with an AI — AlphaQubit — that <em>learned</em> one real choir's particular bad habits from its own recordings. It makes about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one. It is still too slow to conduct in real time. Making it fast is the current race.</p>
@@ -209,16 +196,234 @@
   </div>
   <p class="cyu-why"><strong>Measuring one qubit on its own collapses its superposition</strong> — the property that made it worth having. A parity check dodges this by asking only <em>do these two agree?</em>, which reveals that something flipped without revealing what either one is. That single constraint is why quantum error correction looks so strange next to the classical kind: you are repairing a thing you are never allowed to inspect.</p>
 </div>
+
+<span class="tier y" id="yellow">🟡 Some math</span>
+<p class="tier-lede">The mechanism, one worked number, and the picture you should have in your head. No derivations — those are in 🔴.</p>
+
+<h2>The mechanism</h2>
+
+<p>Physical qubits fail constantly — roughly <strong>1 error per 1,000 operations</strong> on good hardware. The fix is not a better qubit; it is redundancy with a twist. You encode one <em>logical</em> qubit across many physical ones in a <strong>surface code</strong>, then never measure the data at all.</p>
+
+<p>Instead, extra <strong>measurement qubits</strong> sitting between the data qubits run parity checks — <strong>syndrome measurements</strong>. Each one asks only whether its neighbours <em>agree</em>, never what they are. That distinction is the entire trick: a parity check extracts the fact that something flipped without extracting the value that would collapse the superposition. A <strong>decoder</strong> then infers the most likely error pattern from the history of those checks, the way a doctor diagnoses from symptoms rather than by opening the patient.</p>
+
+<h2>The picture to hold in your head</h2>
+
+<p>Draw a checkerboard. Every <em>corner</em> is a data qubit, holding part of your one logical qubit. Every <em>square</em> is a measurement qubit that watches the four corners touching it and reports a single bit: <em>even</em> or <em>odd</em>. The squares alternate between two flavours — one watches for bit flips, the other for phase flips — because a qubit can fail in two independent ways and you need to catch both.</p>
+
+<p>Run every square once and you get a snapshot: mostly zeros, with a few squares lit up. A single flipped data qubit lights the squares around it. A <em>chain</em> of flips lights only the two squares at its <strong>ends</strong> — everything in the middle cancels. So the decoder never sees the error; it sees a scattering of endpoints and has to guess the cheapest set of chains that would produce exactly those endpoints. That is why decoding is a matching problem, and why a 1965 graph algorithm ended up inside a quantum computer.</p>
+
+<h2>The number that explains the whole overhead</h2>
+
+<p>Here is the one calculation worth doing by hand, because it explains every "1,000 qubits to make 1" headline you have read.</p>
+
+<p>A useful algorithm runs on the order of a <strong>billion</strong> logical operations. For fewer than one expected failure across the whole run, you need a logical error rate below about <strong>10<sup>−9</sup></strong>. You are starting from a physical error rate of <strong>10<sup>−3</sup></strong>. So the code has to buy you <strong>six orders of magnitude</strong>.</p>
+
+<p>It buys them in steps. Each increase of the code distance <em>d</em> by two multiplies the suppression by a factor Λ — and Google measured Λ = <strong>2.14</strong> on Willow, going from <em>d</em> = 5 to <em>d</em> = 7. So a factor of 1,000 costs about nine of those steps: 2.14<sup>9</sup> ≈ <strong>941</strong>.</p>
+
+<p>Nine steps takes you from <em>d</em> = 5 to <em>d</em> = 23. A rotated surface-code patch at distance <em>d</em> costs 2<em>d</em>² − 1 physical qubits, so that one logical qubit now occupies <strong>1,057 physical qubits</strong> — and you have bought roughly 1,000×, not the full million. <strong>That is the exchange rate.</strong> It is also why Λ is the single most important number in the field: it is the interest rate on every qubit you will ever build.</p>
+
+<figure class="fig figcycle figcard">
+  <div class="figscroll"><svg viewBox="0 0 620 214" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="The error-correction cycle: qubits drift, parity is measured, a decoder infers the error, the correction is applied, and the loop repeats about once per microsecond. The decoder is the step AI replaced.">
+    <defs>
+      <marker id="figarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--border)"/>
+      </marker>
+    </defs>
+
+    <rect class="box" x="8"   y="42" width="130" height="66" rx="12"/>
+    <text class="lbl-b" x="73" y="64" text-anchor="middle">1 · DRIFT</text>
+    <text class="lbl-s" x="73" y="82" text-anchor="middle">qubits pick up errors</text>
+    <text class="lbl-s" x="73" y="95" text-anchor="middle">constantly, on their own</text>
+
+    <rect class="box" x="163" y="42" width="130" height="66" rx="12"/>
+    <text class="lbl-b" x="228" y="64" text-anchor="middle">2 · SYNDROME</text>
+    <text class="lbl-s" x="228" y="82" text-anchor="middle">measure the parity of</text>
+    <text class="lbl-s" x="228" y="95" text-anchor="middle">neighbours, not the data</text>
+
+    <rect class="box ai" x="318" y="42" width="130" height="66" rx="12"/>
+    <text class="lbl-b teal" x="383" y="64" text-anchor="middle">3 · DECODE</text>
+    <text class="lbl-s" x="383" y="82" text-anchor="middle">infer the likeliest error</text>
+    <text class="lbl-s" x="383" y="95" text-anchor="middle">behind that pattern</text>
+    <text class="lbl-s teal" x="383" y="30" text-anchor="middle">▲ AI walked in here</text>
+
+    <rect class="box" x="473" y="42" width="130" height="66" rx="12"/>
+    <text class="lbl-b" x="538" y="64" text-anchor="middle">4 · CORRECT</text>
+    <text class="lbl-s" x="538" y="82" text-anchor="middle">apply the fix — often</text>
+    <text class="lbl-s" x="538" y="95" text-anchor="middle">just bookkeeping</text>
+
+    <path class="flowline" d="M140 75 H160"/>
+    <path class="flowline" d="M295 75 H315"/>
+    <path class="flowline" d="M450 75 H470"/>
+    <!-- and round again -->
+    <path class="flowline" d="M538 110 V150 Q538 166 522 166 H89 Q73 166 73 150 V110"/>
+    <text class="lbl-s" x="305" y="161" text-anchor="middle">one lap ≈ a millionth of a second — forever, while the machine runs</text>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>Step 3 is the whole story.</strong> Steps 1, 2 and 4 are physics and plumbing; step 3 is <em>inference</em> — and inference is what machine learning is for. There is a hard constraint hiding in that return arrow: the decoder has to finish inside the lap. Fall behind and the backlog grows forever, which is why an accurate decoder that is too slow does not count. <a href="qec.html">How the checks actually work ▸</a></figcaption>
+</figure>
+
+<h2>Where the AI walked in</h2>
+
+<p>The classic decoder — <strong>minimum-weight perfect matching</strong> — assumes errors are independent and simple. Real hardware is not: errors correlate across neighbours, qubits leak out of the computational space entirely, and the noise drifts between calibrations. Matching cannot express any of that, because its model has no vocabulary for it.</p>
+
+<p><strong>AlphaQubit</strong> is a recurrent transformer trained first on hundreds of millions of simulated samples, then fine-tuned on thousands of samples from the real chip — so it learns the <em>actual</em> noise rather than the idealised model, and it reads the analog "soft" readout signal instead of a hard 0/1. Result: about 30% fewer logical errors than correlated matching, the fast class you can actually run live.</p>
+
+<p>The catch is the return arrow in the diagram above. The decoder has to finish inside the cycle, or the backlog grows forever — so an accurate decoder that is too slow does not count. That, not accuracy, is the open engineering problem.</p>
+
+<div class="cyu" data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Willow measured Λ = 2.14. You are at code distance <em>d</em> = 5 and you need 1,000× fewer logical errors. Roughly what distance do you need?</p>
+  <div class="cyu-opts">
+    <button data-opt>d = 7 — one step is enough.</button>
+    <button data-opt>d = 11.</button>
+    <button data-opt>d = 23.</button>
+    <button data-opt>d = 2,140 — the distance scales with Λ directly.</button>
+  </div>
+  <p class="cyu-why">Each step of <em>d</em> → <em>d</em>+2 divides the logical error rate by Λ, so 1,000× needs log(1000)/log(2.14) ≈ 9.08 steps. Nine steps buys 2.14<sup>9</sup> ≈ <strong>941×</strong> and takes you from <em>d</em> = 5 to <strong><em>d</em> = 23</strong> — which is 2<em>d</em>²−1 = <strong>1,057 physical qubits</strong> for that one logical qubit. Note the trap in the wording: raising <em>d</em> from 5 to 6 would buy you nothing at all, because the exponent only moves when the distance moves by two.</p>
+</div>
+
+<span class="tier r" id="red">🔴 Real math</span>
+<p class="tier-lede">Formalism, one derivation carried through, primary sources, and the problems that are actually open. Assumes stabilizer formalism. The 🟡 tier carries the same content without the algebra. Independently verified 2026-07-13.</p>
+
+<p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits, so a patch costs 2<em>d</em>²−1 physical qubits. Stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding is inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors — <em>not</em> the most probable error, which is a different and worse objective.</p>
+
+<h2>Where the exponent comes from</h2>
+
+<p>The scaling law quoted everywhere is worth deriving once, because the exponent is where the recurring off-by-one in this field lives.</p>
+
+<p>A distance-<em>d</em> code corrects any error of weight <em>t</em> = ⌊(<em>d</em>−1)/2⌋. So the lowest-order event the decoder cannot fix requires <strong><em>t</em>+1 = ⌊(<em>d</em>+1)/2⌋</strong> physical faults. Below threshold each independent fault carries probability ∝ <em>p</em>, and the number of weight-(<em>t</em>+1) fault patterns is a binomial prefactor in the patch size. Summing the lowest-order term:</p>
+
+<div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
+
+<p>with <em>A</em> and <em>p</em><sub>th</sub> absorbing the combinatorics and the decoder's quality. Two consequences follow immediately, and both are routinely stated wrong:</p>
+
+<ul>
+  <li><strong>Raising an odd <em>d</em> by one buys nothing.</strong> ⌊(<em>d</em>+1)/2⌋ is unchanged from <em>d</em> = 23 to <em>d</em> = 24. This is why the literature always steps <em>d</em> → <em>d</em>+2, and why "distance" and "step" must never be used interchangeably in the same paragraph.</li>
+  <li><strong>Λ is defined per two-distance step.</strong> Λ ≡ p<sub>L</sub>(<em>d</em>) / p<sub>L</sub>(<em>d</em>+2). Google's measured Λ = 2.14 ± 0.02 on Willow is quoted for the <em>d</em> = 5 → <em>d</em> = 7 step (<em>Nature</em> <strong>638</strong>, 920 (2025)) — it is not a per-unit-distance figure, and it is not an average over 3 → 5 → 7.</li>
+</ul>
+
+<p>Working the exchange rate the other way: buying 10³ suppression at Λ = 2.14 needs log(10³)/log(2.14) ≈ 9.08 steps, so nine steps gives 2.14<sup>9</sup> ≈ 941×, taking <em>d</em> = 5 → 23 and one logical qubit to 2(23²)−1 = <strong>1,057 physical qubits</strong>. The million-fold suppression a billion-operation algorithm actually needs costs roughly double that distance again.</p>
+
+<p>Note what the ratio construction buys you: expressing everything relative to <em>d</em> = 3 cancels the unknown prefactor <em>A</em> exactly, so the suppression curve is a parameter-free prediction rather than a fit. Real devices depart from it near threshold, where the lowest-order truncation stops being the whole story.</p>
+
+<figure class="fig figcode figcard">
+  <div class="figscroll"><svg viewBox="0 0 566 286" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="The d=3 rotated surface code: nine data qubits, eight stabilizers — four weight-4 plaquettes in the bulk and four weight-2 checks on the boundary — with a weight-3 logical operator marked down the left column.">
+    <!-- Z plaquettes (violet): [0,1,3,4] [4,5,7,8] bulk, [2,5] [3,6] boundary -->
+    <rect class="plq z" x="120" y="50" width="80" height="80"/>
+    <rect class="plq z" x="200" y="130" width="80" height="80"/>
+    <path class="plq z" d="M280 50 A40 40 0 0 1 280 130 Z"/>
+    <path class="plq z" d="M120 130 A40 40 0 0 0 120 210 Z"/>
+    <!-- X plaquettes (teal): [1,2,4,5] [3,4,6,7] bulk, [0,1] [7,8] boundary -->
+    <rect class="plq x" x="200" y="50" width="80" height="80"/>
+    <rect class="plq x" x="120" y="130" width="80" height="80"/>
+    <path class="plq x" d="M120 50 A40 40 0 0 1 200 50 Z"/>
+    <path class="plq x" d="M200 210 A40 40 0 0 0 280 210 Z"/>
+
+    <!-- a weight-3 logical operator: undetectable, and its length IS the distance -->
+    <path d="M120 50 V210" stroke="var(--yellow)" stroke-width="3" stroke-dasharray="6 5" fill="none" opacity=".9"/>
+    <text class="lbl-s yellow" x="112" y="238" text-anchor="middle">X̄</text>
+
+    <!-- syndrome qubits at each check centre -->
+    <circle class="sq z" cx="160" cy="90"  r="7"/><circle class="sq z" cx="240" cy="170" r="7"/>
+    <circle class="sq z" cx="300" cy="90"  r="7"/><circle class="sq z" cx="100" cy="170" r="7"/>
+    <circle class="sq x" cx="240" cy="90"  r="7"/><circle class="sq x" cx="160" cy="170" r="7"/>
+    <circle class="sq x" cx="160" cy="30"  r="7"/><circle class="sq x" cx="240" cy="230" r="7"/>
+
+    <!-- data qubits -->
+    <g>
+      <circle class="dq" cx="120" cy="50"  r="11"/><circle class="dq" cx="200" cy="50"  r="11"/><circle class="dq" cx="280" cy="50"  r="11"/>
+      <circle class="dq" cx="120" cy="130" r="11"/><circle class="dq" cx="200" cy="130" r="11"/><circle class="dq" cx="280" cy="130" r="11"/>
+      <circle class="dq" cx="120" cy="210" r="11"/><circle class="dq" cx="200" cy="210" r="11"/><circle class="dq" cx="280" cy="210" r="11"/>
+    </g>
+    <g class="lbl-s" text-anchor="middle" style="font-size:9.5px">
+      <text x="120" y="53">0</text><text x="200" y="53">1</text><text x="280" y="53">2</text>
+      <text x="120" y="133">3</text><text x="200" y="133">4</text><text x="280" y="133">5</text>
+      <text x="120" y="213">6</text><text x="200" y="213">7</text><text x="280" y="213">8</text>
+    </g>
+
+    <!-- legend -->
+    <g transform="translate(360,44)">
+      <circle class="dq" cx="10" cy="0" r="9"/>
+      <text class="lbl" x="28" y="4">9 data qubits = d²</text>
+      <circle class="sq z" cx="10" cy="30" r="7"/>
+      <text class="lbl" x="28" y="34">4 Z-checks</text>
+      <circle class="sq x" cx="10" cy="56" r="7"/>
+      <text class="lbl" x="28" y="60">4 X-checks &nbsp;→ d²−1 = 8</text>
+      <rect class="plq z" x="2" y="80" width="16" height="16"/>
+      <text class="lbl" x="28" y="92">weight-4 in the bulk</text>
+      <path class="plq x" d="M2 112 A8 8 0 0 1 18 112 Z"/>
+      <text class="lbl" x="28" y="118">weight-2 on a boundary</text>
+      <line x1="2" y1="140" x2="18" y2="140" stroke="var(--yellow)" stroke-width="3" stroke-dasharray="5 4"/>
+      <text class="lbl" x="28" y="144">logical operator, weight 3</text>
+      <text class="lbl-s" x="0" y="168">Every check commutes with every</text>
+      <text class="lbl-s" x="0" y="181">other; the yellow chain commutes</text>
+      <text class="lbl-s" x="0" y="194">with all of them — so no syndrome</text>
+      <text class="lbl-s" x="0" y="207">ever fires, and the logical qubit</text>
+      <text class="lbl-s" x="0" y="220">flips silently.</text>
+    </g>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>d = 3, drawn exactly.</strong> Nine data qubits, eight stabilizers — four weight-4 plaquettes in the bulk, four weight-2 checks on the boundary, alternating X and Z so that every pair overlaps in an even number of qubits and commutes. The yellow chain is a logical X̄ operator: it commutes with all eight stabilizers, so it is <em>undetectable</em> — and the shortest such chain has weight 3, which is precisely why this code is called distance 3. Verified by exhaustive search over all 2⁹ Pauli supports: no nontrivial logical operator of weight 1 or 2 exists. Layout per Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a>; the same lattice drives <a href="qec.html#qec-widget">the interactive decoder</a>.</figcaption>
+</figure>
+
+<h2>Decoders</h2>
+
+<p>MWPM solves the inference on a decoder graph with edge weights drawn from an assumed independent-Pauli plus phenomenological noise model — provably good under that model, degraded under correlated noise, leakage, cross-talk and non-Markovian drift. The failure is structural rather than computational: the model has no term for the thing that is happening.</p>
+
+<p><strong>AlphaQubit:</strong> recurrent transformer over per-round syndrome inputs, including analog "soft" readout rather than binarized measurements — which is a genuine information advantage, not merely a bigger model. Pretrained on hundreds of millions of simulated samples, fine-tuned on thousands of experimental samples from a Sycamore processor. Reported ~6% fewer logical errors than tensor-network decoders (near-optimal, far too slow for real time) and ~30% fewer than correlated matching. <strong>The real-device data is <em>d</em> = 3 and <em>d</em> = 5; the <em>d</em> = 11 result is simulation only</strong> — a distinction frequently lost in secondary coverage, and one we got wrong here once (see <a href="corrections.html">Corrections</a>).</p>
+
+<p>Below threshold, a decoder that effectively raises p<sub>th</sub> or sharpens the exponent compounds through every future distance increase. Decoder quality is hardware you do not have to build — which is the entire economic argument for this site's thesis.</p>
+
+<h2>What is actually open</h2>
+
+<p>Stated as problems rather than as a roadmap, because the honest answer to most of these is that nobody knows.</p>
+
+<ol class="openq">
+  <li><strong>Real-time decoding at scale.</strong> "NN decoders are too slow for the ~1 μs cycle" is no longer simply true — an FPGA neural decoder hit 550 ns system latency (124 ns inference) inside a 1.25 μs cycle on superconducting hardware (<a href="https://arxiv.org/abs/2605.04892">arXiv:2605.04892</a>, May 2026). But that is small <em>d</em>. Latency and bandwidth both grow with patch size while the cycle budget does not, and no published learned decoder runs in real time at the distances fault tolerance requires.</li>
+  <li><strong>Whether the learned margin survives scale.</strong> Every reported advantage for learned decoders is measured at small distance. There is no result showing the ~30% margin holds at <em>d</em> = 25 or beyond, and there is no theory saying it must.</li>
+  <li><strong>Leakage and non-Markovian noise.</strong> Both sit outside the Pauli model that the threshold theorem's guarantees are stated in. Leakage-reduction units exist and cost cycles; the accounting for how much they cost at scale is not settled.</li>
+  <li><strong>Magic states dominate the real bill.</strong> Clifford operations are the easy half — they are essentially free under the code. Non-Clifford gates need distilled magic states, and T-count, not qubit count, sets the wall-clock time for any real algorithm. Resource estimates move by orders of magnitude when distillation architectures change, which is exactly what happened to the Bitcoin numbers between 2022 and 2026.</li>
+  <li><strong>Threshold versus pseudo-threshold.</strong> The single number "p<sub>th</sub> ≈ 1%" is model-, decoder- and geometry-dependent. Quoting it without those three qualifiers is the most common way this field's own literature is misread.</li>
+</ol>
+
+<h2>Primary sources</h2>
+<div class="card refs">
+  <p>• <strong>AlphaQubit</strong> — Bausch et al., "Learning high-accuracy error decoding for quantum processors," <em>Nature</em> <strong>635</strong>, 834 (2024). <a href="https://arxiv.org/abs/2310.05900">arXiv:2310.05900</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
+  • <strong>Below-threshold surface code (Willow)</strong> — Google Quantum AI, "Quantum error correction below the surface code threshold," <em>Nature</em> <strong>638</strong>, 920 (2025). <a href="https://arxiv.org/abs/2408.13687">arXiv:2408.13687</a> — source of Λ = 2.14 ± 0.02, measured <em>d</em> = 5 → 7<br>
+  • <strong>Rotated surface-code layout</strong> — Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a> — the <em>d</em> = 3 lattice drawn above<br>
+  • <strong>Surface codes, practical</strong> — Fowler et al., <a href="https://arxiv.org/abs/1208.0928">arXiv:1208.0928</a> — the standard reference for thresholds and the d→d+2 convention<br>
+  • <strong>Topological memory</strong> — Dennis, Kitaev, Landahl &amp; Preskill, <a href="https://arxiv.org/abs/quant-ph/0110143">quant-ph/0110143</a> (2001) — where matching-based decoding of the surface code begins<br>
+  • <strong>Real-time FPGA neural decoder</strong> — <a href="https://arxiv.org/abs/2605.04892">arXiv:2605.04892</a> (2026) — 550 ns system latency inside a 1.25 μs cycle</p>
+</div>
+
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A team raises the code distance from <em>d</em> = 23 to <em>d</em> = 24. What happens to the lowest-order failure exponent?</p>
+  <div class="cyu-opts">
+    <button data-opt>It rises by one.</button>
+    <button data-opt>It does not move.</button>
+    <button data-opt>It roughly doubles.</button>
+    <button data-opt>It falls by one, because larger patches carry more faults.</button>
+  </div>
+  <p class="cyu-why">The exponent is ⌊(<em>d</em>+1)/2⌋, and ⌊24/2⌋ = ⌊25/2⌋ = <strong>12</strong>. A distance-<em>d</em> code corrects ⌊(<em>d</em>−1)/2⌋ errors, so the smallest uncorrectable fault set only grows when <em>d</em> grows by <strong>two</strong>. This is why the literature always steps <em>d</em> → <em>d</em>+2, and why "we increased the code distance" is not on its own a claim about error suppression. It is also the single most common off-by-one in secondary coverage of this field.</p>
+</div>
+
+<div data-tier-stop></div>
+
 <div class="pathway-nudge" hidden>
   <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
 </div>
 <div class="pathway">
-  <a href="concepts.html"><span class="pw-k">Next, same topic</span><span class="pw-t">🟡 Concepts</span><span class="pw-s">The mechanism, and the one number that explains the whole overhead.</span></a>
   <a href="qec.html"><span class="pw-k">The full explainer</span><span class="pw-t">What is error correction?</span><span class="pw-s">The pillar page, with a surface code you can break yourself.</span></a>
   <a href="qec.html#duel"><span class="pw-k">Or play it</span><span class="pw-t">The Decoder Duel</span><span class="pw-s">Ten rounds against the textbook decoder, on a chip it was never told about.</span></a>
+  <a href="logical-qubit.html"><span class="pw-k">The exchange rate</span><span class="pw-t">What is a logical qubit?</span><span class="pw-s">A calculator that turns an error rate into a real qubit count.</span></a>
+  <a href="race.html#threshold"><span class="pw-k">The race it decides</span><span class="pw-t">The threshold</span><span class="pw-s">Drag Λ and watch the cliff flip into a climb.</span></a>
+  <a href="corrections.html"><span class="pw-k">Where we were wrong</span><span class="pw-t">Corrections</span><span class="pw-s">Twenty-one logged errors, including two on this page.</span></a>
 </div>
 
-<footer>The green door: no math, no jargon, no gatekeeping.<br>SymbiQ · 🟢 posts are tested on smart friends who studied literature. If one doesn't get it, we rewrite it.</footer>
+<footer>No math, real terms, or full formalism — same topic, your pick.<br>SymbiQ · Every 🔴 passage passes an independent hostile-referee verification before it ships. Find an error anyway? It goes on the <a href="corrections.html">Corrections</a> page with more prominence than the original.</footer>
 </div>
 </body>
 </html>

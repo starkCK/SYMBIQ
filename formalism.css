@@ -1,0 +1,182 @@
+/* ===================================================================
+   THE MACHINERY (formalism.html) — quantum's own visual identity.
+
+   Structurally a sibling of feasible.css (same masthead / numbered-module
+   / four-layer shape — see outputs/19_CURRICULUM_TREE_BUILD_PLAN.md for
+   why that shape was reused rather than invented twice), but NOT the same
+   skin. feasible.css's accent is deliberately amber — "classical, proven,
+   shipping for 80 years" — and its background is graph paper, both signatures
+   of Operations Research. This page is quantum content, so it gets SymbiQ's
+   own accent (violet, the colour used everywhere else quantum on this site)
+   and the site's own dot-lattice background, not OR's — loading feasible.css
+   directly on this page was the bug that made it look like a reskinned OR
+   page instead of a SymbiQ one.
+
+   Loaded only by formalism.html, so nothing here disturbs the other pages.
+   =================================================================== */
+
+/* ---- masthead -------------------------------------------------------- */
+.fr-mast { margin: 6px 0 30px; padding-bottom: 26px; border-bottom: 1px solid var(--border); }
+.fr-kicker {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700;
+  color: var(--violet); border: 1px solid rgba(167,139,250,.34); border-radius: 99px;
+  padding: 5px 13px; margin-bottom: 18px;
+}
+.fr-kicker::before { content: '◆'; font-size: .8rem; }
+body.fr h1 {
+  font-size: clamp(2.1rem, 6vw, 3.5rem); line-height: 1.02; letter-spacing: -.028em;
+  background: linear-gradient(100deg, var(--text) 22%, var(--violet) 62%, var(--teal) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 0 0 16px;
+}
+.fr-lede { font-size: 1.12rem; max-width: 62ch; color: var(--text); margin: 0 0 6px; }
+.fr-sub  { color: var(--muted); max-width: 66ch; margin: 10px 0 0; }
+.fr-stats { display: flex; flex-wrap: wrap; gap: 10px 30px; margin-top: 24px; }
+.fr-stats div { min-width: 92px; }
+.fr-stats b { display: block; font-size: 1.5rem; font-weight: 800; color: var(--violet); font-variant-numeric: tabular-nums; }
+.fr-stats span { font-size: .78rem; color: var(--muted); }
+
+/* ---- section headings, numbered like a manual ------------------------ */
+body.fr h2 { letter-spacing: -.015em; }
+body.fr h2::before { background: var(--violet) !important; }
+.fr-secnum {
+  display: block; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--violet); font-weight: 700; margin-bottom: 6px;
+}
+
+/* ---- the contents rail ----------------------------------------------- */
+.fr-toc {
+  border: 1px solid var(--border); border-left: 3px solid var(--violet);
+  border-radius: 12px; padding: 18px 20px; margin: 24px 0 34px;
+  background: linear-gradient(135deg, rgba(167,139,250,.13), transparent 72%);
+}
+.fr-toc h3 { margin: 0 0 4px; font-size: .95rem; }
+.fr-toc p { margin: 0 0 14px; font-size: .86rem; color: var(--muted); }
+.fr-toc ol { list-style: none; counter-reset: t; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 2px 18px; }
+.fr-toc li { counter-increment: t; }
+.fr-toc a {
+  display: flex; gap: 10px; align-items: baseline; padding: 7px 8px; border-radius: 8px;
+  text-decoration: none; color: var(--text); font-size: .92rem;
+  min-height: 44px;
+}
+.fr-toc a::before {
+  content: counter(t, decimal-leading-zero); color: var(--violet); font-weight: 700;
+  font-size: .75rem; font-variant-numeric: tabular-nums; flex: 0 0 auto;
+}
+.fr-toc a:hover { background: var(--rowhover); }
+.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 0 auto; }
+
+/* ---- a curriculum module --------------------------------------------- */
+.mod {
+  border: 1px solid var(--border); border-radius: 14px; margin: 0 0 12px;
+  background: var(--panel); overflow: hidden;
+  transition: border-color .2s cubic-bezier(.22,.7,.3,1), box-shadow .2s ease;
+}
+.mod[open] { border-color: rgba(167,139,250,.34); box-shadow: 0 12px 34px -22px rgba(0,0,0,.5); }
+.mod > summary {
+  list-style: none; cursor: pointer; padding: 17px 20px;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 4px 14px; align-items: center;
+}
+.mod > summary::-webkit-details-marker { display: none; }
+.mod > summary:hover { background: var(--rowhover); }
+.mod-n {
+  grid-row: span 2; font-size: 1.05rem; font-weight: 800; color: var(--violet);
+  font-variant-numeric: tabular-nums; opacity: .85;
+}
+.mod-t { font-weight: 700; font-size: 1.06rem; }
+.mod-q { grid-column: 2; font-size: .87rem; color: var(--muted); }
+.mod-x {
+  grid-row: span 2; color: var(--muted); font-size: 1.2rem; line-height: 1;
+  transition: transform .22s cubic-bezier(.22,.7,.3,1);
+}
+.mod[open] .mod-x { transform: rotate(45deg); color: var(--violet); }
+.mod-body { padding: 4px 20px 22px; border-top: 1px solid var(--border); }
+
+/* the four layers, always in this order */
+.layer { margin: 20px 0 0; }
+.layer:first-child { margin-top: 18px; }
+.layer > h4 {
+  display: flex; align-items: center; gap: 9px; margin: 0 0 9px;
+  font-size: .71rem; letter-spacing: .17em; text-transform: uppercase; font-weight: 700;
+  color: var(--muted);
+}
+.layer > h4::before {
+  content: ''; width: 16px; height: 2px; border-radius: 2px; background: var(--violet); flex: 0 0 auto;
+}
+.layer.see > h4    { color: var(--violet); }
+.layer.maths > h4  { color: var(--teal); }
+.layer.maths > h4::before { background: var(--teal); }
+.layer.real > h4   { color: var(--text); }
+.layer.real > h4::before  { background: var(--text); }
+.layer p:last-child { margin-bottom: 0; }
+.layer.maths {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+}
+.layer.maths .eq {
+  display: block; margin: 12px 0; padding: 12px 14px; overflow-x: auto;
+  background: var(--panel); border-left: 3px solid var(--teal); border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88rem; line-height: 1.7;
+}
+.layer.real {
+  border-left: 3px solid var(--violet); padding-left: 15px;
+}
+.layer.real .where {
+  display: inline-block; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: var(--violet); margin-bottom: 6px;
+}
+
+/* module figures — inline SVG, per the house rule, never JS */
+.modfig { margin: 0; }
+.modfig svg { display: block; width: 100%; height: auto; overflow: visible; }
+.modfig figcaption { font-size: .85rem; color: var(--muted); margin-top: 10px; }
+.modfig figcaption b { color: var(--text); }
+.modscroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.modscroll > svg { min-width: 430px; }
+.fr .lbl   { fill: var(--muted); font-weight: 600; font-size: 11.5px; }
+.fr .lbl-s { fill: var(--muted); font-weight: 500; font-size: 10px; }
+.fr .lbl-b { fill: var(--text);  font-weight: 700; font-size: 13px; }
+.fr .or    { fill: var(--violet); }
+.fr .tl    { fill: var(--teal); }
+.fr .vi    { fill: var(--violet); }
+.fr .sOr   { stroke: var(--violet); fill: none; }
+.fr .sTl   { stroke: var(--teal);  fill: none; }
+.fr .sMut  { stroke: var(--border); fill: none; }
+
+/* footer strip of a module: the bridges out */
+.mod-out { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); }
+.mod-out a {
+  display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
+  font-size: .84rem; font-weight: 600; padding: 8px 13px; border-radius: 9px;
+  border: 1px solid var(--border); color: var(--text);
+  transition: border-color .18s cubic-bezier(.22,.7,.3,1), transform .18s cubic-bezier(.22,.7,.3,1);
+}
+.mod-out a:hover { transform: translateY(-2px); }
+.mod-out a.play  { border-color: rgba(167,139,250,.34); color: var(--violet); }
+.mod-out a.play:hover  { border-color: var(--violet); }
+.mod-out a.q     { border-color: rgba(45,212,191,.45); color: var(--teal); }
+.mod-out a.q:hover     { border-color: var(--teal); }
+
+/* expand/collapse everything */
+.fr-allctl { display: flex; gap: 10px; align-items: center; margin: 0 0 16px; flex-wrap: wrap; }
+.fr-allctl button {
+  background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--muted);
+  font: inherit; font-size: .82rem; padding: 6px 12px; cursor: pointer;
+  transition: border-color .18s ease, color .18s ease;
+  min-height: 44px;
+}
+.fr-allctl button:hover { border-color: var(--violet); color: var(--violet); }
+.fr-allctl .count { font-size: .82rem; color: var(--muted); margin-left: auto; }
+
+@media (max-width: 719px) {
+  .fr-mast { margin-bottom: 22px; }
+  .fr-stats { gap: 10px 20px; }
+  .fr-stats b { font-size: 1.25rem; }
+  .mod > summary { padding: 14px 15px; gap: 3px 11px; }
+  .mod-body { padding: 4px 15px 18px; }
+  .layer.maths { padding: 12px 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mod, .mod-x, .mod-out a { transition: none; }
+}

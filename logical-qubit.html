@@ -104,10 +104,8 @@
     <details class="navcat" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
+      <a href="basics.html" class="navmain">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
+      <a href="formalism.html" class="navmain">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="explainers">
@@ -249,7 +247,7 @@
 </figure>
 
 <h2 data-tier-keep>The calculator: physical qubits → logical qubits</h2>
-<p>This is the exact model our community uses in <a href="deep.html">Boss Question #3</a>. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.</p>
+<p>This is the exact model our community uses in <a href="basics.html#red">Boss Question #3</a>. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.</p>
 
 <div class="card" id="lq-widget">
   <h3>Logical-qubit calculator</h3>
@@ -272,7 +270,7 @@
 
 <span class="tier r">🔴 Real math</span>
 <h2 id="red">Worked: why 10× fewer qubits can win</h2>
-<p>Take the two machines from <a href="deep.html">Boss Question #3</a> and run them to a p<sub>L</sub> ≤ 10⁻⁹ target under the surface-code model above.</p>
+<p>Take the two machines from <a href="basics.html#red">Boss Question #3</a> and run them to a p<sub>L</sub> ≤ 10⁻⁹ target under the surface-code model above.</p>
 <p><strong>Machine A</strong> — 10⁵ physical qubits at p/p<sub>th</sub> = 1/2. Need (1/2)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀2 ≈ 29.9 → 30 → <em>d</em> ≥ 59. Patch ≈ 2·59² = 6,962 physical/logical → 10⁵ / 6,962 ≈ <strong>14 logical qubits</strong>.</p>
 <p><strong>Machine B</strong> — 10⁴ physical qubits at p/p<sub>th</sub> = 1/20 (a <em>tenth</em> the hardware, but far cleaner). Need (1/20)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀20 ≈ 6.9 → 7 → <em>d</em> ≥ 13. Patch ≈ 2·13² = 338 physical/logical → 10⁴ / 338 ≈ <strong>29 logical qubits</strong>.</p>
 <p><strong>B wins, 29 to 14 — with 10× fewer physical qubits.</strong> The exponent ⌊(d+1)/2⌋ is where the leverage lives: cleaner hardware doesn't just shave the patch, it shrinks the distance you need in the first place, and you pay for distance squared. Error rate beats scale, and it isn't close. This is the whole case for spending your next engineering dollar on fidelity — much of it <a href="ai.html">bought by AI-driven calibration and decoding</a> — rather than on more noisy qubits.</p>
@@ -297,7 +295,7 @@
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>🟢 How the correcting works</h3><p>The error-correction machinery a logical qubit is built from — with a code you can break yourself.</p><a href="qec.html">Quantum error correction →</a></div>
-  <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, distance, and the threshold theorem in full formalism.</p><a href="deep.html">Read →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, distance, and the threshold theorem in full formalism.</p><a href="basics.html#red">Read →</a></div>
   <div class="card"><h3>🏁 The Race</h3><p>Who's fielding the most logical qubits — the scoreboard that counts the honest number.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 

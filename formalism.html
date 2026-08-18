@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Formalism — the real machinery of quantum computing | SymbiQ</title>
+<title>The Machinery — the mathematical spine of quantum computing | SymbiQ</title>
 <meta name="description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices and mixed states, measurement done properly, and the no-cloning theorem — with proofs, not just claims.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/formalism.html">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/formalism.html">
-<meta property="og:title" content="The Formalism — the real machinery of quantum computing | SymbiQ">
+<meta property="og:title" content="The Machinery — the mathematical spine of quantum computing | SymbiQ">
 <meta property="og:description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices, measurement, and the no-cloning theorem — with proofs, not just claims.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
@@ -22,12 +22,12 @@
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Formalism — the real machinery of quantum computing | SymbiQ">
+<meta name="twitter:title" content="The Machinery — the mathematical spine of quantum computing | SymbiQ">
 <meta name="twitter:description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices, measurement, and the no-cloning theorem — with proofs, not just claims.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=29">
-<link rel="stylesheet" href="feasible.css?v=4">
+<link rel="stylesheet" href="formalism.css?v=1">
 <script src="save.js"></script>
 <script src="nav.js?v=5" defer></script>
 <script src="depth.js" defer></script>
@@ -52,10 +52,8 @@
     <details class="navcat navcat-cur" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-      <a href="formalism.html" class="navmain active">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
+      <a href="basics.html" class="navmain">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
+      <a href="formalism.html" class="navmain active">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="explainers">
@@ -123,12 +121,12 @@
 
 <header class="fr-mast">
   <span class="fr-kicker">Quantum computing, in full</span>
-  <h1>The Formalism</h1>
+  <h1>The Machinery</h1>
   <p class="fr-lede">The machinery every algorithm on this site actually runs on.</p>
-  <p class="fr-sub">Basics, Concepts and Deep teach the ideas at three depths on one flowing page each. This is the fourth thing: not a deeper <em>tier</em> of the same explanations, but the actual mathematical objects — state spaces, density matrices, measurement operators — that a real course builds before it lets you near Shor&#39;s algorithm. Nothing here is hand-waved. Every claim either has a proof or says plainly that it doesn&#39;t.</p>
+  <p class="fr-sub">Every pillar page on this site already teaches its ideas at three depths, toggled in place. This is a different kind of depth: not another <em>tier</em> of the same explanations, but the actual mathematical objects — state spaces, density matrices, measurement operators — that a real course builds before it lets you near Shor&#39;s algorithm. Nothing here is hand-waved. Every claim either has a proof or says plainly that it doesn&#39;t.</p>
   <div class="fr-stats">
     <div><b>4</b><span>topics live<br>of 15 planned</span></div>
-    <div><b>1</b><span>module built<br>of 5</span></div>
+    <div><b>1</b><span>section built<br>of 5</span></div>
     <div><b>0</b><span>claims without<br>a proof or a source</span></div>
   </div>
 </header>
@@ -136,10 +134,10 @@
 <div class="card">
   <h3>Why this page exists, separately</h3>
   <p>Every quantum claim on this site — Shor&#39;s algorithm breaks ECDSA, a surface code suppresses errors exponentially, a decoder reads a syndrome — rests on the same handful of mathematical facts: what a quantum state <em>is</em>, how it evolves, what happens when you measure it, and what you provably cannot do to it. Those facts are usually asserted on the page that needs them and moved past quickly, because that page has its own job. This page is where they get built properly, once, so every other page can point back here instead of re-deriving them.</p>
-  <p style="margin-bottom:0">This is <strong>module 2 of the planned five</strong> (postulates → protocols → building-block algorithms → the Fourier transform → information theory). The other four aren&#39;t built yet — see <span class="mono">outputs/19_CURRICULUM_TREE_BUILD_PLAN.md</span> for the sequencing. What&#39;s below is real, not a preview.</p>
+  <p style="margin-bottom:0">More sections are being added over time — protocols, building-block algorithms, the Fourier transform, and information theory are next. What&#39;s below is real and complete, not a preview.</p>
 </div>
 
-<h2 id="course"><span class="fr-secnum">Module 2 · The Formal Framework</span>Four topics, each taught four ways</h2>
+<h2 id="course"><span class="fr-secnum">The Formal Framework</span>Four topics, each taught four ways</h2>
 
 <div class="fr-toc">
   <h3>How each topic is built</h3>
@@ -395,12 +393,12 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
     </div>
 
     <div class="mod-out">
-      <span style="color:var(--muted);font-size:.85rem">Modules 3–5, 8 (protocols, building-block algorithms, the Fourier transform, information theory) are scoped in <span class="mono">outputs/19_CURRICULUM_TREE_BUILD_PLAN.md</span> and not yet built.</span>
+      <span style="color:var(--muted);font-size:.85rem">Next up: protocols, building-block algorithms, the Fourier transform, and information theory — not built yet.</span>
     </div>
   </div>
 </details>
 
-<footer>The Formalism is under construction: 1 of 5 planned modules, 4 of 15 planned topics. Every topic above is complete and verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
+<footer>The Machinery is under construction: 1 of 5 planned sections, 4 of 15 planned topics. Every topic above is complete and verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
 </div>
 
 <script type="application/ld+json">
@@ -409,7 +407,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
   "@type": "BreadcrumbList",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "SymbiQ", "item": "index.html" },
-    { "@type": "ListItem", "position": 2, "name": "The Formalism", "item": "formalism.html" }
+    { "@type": "ListItem", "position": 2, "name": "The Machinery", "item": "formalism.html" }
   ]
 }
 </script>

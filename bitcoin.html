@@ -98,10 +98,8 @@
     <details class="navcat" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
+      <a href="basics.html" class="navmain">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
+      <a href="formalism.html" class="navmain">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="explainers">
@@ -193,10 +191,10 @@
 <tr><td>Mining (SHA-256)</td><td>Grover — quadratic only</td><td>Effectively safe. √ speedup loses to ASICs + error-correction overhead.</td></tr>
 </table></div>
 <p><strong>The 10-minute window.</strong> Spending from a hashed address reveals your public key while the transaction waits (~10 minutes) to confirm. An attacker would need to run Shor's algorithm <em>inside that window</em> to race you — which is why serious resource estimates ask not just "can it be done" but "can it be done in an hour." That requirement multiplies the machine size — though a 2026 result cut it sharply by precomputing half the algorithm before your transaction even appears (see the calculator below, and the 2026 update in the 🔴 section).</p>
-<p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half — today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps — sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="deep.html">Grover audit</a>: quadratic speedups die in the overhead.</p>
+<p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half — today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps — sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="basics.html#red">Grover audit</a>: quadratic speedups die in the overhead.</p>
 
 <h2 data-tier-keep>The calculator: what would it actually take?</h2>
-<p>Drag the sliders. The model is the same one our community uses in <a href="deep.html">Boss Questions</a>: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation — the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
+<p>Drag the sliders. The model is the same one our community uses in <a href="basics.html#red">Boss Questions</a>: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation — the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
 
 <div class="card" id="shor-widget">
   <h3>Shor-vs-Bitcoin resource estimator</h3>
@@ -247,7 +245,7 @@
 <h2>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>🟢 Error correction, no math</h3><p>Why quantum computers need babysitting at all.</p><a href="basics.html">Read →</a></div>
-  <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, decoders, and the Grover audit this page leans on.</p><a href="deep.html">Read →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, decoders, and the Grover audit this page leans on.</p><a href="basics.html#red">Read →</a></div>
   <div class="card"><h3>🏁 The Race</h3><p>Who's closest to machines that matter — scored weekly, predictions on record.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 

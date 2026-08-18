@@ -121,10 +121,8 @@
     <details class="navcat" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain">🟢 Basics<span class="sub">Zero math, zero jargon</span></a>
-      <a href="concepts.html" class="navmain">🟡 Concepts<span class="sub">Real terms, light math</span></a>
-      <a href="deep.html" class="navmain">🔴 Deep<span class="sub">Formalism, with citations</span></a>
-      <a href="formalism.html" class="navmain">◆ The Formalism<span class="sub">The real machinery, with proofs</span></a>
+      <a href="basics.html" class="navmain">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
+      <a href="formalism.html" class="navmain">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="explainers">
@@ -267,7 +265,7 @@
 <p>HHL solves <em>A</em><strong>x</strong>=<strong>b</strong> in Õ(log <em>N</em> · <em>s</em>²κ²/ε) time for an <em>s</em>-sparse, well-conditioned <em>A</em> with an efficiently preparable |<strong>b</strong>⟩ — and the "fine print" (Aaronson, <a href="https://www.nature.com/articles/nphys3272">Nat. Phys. 2015</a>) is where the exponential speedup usually leaks out: preparing an arbitrary classical <strong>b</strong> costs Ω(<em>N</em>) without QRAM; the condition number κ enters polynomially; and the output is the quantum state |<strong>x</strong>⟩, so reading out classical components costs another ~Ω(<em>N</em>) sampling overhead. Three separate O(<em>N</em>) tolls on a "log <em>N</em>" algorithm.</p>
 <p><strong>Dequantization.</strong> Tang (<a href="https://arxiv.org/abs/1807.04271">arXiv 1807.04271</a>) gave a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access — collapsing the claimed exponential separation; the technique generalized to kill several QML speedups in low-rank regimes. The lesson isn't "quantum lost"; it's that a speedup is defined <em>against the best classical algorithm</em>, which may not exist yet.</p>
 <p><strong>Barren plateaus.</strong> For random parameterized circuits forming approximate 2-designs, Var[∂<sub>θ</sub><em>C</em>] decays exponentially in qubit count <em>n</em> (McClean et al., <a href="https://arxiv.org/abs/1803.11173">arXiv 1803.11173</a>); global cost functions make it worse (Cerezo et al.). Trainability then requires structured or symmetry-constrained ansätze — you must smuggle physics back in to make the "learning" learn.</p>
-<p><strong>Where the reverse loop actually pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup — Grover-style quadratic gaps — die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="deep.html">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and — the constructive results — classical ML gains provable power from data, which shrinks the space of genuine quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Genuine advantage concentrates on tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong> — sampling and Hamiltonian simulation feeding classical AI — not QML on classical data.</p>
+<p><strong>Where the reverse loop actually pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup — Grover-style quadratic gaps — die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="basics.html#red">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and — the constructive results — classical ML gains provable power from data, which shrinks the space of genuine quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Genuine advantage concentrates on tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong> — sampling and Hamiltonian simulation feeding classical AI — not QML on classical data.</p>
 <p><em>Verification status: fresh-session hostile-referee pass completed 2026-07-15 (all six citations fetched and confirmed against primary sources) — every finding applied same day. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
 <div class="cyu" data-a="2">
@@ -291,7 +289,7 @@
 <h2>Go deeper</h2>
 <div class="grid">
   <div class="card"><h3>🟢 The other direction</h3><p>How AI became quantum computing's repair crew — the half of the loop that ships today.</p><a href="qec.html">Quantum error correction →</a></div>
-  <div class="card"><h3>🔴 The math floor</h3><p>Decoders, thresholds, and the overheads that decide which speedups survive.</p><a href="deep.html">Read →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>Decoders, thresholds, and the overheads that decide which speedups survive.</p><a href="basics.html#red">Read →</a></div>
   <div class="card"><h3>🏁 The Race</h3><p>Who's building the hardware both halves of the loop depend on.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 

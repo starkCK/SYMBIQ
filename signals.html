@@ -3,34 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Terms of use — SymbiQ</title>
-<meta name="description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<title>The Signal — SymbiQ</title>
+<meta name="description" content="SymbiQ's news feed: one AI/quantum story at a time, in the loop's voice, with every claim's evidence tier named and what it does NOT mean spelled out. Human-approved before anything ships.">
 <!-- social:start -->
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/terms.html">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/signals.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/terms.html">
-<meta property="og:title" content="Terms of use — SymbiQ">
-<meta property="og:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/signals.html">
+<meta property="og:title" content="The Signal — SymbiQ">
+<meta property="og:description" content="SymbiQ's news feed: one AI/quantum story at a time, with every claim's evidence tier named and what it does NOT mean spelled out.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="Terms of use — SymbiQ">
-<meta name="twitter:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<meta name="twitter:title" content="The Signal — SymbiQ">
+<meta name="twitter:description" content="SymbiQ's news feed: one AI/quantum story at a time, with every claim's evidence tier named and what it does NOT mean spelled out.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=29">
+<link rel="stylesheet" href="signals.css">
 <script src="nav.js?v=5" defer></script>
 <script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="signals.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -105,7 +107,7 @@
       <summary>Track</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The daily question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop, human-approved</span></a>
+      <a href="signals.html" class="navmain active">The Signal<span class="sub">News from the loop, human-approved</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -118,43 +120,32 @@
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
 </nav>
 
+<h1>The Signal</h1>
+<p class="tagline">One AI/quantum story at a time, written in the loop's voice. Every post names its evidence tier, links straight to whatever it rests on that SymbiQ already teaches, and carries a "what this does NOT mean" section as standard — not a footnote. A human reads and approves every story before it ships; nothing here is auto-published.</p>
 
+<div class="card" id="sig-summary">
+  <h3>Loading The Signal…</h3>
+  <p style="margin-bottom:0">If this does not fill in, the feed could not be fetched. It lives at <code>data/signals/index.json</code>.</p>
+</div>
 
+<div id="sig-list"></div>
 
-<h1>Terms of use</h1>
-<p class="lede">Use the site, learn from it, share it. Don't republish it as your own, and don't rely on it for decisions that need a professional.</p>
+<h2>How The Signal works</h2>
+<p>A daily pass over a short list of primary sources drafts at most one story — never a roundup, never filler for a quiet day. The draft is forbidden from stating any number that is not in the source, must name what a reader would wrongly conclude from the headline, and is checked against everything SymbiQ already teaches so a claim about, say, a new decoder result links straight to the page that explains decoders. None of that publishes on its own: it becomes an approval request, and only a reply of <code>post</code> ships it.</p>
 
-<h2>What SymbiQ is</h2>
-<p>SymbiQ is an educational platform about the relationship between artificial intelligence and quantum computing. Everything here is published for general information and education.</p>
+<script>
+(function () {
+  var host = document.getElementById("sig-list");
+  var sum  = document.getElementById("sig-summary");
+  if (sum) sum.remove();
+  if (window.SymbiQ && SymbiQ.signals) SymbiQ.signals.mount(host, { heading: true });
+  else document.addEventListener("DOMContentLoaded", function () {
+    if (window.SymbiQ && SymbiQ.signals) SymbiQ.signals.mount(host, { heading: true });
+  });
+})();
+</script>
 
-<h2>No professional advice</h2>
-<p><strong>Nothing on this site is financial, investment, legal, or security advice.</strong> The pages about Bitcoin and post-quantum cryptography discuss published research and public standards; they describe how attacks and migrations work in general, not what you or your organisation should do. The cryptography tools on this site run entirely in your browser and are teaching instruments, not audits. Do not treat any output from them as a compliance assessment, a penetration test, or a substitute for a qualified security professional.</p>
-
-<h2>Accuracy, and what we do about being wrong</h2>
-<p>We verify claims before publishing and cite primary sources, and every quantitative claim carries an evidence tier. We will still get things wrong. When we do, the correction runs on the <a href="corrections.html">corrections page</a>, credited to whoever caught it. But the site is provided <em>as is</em>: we make no warranty that it is complete, current, or error-free, and we are not liable for any loss arising from relying on it. If a decision matters, check the primary source — we link them for exactly that reason.</p>
-
-<h2>Our content</h2>
-<p>The text, diagrams, games, code and design of SymbiQ are © [FILL: name or entity] and are protected by copyright. You may read, link to, quote briefly with attribution, and share the pages. You may not republish substantial portions, mirror the site, or present the material as your own work — including as training data or bulk-scraped content — without written permission. Third-party research we cite belongs to its authors and is used here under fair dealing for education and commentary.</p>
-
-<h2>Your contributions</h2>
-<p>If you send us a correction, a question, or a forum or Discord post, you keep ownership of it, and you give us permission to publish it on SymbiQ with credit. We edit for length and clarity. Nothing you submit is published automatically — a person reviews it first.</p>
-
-<h2>Acceptable use</h2>
-<p>Don't use SymbiQ to break the law, harass anyone, or attack the site or its infrastructure. Don't scrape it at a volume that degrades it for others. Don't misrepresent our content or imply we endorse you.</p>
-
-<h2>Links out</h2>
-<p>We link to arXiv papers, company research blogs and standards bodies. We don't control those sites and aren't responsible for their content — a link is a citation, not an endorsement.</p>
-
-<h2>Availability</h2>
-<p>SymbiQ is free and offered without any guarantee of uptime. We may change, suspend, or discontinue any part of it at any time.</p>
-
-<h2>Governing law</h2>
-<p>These terms are governed by the laws of [FILL: India, or your jurisdiction], and the courts of [FILL: city] have exclusive jurisdiction over any dispute.</p>
-
-<h2>Contact</h2>
-<p><strong>[FILL: contact email]</strong>.</p>
-<p class="verif">Last updated: [FILL: date].</p>
-<footer>SymbiQ &middot; Educational content, not advice. <a href="privacy.html">Privacy</a></footer>
+<footer>Nothing here auto-publishes. Every Signal is approved by a human before it ships.<br>SymbiQ · Found an error in one? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
 </div>
 </body>
 </html>

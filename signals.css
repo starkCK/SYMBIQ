@@ -1,0 +1,39 @@
+/* SymbiQ — signals.html only. Page-specific so it can change without a
+   16-page cache-buster bump (same rationale as feasible.css). Covers two
+   things nothing else on the site needed yet: the "concept card" that
+   tools/news/link_concepts.py emits below every Signal, and the article
+   body/source line. Everything else reuses .archq/.orbadge/.card from
+   style.css so the page still looks like SymbiQ. */
+
+.sig-dek { display: block; font-weight: 400; color: var(--muted); font-size: .86rem; margin-top: 2px; }
+
+.sig-body { margin: 16px 0; }
+.sig-body p { margin: 0 0 12px; }
+.sig-body p:last-child { margin-bottom: 0; }
+
+.sig-source { font-size: .86rem; color: var(--muted); margin: 14px 0 0; }
+.sig-source a { color: var(--link); }
+
+.cx-card {
+  margin: 18px 0 0; padding: 16px 18px; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--panel);
+}
+.cx-card h3 { margin: 0 0 4px; font-size: .95rem; }
+.cx-sub { margin: 0 0 10px; font-size: .82rem; color: var(--muted); }
+.cx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cx-list li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  padding: 8px 10px; border-radius: 8px; background: var(--rowhover);
+}
+.cx-list a { color: var(--link); font-weight: 600; }
+.cx-blurb { flex: 1 1 220px; min-width: 0; color: var(--muted); font-size: .84rem; }
+.cx-tier {
+  font-size: .68rem; border: 1px solid var(--border); border-radius: 99px;
+  padding: 1px 8px; color: var(--muted);
+}
+.cx-tier.t-g { color: var(--green); border-color: rgba(74, 222, 128, .4); }
+.cx-tier.t-y { color: var(--yellow); border-color: rgba(250, 204, 21, .4); }
+.cx-tier.t-r { color: var(--red); border-color: rgba(248, 113, 113, .4); }
+
+/* first-mention inline links the linker adds inside the article body */
+a.cx { color: var(--link); text-decoration: underline; text-decoration-color: rgba(45, 212, 191, .4); }

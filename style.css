@@ -1741,4 +1741,71 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   .corr-kind { margin-left: 0; }
 }
 a.tbtn { text-decoration: none; }
+
+/* ================================================================
+   INTERACTION POLISH (2026-08-19) — one press-feedback language for
+   every custom control that didn't already have one.
+
+   The site had two button languages by accident, not by design:
+   .preset/.bigplay/.sqform button/.orbuy all press down on :active
+   (translateY(1px) scale(.985), or the equivalent), while roughly a
+   dozen other clickable classes — pill toggles, OR-tool chips, the
+   volcano's dial detents, mission choice buttons — had a :hover but
+   nothing at all on :active, so clicking them read as inert next to
+   the ones that already got this treatment. This closes that gap
+   using the SAME motion already approved (translateY/scale on press,
+   the site's one easing curve cubic-bezier(.22,.7,.3,1)) rather than
+   inventing a louder one — see memory symbiq-button-taste.md:
+   Chinmoy dialled .bigplay BACK from flashier/bigger on 2026-08-07,
+   so "more attractive" here means *consistent*, not *bigger*.
+
+   Appended at file end deliberately: several of these classes carry
+   a :hover transform declared earlier in the cascade, and every rule
+   below has equal specificity to its own :hover sibling (one class +
+   one pseudo-class), so source order is what decides which wins when
+   a real click holds both states true at once — being last means the
+   press always wins over the hover-lift for that instant.
+   ================================================================ */
+
+/* pill-shaped toggles and leave-controls: hover only ever changed
+   colour, so give them the same press-down the filled buttons have */
+.tbtn:active, .corr-f:active, .scene-audio:active, .ms-leave:active,
+.ms-tell:active:not(:disabled) {
+  transform: scale(.97);
+}
+
+/* bordered controls that already lift/slide on hover — press-down
+   replaces rather than fights that motion for the moment of the click */
+.hole:active, .orjump:active, .ms-opt:active, .lv:active, .orsm:active:not([disabled]),
+.pick:active, button.nextup:active {
+  transform: scale(.97) !important;
+}
+
+/* SVG-drawn controls: a raw shape's transform-origin sits at the SVG
+   viewport corner, not its own centre, so scaling it on press lands
+   off-centre and looks like a glitch. Brightness reads as "pressed"
+   without moving anything. */
+.mc-node:active, .duelwrap .dq:active, .dial-detent:active circle, .ornode.open:active circle {
+  filter: brightness(1.4);
+}
+
+/* The estate tool's "Load a code" button (journey.html) was the one
+   button on the site hand-styled with an inline background/border
+   override instead of a class — which meant it kept .sqform button's
+   base teal glow-shadow under a transparent fill (a shadow with
+   nothing to cast it) and had no hover/press feedback of its own.
+   Given a real ghost variant, matching .bigplay.ghost's pattern. */
+.sqform button.ghost {
+  background: transparent; color: var(--teal); border: 1.5px solid var(--teal); box-shadow: none;
+}
+.sqform button.ghost:hover { box-shadow: 0 4px 12px rgba(45,212,191,.14); filter: none; }
+.sqform button.ghost:active { filter: none; }
+@media (prefers-color-scheme: light) {
+  .sqform button.ghost { color: #0f766e; border-color: #0f766e; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tbtn, .corr-f, .scene-audio, .ms-leave, .ms-tell, .hole, .orjump, .ms-opt, .lv, .orsm, .pick,
+  .mc-node, .duelwrap .dq, .dial-detent circle, .ornode.open circle { transition: none; }
+}
 .tbar-links .tbtn.is-on { cursor: default; }

@@ -137,6 +137,8 @@
   <p style="margin-bottom:0">This page's five planned sections are now all built. That doesn't mean quantum computing is exhausted — it means the load-bearing mathematics behind every other page on this site now has a proper home, once, instead of being asserted piecemeal.</p>
 </div>
 
+<p><em>Verification status: topics f01–f07 (postulates, evolution, measurement, no-cloning, teleportation, superdense coding, Schmidt decomposition) were referee-verified in an earlier session. Topics f08–f15 (Deutsch&#39;s through Holevo&#39;s bound) shipped 2026-08-20 and cleared a fresh-session hostile-referee pass the same day: all four companion Python scripts re-run clean, all 8 external citations independently re-checked, one Minor finding fixed (a continued-fraction convergent theorem was attributed to Khinchin; it is standardly Legendre&#39;s, 1798). Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+
 <h2 id="course"><span class="fr-secnum">The Formal Framework</span>Four topics, each taught four ways</h2>
 
 <div class="fr-toc">
@@ -1082,7 +1084,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
 
     <div class="layer maths">
       <h4>The mathematics</h4>
-      <p><strong>The classical guarantee.</strong> If θ is within 1/(2r²) of some fraction s/r in lowest terms with r &lt; N, then s/r is guaranteed to appear as a convergent of θ&#39;s continued fraction expansion — a number-theoretic fact independent of quantum mechanics (Khinchin&#39;s classical theory of continued fractions). Choosing t ≈ 2 log₂N counting qubits in phase estimation makes the measured m/2<sup>t</sup> land within this radius of the true s/r, satisfying the guarantee&#39;s hypothesis.</p>
+      <p><strong>The classical guarantee.</strong> If θ is within 1/(2r²) of some fraction s/r in lowest terms with r &lt; N, then s/r is guaranteed to appear as a convergent of θ&#39;s continued fraction expansion — a number-theoretic fact independent of quantum mechanics — Legendre&#39;s theorem on continued-fraction convergents (Legendre, <em>Essai sur la théorie des nombres</em>, 1798). Choosing t ≈ 2 log₂N counting qubits in phase estimation makes the measured m/2<sup>t</sup> land within this radius of the true s/r, satisfying the guarantee&#39;s hypothesis.</p>
       <p><strong>What the guarantee does and doesn't promise:</strong> it promises s/r appears as a convergent — the fraction actually equal to the measured phase in lowest terms. When gcd(s,r)=1, that fraction's denominator <em>is</em> r. When gcd(s,r)=g&gt;1, the reduced fraction's denominator is r/g — a proper divisor, and the guarantee still holds exactly, just for a smaller number.</p>
       <p><span class="orbadge">⟦Proven⟧</span> Verified numerically over 2,000 random (N, r, s) triples with t = 2·⌈log₂N⌉ counting qubits, using the ideal (noiseless) measurement outcome m = round(s/r·2<sup>t</sup>): every one of the 1,189 trials with gcd(s,r)=1 recovered r exactly as a convergent denominator (1,189/1,189); every one of the 811 trials with gcd(s,r)&gt;1 recovered exactly r/gcd(s,r) as predicted, never r itself and never a wrong answer (811/811) — Shor, <em>SIAM J. Comput.</em> 26(5), 1484 (1997; FOCS 1994); continued-fraction period recovery: Nielsen &amp; Chuang, <em>Quantum Computation and Quantum Information</em>, §5.3.1.</p>
     </div>

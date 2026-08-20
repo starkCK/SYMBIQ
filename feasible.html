@@ -127,7 +127,7 @@
   <p class="fr-lede">Everything that is actually possible. Nothing that isn&#39;t.</p>
   <p class="fr-sub">Operations research is the mathematics of deciding well when you cannot have everything. It routed your parcel, staffed tonight&#39;s hospital shift, and priced your flight twice while you were looking at it — and it is the field quantum computing is most often accused of being about to revolutionise. This is a course in it, from the top.</p>
   <div class="fr-stats">
-    <div><b>17</b><span>topics, each built<br>picture → maths</span></div>
+    <div><b>19</b><span>topics, each built<br>picture → maths</span></div>
     <div><b>2</b><span>games where the<br>maths does the judging</span></div>
     <div><b>1937</b><span>the year it got its<br>name, at a radar station</span></div>
     <div><b>3</b><span>places it runs inside<br>a quantum computer</span></div>
@@ -151,7 +151,7 @@
 
 <p>So the honest order is: <strong>learn what the classical machinery does first.</strong> Then the quantum question becomes answerable instead of atmospheric. That is what this page is for, and why it sits beside the quantum material rather than inside it.</p>
 
-<h2 id="course"><span class="fr-secnum">The course</span>Seventeen topics, each taught four ways</h2>
+<h2 id="course"><span class="fr-secnum">The course</span>Nineteen topics, each taught four ways</h2>
 
 <div class="fr-toc">
   <h3>How each topic is built</h3>
@@ -174,11 +174,13 @@
     <li><a href="#t15">Evolutionary game theory<em>when strategies breed</em></a></li>
     <li><a href="#t16">The simplex algorithm<em>how you actually find the corner</em></a></li>
     <li><a href="#t17">Quadratic &amp; semidefinite programming<em>the SDP bridge to Max-Cut</em></a></li>
+    <li><a href="#t18">The transportation problem<em>network flow with no interior</em></a></li>
+    <li><a href="#t19">Constraint satisfaction<em>no objective at all</em></a></li>
   </ol>
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all seventeen</button>
+  <button type="button" id="fr-open">Open all nineteen</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -1536,6 +1538,196 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ   for i = 1..m
   </div>
 </details>
 
+<h2 id="modb"><span class="fr-secnum">Module B, completed</span>Two more: the transportation problem, and when there is no objective at all</h2>
+
+<p>Topic 18 is not a new idea so much as a return trip: it takes topic 06&#39;s network flow and strips out everything except two flat layers of nodes, which turns out to be exactly the structure real shipping networks have. Topic 19 is the opposite kind of addition — a topic that shares this course&#39;s language of variables and constraints but drops the objective entirely, because sometimes the honest question is not &quot;what&#39;s best&quot; but &quot;does anything work at all.&quot; Both are appended here, after topics 16 and 17, for the same reason those two were: every link on this site into an existing topic already points at a fixed anchor.</p>
+
+<!-- ================= 18 ================= -->
+<details class="mod" id="t18">
+  <summary>
+    <span class="mod-n">18</span>
+    <span class="mod-t">The transportation problem</span>
+    <span class="mod-q">What happens when a flow network has no interior?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A bipartite network: two supply nodes S1 and S2 on the left, three demand nodes D1, D2 and D3 on the right. Three highlighted routes carry the optimal flow -- S1 to D1 fifteen units, S1 to D3 fifteen units, S2 to D2 twenty units -- for a total cost of 240. Three other routes exist but carry no flow in this optimal plan.">
+          <path d="M100 90 L300 45"   class="sOr"  stroke-width="3.5"/>
+          <path d="M100 90 L300 165"  class="sMut" stroke-width="1.6" stroke-dasharray="5 5"/>
+          <path d="M100 90 L300 285"  class="sOr"  stroke-width="3.5"/>
+          <path d="M100 245 L300 45"  class="sMut" stroke-width="1.6" stroke-dasharray="5 5"/>
+          <path d="M100 245 L300 165" class="sOr"  stroke-width="3.5"/>
+          <path d="M100 245 L300 285" class="sMut" stroke-width="1.6" stroke-dasharray="5 5"/>
+
+          <circle cx="100" cy="90"  r="26" fill="var(--panel)" stroke="var(--or)" stroke-width="2.5"/>
+          <circle cx="100" cy="245" r="26" fill="var(--panel)" stroke="var(--or)" stroke-width="2.5"/>
+          <circle cx="300" cy="45"  r="22" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+          <circle cx="300" cy="165" r="22" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+          <circle cx="300" cy="285" r="22" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+
+          <g class="lbl-b" text-anchor="middle">
+            <text x="100" y="95">S1</text><text x="100" y="250">S2</text>
+            <text x="300" y="50">D1</text><text x="300" y="170">D2</text><text x="300" y="290">D3</text>
+          </g>
+          <g class="lbl-s" text-anchor="middle">
+            <text x="100" y="125">supply 30</text><text x="100" y="280">supply 20</text>
+            <text x="300" y="76">demand 15</text><text x="300" y="196">demand 20</text><text x="300" y="316">demand 15</text>
+          </g>
+
+          <g class="lbl-s">
+            <text x="380" y="40" class="lbl-b or">The optimum, solved exactly:</text>
+            <text x="380" y="62">S1 → D1:  15 × 4  = 60</text>
+            <text x="380" y="80">S1 → D3:  15 × 8  = 120</text>
+            <text x="380" y="98">S2 → D2:  20 × 3  = 60</text>
+            <text x="380" y="122" class="lbl-b or">Total = 240</text>
+            <text x="380" y="146">(S1→D2, S2→D1, S2→D3 carry nothing)</text>
+            <text x="380" y="182" class="lbl-b">A naive northwest-corner plan —</text>
+            <text x="380" y="200">any feasible starting point, found</text>
+            <text x="380" y="218">by filling cells top-left to bottom-right —</text>
+            <text x="380" y="236">ships 15, 15, 5, 15 across four routes</text>
+            <text x="380" y="254" class="lbl-b" style="fill:var(--red)">and totals 300: 25% worse.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>Two sources, three destinations, six possible routes at six different costs per unit.</strong> Solving the linear program exactly — and cross-checked here against an exhaustive search over every integer-feasible plan — ships 15 units S1→D1, 15 units S1→D3 and 20 units S2→D2, for a total cost of <b>240</b>, leaving three of the six possible routes unused entirely. A northwest-corner plan, a standard naive way to get <em>some</em> feasible starting point fast, instead ships 15+15+5+15 across four routes and costs <b>300</b>. Both plans are feasible. Only one is optimal.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Take topic 06&#39;s network-flow picture — a source, a sink, and whatever tangle of intermediate nodes and pipes sits between them — and strip out everything except two flat layers: a row of <strong>supply nodes</strong>, each holding a fixed amount of stock, and a row of <strong>demand nodes</strong>, each needing a fixed amount delivered, with a direct edge from every supply node to every demand node and nothing in between. That is the <strong>transportation problem</strong>: minimise total shipping cost, where each edge (i, j) costs c<sub>ij</sub> per unit and every supply and every demand must be met exactly.</p>
+      <p>It is the single most structured special case of network flow on this whole page — bipartite, no intermediate nodes, every unit of supply going somewhere and every unit of demand coming from somewhere — and that extra structure is not incidental, as the mathematics below makes precise.</p>
+      <p>It is also, unusually for this course, a problem with two independent discoveries rather than one. Frank Hitchcock published it first, as a pure distribution problem with no economic framing at all (1941). Tjalling Koopmans arrived at the same mathematical structure eight years later from the opposite direction: he spent 1942&ndash;44 as a statistician for the British Merchant Shipping Mission and the Combined Shipping Adjustment Board in Washington, a joint American&ndash;British wartime agency, working out how to route merchant shipping efficiently, and wrote the general problem up as a question about optimally allocating scarce cargo capacity to routes (1949). Koopmans shared the 1975 Nobel Memorial Prize in Economic Sciences with Leonid Kantorovich, awarded jointly &quot;for their contributions to the theory of optimum allocation of resources&quot; — work whose starting point was this same shipping-and-supply structure, reached from economics rather than from mathematics.</p>
+      <p>The trap here rhymes with topic 04&#39;s rounding trap and topic 07&#39;s greedy trap: a plan that is <em>feasible</em> — every supply used, every demand met — is not automatically a good plan. The northwest-corner plan in the figure satisfies every constraint and still costs 25% more than necessary.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>As a linear program, with x<sub>ij</sub> the amount shipped from source i to destination j, supplies s<sub>i</sub> and demands d<sub>j</sub> (balanced: Σs<sub>i</sub> = Σd<sub>j</sub>):</p>
+      <code class="eq">minimise  Σᵢ Σⱼ cᵢⱼ xᵢⱼ
+s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
+          Σᵢ xᵢⱼ = dⱼ     every destination receives its whole demand
+          xᵢⱼ ≥ 0</code>
+      <p>Compare this to the assignment problem&#39;s integer program in topic 07: identical shape, with every s<sub>i</sub> and every d<sub>j</sub> pinned to exactly 1 and x<sub>ij</sub> restricted to {0, 1}. The assignment problem is not merely <em>similar</em> to the transportation problem — it is the transportation problem&#39;s own special case, one supply unit and one demand unit per node.</p>
+      <p>Topic 04 stated the totally-unimodular rule without deriving it; here is the derivation it left out. Call a matrix <strong>totally unimodular (TU)</strong> if every square submatrix has determinant 0, +1 or −1 (the whole matrix, taken as a submatrix of itself, is included). A <strong>basic feasible solution</strong> of a linear program — a vertex of the feasible polytope — comes from choosing a square, invertible submatrix B of the constraint matrix (the &quot;basis&quot;) and solving x_B = B⁻¹b for the basic variables, with every non-basic variable set to 0. By Cramer&#39;s rule, each entry of B⁻¹ is a cofactor of B — itself the determinant of a square submatrix of B, hence of the original matrix — divided by det(B). If the constraint matrix is TU, det(B) = ±1 for every basis B, so B⁻¹ is an <em>integer</em> matrix outright, and x_B = B⁻¹b is integral whenever b is integral. Every vertex of the feasible region is therefore an integer point already: no rounding, no branch and bound, no gap between the LP relaxation and the true integer optimum. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>The transportation problem&#39;s constraint matrix is the node–arc incidence matrix of a bipartite graph — exactly the network structure topic 06 already proved is TU, here with no intermediate nodes at all. So its integrality is not a new theorem; it is topic 06&#39;s theorem, applied to the flattest network there is. (Checked directly for the instance in the figure: all 461 square submatrices of its 5×6 constraint matrix have determinant in {−1, 0, +1}, computed in the verification script cited below.)</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Restructuring a supply chain, for real</span>
+      Procter &amp; Gamble&#39;s mid-1990s redesign of its North American product-sourcing and distribution network combined a facility-location decision (which plants stay open) with exactly this problem sitting underneath it: once the surviving plants and distribution centres are fixed, shipping product from each open plant to each distribution centre at minimum cost, against fixed plant capacities and centre demands, <em>is</em> a transportation problem in the textbook sense. Camm, Chorman, Dill, Evans, Sweeney &amp; Wegryn, &quot;Blending OR/MS, Judgment, and GIS: Restructuring P&amp;G&#39;s Supply Chain,&quot; <em>Interfaces</em> 27(1) (1997), 128&ndash;142, report the outcome: almost 20% fewer North American plants and over $200 million a year in pretax savings.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t06">Where this specialises from: network flow ▸</a>
+      <a href="#t19">Next: when there is no objective at all ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 19 ================= -->
+<details class="mod" id="t19">
+  <summary>
+    <span class="mod-n">19</span>
+    <span class="mod-t">Constraint satisfaction</span>
+    <span class="mod-q">Does a solution exist at all?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A constraint graph for map-colouring Australia's seven mainland-plus-island regions with three colours: amber, teal and violet. Every edge marks two regions that share a border and must get different colours. The valid colouring shown is Western Australia amber, Northern Territory teal, South Australia violet, Queensland amber, New South Wales teal, Victoria amber, Tasmania amber -- Tasmania shares no border with anything and is unconstrained. After Western Australia is fixed to amber, arc consistency alone shrinks both Northern Territory's and South Australia's domains from three colours to two, before any search happens.">
+          <g class="sMut" stroke-width="2" fill="none">
+            <path d="M90 210 L240 100"/>
+            <path d="M90 210 L240 250"/>
+            <path d="M240 100 L240 250"/>
+            <path d="M240 100 L390 100"/>
+            <path d="M240 250 L390 100"/>
+            <path d="M240 250 L390 250"/>
+            <path d="M240 250 L330 330"/>
+            <path d="M390 100 L390 250"/>
+            <path d="M390 250 L330 330"/>
+          </g>
+
+          <circle cx="90"  cy="210" r="26" fill="var(--or)"     opacity=".22" stroke="var(--or)"     stroke-width="2.5"/>
+          <circle cx="240" cy="100" r="22" fill="var(--teal)"   opacity=".22" stroke="var(--teal)"   stroke-width="2.5"/>
+          <circle cx="240" cy="250" r="22" fill="var(--violet)" opacity=".22" stroke="var(--violet)" stroke-width="2.5"/>
+          <circle cx="390" cy="100" r="22" fill="var(--or)"     opacity=".22" stroke="var(--or)"     stroke-width="2.5"/>
+          <circle cx="390" cy="250" r="22" fill="var(--teal)"   opacity=".22" stroke="var(--teal)"   stroke-width="2.5"/>
+          <circle cx="330" cy="330" r="20" fill="var(--or)"     opacity=".22" stroke="var(--or)"     stroke-width="2.5"/>
+          <circle cx="520" cy="330" r="16" fill="var(--or)"     opacity=".18" stroke="var(--border)" stroke-width="2" stroke-dasharray="3 3"/>
+
+          <g class="lbl-b" text-anchor="middle" font-size="11">
+            <text x="90"  y="214">WA</text>
+            <text x="240" y="104">NT</text>
+            <text x="240" y="254">SA</text>
+            <text x="390" y="104">Q</text>
+            <text x="390" y="254">NSW</text>
+            <text x="330" y="334">V</text>
+            <text x="520" y="334">T</text>
+          </g>
+          <text class="lbl-s" x="520" y="358" text-anchor="middle">no shared border —</text>
+          <text class="lbl-s" x="520" y="372" text-anchor="middle">no constraint at all</text>
+
+          <g class="lbl-s">
+            <rect x="440" y="16" width="12" height="12" fill="var(--or)"/>
+            <text x="458" y="26">amber</text>
+            <rect x="440" y="34" width="12" height="12" fill="var(--teal)"/>
+            <text x="458" y="44">teal</text>
+            <rect x="440" y="52" width="12" height="12" fill="var(--violet)"/>
+            <text x="458" y="62">violet</text>
+
+            <text x="440" y="92"  class="lbl-b">AC-3, after WA := amber:</text>
+            <text x="440" y="112">NT domain {amber, teal, violet}</text>
+            <text x="440" y="128" class="or">  → {teal, violet}</text>
+            <text x="440" y="150">SA domain {amber, teal, violet}</text>
+            <text x="440" y="166" class="or">  → {teal, violet}</text>
+            <text x="440" y="188">— pruned before any variable</text>
+            <text x="440" y="202">is even branched on.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>The classic textbook instance: colour Australia&#39;s mainland states and territories, plus Tasmania, with three colours so that no two neighbours match.</strong> The colouring shown — WA amber, NT teal, SA violet, Q amber, NSW teal, V amber, T amber — is checked here against all nine adjacency constraints. Fix WA to amber first, as a backtracking search naturally would, and a real AC-3 pass (not a hand-wave) removes amber from NT&#39;s and SA&#39;s domains immediately: both were WA&#39;s neighbours, and amber has no support left in WA&#39;s now-singleton domain. Two domains shrink from three values to two, for free, before search does any work at all.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Stop and notice what every topic before this one has in common, including this course&#39;s own four-line opening: there has always been an objective — a number to push up or down, a plan to call &quot;best.&quot; <strong>Constraint satisfaction has no objective at all.</strong> The only question is whether some assignment exists that satisfies every constraint simultaneously, and if so, to produce one. There is no better or worse among the assignments that work — an assignment either satisfies every constraint or it does not, full stop. That is not a simplification made for this course; it is the honest, complete statement of what the field studies, and it is worth sitting with, because it means a good deal of the vocabulary built up over the last seventeen topics — shadow prices, bounds, approximation ratios — simply does not apply here. There is nothing to be a ratio <em>of</em>.</p>
+      <p>The formal shape: a <strong>constraint satisfaction problem (CSP)</strong> is a set of variables, each with a <strong>domain</strong> of allowed values, and a set of <strong>constraints</strong>, each restricting which combinations of values its variables may jointly take. Solving it means finding an assignment of one value per variable that satisfies every constraint — or correctly reporting that none exists.</p>
+      <p>Two techniques do essentially all the work, and they compose. <strong>Backtracking search</strong> assigns variables one at a time, checking constraints as it goes, and undoes an assignment the moment it conflicts with one already made. <strong>Constraint propagation</strong> runs before or between those assignments and removes domain values that could never appear in any solution, tightening the problem before search has to touch it. Neither is quantum, neither is exotic — and the worked example above shows exactly what propagation removes and why.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>General CSP — arbitrary finite domains, arbitrary constraints given as tables of allowed combinations — is <strong>NP-complete</strong>. Membership in NP is immediate: guess an assignment, and checking it against every constraint takes polynomial time. NP-hardness needs no new argument either, because two problems already on this page&#39;s own hardness ledger are themselves nothing but CSPs with a particular choice of variables, domains and constraints: graph k-colourability (also one of Karp&#39;s original 21 NP-complete problems, Karp, 1972 — the same paper topic 04 cites for 0&ndash;1 integer programming, though it doesn&#39;t discuss colouring) and Boolean satisfiability (Cook, &quot;The Complexity of Theorem-Proving Procedures,&quot; <em>Proceedings of the 3rd ACM Symposium on Theory of Computing</em> (1971), 151&ndash;158 — the theorem that opened the NP-complete class in the first place). <span class="orbadge">⟦Proven⟧</span></p>
+      <p>That general statement hides something sharper. Restrict every variable&#39;s domain to just two values — Boolean CSP — and Schaefer proved the complexity of <em>every possible</em> constraint language collapses to exactly two outcomes, with nothing in between: T.J. Schaefer, &quot;The Complexity of Satisfiability Problems,&quot; <em>Proceedings of the 10th ACM Symposium on Theory of Computing</em> (1978), 216&ndash;226. Whatever set of allowed relations a Boolean CSP is built from, the resulting problem is either solvable in polynomial time — Schaefer names six tractable cases in full, among them Horn clauses, 2-SAT-like binary clauses, and linear equations over GF(2), and shows they cover every polynomial case there is — or it is NP-complete. No Boolean constraint language sits anywhere in between. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>The natural next question — does the same clean dichotomy hold once domains are allowed to be larger than two values, as in genuine graph colouring — stayed open for two decades as the Feder&ndash;Vardi conjecture (Feder &amp; Vardi, <em>SIAM Journal on Computing</em> 28(1) (1998), 57&ndash;104) before being proved independently, and published back-to-back in the same proceedings, by Bulatov, &quot;A Dichotomy Theorem for Nonuniform CSPs,&quot; <em>Proceedings of FOCS</em> (2017), 319&ndash;330, and Zhuk, &quot;A Proof of CSP Dichotomy Conjecture,&quot; <em>Proceedings of FOCS</em> (2017), 331&ndash;342: every fixed-template CSP, over any finite domain whatsoever, is either in P or NP-complete. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>Constraint propagation&#39;s standard form is <strong>arc consistency</strong>: an arc from variable X<sub>i</sub> to X<sub>j</sub> is consistent if every value remaining in X<sub>i</sub>&#39;s domain has <em>some</em> compatible value in X<sub>j</sub>&#39;s domain. A value with no such support can never be part of any solution, so deleting it is a proof of uselessness, not a heuristic guess — exactly as final as branch and bound&#39;s pruning in topic 05. <strong>AC-3</strong> (Mackworth, &quot;Consistency in Networks of Relations,&quot; <em>Artificial Intelligence</em> 8(1) (1977), 99&ndash;118) is the standard algorithm: maintain a queue of arcs, revise one, and if a domain shrinks, re-queue every arc pointing back into the variable that just changed, since a value that used to have support may have lost it. The worked example above runs exactly this and shows two domains shrink from three colours to two before any variable beyond WA is even assigned.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Register allocation, every time a compiler runs</span>
+      A compiler must assign each live temporary value in a program to one of a small number of physical registers, never giving the same register to two temporaries that are &quot;live&quot; at the same time. That is a CSP by construction — variables are temporaries, the domain is the set of physical registers, the constraint is &quot;different register from anything you interfere with&quot; — and it is standardly solved as graph colouring, on an interference graph built from the program. Chaitin, Auslander, Chandra, Cocke, Hopkins &amp; Markstein, &quot;Register Allocation via Coloring,&quot; <em>Computer Languages</em> 6(1) (1981), 47&ndash;57, is the paper that made this the industry-standard approach; when the graph is not colourable with the registers available, the compiler &quot;spills&quot; a value to memory and recolours.</p>
+      <p><span class="where">And the puzzle everyone has already solved by hand</span>
+      Sudoku is a CSP with 81 variables, domains {1,…,9}, and all-different constraints on every row, column and 3×3 box — nothing more exotic than that. The reason a good human solver reaches for &quot;this cell can only be a 7&quot; long before guessing anything is that they are doing constraint propagation by eye, the same pruning AC-3 does mechanically above.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t18">Previous: the transportation problem ▸</a>
+      <a href="#bridges">The QUBO/Ising bridge — where CSP meets quantum annealing ▸</a>
+    </div>
+  </div>
+</details>
+
 <h2 id="play"><span class="fr-secnum">Play</span>Two games where the mathematics does the judging</h2>
 
 <p>Neither can be won by feel. Both were built the way everything else here is: the answer was computed offline in exact arithmetic first, and the game only ever reports what that arithmetic says. Par is a proven number in both, but it means different things: in The Bottleneck it is the best score reachable, found by enumerating every purchase sequence, so you can hit it. In The Prune it is a <strong>floor</strong> — the count of branches that no strategy on earth could safely skip — and on the larger levels it is provably out of reach, which is why those levels are cleared against a measured target instead.</p>
@@ -1582,7 +1774,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ   for i = 1..m
 <div class="grid">
   <div class="card">
     <h3>QUBO and Ising <span class="orbadge">⟦Proven⟧ formulation</span></h3>
-    <p>Nearly every combinatorial problem can be rewritten as minimising <em>Σ w<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></em> over spins of ±1 — the ground state of a magnet (Lucas, 2014). <strong>This is the format quantum annealers and QAOA actually consume</strong>, so it is the doorway every quantum optimisation claim has to walk through.</p>
+    <p>Nearly every combinatorial problem can be rewritten as minimising <em>Σ w<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></em> over spins of ±1 — the ground state of a magnet (Lucas, 2014). <strong>This is the format quantum annealers and QAOA actually consume</strong>, so it is the doorway every quantum optimisation claim has to walk through. Constraint satisfaction (topic 19) is a standing source of these instances: each violated constraint becomes an energy penalty, so satisfying every constraint becomes finding the ground state.</p>
     <a href="play.html#maxcut">Play it — Graph City →</a>
   </div>
   <div class="card">
@@ -1702,7 +1894,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ   for i = 1..m
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "The Feasible Region — operations research from the top",
-  "description": "A seventeen-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
+  "description": "A nineteen-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
   "provider": { "@type": "Organization", "name": "SymbiQ" },
   "hasCourseInstance": {
     "@type": "CourseInstance",
@@ -1714,7 +1906,8 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ   for i = 1..m
             "Queueing theory", "Metaheuristics", "Game theory", "Nash equilibrium",
             "Shapley value", "Mechanism design", "Evolutionary game theory",
             "Simplex algorithm", "Quadratic programming", "Semidefinite programming",
-            "Max-Cut", "Goemans-Williamson algorithm"]
+            "Max-Cut", "Goemans-Williamson algorithm", "Transportation problem",
+            "Constraint satisfaction", "Total unimodularity", "Arc consistency"]
 }
 </script>
 
@@ -1832,7 +2025,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ   for i = 1..m
 })();
 </script>
 
-<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. <strong>Topics 18–19, added 2026-08-21:</strong> the transportation instance (2 sources, 3 destinations, optimum 240 against a northwest-corner plan of 300) was checked by exhaustive integer search cross-checked against scipy's LP relaxation, and the total unimodularity claim was checked directly by computing all 461 square submatrices of the instance's 5×6 constraint matrix; the Australia map-colouring assignment was checked against all nine adjacency constraints, and the AC-3 arc-consistency pruning (Northern Territory's and South Australia's domains shrinking from three colours to two once Western Australia is fixed) was produced by a real AC-3 implementation, not asserted — the verification code lives in <code>tools/verify_transportation_csp.py</code>. Every citation on those two topics — Hitchcock 1941, Koopmans 1949, the 1975 Nobel Memorial Prize to Koopmans and Kantorovich, Camm et al. 1997, Cook 1971, Schaefer 1978, Feder &amp; Vardi 1998, Bulatov 2017, Zhuk 2017, Mackworth 1977, Chaitin et al. 1981 — was checked against a primary or bibliographic source before use. <strong>A fresh-session hostile-referee pass ran 2026-08-21</strong> and re-derived both worked examples by hand (matching the script exactly), independently fetched the Bulatov and Zhuk FOCS 2017 proceedings PDFs directly rather than trusting a search summary (confirming pages 319–330 and 331–342), and confirmed every other citation, badge and cross-reference — one finding, fixed: a sentence cited graph k-colourability&#39;s NP-hardness to &quot;topic 04&#39;s Karp-1972 list,&quot; but topic 04 only invokes Karp 1972 for 0–1 integer programming and never discusses colouring — the underlying fact was true, the attribution wasn&#39;t. Now cited to Karp 1972 directly, with the misattribution named rather than quietly smoothed over. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
 </div>
 </body>
 </html>

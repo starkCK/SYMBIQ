@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with eight games where the mathematics does the judging.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=30">
+<link rel="stylesheet" href="style.css?v=31">
 <style>
 /* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
@@ -371,17 +371,6 @@
   function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
   function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
-  // Whole days between the feed's date and today, both read as calendar days so
-  // a clock hour never shifts the count. Returns null on a malformed date rather
-  // than a wrong number.
-  function daysSince(iso) {
-    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
-    if (!m) return null;
-    var then = Date.UTC(+m[1], +m[2] - 1, +m[3]);
-    var n = new Date(), now = Date.UTC(n.getFullYear(), n.getMonth(), n.getDate());
-    return Math.round((now - then) / 86400000);
-  }
-
   fetch('data/today.json', { cache: 'no-store' })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(init)
@@ -393,28 +382,17 @@
 
   function init(D) {
     var s = load(), q = D.question, done = s.history && s.history[D.date];
+    // No calendar date here on purpose -- streaks key off consecutive question
+    // numbers, not days (see answer()), so the date was never actually load-
+    // bearing and only ever raised "is this stale?" for a reader to wonder
+    // about. The streak is the honest evergreen thing to show instead: it is
+    // the reader's own real progress, and it never goes out of date.
+    var streak = s.streak || 0;
     document.getElementById('dq-meta').innerHTML =
       '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
-      '<span style="color:var(--muted)"> Question #' + D.qnum + ' · ' + D.date + '</span>';
+      '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>' +
+      (streak > 0 ? ' <span class="dq-streak">🔥 ' + streak + '-question streak</span>' : '');
     document.getElementById('dq-q').textContent = q.text;
-
-    // The feed carries a date and the header promises "daily", so a stale file
-    // makes the page quietly overclaim. Observed gaps in the archive run 1-3
-    // days, so 4+ is past anything the normal cadence has ever produced and is
-    // worth naming out loud rather than letting the reader notice the date. The
-    // streak claim below is exact: it keys off consecutive qnum, not calendar
-    // days (see answer()), so a gap in publishing genuinely cannot break it.
-    var age = daysSince(D.date);
-    if (age !== null && age >= 4) {
-      var note = document.createElement('p');
-      note.className = 'dq-stale';
-      note.innerHTML = 'Posted <b>' + age + ' days ago</b>, and still the current one. ' +
-        'Each Question is written and checked by hand, so the real cadence is every few days rather ' +
-        'than literally daily. Answering still counts: streaks here run on consecutive question ' +
-        'numbers, not on calendar days. <a href="archive.html">Every previous one is here.</a>';
-      var meta = document.getElementById('dq-meta');
-      meta.parentNode.insertBefore(note, meta.nextSibling);
-    }
 
     var opts = document.getElementById('dq-opts');
     q.options.forEach(function (o, i) {
@@ -539,9 +517,8 @@
     '.dq-heat{display:flex;gap:3px;margin-top:12px}' +
     '.dq-heat .w{display:flex;flex-direction:column;gap:3px}' +
     '.dq-heat i{width:9px;height:9px;border-radius:2px;background:var(--border);display:block}' +
-    '.dq-stale{margin:2px 0 10px;padding:8px 11px;font-size:.9rem;line-height:1.5;' +
-    'border-left:3px solid var(--yellow);background:color-mix(in srgb,var(--yellow) 9%,transparent);' +
-    'border-radius:0 8px 8px 0}';
+    '.dq-streak{font-weight:600;color:var(--teal)}' +
+    '@media (prefers-color-scheme:light){.dq-streak{color:#0f766e}}';
   document.head.appendChild(st);
 })();
 </script>

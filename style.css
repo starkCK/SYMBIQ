@@ -851,19 +851,26 @@ nav .link.pathlink:hover { color: var(--violet); }
    after real reports of visitors missing them -- so this keeps them a clear
    primary control (filled, bordered, still >=44px) while dropping the size,
    weight and motion that made them shout. If discoverability regresses,
-   that history is why -- flag it rather than re-inflating silently. */
+   that history is why -- flag it rather than re-inflating silently.
+   2026-08-20: dialled down again on the same complaint, one notch further.
+   Padding/font shrink, but the 44px floor is now an explicit min-height
+   rather than something padding happened to clear -- shrinking padding
+   without that would have silently broken the tap-target rule. What makes
+   it read as noticeable at the smaller size instead of just "a small
+   button": a full pill radius, which nothing else on the site uses (every
+   .preset/.cta is 8px), so shape carries the distinction size used to. */
 .bigplay {
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   background: linear-gradient(135deg, var(--teal), #22b8a6);
-  color: #04211d; border: none; border-radius: 10px;
-  padding: 12px 22px; font: inherit; font-size: .98rem; font-weight: 700;
+  color: #04211d; border: none; border-radius: 999px; min-height: 44px;
+  padding: 8px 18px; font: inherit; font-size: .88rem; font-weight: 700;
   letter-spacing: .01em; cursor: pointer; margin: 6px 0 4px;
-  box-shadow: 0 4px 12px rgba(45,212,191,.16);
+  box-shadow: 0 3px 10px rgba(45,212,191,.14);
   transition: box-shadow .18s ease, filter .18s ease;
 }
-.bigplay:hover { box-shadow: 0 6px 16px rgba(45,212,191,.22); filter: brightness(1.04); }
+.bigplay:hover { box-shadow: 0 5px 14px rgba(45,212,191,.2); filter: brightness(1.04); }
 .bigplay:active { filter: brightness(.97); }
-.bigplay .kbd { font-size: .78rem; font-weight: 600; opacity: .82; }
+.bigplay .kbd { font-size: .72rem; font-weight: 600; opacity: .82; }
 /* Light mode needs its own pairing, measured rather than guessed. The dark
    theme's bright teal takes near-black text at 9.09:1, but light mode's teal
    is dark (#0d9488), where the same text scores a marginal 4.52 and white
@@ -871,8 +878,8 @@ nav .link.pathlink:hover { color: var(--violet); }
    5.47:1 at the light end, 7.58:1 at the dark end. */
 @media (prefers-color-scheme: light) {
   .bigplay { background: linear-gradient(135deg, #0f766e, #115e59); color: #ffffff;
-             box-shadow: 0 4px 12px rgba(17,94,89,.2); }
-  .bigplay:hover { box-shadow: 0 6px 16px rgba(17,94,89,.26); }
+             box-shadow: 0 3px 10px rgba(17,94,89,.18); }
+  .bigplay:hover { box-shadow: 0 5px 14px rgba(17,94,89,.24); }
   .bigplay.ghost { background: transparent; color: #0f766e; border-color: #0f766e; }
 }
 .bigplay.ghost {
@@ -950,7 +957,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 @media (max-width: 719px) {
   .orhero { padding: 24px 20px; }
   .orhero h2 { font-size: 1.4rem; }
-  .bigplay { width: 100%; padding: 12px 18px; font-size: .96rem; }
+  .bigplay { width: 100%; padding: 9px 16px; font-size: .86rem; }
   .gamehero .gh-row { flex-direction: column; align-items: stretch; }
 }
 

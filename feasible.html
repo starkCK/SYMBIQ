@@ -127,7 +127,7 @@
   <p class="fr-lede">Everything that is actually possible. Nothing that isn&#39;t.</p>
   <p class="fr-sub">Operations research is the mathematics of deciding well when you cannot have everything. It routed your parcel, staffed tonight&#39;s hospital shift, and priced your flight twice while you were looking at it — and it is the field quantum computing is most often accused of being about to revolutionise. This is a course in it, from the top.</p>
   <div class="fr-stats">
-    <div><b>15</b><span>topics, each built<br>picture → maths</span></div>
+    <div><b>17</b><span>topics, each built<br>picture → maths</span></div>
     <div><b>2</b><span>games where the<br>maths does the judging</span></div>
     <div><b>1937</b><span>the year it got its<br>name, at a radar station</span></div>
     <div><b>3</b><span>places it runs inside<br>a quantum computer</span></div>
@@ -151,7 +151,7 @@
 
 <p>So the honest order is: <strong>learn what the classical machinery does first.</strong> Then the quantum question becomes answerable instead of atmospheric. That is what this page is for, and why it sits beside the quantum material rather than inside it.</p>
 
-<h2 id="course"><span class="fr-secnum">The course</span>Fifteen topics, each taught four ways</h2>
+<h2 id="course"><span class="fr-secnum">The course</span>Seventeen topics, each taught four ways</h2>
 
 <div class="fr-toc">
   <h3>How each topic is built</h3>
@@ -172,11 +172,13 @@
     <li><a href="#t13">Cooperative games &amp; Shapley value<em>splitting credit fairly</em></a></li>
     <li><a href="#t14">Mechanism design &amp; auctions<em>designing the rules, not the play</em></a></li>
     <li><a href="#t15">Evolutionary game theory<em>when strategies breed</em></a></li>
+    <li><a href="#t16">The simplex algorithm<em>how you actually find the corner</em></a></li>
+    <li><a href="#t17">Quadratic &amp; semidefinite programming<em>the SDP bridge to Max-Cut</em></a></li>
   </ol>
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all fifteen</button>
+  <button type="button" id="fr-open">Open all seventeen</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -1337,6 +1339,203 @@ solving:  p* = V / C</code>
   </div>
 </details>
 
+<h2 id="more"><span class="fr-secnum">Added after the flagship</span>Two more from the classical core</h2>
+
+<p>These two belong earlier in the reading order — right after topic 02, where the vertex theorem promises a best corner exists but doesn&#39;t say how to find it. Topic 16 is that algorithm. Topic 17 is what happens once the objective is allowed to curve, ending at the exact classical result — Goemans&ndash;Williamson&#39;s semidefinite relaxation of Max-Cut — that QAOA on the quantum side has to beat. They are appended here, after the flagship, rather than renumbered into the middle of a page every link on this site already points into.</p>
+
+<!-- ================= 16 ================= -->
+<details class="mod" id="t16">
+  <summary>
+    <span class="mod-n">16</span>
+    <span class="mod-t">The simplex algorithm</span>
+    <span class="mod-q">How do you actually find the best corner?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 620 400" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A five-sided feasible region. Arrows trace the simplex method's actual path: from the origin to the corner at four, zero, worth sixteen, then to four, two, worth twenty-two, then to two point five, five, worth twenty-five, where it stops because no neighbouring corner scores higher.">
+          <g stroke="var(--border)" stroke-width="1" opacity=".3">
+            <path d="M165 88 V340 M250 88 V340 M335 88 V340 M420 88 V340 M505 88 V340"/>
+            <path d="M80 298 H530 M80 256 H530 M80 214 H530 M80 172 H530 M80 130 H530"/>
+          </g>
+          <polygon points="80,340 420,340 420,256 292.5,130 80,130" fill="rgba(245,158,11,.15)" stroke="var(--or)" stroke-width="2.5"/>
+          <path d="M420 340 V88" class="sMut" stroke-width="2" stroke-dasharray="6 4"/>
+          <path d="M80 130 H530" class="sMut" stroke-width="2" stroke-dasharray="6 4"/>
+          <path d="M526 361 L229 67" class="sMut" stroke-width="2" stroke-dasharray="6 4"/>
+          <text class="lbl-s" x="428" y="102">x ≤ 4</text>
+          <text class="lbl-s" x="428" y="116">machine A</text>
+          <text class="lbl-s" x="380" y="122">y ≤ 5 — machine B</text>
+          <text class="lbl-s" x="352" y="205">2x + y ≤ 10</text>
+          <text class="lbl-s" x="352" y="219">material</text>
+
+          <path d="M80 340 L420 340" class="sOr" stroke-width="3.5" marker-end="url(#fa16)"/>
+          <path d="M420 340 L420 256" class="sOr" stroke-width="3.5" marker-end="url(#fa16)"/>
+          <path d="M420 256 L292.5 130" class="sOr" stroke-width="3.5" marker-end="url(#fa16)"/>
+          <defs><marker id="fa16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--or)"/></marker></defs>
+
+          <circle cx="80" cy="340" r="7" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
+          <text class="lbl-b or" x="92" y="336">start: (0, 0)</text>
+          <text class="lbl-s" x="92" y="352">objective = 0</text>
+
+          <circle cx="420" cy="340" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
+          <text class="lbl-s or" x="428" y="330">(4, 0) → 16</text>
+
+          <circle cx="420" cy="256" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
+          <text class="lbl-s or" x="428" y="250">(4, 2) → 22</text>
+
+          <circle cx="292.5" cy="130" r="8" fill="var(--or)" stroke="var(--bg)" stroke-width="2.5"/>
+          <text class="lbl-b or" x="225" y="112">STOP — (2.5, 5) → 25</text>
+          <text class="lbl-s" x="225" y="126">no neighbour scores higher</text>
+
+          <circle cx="80" cy="130" r="6" fill="var(--muted)"/>
+          <text class="lbl-s" x="26" y="120" text-anchor="end">(0, 5) → 15</text>
+          <text class="lbl-s" x="26" y="134" text-anchor="end">never visited</text>
+
+          <path d="M80 88 V340 H530" fill="none" stroke="var(--border)" stroke-width="2"/>
+          <g class="lbl-s" text-anchor="middle">
+            <text x="80" y="356">0</text><text x="165" y="356">1</text><text x="250" y="356">2</text>
+            <text x="335" y="356">3</text><text x="420" y="356">4</text><text x="505" y="356">5</text>
+          </g>
+          <text class="lbl-b" x="300" y="380" text-anchor="middle">units of product A</text>
+          <text class="lbl-b" x="26" y="214" text-anchor="middle" transform="rotate(-90 26 214)">units of product B</text>
+        </svg></div>
+        <figcaption><strong>A fresh instance, walked rather than just solved: maximise 4x + 3y subject to x ≤ 4, y ≤ 5, 2x + y ≤ 10.</strong> Five vertices, checked here both by direct enumeration and by an independent LP solver: (0,0) → 0, (4,0) → 16, (4,2) → 22, (2.5,5) → 25, (0,5) → 15. Starting at the origin, simplex always steps to the best-looking improving neighbour — here (4,0), then (4,2), then (2.5,5) — and stops the instant no neighbour scores higher. It never visits (0,5), and it does not need to: three pivots against five candidate corners.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Topic 02 proved something remarkable and then left a practical question hanging: the best plan is always at a corner, so you never have to search the infinite interior. But a feasible region can still have an enormous number of corners. Which ones do you actually visit?</p>
+      <p>Dantzig&#39;s answer — developed in 1947 while he was at the Pentagon and later at RAND, and written up in full in <em>Linear Programming and Extensions</em> (Princeton University Press, 1963) — is the simplex method, and it is almost insultingly simple once stated plainly: <strong>start at any vertex. Look at every neighbouring vertex — one along each edge. If any neighbour scores better, move to the best-looking one. If none does, stop.</strong> You are provably at the optimum, because topic 02&#39;s own convexity argument already ruled out anything better hiding elsewhere. That is the whole algorithm. Everything else — representing a vertex as a &quot;basic feasible solution&quot;, choosing which improving neighbour to try, avoiding a degenerate vertex that loops back on itself — is bookkeeping around that one idea.</p>
+      <p>The figure above walks a real instance three pivots deep: origin → (4,0) → (4,2) → (2.5,5), stopping the moment the next neighbour, (0,5), would score worse. Three moves against five vertices is not much of a saving on a toy example. The saving is that, in practice, the number of pivots needed grows nowhere near as fast as the number of vertices does — which is exactly the complexity story the mathematics below has to tell honestly, because it is not always true.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>Maintain a basic feasible solution — a vertex, expressed as which variables (decision plus slack) are currently &quot;basic&quot;. At each iteration, compute the <strong>reduced cost</strong> of every non-basic variable: how much the objective would improve per unit if that variable entered the basis. Dantzig&#39;s original rule enters the variable with the most attractive reduced cost; a ratio test then finds which basic variable must leave to keep the solution feasible, and pivoting swaps the two:</p>
+      <code class="eq">enter:  the non-basic variable with the best reduced cost
+leave:  arg min over rows i with a_ij &gt; 0 of  b_i / a_ij      (the ratio test)
+stop:   when no reduced cost is still improving — that is the certificate</code>
+      <p><strong>Worst case: exponential, and provably so.</strong> Klee &amp; Minty, &quot;How Good is the Simplex Algorithm?&quot;, in <em>Inequalities III</em> (O. Shisha, ed.), Academic Press (1972), pp. 159&ndash;175, built a family of feasible regions — a mildly skewed n-dimensional cube — on which the standard largest-coefficient pivot rule visits <em>every one</em> of the 2ⁿ vertices before stopping. This is not a claim taken on faith here: re-running the classic n = 3 instance directly confirms it — starting from the origin, the rule takes exactly 7 pivots to reach all 8 vertices of the cube in turn, the objective climbing 0 → 20 → 30 → 50 → 75 → 95 → 105 → 125, never once revisiting a vertex or finding a shortcut. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>And yet simplex is, empirically, one of the fastest algorithms known for typical linear programs — solving instances with millions of variables in seconds. That gap between the proven worst case and lived reality went unexplained for three decades, until Spielman &amp; Teng, &quot;Smoothed Analysis of Algorithms: Why the Simplex Algorithm Usually Takes Polynomial Time,&quot; <em>Journal of the ACM</em> 51(3) (2004), 385&ndash;463: perturb any input instance by a small amount of random noise, and simplex&#39;s <em>expected</em> running time is polynomial in the input size and the inverse of the perturbation size. Pathological instances like the Klee&ndash;Minty cube turn out to be fragile, not typical — nudge them slightly and the exponential behaviour disappears. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>Note what this settles and what it doesn&#39;t. It does not contradict Klee&ndash;Minty — that cube is still there, and an adversary who knows your pivot rule can still build one on purpose. It explains why nobody runs into one by accident. Topic 02 already noted that linear programming <em>as a decision problem</em> is in P via Khachiyan&#39;s ellipsoid method and Karmarkar&#39;s interior-point method; smoothed analysis is the separate, later result explaining why the much older, and in practice much faster, simplex method was never really the outlier its worst case suggested.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Still inside the solver, decades after being &quot;obsoleted&quot;</span>
+      Interior-point methods (Karmarkar, 1984, and the barrier methods descended from it — topic 17 below builds on exactly that machinery) are usually the faster choice for solving one enormous linear program from a cold start. But branch and bound (topic 05) does not solve one LP — it solves thousands of closely related LPs, each just one added constraint away from the last, and needs an answer to each quickly. That is a warm-start problem, and it is where simplex, specifically its dual variant, still wins decisively: it can resume from a previous solution and restore feasibility in a handful of pivots, where a standard interior-point method has no equivalent warm start and effectively begins again. That is a structural reason rather than a single benchmark number, and it is honestly why commercial mixed-integer solvers still run (dual) simplex at every node of the search tree even when they reach for interior-point methods to solve the very first relaxation.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t02">Where this began: why the answer is at a corner ▸</a>
+      <a href="#t17">Next: when the objective learns to curve ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 17 ================= -->
+<details class="mod" id="t17">
+  <summary>
+    <span class="mod-n">17</span>
+    <span class="mod-t">Quadratic &amp; semidefinite programming</span>
+    <span class="mod-q">What does a quantum computer actually have to beat?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Three points forming a triangle, all pairwise connected. Their relaxed representation is three unit vectors at exactly one hundred twenty degrees to each other. A horizontal line through the centre, a random hyperplane, separates one vector from the other two, cutting two of the three edges -- the true optimum.">
+          <circle cx="190" cy="160" r="100" fill="none" stroke="var(--border)" stroke-width="1.5" opacity=".5"/>
+          <path d="M190 60 L103.4 210 L276.6 210 Z" fill="none" class="sMut" stroke-width="2"/>
+          <path d="M190 160 L190 60"     class="sTl" stroke-width="3" marker-end="url(#fa17v)"/>
+          <path d="M190 160 L103.4 210" class="sTl" stroke-width="3" marker-end="url(#fa17v)"/>
+          <path d="M190 160 L276.6 210" class="sTl" stroke-width="3" marker-end="url(#fa17v)"/>
+          <defs><marker id="fa17v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/></marker></defs>
+          <path d="M60 160 H320" class="sOr" stroke-width="2.5" stroke-dasharray="7 5"/>
+          <text class="lbl-s or" x="325" y="164">the random hyperplane</text>
+          <circle cx="190" cy="60"  r="6" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+          <circle cx="103.4" cy="210" r="6" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+          <circle cx="276.6" cy="210" r="6" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+          <text class="lbl-b tl" x="190" y="42" text-anchor="middle">A</text>
+          <text class="lbl-b tl" x="80" y="222" text-anchor="middle">B</text>
+          <text class="lbl-b tl" x="300" y="222" text-anchor="middle">C</text>
+          <text class="lbl-s or" x="146" y="118" text-anchor="middle">A–B: cut ✓</text>
+          <text class="lbl-s or" x="234" y="118" text-anchor="middle">A–C: cut ✓</text>
+          <text class="lbl-s" x="190" y="230" text-anchor="middle">B–C: not cut</text>
+          <g class="lbl-s" text-anchor="start">
+            <text x="360" y="60">Three points, all linked — the triangle graph K₃.</text>
+            <text x="360" y="80">Every pair of relaxed vectors sits at exactly 120°.</text>
+            <text x="360" y="108" class="lbl-b or">SDP relaxation value: 2.25</text>
+            <text x="360" y="126">a triangle can never cut more than 2 of its 3 edges,</text>
+            <text x="360" y="142">so 2.25 is provably unreachable by any real cut.</text>
+            <text x="360" y="168" class="lbl-b">This hyperplane: cuts A–B and A–C, not B–C → 2</text>
+            <text x="360" y="184">— the true integral optimum, reached by one random line.</text>
+            <text x="360" y="210" class="lbl-b tl">20,000 random hyperplanes, on average: 8/9 ≈ 0.889 of 2.25</text>
+            <text x="360" y="228">— comfortably above Goemans–Williamson&#39;s proven floor of 0.878567.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>The smallest odd cycle there is, solved three ways and cross-checked against each.</strong> Relaxing each ±1 spin to a unit vector and solving the semidefinite program exactly (cvxpy, Clarabel solver) places the three vectors at exactly 120° and gives 2.25 — matching the known closed form 9/4 for the triangle. Brute force over all 8 assignments gives the true optimum of 2. A single random hyperplane recovers that 2 directly; averaged over 20,000 random hyperplanes, the expected cut is 8/9 ≈ 0.889 of 2.25 on this instance, above the 0.878567 worst-case guarantee proved below.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Linear programming keeps the objective flat — a straight trade-off between variables. <strong>Quadratic programming (QP)</strong> lets it curve: minimise or maximise a quadratic function of the variables, still subject to linear constraints. Portfolio construction is the standard example — risk enters as a quadratic form (variance), return enters linearly, and Markowitz&#39;s 1952 mean-variance framework is exactly this shape.</p>
+      <p>Whether the curve is a bowl or a saddle decides everything. A convex quadratic — one whose quadratic form never bends the &quot;wrong way&quot;, technically positive semidefinite — is still efficiently solvable, by the same interior-point machinery topic 16 just introduced for linear programs. The moment the quadratic form has even one direction that curves downward instead, the nice structure is gone and the problem becomes NP-hard: not harder in some cases, but provably hard in general, with the line between zero such directions and one being the entire boundary.</p>
+      <p><strong>Semidefinite programming (SDP)</strong> is the next rung up the same ladder: instead of optimising over a vector of numbers, optimise a linear function over the cone of positive-semidefinite <em>matrices</em>. The chain is genuinely nested — LP ⊂ QP ⊂ SDP, each strictly more expressive than the last, and every one of them convex and solvable in polynomial time. What SDP buys is the ability to take a problem that is discrete and NP-hard, relax it into something continuous and convex, solve that exactly, and round the continuous answer back down with a provable guarantee on how much is lost. Doing exactly that to Max-Cut is one of the most celebrated results in the field — and the reason this topic ends up mattering to quantum computing.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>A quadratic program in standard form, and the line that decides its complexity:</p>
+      <code class="eq">minimise   ½xᵀQx + cᵀx
+s.t.       Ax ≤ b
+
+convex (poly-time solvable)  ⟺  Q positive semidefinite
+Q has even one negative eigenvalue  ⟹  NP-hard</code>
+      <p>Sahni, &quot;Computationally Related Problems,&quot; <em>SIAM Journal on Computing</em> 3 (1974), 262&ndash;279, first showed hardness for a fully negative-definite Q. Pardalos &amp; Vavasis, &quot;Quadratic Programming with One Negative Eigenvalue is NP-hard,&quot; <em>Journal of Global Optimization</em> 1 (1991), 15&ndash;22, sharpened it to the tightest possible statement: a <em>single</em> negative eigenvalue already suffices. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>A semidefinite program, in standard form — X an n×n symmetric matrix, ⟨·,·⟩ the trace inner product, X ⪰ 0 meaning positive semidefinite:</p>
+      <code class="eq">maximise   ⟨C, X⟩
+s.t.       ⟨Aᵢ, X⟩ = bᵢ   for i = 1..m
+           X ⪰ 0</code>
+      <p>Linear programming is the special case where X is forced diagonal; relax that one restriction and LP becomes SDP.</p>
+      <p><strong>The centrepiece, and the reason this topic sits on the OR/quantum boundary:</strong> Goemans &amp; Williamson, &quot;Improved Approximation Algorithms for Maximum Cut and Satisfiability Problems Using Semidefinite Programming,&quot; <em>Journal of the ACM</em> 42(6) (1995), 1115&ndash;1145. Max-Cut — partition a graph&#39;s vertices into two sets to maximise the edges crossing between them — is NP-hard (one of Karp&#39;s original 21, topic 04). Relax each vertex&#39;s ±1 label to a unit vector yᵢ, and relax the objective the same way:</p>
+      <code class="eq">maximise  ½ Σ_(i,j)∈E w_ij (1 − yᵢ·yⱼ)     over unit vectors y₁,…,yₙ
+        = maximise  ½ Σ w_ij (1 − Yᵢⱼ)      over Y ⪰ 0, diag(Y) = 1</code>
+      <p>— an SDP, solvable exactly in polynomial time. Then round: draw a uniformly random hyperplane through the origin (a random unit vector r) and put each vertex on the side given by the sign of yᵢ·r. For two vectors at angle θᵢⱼ, the chance a random hyperplane separates them is exactly θᵢⱼ/π, so the rounded cut&#39;s expected value is Σ w_ij·θᵢⱼ/π. Comparing that, edge by edge, to the SDP&#39;s own contribution ½(1 − cos θᵢⱼ) gives a ratio that depends only on θ:</p>
+      <code class="eq">(θ/π) ÷ ½(1 − cos θ)  =  (2/π)·θ/(1 − cos θ)</code>
+      <p>Minimised — independently confirmed here by direct numerical minimisation over θ — at θ ≈ 2.331122 rad (about 133.6°), giving α_GW ≈ <strong>0.878567</strong>. Since every edge contributes at least this fraction of its SDP share, so does the whole cut:</p>
+      <code class="eq">E[cut value]  ≥  α_GW · SDP_OPT  ≥  α_GW · OPT       α_GW ≈ 0.878567</code>
+      <p><span class="orbadge">⟦Proven⟧</span> — unconditional, and the best worst-case ratio then known for any polynomial-time Max-Cut algorithm. The triangle in the figure shows the relaxation&#39;s slack directly: SDP value 2.25 against a true optimum of 2, an integrality gap confirmed here against the closed form 9/4, not just asserted.</p>
+      <p>Is 0.878567 the best <em>any</em> efficient algorithm could ever do, not just this specific rounding scheme? Conditionally, yes: Khot, Kindler, Mossel &amp; O&#39;Donnell, &quot;Optimal Inapproximability Results for MAX-CUT and Other 2-Variable CSPs?&quot;, <em>SIAM Journal on Computing</em> 37(1) (2007), 319&ndash;357, show that beating α_GW + ε for any ε &gt; 0 is NP-hard <em>assuming the Unique Games Conjecture</em> — a widely credited but still unproven hardness assumption. Unlike the Goemans&ndash;Williamson guarantee itself, this optimality claim is conditional on an open conjecture and is reported here as such, with no ⟦Proven⟧ badge attached.</p>
+      <p><strong>This is the number a quantum optimiser has to clear.</strong> QAOA, the Quantum Approximate Optimization Algorithm (Farhi, Goldstone &amp; Gutmann, arXiv:1411.4028, 2014), was introduced on exactly this problem, and its own authors&#39; analysis is the first honest data point: on 3-regular graphs, QAOA at its shallowest depth (p=1) is guaranteed at least ≈0.6924 of the optimal cut — a bound that is tight on triangle-free graphs — below 0.878567, not above it. A companion negative result at the next depth, Marwaha, &quot;Local Classical MAX-CUT Algorithm Outperforms p=2 QAOA on High-Girth Regular Graphs,&quot; <em>Quantum</em> 5, 437 (2021), shows that a simple classical local algorithm matches or beats QAOA at depth p=2 on high-girth regular graphs — the locally tree-like family a bounded-depth quantum circuit is naturally analysed on, since a depth-p QAOA circuit only ever sees a p-hop neighbourhood of each node. Deeper circuits narrow the gap on some graph families; whether they cross 0.878567 on instances anyone actually needs solved is genuinely open, and this page will not assert more than that.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Combinatorial optimisation, exactly this way</span>
+      Max-Cut and Max-SAT are the two problems Goemans and Williamson&#39;s own 1995 paper targets directly — the same NP-hard territory topic 10&#39;s metaheuristics search <em>without</em> a certificate, using a different tool (an exact convex relaxation with a proven worst-case ratio, not a heuristic search) — and SDP relaxations of this style are now the standard rigorous approach across a wide family of NP-hard combinatorial problems, wherever a certified approximation ratio is worth more than an exact answer nobody can compute in time.</p>
+      <p><span class="where">And on the quantum side of this page</span>
+      The bridges section below names this pairing directly. Goemans&ndash;Williamson&#39;s SDP is the classical benchmark every quantum Max-Cut claim is implicitly being measured against, whether the paper making the claim says so or not.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t16">Previous: the algorithm that walks the corners ▸</a>
+      <a href="#bridges">The fifth bridge — SDP vs. QAOA ▸</a>
+    </div>
+  </div>
+</details>
+
 <h2 id="play"><span class="fr-secnum">Play</span>Two games where the mathematics does the judging</h2>
 
 <p>Neither can be won by feel. Both were built the way everything else here is: the answer was computed offline in exact arithmetic first, and the game only ever reports what that arithmetic says. Par is a proven number in both, but it means different things: in The Bottleneck it is the best score reachable, found by enumerating every purchase sequence, so you can hit it. In The Prune it is a <strong>floor</strong> — the count of branches that no strategy on earth could safely skip — and on the larger levels it is provably out of reach, which is why those levels are cleared against a measured target instead.</p>
@@ -1376,7 +1575,7 @@ solving:  p* = V / C</code>
 
 <p>This is the honest shape of nearly every quantum-optimisation claim you will read: true on an instance small enough that you did not need a quantum computer, and untested at the size where you would.</p>
 
-<h2 id="bridges"><span class="fr-secnum">The overlap</span>Where this touches quantum computing — four real bridges</h2>
+<h2 id="bridges"><span class="fr-secnum">The overlap</span>Where this touches quantum computing — five real bridges</h2>
 
 <p>These are not analogies. Each is a place where the same mathematics is load-bearing on both sides.</p>
 
@@ -1400,6 +1599,11 @@ solving:  p* = V / C</code>
     <h3>Security games <span class="orbadge">⟦Proven⟧ vocabulary</span></h3>
     <p>Every post-quantum security proof on this site is stated as a game between a challenger and an adversary — exactly topic 12&#39;s minimax framing, used in earnest. &quot;Secure&quot; means no adversary&#39;s winning probability can be pushed above a negligible bound, whatever strategy they run.</p>
     <a href="pqc.html">See it on the PQC pages →</a>
+  </div>
+  <div class="card">
+    <h3>SDP vs. QAOA <span class="orbadge">⟦Proven⟧ bound, one side</span></h3>
+    <p>The sharpest bridge of the five, because it is a head-to-head. Goemans&ndash;Williamson&#39;s SDP relaxation of Max-Cut (topic 17) proves an unconditional 0.878567 for a classical polynomial-time algorithm. QAOA was introduced on the same problem, and at its shallowest depth its own authors&#39; bound sits below that number, not above it — with a later result showing a simple classical algorithm still matching or beating it one depth up. This is the honest, checkable version of &quot;can quantum beat classical at optimisation&quot;, not the atmospheric one.</p>
+    <a href="#t17">See it worked through — topic 17 →</a>
   </div>
 </div>
 
@@ -1478,7 +1682,7 @@ solving:  p* = V / C</code>
       "name": "How does operations research connect to quantum computing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Through four concrete bridges. First, QUBO and Ising formulations (Lucas, 2014) are the format quantum annealers and QAOA actually consume, so every quantum optimisation claim passes through them. Second, simulated annealing is the classical metaheuristic that quantum annealing imitates, and is the baseline any quantum claim must beat. Third, decoding the surface code in real time is solved as minimum-weight perfect matching using Edmonds' blossom algorithm from 1965 — an operations research algorithm running as a component inside a quantum computer. Fourth, post-quantum security proofs are stated as games between a challenger and an adversary, the same minimax vocabulary game theory formalised for zero-sum games."
+        "text": "Through five concrete bridges. First, QUBO and Ising formulations (Lucas, 2014) are the format quantum annealers and QAOA actually consume, so every quantum optimisation claim passes through them. Second, simulated annealing is the classical metaheuristic that quantum annealing imitates, and is the baseline any quantum claim must beat. Third, decoding the surface code in real time is solved as minimum-weight perfect matching using Edmonds' blossom algorithm from 1965 — an operations research algorithm running as a component inside a quantum computer. Fourth, post-quantum security proofs are stated as games between a challenger and an adversary, the same minimax vocabulary game theory formalised for zero-sum games. Fifth, Goemans-Williamson's semidefinite relaxation of Max-Cut proves an unconditional 0.878567 for a classical algorithm, which is the number QAOA has to beat and, on the evidence verified for this page, has not yet beaten on general instances."
       }
     },
     {
@@ -1498,7 +1702,7 @@ solving:  p* = V / C</code>
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "The Feasible Region — operations research from the top",
-  "description": "A fifteen-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
+  "description": "A seventeen-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
   "provider": { "@type": "Organization", "name": "SymbiQ" },
   "hasCourseInstance": {
     "@type": "CourseInstance",
@@ -1508,7 +1712,9 @@ solving:  p* = V / C</code>
   "about": ["Operations research", "Linear programming", "Integer programming", "Duality",
             "Branch and bound", "Network flow", "Matching", "Dynamic programming",
             "Queueing theory", "Metaheuristics", "Game theory", "Nash equilibrium",
-            "Shapley value", "Mechanism design", "Evolutionary game theory"]
+            "Shapley value", "Mechanism design", "Evolutionary game theory",
+            "Simplex algorithm", "Quadratic programming", "Semidefinite programming",
+            "Max-Cut", "Goemans-Williamson algorithm"]
 }
 </script>
 
@@ -1626,7 +1832,7 @@ solving:  p* = V / C</code>
 })();
 </script>
 
-<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. Found another? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
 </div>
 </body>
 </html>

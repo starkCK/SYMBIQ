@@ -36,7 +36,7 @@
       "headline": "What does post-quantum cryptography cost on the wire?",
       "author": {"@type": "Organization", "name": "SymbiQ"},
       "datePublished": "2026-08-06",
-      "dateModified": "2026-08-18",
+      "dateModified": "2026-08-20",
       "description": "Post-quantum TLS is not slower because the maths is slow. It is slower because the keys and signatures are large. Measure the real byte cost in your own browser, with real ML-KEM and ML-DSA keys."
     },
     {
@@ -77,7 +77,7 @@
 <script src="nav.js?v=5" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script type="module" src="pqc-tools.js?v=6"></script>
+<script type="module" src="pqc-tools.js?v=7"></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
    without a cache bump across all sixteen. */
@@ -312,6 +312,47 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 .pq-score .hud-score.warn { color: var(--yellow, #fbbf24); }
 .pq-score .hud-score.bad { color: var(--red); }
 @media (prefers-color-scheme: light) { .pq-score .hud-score.warn { color: #92400e; } }
+.pq-toprisk { font-size: .82rem; color: var(--muted); margin: 10px 2px 0; }
+.pq-toprisk b { color: inherit; }
+
+/* ── printable report — a PDF from a static site is print CSS plus
+   window.print(); every browser's own print dialog already lays it out. ── */
+#pq-printview { display: none; }
+@media print {
+  body.pq-printing > *:not(#pq-printview) { display: none !important; }
+  body.pq-printing #pq-printview { display: block !important; color: #000; background: #fff;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  #pq-printview h1 { font-size: 1.3rem; margin: 0 0 4px; }
+  #pq-printview h2 { font-size: 1rem; margin: 18px 0 6px; border-bottom: 1px solid #999; padding-bottom: 3px; }
+  #pq-printview .pp-meta { font-size: .8rem; color: #444; margin: 0 0 10px; }
+  #pq-printview table { width: 100%; border-collapse: collapse; font-size: .82rem; margin-bottom: 6px; }
+  #pq-printview th, #pq-printview td { text-align: left; padding: 4px 8px 4px 0; border-bottom: 1px solid #ccc; }
+  #pq-printview .pp-summary th { width: 170px; color: #444; font-weight: 600; }
+  #pq-printview .pp-note { font-size: .76rem; color: #555; margin-top: 14px; }
+  #pq-printview tr { page-break-inside: avoid; }
+}
+
+/* ── migration timeline ───────────────────────────────────────────────── */
+.tl-scroll { overflow-x: auto; margin: 10px 0; }
+.tl-svg { display: block; min-width: 560px; width: 100%; height: auto; }
+.tl-grid { stroke: rgba(255,255,255,.08); stroke-width: 1; }
+.tl-yrlabel { font-size: 9px; fill: var(--muted); }
+.tl-deadline { stroke: var(--yellow, #fbbf24); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.tl-dlabel { font-size: 9px; fill: var(--yellow, #fbbf24); font-weight: 600; }
+.tl-name { font-size: 10.5px; fill: var(--text); }
+.tl-bar { fill: var(--teal); background: var(--teal); }
+.tl-bar.tl-late { fill: var(--red); background: var(--red); }
+.tl-bar.tl-stuck { fill: var(--muted); background: var(--muted); opacity: .6; }
+.tl-qlabel { font-size: 9px; fill: var(--muted); }
+.tl-stucklabel { font-size: 9px; fill: var(--red); }
+.tl-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .74rem; color: var(--muted); margin-top: 6px; }
+.tl-item { display: inline-flex; align-items: center; gap: 6px; }
+.tl-sw { display: inline-block; width: 14px; height: 10px; border-radius: 3px; }
+@media (prefers-color-scheme: light) {
+  .tl-grid { stroke: rgba(15,23,42,.08); }
+  .tl-name, .tl-yrlabel, .tl-qlabel { fill: #334155; }
+  .tl-dlabel { fill: #92400e; }
+}
 
 /* ── compliance checklist ─────────────────────────────────────────────── */
 .pq-comp { list-style: none; margin: 12px 0 0; padding: 0; }
@@ -598,6 +639,12 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>A vendor asset is marked, not solved.</b> If you do not control it, your migration date is theirs. The tool schedules it because your exposure is real either way — but the lever is procurement, not engineering.</li>
 </ul>
 
+<h3>The migration, drawn as a timeline</h3>
+<p>The table above says which quarter each asset finishes; a planning meeting wants to see it. Same numbers — <code>assess()</code>, unchanged — as a bar per exposed asset, against the deadline you picked above.</p>
+<div class="card">
+  <div id="timeline-mount"><p class="sc-wait">Build a plan above to see it drawn here.</p></div>
+</div>
+
 <h3>Are you actually compliant?</h3>
 <p>The same plan, checked against <b>four dated lines</b> drawn from the instruments named at the bottom of this page. Nothing new is computed here — this is the sequencer's own <code>feasibility()</code> run once per date instead of once against whichever one you last clicked above. <b>Read the four as dates, not as a roll-call of instruments:</b> Executive Order 14412 contributes two of them, 2030 is also CNSA 2.0's exclusive-use date for signing and networking and the EU roadmap's high-risk date, and 2035 comes from a NIST report that is still a draft. The EU roadmap's end-of-2026 milestone is deliberately absent — it asks you to <em>have an inventory</em>, which is <a href="#inventory">the tool above</a>, not a migration this scheduler can pass or fail.</p>
 <div class="card">
@@ -667,7 +714,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>Its timings are ceilings, and the ratios travel better than the absolutes.</b> This is portable JavaScript on one main thread; a server runs native, vectorised code and is substantially quicker. The classical baseline is worse still as a comparison — WebCrypto is native code behind a promise, so it carries scheduling overhead the post-quantum rows do not, while they carry interpreter overhead it does not. Both distortions are printed next to the table rather than averaged away.</li>
 </ul>
 
-<p><em>Verification status: the page's original four instruments (Size Cliff, Inventory, Sequencer, Odds) cleared a fresh-session hostile-referee pass 2026-08-06 (<a href="corrections.html">one confirmed error found and fixed</a>). The Harvest Clock was verified with a full Python sweep of the slider domain plus an independent in-browser reimplementation. The Proof is new — verified against the byte lengths fixed by FIPS 203/204/205, 25 consecutive encapsulate/decapsulate agreements, 40 tamper trials measuring the rejection-path avalanche, and its five accept/reject checks driven across five message shapes including empty, Unicode and 5 KB inputs. <b>A fresh-session hostile-referee pass ran 2026-08-14 over the compliance checklist and the four regulatory instruments above</b>, and found three real errors, all now fixed: NIST IR 8547 was cited as a settled requirement when it is still an initial public draft; CNSA 2.0's exclusive-use date was given as 2033 when signing and networking are due in 2030; and this checklist was described as testing four instruments when it tests four dates drawn from three. All three were caught before launch, so by <a href="corrections.html">this site's own rule</a> they are editing rather than corrections — that log counts what a reader catches once we are live. <b>Still carrying referee debt of their own:</b> The Proof, the Harvest Clock, Quick Check, the scorecard and the domain lookup.</em></p>
+<p><em>Verification status: the page's original four instruments (Size Cliff, Inventory, Sequencer, Odds) cleared a fresh-session hostile-referee pass 2026-08-06 (<a href="corrections.html">one confirmed error found and fixed</a>). The Harvest Clock was verified with a full Python sweep of the slider domain plus an independent in-browser reimplementation. The Proof is new — verified against the byte lengths fixed by FIPS 203/204/205, 25 consecutive encapsulate/decapsulate agreements, 40 tamper trials measuring the rejection-path avalanche, and its five accept/reject checks driven across five message shapes including empty, Unicode and 5 KB inputs. <b>A fresh-session hostile-referee pass ran 2026-08-14 over the compliance checklist and the four regulatory instruments above</b>, and found three real errors, all now fixed: NIST IR 8547 was cited as a settled requirement when it is still an initial public draft; CNSA 2.0's exclusive-use date was given as 2033 when signing and networking are due in 2030; and this checklist was described as testing four instruments when it tests four dates drawn from three. All three were caught before launch, so by <a href="corrections.html">this site's own rule</a> they are editing rather than corrections — that log counts what a reader catches once we are live. <b>Still carrying referee debt of their own:</b> The Proof, the Harvest Clock, Quick Check, the scorecard and the domain lookup. <b>2026-08-20:</b> four additions — the compliance stat and top-exposed line on the scorecard, a shareable plan link (URL-encoded, still nothing sent to a server), a print/PDF report, and the migration timeline. The timeline's only new arithmetic is a per-asset start quarter added to the scheduler; verified against the unmodified scheduler over 4,000 random estates (<code>tools/verify_pqc_timeline.py</code>, 0 regressions, 0 invariant failures) before shipping. All four are self-verified only — not yet a fresh-session hostile-referee pass.</em></p>
 
 <p class="tagline" style="margin-top:26px">Found an error on this page? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>, and the correction runs louder than the original.</p>
 
@@ -684,6 +731,29 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
     var S = window.SymbiQ || {};
     var saved = (S.pqPersist && S.pqPersist.read()) || {};
 
+    // A shared link (?plan=...) outranks localStorage — someone who clicked
+    // a link sent to them wants THAT plan, not whatever this browser had
+    // saved from a previous, unrelated visit. Falls through silently to the
+    // normal restore/example behaviour on any decode failure.
+    var restoreOpts = { restore: saved.estate };
+    try {
+      var sharedPlan = new URLSearchParams(location.search).get('plan');
+      if (sharedPlan && S.estate && S.estate.decodeShare) {
+        var decoded = S.estate.decodeShare(sharedPlan);
+        if (decoded) {
+          restoreOpts = { restore: decoded, restoreSource: 'shared' };
+          // Strip ?plan= once it has done its job. Otherwise editing the
+          // restored plan and refreshing would silently reload the ORIGINAL
+          // shared snapshot every time, discarding the edits -- the query
+          // param would permanently outrank whatever this browser has since
+          // saved to localStorage.
+          if (window.history && history.replaceState) {
+            history.replaceState(null, '', location.pathname + location.hash);
+          }
+        }
+      }
+    } catch (e) {}
+
     var clHost = document.getElementById('cliff-mount');
     if (S.sizecliff && clHost) {
       try { S.sizecliff.mount(clHost, { kex: 'x25519', sig: 'p256', depth: 2, scts: true }); }
@@ -697,7 +767,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
      * loader that does not exist yet. Each mount is independently guarded: no
      * one tool can take another down. */
     var eHost = document.getElementById('estate-mount');
-    if (S.estate && eHost) { try { S.estate.mount(eHost, { restore: saved.estate }); } catch (e) {} }
+    if (S.estate && eHost) { try { S.estate.mount(eHost, restoreOpts); } catch (e) {} }
 
     // Persist the live plan on real edits only -- estate.subscribe() replays
     // the state synchronously the moment it is called, and that first replay
@@ -779,6 +849,9 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
     // The Odds subscribes to the Sequencer rather than taking a hand-off, so
     // mount order relative to it never matters -- it will replay the current
     // plan the moment it mounts, and every future edit after that.
+    var tlHost = document.getElementById('timeline-mount');
+    if (S.timeline && tlHost) { try { S.timeline.mount(tlHost); } catch (e) {} }
+
     var oHost = document.getElementById('odds-mount');
     if (S.odds && oHost) { try { S.odds.mount(oHost, {}); } catch (e) {} }
 

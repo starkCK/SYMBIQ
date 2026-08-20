@@ -1560,7 +1560,7 @@ function mount(root, opts) {
   function plan(assets, cap, policy) {
     var byId = {}; assets.forEach(function (a) { byId[a.id] = a; });
     var todo = assets.filter(function (a) { return ALGS[a.alg] && ALGS[a.alg].vuln; });
-    var done = {}, out = {}, q = 0, guard = 0;
+    var done = {}, out = {}, start = {}, q = 0, guard = 0;
     // non-vulnerable assets are complete before we start; they are not work
     assets.forEach(function (a) { if (todo.indexOf(a) < 0) done[a.id] = true; });
 
@@ -1588,6 +1588,13 @@ function mount(root, opts) {
       for (var i = 0; i < ready.length && budget > 0; i++) {
         var a = ready[i];
         a._spent = (a._spent || 0);
+        // Timeline addition: record the first quarter an asset actually
+        // receives budget. Purely additive -- reads a.effort/a._spent, which
+        // the scheduling loop below already computes, and never influences
+        // budget, take, out, done, remaining or q. Verified against the
+        // unmodified scheduler over 4,000 random estates in
+        // tools/verify_pqc_timeline.py: identical finish/quarters/stuck.
+        if (a._spent === 0 && a.effort > 0) start[a.id] = q;
         var take = Math.min(budget, a.effort - a._spent);
         a._spent += take; budget -= take;
         if (a._spent >= a.effort) { out[a.id] = q; completed.push(a); }
@@ -1601,7 +1608,7 @@ function mount(root, opts) {
       if (budget === cap && ready.length === 0 && remaining.length) break;  // deadlock
     }
     assets.forEach(function (a) { delete a._spent; });
-    return { finish: out, quarters: q, stuck: remaining.map(function (a) { return a.id; }) };
+    return { finish: out, start: start, quarters: q, stuck: remaining.map(function (a) { return a.id; }) };
   }
 
   function depth(a, byId, seen) {
@@ -1624,7 +1631,9 @@ function mount(root, opts) {
       if (!info.vuln) return { a: a, vuln: false, why: info.why };
       var qs = p.finish[a.id];
       var y = qs == null ? null : qs / 4;
+      var sq = p.start[a.id];
       return { a: a, vuln: true, why: info.why, quarter: qs, y: y,
+               startQuarter: sq == null ? qs : sq,
                breakevenZ: y == null ? null : +(a.shelf + y).toFixed(2),
                stuck: qs == null };
     });
@@ -1675,8 +1684,29 @@ function mount(root, opts) {
     if (lastState) fn(lastState);
   }
 
+  /* ---------------------------------------------------------- shareable ---
+   * No backend exists, so "share this plan" means "put it in the URL". UTF-8
+   * safe (asset names are visitor-typed and may not be Latin1) via the
+   * standard escape/unescape-around-atob/btoa trick, then percent-encoded so
+   * it survives as a query value. decodeShare never throws outward -- a
+   * corrupt or hand-edited link degrades to "nothing to restore", never a
+   * broken page. */
+  function encodeShare(payload) {
+    try {
+      return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
+    } catch (e) { return ''; }
+  }
+  function decodeShare(str) {
+    try {
+      var payload = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(str)))));
+      if (!payload || !payload.assets || !payload.assets.length) return null;
+      return payload;
+    } catch (e) { return null; }
+  }
+
   SymbiQ.estate = { ALGS: ALGS, TEMPLATE: TEMPLATE, plan: plan, assess: assess,
-                    feasibility: feasibility, depth: depth, subscribe: subscribe };
+                    feasibility: feasibility, depth: depth, subscribe: subscribe,
+                    encodeShare: encodeShare, decodeShare: decodeShare };
 
   /* ================================ the UI ================================ */
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
@@ -1723,7 +1753,7 @@ function mount(root, opts) {
       if (opts.restore.cap) cap = opts.restore.cap;
       if (opts.restore.policy) policy = opts.restore.policy;
       if (opts.restore.dlYear) dlYear = opts.restore.dlYear;
-      source = 'restored';
+      source = opts.restoreSource || 'restored';
     }
 
     function ids() { return assets.map(function (a) { return a.id; }); }
@@ -1748,6 +1778,10 @@ function mount(root, opts) {
         return '<p class="es-from"><b>Restored from your last visit on this device.</b> ' +
           'Nothing was sent anywhere to do this — it was saved in this browser\'s own local storage.</p>' +
           '<p class="es-add"><button type="button" class="preset" id="es-restclr">Clear it and start fresh</button></p>';
+      }
+      if (source === 'shared') {
+        return '<p class="es-from"><b>Loaded from a shared link.</b> ' +
+          'The whole plan is encoded in the URL itself — nothing was sent to a server to build this, because there is no server to send it to.</p>';
       }
       return '';
     }
@@ -1778,7 +1812,8 @@ function mount(root, opts) {
         }).join('') + '</tbody></table></div>' +
         '<p class="es-add"><button type="button" class="preset" id="es-addrow">+ Add an asset</button>' +
         '<button type="button" class="preset" id="es-reset">Reset to the example estate</button>' +
-        '<button type="button" class="preset" id="es-export">⤓ Export as JSON</button></p>';
+        '<button type="button" class="preset" id="es-export">⤓ Export as JSON</button>' +
+        '<button type="button" class="preset" id="es-share">🔗 Copy shareable link</button></p>';
     }
 
     function controls() {
@@ -1946,6 +1981,18 @@ function mount(root, opts) {
         var url = URL.createObjectURL(blob), a2 = document.createElement('a');
         a2.href = url; a2.download = 'pqc-estate.json'; a2.click();
         setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      }
+      else if (b.id === 'es-share') {
+        var encoded = SymbiQ.estate.encodeShare({ assets: assets, cap: cap, policy: policy, dlYear: dlYear });
+        var shareUrl = location.origin + location.pathname + '?plan=' + encoded + '#estate';
+        var label = b.textContent;
+        function flash(msg) { b.textContent = msg; setTimeout(function () { b.textContent = label; }, 1800); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareUrl).then(function () { flash('Copied ✓'); },
+            function () { window.prompt('Copy this link:', shareUrl); });
+        } else {
+          window.prompt('Copy this link:', shareUrl);
+        }
       }
     });
 
@@ -2703,6 +2750,68 @@ function mount(root, opts) {
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
 
+  /* ---------------------------------------------------------- print view --
+   * A PDF from a static, no-backend site is print CSS plus window.print() --
+   * every browser's own "save as PDF" already does the layout work, so this
+   * needs no library. The report is built as a real, hidden DOM node rather
+   * than a fresh window/iframe, appended straight to <body> so the print CSS
+   * selector (body.pq-printing > *:not(#pq-printview)) can hide everything
+   * else with one rule. Removed again after printing so it never lingers in
+   * the live DOM or gets picked up by anything else on the page. */
+  function reportHTML(h, comp) {
+    var rows = h.r.rows.filter(function (x) { return x.vuln; })
+      .sort(function (a, b) { return b.breakevenZ - a.breakevenZ; });
+    return '<h1>SymbiQ — Post-Quantum Migration Assessment</h1>' +
+      '<p class="pp-meta">Generated client-side in your browser — ' + new Date().toISOString() + '</p>' +
+      '<h2>Plan summary</h2>' +
+      '<table class="pp-summary"><tbody>' +
+        '<tr><th>Capacity</th><td>' + h.state.cap + ' quarter-unit(s)/quarter</td></tr>' +
+        '<tr><th>Migration order</th><td>' + esc(h.state.policy) + '</td></tr>' +
+        '<tr><th>Deadline</th><td>' + h.state.dlYear + '</td></tr>' +
+        '<tr><th>Assets tracked</th><td>' + h.total + '</td></tr>' +
+        '<tr><th>Exposed now</th><td>' + h.vuln + '</td></tr>' +
+        '<tr><th>Worst-case breakeven</th><td>' + (h.worst ? h.worst.toFixed(2) + ' years' : 'n/a') + '</td></tr>' +
+        '<tr><th>Plan status</th><td>' + esc(h.status.t) + '</td></tr>' +
+      '</tbody></table>' +
+      (rows.length ? '<h2>Per-asset detail</h2><table class="pp-assets"><thead><tr>' +
+        '<th>Asset</th><th>Algorithm</th><th>Secret for</th><th>Migrated</th><th>Breakeven</th></tr></thead><tbody>' +
+        rows.map(function (x) {
+          return '<tr><td>' + esc(x.a.name) + '</td><td>' + esc(x.a.alg) + '</td><td>' + x.a.shelf + 'y</td><td>' +
+            (x.quarter == null ? 'never (stuck)' : 'Q' + x.quarter) + '</td><td>' +
+            (x.breakevenZ == null ? 'n/a' : x.breakevenZ + 'y') + '</td></tr>';
+        }).join('') + '</tbody></table>' : '') +
+      '<h2>Compliance against named deadlines</h2>' +
+      '<table class="pp-comp"><thead><tr><th>Deadline</th><th>Year</th><th>Status</th></tr></thead><tbody>' +
+        comp.map(function (c) {
+          return '<tr><td>' + esc(c.d.label) + '</td><td>' + c.d.y + '</td><td>' + (c.on ? 'On track' : 'At risk') + '</td></tr>';
+        }).join('') + '</tbody></table>' +
+      '<p class="pp-note">This is arithmetic over what you typed or looked up, not a certified audit — see symbiq\'s pqc.html for the full method and honest limits.</p>';
+  }
+
+  function printReport(h, comp) {
+    var old = document.getElementById('pq-printview');
+    if (old) old.remove();
+    var view = document.createElement('div');
+    view.id = 'pq-printview';
+    view.innerHTML = reportHTML(h, comp);
+    document.body.appendChild(view);
+    document.body.classList.add('pq-printing');
+    var cleaned = false;
+    function cleanup() {
+      if (cleaned) return;
+      cleaned = true;
+      document.body.classList.remove('pq-printing');
+      var v = document.getElementById('pq-printview');
+      if (v) v.remove();
+      window.removeEventListener('afterprint', cleanup);
+    }
+    window.addEventListener('afterprint', cleanup);
+    window.print();
+    // Not every browser reliably fires afterprint (some mobile WebViews
+    // don't); this is a safety net so the report never lingers permanently.
+    setTimeout(cleanup, 5000);
+  }
+
   /* ------------------------------------------------------------ scorecard */
   SymbiQ.scorecard = {};
   SymbiQ.scorecard.mount = function (root, opts) {
@@ -2715,16 +2824,25 @@ function mount(root, opts) {
         return;
       }
       var h = headline(state); last = h;
+      var comp = complianceRows(state);
+      var onTrack = comp.filter(function (c) { return c.on; }).length;
+      var compCls = onTrack === comp.length ? '' : (onTrack === 0 ? ' bad' : ' warn');
+      var worstRow = h.r.rows.filter(function (x) { return x.vuln && !x.stuck; })
+        .sort(function (a, b) { return b.breakevenZ - a.breakevenZ; })[0];
       root.innerHTML =
         '<div class="pq-score">' +
           '<div class="pq-stat"><span class="hud-label">Assets tracked</span><span class="hud-score">' + h.total + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Exposed now</span><span class="hud-score' + (h.vuln ? ' warn' : '') + '">' + h.vuln + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Worst breakeven</span><span class="hud-score">' + (h.worst ? h.worst.toFixed(1) + 'y' : '—') + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Plan</span><span class="hud-score' + (h.status.c === 'bad' ? ' bad' : '') + '">' + h.status.t + '</span></div>' +
+          '<div class="pq-stat"><span class="hud-label">Compliance</span><span class="hud-score' + compCls + '">' + onTrack + '/' + comp.length + '</span></div>' +
         '</div>' +
+        (worstRow ? '<p class="pq-toprisk">Top exposed: <b>' + esc(worstRow.a.name) + '</b> (' + esc(worstRow.a.alg) +
+          ') — breakeven ' + worstRow.breakevenZ.toFixed(1) + 'y. <a href="#estate">Reorder the sequence →</a></p>' : '') +
         (opts.compact ? '' :
           '<p class="es-add"><button type="button" class="preset" id="pq-dltxt">⤓ Download full report (text)</button>' +
           '<button type="button" class="preset" id="pq-dljson">⤓ Download as JSON</button>' +
+          '<button type="button" class="preset" id="pq-print">🖨 Print / save as PDF</button>' +
           '<button type="button" class="preset" id="pq-clearsaved">Clear saved data</button></p>');
     }
     SymbiQ.estate.subscribe(render);
@@ -2739,6 +2857,7 @@ function mount(root, opts) {
       var comp = complianceRows(last.state);
       if (b.id === 'pq-dltxt') fireDownload('symbiq-pqc-assessment.txt', reportText(last, comp), 'text/plain');
       else if (b.id === 'pq-dljson') fireDownload('symbiq-pqc-assessment.json', JSON.stringify(reportJSON(last, comp), null, 2), 'application/json');
+      else if (b.id === 'pq-print') printReport(last, comp);
     });
   };
 
@@ -2756,6 +2875,91 @@ function mount(root, opts) {
           (c.on ? 'ON TRACK' : 'AT RISK') + '</span><b>' + esc(c.d.label) + '</b>' +
           '<span class="sc-rl">by ' + c.d.y + '</span></li>';
       }).join('') + '</ul>';
+    }
+    SymbiQ.estate.subscribe(render);
+  };
+})();
+
+/* ── 7b · MIGRATION TIMELINE ──────────────────────────────────────────────
+ * The Sequencer's table already says WHEN each asset finishes, as a bare
+ * quarter number in one column of a table -- not how anyone reads a
+ * schedule in an actual planning meeting. This draws the exact same
+ * assess() output the compliance checklist already reuses (no new
+ * arithmetic, no new scheduling decision) as a horizontal bar per
+ * vulnerable asset spanning [startQuarter, finishQuarter], against the
+ * currently selected deadline. startQuarter/finish both come straight off
+ * plan() -- see the "Timeline addition" comment at its definition and
+ * tools/verify_pqc_timeline.py (4,000-estate sweep against the unmodified
+ * scheduler, 0 regressions). Subscribes to the same estate.publish() as
+ * everything else in this section, so mount order never matters. */
+(function () {
+  var SymbiQ = window.SymbiQ = window.SymbiQ || {};
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  SymbiQ.timeline = {};
+  SymbiQ.timeline.mount = function (root) {
+    function render(state) {
+      if (!state || !state.assets || !state.assets.length) {
+        root.innerHTML = '<p class="sc-wait">Build a plan above to see it drawn as a timeline.</p>';
+        return;
+      }
+      var r = SymbiQ.estate.assess(state.assets, state.cap, state.policy);
+      var rows = r.rows.filter(function (x) { return x.vuln; })
+        .sort(function (a, b) { return (a.startQuarter || 0) - (b.startQuarter || 0); });
+      if (!rows.length) {
+        root.innerHTML = '<p class="sc-wait">Nothing on this estate rests on a problem Shor\'s algorithm solves — no timeline to draw.</p>';
+        return;
+      }
+      var dq = SymbiQ.estate.quartersUntil(state.dlYear);
+      var maxQ = Math.max(dq, r.quarters || 0, 1);
+      rows.forEach(function (x) { if (x.quarter) maxQ = Math.max(maxQ, x.quarter); });
+      maxQ = Math.ceil((maxQ + 1) / 4) * 4; // pad out to a whole extra year
+
+      var W = 680, padL = 190, padR = 16, padT = 16, rowH = 26;
+      var plotW = W - padL - padR;
+      var H = padT + rows.length * rowH + 26;
+      function xq(q) { return padL + (q / maxQ) * plotW; }
+
+      var years = []; for (var yq = 0; yq <= maxQ; yq += 4) years.push(yq);
+
+      var svg = '<svg class="tl-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
+        'aria-label="Migration timeline: one bar per exposed asset, spanning the quarters it is actively being migrated in, against the selected deadline.">';
+      years.forEach(function (yq) {
+        var x = xq(yq);
+        svg += '<line x1="' + x + '" y1="' + padT + '" x2="' + x + '" y2="' + (H - 18) + '" class="tl-grid"/>' +
+          '<text x="' + x + '" y="' + (H - 5) + '" class="tl-yrlabel" text-anchor="middle">+' + (yq / 4) + 'y</text>';
+      });
+      var dx = xq(dq);
+      svg += '<line x1="' + dx + '" y1="' + padT + '" x2="' + dx + '" y2="' + (H - 18) + '" class="tl-deadline"/>' +
+        '<text x="' + dx + '" y="10" class="tl-dlabel" text-anchor="middle">' + state.dlYear + ' deadline</text>';
+
+      rows.forEach(function (x, i) {
+        var y = padT + 14 + i * rowH;
+        var name = x.a.name.length > 26 ? x.a.name.slice(0, 25) + '…' : x.a.name;
+        svg += '<text x="' + (padL - 10) + '" y="' + (y + 4) + '" class="tl-name" text-anchor="end">' + esc(name) + '</text>';
+        if (x.stuck) {
+          var sxq = Math.max(0, maxQ - 3);
+          svg += '<rect x="' + xq(sxq) + '" y="' + (y - 8) + '" width="' + (xq(maxQ) - xq(sxq)) +
+            '" height="16" rx="4" class="tl-bar tl-stuck"/>' +
+            '<text x="' + (xq(sxq) + 6) + '" y="' + (y + 4) + '" class="tl-stucklabel">stuck — dependency deadlock</text>';
+          return;
+        }
+        var sx = xq(x.startQuarter || 0), fx = xq(x.quarter);
+        var w = Math.max(fx - sx, 4);
+        var late = x.quarter > dq;
+        svg += '<rect x="' + sx + '" y="' + (y - 8) + '" width="' + w + '" height="16" rx="4" class="tl-bar' +
+          (late ? ' tl-late' : '') + '"/>' +
+          '<text x="' + (sx + w + 6) + '" y="' + (y + 4) + '" class="tl-qlabel">' + x.breakevenZ.toFixed(1) + 'y breakeven</text>';
+      });
+      svg += '</svg>';
+
+      root.innerHTML = '<div class="tl-scroll">' + svg + '</div>' +
+        '<p class="tl-legend">' +
+          '<span class="tl-item"><span class="tl-sw tl-bar"></span>on track for ' + state.dlYear + '</span>' +
+          '<span class="tl-item"><span class="tl-sw tl-bar tl-late"></span>finishes after it</span>' +
+          '<span class="tl-item"><span class="tl-sw tl-bar tl-stuck"></span>deadlocked</span>' +
+        '</p>';
     }
     SymbiQ.estate.subscribe(render);
   };

@@ -754,6 +754,86 @@
       "tier": "r",
       "kind": "concept",
       "blurb": "The one basis pair in which any two-part quantum state collapses to a short matched list -- the honest, basis-independent measure of how entangled it is."
+    },
+    {
+      "id": "deutsch-algorithm",
+      "term": "Deutsch's algorithm",
+      "aliases": ["Deutsch algorithm", "phase kickback", "constant or balanced"],
+      "page": "formalism.html",
+      "anchor": "f08",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "One query settles whether a 1-bit function is constant or balanced, where a classical algorithm needs two -- the first proof of phase kickback plus interference."
+    },
+    {
+      "id": "deutsch-jozsa-algorithm",
+      "term": "Deutsch-Jozsa algorithm",
+      "aliases": ["Deutsch Jozsa", "DJ algorithm"],
+      "page": "formalism.html",
+      "anchor": "f09",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "One query beats an exponential classical worst case for the same constant-or-balanced promise, scaled to n bits -- an oracle separation, proven exactly."
+    },
+    {
+      "id": "simons-algorithm",
+      "term": "Simon's algorithm",
+      "aliases": ["Simon algorithm", "hidden period", "hidden subgroup problem"],
+      "page": "formalism.html",
+      "anchor": "f10",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Finds a function's secret XOR-period in O(n) queries against a classical birthday-bound floor of about root-2^n -- the direct forerunner of Shor's period-finding."
+    },
+    {
+      "id": "quantum-fourier-transform",
+      "term": "quantum Fourier transform",
+      "aliases": ["QFT", "Fourier transform quantum"],
+      "page": "formalism.html",
+      "anchor": "f11",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The classical discrete Fourier transform applied to a quantum superposition's amplitudes -- built from O(n^2) gates, exponentially fewer than the classical FFT needs."
+    },
+    {
+      "id": "phase-estimation",
+      "term": "quantum phase estimation",
+      "aliases": ["QPE", "phase estimation algorithm"],
+      "page": "formalism.html",
+      "anchor": "f12",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Reads out a unitary's eigenvalue to t bits of precision using t counting qubits, controlled powers of the unitary, and an inverse QFT."
+    },
+    {
+      "id": "period-finding-continued-fractions",
+      "term": "period finding via continued fractions",
+      "aliases": ["continued fraction algorithm", "Shor period finding", "modular period"],
+      "page": "formalism.html",
+      "anchor": "f13",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Turns phase estimation's measured decimal back into the exact period Shor's algorithm needs -- and, when the measured numerator shares a factor with the period, only a divisor of it, provably."
+    },
+    {
+      "id": "shannon-entropy",
+      "term": "Shannon entropy",
+      "aliases": ["information entropy", "classical entropy", "bits of uncertainty"],
+      "page": "formalism.html",
+      "anchor": "f14",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The expected number of bits needed to resolve a random outcome -- zero for a sure thing, log2(n) at most, achieved only by a uniform distribution over n outcomes."
+    },
+    {
+      "id": "von-neumann-entropy",
+      "term": "von Neumann entropy",
+      "aliases": ["quantum entropy", "entanglement entropy", "Holevo bound"],
+      "page": "formalism.html",
+      "anchor": "f15",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Shannon entropy applied to a density matrix's eigenvalues -- zero for any pure state, yet a pure whole can split into two individually maximally-uncertain halves, the number that quantifies entanglement itself."
     }
   ]
 }

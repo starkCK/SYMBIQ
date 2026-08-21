@@ -128,7 +128,7 @@
   <p class="fr-lede">Everything that is actually possible. Nothing that isn&#39;t.</p>
   <p class="fr-sub">Operations research is the mathematics of deciding well when you cannot have everything. It routed your parcel, staffed tonight&#39;s hospital shift, and priced your flight twice while you were looking at it — and it is the field quantum computing is most often accused of being about to revolutionise. This is a course in it, from the top.</p>
   <div class="fr-stats">
-    <div><b>19</b><span>topics, each built<br>picture → maths</span></div>
+    <div><b>20</b><span>topics, each built<br>picture → maths</span></div>
     <div><b>2</b><span>games where the<br>maths does the judging</span></div>
     <div><b>1937</b><span>the year it got its<br>name, at a radar station</span></div>
     <div><b>3</b><span>places it runs inside<br>a quantum computer</span></div>
@@ -152,7 +152,7 @@
 
 <p>So the honest order is: <strong>learn what the classical machinery does first.</strong> Then the quantum question becomes answerable instead of atmospheric. That is what this page is for, and why it sits beside the quantum material rather than inside it.</p>
 
-<h2 id="course"><span class="fr-secnum">The course</span>Nineteen topics, each taught four ways</h2>
+<h2 id="course"><span class="fr-secnum">The course</span>Twenty topics, each taught four ways</h2>
 
 <div class="fr-toc">
   <h3>How each topic is built</h3>
@@ -181,7 +181,7 @@
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all nineteen</button>
+  <button type="button" id="fr-open">Open all twenty</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -189,7 +189,7 @@
 
 <div class="mod-progress-wrap" id="mod-progress-wrap">
   <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
-  <span id="mod-progress-label">Your progress: 0 of 19 understood</span>
+  <span id="mod-progress-label">Your progress: 0 of 20 understood</span>
 </div>
 
 <!-- ================= 01 ================= -->
@@ -809,7 +809,7 @@ s.t.      Σⱼ xᵢⱼ = 1     every worker gets exactly one job
 d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
       <p>Solve it and you get every distance at once. Three standard ways, each with a different assumption:</p>
       <p><strong>Dijkstra (1959)</strong>, O(E + V log V) with a Fibonacci heap — O((V + E) log V) with an ordinary binary one, which is what most implementations actually use — requires all weights ≥ 0. It settles nodes in increasing distance order, which is only valid if edges cannot reduce a distance you have already finalised. <strong>Bellman–Ford</strong>, O(VE), tolerates negative weights and detects negative cycles — if a distance is still improving after V−1 passes, a negative cycle exists. <strong>Floyd–Warshall</strong>, O(V³), gives all pairs at once in three nested loops. <span class="orbadge">⟦Proven⟧</span></p>
-      <p>The reach of this idea is much wider than roads. The same recursion is <strong>Viterbi decoding</strong> in communications, <strong>sequence alignment</strong> in genomics, optimal inventory policy in supply chains, and — with an expectation where the min is — the <strong>Bellman optimality equation</strong> at the heart of reinforcement learning. Q-learning is this equation solved by sampling. The bridge from operations research into modern AI runs directly through this box.</p>
+      <p>The reach of this idea is much wider than roads. The same recursion is <strong>Viterbi decoding</strong> in communications, <strong>sequence alignment</strong> in genomics, optimal inventory policy in supply chains, and — with an expectation where the min is — the <strong>Bellman optimality equation</strong> at the heart of <a href="#t20">reinforcement learning</a>. Q-learning is this equation solved by sampling. The bridge from operations research into modern AI runs directly through this box.</p>
     </div>
 
     <div class="layer real">
@@ -1729,6 +1729,107 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
 
     <div class="mod-out">
       <a href="#t18">Previous: the transportation problem ▸</a>
+      <a href="#t20">Next: what if the edge you choose isn&#39;t the edge you get? ▸</a>
+    </div>
+  </div>
+</details>
+
+<h2 id="modc"><span class="fr-secnum">Module C, completed</span>One more: what to do when your own actions aren&#39;t certain</h2>
+
+<p>Topic 08 solved the shortest path through a network under a quiet assumption: choosing an edge means taking it. Topic 20 removes that assumption and reuses the exact same S&ndash;A&ndash;B&ndash;C&ndash;D network to do it, because that is precisely the gap topic 08&#39;s own closing line pointed at &mdash; &quot;the Bellman optimality equation, with an expectation where the min is.&quot; This is that expectation, made precise.</p>
+
+<!-- ================= 20 ================= -->
+<details class="mod" id="t20">
+  <summary>
+    <span class="mod-n">20</span>
+    <span class="mod-t">Markov decision processes &amp; reinforcement learning</span>
+    <span class="mod-q">What if the edge you choose isn&#39;t the edge you get?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="The same S-A-B-C-D road network from topic 08, now a Markov decision process: at S, A and B, the action you take succeeds 80 percent of the time and slips onto the state's other outgoing edge 20 percent of the time; C has only one outgoing edge, so no choice and no slip. Solving the resulting Bellman optimality equation exactly gives the same route as topic 08, S to A to B to C to D, but with expected cost 9.384, worse than topic 08's guaranteed 8, because the environment no longer promises to obey the chosen action.">
+          <g class="sMut" stroke-width="2" fill="none">
+            <path d="M78 100 L172 50"/><path d="M78 108 L242 152"/>
+            <path d="M198 60 L232 132"/><path d="M208 46 L342 62"/>
+            <path d="M268 146 L342 80"/><path d="M270 158 L412 152"/>
+          </g>
+          <path d="M78 100 L172 50"  class="sOr" stroke-width="3.5" fill="none"/>
+          <path d="M198 60 L232 132" class="sOr" stroke-width="3.5" fill="none"/>
+          <path d="M268 146 L342 80" class="sOr" stroke-width="3.5" fill="none"/>
+          <path d="M368 78 L412 136" class="sOr" stroke-width="3.5" fill="none"/>
+          <g>
+            <circle cx="60"  cy="104" r="19" fill="var(--panel)" stroke="var(--or)" stroke-width="2.5"/>
+            <circle cx="188" cy="45"  r="17" fill="var(--panel)" stroke="var(--or)" stroke-width="2"/>
+            <circle cx="252" cy="145" r="17" fill="var(--panel)" stroke="var(--or)" stroke-width="2"/>
+            <circle cx="356" cy="68"  r="17" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="426" cy="148" r="19" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+          </g>
+          <g class="lbl-b" text-anchor="middle">
+            <text x="60" y="109">S</text><text x="188" y="50">A</text><text x="252" y="150">B</text>
+            <text x="356" y="73">C</text><text x="426" y="153">D</text>
+          </g>
+          <g class="lbl-s">
+            <text x="116" y="66">2</text><text x="150" y="140">5</text><text x="204" y="104">1</text>
+            <text x="272" y="42">7</text><text x="308" y="102">3</text><text x="330" y="168">8</text>
+            <text x="398" y="104">2</text>
+          </g>
+          <g class="lbl-s">
+            <text x="460" y="26" class="lbl-b or">At S, A, B — each action:</text>
+            <text x="460" y="44">80% arrives as chosen</text>
+            <text x="460" y="60">20% slips to the other edge</text>
+            <text x="460" y="80">C has one road out — no choice, no slip</text>
+
+            <text x="460" y="112" class="lbl-b">Solved exactly (backward induction,</text>
+            <text x="460" y="128" class="lbl-b">cross-checked by value iteration):</text>
+            <text x="460" y="150">V*(S) = &minus;9.384    &pi;*(S) &rarr; A</text>
+            <text x="460" y="166">V*(A) = &minus;7.080    &pi;*(A) &rarr; B</text>
+            <text x="460" y="182">V*(B) = &minus;5.600    &pi;*(B) &rarr; C</text>
+            <text x="460" y="198">V*(C) = &minus;2.000    &pi;*(C) &rarr; D</text>
+
+            <text x="460" y="228" class="lbl-b or">Same route as topic 08: S&rarr;A&rarr;B&rarr;C&rarr;D.</text>
+            <text x="460" y="246">Topic 08&#39;s guaranteed cost: 8.</text>
+            <text x="460" y="262" style="fill:var(--red)">This policy&#39;s expected cost: 9.384.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>Same map, same optimal route — a different, honest number attached to it.</strong> Every edge now succeeds 80% of the time and slips onto its sibling edge 20% of the time (C, with only one road out, has nothing to slip to). Solving the Bellman optimality equation exactly still recommends S&rarr;A&rarr;B&rarr;C&rarr;D, topic 08&#39;s own route — but its true expected cost is <b>9.384</b>, not <b>8</b>, because &quot;optimal&quot; now means best <em>on average</em>, not best <em>guaranteed</em>.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Topic 08&#39;s whole method rested on one quiet assumption: pick the cheapest edge out of a node, and you get that edge. A <strong>Markov decision process (MDP)</strong> is what is left of the shortest-path problem once that assumption is removed. You still choose an <strong>action</strong> at every <strong>state</strong>. The world still responds with a reward and a next state. But the next state is now drawn from a probability distribution over what your action makes <em>likely</em>, not a guarantee of what it makes <em>certain</em> &mdash; and &quot;Markov&quot; is the name for the specific, useful restriction that this distribution depends only on the current state and action, never on the path taken to reach them.</p>
+      <p>This is exactly the gap topic 08 named on its way out the door: the same recursion, &quot;with an expectation where the min is.&quot; Where topic 08 asked <em>which edge is cheapest</em>, an MDP asks <em>which action has the best cheapest-in-expectation outcome</em>, averaged honestly over everything that action might actually cause.</p>
+      <p>Solving an MDP still assumes you are handed the model &mdash; every transition probability, every reward, known in advance, exactly like topic 08&#39;s road network was simply given. <strong>Reinforcement learning (RL)</strong> is what happens when that assumption goes too: no one hands you the probabilities or the rewards. You are dropped at S with nothing but the ability to try an action, observe what state you land in and what reward you got, and try again. The &quot;R&quot; in RL is the same reward as the Bellman equation&#39;s; &quot;learning&quot; means estimating that equation&#39;s answer from lived samples instead of computing it from a model you were never given.</p>
+      <p>That is the whole distinction this topic exists to draw: <strong>planning</strong> is solving the Bellman equation when you know the world (value iteration, and topic 08&#39;s Dijkstra/Bellman&ndash;Ford before it); <strong>learning</strong> is solving it when you don&#39;t (Q-learning, below). Same equation, different amount of information handed to you before you start.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>An MDP is a tuple (S, A, P, R, &gamma;): states S, actions A, transition probabilities P(s&#39;|s,a), a reward R(s,a,s&#39;), and a discount factor &gamma; &isin; (0,1] weighting future reward against immediate reward. The <strong>Bellman optimality equation</strong> topic 08 forward-referenced, written in full:</p>
+      <code class="eq">V*(s) = max over actions a of  Σ P(s&#39;|s,a) · [ R(s,a,s&#39;) + γ·V*(s&#39;) ]
+                                    s&#39;</code>
+      <p>Topic 08&#39;s equation is this one&#39;s special case: deterministic transitions collapse the sum to a single term, and minimising cost is maximising negative cost, so &quot;min&quot; and &quot;max&quot; are the same instruction in different units. <strong>Value iteration</strong> (Bellman, <em>Dynamic Programming</em>, Princeton University Press, 1957) applies this equation as an update rule from an arbitrary starting guess and repeats it; for &gamma; &lt; 1 it is a contraction mapping in the max-norm, so the Banach fixed-point theorem guarantees convergence to the unique V* regardless of where it starts. This particular network needs no discounting or iteration at all to solve exactly &mdash; every edge moves strictly S &lt; A &lt; B &lt; C &lt; D, so it is a finite, acyclic decision chain, and one backward pass from D gives the exact answer in the figure above. Value iteration was run anyway, from a starting guess of &minus;999 at every state, and converged to that identical fixed point &mdash; the same V* and the same policy, from nowhere close to it. <span class="orbadge">⟦Proven⟧</span></p>
+      <p>Notice what did <em>not</em> change: the optimal <em>policy</em> is still S&rarr;A&rarr;B&rarr;C&rarr;D, topic 08&#39;s exact route, because it stays cheap enough that a 20% chance of a costlier detour still beats the alternative in expectation. What changed is the <em>value</em> &mdash; 9.384 in expectation, not a guaranteed 8 &mdash; which is the entire content of adding uncertainty: the best available action can stay the same while what you should honestly expect from it gets worse.</p>
+      <p><strong>Q-learning</strong> (Watkins &amp; Dayan, &quot;Q-learning,&quot; <em>Machine Learning</em> 8, 279&ndash;292 (1992)) solves the same equation without ever being given P or R: Q(s,a) &larr; Q(s,a) + &alpha;[r + &gamma;·max<sub>a&#39;</sub> Q(s&#39;,a&#39;) &minus; Q(s,a)], updated after every real (or simulated) step, using only the reward and next state actually observed. Watkins &amp; Dayan proved convergence to Q* with probability 1 given every state&ndash;action pair visited infinitely often and a step size &alpha; satisfying the standard Robbins&ndash;Monro conditions. Run here for 200,000 sampled episodes against the identical stochastic network, never once given the 0.8/0.2 slip probabilities or the edge weights as numbers to plan with &mdash; only reward-and-next-state pairs from actually stepping through it &mdash; Q-learning recovered the exact optimal action at every one of the four decision states, with its value estimates within 0.044 of the true V* computed above (against a typical magnitude near 9.4, under 0.5% off). Verification script: <code>tools/verify_or4_mdp_rl.py</code> (desk repo).</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">And on the quantum side of this page</span>
+      A superconducting qubit drifts &mdash; its resonance frequency, its gate timings, the parameters a calibration pass tuned yesterday &mdash; and for years the standard fix has been to stop the machine and recalibrate from scratch. Baum, Amico, Howell, Hush, Liuzzi, Mundada, Merkh, Carvalho &amp; Biercuk (Q-CTRL), &quot;Experimental Deep Reinforcement Learning for Error-Robust Gate-Set Design on a Superconducting Quantum Computer,&quot; <em>PRX Quantum</em> 2, 040324 (2021), <a href="https://arxiv.org/abs/2105.01079">arXiv 2105.01079</a>, trained an RL agent directly against a real superconducting chip &mdash; no Hamiltonian model of the device supplied &mdash; to design an RX(&pi;/2) single-qubit gate and a ZX(&minus;&pi;/2) two-qubit gate robust to the chip&#39;s own error processes. It is exactly this page&#39;s state/action/reward loop, with the environment being real hardware instead of a simulated road network.</p>
+      <p><span class="where">And the machine already named on this site&#39;s QEC page</span>
+      Sivak, Morvan et al. (Google Quantum AI &amp; Google DeepMind), &quot;Reinforcement Learning Control of Quantum Error Correction,&quot; <a href="https://arxiv.org/abs/2511.08493">arXiv 2511.08493</a> (<em>Nature</em>, 2026), ran an RL agent on the same <a href="qec.html#red">Willow processor</a> already cited on this site&#39;s QEC page &mdash; but instead of stopping the machine to recalibrate, it repurposed the surface code&#39;s own error-detection events (already being produced every cycle, for decoding) as the reward signal, and let the agent steer control parameters <em>during</em> computation. Measured result: 3.5&times; more stable logical error rate under injected drift, and a new record logical error per cycle of 7.72(9)&times;10&#8722;&sup4; for the surface code and 8.19(14)&times;10&#8722;&sup3; for the color code. Simulations scaling to tens of thousands of control parameters showed the same optimisation speed regardless of system size &mdash; evidence this is a control loop, not a one-chip trick.</p>
+      <p>Neither paper claims the RL agent discovered a new algorithm or a smarter circuit &mdash; both are steering knobs on hardware whose job was already fixed, which is exactly the anti-hype line <a href="ai.html">this site&#39;s own AI&harr;Q page</a> draws everywhere else: AI reading and correcting a quantum machine&#39;s noise is real and shipping now; AI redesigning what the machine computes is a different, much less settled claim.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t08">Where the equation first appeared: dynamic programming ▸</a>
+      <a href="#t19">Previous: constraint satisfaction ▸</a>
       <a href="#bridges">The QUBO/Ising bridge — where CSP meets quantum annealing ▸</a>
     </div>
   </div>
@@ -1900,7 +2001,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "The Feasible Region — operations research from the top",
-  "description": "A nineteen-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
+  "description": "A twenty-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
   "provider": { "@type": "Organization", "name": "SymbiQ" },
   "hasCourseInstance": {
     "@type": "CourseInstance",
@@ -2036,7 +2137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. <strong>Topics 18–19, added 2026-08-21:</strong> the transportation instance (2 sources, 3 destinations, optimum 240 against a northwest-corner plan of 300) was checked by exhaustive integer search cross-checked against scipy's LP relaxation, and the total unimodularity claim was checked directly by computing all 461 square submatrices of the instance's 5×6 constraint matrix; the Australia map-colouring assignment was checked against all nine adjacency constraints, and the AC-3 arc-consistency pruning (Northern Territory's and South Australia's domains shrinking from three colours to two once Western Australia is fixed) was produced by a real AC-3 implementation, not asserted — the verification code lives in <code>tools/verify_transportation_csp.py</code>. Every citation on those two topics — Hitchcock 1941, Koopmans 1949, the 1975 Nobel Memorial Prize to Koopmans and Kantorovich, Camm et al. 1997, Cook 1971, Schaefer 1978, Feder &amp; Vardi 1998, Bulatov 2017, Zhuk 2017, Mackworth 1977, Chaitin et al. 1981 — was checked against a primary or bibliographic source before use. <strong>A fresh-session hostile-referee pass ran 2026-08-21</strong> and re-derived both worked examples by hand (matching the script exactly), independently fetched the Bulatov and Zhuk FOCS 2017 proceedings PDFs directly rather than trusting a search summary (confirming pages 319–330 and 331–342), and confirmed every other citation, badge and cross-reference — one finding, fixed: a sentence cited graph k-colourability&#39;s NP-hardness to &quot;topic 04&#39;s Karp-1972 list,&quot; but topic 04 only invokes Karp 1972 for 0–1 integer programming and never discusses colouring — the underlying fact was true, the attribution wasn&#39;t. Now cited to Karp 1972 directly, with the misattribution named rather than quietly smoothed over. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. <strong>Topics 18–19, added 2026-08-21:</strong> the transportation instance (2 sources, 3 destinations, optimum 240 against a northwest-corner plan of 300) was checked by exhaustive integer search cross-checked against scipy's LP relaxation, and the total unimodularity claim was checked directly by computing all 461 square submatrices of the instance's 5×6 constraint matrix; the Australia map-colouring assignment was checked against all nine adjacency constraints, and the AC-3 arc-consistency pruning (Northern Territory's and South Australia's domains shrinking from three colours to two once Western Australia is fixed) was produced by a real AC-3 implementation, not asserted — the verification code lives in <code>tools/verify_transportation_csp.py</code>. Every citation on those two topics — Hitchcock 1941, Koopmans 1949, the 1975 Nobel Memorial Prize to Koopmans and Kantorovich, Camm et al. 1997, Cook 1971, Schaefer 1978, Feder &amp; Vardi 1998, Bulatov 2017, Zhuk 2017, Mackworth 1977, Chaitin et al. 1981 — was checked against a primary or bibliographic source before use. <strong>A fresh-session hostile-referee pass ran 2026-08-21</strong> and re-derived both worked examples by hand (matching the script exactly), independently fetched the Bulatov and Zhuk FOCS 2017 proceedings PDFs directly rather than trusting a search summary (confirming pages 319–330 and 331–342), and confirmed every other citation, badge and cross-reference — one finding, fixed: a sentence cited graph k-colourability&#39;s NP-hardness to &quot;topic 04&#39;s Karp-1972 list,&quot; but topic 04 only invokes Karp 1972 for 0–1 integer programming and never discusses colouring — the underlying fact was true, the attribution wasn&#39;t. Now cited to Karp 1972 directly, with the misattribution named rather than quietly smoothed over. <strong>Topic 20, added 2026-08-21:</strong> the S–A–B–C–D Markov decision process was solved three independent ways and cross-checked against each other — exact backward induction, generic value iteration run from a deliberately wrong starting guess (converged to the identical fixed point), and 200,000 episodes of tabular Q-learning that never saw the transition probabilities or edge weights directly, only sampled rewards and next states, and still recovered the exact optimal action at all four decision states with its values within 0.044 of the true V*; with the slip probability set to zero the same code collapses to topic 08's own deterministic answer of 8, exactly. Verification code: <code>tools/verify_or4_mdp_rl.py</code> (desk repo). Citations — Bellman 1957, Watkins &amp; Dayan 1992, Baum et al. (Q-CTRL) 2021, Sivak/Morvan et al. (Google Quantum AI/DeepMind) 2026 — were checked against the arXiv preprints and journal records directly rather than a search summary; this topic has not yet had a fresh-session hostile-referee pass. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
 </div>
 </body>
 </html>

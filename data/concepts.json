@@ -934,6 +934,16 @@
       "tier": "r",
       "kind": "concept",
       "blurb": "Shannon entropy applied to a density matrix's eigenvalues -- zero for any pure state, yet a pure whole can split into two individually maximally-uncertain halves, the number that quantifies entanglement itself."
+    },
+    {
+      "id": "markov-decision-processes",
+      "term": "Markov decision processes & reinforcement learning",
+      "aliases": ["MDP", "Markov decision process", "reinforcement learning", "RL", "Q-learning", "value iteration"],
+      "page": "feasible.html",
+      "anchor": "t20",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The Bellman equation once the world stops guaranteeing your action lands where you aimed it -- and what changes when nobody hands you the transition probabilities at all."
     }
   ]
 }

@@ -677,7 +677,7 @@
     {
       "id": "simulated-annealing",
       "term": "simulated annealing",
-      "aliases": ["annealing", "cooling schedule", "quantum annealing"],
+      "aliases": ["annealing", "cooling schedule"],
       "page": "play.html",
       "anchor": "volcano",
       "tier": "y",
@@ -974,6 +974,56 @@
       "tier": "y",
       "kind": "concept",
       "blurb": "Uses quantum measurement disturbance (BB84, B92) or Bell-inequality violation (Ekert91) to let two parties detect an eavesdropper directly -- real physics, flown on China's Micius satellite, and not a substitute for the classical/post-quantum cryptography this page's tools actually measure."
+    },
+    {
+      "id": "quantum-annealing",
+      "term": "quantum annealing",
+      "aliases": ["adiabatic quantum computation", "adiabatic quantum computing", "D-Wave", "adiabatic evolution"],
+      "page": "compare.html",
+      "anchor": "annealing",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "Physical hardware that deforms a system toward a problem's Ising-model ground state instead of applying gates -- real and commercially built by D-Wave since 2011, but solves exactly one problem shape and is not a universal quantum computer."
+    },
+    {
+      "id": "measurement-based-quantum-computing",
+      "term": "measurement-based quantum computing",
+      "aliases": ["one-way quantum computer", "one-way quantum computing", "cluster state", "MBQC", "fusion-based quantum computing"],
+      "page": "compare.html",
+      "anchor": "mbqc",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "Compute by measuring a fixed, pre-entangled cluster state one qubit at a time, adapting each basis choice to earlier outcomes -- no gate ever applied after the state is built, and the model closest to how a photonic machine actually wants to compute."
+    },
+    {
+      "id": "continuous-variable-quantum-computing",
+      "term": "continuous-variable quantum computing",
+      "aliases": ["CV quantum computing", "qumode", "qumodes", "Gaussian boson sampling"],
+      "page": "compare.html",
+      "anchor": "cv",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "Encodes information in a continuous quantity -- a light mode's amplitude and phase -- instead of a discrete qubit; the architecture behind both Jiuzhang's and Xanadu Borealis's headline photonic advantage claims."
+    },
+    {
+      "id": "quantum-repeaters",
+      "term": "quantum networking & repeaters",
+      "aliases": ["quantum repeater", "quantum repeaters", "quantum internet"],
+      "page": "compare.html",
+      "anchor": "networking",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "The chain-of-purified-hops fix for the fact that an unknown quantum state can't be amplified like a classical signal -- proposed in 1998, still mostly lab-scale (a real three-node network exists), and the reason a satellite sidesteps the whole problem for one specific link."
+    },
+    {
+      "id": "nisq-quantum-advantage",
+      "term": "NISQ & quantum advantage experiments",
+      "aliases": ["NISQ", "quantum supremacy", "quantum advantage", "random circuit sampling", "Sycamore"],
+      "page": "compare.html",
+      "anchor": "nisq",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "Noisy Intermediate-Scale Quantum, the era the field is actually in -- and the still-unsettled tug-of-war between Google's 2019 Sycamore claim and classical simulations that have matched, lost to, and matched it again since."
     }
   ]
 }

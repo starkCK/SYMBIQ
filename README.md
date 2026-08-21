@@ -2,7 +2,7 @@
 
 **Two broken geniuses, fixing each other.**
 
-AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop — daily, at three levels, as a game.
+AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop — at three levels, as a game.
 
 Live at **https://starkck.github.io/symbiq/**
 
@@ -37,7 +37,7 @@ Found an error? That pays the biggest reward we offer — see the [Corrections](
 
 | | |
 |---|---|
-| `index.html` | Home, plus the Daily Question |
+| `index.html` | Home, plus The Question |
 | `journey.html` | **The Solver's Path** — the narrative game: map, missions, mentors, saved progress |
 | `play.html` | **The Arcade** — the same five games, free play, no story |
 | `basics · concepts · deep` | The three tiers |

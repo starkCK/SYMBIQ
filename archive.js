@@ -1,9 +1,9 @@
-/* SymbiQ — the Daily Question archive, defined once and mounted anywhere.
+/* SymbiQ — The Question archive, defined once and mounted anywhere.
  *
  *   SymbiQ.archive.mount(el, { limit, open })
  *
  * Used by archive.html (the full back catalogue) and by index.html, where it
- * sits collapsed inside the Daily Question card.
+ * sits collapsed inside The Question card.
  *
  * WHY IT IS ON THE HOMEPAGE: the archive existed from 2026-07-29 but was
  * reachable only from inside the Lattice overlay. A reader standing on the

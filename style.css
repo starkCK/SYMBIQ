@@ -1173,7 +1173,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   .lv, .crate, .orprog i { transition: none; }
 }
 
-/* Previous questions, inside the Daily Question card. The archive existed but
+/* Previous questions, inside The Question card. The archive existed but
    was only reachable from the Lattice overlay, so from the homepage the
    questions still appeared to vanish (reported 2026-07-30). */
 .dq-prev { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }

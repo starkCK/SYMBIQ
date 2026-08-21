@@ -260,7 +260,7 @@ else:
     ok("reveal: not hand-written in any page")
 
 # 7. data/today.json ------------------------------------------------------
-# The homepage Daily Question reads this file. It is rewritten every day by the
+# The homepage Question reads this file. It is rewritten every day by the
 # content pipeline, which makes it the most frequently-changed file on the site
 # and the easiest one to break -- and a malformed feed silently kills the single
 # mechanic the operating plan calls sacred. Validate it like an API payload.
@@ -319,7 +319,7 @@ else:
             import datetime
             age = (datetime.date.today() - datetime.date.fromisoformat(d)).days
             if age > 2:
-                warn("today.json", f"the daily question is {age} days old "
+                warn("today.json", f"the question feed is {age} days old "
                                    f"(dated {d}) -- the feed has gone stale")
         except Exception:
             pass

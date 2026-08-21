@@ -2829,6 +2829,14 @@ function mount(root, opts) {
       var compCls = onTrack === comp.length ? '' : (onTrack === 0 ? ' bad' : ' warn');
       var worstRow = h.r.rows.filter(function (x) { return x.vuln && !x.stuck; })
         .sort(function (a, b) { return b.breakevenZ - a.breakevenZ; })[0];
+      // A deadlocked asset has no breakeven at all (it never finishes), so it
+      // can never be `worstRow` -- worstRow only ranks assets that DO have a
+      // number. Left alone, the one-line summary below could name a 9-year
+      // breakeven as "top exposed" while a worse, unscheduled deadlock sits
+      // silently behind it (surfaced only in the small "Plan" stat). Lead
+      // with the deadlock instead when one exists -- it is strictly more
+      // urgent than any finite breakeven, since it never resolves at all.
+      var stuckRows = h.r.rows.filter(function (x) { return x.vuln && x.stuck; });
       root.innerHTML =
         '<div class="pq-score">' +
           '<div class="pq-stat"><span class="hud-label">Assets tracked</span><span class="hud-score">' + h.total + '</span></div>' +
@@ -2837,6 +2845,9 @@ function mount(root, opts) {
           '<div class="pq-stat"><span class="hud-label">Plan</span><span class="hud-score' + (h.status.c === 'bad' ? ' bad' : '') + '">' + h.status.t + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Compliance</span><span class="hud-score' + compCls + '">' + onTrack + '/' + comp.length + '</span></div>' +
         '</div>' +
+        (stuckRows.length ? '<p class="pq-toprisk bad"><b>' + stuckRows.length + ' asset' + (stuckRows.length === 1 ? '' : 's') +
+          ' cannot be scheduled at all</b> — a dependency deadlock (' + stuckRows.map(function (x) { return esc(x.a.name); }).join(', ') +
+          '), not a distant breakeven. <a href="#estate">Fix the sequence →</a></p>' : '') +
         (worstRow ? '<p class="pq-toprisk">Top exposed: <b>' + esc(worstRow.a.name) + '</b> (' + esc(worstRow.a.alg) +
           ') — breakeven ' + worstRow.breakevenZ.toFixed(1) + 'y. <a href="#estate">Reorder the sequence →</a></p>' : '') +
         (opts.compact ? '' :

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-08-16",
+  "generated": "2026-08-21",
   "note": "The concept index. Maps every idea SymbiQ already teaches to the page and anchor that teaches it. Used by the news pipeline to auto-link stories, by the site for internal linking, and to derive the editorial backlog (a concept a story needs that is NOT in here is a topic we owe). Every entry's anchor and coverage is checked by tools/check_concepts.py -- do not hand-edit without re-running it.",
   "fields": {
     "id": "stable slug, never reused",
@@ -53,6 +53,46 @@
       "tier": "r",
       "kind": "concept",
       "blurb": "The algebra underneath every surface code: operators the encoded state is required to be a +1 eigenstate of."
+    },
+    {
+      "id": "threshold-theorem",
+      "term": "threshold theorem",
+      "aliases": ["fault-tolerance threshold"],
+      "page": "qec.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The proof that arbitrarily long fault-tolerant computation is possible at all, provided the physical error rate sits below a fixed constant and the code scales up to compensate."
+    },
+    {
+      "id": "magic-state-factories",
+      "term": "magic-state factories",
+      "aliases": ["magic state", "magic states", "magic-state distillation"],
+      "page": "qec.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Clifford gates alone are classically simulable, so universality is smuggled in via a purified magic state -- consume several noisy copies, distill out fewer higher-fidelity ones."
+    },
+    {
+      "id": "transversal-gates",
+      "term": "transversal gates",
+      "aliases": ["transversal gate", "Eastin-Knill theorem"],
+      "page": "qec.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "A gate applied to every physical qubit of a logical block independently, so one faulty gate can't spread -- but Eastin-Knill proves no code can make a gate set both transversal and universal."
+    },
+    {
+      "id": "lattice-surgery",
+      "term": "lattice surgery",
+      "aliases": [],
+      "page": "qec.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Executing a logical two-qubit gate by physically merging adjacent surface-code patches and measuring the joint stabilizers, instead of needing two patches' qubits to sit side by side."
     },
     {
       "id": "decoder",
@@ -583,6 +623,46 @@
       "tier": "y",
       "kind": "concept",
       "blurb": "What happens when strategies spread by succeeding, not by being reasoned about -- from animal contests to cancer treatment."
+    },
+    {
+      "id": "simplex-algorithm",
+      "term": "the simplex algorithm",
+      "aliases": [],
+      "page": "feasible.html",
+      "anchor": "t16",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "How you actually find the best corner once you know the optimum is one: walk the edges of the feasible region, only ever uphill, until no neighbour scores higher."
+    },
+    {
+      "id": "semidefinite-programming",
+      "term": "semidefinite programming",
+      "aliases": ["SDP", "quadratic programming", "QP relaxation"],
+      "page": "feasible.html",
+      "anchor": "t17",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The relaxation that turns a hard combinatorial problem into unit vectors on a sphere -- and the actual classical benchmark quantum optimisation has to beat."
+    },
+    {
+      "id": "transportation-problem",
+      "term": "the transportation problem",
+      "aliases": ["transportation problem"],
+      "page": "feasible.html",
+      "anchor": "t18",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A flow network with no interior -- supply nodes and demand nodes only -- so the optimum sits at a vertex before you even start solving."
+    },
+    {
+      "id": "constraint-satisfaction",
+      "term": "constraint satisfaction",
+      "aliases": ["CSP", "arc consistency"],
+      "page": "feasible.html",
+      "anchor": "t19",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Ask whether a solution exists at all before asking which is best -- map-colouring and Sudoku are the same problem underneath."
     },
     {
       "id": "qubo-ising",

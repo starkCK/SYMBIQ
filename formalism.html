@@ -126,8 +126,8 @@
   <p class="fr-lede">The machinery every algorithm on this site actually runs on.</p>
   <p class="fr-sub">Every pillar page on this site already teaches its ideas at three depths, toggled in place. This is a different kind of depth: not another <em>tier</em> of the same explanations, but the actual mathematical objects — state spaces, density matrices, measurement operators — that a real course builds before it lets you near Shor&#39;s algorithm. Nothing here is hand-waved. Every claim either has a proof or says plainly that it doesn&#39;t.</p>
   <div class="fr-stats">
-    <div><b>15</b><span>topics live<br>of 15 planned</span></div>
-    <div><b>5</b><span>sections built<br>of 5</span></div>
+    <div><b>17</b><span>topics live<br>of 17 planned</span></div>
+    <div><b>6</b><span>sections built<br>of 6</span></div>
     <div><b>0</b><span>claims without<br>a proof or a source</span></div>
   </div>
 </header>
@@ -135,10 +135,10 @@
 <div class="card">
   <h3>Why this page exists, separately</h3>
   <p>Every quantum claim on this site — Shor&#39;s algorithm breaks ECDSA, a surface code suppresses errors exponentially, a decoder reads a syndrome — rests on the same handful of mathematical facts: what a quantum state <em>is</em>, how it evolves, what happens when you measure it, and what you provably cannot do to it. Those facts are usually asserted on the page that needs them and moved past quickly, because that page has its own job. This page is where they get built properly, once, so every other page can point back here instead of re-deriving them.</p>
-  <p style="margin-bottom:0">This page's five planned sections are now all built. That doesn't mean quantum computing is exhausted — it means the load-bearing mathematics behind every other page on this site now has a proper home, once, instead of being asserted piecemeal.</p>
+  <p style="margin-bottom:0">This page's six planned sections are now all built — a sixth, added 2026-08-21, once <a href="feasible.html#t17">The Feasible Region&#39;s</a> SDP/Max-Cut bridge existed for it to link back to. That doesn't mean quantum computing is exhausted — it means the load-bearing mathematics behind every other page on this site now has a proper home, once, instead of being asserted piecemeal.</p>
 </div>
 
-<p><em>Verification status: topics f01–f07 (postulates, evolution, measurement, no-cloning, teleportation, superdense coding, Schmidt decomposition) were referee-verified in an earlier session. Topics f08–f15 (Deutsch&#39;s through Holevo&#39;s bound) shipped 2026-08-20 and cleared a fresh-session hostile-referee pass the same day: all four companion Python scripts re-run clean, all 8 external citations independently re-checked, one Minor finding fixed (a continued-fraction convergent theorem was attributed to Khinchin; it is standardly Legendre&#39;s, 1798). Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+<p><em>Verification status: topics f01–f07 (postulates, evolution, measurement, no-cloning, teleportation, superdense coding, Schmidt decomposition) were referee-verified in an earlier session. Topics f08–f15 (Deutsch&#39;s through Holevo&#39;s bound) shipped 2026-08-20 and cleared a fresh-session hostile-referee pass the same day: all four companion Python scripts re-run clean, all 8 external citations independently re-checked, one Minor finding fixed (a continued-fraction convergent theorem was attributed to Khinchin; it is standardly Legendre&#39;s, 1798). <strong>Topics f16–f17 (QAOA &amp; VQE; Trotterization and the chemistry mapping), added 2026-08-21</strong> once OR-2&#39;s SDP/Max-Cut bridge on The Feasible Region existed to link back to: verified against exact linear algebra rather than any external circuit library — QAOA&#39;s cost/mixer construction checked by exact statevector simulation on the identical n=6 &quot;District 5&quot; trap graph already brute-forced on The Feasible Region and playable at Graph City, confirming every depth stays sandwiched in [0, max cut] and that p=1→2→3 closes the gap (74.0%→86.9%→93.1%); the variational principle checked across a full 40,000-point grid on an illustrative H₂-shaped Hamiltonian with zero violations; first-order Trotter error confirmed to shrink monotonically and to roughly halve with each doubling of steps (2.000 measured, n=64→128) against the exact matrix exponential. Verification code: <code>tools/verify_qaoa_vqe_trotter.py</code>. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
 <h2 id="course"><span class="fr-secnum">The Formal Framework</span>Four topics, each taught four ways</h2>
 
@@ -154,7 +154,7 @@
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all fifteen</button>
+  <button type="button" id="fr-open">Open all seventeen</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -162,7 +162,7 @@
 
 <div class="mod-progress-wrap" id="mod-progress-wrap">
   <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
-  <span id="mod-progress-label">Your progress: 0 of 15 understood</span>
+  <span id="mod-progress-label">Your progress: 0 of 17 understood</span>
 </div>
 
 <!-- ================= F01 ================= -->
@@ -1102,6 +1102,146 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
     </div>
 
     <div class="mod-out">
+      <a href="#f16">Next: the algorithms that trade the proof away on purpose ▸</a>
+    </div>
+  </div>
+</details>
+
+<h2 id="optimization"><span class="fr-secnum">Quantum algorithms for optimization &amp; simulation</span>Two topics — the near-term half of the zoo, with no speedup proof to its name</h2>
+
+<p>Every algorithm this page has built so far is <strong>proven</strong>: Deutsch's, Simon's, Shor's period-finding all come with a fixed circuit and a guaranteed advantage over any classical algorithm attacking the identical problem. This section is the honest counterpart. QAOA and VQE are a completely different kind of algorithm — built for the noisy, shallow-circuit hardware that actually exists today, and carrying a different guarantee: not "this is fast," but "this can never quietly report a wrong answer as if it were right." Nobody has a proof either one beats its best classical rival on the problems people actually care about — a fact this section states as plainly as the rest of this page states its proofs.</p>
+
+<div class="fr-toc">
+  <h3>The two topics</h3>
+  <ol>
+    <li><a href="#f16">QAOA &amp; VQE<em>the same hybrid loop, aimed at graphs and at molecules</em></a></li>
+    <li><a href="#f17">Quantum simulation &amp; chemistry<em>Trotter's trick, and where that loop actually gets pointed</em></a></li>
+  </ol>
+</div>
+
+<!-- ================= F16 ================= -->
+<details class="mod" id="f16">
+  <summary>
+    <span class="mod-n">16</span>
+    <span class="mod-t">QAOA &amp; VQE</span>
+    <span class="mod-q">Two algorithms, one for graphs and one for molecules — what's actually shared, and what's genuinely different?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A triangular loop diagram. A box at top reads U(theta), the parameterized quantum circuit. An arrow leads down-right to a large box reading measure the expectation value of H, with two sub-lines: QAOA sets H to the cost Hamiltonian for a graph problem such as Max-Cut, and VQE sets H to a molecule's Hamiltonian. An arrow leads left to a box reading classical optimizer, updates theta. A final arrow closes the loop back up to the circuit box.">
+          <rect x="170" y="20" width="220" height="50" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+          <text class="lbl-b" x="280" y="41" text-anchor="middle" font-size="12.5">U(θ): the parameterized</text>
+          <text class="lbl-b" x="280" y="57" text-anchor="middle" font-size="12.5">quantum circuit</text>
+
+          <rect x="310" y="180" width="230" height="95" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+          <text class="lbl-b" x="425" y="203" text-anchor="middle" font-size="12.5">measure ⟨ψ(θ)|H|ψ(θ)⟩</text>
+          <text class="lbl-s tl" x="425" y="228" text-anchor="middle" font-size="10.5">QAOA: H = cost Hamiltonian</text>
+          <text class="lbl-s tl" x="425" y="241" text-anchor="middle" font-size="10.5">(a graph problem, e.g. Max-Cut)</text>
+          <text class="lbl-s or" x="425" y="258" text-anchor="middle" font-size="10.5">VQE: H = a molecule's Hamiltonian</text>
+
+          <rect x="30" y="210" width="200" height="60" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+          <text class="lbl-b" x="130" y="235" text-anchor="middle" font-size="12.5">classical optimizer:</text>
+          <text class="lbl-b" x="130" y="251" text-anchor="middle" font-size="12.5">update θ</text>
+
+          <defs><marker id="af-qaoa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+          <path d="M290,70 L390,180" stroke="var(--muted)" stroke-width="2" fill="none" marker-end="url(#af-qaoa)"/>
+          <path d="M340,277 L200,222" stroke="var(--muted)" stroke-width="2" fill="none" marker-end="url(#af-qaoa)"/>
+          <path d="M120,210 L225,72" stroke="var(--muted)" stroke-width="2" fill="none" marker-end="url(#af-qaoa)"/>
+        </svg></div>
+        <figcaption><strong>Same loop, two different jobs plugged into it.</strong> A quantum circuit with tunable knobs (θ) is measured, a classical computer nudges the knobs to improve the number it read, and the whole thing repeats — QAOA and VQE are two names for the same hybrid quantum-classical loop, differing only in which Hamiltonian sits in the measurement box.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Both algorithms belong to a family usually called <strong>variational quantum algorithms</strong>, designed on purpose for hardware too noisy and too short-lived to run the deep, fully error-corrected circuits topics 11–13 just built. The trick: keep the quantum part short — a handful of tunable gates — and push all the hard searching onto a classical optimizer sitting outside the quantum computer, the same way an engineer tunes a handful of dials on a physical instrument rather than redesigning it from scratch each time.</p>
+      <p><strong>QAOA</strong> (the Quantum Approximate Optimization Algorithm) points that loop at a combinatorial optimization problem: encode "how good is this cut/assignment/schedule" as a Hamiltonian whose highest eigenvalue is the best possible answer (exactly the Ising-model encoding <a href="feasible.html#bridges">The Feasible Region&#39;s bridges section</a> already introduces), alternate between that cost Hamiltonian and a fixed "mixer" Hamiltonian, and let the optimizer search for the angles that push the expectation value as high as it can go.</p>
+      <p><strong>VQE</strong> (the Variational Quantum Eigensolver) points the identical loop at a completely different Hamiltonian — a real molecule's — searching for the <em>lowest</em> eigenvalue instead of the highest, because a molecule's ground-state energy is exactly that: the smallest possible expectation value of its Hamiltonian over any physical quantum state. The guarantee that makes this trustworthy rather than just plausible is a hundred-year-old fact from ordinary quantum mechanics, not something invented for this algorithm: the variational principle, proved below.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>QAOA.</strong> For a graph problem such as Max-Cut, the cost Hamiltonian is H<sub>C</sub> = Σ<sub>(i,j)∈E</sub> ½(I − Z<sub>i</sub>Z<sub>j</sub>), whose eigenvalue on a computational-basis state is exactly the number of edges that state's ±1 labelling cuts. The mixer is H<sub>M</sub> = Σ<sub>i</sub> X<sub>i</sub>. At depth p, starting from the uniform superposition |+⟩<sup>⊗n</sup>:</p>
+      <code class="eq">|γ,β⟩ = e<sup>−iβ<sub>p</sub>H_M</sup>e<sup>−iγ<sub>p</sub>H_C</sup> ⋯ e<sup>−iβ₁H_M</sup>e<sup>−iγ₁H_C</sup>|+⟩<sup>⊗n</sup></code>
+      <p>and a classical optimizer searches (γ,β) to maximise ⟨γ,β|H<sub>C</sub>|γ,β⟩. <span class="orbadge">⟦Proven⟧</span> Verified by exact statevector simulation on the same n=6 trap graph already verified by brute force on <a href="feasible.html#bridges">The Feasible Region</a> and playable at <a href="play.html#maxcut">Graph City, District 5</a> (edges (4,5),(3,5),(0,5),(1,3),(2,4),(0,2), brute-force max cut = 6): the best expectation value found is always sandwiched in [0, 6] at every depth, and adding layers closes the gap toward the true optimum — p=1 reaches 4.44 (74.0% of optimal), p=2 reaches 5.21 (86.9%), p=3 reaches 5.59 (93.1%). This is a real demonstration of "more layers help," on one concrete instance — it is <em>not</em> a claim that QAOA beats the 87.8567% unconditional classical guarantee <a href="feasible.html#t17">topic 17&#39;s Goemans–Williamson bound</a> already proves; on general instances, nobody has shown that it does (Farhi, Goldstone &amp; Gutmann, arXiv:1411.4028, 2014; Marwaha, <em>Quantum</em> 5, 437 (2021)).</p>
+      <p><strong>VQE and the variational principle.</strong> For any Hermitian H with eigenvalues λ₀≤λ₁≤…, and any normalised |ψ⟩ expanded in H's own eigenbasis as |ψ⟩=Σc<sub>i</sub>|i⟩:</p>
+      <code class="eq">⟨ψ|H|ψ⟩ = Σᵢ |cᵢ|² λᵢ ≥ λ₀ Σᵢ |cᵢ|² = λ₀</code>
+      <p>— a weighted average can never fall below the smallest value being averaged, with equality only when |ψ⟩ is itself the ground state. <strong>This is why VQE's number is trustworthy even when the ansatz is a bad guess: a bad guess reports too high an energy, never too low.</strong> <span class="orbadge">⟦Proven⟧</span> Verified on an illustrative 2-qubit Hamiltonian in the six-term structure a real Jordan–Wigner-mapped H₂ Hamiltonian takes (H = g₀I + g₁Z₀ + g₂Z₁ + g₃Z₀Z₁ + g₄X₀X₁ + g₅Y₀Y₁; coefficients here are illustrative, not fitted to any specific bond length): across a full 200×200 grid of the ansatz&#39;s two angles — 40,000 points — not one ever produced an energy below the true ground state found by exact diagonalization, and a classical optimizer starting from 30 random points converged to the true ground energy to within 10⁻⁹.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Two live cross-links, and one honest limit shared by both</span>
+      QAOA is the quantum side of the exact head-to-head <a href="feasible.html#t17">The Feasible Region&#39;s topic 17</a> already runs against Goemans–Williamson's SDP bound, and the graph verified above is the identical <a href="play.html#maxcut">District 5 trap</a> from Graph City — the same instance, checked by brute force there and by exact quantum simulation here. VQE's target — a molecule's ground-state energy — is exactly what the next topic explains how to actually reach on real chemistry, and how it connects back to phase estimation (topic 12). <strong>Neither algorithm proves a speedup.</strong> They exist because they are the best options that fit on hardware available <em>now</em>, not because a theorem guarantees either wins against the best classical method — the same anti-hype standard <a href="ai.html">this site&#39;s AI↔quantum page</a> applies throughout. (Quantum machine learning, the other major NISQ-era heuristic family, is covered on that page rather than repeated here.)</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#f17">Next: what this loop is actually FOR — simulating a real molecule ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= F17 ================= -->
+<details class="mod" id="f17">
+  <summary>
+    <span class="mod-n">17</span>
+    <span class="mod-t">Quantum simulation &amp; chemistry</span>
+    <span class="mod-q">A quantum computer can't just "plug in" a molecule's Hamiltonian — so what does simulating one actually involve, mechanically?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A descending bar chart, log scale, of the error between an exact time evolution and its Trotter approximation, as the number of steps grows: n=1 has the tallest bar and the largest error, 0.80; n=4 a shorter bar, error 0.17; n=16 shorter still, 0.043; n=64 the shortest, 0.011. The error keeps shrinking as steps increase.">
+          <path d="M40 160 H520" stroke="var(--border)" stroke-width="1.4"/>
+          <g class="sTl" stroke-width="30">
+            <path d="M90 160 V36"/>
+            <path d="M220 160 V77"/>
+            <path d="M350 160 V115"/>
+            <path d="M480 160 V152"/>
+          </g>
+          <text class="lbl-s" x="90" y="176" text-anchor="middle">n=1</text>
+          <text class="lbl-s" x="220" y="176" text-anchor="middle">n=4</text>
+          <text class="lbl-s" x="350" y="176" text-anchor="middle">n=16</text>
+          <text class="lbl-s" x="480" y="176" text-anchor="middle">n=64</text>
+          <text class="lbl-b" x="90" y="28" text-anchor="middle" font-size="11">0.800</text>
+          <text class="lbl-b" x="220" y="69" text-anchor="middle" font-size="11">0.172</text>
+          <text class="lbl-b" x="350" y="107" text-anchor="middle" font-size="11">0.043</text>
+          <text class="lbl-b" x="480" y="144" text-anchor="middle" font-size="11">0.011</text>
+        </svg></div>
+        <figcaption><strong>Chop the time evolution into more, smaller steps, and the approximation error keeps shrinking.</strong> This is the entire mechanical trick that lets a gate-based quantum computer run a Hamiltonian it can't build one single gate for.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>A real system's Hamiltonian is usually a sum of many pieces that don't commute with each other — different interaction terms, acting on different, overlapping qubits. You generally cannot build one clean gate for e<sup>−i(A+B)t</sup> directly the way you can for e<sup>−iAt</sup> or e<sup>−iBt</sup> alone. <strong>Trotter&#39;s trick is to stop trying.</strong> Chop the total time into many tiny slices, and within each slice apply each piece&#39;s own short, buildable evolution one after another instead of together. Because the slices are short, the fact that A and B don&#39;t commute barely matters over any one of them — and the error from ignoring it shrinks to zero as the slices shrink, which the figure above shows happening.</p>
+      <p>This is also, historically, the entire reason anyone first thought a quantum computer might be good for something. Richard Feynman&#39;s 1982 observation was that simulating a quantum system on a classical computer seems to need resources that blow up exponentially with the number of particles — so use a quantum system to simulate a quantum system instead. Lloyd (1996) turned that intuition into an actual algorithm and a real complexity result: a broad, well-defined class of Hamiltonians (a bounded number of terms, each acting on only a few qubits — exactly the kind chemistry and materials produce) can be simulated in time that scales only <em>polynomially</em> in system size and evolution time, on a gate-based quantum computer. That is a separate, and separately proven, kind of advantage from the oracle-based speedups topics 08–10 built.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>The Lie product (Trotter) formula:</p>
+      <code class="eq">e<sup>i(A+B)t</sup> = lim<sub>n→∞</sub> (e<sup>iAt/n</sup> e<sup>iBt/n</sup>)<sup>n</sup></code>
+      <p>and at finite n, the first-order approximation carries an error bounded by O(t²‖[A,B]‖/n) — it vanishes exactly when A and B commute, and otherwise shrinks as 1/n. (Higher-order Trotter–Suzuki formulas push the exponent further, at the cost of more gates per step.) <span class="orbadge">⟦Proven⟧</span> Verified directly against the exact matrix exponential for a concrete non-commuting Hamiltonian, H = 1.3X + 0.8Z at t=1: operator-norm error 0.800 (n=1) → 0.355 (n=2) → 0.172 (n=4) → 0.085 (n=8) → 0.043 (n=16) → 0.021 (n=32) → 0.011 (n=64) → 0.0053 (n=128) — monotonically shrinking throughout, and the n=64→128 ratio measures 2.000, matching the predicted O(1/n) scaling almost exactly (Trotter, <em>Proc. Amer. Math. Soc.</em> 10, 545 (1959); Suzuki, <em>J. Math. Phys.</em> 26, 601 (1985); Lloyd, &quot;Universal Quantum Simulators,&quot; <em>Science</em> 273, 1073 (1996)).</p>
+      <p><strong>Reaching an actual molecule.</strong> A molecule&#39;s Hamiltonian is naturally written in terms of electron creation/annihilation operators on molecular orbitals — fermionic operators, not qubit operators. The <strong>Jordan–Wigner transformation</strong> (Jordan &amp; Wigner, 1928 — originally built for an entirely different problem in condensed-matter physics, decades before there was a quantum computer to run it on) rewrites those fermionic operators as strings of Pauli operators on qubits, turning "simulate this molecule" into exactly the kind of local-Hamiltonian problem the Trotter machinery above already solves. From there, two different roads reach a molecule&#39;s ground-state energy: run the Trotterized evolution as the controlled unitary inside <a href="#f12">topic 12&#39;s phase estimation</a>, provably accurate to any precision on a deep, fully error-corrected circuit; or skip straight to the previous topic&#39;s <strong>VQE</strong>, trading that proof away for a shallow circuit that can run on hardware available today.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">The clearest "quantum computers help X" case beyond breaking cryptography — and how far it still has to go</span>
+      Peruzzo et al. ran the first experimental VQE in 2014 (a photonic chip, the molecule HeH⁺ — <em>Nature Communications</em> 5, 4213); Kandala et al. scaled the same idea to slightly larger molecules on superconducting hardware in 2017 (<em>Nature</em> 549, 242). Both real, both toy-sized. The molecule that actually matters economically is FeMoco, the iron–molybdenum cofactor at the heart of the enzyme that fixes nitrogen in nature — the reaction the industrial Haber–Bosch process reproduces at 400°C and 200 atmospheres, burning on the order of 1–2% of global energy to do it. Reiher, Wiebe, Svore, Wecker &amp; Troyer (<em>PNAS</em> 114(29), 7555 (2017)) estimated what simulating it would actually cost a fault-tolerant quantum computer: on the order of 100+ logical qubits and days of runtime even under aggressive parallelism. Set against <a href="logical-qubit.html">what one logical qubit costs in physical qubits today</a>, that is the same honest gap this page keeps landing on for Shor&#39;s algorithm — a real, proven direction, and still nowhere near a near-term device.</p>
+    </div>
+
+    <div class="mod-out">
       <a href="#f14">Next: how much information is actually in any of this ▸</a>
     </div>
   </div>
@@ -1243,12 +1383,12 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
     </div>
 
     <div class="mod-out">
-      <span style="color:var(--muted);font-size:.85rem">This closes The Machinery's original 15-topic scope. Every algorithm elsewhere on this site now rests on machinery actually built and verified here, not just cited.</span>
+      <span style="color:var(--muted);font-size:.85rem">This closes The Machinery's full 17-topic scope — the original 15, plus QAOA/VQE and quantum simulation, added once their own dependency existed to link back to. Every algorithm elsewhere on this site now rests on machinery actually built and verified here, not just cited.</span>
     </div>
   </div>
 </details>
 
-<footer>The Machinery: 5 of 5 planned sections, 15 of 15 planned topics — complete. Every topic is verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
+<footer>The Machinery: 6 of 6 planned sections, 17 of 17 planned topics — complete. Every topic is verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
 </div>
 
 <script type="application/ld+json">

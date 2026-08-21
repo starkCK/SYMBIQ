@@ -896,6 +896,26 @@
       "blurb": "Turns phase estimation's measured decimal back into the exact period Shor's algorithm needs -- and, when the measured numerator shares a factor with the period, only a divisor of it, provably."
     },
     {
+      "id": "qaoa-vqe",
+      "term": "QAOA & VQE",
+      "aliases": ["QAOA", "VQE", "variational quantum eigensolver", "quantum approximate optimization algorithm", "variational quantum algorithms"],
+      "page": "formalism.html",
+      "anchor": "f16",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The same hybrid quantum-classical loop -- a tunable circuit, measured, adjusted by a classical optimizer -- pointed at a graph's cost Hamiltonian (QAOA) or a molecule's (VQE); neither has a proven speedup over its best classical rival."
+    },
+    {
+      "id": "trotterization-chemistry",
+      "term": "quantum simulation & chemistry",
+      "aliases": ["Trotterization", "Trotter-Suzuki", "Hamiltonian simulation", "Jordan-Wigner transformation", "quantum chemistry simulation"],
+      "page": "formalism.html",
+      "anchor": "f17",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Chopping time into many small steps to approximate the evolution of a Hamiltonian whose terms don't commute -- the mechanical trick that turns Feynman's 1982 intuition into Lloyd's 1996 algorithm, and the route from a molecule's Hamiltonian to its ground-state energy."
+    },
+    {
       "id": "shannon-entropy",
       "term": "Shannon entropy",
       "aliases": ["information entropy", "classical entropy", "bits of uncertainty"],

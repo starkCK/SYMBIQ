@@ -334,7 +334,7 @@
     <div class="layer real">
       <h4>Where it actually matters</h4>
       <p><span class="where">Quantum key distribution</span>
-      BB84 encodes a bit in one of two non-orthogonal bases on purpose. An eavesdropper who measures in the wrong basis necessarily disturbs the state — the distinguishability limit above, made into a security protocol. This is the topic <a href="pqc.html">post-quantum cryptography</a> is most often confused with: PQC is classical mathematics designed to survive a quantum <em>computer</em>; QKD is physics that uses exactly this measurement limit to detect an eavesdropper. They solve the same problem — safe key exchange — by entirely different means.</p>
+      BB84 encodes a bit in one of two non-orthogonal bases on purpose. An eavesdropper who measures in the wrong basis necessarily disturbs the state — the distinguishability limit above, made into a security protocol. This is the topic <a href="pqc.html">post-quantum cryptography</a> is most often confused with: PQC is classical mathematics designed to survive a quantum <em>computer</em>; QKD is physics that uses exactly this measurement limit to detect an eavesdropper. They solve the same problem — safe key exchange — by entirely different means; <a href="pqc.html#qkd">the full comparison, including why every major cybersecurity agency still recommends PQC over QKD for this</a>, is on that page.</p>
     </div>
 
     <div class="mod-out">
@@ -397,7 +397,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
     <div class="layer real">
       <h4>Where it actually matters</h4>
       <p><span class="where">Two things this site already teaches, both explained by this proof</span>
-      <a href="qec.html">Quantum error correction</a> cannot work the way classical error correction does — no backup copy is possible — which is exactly why it instead spreads one logical qubit's information across many physical ones via entanglement (topic 02 above is the tool that makes precise what that spreading even means). And quantum key distribution's security (topic 03) has a second leg to stand on beyond distinguishability: even if an eavesdropper somehow captured a qubit in transit, they cannot clone it to measure at leisure while forwarding an undisturbed original — they get exactly one shot, on the one photon that exists.</p>
+      <a href="qec.html">Quantum error correction</a> cannot work the way classical error correction does — no backup copy is possible — which is exactly why it instead spreads one logical qubit's information across many physical ones via entanglement (topic 02 above is the tool that makes precise what that spreading even means). And <a href="pqc.html#qkd">quantum key distribution</a>'s security (topic 03) has a second leg to stand on beyond distinguishability: even if an eavesdropper somehow captured a qubit in transit, they cannot clone it to measure at leisure while forwarding an undisturbed original — they get exactly one shot, on the one photon that exists.</p>
     </div>
 
     <div class="mod-out">

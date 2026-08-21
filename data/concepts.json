@@ -964,6 +964,16 @@
       "tier": "g",
       "kind": "concept",
       "blurb": "A bet that braided Majorana zero modes protect quantum information by topology alone, before any error correction runs -- and, as of Microsoft's disputed 2025 Majorana 1 announcement, still an unresolved experimental claim, not a settled one."
+    },
+    {
+      "id": "quantum-key-distribution",
+      "term": "quantum key distribution",
+      "aliases": ["QKD", "BB84", "B92", "Ekert91", "E91", "Micius"],
+      "page": "pqc.html",
+      "anchor": "qkd",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Uses quantum measurement disturbance (BB84, B92) or Bell-inequality violation (Ekert91) to let two parties detect an eavesdropper directly -- real physics, flown on China's Micius satellite, and not a substitute for the classical/post-quantum cryptography this page's tools actually measure."
     }
   ]
 }

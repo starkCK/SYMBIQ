@@ -954,6 +954,21 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .gamehero .gh-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
 .gamehero .bigplay.ghost { border-color: var(--violet); color: var(--violet); }
 .gamehero .gh-note { font-size: .87rem; color: var(--muted); margin: 14px 0 0; }
+
+/* The PQC hero. Added 2026-08-21 -- pqc.html had zero links from the homepage
+   body (nav-overlay only), unlike every other major section, which is its own
+   "too much navigation to reach it" complaint. Same ghost-button mechanism as
+   .gamehero's violet Arcade link, just amber -- reusing the already-approved
+   pattern rather than inventing a fourth button language. Amber reads as
+   "check this" rather than "explore this", which fits a page whose whole
+   point is finding out whether YOUR system is exposed. --yellow is already
+   the site's verified 4.5:1+ tier colour in both schemes, so no new contrast
+   work is needed here. */
+.pqhero { border-top-color: var(--yellow); }
+.pqhero .eyebrow { color: var(--yellow); }
+.pqhero .orhero-grid b { color: var(--yellow); }
+.pqhero .bigplay.ghost { border-color: var(--yellow); color: var(--yellow); }
+
 @media (max-width: 719px) {
   .orhero { padding: 24px 20px; }
   .orhero h2 { font-size: 1.4rem; }

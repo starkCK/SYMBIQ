@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with eight games where the mathematics does the judging.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=33">
+<link rel="stylesheet" href="style.css?v=34">
 <style>
 /* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
@@ -144,6 +144,31 @@
 <p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a> — two minutes, zero jargon, zero equations.</p>
 
 <p>Everyone's watching the AI race. The interesting race is the one behind it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum computers are being aimed at the data AI can't get anywhere else. Neither story makes sense alone. SymbiQ covers the loop.</p>
+
+<div class="introute" id="introute">
+  <p class="introute-lede">Three different things happen on this site. Which one are you here for?</p>
+  <div class="introute-grid">
+    <a class="introute-card" href="journey.html"><span class="ic" aria-hidden="true">🧬</span><span class="tt">Quantum computing</span><span class="sb">The story, the games, the maths behind them</span></a>
+    <a class="introute-card" href="feasible.html"><span class="ic" aria-hidden="true">📐</span><span class="tt">Optimisation / OR</span><span class="sb">The field every quantum-optimisation headline is actually about</span></a>
+    <a class="introute-card" href="pqc.html"><span class="ic" aria-hidden="true">🔒</span><span class="tt">Post-quantum security</span><span class="sb">Check your own systems, not just the theory</span></a>
+  </div>
+</div>
+<script>
+// Only for a genuinely first-time visitor. Anyone with EITHER save key already
+// picked a track (a game played, a topic marked, a plan built on pqc.html) --
+// asking again reads as not having noticed. Ships visible in the HTML (so a
+// broken script never hides it from someone who'd have used it), hidden here
+// rather than never rendered, matching tiers.js's own .reveal rule applied in
+// the opposite direction.
+(function () {
+  try {
+    if (localStorage.getItem('symbiq.solverpath.v1') || localStorage.getItem('symbiq.pqc.v1')) {
+      var el = document.getElementById('introute');
+      if (el) el.hidden = true;
+    }
+  } catch (e) {}
+})();
+</script>
 
 
 <div class="card" id="daily-q">

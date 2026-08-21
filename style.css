@@ -109,6 +109,15 @@ body::after {
   animation: drift 14s linear infinite;
 }
 .wrap { max-width: 780px; margin: 0 auto; padding: 0 20px 80px; }
+/* Fixed at 780px regardless of viewport, the whole page (nav included, since
+   it lives inside .wrap) sat in a narrow centre column with dead margins on
+   any screen wider than a tablet -- reading text that size is fine, but every
+   grid, table and card on the site was still capped to that width too,
+   so widescreen desktops never got to use the extra room. Widened in two
+   steps rather than one jump so very large monitors don't overshoot into
+   uncomfortably long text lines. */
+@media (min-width: 1024px) { .wrap { max-width: 880px; } }
+@media (min-width: 1440px) { .wrap { max-width: 1040px; } }
 nav {
   display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
   padding: 18px 0; border-bottom: 1px solid var(--border); margin-bottom: 40px;

@@ -406,6 +406,15 @@
     </div>
     <p class="sqmsg" id="carry-msg"></p>
     <p class="sqnote">Loading a code <strong>merges</strong> — it adds what the code contains and never erases what you already did here. When real accounts arrive, this same code is how you bring your history with you.</p>
+    <p style="font-size:.88rem;margin:14px 0 4px">Switching devices right now and don't want to copy-paste? Email the code to yourself instead.</p>
+    <form class="sqform" data-sq="save-code-backup" style="margin-top:4px">
+      <input type="email" name="email" data-label="your email" required placeholder="you@example.com" aria-label="Your email address">
+      <input type="hidden" name="code" id="carry-email-code">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+             style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <button type="submit">Email me this code →</button>
+    </form>
+    <p class="sqnote">One email, sent once, to you. Nothing is stored anywhere but that message.</p>
   </div>
   <div id="coh-meter" class="coh-mount"></div>
   <div class="objective" id="objective" role="status"></div>
@@ -1091,20 +1100,32 @@
   (function () {
     var box = document.getElementById('carrybox'),
         ta  = document.getElementById('carry-code'),
-        msg = document.getElementById('carry-msg');
+        msg = document.getElementById('carry-msg'),
+        emailCode = document.getElementById('carry-email-code');
     function say(t, ok) { msg.className = 'sqmsg ' + (ok ? 'ok' : 'err'); msg.textContent = t; }
+    // Both the visible textarea and the hidden field the email form actually
+    // submits stay in sync -- refreshed at the same two moments the code can
+    // go stale (opening the box, hitting copy), so whichever button someone
+    // uses last, the email form still sends the CURRENT code, not whatever
+    // was true when the page loaded.
+    function refreshCode() {
+      var c = S ? S.exportCode() : '';
+      ta.value = c;
+      if (emailCode) emailCode.value = c;
+      return c;
+    }
 
     document.getElementById('hud-carry').addEventListener('click', function () {
       box.hidden = !box.hidden;
       if (!box.hidden) {
-        ta.value = S ? S.exportCode() : '';
+        refreshCode();
         msg.textContent = '';
         ta.focus(); ta.select();
       }
     });
 
     document.getElementById('carry-copy').addEventListener('click', function () {
-      ta.value = S ? S.exportCode() : '';
+      refreshCode();
       ta.select();
       var done = function () { say('Copied. Paste it into this same box on your other device.', true); };
       if (navigator.clipboard && navigator.clipboard.writeText) {

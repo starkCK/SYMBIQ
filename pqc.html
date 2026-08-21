@@ -544,6 +544,18 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <div id="score-mount"><p class="sc-wait">Nothing tracked yet.</p></div>
 </div>
 
+<div class="card" id="cipherproof-lead">
+  <h3>Want this checked against your real, public-facing systems?</h3>
+  <p>Everything above runs on what you paste or type in — honest, but it only ever sees what you already knew to bring it. The harder, more useful version checks your systems the way an outsider actually would: probing your own public endpoints directly, the same evidence an attacker or an auditor would gather, without needing you to hand anything over first. That probe service doesn't exist yet. Leave an email and you'll hear the moment it does — nothing else, no list, no follow-up pitch.</p>
+  <form class="sqform" data-sq="cipherproof">
+    <input type="email" name="email" data-label="your email" required placeholder="you@company.com" aria-label="Your email address">
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+           style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    <button type="submit">Tell me when it's ready →</button>
+  </form>
+  <p class="sqnote">One email, when it ships. We never sell or share this.</p>
+</div>
+
 <!-- Five tools on one long page. Without this the sequencer sits 7,000px down,
      which is the same "buried the thing they came for" problem the homepage
      hero had. Plain anchors, so it works with scripts off. -->

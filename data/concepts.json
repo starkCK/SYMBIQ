@@ -944,6 +944,26 @@
       "tier": "y",
       "kind": "concept",
       "blurb": "The Bellman equation once the world stops guaranteeing your action lands where you aimed it -- and what changes when nobody hands you the transition probabilities at all."
+    },
+    {
+      "id": "spin-qubits",
+      "term": "spin qubits",
+      "aliases": ["spin qubit", "silicon spin qubit", "silicon quantum dot", "electron spin qubit"],
+      "page": "compare.html",
+      "anchor": "spin",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "A single electron or nuclear spin in a silicon quantum dot as the qubit -- betting the entire existing chip-fabrication industry instead of building bespoke hardware, and already past 99% fidelity in a real 300mm foundry."
+    },
+    {
+      "id": "topological-qubits",
+      "term": "topological qubits",
+      "aliases": ["topological qubit", "Majorana zero mode", "Majorana zero modes", "Majorana fermion", "non-abelian anyon", "Majorana 1"],
+      "page": "compare.html",
+      "anchor": "topological",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "A bet that braided Majorana zero modes protect quantum information by topology alone, before any error correction runs -- and, as of Microsoft's disputed 2025 Majorana 1 announcement, still an unresolved experimental claim, not a settled one."
     }
   ]
 }

@@ -26,11 +26,12 @@
 <meta name="twitter:description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices, measurement, and the no-cloning theorem — with proofs, not just claims.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=32">
+<link rel="stylesheet" href="style.css?v=33">
 <link rel="stylesheet" href="formalism.css?v=1">
 <script src="save.js"></script>
 <script src="nav.js?v=5" defer></script>
 <script src="depth.js" defer></script>
+<script src="curriculum-track.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -157,6 +158,11 @@
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
+</div>
+
+<div class="mod-progress-wrap" id="mod-progress-wrap">
+  <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
+  <span id="mod-progress-label">Your progress: 0 of 15 understood</span>
 </div>
 
 <!-- ================= F01 ================= -->
@@ -1312,6 +1318,11 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
   openTarget(location.hash);
   window.addEventListener('hashchange', function () { openTarget(location.hash); });
 })();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.SymbiQ && SymbiQ.curriculumTrack) SymbiQ.curriculumTrack.init('formalism', 'machinery-complete');
+});
 </script>
 </body>
 </html>

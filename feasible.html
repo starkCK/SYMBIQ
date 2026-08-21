@@ -26,13 +26,14 @@
 <meta name="twitter:description" content="Operations research from the top: the feasible region, duality, integer programming, network flow, matching, queueing, metaheuristics, and a full module on game theory — Nash equilibrium, auctions, and the Shapley value.…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=32">
+<link rel="stylesheet" href="style.css?v=33">
 <link rel="stylesheet" href="feasible.css?v=4">
 <script src="save.js"></script>
 <script src="feasible-tools.js?v=1"></script>
 <script src="nav.js?v=5" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=2" defer></script>
+<script src="curriculum-track.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 </head>
@@ -184,6 +185,11 @@
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
+</div>
+
+<div class="mod-progress-wrap" id="mod-progress-wrap">
+  <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
+  <span id="mod-progress-label">Your progress: 0 of 19 understood</span>
 </div>
 
 <!-- ================= 01 ================= -->
@@ -2023,6 +2029,11 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
   var vhost = document.getElementById('mount-verdict');
   if (M && vhost) M.mount(vhost, { level: 2 });
 })();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.SymbiQ && SymbiQ.curriculumTrack) SymbiQ.curriculumTrack.init('feasible', 'feasible-complete');
+});
 </script>
 
 <footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. <strong>Topics 18–19, added 2026-08-21:</strong> the transportation instance (2 sources, 3 destinations, optimum 240 against a northwest-corner plan of 300) was checked by exhaustive integer search cross-checked against scipy's LP relaxation, and the total unimodularity claim was checked directly by computing all 461 square submatrices of the instance's 5×6 constraint matrix; the Australia map-colouring assignment was checked against all nine adjacency constraints, and the AC-3 arc-consistency pruning (Northern Territory's and South Australia's domains shrinking from three colours to two once Western Australia is fixed) was produced by a real AC-3 implementation, not asserted — the verification code lives in <code>tools/verify_transportation_csp.py</code>. Every citation on those two topics — Hitchcock 1941, Koopmans 1949, the 1975 Nobel Memorial Prize to Koopmans and Kantorovich, Camm et al. 1997, Cook 1971, Schaefer 1978, Feder &amp; Vardi 1998, Bulatov 2017, Zhuk 2017, Mackworth 1977, Chaitin et al. 1981 — was checked against a primary or bibliographic source before use. <strong>A fresh-session hostile-referee pass ran 2026-08-21</strong> and re-derived both worked examples by hand (matching the script exactly), independently fetched the Bulatov and Zhuk FOCS 2017 proceedings PDFs directly rather than trusting a search summary (confirming pages 319–330 and 331–342), and confirmed every other citation, badge and cross-reference — one finding, fixed: a sentence cited graph k-colourability&#39;s NP-hardness to &quot;topic 04&#39;s Karp-1972 list,&quot; but topic 04 only invokes Karp 1972 for 0–1 integer programming and never discusses colouring — the underlying fact was true, the attribution wasn&#39;t. Now cited to Karp 1972 directly, with the misattribution named rather than quietly smoothed over. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>

@@ -32,7 +32,7 @@
 <script src="games.js?v=12"></script>
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=8"></script>
-<script src="nav.js?v=5" defer></script>
+<script src="nav.js?v=7" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
@@ -282,16 +282,10 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat" data-cat="learn">
-      <summary>Learn</summary>
+    <details class="navcat" data-cat="quantum">
+      <summary>Quantum</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
-      <a href="formalism.html" class="navmain">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
-      </div>
-    </details>
-    <details class="navcat" data-cat="explainers">
-      <summary>Explainers</summary>
-      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <div class="navrow">
         <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
         <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
@@ -312,35 +306,46 @@
         <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
         <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
       </div>
-      <a href="pqc.html" class="navmain">What post-quantum costs on the wire<span class="sub">Measured in your browser, with real keys</span></a>
-      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">Real PQC keys, measured on the wire</span></a>
       <div class="navrow">
         <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
         <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
       </div>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 17 topics</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="optimisation">
       <summary>Optimisation</summary>
       <div class="navpanel">
-      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, from the top</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain active">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain active">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
-    <details class="navcat" data-cat="track">
-      <summary>Track</summary>
+    <details class="navcat" data-cat="desk">
+      <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop, human-approved</span></a>
-      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>

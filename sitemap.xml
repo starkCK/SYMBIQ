@@ -1,80 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Every crawlable page. Kept complete on purpose: between 2026-07-25 and
+     2026-08-21 this file silently omitted feasible.html and pqc.html — the two
+     largest and most linkable pages on the site — because they were built after
+     it was written and nothing checks it. If you add a page, add it here. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://starkck.github.io/SYMBIQ/</loc>
-    <lastmod>2026-07-25</lastmod>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://starkck.github.io/SYMBIQ/journey.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <loc>https://starkck.github.io/SYMBIQ/feasible.html</loc>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://starkck.github.io/SYMBIQ/pqc.html</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://starkck.github.io/SYMBIQ/journey.html</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://starkck.github.io/SYMBIQ/formalism.html</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://starkck.github.io/SYMBIQ/play.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/qec.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/ai.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/bitcoin.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/logical-qubit.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/compare.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/quantum-mechanics.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/basics.html</loc>
-    <lastmod>2026-08-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://starkck.github.io/SYMBIQ/formalism.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://starkck.github.io/SYMBIQ/race.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://starkck.github.io/SYMBIQ/signals.html</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://starkck.github.io/SYMBIQ/archive.html</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://starkck.github.io/SYMBIQ/corrections.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

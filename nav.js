@@ -93,3 +93,41 @@
     [].slice.call(document.querySelectorAll('.reveal')).forEach(function (el) { el.classList.add('in'); });
   }
 })();
+
+/* Deep links into a folded section.
+   Any <details> can now hold real content (see .foldsec in style.css), which
+   means a fragment link can point INSIDE something that is shut. Browsers
+   disagree about whether they auto-expand for that, so do it ourselves: on
+   load and on every hash change, open every <details> ancestor of the target
+   and then bring it into view. Purely additive — pages that fold nothing are
+   unaffected, and feasible.html/formalism.html keep their own richer handlers
+   (which also update their progress tally); this one runs first and only ever
+   opens things, so the two never fight. */
+(function () {
+  function openTo(hash) {
+    try {
+      var id = String(hash || '').replace(/^#/, '');
+      if (!id) return;
+      var t = document.getElementById(id);
+      if (!t) return;
+      var opened = false, n = t;
+      while (n && n !== document.body) {
+        if (n.tagName === 'DETAILS' && !n.open) { n.open = true; opened = true; }
+        n = n.parentElement;
+      }
+      if (opened) {
+        // Layout has just changed under the browser's own scroll attempt, and
+        // the scroll-reveal pass above is still adding/removing transforms.
+        // Two frames plus a load-time retry is what it actually takes for the
+        // final position to be correct; one rAF lands short.
+        var go = function () { t.scrollIntoView({ block: 'start', behavior: 'auto' }); };
+        requestAnimationFrame(function () { requestAnimationFrame(go); });
+        if (document.readyState !== 'complete') {
+          window.addEventListener('load', function () { setTimeout(go, 0); }, { once: true });
+        }
+      }
+    } catch (e) {}
+  }
+  openTo(location.hash);
+  window.addEventListener('hashchange', function () { openTo(location.hash); });
+})();

@@ -79,7 +79,7 @@
   ]
 }
 </script>
-<script src="nav.js?v=5" defer></script>
+<script src="nav.js?v=7" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <script type="module" src="pqc-tools.js?v=8"></script>
@@ -462,16 +462,10 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat" data-cat="learn">
-      <summary>Learn</summary>
+    <details class="navcat" data-cat="quantum">
+      <summary>Quantum</summary>
       <div class="navpanel">
-      <a href="basics.html" class="navmain">◆ The AI That Babysits Qubits<span class="sub">Every depth, one page</span></a>
-      <a href="formalism.html" class="navmain">◆ The Machinery<span class="sub">Postulates, proofs, no hand-waving</span></a>
-      </div>
-    </details>
-    <details class="navcat navcat-cur" data-cat="explainers">
-      <summary>Explainers</summary>
-      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <div class="navrow">
         <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
         <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
@@ -492,35 +486,46 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
         <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
         <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
       </div>
-      <a href="pqc.html" class="navmain active">What post-quantum costs on the wire<span class="sub">Measured in your browser, with real keys</span></a>
-      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">Real PQC keys, measured on the wire</span></a>
       <div class="navrow">
         <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
         <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
       </div>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 17 topics</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="optimisation">
       <summary>Optimisation</summary>
       <div class="navpanel">
-      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, from the top</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="security">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <a href="pqc.html" class="navmain active">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver's Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
-    <details class="navcat" data-cat="track">
-      <summary>Track</summary>
+    <details class="navcat" data-cat="desk">
+      <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop, human-approved</span></a>
-      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we've ever asked</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
@@ -540,7 +545,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
    full Inventory below, then hands it straight to the Sequencer for a live verdict. If you already know the four
    instruments on this page, skip straight past this to <a href="#cliff">the Size Cliff</a>.</p>
 <div class="od-spotlight">
-  <p class="pq-eyebrow" data-icon="⚡" style="margin-top:0">Check your own system</p>
+  <p class="pq-eyebrow" data-icon="⚡" style="margin-top:0">Tool 1 of 7 · check your own system</p>
   <div id="quickcheck-mount"><p class="sc-wait">This needs JavaScript — it runs entirely in your browser. Nothing you paste or look up is sent anywhere except, if you choose the domain tab, a public certificate-transparency log.</p></div>
 </div>
 
@@ -582,7 +587,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <p style="margin-bottom:0"><b>And the obvious metric misleads.</b> Pick a signature scheme by public-key size and you will choose the one with an eight-kilobyte signature. Move the controls below and watch which choice actually breaks.</p>
 </div>
 
-<p class="pq-eyebrow" data-icon="📏">Instrument 1 of 4 · measured, not modelled</p>
+<p class="pq-eyebrow" data-icon="📏">Tool 2 of 7 · measured, not modelled</p>
 <h2 id="cliff">The Size Cliff</h2>
 <p>Every cryptographic number below is the length of a real object — a key, a ciphertext, or a signature — that your browser generated when you clicked. Nothing is read from a table. <b>That is the point of building it this way:</b> a lookup table inherits whatever error was in its source, and this one caught a live example. Several published sources state that an ML-DSA-65 signature is 3,293 bytes. Sign something and measure it and the answer is <b>3,309</b>, which is what FIPS 204 specifies. The widget cannot make that mistake, because it never looks anything up.</p>
 
@@ -605,7 +610,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <p>Set the signature to <b>SLH-DSA-128s</b>. Its public key is 32 bytes — smaller than ML-DSA-65's 1,952, and exactly the same size as Ed25519's. By the metric most people reach for first, it is the compact choice.</p>
 <p>Its signature is <b>7,856 bytes</b>. A chain carries more signatures than public keys, so the scheme with the smallest key produces by far the largest handshake. SLH-DSA earns that cost honestly — it rests only on the security of a hash function, with no lattice assumption to be wrong about — but the trade is the opposite of the one the key size advertises.</p>
 
-<p class="pq-eyebrow" data-icon="🔍">Instrument 2 of 4 · discover what you actually run</p>
+<p class="pq-eyebrow" data-icon="🔍">Tool 3 of 7 · discover what you actually run</p>
 <h2 id="inventory">The Inventory</h2>
 
 <p>The tool below this one plans a migration across whatever estate you describe. Its own honest-limits list says the obvious thing about that: <b>it discovers nothing.</b> A migration programme lives or dies on the inventory, and the inventory is the hard part.</p>
@@ -638,7 +643,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 </ul>
 </details>
 
-<p class="pq-eyebrow" data-icon="🧮">Instrument 3 of 4 · sequence the migration</p>
+<p class="pq-eyebrow" data-icon="🧮">Tool 4 of 7 · sequence the migration</p>
 <h2 id="estate">Your estate, not ours</h2>
 
 <p>The figure above measures a decision. This one measures <em>you</em>. Describe what you actually run — the rows below start from a realistic example, and every one of them is editable — and it will tell you which of your assets are already past saving, in what order to migrate, and whether your deadline is reachable at all.</p>
@@ -679,6 +684,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>Nothing leaves your browser.</b> Export writes a file locally. There is no analytics on what you type, because there is no request.</li>
 </ul>
 
+<p class="pq-eyebrow" data-icon="🎲">Tool 5 of 7 · put a distribution behind the date</p>
 <h2 id="odds">The Odds</h2>
 
 <p>The Sequencer above gives every exposed asset a <b>breakevenZ</b> — the year a quantum computer would have to exist before your plan stopped protecting it. That number is exact arithmetic sitting next to a number nobody has: nobody knows when a cryptographically relevant quantum computer (CRQC) will actually exist. Reading "15.75 years" as a verdict is exactly the mistake the rest of this page exists to catch — so this tool puts a real distribution behind it instead of leaving you to supply your own gut feeling, and lets you test it against the estate a hospital, a bank or a utility would actually recognise.</p>
@@ -723,7 +729,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 <p>None of this is an argument that QKD is a failure — Micius is a genuine, hard-won achievement, and QKD is the right tool for a narrow set of point-to-point links where everlasting confidentiality is worth the dedicated fibre and the cost. It is an argument that QKD and post-quantum cryptography answer <em>different</em> questions. This page&#39;s question — how do you re-key the internet as it already exists, at internet scale, before 2030&ndash;2035 — has exactly one candidate answer among the two, and it is the one every tool above measures.</p>
 
-<p class="pq-eyebrow" data-icon="⏳">The inequality, played</p>
+<p class="pq-eyebrow" data-icon="⏳">Tool 6 of 7 · the inequality, played</p>
 <h2 id="mosca" data-tier-keep>The Harvest Clock</h2>
 <p>Nothing above is new — this is the same inequality, made playable instead of read once and left as a paragraph. Move the three sliders. Most starting positions come back <b>already late</b>, on purpose: for the great majority of X, they are.</p>
 <div class="card">
@@ -731,7 +737,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 </div>
 <p class="cb-note">This is deliberately the simplest instrument on the page. For a real estate instead of a guess, use <a href="#estate">the Sequencer</a>; for a real distribution behind Z instead of one slider, use <a href="#odds">the Odds</a> above. This one exists to make the inequality itself click in ten seconds.</p>
 
-<p class="pq-eyebrow" data-icon="🔬">Stop citing it, run it</p>
+<p class="pq-eyebrow" data-icon="🔬">Tool 7 of 7 · stop citing it, run it</p>
 <h2 id="proof" data-tier-keep>The Proof</h2>
 <p>Every tool above this one measures or models. None of them ever runs the cryptography end to end, which means that up to this point <em>“post-quantum cryptography works”</em> has been an assertion on this page, carried by citation. So: run it. Real ML-KEM-768 and ML-DSA-65, in this tab, on your text, with the results checked rather than tabulated.</p>
 <p>The part that matters is not the signature verifying. A function that returned <code>true</code> unconditionally would look identical on screen. The evidence is in the <b>refusals</b> — flip one bit of a 3,309-byte signature and verification has to fail. <span class="chip">⟦Proven⟧ the byte lengths and the accept/reject behaviour, measured here</span></p>

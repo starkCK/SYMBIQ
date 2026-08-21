@@ -143,6 +143,44 @@
 </p>
 <p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a> — two minutes, zero jargon, zero equations.</p>
 
+<!-- "Since you left" -- for a RETURNING visitor only (shown when a prior
+     concepts.json snapshot exists locally and it differs from the current
+     one). Ships hidden; the script below unhides it only after it has
+     something true to say -- same .reveal rule tiers.js follows, applied to
+     a second system. -->
+<div class="card" id="sinceleft" hidden>
+  <p style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Since you left</p>
+  <p id="sinceleft-body" style="margin:0"></p>
+</div>
+
+<!-- The first-ten-seconds playable widget -- a stripped one-hole version of
+     Circuit Golf's own hole 2 (reach |+> with H, par 1). Deliberately NOT
+     mounted via SymbiQ.games.mount('golf', ...): that engine's win() marks
+     the real nine-hole mission complete the moment ALL nine holes are done,
+     and a homepage teaser must never let one gate press on one hole silently
+     complete a mission the visitor never actually played. So this reuses the
+     same verified one-qubit gate matrices and Bloch projection (see
+     games.js's G.golf / quantum-mechanics.html#bloch for the shared engine)
+     as a small, independent, side-effect-free copy -- and the same golfsvg/
+     gsphere/gequator/gaxis/gtarget/gvec classes already in style.css, so it
+     needs no new CSS at all. -->
+<div class="card" id="tryit">
+  <p style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Try it — ten seconds, no signup</p>
+  <p style="margin:0 0 10px"><strong>Turn this into <span class="ket">|+⟩</span> with one gate.</strong> This is what &ldquo;the mathematics does the judging&rdquo; actually means.</p>
+  <svg class="golfsvg" viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bloch sphere: your state against the target" id="tryit-svg"></svg>
+  <p style="text-align:center;font-size:.85rem;color:var(--muted);margin:6px 0 0"><span style="color:var(--teal)">━ solid teal = you</span> · <span style="color:var(--violet)">┅ dashed violet = the target</span></p>
+  <p style="margin:10px 0 4px;text-align:center">
+    <button class="preset gatebtn" data-g="X">X</button>
+    <button class="preset gatebtn" data-g="Y">Y</button>
+    <button class="preset gatebtn" data-g="Z">Z</button>
+    <button class="preset gatebtn" data-g="H">H</button>
+    <button class="preset gatebtn" data-g="S">S</button>
+    <button class="preset gatebtn" data-g="T">T</button>
+    <button class="preset" id="tryit-reset" type="button">Reset</button>
+  </p>
+  <div id="tryit-out" style="text-align:center"></div>
+</div>
+
 <p>Everyone's watching the AI race. The interesting race is the one behind it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum computers are being aimed at the data AI can't get anywhere else. Neither story makes sense alone. SymbiQ covers the loop.</p>
 
 <div class="introute" id="introute">
@@ -159,14 +197,134 @@
 // asking again reads as not having noticed. Ships visible in the HTML (so a
 // broken script never hides it from someone who'd have used it), hidden here
 // rather than never rendered, matching tiers.js's own .reveal rule applied in
-// the opposite direction.
+// the opposite direction. The try-it teaser gets the same treatment: someone
+// who has already played or planned something here has already met the
+// mechanic.
 (function () {
   try {
     if (localStorage.getItem('symbiq.solverpath.v1') || localStorage.getItem('symbiq.pqc.v1')) {
       var el = document.getElementById('introute');
       if (el) el.hidden = true;
+      var t = document.getElementById('tryit');
+      if (t) t.hidden = true;
     }
   } catch (e) {}
+})();
+</script>
+<script>
+// The try-it engine. Same verified 2x2 complex gate matrices and Bloch
+// projection as games.js's Circuit Golf -- see that file's comment for the
+// full derivation; this is a deliberately independent, side-effect-free copy
+// (no SymbiQ.save writes at all), for the reason explained in the HTML
+// comment above.
+(function () {
+  var svg = document.getElementById('tryit-svg'), out = document.getElementById('tryit-out');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(t, a) { var n = document.createElementNS(NS, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
+  function add(t, a, txt) { var n = el(t, a); if (txt != null) n.textContent = txt; svg.appendChild(n); return n; }
+
+  var S2 = 1 / Math.sqrt(2), C4 = Math.cos(Math.PI / 4), S4 = Math.sin(Math.PI / 4);
+  function cm(p, q) { return [p[0]*q[0] - p[1]*q[1], p[0]*q[1] + p[1]*q[0]]; }
+  function cadd(p, q) { return [p[0]+q[0], p[1]+q[1]]; }
+  var GT = {
+    X: [[0,0],[1,0],[1,0],[0,0]], Y: [[0,0],[0,-1],[0,1],[0,0]], Z: [[1,0],[0,0],[0,0],[-1,0]],
+    H: [[S2,0],[S2,0],[S2,0],[-S2,0]], S: [[1,0],[0,0],[0,0],[0,1]], T: [[1,0],[0,0],[0,0],[C4,S4]]
+  };
+  function ap(g, s) { var m = GT[g]; return [cadd(cm(m[0],s[0]),cm(m[1],s[1])), cadd(cm(m[2],s[0]),cm(m[3],s[1]))]; }
+  function bloch(s) {
+    var a = s[0], b = s[1], acb = cm([a[0], -a[1]], b);
+    return [2*acb[0], 2*acb[1], (a[0]*a[0]+a[1]*a[1]) - (b[0]*b[0]+b[1]*b[1])];
+  }
+  var Z0 = [[1,0],[0,0]], TARGET = bloch(ap('H', Z0));
+
+  var R = 82, CX = 130, CY = 118, AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
+  function proj(v) {
+    return [CX + R * (-v[0]*Math.sin(AZ) + v[1]*Math.cos(AZ)),
+            CY + R * (v[0]*Math.cos(AZ)*Math.sin(EL) + v[1]*Math.sin(AZ)*Math.sin(EL) - v[2]*Math.cos(EL))];
+  }
+  add('circle', { 'class': 'gsphere', cx: CX, cy: CY, r: R });
+  var eq = '';
+  for (var i = 0; i <= 64; i++) { var t = i/64*2*Math.PI, p = proj([Math.cos(t), Math.sin(t), 0]); eq += (i?'L':'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+  add('path', { 'class': 'gequator', d: eq });
+  [[[0,0,1],'|0⟩'],[[0,0,-1],'|1⟩'],[[1,0,0],'|+⟩'],[[0,1,0],'|i⟩']].forEach(function (ax) {
+    var p = proj(ax[0]), o = proj([0,0,0]);
+    add('line', { 'class': 'gaxis', x1: o[0], y1: o[1], x2: p[0], y2: p[1] });
+    add('text', { 'class': 'gaxlab', x: p[0], y: p[1] + (ax[0][2] > 0 ? -7 : 13) }, ax[1]);
+  });
+  var pt = proj(TARGET);
+  add('line', { 'class': 'gtarget', x1: CX, y1: CY, x2: pt[0], y2: pt[1] });
+  add('circle', { 'class': 'gtargetdot', cx: pt[0], cy: pt[1], r: 4.5 });
+  var vLine = add('line', { 'class': 'gvec', x1: CX, y1: CY, x2: CX, y2: CY - R });
+  var vDot  = add('circle', { 'class': 'gdot', cx: CX, cy: CY - R, r: 5 });
+
+  var cur = Z0, solved = false;
+  function same(a, b) { for (var i = 0; i < 3; i++) if (Math.abs(a[i]-b[i]) > 1e-9) return false; return true; }
+  function render() {
+    var me = bloch(cur), pm = proj(me);
+    vLine.setAttribute('x2', pm[0]); vLine.setAttribute('y2', pm[1]);
+    vDot.setAttribute('cx', pm[0]); vDot.setAttribute('cy', pm[1]);
+  }
+  function reset() {
+    cur = Z0; solved = false; render();
+    out.className = ''; out.innerHTML = '';
+  }
+  render();
+  Array.prototype.forEach.call(document.querySelectorAll('#tryit .gatebtn'), function (b) {
+    b.addEventListener('click', function () {
+      if (solved) return;
+      cur = ap(b.getAttribute('data-g'), cur);
+      render();
+      if (same(bloch(cur), TARGET)) {
+        solved = true;
+        out.className = 'verdict good';
+        out.innerHTML = '<strong>That&#39;s it &mdash; one gate, proven optimal, nothing shorter exists.</strong> ' +
+          'Circuit Golf has nine holes like this one, and seven more games where every par and every ' +
+          'probability is computed rather than chosen. <a href="play.html#golf">Play the rest of Circuit Golf →</a>';
+      }
+    });
+  });
+  document.getElementById('tryit-reset').addEventListener('click', reset);
+})();
+</script>
+<script>
+// "Since you left": a diff against data/concepts.json (the one source of
+// truth for what SymbiQ teaches) and a locally-stored snapshot of concept ids
+// seen on a PRIOR visit. Deliberately its own tiny localStorage key rather
+// than folded into save.js's symbiq.solverpath.v1 bag -- same reasoning as
+// depth.js gives for its own key: this is reading history, not Solver's Path
+// progress, and resetting or importing one must never touch the other.
+(function () {
+  var box = document.getElementById('sinceleft'), body = document.getElementById('sinceleft-body');
+  if (!box || !body) return;
+  var KEY = 'symbiq.seen.v1';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
+  function persist(ids) { try { localStorage.setItem(KEY, JSON.stringify({ ids: ids, at: Date.now() })); } catch (e) {} }
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+  fetch('data/concepts.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (D) {
+      var cur = (D.concepts || []).filter(function (c) { return c.kind === 'concept'; });
+      var prev = load();
+      if (prev && prev.ids && prev.ids.length) {
+        var prevSet = {};
+        prev.ids.forEach(function (id) { prevSet[id] = true; });
+        var fresh = cur.filter(function (c) { return !prevSet[c.id]; });
+        if (fresh.length) {
+          var shown = fresh.slice(0, 3);
+          var links = shown.map(function (c) {
+            return '<a href="' + c.page + (c.anchor ? '#' + c.anchor : '') + '">' + esc(c.term) + '</a>';
+          }).join(', ');
+          var more = fresh.length > shown.length ? ' and ' + (fresh.length - shown.length) + ' more' : '';
+          body.innerHTML = '<strong>' + fresh.length + ' new topic' + (fresh.length === 1 ? '' : 's') +
+            '</strong> landed since your last visit: ' + links + more + '.';
+          box.hidden = false;
+        }
+      }
+      persist(cur.map(function (c) { return c.id; }));
+    })
+    .catch(function () {}); // a homepage nicety, never a hard dependency
 })();
 </script>
 

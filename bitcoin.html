@@ -157,7 +157,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop, human-approved</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -199,7 +199,7 @@
 <p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half — today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps — sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="basics.html#red">Grover audit</a>: quadratic speedups die in the overhead.</p>
 
 <h2 data-tier-keep>The calculator: what would it actually take?</h2>
-<p>Drag the sliders. The model is the same one our community uses in <a href="basics.html#red">Boss Questions</a>: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation — the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
+<p>Drag the sliders. The model is the one <a href="basics.html#red">the 🔴 tier</a> works in: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation — the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
 
 <div class="card" id="shor-widget">
   <h3>Shor-vs-Bitcoin resource estimator</h3>
@@ -227,7 +227,7 @@
 <p>This page asserts those counts; it does not derive how Shor's algorithm reaches them. The mechanism — the quantum Fourier transform, phase estimation, and the period-finding step that turns "factor N" into "find a period" — is worked through from scratch, not asserted, on <a href="formalism.html#f13">The Machinery</a>.</p>
 <p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ 1.9B</strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation — and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
 <p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis — under half a million physical qubits, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong>≈9 minutes</strong> once your transaction appears — inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
-<p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime — magic-state throughput is the real budget (same economics as our magic-state Boss Question); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic — there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once — hardware error rates AND algorithmic Toffoli counts — so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
+<p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime — magic-state throughput is the real budget (the same economics as <a href="qec.html#red">magic-state distillation</a>); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic — there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once — hardware error rates AND algorithmic Toffoli counts — so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
 <p><em>Verification status: referee-verified — fresh-session hostile-referee pass with fixes applied 2026-07-14, including the March-2026 supersession (arXiv 2603.28846). Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
 <div class="cyu" data-a="1">
@@ -242,7 +242,7 @@
   <p class="cyu-why">Both estimates are careful and neither is wrong. The collapse came from the <em>algorithm</em> side — active-volume architectures, windowed arithmetic and far lower Toffoli counts — plus the observation in <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a> that the first half of Shor’s algorithm can be precomputed from public curve parameters, before your transaction even exists. That is the honest lesson: <strong>a correctly-cited number can go stale by three orders of magnitude in four years</strong>, and this page got that wrong once — it is <a href="corrections.html">logged</a>.</p>
 </div>
 <div class="pathway-nudge" hidden>
-  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
 </div>
 
 <h2 data-tier-stop>So when should anyone actually worry?</h2>
@@ -252,7 +252,7 @@
 <div class="grid">
   <div class="card"><h3>🟢 Error correction, no math</h3><p>Why quantum computers need babysitting at all.</p><a href="basics.html">Read →</a></div>
   <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, decoders, and the Grover audit this page leans on.</p><a href="basics.html#red">Read →</a></div>
-  <div class="card"><h3>🏁 The Race</h3><p>Who's closest to machines that matter — scored weekly, predictions on record.</p><a href="race.html">Scoreboard →</a></div>
+  <div class="card"><h3>🏁 The Race</h3><p>Who's closest to machines that matter. The table is still empty, and the page says why.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 
 <footer>Quantum vs Bitcoin, in numbers — not panic.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>

@@ -163,7 +163,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop, human-approved</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -252,7 +252,7 @@
 </figure>
 
 <h2 data-tier-keep>The calculator: physical qubits → logical qubits</h2>
-<p>This is the exact model our community uses in <a href="basics.html#red">Boss Question #3</a>. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.</p>
+<p>This is the exact model derived at <a href="basics.html#red">🟢 Basics, 🔴 tier</a>. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.</p>
 
 <div class="card" id="lq-widget">
   <h3>Logical-qubit calculator</h3>
@@ -265,17 +265,17 @@
     <button class="preset on" data-t="9">10⁻⁹ serious</button>
     <button class="preset" data-t="12">10⁻¹² cryptography</button>
   </p>
-  <p style="margin:6px 0 4px">Or drop in the two machines from Boss #3:
+  <p style="margin:6px 0 4px">Or drop in the two machines from the 🔴 worked example below:
     <button class="preset" data-r="0" data-n="50" data-t="9">Machine A (noisy, big)</button>
     <button class="preset" data-r="4" data-n="40" data-t="9">Machine B (clean, small)</button>
   </p>
   <div id="lq-out" class="formula" aria-live="polite"></div>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, Boss-#3 conventions (referee-verified): p<sub>L</sub> ≈ (p/p<sub>th</sub>)^⌊(d+1)/2⌋; smallest odd code distance <em>d</em> meeting the target; surface-code patch ≈ 2d² physical qubits per logical; logical count floored. Ignores routing, magic-state factories, and per-patch overhead — which for real computation can rival or exceed the data-patch cost — so a working machine fields materially fewer. The exchange-rate <em>shape</em> is what's honest here, not the count.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, referee-verified conventions: p<sub>L</sub> ≈ (p/p<sub>th</sub>)^⌊(d+1)/2⌋; smallest odd code distance <em>d</em> meeting the target; surface-code patch ≈ 2d² physical qubits per logical; logical count floored. Ignores routing, magic-state factories, and per-patch overhead — which for real computation can rival or exceed the data-patch cost — so a working machine fields materially fewer. The exchange-rate <em>shape</em> is what's honest here, not the count.</p>
 </div>
 
 <span class="tier r">🔴 Real math</span>
 <h2 id="red">Worked: why 10× fewer qubits can win</h2>
-<p>Take the two machines from <a href="basics.html#red">Boss Question #3</a> and run them to a p<sub>L</sub> ≤ 10⁻⁹ target under the surface-code model above.</p>
+<p>Take two machines and run them to a p<sub>L</sub> ≤ 10⁻⁹ target under the surface-code model above.</p>
 <p><strong>Machine A</strong> — 10⁵ physical qubits at p/p<sub>th</sub> = 1/2. Need (1/2)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀2 ≈ 29.9 → 30 → <em>d</em> ≥ 59. Patch ≈ 2·59² = 6,962 physical/logical → 10⁵ / 6,962 ≈ <strong>14 logical qubits</strong>.</p>
 <p><strong>Machine B</strong> — 10⁴ physical qubits at p/p<sub>th</sub> = 1/20 (a <em>tenth</em> the hardware, but far cleaner). Need (1/20)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀20 ≈ 6.9 → 7 → <em>d</em> ≥ 13. Patch ≈ 2·13² = 338 physical/logical → 10⁴ / 338 ≈ <strong>29 logical qubits</strong>.</p>
 <p><strong>B wins, 29 to 14 — with 10× fewer physical qubits.</strong> The exponent ⌊(d+1)/2⌋ is where the leverage lives: cleaner hardware doesn't just shave the patch, it shrinks the distance you need in the first place, and you pay for distance squared. Error rate beats scale, and it isn't close. This is the whole case for spending your next engineering dollar on fidelity — much of it <a href="ai.html">bought by AI-driven calibration and decoding</a> — rather than on more noisy qubits.</p>
@@ -294,7 +294,7 @@
   <p class="cyu-why">A patch costs ~2<em>d</em>² physical qubits, and <em>d</em> is driven by how far below threshold you are — so error rate beats raw size, badly. B fits <strong>29</strong> logical qubits to A’s <strong>14</strong> while holding a tenth of the hardware. This is the referee-verified Q21 answer, and the calculator above reproduces it exactly. It is also why "1,000 qubits!" is the wrong headline.</p>
 </div>
 <div class="pathway-nudge" hidden>
-  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and the answers get argued about <a href="https://discord.gg/fWKGSb7ZHE">in the Discord</a>.
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
 </div>
 
 <h2 data-tier-stop>Go deeper</h2>

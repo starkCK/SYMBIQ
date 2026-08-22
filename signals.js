@@ -45,9 +45,9 @@
       .then(function (idx) {
         var entries = (idx && idx.entries) || [];
         if (!entries.length) {
-          host.innerHTML = '<p class="archq-loading">No Signals published yet. The pipeline drafts one a '
-            + 'day when there is a story worth writing about, but nothing goes out until a human replies '
-            + '<code>post</code> — check back soon.</p>';
+          host.innerHTML = '<p class="archq-loading">No Signals published yet — and none are queued either: '
+            + 'the job that drafts them has not run successfully since it was created. What is supposed to '
+            + 'happen, and why it has not, is written out <a href="#how">below</a>.</p>';
           return;
         }
         // Appended oldest-first as they publish; show newest first.

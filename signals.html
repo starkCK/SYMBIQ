@@ -33,7 +33,7 @@
 <script src="tiers.js?v=2" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script src="signals.js" defer></script>
+<script src="signals.js?v=2" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -112,7 +112,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain active">The Signal<span class="sub">News from the loop, human-approved</span></a>
+      <a href="signals.html" class="navmain active">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -126,7 +126,7 @@
 </nav>
 
 <h1>The Signal</h1>
-<p class="tagline">One AI/quantum story at a time, written in the loop's voice. Every post names its evidence tier, links straight to whatever it rests on that SymbiQ already teaches, and carries a "what this does NOT mean" section as standard — not a footnote. A human reads and approves every story before it ships; nothing here is auto-published.</p>
+<p class="tagline"><strong>Nothing has been published here yet.</strong> When something is, it will be one AI/quantum story at a time: evidence tier named, linked straight to whatever it rests on that SymbiQ already teaches, and carrying a &ldquo;what this does NOT mean&rdquo; section as standard rather than a footnote. A human reads and approves every story before it ships; nothing here is auto-published.</p>
 
 <div class="card" id="sig-summary">
   <h3>Loading The Signal…</h3>
@@ -135,8 +135,9 @@
 
 <div id="sig-list"></div>
 
-<h2>How The Signal works</h2>
-<p>A daily pass over a short list of primary sources drafts at most one story — never a roundup, never filler for a quiet day. The draft is forbidden from stating any number that is not in the source, must name what a reader would wrongly conclude from the headline, and is checked against everything SymbiQ already teaches so a claim about, say, a new decoder result links straight to the page that explains decoders. None of that publishes on its own: it becomes an approval request, and only a reply of <code>post</code> ships it.</p>
+<h2 id="how">How The Signal is meant to work — and why it is not</h2>
+<p><strong>The design.</strong> A daily pass over a short list of primary sources drafts at most one story — never a roundup, never filler for a quiet day. The draft is forbidden from stating any number that is not in the source, must name what a reader would wrongly conclude from the headline, and is checked against everything SymbiQ already teaches so a claim about, say, a new decoder result links straight to the page that explains decoders. None of that publishes on its own: it becomes an approval request, and only a reply of <code>post</code> ships it.</p>
+<p><strong>Status, 22 August 2026: it is not running.</strong> The scheduled job exists and fires every morning, and it has failed on every run since the day it was created — it stops at its first step, before it ever reads a source, because a credential it needs was never configured. So there is no queue of drafts waiting on a human here; there are no drafts at all. This paragraph comes down when the first Signal goes up.</p>
 
 <script>
 (function () {
@@ -150,7 +151,7 @@
 })();
 </script>
 
-<footer>Nothing here auto-publishes. Every Signal is approved by a human before it ships.<br>SymbiQ · Found an error in one? That is worth the largest bounty on the server — <a href="corrections.html#report">tell us</a>.</footer>
+<footer>Nothing here auto-publishes. Every Signal is approved by a human before it ships.<br>SymbiQ · Found an error in one? That is worth the biggest bounty we pay — <a href="corrections.html#report">tell us</a>.</footer>
 </div>
 </body>
 </html>

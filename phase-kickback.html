@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why do Grover's and Shor's algorithms actually work?</title>
+<meta name="description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
+<!-- social:start -->
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/phase-kickback.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/phase-kickback.html">
+<meta property="og:title" content="Why do Grover's and Shor's algorithms actually work?">
+<meta property="og:description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="Why do Grover's and Shor's algorithms actually work?">
+<meta name="twitter:description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<!-- social:end -->
+<link rel="stylesheet" href="style.css?v=35">
+<style>
+.pk-wrap { display: flex; gap: 26px; justify-content: center; align-items: flex-start; flex-wrap: wrap; margin: 8px 0; }
+.pk-col { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 160px; }
+.pk-col svg { width: 150px; height: 150px; }
+.pk-col-lab { font-size: .82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.pk-col-sub { font-size: .82rem; color: var(--muted); text-align: center; min-height: 2.6em; }
+.pk-row { display: flex; align-items: center; gap: 10px; margin: 14px 0; flex-wrap: wrap; justify-content: center; }
+.pk-row label { font-size: .88rem; color: var(--muted); }
+.pk-row input[type=range] { flex: 1; min-width: 140px; max-width: 260px; }
+.pk-row b { color: var(--teal); font-variant-numeric: tabular-nums; }
+#pk-total { color: var(--violet); font-weight: 700; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Why do Grover's and Shor's algorithms actually work?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-08-23",
+      "dateModified": "2026-08-23",
+      "description": "Phase kickback: when a controlled gate acts on a target already sitting in one of its eigenstates, the target never changes -- the eigenvalue's phase lands on the control instead. The single mechanism behind Deutsch-Jozsa, Grover's algorithm, and quantum phase estimation."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "Why do Grover's and Shor's algorithms actually work?", "item": "phase-kickback.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is phase kickback in quantum computing?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Apply a controlled version of a unitary gate U where the target qubit is already prepared in an eigenstate of U. The target's state never changes -- but the eigenvalue's phase, which would normally have landed on the target, appears instead as a relative phase on the control qubit. That is phase kickback: information about the target's eigenvalue leaks into the control register rather than the register the gate was nominally applied to."}
+        },
+        {
+          "@type": "Question",
+          "name": "Which quantum algorithms use phase kickback?",
+          "acceptedAnswer": {"@type": "Answer", "text": "It is the core mechanism behind Deutsch's algorithm and the Deutsch-Jozsa algorithm (the oracle's answer kicks back onto the query register as a phase), Grover's search algorithm (the phase-oracle formulation marks the target state by kicking back a sign flip), and quantum phase estimation -- which is named after this exact effect, and which Shor's algorithm uses to find the period behind factoring."}
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't the target qubit change during phase kickback?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Because it starts in an eigenstate of the gate being applied. A controlled-U gate only ever multiplies an eigenstate by its eigenvalue -- a global phase for that state alone -- so the target's state vector points in exactly the same direction afterward. Since the control's two branches (control=0 keeps the target unchanged, control=1 multiplies it by the eigenvalue) share the same target state, the eigenvalue factors out of the target register entirely and attaches to the control instead."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="nav.js?v=7" defer></script>
+<script src="depth.js" defer></script>
+<script src="tiers.js?v=2" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
+</head>
+<body data-tiers>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="quantum">
+      <summary>Quantum</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain active">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 17 topics</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="desk">
+      <summary>The Desk</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<h1>Why do Grover's and Shor's algorithms actually work?</h1>
+<p class="tagline">One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name — phase kickback — and this site never said it out loud until now.</p>
+
+<div class="card">
+<h3>The answer in four lines</h3>
+<p>Apply a controlled gate where the target qubit is already sitting in one of that gate's own <strong>eigenstates</strong>, and something backwards happens: the target doesn't change at all — it can't, an eigenstate just gets multiplied by a number — but that number's phase has to go <em>somewhere</em>, and it lands on the <strong>control</strong> qubit instead, as a twist between its |0⟩ and |1⟩. That misdirected phase is <strong>phase kickback</strong>, and it is the entire mechanism behind quantum algorithms that look, on the surface, unrelated: Grover's oracle marking an answer, and quantum phase estimation, which is quite literally named after this effect and is the engine inside Shor's algorithm.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">The trick: aim at something that can't move, and watch the recoil</h2>
+<p>Picture a locked door with a combination dial, and a rule: turning the dial to the right number does nothing visible to the door — it was already unlocked, so "unlocking" it again just leaves it exactly as unlocked as before. But the person turning the dial isn't left unaffected. Their hand picks up a small, specific twist depending on whether the combination they tried was right or wrong — a twist you can't see by looking at the door, only by looking at the hand.</p>
+<p>Now do this in superposition: instead of trying combinations one at a time, hold every combination in your hand <em>at once</em>, and touch the dial once. The door — silent throughout, never changing — has quietly imprinted a different twist onto each of your simultaneously-held combinations. Nothing about the door tells you which twist went where. But if you now let all those twisted possibilities interfere with each other — the twisted-right combination reinforcing itself, the twisted-wrong ones cancelling out — the answer falls out.</p>
+<p>That's the whole trick, stated without a single equation. The "door" is a target qubit prepared so that touching it can never change it. The "twist" is a phase. And "letting them interfere" is exactly what a Hadamard gate, or the more elaborate Fourier transform used in Shor's algorithm, is for. The mechanism, with the equation: <a href="#yellow">🟡 keep going ↓</a></p>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">The mechanism: eigenstates don't move, so the phase has nowhere else to go</h2>
+<p>An <strong>eigenstate</strong> of a gate U is a state that U leaves pointing the same direction — U only ever multiplies it by a number, U|u⟩ = λ|u⟩, called the eigenvalue. For any gate actually used in quantum computing, λ is a pure phase, λ = e<sup>iφ</sup>, since gates preserve length.</p>
+<p>The cleanest possible case: the gate Z flips the sign of |1⟩ and leaves |0⟩ alone — so |1⟩ is an eigenstate of Z with eigenvalue −1. Take the <strong>controlled</strong> version, CZ, wired so a control qubit decides whether Z is applied to a target held fixed at |1⟩, and put the control in an equal superposition |+⟩ = (|0⟩+|1⟩)/√2:</p>
+<div class="formula">CZ ( |+⟩ ⊗ |1⟩ ) = (|0⟩|1⟩ − |1⟩|1⟩) / √2 = |−⟩ ⊗ |1⟩</div>
+<p>Read that literally: the target started at |1⟩ and ends at |1⟩ — untouched, every single time, because |1⟩ is exactly what Z can't change. But the control started at |+⟩ and ended at |−⟩ = (|0⟩−|1⟩)/√2 — a genuine, measurable flip, purely from being wired to a gate that, by every other measure, "did nothing."</p>
+<p>Try it below with a general phase, not just Z's −1.</p>
+
+<h2 data-tier-keep>Watch the phase kick back</h2>
+<p>The target (left) is fixed at |1⟩ throughout — an eigenstate of every phase gate below, so it is mathematically incapable of moving. Set how much phase each application carries, then apply it a few times and watch the control (right) accumulate it instead.</p>
+
+<div class="card" id="pk-widget">
+  <h3>Two qubits, one that can't move</h3>
+  <div class="pk-wrap">
+    <div class="pk-col">
+      <span class="pk-col-lab">Target</span>
+      <svg id="pk-target-svg" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Target qubit, fixed at the eigenstate |1>, never moves"></svg>
+      <span class="pk-col-sub">stays exactly at |1⟩ — it cannot move, by construction</span>
+    </div>
+    <div class="pk-col">
+      <span class="pk-col-lab">Control</span>
+      <svg id="pk-control-svg" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Control qubit, accumulating the kicked-back phase"></svg>
+      <span class="pk-col-sub">accumulates the phase the target should have kept</span>
+    </div>
+  </div>
+  <div class="pk-row">
+    <label for="pk-phi">Phase per application φ</label>
+    <input type="range" id="pk-phi" min="1" max="8" value="4" step="1" aria-describedby="pk-phi-out">
+    <b id="pk-phi-out">π/2</b>
+  </div>
+  <p style="margin:12px 0 4px;text-align:center">
+    <button class="bigplay" id="pk-apply">Apply controlled-phase(φ)</button>
+    <button class="bigplay ghost" id="pk-reset">Reset</button>
+  </p>
+  <p style="text-align:center;margin-bottom:4px">Total kicked back onto the control: <span id="pk-total">0</span> · applications: <span id="pk-count">0</span></p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest scope: this shows the cleanest case — a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full — including the numerical verification — at <a href="formalism.html#f08">The Machinery, topic f08</a>. This widget deliberately does not re-derive that; it exists to make the mechanism visible before the proof.</p>
+</div>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">Where this mechanism actually runs — and where the proofs already live</h2>
+<p>This page does not re-derive what <a href="formalism.html">The Machinery</a> has already proven and independently referee-verified. It exists to name the mechanism plainly and point at exactly where each proof lives.</p>
+<p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register — proven, and numerically verified over every possible function at small n, on <a href="formalism.html#f08">topic f08</a> and <a href="formalism.html#f09">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)).</p>
+<p><strong>Grover's algorithm</strong> uses the identical trick in its <em>phase-oracle</em> form: instead of writing "is this the answer?" to a separate register, the oracle multiplies the marked state by −1 directly, exactly the kickback pattern above with the marked state playing the role of the fixed eigenstate. Grover, <a href="https://arxiv.org/abs/quant-ph/9605043">arXiv quant-ph/9605043</a> (Proc. 28th STOC, 212 (1996)), proved the O(√N) query bound this buys; play the mechanism yourself at <a href="play.html#grover">Grover's Escape</a>, where over-rotating past the answer is the honest failure mode this site's own games are built to demonstrate, not hide.</p>
+<p><strong>Quantum phase estimation</strong> generalises the widget above from a fixed ±1 to an arbitrary eigenvalue e<sup>2πiθ</sup> of any unitary U, using repeated controlled applications of increasing powers of U to read θ out bit by bit — proven, with its honest "sharply peaked, not exact" limit stated plainly, on <a href="formalism.html#f12">topic f12</a>. <strong>Shor's algorithm</strong> is one specific choice of U — modular multiplication — that turns phase estimation's output into the period behind factoring, worked through with a 2,000-trial numerical verification on <a href="formalism.html#f13">topic f13</a>, which is also where <a href="bitcoin.html">the Bitcoin page's</a> qubit counts are actually derived rather than asserted.</p>
+<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). This page's own new claims are narrow by design — the CZ-kickback identity above was checked by hand against the standard definition of CZ and Z's eigenstates, algebra any reader can redo in four lines. The Grover citation (arXiv quant-ph/9605043, Proc. 28th STOC (1996)) was fetched and confirmed directly against its arXiv abstract page before this page shipped; it is the first formal citation of Grover's original paper anywhere on this site, which previously described and played the algorithm without ever citing its source. Every other citation on this page (Deutsch 1985, Deutsch &amp; Jozsa 1992, Cleve/Ekert/Macchiavello/Mosca 1998) is reused verbatim from <a href="formalism.html#f08">formalism.html</a>, where it was already independently fetched, checked, and cleared a fresh-session hostile-referee pass on 2026-08-20 — not re-verified here, because it did not need to be. <b>This page's own widget and prose have not yet had an independent hostile-referee pass</b>, same open status as <a href="circuits.html">circuits.html</a> and <a href="analog.html">analog.html</a>. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
+
+<h2>References</h2>
+<div class="card">
+  <p>• Deutsch's algorithm: Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)<br>
+  • Deutsch-Jozsa: Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992)<br>
+  • Grover's algorithm: Grover, <a href="https://arxiv.org/abs/quant-ph/9605043">arXiv quant-ph/9605043</a> (Proc. 28th STOC, 212 (1996))<br>
+  • Phase estimation and period-finding: proved in full on <a href="formalism.html#f12">The Machinery, f12</a> and <a href="formalism.html#f13">f13</a>, citations there</p>
+</div>
+
+<div class="cyu" data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A controlled-U gate is applied with the target prepared in an eigenstate of U. What actually happens?</p>
+  <div class="cyu-opts">
+    <button data-opt>The target changes to reflect U's eigenvalue.</button>
+    <button data-opt>Nothing happens anywhere — eigenstates are immune to gates.</button>
+    <button data-opt>The target stays exactly as it was, because that is what "eigenstate" means, and the eigenvalue's phase attaches to the control qubit instead.</button>
+    <button data-opt>The control and target swap states.</button>
+  </div>
+  <p class="cyu-why">An eigenstate of U is, by definition, a state U only multiplies by a number — it cannot rotate an eigenstate into some other state, only rescale it. Since a controlled-U gate's two branches (control=0 does nothing, control=1 applies U) share the same target state either way, that shared eigenvalue factors out of the target entirely and becomes a genuine, measurable difference between the control's own two branches instead. This is not a metaphor — it is the same algebra the widget above runs, and the same algebra formalism.html#f08 proves in full for Deutsch's algorithm.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🔴 The full proofs</h3><p>Every claim on this page, derived from scratch and numerically verified — Deutsch's, Deutsch-Jozsa, phase estimation, and Shor's period-finding.</p><a href="formalism.html">The Machinery →</a></div>
+  <div class="card"><h3>🎯 Play the oracle</h3><p>Grover's algorithm's phase kickback, as a game — tilt the odds, look once, and see why looking twice loses it.</p><a href="play.html#grover">Grover's Escape →</a></div>
+  <div class="card"><h3>₿ Where this ends up</h3><p>The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.</p><a href="bitcoin.html">Can quantum break Bitcoin? →</a></div>
+</div>
+
+<footer>Phase kickback — the one mechanism, applied four times.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  try {
+    var svgns = 'http://www.w3.org/2000/svg';
+    var targetSvg = document.getElementById('pk-target-svg');
+    var controlSvg = document.getElementById('pk-control-svg');
+    var phiInput = document.getElementById('pk-phi');
+    var phiOut = document.getElementById('pk-phi-out');
+    var applyBtn = document.getElementById('pk-apply');
+    var resetBtn = document.getElementById('pk-reset');
+    var totalOut = document.getElementById('pk-total');
+    var countOut = document.getElementById('pk-count');
+    if (!targetSvg || !controlSvg || !phiInput || !applyBtn) return;
+
+    var PHI_STEPS = { 1: [1,8,'π/8'], 2: [1,4,'π/4'], 3: [3,8,'3π/8'], 4: [1,2,'π/2'],
+                       5: [5,8,'5π/8'], 6: [3,4,'3π/4'], 7: [7,8,'7π/8'], 8: [1,1,'π'] };
+    function phiValue() { var s = PHI_STEPS[phiInput.value]; return Math.PI * s[0] / s[1]; }
+    function phiLabel() { return PHI_STEPS[phiInput.value][2]; }
+
+    var totalPhase = 0, count = 0;
+
+    function drawDial(svg, angleRad, colorVar, fixed) {
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      var cx = 75, cy = 75, r = 58;
+      var circle = document.createElementNS(svgns, 'circle');
+      circle.setAttribute('cx', cx); circle.setAttribute('cy', cy); circle.setAttribute('r', r);
+      circle.setAttribute('fill', 'none'); circle.setAttribute('stroke', 'var(--border)'); circle.setAttribute('stroke-width', '1.5');
+      svg.appendChild(circle);
+      // |0> and |1> reference marks
+      [0, Math.PI].forEach(function (a, i) {
+        var x = cx + r * Math.cos(a - Math.PI/2), y = cy + r * Math.sin(a - Math.PI/2);
+        var tick = document.createElementNS(svgns, 'circle');
+        tick.setAttribute('cx', x); tick.setAttribute('cy', y); tick.setAttribute('r', '2.4');
+        tick.setAttribute('fill', 'var(--muted)');
+        svg.appendChild(tick);
+      });
+      var x0 = cx, y0 = cy;
+      var x1 = cx + r * Math.cos(angleRad - Math.PI/2), y1 = cy + r * Math.sin(angleRad - Math.PI/2);
+      var line = document.createElementNS(svgns, 'line');
+      line.setAttribute('x1', x0); line.setAttribute('y1', y0);
+      line.setAttribute('x2', x1); line.setAttribute('y2', y1);
+      line.setAttribute('stroke', 'var(--' + colorVar + ')'); line.setAttribute('stroke-width', '3'); line.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(line);
+      var dot = document.createElementNS(svgns, 'circle');
+      dot.setAttribute('cx', x1); dot.setAttribute('cy', y1); dot.setAttribute('r', '5');
+      dot.setAttribute('fill', 'var(--' + colorVar + ')');
+      svg.appendChild(dot);
+      if (fixed) {
+        var pin = document.createElementNS(svgns, 'circle');
+        pin.setAttribute('cx', cx); pin.setAttribute('cy', cy); pin.setAttribute('r', '3');
+        pin.setAttribute('fill', 'none'); pin.setAttribute('stroke', 'var(--' + colorVar + ')'); pin.setAttribute('stroke-width', '1.5');
+        svg.appendChild(pin);
+      }
+    }
+
+    function render() {
+      drawDial(targetSvg, Math.PI, 'teal', true);   // target: fixed at |1>, angle = pi, NEVER moves
+      drawDial(controlSvg, totalPhase, 'violet', false);
+      totalOut.textContent = (totalPhase / Math.PI).toFixed(3) + 'π';
+      countOut.textContent = String(count);
+    }
+    function updatePhiLabel() { phiOut.textContent = phiLabel(); }
+
+    applyBtn.addEventListener('click', function () {
+      totalPhase = (totalPhase + phiValue()) % (2 * Math.PI);
+      count++;
+      render();
+    });
+    resetBtn.addEventListener('click', function () { totalPhase = 0; count = 0; render(); });
+    phiInput.addEventListener('input', updatePhiLabel);
+
+    updatePhiLabel();
+    render();
+  } catch (e) { /* additive -- the prose above stands without this widget */ }
+})();
+</script>
+</body>
+</html>

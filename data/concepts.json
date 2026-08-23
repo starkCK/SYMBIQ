@@ -15,6 +15,16 @@
   },
   "concepts": [
     {
+      "id": "phase-kickback",
+      "term": "phase kickback",
+      "aliases": [],
+      "page": "phase-kickback.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A controlled gate applied to a target already in one of its eigenstates leaves the target untouched and dumps the eigenvalue's phase onto the control instead -- the mechanism inside Deutsch-Jozsa, Grover's and phase estimation alike."
+    },
+    {
       "id": "the-bench",
       "term": "The Bench",
       "aliases": ["three methods, many replays"],
@@ -928,7 +938,7 @@
     {
       "id": "deutsch-algorithm",
       "term": "Deutsch's algorithm",
-      "aliases": ["Deutsch algorithm", "phase kickback", "constant or balanced"],
+      "aliases": ["Deutsch algorithm", "constant or balanced"],
       "page": "formalism.html",
       "anchor": "f08",
       "tier": "r",

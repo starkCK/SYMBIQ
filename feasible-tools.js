@@ -295,8 +295,8 @@
             '<span class="orhud-k">Profit</span><span class="orhud-v big">' + fmt(sol.value) + '</span>' +
             '<span class="orhud-k">Par</span><span class="orhud-v">' + L.par + '</span>' +
             '<span class="orctl">' +
-              '<button class="orsm" data-undo' + (hist.length && !done ? '' : ' disabled') + '>↶ undo</button>' +
-              '<button class="orsm" data-restart>↺ restart</button>' +
+              '<button class="ctrlbtn" data-undo' + (hist.length && !done ? '' : ' disabled') + '>↶ undo</button>' +
+              '<button class="ctrlbtn" data-restart>↺ restart</button>' +
             '</span>' +
           '</div>' +
           '<div class="orprog"><i style="width:' + pct + '%"></i></div>' +
@@ -577,7 +577,7 @@
             '<span class="orhud-k">Best haul</span><span class="orhud-v big">' + inc + '</span>' +
             '<span class="orhud-k">Branches opened</span><span class="orhud-v">' + used + '</span>' +
             '<span class="orhud-k">Par</span><span class="orhud-v">' + L.par + '</span>' +
-            '<span class="orctl"><button class="orsm" data-restart>↺ restart</button></span>' +
+            '<span class="orctl"><button class="ctrlbtn" data-restart>↺ restart</button></span>' +
           '</div>' +
           '<div class="orbar" title="' + killed + ' of ' + TOTAL + ' accounted for">' +
             '<i style="width:' + pct + '%"></i><span>' + killed.toLocaleString() + ' of ' +

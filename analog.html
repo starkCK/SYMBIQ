@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can a classical machine out-optimise a quantum one?</title>
+<meta name="description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
+<!-- social:start -->
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/analog.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/analog.html">
+<meta property="og:title" content="Can a classical machine out-optimise a quantum one?">
+<meta property="og:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ. Operations research, run for real.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="Can a classical machine out-optimise a quantum one?">
+<meta name="twitter:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
+<!-- social:end -->
+<link rel="stylesheet" href="style.css?v=35">
+<style>
+.am-pair { display: flex; gap: 22px; align-items: center; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+.am-pair svg { width: 150px; height: 90px; }
+.am-pair figcaption { font-size: .85rem; color: var(--muted); text-align: center; max-width: 150px; }
+.am-graph-wrap { display: flex; justify-content: center; }
+.am-graph-wrap svg { width: 100%; max-width: 340px; height: auto; }
+.am-row { display: flex; align-items: center; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
+.am-row b { color: var(--teal); font-variant-numeric: tabular-nums; }
+#am-readout .yes { color: var(--green); font-weight: 700; }
+#am-readout .no { color: var(--yellow); font-weight: 700; }
+.am-legend-row { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; font-size: .84rem; color: var(--muted); margin-top: 8px; }
+.am-legend-row span { display: inline-flex; align-items: center; gap: 6px; }
+.am-swatch { width: 16px; height: 3px; display: inline-block; border-radius: 2px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Can a classical machine out-optimise a quantum one?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-08-23",
+      "dateModified": "2026-08-23",
+      "description": "The classical rival to quantum annealing: Ising machines built from coupled oscillators, coupled lasers, or fluctuating probabilistic bits, all engineered so their own physical resting state solves an optimisation problem."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "Can a classical machine out-optimise a quantum one?", "item": "analog.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is an Ising machine?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A physical device -- built from coupled electronic oscillators, coupled lasers, or networks of fluctuating probabilistic bits -- engineered so its own natural resting state minimises an energy function called the Ising Hamiltonian. Because a huge range of optimisation problems, including Max-Cut, can be rewritten in that exact form, letting the physical system settle is a way of solving the optimisation problem without running a search algorithm over it."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is an Ising machine the same as a quantum annealer?",
+          "acceptedAnswer": {"@type": "Answer", "text": "No. A quantum annealer (such as D-Wave's hardware) minimises the same Ising Hamiltonian using quantum tunnelling through an engineered Hamiltonian. Oscillator Ising machines, coherent (laser-based) Ising machines, and probabilistic-bit machines minimise it using entirely classical physics -- injection-locking, optical parametric oscillation, or thermal fluctuation. They are built to solve the same class of problem by a different physical route, which makes them the direct classical rival any quantum-optimisation claim has to beat."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is a p-bit?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A probabilistic bit: a physical unit whose state continuously fluctuates between 0 and 1 rather than sitting still, with the probability of each state set by its neighbours -- a physical realisation of a stochastic (Boltzmann-machine-style) binary unit. Networks of p-bits solve Ising and optimisation problems the same way oscillator and laser networks do. The largest demonstrated network, reported in 2026, links one million p-bits by networking ordinary FPGAs together."}
+        },
+        {
+          "@type": "Question",
+          "name": "Does a classical Ising machine always beat a quantum annealer?",
+          "acceptedAnswer": {"@type": "Answer", "text": "No, and neither claim holds universally. Benchmarking work comparing quantum annealers, coherent Ising machines and classical heuristics has found that which approach performs best depends on the specific problem instance and how its parameters are tuned, not on the hardware category alone. That instance-dependence, not a settled winner, is the honest state of the field."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="nav.js?v=7" defer></script>
+<script src="depth.js" defer></script>
+<script src="tiers.js?v=2" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
+</head>
+<body data-tiers>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="quantum">
+      <summary>Quantum</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 17 topics</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="analog.html" class="navmain active">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="desk">
+      <summary>The Desk</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<h1>Can a classical machine out-optimise a quantum one?</h1>
+<p class="tagline">Every "quantum will revolutionise optimisation" headline has a classical rival built on the same underlying physics — coupled circuits settling into the answer, not calculating it. Meet the machine it actually has to beat.</p>
+
+<div class="card">
+<h3>The answer in four lines</h3>
+<p>An <strong>Ising machine</strong> is a physical network engineered so its own natural resting state <em>is</em> the answer to an optimisation problem — not calculated, arrived at. Wire many oscillators, lasers, or fluctuating bits together with couplings that encode a problem, and the network relaxes toward the minimum of an energy function called the <strong>Ising Hamiltonian</strong> — the exact same object a quantum annealer is built to minimise, reached by an entirely classical route. Three real hardware families compete on this today, one of them now running at a million-unit scale, and none of them wins every problem — which one is best depends on the instance, not the marketing.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">The trick: don't calculate the answer, build something that settles into it</h2>
+<p>Tip a tray full of marbles onto a warped sheet and walk away. You didn't compute where they'd end up — you shaped the sheet, and physics did the rest. Every marble rolls downhill until it can't roll any further, and the resting positions are, in a real sense, the "answer" to "where is lowest here?" Nobody ran an algorithm. The shape of the sheet <em>was</em> the algorithm.</p>
+<p>Now imagine a much stranger version of the same trick, played with something simpler than marbles: a row of switches, each one either up or down. Wire pairs of them together, and let each wire carry an opinion — some wires want their two switches to <em>agree</em>, others want them to <em>disagree</em>. Count how many wires get their wish in any given arrangement of the switches. The best arrangement is whichever one keeps the most wires happy.</p>
+<p>That switches-and-wires puzzle has a name — it's called <strong>Max-Cut</strong>, and this site's own <a href="feasible.html">operations research track</a> already teaches it as ordinary graph theory. The idea on this page is what happens when you stop treating that puzzle as something to search through, and start treating it as something to <em>build</em>: a real physical network where "settling toward the arrangement with the fewest unhappy wires" is just what the hardware does when you switch it on, the same way marbles roll downhill without being told to.</p>
+<p>Three genuinely different ways to build that network exist today. How they differ: <a href="#yellow">🟡 keep going ↓</a></p>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">Three ways to build one</h2>
+<p>Every design below needs the same two ingredients: something with exactly two stable states (so it can stand in for a switch, or "spin"), and a way to wire pairs of them together so each connection can push its two spins toward agreeing or disagreeing. What differs is the physical substrate.</p>
+<div class="overflow"><table>
+<tr><th>Design</th><th>The "spin"</th><th>How two are coupled</th><th>Demonstrated scale</th></tr>
+<tr><td><strong>Oscillator Ising machine (OIM)</strong></td><td>An oscillator's phase, locked to 0 or π</td><td>Resistive/circuit coupling between oscillators</td><td>Thousands of nodes on a single chip</td></tr>
+<tr><td><strong>Coherent Ising machine (CIM)</strong></td><td>A light pulse's phase, locked to 0 or π relative to the pump</td><td>Optical coupling or measurement-and-feedback</td><td>2,000 nodes (2016); up to 100,000 in later work</td></tr>
+<tr><td><strong>Probabilistic-bit machine (p-bit)</strong></td><td>A bit that fluctuates continuously between 0 and 1</td><td>Each bit's flip probability is set by its neighbours' current values</td><td>1,000,000 p-bits (2026, networked FPGAs)</td></tr>
+</table></div>
+<p><strong>Oscillator Ising machines</strong> are the direct extension of <a href="circuits.html">the previous page's circuit</a>: instead of one nonlinear oscillator isolated and driven, wire many together. Under a technique called subharmonic injection locking, each oscillator's phase settles to one of exactly two values — 0 or π — which is precisely the two-state "spin" the model needs. Wang &amp; Roychowdhury showed that the network's own phase dynamics are governed by a Lyapunov function with the same shape as the Ising energy, so as the circuit settles toward a stable state, it is — provably, not just by analogy — descending the optimisation landscape.</p>
+<p><strong>Coherent Ising machines</strong> play the identical trick with light instead of electricity: pulses circulating in a fibre loop, pumped as degenerate optical parametric oscillators, whose phase also locks to one of two values relative to the pump. Coupling between pulses is engineered optically or via fast measurement-and-feedback. The two landmark demonstrations shipped in the same week of 2016: a 2,000-node machine and, separately, a fully-connected 100-spin machine — different trade-offs (many weakly-connected nodes versus fewer nodes with every possible connection wired in) that still define the design space today.</p>
+<p><strong>Probabilistic bits (p-bits)</strong> take a different route entirely: instead of settling to a fixed value, each unit keeps <em>fluctuating</em> between 0 and 1, with the probability of landing on either one set by its neighbours' current states — a direct physical stand-in for a stochastic neural network (a Boltzmann machine). The core primitive was established with stochastic magnetic tunnel junctions, whose natural thermal noise makes the physical flipping happen for free. The 2026 scale record didn't need exotic new materials at all: networking ordinary FPGAs together, exchanging only a single bit of boundary state between chips, reached one million p-bits.</p>
+<p>A related idea generalises past pure optimisation entirely: <strong>thermodynamic computing</strong> treats a circuit's own electrical noise as a computational resource for a wider class of AI primitives — sampling from a distribution, Bayesian inference, the noise-adding step inside a diffusion model — rather than something to fight. A working prototype exists already, and it is built from exactly the component this site started with: eight ordinary <a href="circuits.html">RLC circuits</a>, wired all-to-all, running real Gaussian sampling and matrix inversion. Same physics, aimed at a broader job.</p>
+
+<h2 data-tier-keep>Let it settle</h2>
+<p>Two coupled oscillators only ever do one of two things: <strong>lock in phase</strong> if their coupling wants them to agree, or <strong>lock out of phase</strong> if it wants them to disagree.</p>
+<div class="am-pair">
+  <figure>
+    <svg viewBox="0 0 150 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two oscillators with a positive coupling settle in phase">
+      <circle cx="35" cy="45" r="24" fill="none" stroke="var(--teal)" stroke-width="2"/>
+      <circle cx="115" cy="45" r="24" fill="none" stroke="var(--teal)" stroke-width="2"/>
+      <circle cx="50" cy="45" r="3.2" fill="var(--teal)"/>
+      <circle cx="130" cy="45" r="3.2" fill="var(--teal)"/>
+      <line x1="59" y1="45" x2="91" y2="45" stroke="var(--teal)" stroke-width="2"/>
+    </svg>
+    <figcaption><strong>J &gt; 0 — "agree":</strong> both dots settle on the same side. Teal edges in the graph below work this way.</figcaption>
+  </figure>
+  <figure>
+    <svg viewBox="0 0 150 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two oscillators with a negative coupling settle out of phase">
+      <circle cx="35" cy="45" r="24" fill="none" stroke="var(--violet)" stroke-width="2"/>
+      <circle cx="115" cy="45" r="24" fill="none" stroke="var(--violet)" stroke-width="2"/>
+      <circle cx="50" cy="45" r="3.2" fill="var(--violet)"/>
+      <circle cx="100" cy="45" r="3.2" fill="var(--violet)"/>
+      <line x1="59" y1="45" x2="91" y2="45" stroke="var(--violet)" stroke-width="2" stroke-dasharray="4 3"/>
+    </svg>
+    <figcaption><strong>J &lt; 0 — "disagree":</strong> the dots settle on opposite sides. Violet edges below work this way.</figcaption>
+  </figure>
+</div>
+<p>Below is a small five-node network with seven such couplings wired in — a genuinely <strong>frustrated</strong> instance: the five outer edges all want their neighbours to disagree, but you cannot walk around a five-sided loop alternating disagree/disagree/disagree/disagree/disagree and have it come out consistent. Something has to give. Shuffle the starting phases and let the circuit settle, exactly the way the hardware above does it — by integrating the same coupling rule forward in time, nothing more.</p>
+
+<div class="card" id="analog-widget">
+  <h3>A small graph, settling</h3>
+  <div class="am-graph-wrap">
+    <svg id="am-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five nodes wired with agree/disagree couplings, settling toward a low-energy state"></svg>
+  </div>
+  <div class="am-legend-row">
+    <span><span class="am-swatch" style="background:var(--teal)"></span>wants to agree (J&gt;0)</span>
+    <span><span class="am-swatch" style="background:var(--violet);opacity:.7;border-top:2px dashed var(--violet)"></span>wants to disagree (J&lt;0)</span>
+  </div>
+  <p style="margin:14px 0 4px">
+    <button class="bigplay" id="am-settle">Shuffle &amp; settle</button>
+  </p>
+  <div id="am-readout" class="formula" aria-live="polite">The true best arrangement (checked by trying all 32) keeps 6 of 7 wires happy — computing…</div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the graph, its couplings, and the true optimum are all genuinely computed — the optimum by brute-force enumeration of all 2⁵ = 32 spin arrangements, run once in your browser, not looked up. The settling animation integrates the real coupling rule (dθ/dt = −KΣJ<sub>ij</sub>sin(θ<sub>i</sub>−θ<sub>j</sub>), the same shape Wang &amp; Roychowdhury derive for oscillator Ising machines) forward from random starting phases by simple Euler steps. It is not rigged to succeed: like real hardware, a single settle can land on a locally-stable arrangement that isn't the global best — that is not a bug in this demo, it is the single most-documented limitation of every physical Ising machine built so far, which is why real ones are annealed (many attempts, or a slowly-changing schedule) rather than trusted on one pass.</p>
+</div>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">The formalism, with receipts</h2>
+<p>The Ising Hamiltonian over spins s<sub>i</sub> ∈ {−1, +1} on a graph with couplings J<sub>ij</sub> is</p>
+<div class="formula">H(s) = − Σ<sub>(i,j)</sub> J<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></div>
+<p>Finding the ground state — the spin assignment minimising H — is NP-hard in general, and a striking fact does most of the work in this field: an enormous range of NP-hard combinatorial problems, including Max-Cut, graph colouring and satisfiability, can be rewritten <em>exactly</em> in this form, at a cost of at most a cubic blow-up in the number of spins (Lucas, <a href="https://arxiv.org/abs/1302.5843">arXiv 1302.5843</a>, <em>Frontiers in Physics</em> 2, 5 (2014) — covering all 21 of Karp's original NP-complete problems). This is exactly the <a href="feasible.html#bridges">QUBO/Ising bridge</a> this site's own operations-research track already names as the doorway every quantum-optimisation claim has to walk through — the hardware below is what walks through it classically.</p>
+<p><strong>Oscillator Ising machines.</strong> Under subharmonic injection locking, an oscillator's phase θ is pulled toward 0 or π. Wang &amp; Roychowdhury, <a href="https://arxiv.org/abs/1903.07163">arXiv 1903.07163</a>, prove that a network of such oscillators, coupled with strength proportional to J<sub>ij</sub>, evolves under a Lyapunov function L(θ) = −Σ J<sub>ij</sub> cos(θ<sub>i</sub> − θ<sub>j</sub>) that strictly decreases along the dynamics and shares its stationary points with the Ising energy restricted to θ ∈ {0, π} — so the network's physical relaxation genuinely is a gradient descent on H, not merely analogous to one. The widget above integrates the corresponding phase-coupling rule directly.</p>
+<p><strong>Coherent Ising machines.</strong> A degenerate optical parametric oscillator, pumped above threshold, bifurcates into one of two possible output phases 0 or π relative to the pump — the same two-state trick, implemented in light. Inagaki et al., <em>Science</em> 354, 603 (2016), coupled 2,000 time-multiplexed pulses in a single fibre loop via measurement-and-feedback; the same week, McMahon et al., <em>Science</em> 354, 614 (2016), built a smaller (100-spin) machine with every pair of spins directly, optically coupled — the two ends of the same trade-off oscillator machines face on a chip: breadth of connection versus number of nodes.</p>
+<p><strong>Probabilistic bits.</strong> A p-bit's state is a stochastic function of its instantaneous input current, updating so that its time-averaged value follows a sigmoid probability of being +1 — the textbook building block of a Boltzmann machine, realised in physical hardware rather than simulated in software. Camsari, Faria, Sutton &amp; Datta, <a href="https://link.aps.org/doi/10.1103/PhysRevX.7.031014">Phys. Rev. X 7, 031014</a> (2017), established the primitive using stochastic magnetic tunnel junctions. Aadit et al., <a href="https://arxiv.org/abs/2606.25313">arXiv 2606.25313</a> (2026), scaled it to one million p-bits without exotic hardware at all — ordinary FPGAs networked together, each holding its own local coupling weights and exchanging only single-bit boundary states with its neighbours, a scaling strategy closer to distributed computing than to physics.</p>
+<p><strong>Thermodynamic computing.</strong> Coles et al., <a href="https://arxiv.org/abs/2302.06584">arXiv 2302.06584</a> (2023), frame a wider class of AI algorithms — generative diffusion models, Bayesian neural networks, Monte Carlo sampling, simulated annealing itself — as sharing a common reliance on stochastic fluctuation, and propose hardware that supplies that fluctuation physically rather than computing pseudorandomness digitally. A working prototype, Melanson et al., <a href="https://arxiv.org/abs/2312.04836">arXiv 2312.04836</a> (2023), built a "stochastic processing unit" from eight all-to-all coupled RLC circuits on a single board — the same component family this site's own circuit page teaches, coupled and left to fluctuate rather than driven and isolated — and demonstrated genuine Gaussian sampling and the first thermodynamic matrix inversion.</p>
+<p><strong>None of this settles the question the page opened with.</strong> Bernal Neira, Brown, Sathe, Wudarski, Pavone, Rieffel &amp; Venturelli, <a href="https://arxiv.org/abs/2402.10255">arXiv 2402.10255</a> (2024), benchmarking quantum annealers, a coherent-Ising-machine simulator, and classical heuristics against each other, found no universal winner — optimal parameter choices, and which method comes out ahead, vary significantly instance by instance. That is the honest state of the field: not "classical beats quantum" or the reverse, but a genuine, unresolved contest that depends on the problem you hand it.</p>
+<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). All nine citations (Wang &amp; Roychowdhury 2019, Inagaki et al. 2016, McMahon et al. 2016, Camsari et al. 2017, Aadit et al. 2026, Coles et al. 2023, Melanson et al. 2023, Bernal Neira et al. 2024, Lucas 2014) were fetched and confirmed directly against their arXiv abstract pages or publisher pages for title, author list and journal citation before this page shipped — including the specific finding attributed to each. The OIM Lyapunov-function claim is stated as the source paper's own headline theoretical result, confirmed from the abstract; the CIM and p-bit mechanism descriptions are kept at the level of confidence the fetched abstracts directly support, without extending into derivations not verified against the full paper text. <b>Has not yet had an independent hostile-referee pass</b> — same open status as <a href="circuits.html">circuits.html</a>. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
+
+<h2>References</h2>
+<div class="card">
+  <p>• Ising formulations of NP-hard problems: Lucas, <a href="https://arxiv.org/abs/1302.5843">arXiv 1302.5843</a> (<em>Frontiers in Physics</em> 2, 5 (2014))<br>
+  • Oscillator Ising machines: Wang &amp; Roychowdhury, <a href="https://arxiv.org/abs/1903.07163">arXiv 1903.07163</a> (2019)<br>
+  • Coherent Ising machine, 2,000 nodes: Inagaki, Haribara, Igarashi et al., <em>Science</em> 354, 603 (2016)<br>
+  • Coherent Ising machine, 100 spins, fully connected: McMahon, Marandi, Haribara et al., <em>Science</em> 354, 614 (2016)<br>
+  • p-bits, the foundational primitive: Camsari, Faria, Sutton &amp; Datta, <a href="https://link.aps.org/doi/10.1103/PhysRevX.7.031014">Phys. Rev. X 7, 031014</a> (2017)<br>
+  • p-bits at scale, 1,000,000 units: Aadit, Zhang, Chowdhury et al., <a href="https://arxiv.org/abs/2606.25313">arXiv 2606.25313</a> (2026)<br>
+  • Thermodynamic AI, the framework: Coles, Szczepanski, Melanson et al., <a href="https://arxiv.org/abs/2302.06584">arXiv 2302.06584</a> (2023)<br>
+  • Thermodynamic computing, the hardware: Melanson, Abu Khater, Aifer et al., <a href="https://arxiv.org/abs/2312.04836">arXiv 2312.04836</a> (2023)<br>
+  • No universal winner, the benchmark: Bernal Neira, Brown, Sathe et al., <a href="https://arxiv.org/abs/2402.10255">arXiv 2402.10255</a> (2024)</p>
+</div>
+
+<div class="cyu" data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A quantum annealer and an oscillator Ising machine are given the exact same Max-Cut problem. What is actually different between them?</p>
+  <div class="cyu-opts">
+    <button data-opt>Nothing physical — only the marketing differs.</button>
+    <button data-opt>They minimise the same Ising energy function, but reach the low-energy state by different physics: quantum tunnelling through an engineered Hamiltonian versus classical oscillators settling under injection-locking.</button>
+    <button data-opt>The oscillator machine solves a completely different mathematical problem.</button>
+    <button data-opt>Only the quantum annealer can be wrong; the oscillator machine always finds the true optimum.</button>
+  </div>
+  <p class="cyu-why">Both machines are built around the identical mathematical target — minimise Σ J<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — which is precisely why they compete directly rather than being different tools for different jobs. What differs is entirely the physical mechanism that does the minimising. And neither one is exempt from landing on a local rather than global minimum — that is a real, well-documented limitation on both sides, which the widget above deliberately does not hide.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+</div>
+
+<a class="orjump" href="compare.html#annealing">
+  <span>◆ <b>The quantum machine this page's hardware actually competes against.</b> D-Wave's commercial annealers minimise the identical Ising Hamiltonian using quantum tunnelling instead — same target, different physics, argued over for more than a decade.<span class="arr"> How the companies compare ▸</span></span>
+</a>
+
+<h2 data-tier-stop>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>⚡ The circuit underneath</h3><p>What one of this page's oscillators actually is, and how a single nonlinear one becomes a qubit instead.</p><a href="circuits.html">What is a qubit made of? →</a></div>
+  <div class="card"><h3>◆ The full OR track</h3><p>Max-Cut, the QUBO/Ising bridge, and nineteen other topics operations research already runs on.</p><a href="feasible.html">The Feasible Region →</a></div>
+  <div class="card"><h3>🌋 Prove it yourself</h3><p>The same "does it actually find the optimum" question, played as a game against a real annealing schedule.</p><a href="play.html">The Annealing Volcano →</a></div>
+</div>
+
+<footer>Can a classical machine out-optimise a quantum one — the fork in SymbiQ's own spine.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  try {
+    var svg = document.getElementById('am-svg');
+    var settleBtn = document.getElementById('am-settle');
+    var readout = document.getElementById('am-readout');
+    if (!svg || !settleBtn || !readout) return;
+    var svgns = 'http://www.w3.org/2000/svg';
+    var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    // 5-node pentagon, all-antiferromagnetic (J=-1, "disagree") + two
+    // agree (J=+1) chords -- a small, genuinely frustrated instance.
+    var N = 5;
+    var pos = [];
+    for (var i = 0; i < N; i++) {
+      var ang = -Math.PI / 2 + i * (2 * Math.PI / N);
+      pos.push({ x: 150 + 105 * Math.cos(ang), y: 140 + 105 * Math.sin(ang) });
+    }
+    var edges = [
+      [0, 1, -1], [1, 2, -1], [2, 3, -1], [3, 4, -1], [4, 0, -1],
+      [0, 2, 1], [1, 3, 1]
+    ];
+
+    function energy(spins) {
+      var H = 0;
+      for (var k = 0; k < edges.length; k++) {
+        var e = edges[k];
+        H -= e[2] * spins[e[0]] * spins[e[1]];
+      }
+      return H;
+    }
+    // Brute force over all 32 assignments -- genuinely computed, not looked up.
+    var bestE = Infinity, bestCount = 0;
+    for (var mask = 0; mask < (1 << N); mask++) {
+      var s = [];
+      for (var b = 0; b < N; b++) s.push((mask & (1 << b)) ? 1 : -1);
+      var e = energy(s);
+      if (e < bestE - 1e-9) { bestE = e; bestCount = 1; }
+      else if (Math.abs(e - bestE) < 1e-9) bestCount++;
+    }
+    var totalJ = edges.reduce(function (a, e) { return a + Math.abs(e[2]); }, 0);
+    var bestHappy = Math.round((totalJ - bestE) / 2 + edges.length / 2); // happy edges at bestE
+    // happy(s) = number of edges with J_ij*s_i*s_j > 0; H = -sum(J*s_i*s_j) over edges
+    // sum(J*s_i*s_j) over edges = happyWeight - unhappyWeight, and happyWeight+unhappyWeight = totalJ (all |J|=1)
+    // so H = -(happyWeight - unhappyWeight) = unhappyWeight - happyWeight => happyWeight = (totalJ - H)/2
+    function happyEdgeCount(H) { return (totalJ - H) / 2; }
+
+    // ---- render -------------------------------------------------------
+    var edgeEls = [], nodeEls = [];
+    function buildSvg() {
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      edges.forEach(function (e) {
+        var a = pos[e[0]], b = pos[e[1]];
+        var line = document.createElementNS(svgns, 'line');
+        line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+        line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+        line.setAttribute('stroke', e[2] > 0 ? 'var(--teal)' : 'var(--violet)');
+        line.setAttribute('stroke-width', '2.4');
+        if (e[2] < 0) line.setAttribute('stroke-dasharray', '5 4');
+        line.setAttribute('opacity', '0.55');
+        svg.appendChild(line);
+        edgeEls.push(line);
+      });
+      pos.forEach(function (p, i) {
+        var c = document.createElementNS(svgns, 'circle');
+        c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', '15');
+        c.setAttribute('fill', 'var(--panel)'); c.setAttribute('stroke', 'var(--muted)'); c.setAttribute('stroke-width', '2');
+        svg.appendChild(c);
+        var tick = document.createElementNS(svgns, 'line');
+        tick.setAttribute('x1', p.x); tick.setAttribute('y1', p.y);
+        tick.setAttribute('x2', p.x); tick.setAttribute('y2', p.y - 15);
+        tick.setAttribute('stroke', 'var(--teal)'); tick.setAttribute('stroke-width', '2.5');
+        tick.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(tick);
+        nodeEls.push({ circle: c, tick: tick, x: p.x, y: p.y });
+      });
+    }
+    buildSvg();
+    readout.innerHTML = 'The true best arrangement (checked by trying all ' + (1 << N) + ') keeps <b>' + happyEdgeCount(bestE) + ' of ' + edges.length + '</b> wires happy' + (bestCount > 1 ? ', ' + bestCount + ' ways' : '') + '. Click Shuffle &amp; settle to try reaching it.';
+
+    var running = false;
+    settleBtn.addEventListener('click', function () {
+      if (running) return;
+      running = true;
+      settleBtn.disabled = true;
+      var theta = [];
+      for (var i = 0; i < N; i++) theta.push(Math.random() * 2 * Math.PI);
+      var K = 1.4, dt = 0.04, steps = 0, maxSteps = 260;
+
+      function step() {
+        var dtheta = new Array(N).fill(0);
+        edges.forEach(function (e) {
+          var i = e[0], j = e[1], J = e[2];
+          var d = -K * J * Math.sin(theta[i] - theta[j]);
+          dtheta[i] += d;
+          dtheta[j] -= d;
+        });
+        for (var i = 0; i < N; i++) theta[i] += dt * dtheta[i];
+        steps++;
+
+        nodeEls.forEach(function (n, i) {
+          n.tick.setAttribute('x2', n.x + 15 * Math.sin(theta[i]));
+          n.tick.setAttribute('y2', n.y - 15 * Math.cos(theta[i]));
+        });
+
+        if (steps < maxSteps) {
+          if (reduceMotion) { while (steps < maxSteps) step(); return; }
+          requestAnimationFrame(step);
+        } else {
+          finish();
+        }
+      }
+      function finish() {
+        var spins = theta.map(function (t) { return Math.cos(t) >= 0 ? 1 : -1; });
+        var H = energy(spins);
+        var happy = happyEdgeCount(H);
+        var isOptimal = Math.abs(H - bestE) < 1e-6;
+        edgeEls.forEach(function (line, k) {
+          var e = edges[k];
+          var satisfied = e[2] * spins[e[0]] * spins[e[1]] > 0;
+          line.setAttribute('opacity', satisfied ? '1' : '0.22');
+        });
+        readout.innerHTML = 'This run settled at <b>' + happy + ' of ' + edges.length + '</b> wires happy — ' +
+          (isOptimal
+            ? '<span class="yes">matches the true best.</span>'
+            : '<span class="no">short of the true best (' + happyEdgeCount(bestE) + ').</span> Try again — different starting phases land differently, on this hardware and on the real thing.');
+        settleBtn.disabled = false;
+        running = false;
+      }
+      requestAnimationFrame(step);
+    });
+  } catch (e) { /* the widget is additive -- the explanation above stands without it */ }
+})();
+</script>
+</body>
+</html>

@@ -87,6 +87,7 @@
     <details class="navcat navcat-cur" data-cat="optimisation">
       <summary>Optimisation</summary>
       <div class="navpanel">
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
       <a href="feasible.html" class="navmain active">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
@@ -1888,8 +1889,9 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
 <div class="grid">
   <div class="card">
     <h3>QUBO and Ising <span class="orbadge">⟦Proven⟧ formulation</span></h3>
-    <p>Nearly every combinatorial problem can be rewritten as minimising <em>Σ w<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></em> over spins of ±1 — the ground state of a magnet (Lucas, 2014). <strong>This is the format quantum annealers and QAOA actually consume</strong>, so it is the doorway every quantum optimisation claim has to walk through. Constraint satisfaction (topic 19) is a standing source of these instances: each violated constraint becomes an energy penalty, so satisfying every constraint becomes finding the ground state.</p>
+    <p>Nearly every combinatorial problem can be rewritten as minimising <em>Σ w<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></em> over spins of ±1 — the ground state of a magnet (Lucas, 2014). <strong>This is the format quantum annealers and QAOA actually consume</strong>, so it is the doorway every quantum optimisation claim has to walk through. Constraint satisfaction (topic 19) is a standing source of these instances: each violated constraint becomes an energy penalty, so satisfying every constraint becomes finding the ground state. It is also the format three real <em>classical</em> hardware families now consume directly — coupled oscillators, coupled lasers, and fluctuating bits, engineered to settle into that same ground state.</p>
     <a href="play.html#maxcut">Play it — Graph City →</a>
+    <a href="analog.html">Can classical hardware actually do this? →</a>
   </div>
   <div class="card">
     <h3>Metaheuristics <span class="orbadge">⟦Heuristic⟧</span></h3>

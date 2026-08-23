@@ -15,6 +15,36 @@
   },
   "concepts": [
     {
+      "id": "ising-machine",
+      "term": "Ising machine",
+      "aliases": ["Ising machines", "oscillator Ising machine", "OIM", "coherent Ising machine", "CIM"],
+      "page": "analog.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A physical network -- built from coupled oscillators or lasers -- engineered so its own resting state solves an optimisation problem. The classical rival every quantum annealer actually competes against."
+    },
+    {
+      "id": "p-bit",
+      "term": "p-bit",
+      "aliases": ["p-bits", "probabilistic bit", "probabilistic bits"],
+      "page": "analog.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A unit that keeps fluctuating between 0 and 1 instead of settling, with the odds of each set by its neighbours -- a physical Boltzmann machine, now demonstrated at a million-unit scale."
+    },
+    {
+      "id": "thermodynamic-computing",
+      "term": "thermodynamic computing",
+      "aliases": ["thermodynamic AI", "stochastic processing unit"],
+      "page": "analog.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Treating a circuit's own electrical noise as the computational resource -- for sampling, Bayesian inference and diffusion models -- rather than something to engineer away."
+    },
+    {
       "id": "lc-oscillator",
       "term": "LC circuit",
       "aliases": ["LC oscillator", "LC tank", "LC resonator", "LC circuits"],

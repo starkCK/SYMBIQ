@@ -590,6 +590,8 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <p style="margin-bottom:0"><b>And the obvious metric misleads.</b> Pick a signature scheme by public-key size and you will choose the one with an eight-kilobyte signature. Move the controls below and watch which choice actually breaks.</p>
 </div>
 
+<p>That asymmetry is not a prediction any more — it is what actually happened. A 2026 measurement of the live internet found <b>49.3% of scanned domains already negotiating hybrid post-quantum key exchange</b>, against <b>0% adoption of post-quantum certificates</b> (Dubey &amp; Varshney, <a href="https://arxiv.org/abs/2606.16473">arXiv:2606.16473</a>, "Measurement Study of Post-Quantum Readiness of Internet: 2026"). The cheap half of the problem is nearly half deployed; the expensive half hasn't started. Part of why: a signature's job ends the moment a handshake finishes, so it can wait until a quantum computer is closer to real — the exact "harvest now, decrypt later" logic <a href="#odds">the Odds below</a> puts a number on, run in reverse.</p>
+
 <p class="pq-eyebrow" data-icon="📏">Tool 2 of 7 · measured, not modelled</p>
 <h2 id="cliff">The Size Cliff</h2>
 <p>Every cryptographic number below is the length of a real object — a key, a ciphertext, or a signature — that your browser generated when you clicked. Nothing is read from a table. <b>That is the point of building it this way:</b> a lookup table inherits whatever error was in its source, and this one caught a live example. Several published sources state that an ML-DSA-65 signature is 3,293 bytes. Sign something and measure it and the answer is <b>3,309</b>, which is what FIPS 204 specifies. The widget cannot make that mistake, because it never looks anything up.</p>
@@ -612,6 +614,8 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <h3>The trap worth failing once</h3>
 <p>Set the signature to <b>SLH-DSA-128s</b>. Its public key is 32 bytes — smaller than ML-DSA-65's 1,952, and exactly the same size as Ed25519's. By the metric most people reach for first, it is the compact choice.</p>
 <p>Its signature is <b>7,856 bytes</b>. A chain carries more signatures than public keys, so the scheme with the smallest key produces by far the largest handshake. SLH-DSA earns that cost honestly — it rests only on the security of a hash function, with no lattice assumption to be wrong about — but the trade is the opposite of the one the key size advertises.</p>
+
+<p><b>A fifth algorithm exists, and it is deliberately not in the widget above.</b> On 11 March 2025, NIST selected <b>HQC</b> (Hamming Quasi-Cyclic) as a backup encryption standard specifically because it rests on a different hard problem than ML-KEM — error-correcting codes, not structured lattices — so a single mathematical break cannot take down both at once. A draft standard is due in 2026, with a final expected in 2027 (NIST, <a href="https://www.nist.gov/news-events/news/2025/03/nist-selects-hqc-fifth-algorithm-post-quantum-encryption">nist.gov, 11 Mar 2025</a>). It stays out of the size widget above for the same reason every other number on this page is generated live rather than read from a table: no production-grade, browser-safe HQC implementation is in wide use yet to generate a real key with. And it will very likely stay out of CNSA 2.0 specifically — the NSA's own FAQ states plainly that it does not currently plan to add future NIST post-quantum standards to that suite, keeping the algorithm list fixed through the transition rather than chasing every new addition.</p>
 
 <p class="pq-eyebrow" data-icon="🔍">Tool 3 of 7 · discover what you actually run</p>
 <h2 id="inventory">The Inventory</h2>
@@ -678,6 +682,8 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <div class="card">
   <div id="compliance-mount"><p class="sc-wait">Build a plan above to see it checked here.</p></div>
 </div>
+
+<p>Two more dates are worth knowing even though the scheduler above does not check either of them — both are procurement gates, not migration deadlines, so a pass/fail run against an estate would misstate what they actually do. <b>1 January 2027</b> is when CNSA 2.0 requires new National Security System acquisitions to be compliant by default — earlier than, and different from, the 2030 exclusive-use date already run above, and it binds what you can <em>buy</em>, not what you must have already replaced. <b>21 September 2026</b> is when NIST moves every remaining FIPS 140-2 validation certificate to Historical status — existing validated modules keep working, but CMVP's own guidance is that agencies should not put a Historical-status module into a new procurement from that date on. Neither date changes what your estate needs to survive; both change what you are allowed to buy next.</p>
 
 <h3>Honest limits on this one</h3>
 <ul>

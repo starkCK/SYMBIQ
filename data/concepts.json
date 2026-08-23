@@ -15,6 +15,16 @@
   },
   "concepts": [
     {
+      "id": "hqc",
+      "term": "HQC",
+      "aliases": ["Hamming Quasi-Cyclic"],
+      "page": "pqc.html",
+      "anchor": "cliff",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "NIST's fifth post-quantum standard, selected March 2025 as a code-based backup to ML-KEM specifically because it rests on different math -- so one break can't take both down."
+    },
+    {
       "id": "phase-kickback",
       "term": "phase kickback",
       "aliases": [],

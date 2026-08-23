@@ -997,6 +997,11 @@ nav .link.pathlink:hover { color: var(--violet); }
   border: 1.5px solid var(--teal); box-shadow: none;
 }
 .bigplay.ghost:hover { box-shadow: 0 4px 12px rgba(45,212,191,.14); }
+/* No page used a disabled .bigplay before circuits.html's widget: with no
+   :disabled rule the button kept its full bright gradient and a pointer
+   cursor, indistinguishable from an enabled one even though clicks did
+   nothing. Same treatment .ms-tell:disabled already uses elsewhere. */
+.bigplay:disabled, .bigplay:disabled:hover { opacity: .45; cursor: not-allowed; filter: none; box-shadow: none; }
 
 /* The completion CTA. Still visually distinct (border, tint, an arrow) so it
    is not missed, but no longer animated or oversized. */

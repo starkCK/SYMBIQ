@@ -15,6 +15,56 @@
   },
   "concepts": [
     {
+      "id": "lc-oscillator",
+      "term": "LC circuit",
+      "aliases": ["LC oscillator", "LC tank", "LC resonator", "LC circuits"],
+      "page": "circuits.html",
+      "anchor": "green",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "A coil and a capacitor trading energy back and forth at one fixed rate -- the harmless-looking oscillator that turns out to be useless as a qubit on its own."
+    },
+    {
+      "id": "anharmonicity",
+      "term": "anharmonicity",
+      "aliases": ["anharmonic", "anharmonic oscillator"],
+      "page": "circuits.html",
+      "anchor": "green",
+      "tier": "g",
+      "kind": "concept",
+      "blurb": "How unevenly spaced a circuit's energy levels are -- zero for a plain LC tank, and the one property a superconducting qubit cannot work without."
+    },
+    {
+      "id": "josephson-junction",
+      "term": "Josephson junction",
+      "aliases": ["Josephson junctions"],
+      "page": "circuits.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Two superconductors separated by a gap thin enough to tunnel through -- the one component in the circuit that isn't a straight line, which is the entire trick."
+    },
+    {
+      "id": "transmon",
+      "term": "transmon",
+      "aliases": ["transmons", "transmon qubit"],
+      "page": "circuits.html",
+      "anchor": "yellow",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A capacitor wired across a single Josephson junction -- the most common superconducting qubit design, and almost the same circuit as a plain LC tank with one piece swapped."
+    },
+    {
+      "id": "rabi-oscillation",
+      "term": "Rabi oscillation",
+      "aliases": ["Rabi flop", "Rabi frequency", "Rabi drive", "pi-pulse"],
+      "page": "circuits.html",
+      "anchor": "red",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "A resonant drive swinging a qubit's population between two levels -- stop it exactly halfway (a pi-pulse) and you have physically performed an X gate."
+    },
+    {
       "id": "quantum-error-correction",
       "term": "quantum error correction",
       "aliases": ["QEC", "error correction", "error-corrected", "quantum error-correction"],
@@ -417,7 +467,7 @@
     {
       "id": "superconducting-qubits",
       "term": "superconducting qubits",
-      "aliases": ["superconducting", "transmon", "transmons"],
+      "aliases": ["superconducting"],
       "page": "compare.html",
       "anchor": "mod-widget",
       "tier": "y",

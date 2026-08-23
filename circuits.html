@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is a qubit actually made of?</title>
+<meta name="description" content="Strip away the Bloch sphere and the bra-kets: a superconducting qubit is a capacitor wired across one nonlinear component. Live, driven, and turned into the same gate the homepage widget already uses.">
+<!-- social:start -->
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/circuits.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/circuits.html">
+<meta property="og:title" content="What is a qubit actually made of?">
+<meta property="og:description" content="Strip away the Bloch sphere and the bra-kets: a superconducting qubit is a capacitor wired across one nonlinear component. Live, driven, and turned into the same gate the homepage widget already uses.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="What is a qubit actually made of?">
+<meta name="twitter:description" content="Strip away the Bloch sphere and the bra-kets: a superconducting qubit is a capacitor wired across one nonlinear component. Live, driven, and turned into the same gate the homepage widget already uses.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<!-- social:end -->
+<link rel="stylesheet" href="style.css?v=35">
+<style>
+.cw-grid { display: grid; grid-template-columns: 1fr 170px; gap: 16px; align-items: center; }
+.cw-scope { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
+.cw-scope canvas { width: 100%; height: auto; display: block; }
+.cw-ladder svg { width: 100%; height: auto; }
+.cw-row { display: flex; align-items: center; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
+.cw-row label { font-size: .88rem; color: var(--muted); }
+.cw-row input[type=range] { flex: 1; min-width: 140px; }
+.cw-row b { color: var(--teal); font-variant-numeric: tabular-nums; font-weight: 700; }
+.cw-bars { display: flex; gap: 22px; align-items: flex-end; height: 110px; margin: 6px 0 4px; }
+.cw-bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 64px; }
+.cw-bar-track { position: relative; width: 40px; height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.cw-bar-fill { position: absolute; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, var(--teal), #22b8a6); transition: height .12s linear; }
+.cw-bar-fill.v { background: linear-gradient(180deg, var(--violet), #7c5cf0); }
+.cw-bar-lab { font-size: .8rem; color: var(--muted); font-family: "Cambria Math", Georgia, serif; }
+@media (max-width: 560px) { .cw-grid { grid-template-columns: 1fr; } .cw-ladder { max-width: 170px; margin: 0 auto; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "What is a qubit actually made of?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-08-23",
+      "dateModified": "2026-08-23",
+      "description": "The physical circuit underneath a superconducting qubit: an LC oscillator made nonlinear by a Josephson junction, why that nonlinearity is the entire trick, and how a resonant drive between two levels becomes a logic gate."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "What is a qubit actually made of?", "item": "circuits.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a transmon qubit physically?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A capacitor wired in parallel with a single Josephson junction — two superconductors separated by an insulating gap thin enough for Cooper pairs to tunnel through. Electrically it is almost an ordinary LC oscillator, except the junction acts as an inductor whose effective inductance depends on the current already flowing through it. That nonlinearity is what turns a generic oscillator into an addressable two-level qubit."}
+        },
+        {
+          "@type": "Question",
+          "name": "Why can't a plain LC circuit be a qubit?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A plain LC circuit is a harmonic oscillator: its energy levels are evenly spaced, so the exact pulse that drives it from level 0 to level 1 also drives 1 to 2, 2 to 3, and so on. There is no way to address just two levels. A qubit needs a circuit whose levels are unevenly spaced (anharmonic), so a pulse tuned to one gap does not also drive the next one."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is anharmonicity in a superconducting qubit?",
+          "acceptedAnswer": {"@type": "Answer", "text": "The difference between the 0-to-1 and 1-to-2 transition frequencies. For a transmon it is set almost entirely by the charging energy Ec, and to leading order equals minus Ec. Engineers deliberately operate in the regime where Josephson energy is much larger than charging energy (Ej/Ec >> 1) because that makes the qubit almost immune to charge noise, at the cost of only a slow, power-law shrinking of the anharmonicity -- not an exponential one -- which is the trade Koch et al.'s 2007 transmon paper is built on."}
+        },
+        {
+          "@type": "Question",
+          "name": "How does a microwave pulse perform a quantum logic gate?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Driving a qubit on resonance with its 0-to-1 transition causes its state to oscillate between the two levels -- a Rabi oscillation. A pulse timed to stop exactly halfway through a full cycle (a pi-pulse) leaves the qubit fully flipped from 0 to 1: that is the physical X gate. A pulse half that length (a pi/2-pulse) leaves it in an equal superposition instead."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="nav.js?v=7" defer></script>
+<script src="depth.js" defer></script>
+<script src="tiers.js?v=2" defer></script>
+<script src="analytics.js?v=2" defer></script>
+<script src="forms.js?v=2" defer></script>
+</head>
+<body data-tiers>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="quantum">
+      <summary>Quantum</summary>
+      <div class="navpanel">
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain active">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 17 topics</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="optimisation">
+      <summary>Optimisation</summary>
+      <div class="navpanel">
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="desk">
+      <summary>The Desk</summary>
+      <div class="navpanel">
+      <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+</nav>
+
+<h1>What is a qubit actually made of?</h1>
+<p class="tagline">Strip away the Bloch sphere and the bra-kets: physically, a superconducting qubit is a capacitor wired across one nonlinear component. Here is what that component does, and why it is the entire trick.</p>
+
+<div class="card">
+<h3>The answer in four lines</h3>
+<p>Any qubit needs two things: something that oscillates, and something that makes the oscillation <em>uneven</em>. An LC circuit — a coil and a capacitor — oscillates beautifully, but its energy levels are evenly spaced, which makes it useless as a qubit: the pulse that drives level 0 to level 1 also drives 1 to 2, and 2 to 3. Swap the coil for a <strong>Josephson junction</strong> — a component that acts like an inductor whose effective inductance depends on the current already flowing through it — and the levels bunch up unevenly. Now the bottom two levels can be addressed on their own, and a resonant pulse rotating you between them <em>is</em> a quantum logic gate.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">The problem: oscillators are too polite</h2>
+<p>Picture a swing. Push it, and it settles into a rhythm: back and forth at one fixed rate, forever, if nothing slows it down. An LC circuit — a capacitor (a bucket that stores charge) wired to a coil (a flywheel that stores current) — does the electrical version of the same thing. Charge sloshes into the capacitor, drains out through the coil, sloshes back, and the whole thing rings at one fixed frequency set by how big the bucket and the flywheel are.</p>
+<p>Here is the catch. Quantum mechanically, that ringing circuit doesn't just have one energy — it has a whole ladder of allowed energies, evenly spaced, rung after rung, like a musical instrument's overtones. Evenly spaced sounds harmless. It's fatal for a qubit. If you send in a pulse tuned to boost the circuit from the bottom rung to the second rung, that <em>exact same</em> pulse is equally good at boosting it from the second rung to the third, and the third to the fourth. You can never cleanly stop at "just two levels" — the two things every classical bit and every qubit actually need.</p>
+<p>So the goal isn't just "build something that oscillates" — a plain LC tank already does that beautifully, and it's useless. The goal is to build something that oscillates <em>unevenly</em>: where the first rung costs a noticeably different amount of energy to climb than the second one. That unevenness is called <strong>anharmonicity</strong>, and one component supplies almost all of it.</p>
+<p>How, in real terms: <a href="#yellow">🟡 keep going ↓</a></p>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">The fix: one component that refuses to be linear</h2>
+<p>The component is the <strong>Josephson junction</strong>: two superconductors separated by an insulating gap so thin — a couple of nanometers — that paired electrons (Cooper pairs) tunnel straight through it. Below a critical current it carries current with exactly zero resistance, which is already strange. What makes it useful here is stranger still: the relationship between the current flowing through it and the phase difference across it isn't a straight line, the way it is for a normal wire or a normal coil. It's a <strong>sine function</strong>. Wired into a circuit, it behaves like an inductor — but one whose effective "inductance" depends on how much current is already flowing through it. Push it harder, and it pushes back disproportionately. That disproportion is the nonlinearity the whole field is built on.</p>
+<p>Wire an ordinary capacitor straight across a single Josephson junction, and you get the <strong>transmon</strong> — far and away the most common superconducting qubit design, running under most of Google, IBM and Rigetti's hardware. Electrically it is almost the same object as the plain LC tank above, with one piece swapped: the linear coil is replaced by the junction's nonlinear one. Solve that circuit and the evenly-spaced ladder collapses into an <em>uneven</em> one — each rung costs a little less energy to climb than the rung below it.</p>
+<div class="overflow"><table>
+<tr><th>Quantity</th><th>What it means</th><th>What sets it</th></tr>
+<tr><td>Josephson energy E<sub>J</sub></td><td>How "stiff" the junction's nonlinear inductor is</td><td>The junction's critical current</td></tr>
+<tr><td>Charging energy E<sub>C</sub></td><td>The cost of putting one extra Cooper pair on the capacitor</td><td>The total shunt capacitance</td></tr>
+<tr><td>Qubit frequency ω<sub>01</sub></td><td>The energy gap you actually drive</td><td>≈ √(8E<sub>J</sub>E<sub>C</sub>) − E<sub>C</sub> (leading order)</td></tr>
+<tr><td>Anharmonicity α</td><td>How much the next gap up shrinks by</td><td>≈ −E<sub>C</sub> (leading order)</td></tr>
+</table></div>
+<p>The ratio E<sub>J</sub>/E<sub>C</sub> is the one dial that matters, and it's a genuine trade-off. A real Cooper-pair box (the transmon's ancestor) ran at low E<sub>J</sub>/E<sub>C</sub> and paid for it in charge noise — stray, uncontrolled electric fields constantly jittering the qubit frequency. Koch and colleagues' 2007 transmon paper showed that pushing deep into E<sub>J</sub>/E<sub>C</sub> ≫ 1 — a "fat," well-shielded capacitor — suppresses that charge noise <em>exponentially</em>, while the anharmonicity you need for addressability only shrinks by a slow power law in return. An exponential win paid for with a mild tax is a trade you take every time, which is exactly why the transmon, not its more charge-sensitive ancestor, is the design almost every lab converged on.</p>
+<p>With the bottom two levels now sitting at a distinguishable energy gap from the next pair up, a microwave pulse tuned exactly to ω<sub>01</sub> drives 0→1 cleanly, without much leaking into level 2. Try it below.</p>
+
+<h2 data-tier-keep>Drive it yourself</h2>
+<p>Left: the circuit's own voltage, ringing at whatever frequency the controls below set. Right: its actual energy ladder, computed live from the same numbers — evenly spaced with no junction, uneven the moment you add one.</p>
+
+<div class="card" id="circuit-widget">
+  <h3>The circuit, live</h3>
+  <div class="cw-grid">
+    <div class="cw-scope">
+      <canvas id="cw-canvas" width="420" height="180" role="img" aria-label="The circuit's voltage oscillating over time"></canvas>
+    </div>
+    <div class="cw-ladder">
+      <svg id="cw-ladder-svg" viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The circuit's energy level ladder"></svg>
+    </div>
+  </div>
+  <p class="legend">teal trace = the circuit's own voltage · the ladder is its real energy spectrum, recomputed on every change below · sped up for viewing — real transmons ring some four to six billion times a second</p>
+  <p style="margin:10px 0 4px">
+    <button class="preset on" id="btn-linear">Plain LC — no junction</button>
+    <button class="preset" id="btn-weak">Josephson junction — weak</button>
+    <button class="preset" id="btn-strong">Josephson junction — strong</button>
+  </p>
+  <div class="cw-row" id="cw-ratio-row" hidden>
+    <label for="cw-ratio">E<sub>J</sub>/E<sub>C</sub> ratio</label>
+    <input type="range" id="cw-ratio" min="8" max="100" value="50" step="1" aria-describedby="cw-ratio-out">
+    <b id="cw-ratio-out">50</b>
+  </div>
+  <div id="cw-readout" class="formula" aria-live="polite"></div>
+  <p style="margin:16px 0 6px">
+    <button class="bigplay" id="cw-drive" disabled>Drive the 0→1 gap <span class="kbd">needs a junction</span></button>
+    <button class="bigplay ghost" id="cw-drive-reset" hidden>Reset</button>
+  </p>
+  <div class="cw-bars" id="cw-bars" hidden>
+    <div class="cw-bar-col">
+      <div class="cw-bar-track"><div class="cw-bar-fill" id="cw-bar-0" style="height:100%"></div></div>
+      <span class="cw-bar-lab">P(|0⟩)</span>
+    </div>
+    <div class="cw-bar-col">
+      <div class="cw-bar-track"><div class="cw-bar-fill v" id="cw-bar-1" style="height:0%"></div></div>
+      <span class="cw-bar-lab">P(|1⟩)</span>
+    </div>
+  </div>
+  <p id="cw-drive-out" class="legend" aria-live="polite">&nbsp;</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the trace and the ladder are both genuinely computed, not decorative — the plain-LC case exactly (E<sub>n</sub> evenly spaced), the junction case from the standard transmon leading-order approximation above (Koch et al. 2007), valid in the E<sub>J</sub>/E<sub>C</sub> ≫ 1 regime the slider stays inside. E<sub>C</sub> is held at an illustrative, representative 250 MHz throughout — real designs typically sit within a factor of two of that. The drive animation restricts to levels 0 and 1 only and ignores leakage into level 2; real hardware corrects for exactly that leakage with shaped ("DRAG") pulses, not by ignoring it.</p>
+</div>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">The formalism, with receipts</h2>
+<p>An LC circuit is quantized the same way a mechanical oscillator is: canonical conjugate variables — flux Φ across the inductor and charge Q on the capacitor — obey [Φ̂, Q̂] = iħ, and the Hamiltonian H = Q̂²/2C + Φ̂²/2L is exactly a quantum harmonic oscillator, with eigenvalues E<sub>n</sub> = (n + ½)ħω, ω = 1/√(LC). Evenly spaced, as claimed above — this is not an approximation, it is exact.</p>
+<p>A Josephson junction's current-phase relation is I = I<sub>c</sub> sin φ, with voltage V = (ħ/2e) dφ/dt across it. Treated as a circuit element this defines a nonlinear inductance L<sub>J</sub>(φ) = ħ/(2eI<sub>c</sub> cos φ) — a genuine inductor, but one whose value depends on the bias point, which is exactly the sine-versus-straight-line nonlinearity described above. Its energy scale is the Josephson energy E<sub>J</sub> = ħI<sub>c</sub>/2e.</p>
+<p>Shunting a single junction with a capacitor C<sub>Σ</sub> (charging energy E<sub>C</sub> = e²/2C<sub>Σ</sub>) gives the transmon Hamiltonian in the charge basis:</p>
+<div class="formula">Ĥ = 4E<sub>C</sub>(n̂ − n<sub>g</sub>)² − E<sub>J</sub> cos φ̂</div>
+<p>where n̂ is the Cooper-pair number operator and n<sub>g</sub> the offset charge. In the transmon regime E<sub>J</sub>/E<sub>C</sub> ≫ 1, expanding cos φ̂ past its quadratic (harmonic) term to the next, quartic order turns this into a weakly anharmonic — Duffing — oscillator, giving the leading-order level structure quoted above: ω<sub>01</sub> ≈ √(8E<sub>J</sub>E<sub>C</sub>)/ħ − E<sub>C</sub>/ħ, and each successive gap ω<sub>n,n+1</sub> smaller than the one before it by α ≈ −E<sub>C</sub>/ħ (Koch, Yu, Gambetta, Houck, Schuster, Majer, Blais, Devoret, Girvin &amp; Schoelkopf, <a href="https://arxiv.org/abs/cond-mat/0703002">arXiv cond-mat/0703002</a>, <em>Phys. Rev. A</em> 76, 042319 (2007)). The paper's headline result is the trade this page keeps returning to: charge dispersion — the residual sensitivity to the offset charge n<sub>g</sub> — falls <em>exponentially</em> in √(8E<sub>J</sub>/E<sub>C</sub>), while the anharmonicity available for gating falls only as a weak power law in E<sub>C</sub>/E<sub>J</sub>. That asymmetry is the entire argument for operating deep in the E<sub>J</sub>/E<sub>C</sub> ≫ 1 regime rather than near the Cooper-pair box's original charge-sensitive point.</p>
+<p><strong>The drive, and why it is a gate.</strong> Coupling a classical microwave tone to the circuit adds a drive term to the Hamiltonian; in the rotating frame, under the rotating-wave approximation, and restricted to the {|0⟩, |1⟩} subspace, this reduces to the textbook two-level Rabi problem. On resonance, the population in |1⟩ evolves as</p>
+<div class="formula">P<sub>1</sub>(t) = sin²(Ωt / 2)</div>
+<p>where Ω is the Rabi frequency set by the drive amplitude. A pulse cut off at Ωt = π — a <strong>π-pulse</strong> — leaves P<sub>1</sub> = 1: full population transfer from |0⟩ to |1⟩, which is precisely the physical implementation of the X gate. A π/2-pulse instead leaves an equal superposition, the same primitive the homepage's own |0⟩→|+⟩ widget asks you to apply. This is the exact mechanism behind every single-qubit gate on real superconducting hardware, surveyed in full in Krantz, Kjaergaard, Yan, Orlando, Gustavsson &amp; Oliver, <a href="https://arxiv.org/abs/1904.06560">arXiv 1904.06560</a> (<em>Applied Physics Reviews</em> 6, 021318 (2019)); the broader circuit-QED framework this all sits inside is reviewed in Blais, Grimsmo, Girvin &amp; Wallraff, <a href="https://arxiv.org/abs/2005.12667">arXiv 2005.12667</a> (<em>Rev. Mod. Phys.</em> 93, 025005 (2021)).</p>
+<p><strong>The catch this page's widget deliberately simplifies away.</strong> Because the transmon is only <em>weakly</em> anharmonic, a fast drive tuned to ω<sub>01</sub> has non-negligible spectral weight at the nearby ω<sub>12</sub> gap too, leaking population into level 2 — an error, not a feature. The standard fix is <strong>DRAG</strong> (Derivative Removal by Adiabatic Gate): add a second control tone proportional to the time-derivative of the first, which analytically cancels the leading leakage term without slowing the gate down. Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009)) — reported roughly an order-of-magnitude error reduction over undconditioned pulses at realistic transmon parameters, and some form of DRAG shaping runs on essentially every superconducting qubit gate in production today.</p>
+<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). All four citations (Koch et al. 2007, Krantz et al. 2019, Blais et al. 2021, Motzoi et al. 2009) were fetched and confirmed directly against their arXiv abstract pages for title, author list and journal citation before this page shipped. The leading-order formulas (ω<sub>01</sub> ≈ √(8E<sub>J</sub>E<sub>C</sub>) − E<sub>C</sub>, α ≈ −E<sub>C</sub>) are the standard, universally-quoted transmon result reproduced across the circuit-QED literature; this page states them to leading order only and does not carry the next-order correction terms, on the same honesty policy as every other formal section on this site. <b>Has not yet had an independent hostile-referee pass</b> — unlike this site's older pillar pages, which all carry a dated referee-pass note above their references. Treat this page's 🔴 tier with that in mind until one runs. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
+
+<h2>References</h2>
+<div class="card">
+  <p>• The transmon: Koch, Yu, Gambetta, Houck, Schuster, Majer, Blais, Devoret, Girvin &amp; Schoelkopf, <a href="https://arxiv.org/abs/cond-mat/0703002">arXiv cond-mat/0703002</a> (<em>Phys. Rev. A</em> 76, 042319 (2007))<br>
+  • Qubit control and gates, full survey: Krantz, Kjaergaard, Yan, Orlando, Gustavsson &amp; Oliver, <a href="https://arxiv.org/abs/1904.06560">arXiv 1904.06560</a> (<em>Applied Physics Reviews</em> 6, 021318 (2019))<br>
+  • Circuit QED, the broader framework: Blais, Grimsmo, Girvin &amp; Wallraff, <a href="https://arxiv.org/abs/2005.12667">arXiv 2005.12667</a> (<em>Rev. Mod. Phys.</em> 93, 025005 (2021))<br>
+  • DRAG, the leakage fix: Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009))</p>
+</div>
+
+<div class="cyu" data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A plain LC circuit and a transmon are both, in a sense, "an oscillating circuit." Why can only one of them be a qubit?</p>
+  <div class="cyu-opts">
+    <button data-opt>The LC circuit oscillates too slowly to be useful.</button>
+    <button data-opt>The LC circuit's energy levels are evenly spaced, so no pulse can address only two of them; the junction's nonlinearity makes the levels uneven, which the LC circuit's linear inductor cannot do.</button>
+    <button data-opt>The LC circuit has no charge on it, so nothing can be encoded.</button>
+    <button data-opt>Only superconducting components can hold quantum information at all.</button>
+  </div>
+  <p class="cyu-why">Being able to oscillate is necessary but not sufficient. A qubit needs exactly two addressable levels, and the only way to address two levels without also driving every level above them is for the gaps between levels to be unequal. A linear inductor can never produce that — its restoring force is proportional to displacement, full stop, which is what makes the resulting spectrum perfectly evenly spaced. The Josephson junction's sine current-phase relation is the one component in this circuit that isn't a straight line, and that is the entire reason it, and not a bigger coil, is what turns an oscillator into a qubit.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+</div>
+
+<a class="orjump" href="feasible.html">
+  <span>◆ <b>The same circuit, coupled instead of alone, is the classical rival to everything above.</b> Wire many oscillators like this one together instead of isolating a single nonlinear pair, and their resting state settles into the minimum of a Hamiltonian — the same kind of object a quantum annealer is built to minimise. That machine is what operations research already runs on.<span class="arr"> Enter The Feasible Region ▸</span></span>
+</a>
+
+<h2 data-tier-stop>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🌀 The next rung</h3><p>What this circuit's two addressable levels actually look like as a quantum state, and the sphere every gate on this site moves a point around.</p><a href="quantum-mechanics.html#bloch">Quantum mechanics vs computing →</a></div>
+  <div class="card"><h3>🛡️ Why one qubit isn't enough</h3><p>This page's qubit is fragile — any of a thousand tiny nudges knocks it off course. What error correction does about that.</p><a href="qec.html">What is error correction? →</a></div>
+  <div class="card"><h3>🏁 The Race</h3><p>Who's actually building this hardware, and how their qubit counts compare.</p><a href="compare.html">How the companies compare →</a></div>
+</div>
+
+<footer>What a qubit is actually made of — the rung underneath everything else on this site.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+</div>
+
+<script>
+(function () {
+  try {
+    var canvas = document.getElementById('cw-canvas');
+    var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+    var ladderSvg = document.getElementById('cw-ladder-svg');
+    var ratioRow = document.getElementById('cw-ratio-row');
+    var ratioInput = document.getElementById('cw-ratio');
+    var ratioOut = document.getElementById('cw-ratio-out');
+    var readout = document.getElementById('cw-readout');
+    var driveBtn = document.getElementById('cw-drive');
+    var driveResetBtn = document.getElementById('cw-drive-reset');
+    var driveOut = document.getElementById('cw-drive-out');
+    var barsWrap = document.getElementById('cw-bars');
+    var bar0 = document.getElementById('cw-bar-0');
+    var bar1 = document.getElementById('cw-bar-1');
+    var btnLinear = document.getElementById('btn-linear');
+    var btnWeak = document.getElementById('btn-weak');
+    var btnStrong = document.getElementById('btn-strong');
+    if (!canvas || !ctx || !ladderSvg) return;
+
+    var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var EC = 0.25;                 // GHz, held fixed (illustrative, representative)
+    var mode = 'linear';           // 'linear' | 'junction'
+    var ratio = 50;                // Ej/Ec, junction mode only
+    var phase = 0;                 // moving dot phase, radians
+    var driving = false, drivePhase = 0, driveDoneAt = 0;
+    var W = canvas.width, H = canvas.height;
+
+    function omega01() {
+      if (mode === 'linear') return 5.0; // GHz, illustrative bare LC resonance
+      var Ej = ratio * EC;
+      return Math.sqrt(8 * Ej * EC) - EC;
+    }
+    function levelGaps(n) {
+      // gap(k -> k+1) = omega01 - k*EC for junction mode (leading order,
+      // constant anharmonicity); all gaps equal omega01 for linear mode.
+      var w01 = omega01(), out = [];
+      for (var k = 0; k < n; k++) {
+        out.push(mode === 'linear' ? w01 : Math.max(0.15, w01 - k * EC));
+      }
+      return out;
+    }
+    function levels(n) {
+      var gaps = levelGaps(n - 1), out = [0];
+      for (var i = 0; i < gaps.length; i++) out.push(out[i] + gaps[i]);
+      return out;
+    }
+
+    function drawScope() {
+      ctx.clearRect(0, 0, W, H);
+      var w01 = omega01();
+      var cycles = Math.max(2, Math.min(9, w01 * 1.5));
+      var midY = H / 2, amp = H * 0.32;
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border') || '#232d45';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, midY); ctx.lineTo(W, midY); ctx.stroke();
+
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--teal') || '#2dd4bf';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      for (var x = 0; x <= W; x++) {
+        var th = (x / W) * cycles * 2 * Math.PI;
+        var y = midY - amp * Math.cos(th);
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // moving phase dot -- purely to signal "this is live", not a data channel
+      var dotX = ((phase / (2 * Math.PI)) % 1) * W;
+      var dotTh = (dotX / W) * cycles * 2 * Math.PI;
+      var dotY = midY - amp * Math.cos(dotTh);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--violet') || '#a78bfa';
+      ctx.beginPath(); ctx.arc(dotX, dotY, 4.5, 0, 2 * Math.PI); ctx.fill();
+    }
+
+    function drawLadder() {
+      var n = 5;
+      var E = levels(n);
+      var maxE = E[n - 1] || 1;
+      var padTop = 14, padBot = 14, usable = 200 - padTop - padBot;
+      var svgns = 'http://www.w3.org/2000/svg';
+      while (ladderSvg.firstChild) ladderSvg.removeChild(ladderSvg.firstChild);
+      var muted = getComputedStyle(document.documentElement).getPropertyValue('--muted') || '#9aa5bd';
+      var teal = getComputedStyle(document.documentElement).getPropertyValue('--teal') || '#2dd4bf';
+      for (var i = 0; i < n; i++) {
+        var y = padTop + usable - (E[i] / maxE) * usable;
+        var line = document.createElementNS(svgns, 'line');
+        line.setAttribute('x1', 18); line.setAttribute('x2', 90);
+        line.setAttribute('y1', y); line.setAttribute('y2', y);
+        line.setAttribute('stroke', i < 2 ? teal : muted);
+        line.setAttribute('stroke-width', i < 2 ? 2.6 : 1.6);
+        ladderSvg.appendChild(line);
+        var label = document.createElementNS(svgns, 'text');
+        label.setAttribute('x', 96); label.setAttribute('y', y + 4);
+        label.setAttribute('font-size', '11'); label.setAttribute('fill', muted);
+        label.textContent = '|' + i + '⟩';
+        ladderSvg.appendChild(label);
+      }
+    }
+
+    function updateReadout() {
+      var w01 = omega01();
+      var alpha = mode === 'linear' ? 0 : -EC;
+      var html = mode === 'linear'
+        ? '<strong>Plain LC:</strong> every gap = ' + w01.toFixed(2) + ' GHz (illustrative). Perfectly evenly spaced — no two levels are addressable alone.'
+        : '<strong>ω₀₁ ≈ ' + w01.toFixed(2) + ' GHz</strong> · <strong>anharmonicity α ≈ ' + alpha.toFixed(2) + ' GHz</strong> · E<sub>J</sub>/E<sub>C</sub> = ' + ratio + ' (E<sub>C</sub> fixed at ' + EC.toFixed(2) + ' GHz)';
+      readout.innerHTML = html;
+    }
+
+    function setMode(next, r) {
+      mode = next;
+      if (typeof r === 'number') ratio = r;
+      ratioRow.hidden = (mode === 'linear');
+      driveBtn.disabled = (mode === 'linear');
+      driveBtn.innerHTML = mode === 'linear'
+        ? 'Drive the 0→1 gap <span class="kbd">needs a junction</span>'
+        : 'Drive the 0→1 gap <span class="kbd">π-pulse = X gate</span>';
+      [btnLinear, btnWeak, btnStrong].forEach(function (b) { b.classList.remove('on'); });
+      (mode === 'linear' ? btnLinear : (ratio <= 30 ? btnWeak : btnStrong)).classList.add('on');
+      resetDrive();
+      drawLadder();
+      updateReadout();
+    }
+
+    function resetDrive() {
+      driving = false; drivePhase = 0;
+      barsWrap.hidden = true;
+      driveResetBtn.hidden = true;
+      driveOut.innerHTML = '&nbsp;';
+      bar0.style.height = '100%'; bar1.style.height = '0%';
+    }
+
+    btnLinear.addEventListener('click', function () { setMode('linear'); });
+    btnWeak.addEventListener('click', function () { ratioInput.value = 20; ratio = 20; ratioOut.textContent = '20'; setMode('junction', 20); });
+    btnStrong.addEventListener('click', function () { ratioInput.value = 80; ratio = 80; ratioOut.textContent = '80'; setMode('junction', 80); });
+    ratioInput.addEventListener('input', function () {
+      ratio = parseInt(ratioInput.value, 10);
+      ratioOut.textContent = String(ratio);
+      if (mode !== 'junction') mode = 'junction';
+      [btnLinear, btnWeak, btnStrong].forEach(function (b) { b.classList.remove('on'); });
+      (ratio <= 30 ? btnWeak : btnStrong).classList.add('on');
+      resetDrive();
+      drawLadder();
+      updateReadout();
+    });
+
+    driveBtn.addEventListener('click', function () {
+      if (mode === 'linear' || driving) return;
+      driving = true; drivePhase = 0;
+      barsWrap.hidden = false;
+      driveResetBtn.hidden = false;
+      driveOut.textContent = 'Driving on resonance with ω₀₁ …';
+    });
+    driveResetBtn.addEventListener('click', resetDrive);
+
+    var last = performance.now();
+    function tick(now) {
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      if (!reduceMotion) phase += dt * 2.2;
+      drawScope();
+
+      if (driving) {
+        drivePhase += dt * 2.6; // rad/s, illustrative Rabi rate -- a full pi in ~1.2s
+        var p1 = Math.pow(Math.sin(Math.min(Math.PI, drivePhase) / 2), 2);
+        bar0.style.height = ((1 - p1) * 100).toFixed(1) + '%';
+        bar1.style.height = (p1 * 100).toFixed(1) + '%';
+        if (drivePhase >= Math.PI) {
+          driving = false;
+          driveOut.innerHTML = '<strong>π-pulse complete — this is the X gate.</strong> A π/2-pulse (half this long) would have stopped at an equal superposition instead.';
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    setMode('linear');
+    requestAnimationFrame(tick);
+  } catch (e) { /* the widget is additive -- the explanation above stands without it */ }
+})();
+</script>
+</body>
+</html>

@@ -15,6 +15,16 @@
   },
   "concepts": [
     {
+      "id": "the-bench",
+      "term": "The Bench",
+      "aliases": ["three methods, many replays"],
+      "page": "analog.html",
+      "anchor": "bench",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "Random restart, simulated annealing and oscillator relaxation race on the same graph, 200 replays each -- move the time budget and the winner changes."
+    },
+    {
       "id": "ising-machine",
       "term": "Ising machine",
       "aliases": ["Ising machines", "oscillator Ising machine", "OIM", "coherent Ising machine", "CIM"],

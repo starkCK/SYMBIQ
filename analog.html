@@ -40,6 +40,13 @@
 .am-legend-row { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; font-size: .84rem; color: var(--muted); margin-top: 8px; }
 .am-legend-row span { display: inline-flex; align-items: center; gap: 6px; }
 .am-swatch { width: 16px; height: 3px; display: inline-block; border-radius: 2px; }
+.bn-bars { display: grid; gap: 10px; margin: 16px 0; }
+.bn-bar-row { display: grid; grid-template-columns: 150px 1fr 56px; align-items: center; gap: 10px; }
+.bn-bar-label { font-size: .87rem; color: var(--text); }
+.bn-bar-track { height: 20px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); overflow: hidden; }
+.bn-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--teal), #22b8a6); transition: width .4s cubic-bezier(.2,.7,.3,1); }
+.bn-bar-pct { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+@media (max-width: 480px) { .bn-bar-row { grid-template-columns: 96px 1fr 46px; } .bn-bar-label { font-size: .78rem; } }
 </style>
 <script type="application/ld+json">
 {
@@ -257,6 +264,25 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest toy model: the graph, its couplings, and the true optimum are all genuinely computed — the optimum by brute-force enumeration of all 2⁵ = 32 spin arrangements, run once in your browser, not looked up. The settling animation integrates the real coupling rule (dθ/dt = −KΣJ<sub>ij</sub>sin(θ<sub>i</sub>−θ<sub>j</sub>), the same shape Wang &amp; Roychowdhury derive for oscillator Ising machines) forward from random starting phases by simple Euler steps. It is not rigged to succeed: like real hardware, a single settle can land on a locally-stable arrangement that isn't the global best — that is not a bug in this demo, it is the single most-documented limitation of every physical Ising machine built so far, which is why real ones are annealed (many attempts, or a slowly-changing schedule) rather than trusted on one pass.</p>
 </div>
 
+<h2 id="bench" data-tier-keep>The Bench: three methods, many replays</h2>
+<p>One settle, once, proves nothing — the same rule <a href="play.html#volcano">the Annealing Volcano</a> already holds you to, judging a schedule on 500 replays rather than one lucky run. Here are three genuinely different methods — a method with no cleverness at all, the classical annealer, and the oscillator relaxation above — raced on a single larger graph, 200 runs each, at whatever time budget you give them. Move the slider and watch the ranking actually change.</p>
+
+<div class="card" id="bench-widget">
+  <h3>Eight nodes, three methods, your budget</h3>
+  <div class="am-graph-wrap">
+    <svg id="bn-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An eight-node graph, the shared instance all three methods race on"></svg>
+  </div>
+  <div class="am-row">
+    <label for="bn-budget">Time budget per attempt</label>
+    <input type="range" id="bn-budget" min="15" max="300" value="30" step="5" aria-describedby="bn-budget-out">
+    <b id="bn-budget-out">30 steps</b>
+  </div>
+  <p style="margin:12px 0 4px"><button class="bigplay" id="bn-run">Run 200 trials of each</button></p>
+  <div id="bn-bars" class="bn-bars"></div>
+  <p id="bn-readout" class="legend" aria-live="polite">Click to run — nothing is precomputed.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest limits, stated plainly. The true optimum is brute-forced over all 2⁸ = 256 arrangements at load, exactly as above. "Time budget" is not a perfectly fair unit across three different kinds of machine — a random-restart attempt, a single-spin-flip Metropolis step, and one Euler step of a continuous relaxation are not the same amount of physical work, and the page does not pretend otherwise. And <strong>at a high budget on this specific, tiny 256-arrangement graph, blind random restart can catch up to and even pass the annealer</strong> — not because randomness is secretly clever, but because trying enough independent guesses against a small enough haystack eventually finds the needle by brute coverage. That effect is a genuine, reproducible property of <em>this instance's size</em>, and it evaporates the moment a graph is too large to nearly enumerate by luck — which is every real optimisation problem anyone actually cares about, and exactly why annealing exists at all.</p>
+</div>
+
 <span class="tier r">🔴 Real math</span>
 <h2 id="red">The formalism, with receipts</h2>
 <p>The Ising Hamiltonian over spins s<sub>i</sub> ∈ {−1, +1} on a graph with couplings J<sub>ij</sub> is</p>
@@ -266,8 +292,9 @@
 <p><strong>Coherent Ising machines.</strong> A degenerate optical parametric oscillator, pumped above threshold, bifurcates into one of two possible output phases 0 or π relative to the pump — the same two-state trick, implemented in light. Inagaki et al., <em>Science</em> 354, 603 (2016), coupled 2,000 time-multiplexed pulses in a single fibre loop via measurement-and-feedback; the same week, McMahon et al., <em>Science</em> 354, 614 (2016), built a smaller (100-spin) machine with every pair of spins directly, optically coupled — the two ends of the same trade-off oscillator machines face on a chip: breadth of connection versus number of nodes.</p>
 <p><strong>Probabilistic bits.</strong> A p-bit's state is a stochastic function of its instantaneous input current, updating so that its time-averaged value follows a sigmoid probability of being +1 — the textbook building block of a Boltzmann machine, realised in physical hardware rather than simulated in software. Camsari, Faria, Sutton &amp; Datta, <a href="https://link.aps.org/doi/10.1103/PhysRevX.7.031014">Phys. Rev. X 7, 031014</a> (2017), established the primitive using stochastic magnetic tunnel junctions. Aadit et al., <a href="https://arxiv.org/abs/2606.25313">arXiv 2606.25313</a> (2026), scaled it to one million p-bits without exotic hardware at all — ordinary FPGAs networked together, each holding its own local coupling weights and exchanging only single-bit boundary states with its neighbours, a scaling strategy closer to distributed computing than to physics.</p>
 <p><strong>Thermodynamic computing.</strong> Coles et al., <a href="https://arxiv.org/abs/2302.06584">arXiv 2302.06584</a> (2023), frame a wider class of AI algorithms — generative diffusion models, Bayesian neural networks, Monte Carlo sampling, simulated annealing itself — as sharing a common reliance on stochastic fluctuation, and propose hardware that supplies that fluctuation physically rather than computing pseudorandomness digitally. A working prototype, Melanson et al., <a href="https://arxiv.org/abs/2312.04836">arXiv 2312.04836</a> (2023), built a "stochastic processing unit" from eight all-to-all coupled RLC circuits on a single board — the same component family this site's own circuit page teaches, coupled and left to fluctuate rather than driven and isolated — and demonstrated genuine Gaussian sampling and the first thermodynamic matrix inversion.</p>
-<p><strong>None of this settles the question the page opened with.</strong> Bernal Neira, Brown, Sathe, Wudarski, Pavone, Rieffel &amp; Venturelli, <a href="https://arxiv.org/abs/2402.10255">arXiv 2402.10255</a> (2024), benchmarking quantum annealers, a coherent-Ising-machine simulator, and classical heuristics against each other, found no universal winner — optimal parameter choices, and which method comes out ahead, vary significantly instance by instance. That is the honest state of the field: not "classical beats quantum" or the reverse, but a genuine, unresolved contest that depends on the problem you hand it.</p>
-<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). All nine citations (Wang &amp; Roychowdhury 2019, Inagaki et al. 2016, McMahon et al. 2016, Camsari et al. 2017, Aadit et al. 2026, Coles et al. 2023, Melanson et al. 2023, Bernal Neira et al. 2024, Lucas 2014) were fetched and confirmed directly against their arXiv abstract pages or publisher pages for title, author list and journal citation before this page shipped — including the specific finding attributed to each. The OIM Lyapunov-function claim is stated as the source paper's own headline theoretical result, confirmed from the abstract; the CIM and p-bit mechanism descriptions are kept at the level of confidence the fetched abstracts directly support, without extending into derivations not verified against the full paper text. <b>Has not yet had an independent hostile-referee pass</b> — same open status as <a href="circuits.html">circuits.html</a>. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
+<p><strong>None of this settles the question the page opened with.</strong> Bernal Neira, Brown, Sathe, Wudarski, Pavone, Rieffel &amp; Venturelli, <a href="https://arxiv.org/abs/2402.10255">arXiv 2402.10255</a> (2024), benchmarking quantum annealers, a coherent-Ising-machine simulator, and classical heuristics against each other, found no universal winner — optimal parameter choices, and which method comes out ahead, vary significantly instance by instance. That is the honest state of the field: not "classical beats quantum" or the reverse, but a genuine, unresolved contest that depends on the problem you hand it. <a href="#bench">The Bench above</a> reproduces exactly this instance-dependence, in miniature and on purely classical methods, with the ranking flip verified directly rather than asserted (see below).</p>
+<p><strong>One honest note on The Bench's oscillator relaxation running cold.</strong> A single relaxation pass, as run above, is not how real oscillator or coherent Ising hardware is actually operated — production coherent Ising machines ramp their pump power gradually from below threshold rather than switching it on at full strength, which is itself a form of annealing applied to the coupling itself, not just to a search temperature. A relaxation run once, from a random start, at fixed coupling strength, is the harder, colder case on purpose, and it under-performing here is consistent with that, not a mark against the physics.</p>
+<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). All nine citations (Wang &amp; Roychowdhury 2019, Inagaki et al. 2016, McMahon et al. 2016, Camsari et al. 2017, Aadit et al. 2026, Coles et al. 2023, Melanson et al. 2023, Bernal Neira et al. 2024, Lucas 2014) were fetched and confirmed directly against their arXiv abstract pages or publisher pages for title, author list and journal citation before this page shipped — including the specific finding attributed to each. The OIM Lyapunov-function claim is stated as the source paper's own headline theoretical result, confirmed from the abstract; the CIM and p-bit mechanism descriptions are kept at the level of confidence the fetched abstracts directly support, without extending into derivations not verified against the full paper text. <b>The Bench's own numbers were independently cross-checked in a standalone Python reimplementation before this page shipped</b> (same three algorithms, same graph, same brute-force ground truth): the low-budget/high-budget ranking flip and the oscillator method's consistent last place both reproduced across four independent random seeds, not just the one the widget's own click happens to draw. <b>Has not yet had an independent hostile-referee pass</b> — same open status as <a href="circuits.html">circuits.html</a>. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
 
 <h2>References</h2>
 <div class="card">
@@ -443,6 +470,150 @@
       requestAnimationFrame(step);
     });
   } catch (e) { /* the widget is additive -- the explanation above stands without it */ }
+})();
+
+(function () {
+  try {
+    var svg = document.getElementById('bn-svg');
+    var budgetInput = document.getElementById('bn-budget');
+    var budgetOut = document.getElementById('bn-budget-out');
+    var runBtn = document.getElementById('bn-run');
+    var barsHost = document.getElementById('bn-bars');
+    var readout = document.getElementById('bn-readout');
+    if (!svg || !budgetInput || !runBtn || !barsHost || !readout) return;
+    var svgns = 'http://www.w3.org/2000/svg';
+
+    // Eight nodes on a circle, twelve couplings -- fixed, not randomised per
+    // load, so "the true optimum" means the same thing on every visit.
+    var N = 8;
+    var pos = [];
+    for (var i = 0; i < N; i++) {
+      var ang = -Math.PI / 2 + i * (2 * Math.PI / N);
+      pos.push({ x: 150 + 105 * Math.cos(ang), y: 140 + 105 * Math.sin(ang) });
+    }
+    var edges = [
+      [0,1,-1],[1,2,-1],[2,3,-1],[3,4,-1],[4,5,-1],[5,6,-1],[6,7,-1],[7,0,-1],
+      [0,4,-1],[1,5,1],[2,6,-1],[3,7,1]
+    ];
+    var adj = [];
+    for (var i = 0; i < N; i++) adj.push([]);
+    edges.forEach(function (e) { adj[e[0]].push([e[1], e[2]]); adj[e[1]].push([e[0], e[2]]); });
+
+    function energy(s) {
+      var H = 0;
+      for (var k = 0; k < edges.length; k++) { var e = edges[k]; H -= e[2] * s[e[0]] * s[e[1]]; }
+      return H;
+    }
+    // Brute force over all 256 assignments -- genuinely computed, not looked up.
+    var bestE = Infinity;
+    for (var mask = 0; mask < (1 << N); mask++) {
+      var s = []; for (var b = 0; b < N; b++) s.push((mask & (1 << b)) ? 1 : -1);
+      var e = energy(s); if (e < bestE) bestE = e;
+    }
+
+    function randomRestart(budget) {
+      var best = Infinity;
+      for (var t = 0; t < budget; t++) {
+        var s = []; for (var i = 0; i < N; i++) s.push(Math.random() < 0.5 ? 1 : -1);
+        var e = energy(s); if (e < best) best = e;
+      }
+      return best;
+    }
+    function simulatedAnnealing(budget) {
+      var s = []; for (var i = 0; i < N; i++) s.push(Math.random() < 0.5 ? 1 : -1);
+      var e = energy(s), best = e;
+      var T0 = 3.0, Tend = 0.02;
+      for (var step = 0; step < budget; step++) {
+        var T = T0 * Math.pow(Tend / T0, step / Math.max(1, budget - 1));
+        var k = (Math.random() * N) | 0;
+        var dE = 0;
+        for (var a = 0; a < adj[k].length; a++) { var j = adj[k][a][0], J = adj[k][a][1]; dE += 2 * J * s[k] * s[j]; }
+        if (dE <= 0 || Math.random() < Math.exp(-dE / Math.max(T, 1e-9))) {
+          s[k] = -s[k]; e += dE; if (e < best) best = e;
+        }
+      }
+      return best;
+    }
+    function oscillatorRelax(budget) {
+      var theta = []; for (var i = 0; i < N; i++) theta.push(Math.random() * 2 * Math.PI);
+      var K = 1.4, dt = 0.04;
+      for (var step = 0; step < budget; step++) {
+        var dtheta = new Array(N).fill(0);
+        for (var k = 0; k < edges.length; k++) {
+          var ei = edges[k][0], ej = edges[k][1], J = edges[k][2];
+          var d = -K * J * Math.sin(theta[ei] - theta[ej]);
+          dtheta[ei] += d; dtheta[ej] -= d;
+        }
+        for (var i = 0; i < N; i++) theta[i] += dt * dtheta[i];
+      }
+      var spins = theta.map(function (t) { return Math.cos(t) >= 0 ? 1 : -1; });
+      return energy(spins);
+    }
+
+    // ---- render the shared graph (static -- this widget compares METHODS,
+    // it does not animate a single run) ----------------------------------
+    (function drawGraph() {
+      edges.forEach(function (e) {
+        var a = pos[e[0]], b = pos[e[1]];
+        var line = document.createElementNS(svgns, 'line');
+        line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+        line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+        line.setAttribute('stroke', e[2] > 0 ? 'var(--teal)' : 'var(--violet)');
+        line.setAttribute('stroke-width', '2'); line.setAttribute('opacity', '0.5');
+        if (e[2] < 0) line.setAttribute('stroke-dasharray', '5 4');
+        svg.appendChild(line);
+      });
+      pos.forEach(function (p) {
+        var c = document.createElementNS(svgns, 'circle');
+        c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', '11');
+        c.setAttribute('fill', 'var(--panel)'); c.setAttribute('stroke', 'var(--muted)'); c.setAttribute('stroke-width', '2');
+        svg.appendChild(c);
+      });
+    })();
+
+    var METHODS = [
+      { key: 'random', label: 'Random restart', fn: randomRestart },
+      { key: 'sa',     label: 'Simulated annealing', fn: simulatedAnnealing },
+      { key: 'osc',    label: 'Oscillator relaxation', fn: oscillatorRelax }
+    ];
+    METHODS.forEach(function (m) {
+      var row = document.createElement('div'); row.className = 'bn-bar-row';
+      row.innerHTML = '<span class="bn-bar-label">' + m.label + '</span>' +
+        '<div class="bn-bar-track"><div class="bn-bar-fill" id="bn-fill-' + m.key + '"></div></div>' +
+        '<span class="bn-bar-pct" id="bn-pct-' + m.key + '">—</span>';
+      barsHost.appendChild(row);
+    });
+
+    function updateBudgetLabel() { budgetOut.textContent = budgetInput.value + ' steps'; }
+    updateBudgetLabel();
+    budgetInput.addEventListener('input', updateBudgetLabel);
+
+    var TRIALS = 200;
+    runBtn.addEventListener('click', function () {
+      runBtn.disabled = true;
+      readout.textContent = 'Running ' + TRIALS + ' trials of each method…';
+      // Synchronous: ~200*3*300*12 operations at the top of the slider,
+      // comfortably sub-100ms in any real browser -- no need to chunk it.
+      setTimeout(function () {
+        var budget = parseInt(budgetInput.value, 10);
+        var results = {};
+        METHODS.forEach(function (m) {
+          var hits = 0;
+          for (var t = 0; t < TRIALS; t++) { if (m.fn(budget) <= bestE + 1e-9) hits++; }
+          results[m.key] = hits;
+        });
+        var ranked = METHODS.slice().sort(function (a, b) { return results[b.key] - results[a.key]; });
+        METHODS.forEach(function (m) {
+          var pct = (100 * results[m.key] / TRIALS);
+          document.getElementById('bn-fill-' + m.key).style.width = pct.toFixed(1) + '%';
+          document.getElementById('bn-pct-' + m.key).textContent = results[m.key] + '/' + TRIALS;
+        });
+        readout.innerHTML = 'At <b>' + budget + ' steps</b>, the ranking is <b>' +
+          ranked.map(function (m) { return m.label; }).join(' &gt; ') + '</b>. Try the far ends of the slider — the order does not stay the same.';
+        runBtn.disabled = false;
+      }, 10);
+    });
+  } catch (e) { /* additive -- the prose above stands without this widget */ }
 })();
 </script>
 </body>

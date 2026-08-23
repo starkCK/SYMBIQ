@@ -161,6 +161,23 @@ h2::before {
 }
 p { margin-bottom: 14px; }
 .tagline { color: var(--muted); font-size: 1.05rem; margin-bottom: 28px; animation: fadeUp 0.5s ease-out 0.08s both; }
+/* The spine: one sentence, above the three-door router, answering the
+   question the router itself cannot -- why quantum/OR/security are one site
+   rather than three. Reuses h2::before's own violet->teal rule rather than
+   inventing a second accent language: that gradient already means "the fork"
+   everywhere else on the page. */
+.spine-tag { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 22px 0 7px; }
+.spine {
+  position: relative; padding-left: 15px; max-width: 66ch;
+  font-size: .98rem; color: var(--muted); margin: 0 0 26px;
+}
+.spine::before {
+  content: ""; position: absolute; left: 0; top: .2em; bottom: .2em;
+  width: 3px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--violet), var(--teal));
+}
+.spine a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
+.spine a:hover { text-decoration-color: var(--teal); }
 .tier { display: inline-block; font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--border); margin-bottom: 10px; }
 .tier.g { color: var(--green); background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.3); }
 .tier.y { color: var(--yellow); background: rgba(250, 204, 21, 0.08); border-color: rgba(250, 204, 21, 0.3); }

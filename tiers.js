@@ -159,6 +159,16 @@
       document.body.setAttribute('data-depth', t);
       if (fromClick) {
         hashSet('depth', t);
+        // A reader picking an extreme here has stated a real preference, the
+        // same way picking "light" or "deep" on feasible.html/formalism.html/
+        // journey.html's own toggle already does -- so it should travel with
+        // them the same way. 'y' (the middle) and 'all' don't map onto that
+        // toggle's light/deep binary, so they deliberately leave whatever
+        // preference already exists untouched rather than guessing at one.
+        if (window.SymbiQ && SymbiQ.depth) {
+          if (t === 'g') SymbiQ.depth.set('light');
+          else if (t === 'r') SymbiQ.depth.set('deep');
+        }
         // Keep the bar in view; the reader's eye is on the control they clicked.
         var top = bar.getBoundingClientRect().top;
         if (top < 0) bar.scrollIntoView({ block: 'start' });

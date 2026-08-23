@@ -24,6 +24,20 @@
   --h1-b: #a78bfa;
   --h1-c: #2dd4bf;
   --rowhover: rgba(148, 163, 184, 0.06);
+
+  /* ---- Spacing / radius / elevation scale (added 2026-08-23, item 07 of
+     "The Ladder"). Additive only: the ~700 existing ad-hoc px values in this
+     file are untouched -- refactoring every one to match would be a
+     22-page-blast-radius change for zero reader-visible benefit. New shared
+     components (starting with the rung rail below) use these; the scale
+     exists so the NEXT one doesn't have to invent its own numbers.
+     Theme-independent by design (spacing and radius don't change between
+     light and dark); elevation composes var(--shadow), which already does. */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 28px; --sp-7: 40px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-pill: 999px;
+  --elev-1: 0 1px 2px var(--shadow);
+  --elev-2: 0 10px 28px var(--shadow);
 }
 @media (prefers-color-scheme: light) {
   :root {
@@ -178,6 +192,45 @@ p { margin-bottom: 14px; }
 }
 .spine a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
 .spine a:hover { text-decoration-color: var(--teal); }
+
+/* The rung rail (rung.js). First real use of the item-07 token scale above:
+   spacing/radius come from --sp-*/--r-*, not new one-off numbers. Violet for
+   the five linear rungs, teal for the fork -- the same split the homepage
+   spine and analog.html already use, so the colour means the same thing
+   everywhere it appears rather than being decided fresh per page. */
+.rung-rail {
+  display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+  margin: var(--sp-2) 0 var(--sp-5); padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: var(--panel); font-size: .82rem;
+}
+.rung-rail-lab { color: var(--muted); font-weight: 700; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
+.rung-rail-track { display: flex; align-items: center; gap: 2px; }
+.rung-dot {
+  display: grid; place-items: center; width: 26px; height: 26px; border-radius: var(--r-pill);
+  border: 1.5px solid var(--border); color: var(--muted); text-decoration: none;
+  font-family: "Cambria Math", Georgia, serif; font-size: .72rem;
+  transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+.rung-dot:hover { border-color: var(--violet); color: var(--text); }
+.rung-dot.is-cur { border-color: var(--violet); background: var(--violet); color: #04021f; font-weight: 700; }
+.rung-seg { width: 14px; height: 1.5px; background: var(--border); flex: none; }
+.rung-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.rung-fork {
+  display: inline-flex; align-items: center; gap: 4px; color: var(--muted); text-decoration: none;
+  font-size: .78rem; padding: 3px var(--sp-2); border-radius: var(--r-pill); border: 1px dashed var(--border);
+  white-space: nowrap;
+}
+.rung-fork:hover { border-color: var(--teal); color: var(--text); }
+.rung-fork.is-cur { border-color: var(--teal); border-style: solid; color: var(--teal); font-weight: 700; }
+@media (prefers-color-scheme: light) {
+  .rung-dot.is-cur { color: #f8fafc; }
+}
+@media (max-width: 480px) {
+  .rung-rail { font-size: .76rem; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); }
+  .rung-dot { width: 22px; height: 22px; }
+  .rung-seg { width: 8px; }
+}
 .tier { display: inline-block; font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--border); margin-bottom: 10px; }
 .tier.g { color: var(--green); background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.3); }
 .tier.y { color: var(--yellow); background: rgba(250, 204, 21, 0.08); border-color: rgba(250, 204, 21, 0.3); }

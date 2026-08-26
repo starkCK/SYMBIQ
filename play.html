@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Arcade — quantum games, free play</title>
-<meta name="description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, and quantum tic-tac-toe with genuine superposition and collapse. No story, no gates — just the physics doing the judging.">
+<meta name="description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, quantum tic-tac-toe with genuine superposition and collapse, and The Calibration where you configure a qubit-recalibration agent rather than driving the qubit yourself. No story, no gates — just the physics doing the judging.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/play.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/play.html">
 <meta property="og:title" content="The Arcade — quantum games, free play">
-<meta property="og:description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
+<meta property="og:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,13 +23,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="The Arcade — quantum games, free play">
-<meta name="twitter:description" content="Five games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
+<meta name="twitter:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=35">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=12"></script>
+<script src="games.js?v=14"></script>
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=8"></script>
 <script src="nav.js?v=7" defer></script>
@@ -46,8 +46,8 @@
       "headline": "The Arcade — quantum games, free play",
       "author": {"@type": "Organization", "name": "SymbiQ"},
       "datePublished": "2026-07-21",
-      "dateModified": "2026-07-24",
-      "description": "Five games built on real quantum mechanics and optimisation: Circuit Golf (proven-minimal pars), Grover's Escape (a provable quadratic speedup where over-amplifying loses), Max-Cut (the NP-hard problem that is the Ising ground state), the Annealing Volcano (simulated annealing, scored on your cooling schedule rather than your luck), and quantum tic-tac-toe."
+      "dateModified": "2026-08-27",
+      "description": "Six games built on real quantum mechanics and optimisation: Circuit Golf (proven-minimal pars), Grover's Escape (a provable quadratic speedup where over-amplifying loses), Max-Cut (the NP-hard problem that is the Ising ground state), the Annealing Volcano (simulated annealing, scored on your cooling schedule rather than your luck), quantum tic-tac-toe, and The Calibration (configuring a qubit-recalibration agent rather than driving the qubit yourself)."
     },
     {
       "@type": "BreadcrumbList",
@@ -156,7 +156,7 @@
 
 
 <h1>The Arcade</h1>
-<p class="tagline">The same five machines you meet on <a href="journey.html">the Solver's Path</a> — but here there is no story, no mentor and no order. Just the games, and the physics doing the judging.</p>
+<p class="tagline">Five of these six machines are the ones you meet on <a href="journey.html">the Solver's Path</a> — here, no story, no mentor, no order. The sixth, The Calibration, has no mission of its own; it lives here and natively on <a href="circuits.html#calibration">circuits.html</a>. Just the games, and the physics doing the judging.</p>
 
 <!-- BROWSE: the selection floor. Hidden in full whenever a game or mission
      is open, so playing something is a dedicated view, not a scroll stop
@@ -177,7 +177,7 @@
     <circle class="gnode" cx="130" cy="109" r="3.5"/>
   </svg>
   <h3>Push the door</h3>
-  <p>Behind it: five machines that will not let you fake a score. Where a machine has a par — Circuit Golf, Grover's Escape, Max-Cut — that par is a proven optimum found by exhaustive search, not a designer's guess. The Volcano scores you on a schedule replayed 500 times rather than on a par, because a single lucky run proves nothing. Every probability on every screen is computed rather than chosen. And one landscape is built to prove that your best strategy is worthless on the wrong problem.</p>
+  <p>Behind it: six machines that will not let you fake a score. Where a machine has a par — Circuit Golf, Grover's Escape, Max-Cut — that par is a proven optimum found by exhaustive search, not a designer's guess. The Volcano scores you on a schedule replayed 500 times rather than on a par, because a single lucky run proves nothing. The Calibration scores you against the exact same drift a fixed strategy would have faced, replayed on demand, so luck in the qubit's own drift never gets credited to you. Every probability on every screen is computed rather than chosen. And one landscape is built to prove that your best strategy is worthless on the wrong problem.</p>
   <span class="push">Open the arcade ▸</span>
 </div>
 
@@ -230,7 +230,7 @@
 
   <h2>Coming next</h2>
   <div class="card">
-    <p>A full <strong>board game</strong> for two to four players, on quantum computing and the parts of AI that actually touch it — where knowing more genuinely wins, and the board, pieces and animation are built to be worth looking at. <strong>Designed, not yet started</strong>, and deliberately behind the rebuild of the machines above; we would rather say that than call it "in development" for another six months. The five machines are the groundwork: each is a mechanic that will earn its place on that board, or be cut.</p>
+    <p>A full <strong>board game</strong> for two to four players, on quantum computing and the parts of AI that actually touch it — where knowing more genuinely wins, and the board, pieces and animation are built to be worth looking at. <strong>Designed, not yet started</strong>, and deliberately behind the rebuild of the machines above; we would rather say that than call it "in development" for another six months. The six machines are the groundwork: each is a mechanic that will earn its place on that board, or be cut.</p>
   </div>
 </div>
 
@@ -325,7 +325,7 @@
     missionHost.innerHTML = '';
     document.getElementById('stage-title').textContent = g.title;
     document.getElementById('stage-hook').textContent = g.hook;
-    document.getElementById('stage-mentor').textContent = 'On the Path this is ' + g.mentor + "'s mission";
+    document.getElementById('stage-mentor').textContent = g.mentor ? ('On the Path this is ' + g.mentor + "'s mission") : 'No mission on the Path — also lives natively on circuits.html';
     document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
     document.getElementById('stage-honest').innerHTML = g.honest || '';
     document.getElementById('stage-next').innerHTML = '';

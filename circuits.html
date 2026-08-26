@@ -53,7 +53,7 @@
       "headline": "What is a qubit actually made of?",
       "author": {"@type": "Organization", "name": "SymbiQ"},
       "datePublished": "2026-08-23",
-      "dateModified": "2026-08-23",
+      "dateModified": "2026-08-27",
       "description": "The physical circuit underneath a superconducting qubit: an LC oscillator made nonlinear by a Josephson junction, why that nonlinearity is the entire trick, and how a resonant drive between two levels becomes a logic gate."
     },
     {
@@ -274,14 +274,24 @@
 <div class="formula">P<sub>1</sub>(t) = sin²(Ωt / 2)</div>
 <p>where Ω is the Rabi frequency set by the drive amplitude. A pulse cut off at Ωt = π — a <strong>π-pulse</strong> — leaves P<sub>1</sub> = 1: full population transfer from |0⟩ to |1⟩, which is precisely the physical implementation of the X gate. A π/2-pulse instead leaves an equal superposition, the same primitive the homepage's own |0⟩→|+⟩ widget asks you to apply. This is the exact mechanism behind every single-qubit gate on real superconducting hardware, surveyed in full in Krantz, Kjaergaard, Yan, Orlando, Gustavsson &amp; Oliver, <a href="https://arxiv.org/abs/1904.06560">arXiv 1904.06560</a> (<em>Applied Physics Reviews</em> 6, 021318 (2019)); the broader circuit-QED framework this all sits inside is reviewed in Blais, Grimsmo, Girvin &amp; Wallraff, <a href="https://arxiv.org/abs/2005.12667">arXiv 2005.12667</a> (<em>Rev. Mod. Phys.</em> 93, 025005 (2021)).</p>
 <p><strong>The catch this page's widget deliberately simplifies away.</strong> Because the transmon is only <em>weakly</em> anharmonic, a fast drive tuned to ω<sub>01</sub> has non-negligible spectral weight at the nearby ω<sub>12</sub> gap too, leaking population into level 2 — an error, not a feature. The standard fix is <strong>DRAG</strong> (Derivative Removal by Adiabatic Gate): add a second control tone proportional to the time-derivative of the first, which analytically cancels the leading leakage term without slowing the gate down. Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009)) — reported roughly an order-of-magnitude error reduction relative to the state of the art at realistic transmon parameters, and some form of DRAG shaping runs on essentially every superconducting qubit gate in production today.</p>
-<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). All four citations (Koch et al. 2007, Krantz et al. 2019, Blais et al. 2021, Motzoi et al. 2009) were fetched and confirmed directly against their arXiv abstract pages for title, author list and journal citation before this page shipped. The leading-order formulas (ω<sub>01</sub> ≈ √(8E<sub>J</sub>E<sub>C</sub>) − E<sub>C</sub>, α ≈ −E<sub>C</sub>) are the standard, universally-quoted transmon result reproduced across the circuit-QED literature; this page states them to leading order only and does not carry the next-order correction terms, on the same honesty policy as every other formal section on this site. <b>Fresh-session hostile-referee pass completed 2026-08-23 — two Major findings, both fixed same day.</b> (1) The DRAG citation misattributed its comparison baseline: this page said Motzoi et al.'s order-of-magnitude error reduction was measured "over undconditioned pulses," but the paper's own abstract states the comparison is "relative to the state of the art" — corrected, typo included. (2) The E<sub>J</sub>/E<sub>C</sub> slider allowed values down to 8, but Koch et al. 2007 states the leading-order approximation is a good one only from E<sub>J</sub>/E<sub>C</sub> ≈ 20 upward (exactly the ratio this page's own "weak" preset already used) — the slider's minimum is now 20, so every value it can reach is inside the range the cited formula is actually valid for. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
+<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). All four citations (Koch et al. 2007, Krantz et al. 2019, Blais et al. 2021, Motzoi et al. 2009) were fetched and confirmed directly against their arXiv abstract pages for title, author list and journal citation before this page shipped. The leading-order formulas (ω<sub>01</sub> ≈ √(8E<sub>J</sub>E<sub>C</sub>) − E<sub>C</sub>, α ≈ −E<sub>C</sub>) are the standard, universally-quoted transmon result reproduced across the circuit-QED literature; this page states them to leading order only and does not carry the next-order correction terms, on the same honesty policy as every other formal section on this site. <b>Fresh-session hostile-referee pass completed 2026-08-23 — two Major findings, both fixed same day.</b> (1) The DRAG citation misattributed its comparison baseline: this page said Motzoi et al.'s order-of-magnitude error reduction was measured "over undconditioned pulses," but the paper's own abstract states the comparison is "relative to the state of the art" — corrected, typo included. (2) The E<sub>J</sub>/E<sub>C</sub> slider allowed values down to 8, but Koch et al. 2007 states the leading-order approximation is a good one only from E<sub>J</sub>/E<sub>C</sub> ≈ 20 upward (exactly the ratio this page's own "weak" preset already used) — the slider's minimum is now 20, so every value it can reach is inside the range the cited formula is actually valid for. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em> <strong>The Calibration, added 2026-08-27:</strong> its detuned-Rabi formula is checked to reduce exactly to this page's own on-resonance P<sub>1</sub>=sin²(Ωt/2) at Δ=0 (machine precision). The game's own three fixed strategies and its reactive-beats-fixed claim were found empirically — not tuned to look good — over 8,000 simulated games and re-confirmed across three independent seed blocks and four reactive thresholds; on some individual drift trajectories a fixed strategy still wins, which is stated on the page rather than hidden. Verification script: <code>tools/verify_calibration_agent.py</code>.</p>
+
+<h2 id="calibration">Recalibrating this same gate, blind</h2>
+<p>The π-pulse above assumed the drive was exactly on resonance with ω<sub>01</sub>. Real hardware drifts off resonance constantly — flux noise and two-level-system defects shift a qubit's own frequency slightly, hour to hour — so the drive is usually slightly <strong>detuned</strong>, and the formula above generalizes to P<sub>1</sub>(t; Ω, Δ) = (Ω²/(Ω²+Δ²))·sin²(√(Ω²+Δ²)·t/2), Δ = 0 recovering the on-resonance case exactly. Detuning does two things at once: it shifts <em>where</em> the peak sits in time, and it caps <em>how high</em> that peak can ever reach — a badly detuned drive cannot reach a full π-pulse no matter how long you run it. The game below is what recalibrating against that drift actually looks like when you cannot see Δ directly, only noisy measurement shots.</p>
+<div class="card" id="calibration-game">
+  <h3>The Calibration</h3>
+  <p class="tagline" style="margin:6px 0 14px">You never drive the qubit yourself. You configure the agent that has to find it, blind, while it drifts underneath you.</p>
+  <div id="calibration-mount"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="calibration-honest"></p>
+</div>
 
 <h2>References</h2>
 <div class="card">
   <p>• The transmon: Koch, Yu, Gambetta, Houck, Schuster, Majer, Blais, Devoret, Girvin &amp; Schoelkopf, <a href="https://arxiv.org/abs/cond-mat/0703002">arXiv cond-mat/0703002</a> (<em>Phys. Rev. A</em> 76, 042319 (2007))<br>
   • Qubit control and gates, full survey: Krantz, Kjaergaard, Yan, Orlando, Gustavsson &amp; Oliver, <a href="https://arxiv.org/abs/1904.06560">arXiv 1904.06560</a> (<em>Applied Physics Reviews</em> 6, 021318 (2019))<br>
   • Circuit QED, the broader framework: Blais, Grimsmo, Girvin &amp; Wallraff, <a href="https://arxiv.org/abs/2005.12667">arXiv 2005.12667</a> (<em>Rev. Mod. Phys.</em> 93, 025005 (2021))<br>
-  • DRAG, the leakage fix: Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009))</p>
+  • DRAG, the leakage fix: Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009))<br>
+  • The Calibration's real-world grounding: Baum, Amico, Howell, Hush, Liuzzi, Mundada, Merkh, Carvalho &amp; Biercuk (Q-CTRL), &quot;Experimental Deep Reinforcement Learning for Error-Robust Gate-Set Design on a Superconducting Quantum Computer,&quot; <a href="https://arxiv.org/abs/2105.01079">arXiv 2105.01079</a> (<em>PRX Quantum</em> 2, 040324 (2021)); Sivak, Morvan et al. (Google Quantum AI &amp; Google DeepMind), &quot;Reinforcement Learning Control of Quantum Error Correction,&quot; <a href="https://arxiv.org/abs/2511.08493">arXiv 2511.08493</a> (<em>Nature</em>, 2026)</p>
 </div>
 
 <div class="cyu" data-a="2">
@@ -491,6 +501,20 @@
     setMode('linear');
     requestAnimationFrame(tick);
   } catch (e) { /* the widget is additive -- the explanation above stands without it */ }
+})();
+</script>
+<script src="games.js?v=14"></script>
+<script>
+(function () {
+  var host = document.getElementById('calibration-mount');
+  var G = window.SymbiQ && window.SymbiQ.games;
+  if (!G || !G.get('calibration')) {
+    if (host) host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
+    return;
+  }
+  G.mount('calibration', host, { mode: 'arcade' });
+  var note = document.getElementById('calibration-honest');
+  if (note) note.innerHTML = G.get('calibration').honest;
 })();
 </script>
 </body>

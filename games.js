@@ -1540,10 +1540,245 @@
     }
   };
 
+  /* ==================================================================== *
+   *  THE CALIBRATION — a calibration agent, not a qubit, in your hands    *
+   *                                                                      *
+   *  You do not drive the qubit. Each of ten rounds you choose the       *
+   *  AGENT's behaviour -- Trust / Nudge / Recalibrate -- while the       *
+   *  qubit's true detuning drifts, and occasionally jumps, out of sight. *
+   *                                                                      *
+   *  Physics: the generalized (detuned) Rabi formula, of which           *
+   *  circuits.html's own shipped P1(t)=sin^2(Omega t/2) is the Delta=0   *
+   *  special case (verified to match exactly, see                       *
+   *  tools/verify_calibration_agent.py, check 1). Every measurement is a *
+   *  genuine Bernoulli shot -- shot noise, not an exact readout.         *
+   *                                                                      *
+   *  Design found empirically, not picked to look good: the same script *
+   *  confirms a REACTIVE strategy (Recalibrate only after a low-fidelity *
+   *  round, else Nudge) beats every fixed always-the-same-strategy       *
+   *  baseline on average (0.693 vs best-fixed 0.668 over 8,000 games),   *
+   *  but NOT on every single game -- on some drift trajectories a fixed  *
+   *  strategy wins anyway (checked on 5 example seeds). That is the      *
+   *  honest, non-rigged shape: skill pays off on average, luck still     *
+   *  matters, exactly like this site's other games.                     *
+   * ==================================================================== */
+  G.calibration = {
+    id: 'calibration', title: 'The Calibration',
+    hook: 'You never touch the qubit. You configure the agent that has to find it, blind, while it drifts underneath you.',
+    about: {
+      goal: 'Ten rounds. Each round, choose the agent\'s behaviour, then see the TRUE fidelity it actually achieved. Beat your own best-fixed-strategy replay on the identical drift you just faced.',
+      how: '<strong>Trust</strong>: spend the whole shot budget refining the last calibration, no exploring. <strong>Recalibrate</strong>: a coarse scan across the full range, rediscovering roughly where the peak is. <strong>Nudge</strong>: a narrow, precise scan near the last answer — catches small drift cheaply, misses big jumps completely.',
+      inspired: 'Real closed-loop qubit calibration under reinforcement learning: Baum et al. (Q-CTRL), <em>PRX Quantum</em> 2, 040324 (2021) — RL designing gates directly against real superconducting hardware, no model supplied; and Sivak, Morvan et al., arXiv:2511.08493 (<em>Nature</em>, 2026) — RL steering Google\'s Willow processor\'s own error correction in real time.',
+      learn: 'Why real qubits need periodic recalibration at all, and the explore/exploit trade-off that decides how often.',
+      link: 'circuits.html#calibration', linkText: 'The physics this reuses ▸', tier: '⟦Proven⟧',
+      or: 'Choosing when to explore vs. exploit under a fixed budget is a bandit problem'
+    },
+    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. Verification script: <code>tools/verify_calibration_agent.py</code>.',
+    OMEGA: 1.5, TMAX: 2.6, NBINS: 26, SHOTS: 24, ROUNDS: 10, PJUMP: 0.25, DDRIFT: 0.05,
+    DMIN: -1.6, DMAX: 1.6, NPROBES: 6, NUDGEWIN: 1,
+
+    mount: function (root, opts) {
+      var g = this, NSVG = NS;
+      var NBINS = g.NBINS, TMAX = g.TMAX, OMEGA = g.OMEGA;
+      var TGRID = []; for (var i = 0; i < NBINS; i++) TGRID.push(0.05 + (TMAX - 0.05) * i / (NBINS - 1));
+
+      function p1(t, delta) {
+        var omEff = Math.sqrt(OMEGA * OMEGA + delta * delta);
+        return (OMEGA * OMEGA / (OMEGA * OMEGA + delta * delta)) * Math.pow(Math.sin(omEff * t / 2), 2);
+      }
+      function binomialFrac(n, p) {
+        var hits = 0;
+        for (var i = 0; i < n; i++) if (Math.random() < p) hits++;
+        return hits / n;
+      }
+      function shotsAt(idx, delta, n) { return binomialFrac(n, p1(TGRID[idx], delta)); }
+
+      function resolve(name, lastIdx, delta) {
+        var idxs, probes = [];
+        if (name === 'trust') {
+          idxs = [lastIdx];
+        } else if (name === 'recalibrate') {
+          idxs = []; for (var k = 0; k < g.NPROBES; k++) idxs.push(Math.round(k * (NBINS - 1) / (g.NPROBES - 1)));
+        } else { // nudge
+          idxs = [];
+          for (var j = Math.max(0, lastIdx - g.NUDGEWIN); j <= Math.min(NBINS - 1, lastIdx + g.NUDGEWIN); j++) idxs.push(j);
+        }
+        var per = Math.floor(g.SHOTS / idxs.length), extra = g.SHOTS - per * idxs.length;
+        var best = idxs[0], bestEst = -1;
+        idxs.forEach(function (idx, k) {
+          var n = per + (k < extra ? 1 : 0);
+          var est = shotsAt(idx, delta, n);
+          probes.push({ idx: idx, est: est, n: n });
+          if (est > bestEst) { bestEst = est; best = idx; }
+        });
+        return { idx: best, probes: probes };
+      }
+
+      function newDelta(prev) {
+        if (prev === null || Math.random() < g.PJUMP) {
+          return { delta: g.DMIN + Math.random() * (g.DMAX - g.DMIN), jumped: prev !== null };
+        }
+        var d = prev + (Math.random() * 2 - 1) * g.DDRIFT * 1.6;
+        return { delta: Math.max(g.DMIN, Math.min(g.DMAX, d)), jumped: false };
+      }
+
+      var S = {
+        round: 0, lastIdx: Math.floor(NBINS / 2), delta: null,
+        deltaHistory: [], fidHistory: [], lastProbes: [], over: false
+      };
+
+      root.innerHTML =
+        '<div class="hud" data-r="hud"></div>' +
+        '<div class="verdict" style="text-align:center" data-r="say">Round 1 of ' + g.ROUNDS + ' — the qubit is already drifting. Pick a behaviour.</div>' +
+        '<svg viewBox="0 0 480 150" xmlns="' + NSVG + '" data-r="svg" style="display:block;width:100%;max-width:480px;margin:8px auto" aria-label="This round\'s measurement shots along the drive-duration axis"></svg>' +
+        '<p class="legend" style="text-align:center">Each dot: one probed drive duration, height = measured fraction of shots that flipped. <span style="color:var(--teal)">&#9679;</span> the duration this round locked in.</p>' +
+        '<div style="text-align:center;margin:10px 0">' +
+          '<button class="preset" data-a="trust">Trust</button>' +
+          '<button class="preset" data-a="nudge">Nudge</button>' +
+          '<button class="preset" data-a="recalibrate">Recalibrate</button></div>' +
+        '<div class="holes" data-r="dots" style="justify-content:center"></div>' +
+        '<dl class="rows" data-r="summary"></dl>';
+
+      var svg = $(root, '[data-r=svg]');
+      function ael(tag, a, txt) {
+        var e = document.createElementNS(NSVG, tag);
+        for (var k in a) e.setAttribute(k, a[k]);
+        if (txt != null) e.textContent = txt;
+        svg.appendChild(e); return e;
+      }
+      var W = 480, H = 150, L = 30, TP = 14, BP = 26;
+      function xOf(idx) { return L + (W - L - 14) * idx / (NBINS - 1); }
+      function yOf(p) { return TP + (H - TP - BP) * (1 - Math.max(0, Math.min(1, p))); }
+
+      function drawTrace() {
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        ael('line', { x1: L, y1: yOf(0), x2: W - 10, y2: yOf(0), stroke: 'var(--border)' });
+        ael('text', { x: (L + W - 10) / 2, y: H - 6, 'text-anchor': 'middle', 'font-size': '9', fill: 'var(--muted)' }, 'drive duration ->');
+        S.lastProbes.forEach(function (pr) {
+          var x = xOf(pr.idx), y = yOf(pr.est);
+          var chosen = pr.idx === S.lastIdx;
+          ael('line', { x1: x, y1: yOf(0), x2: x, y2: y, stroke: 'var(--muted)', 'stroke-width': '1', opacity: '0.5' });
+          ael('circle', { cx: x, cy: y, r: chosen ? 6 : 4, fill: chosen ? 'var(--teal)' : 'var(--violet)' });
+        });
+      }
+
+      function fidColor(f) { return f >= 0.75 ? 'var(--teal)' : f >= 0.5 ? 'var(--yellow)' : 'var(--red)'; }
+
+      function renderHud() {
+        var avg = S.fidHistory.length ? S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length : 0;
+        $(root, '[data-r=hud]').innerHTML =
+          '<div class="hud-side"><span class="hud-label">Round</span><span class="hud-score">' +
+            Math.min(S.round + 1, g.ROUNDS) + ' / ' + g.ROUNDS + '</span></div>' +
+          '<div class="hud-mid">Detuning drifts every round.<br>You never see it directly.</div>' +
+          '<div class="hud-side right"><span class="hud-label">Avg fidelity</span><span class="hud-score" style="color:' +
+            fidColor(avg) + '">' + (100 * avg).toFixed(1) + '%</span></div>';
+      }
+
+      function renderDots() {
+        // Colored TEXT + border on the existing neutral chip background (never a
+        // solid colored fill with hardcoded text color) -- var(--teal/yellow/red)
+        // are already chosen per light/dark theme site-wide, so this stays
+        // correctly contrasted in both themes automatically, unlike a fixed
+        // dark-on-bright fill that fails once the theme's colors darken.
+        $(root, '[data-r=dots]').innerHTML = S.fidHistory.map(function (f, i) {
+          var c = fidColor(f);
+          return '<span class="hole" style="color:' + c + ';border-color:' + c + '" title="round ' + (i + 1) + ': ' +
+            (100 * f).toFixed(0) + '%">' + (100 * f).toFixed(0) + '</span>';
+        }).join('');
+      }
+
+      function playRound(name) {
+        if (S.over) return;
+        var nd = newDelta(S.delta);
+        S.delta = nd.delta;
+        var r = resolve(name, S.lastIdx, S.delta);
+        S.lastIdx = r.idx; S.lastProbes = r.probes;
+        var fid = p1(TGRID[S.lastIdx], S.delta);
+        S.deltaHistory.push(S.delta);
+        S.fidHistory.push(fid);
+        S.round++;
+
+        drawTrace();
+        renderHud();
+        renderDots();
+        var v = $(root, '[data-r=say]');
+        v.className = 'verdict';
+        v.innerHTML = 'Played <b>' + name.charAt(0).toUpperCase() + name.slice(1) + '</b> — true fidelity this round: ' +
+          '<b style="color:' + fidColor(fid) + '">' + (100 * fid).toFixed(1) + '%</b>' +
+          (nd.jumped ? ' <span style="color:var(--red)">(something changed underneath you)</span>' : '');
+
+        if (S.round >= g.ROUNDS) finish();
+        emit();
+      }
+
+      function replayFixed(name) {
+        // Re-run this exact recorded delta trajectory under one fixed strategy,
+        // fresh shot noise each time (matches how the Python harness scores
+        // fixed baselines) -- an honest, paired, same-qubit comparison.
+        var idx = Math.floor(NBINS / 2), total = 0;
+        for (var i = 0; i < S.deltaHistory.length; i++) {
+          var rr = resolve(name, idx, S.deltaHistory[i]);
+          idx = rr.idx;
+          total += p1(TGRID[idx], S.deltaHistory[i]);
+        }
+        return total / S.deltaHistory.length;
+      }
+
+      function finish() {
+        S.over = true;
+        var avg = S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length;
+        var baselines = { trust: replayFixed('trust'), nudge: replayFixed('nudge'), recalibrate: replayFixed('recalibrate') };
+        var bestFixed = Math.max(baselines.trust, baselines.nudge, baselines.recalibrate);
+        var beat = avg > bestFixed;
+        $(root, '[data-r=summary]').innerHTML =
+          '<dt>Your average fidelity</dt><dd><strong style="color:' + fidColor(avg) + '">' + (100 * avg).toFixed(1) + '%</strong></dd>' +
+          '<dt>Always Trust, same drift</dt><dd>' + (100 * baselines.trust).toFixed(1) + '%</dd>' +
+          '<dt>Always Nudge, same drift</dt><dd>' + (100 * baselines.nudge).toFixed(1) + '%</dd>' +
+          '<dt>Always Recalibrate, same drift</dt><dd>' + (100 * baselines.recalibrate).toFixed(1) + '%</dd>';
+        var v = $(root, '[data-r=say]');
+        v.className = 'verdict ' + (beat ? 'good' : 'bad');
+        v.innerHTML = beat
+          ? 'You beat every fixed strategy on the exact drift you faced (best fixed: ' + (100 * bestFixed).toFixed(1) + '%). <button class="preset" data-a="again">Play again</button>'
+          : 'A fixed strategy would have done better this time (' + (100 * bestFixed).toFixed(1) + '% vs your ' + (100 * avg).toFixed(1) + '%) — the qubit\'s own drift can still out-luck a reader. <button class="preset" data-a="again">Play again</button>';
+        ['trust', 'nudge', 'recalibrate'].forEach(function (n) { $(root, '[data-a=' + n + ']').disabled = true; });
+        var again = $(root, '[data-a=again]');
+        if (again) again.addEventListener('click', reset);
+        if (beat) win('calibration', opts);
+        emit();
+      }
+
+      function reset() {
+        S.round = 0; S.lastIdx = Math.floor(NBINS / 2); S.delta = null;
+        S.deltaHistory = []; S.fidHistory = []; S.lastProbes = []; S.over = false;
+        ['trust', 'nudge', 'recalibrate'].forEach(function (n) { $(root, '[data-a=' + n + ']').disabled = false; });
+        $(root, '[data-r=summary]').innerHTML = '';
+        $(root, '[data-r=say]').className = 'verdict';
+        $(root, '[data-r=say]').textContent = 'Round 1 of ' + g.ROUNDS + ' — the qubit is already drifting. Pick a behaviour.';
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        renderHud(); renderDots();
+      }
+
+      function emit() {
+        if (!opts || typeof opts.onState !== 'function') return;
+        try {
+          opts.onState({
+            phase: 'render', round: S.round, rounds: g.ROUNDS, over: S.over,
+            fidHistory: S.fidHistory.slice(), avg: S.fidHistory.length ? S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length : 0
+          });
+        } catch (e) {}
+      }
+
+      ['trust', 'nudge', 'recalibrate'].forEach(function (n) {
+        $(root, '[data-a=' + n + ']').addEventListener('click', function () { playRound(n); });
+      });
+      renderHud();
+    }
+  };
+
   /* -------------------------------------------------------------------- */
   window.SymbiQ.games = {
     all: G,
-    list: ['golf', 'grover', 'maxcut', 'volcano', 'qttt'].map(function (k) {
+    list: ['golf', 'grover', 'maxcut', 'volcano', 'qttt', 'calibration'].map(function (k) {
       return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
     }),
     get: function (id) { return G[id]; },

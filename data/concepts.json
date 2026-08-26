@@ -1184,6 +1184,16 @@
       "tier": "r",
       "kind": "concept",
       "blurb": "The still-open question of whether the local Hamiltonian problem stays QMA-hard even at coarse, constant-fraction precision -- the quantum analogue of the classical PCP theorem."
+    },
+    {
+      "id": "the-calibration",
+      "term": "The Calibration",
+      "aliases": ["calibration agent", "detuned Rabi game"],
+      "page": "circuits.html",
+      "anchor": "calibration",
+      "tier": "y",
+      "kind": "game",
+      "blurb": "You configure a calibration agent's per-round behaviour -- Trust, Nudge or Recalibrate -- while a qubit's true detuning drifts out of sight; scored against a paired replay of the same drift under a fixed strategy."
     }
   ]
 }

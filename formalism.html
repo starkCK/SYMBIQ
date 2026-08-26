@@ -81,7 +81,7 @@
         <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
       </div>
       <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
-      <a href="formalism.html" class="navmain active">🔴 The Machinery<span class="sub">Postulates and proofs, 17 topics</span></a>
+      <a href="formalism.html" class="navmain active">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="optimisation">
@@ -135,8 +135,8 @@
   <p class="fr-lede">The machinery every algorithm on this site actually runs on.</p>
   <p class="fr-sub">Every pillar page on this site already teaches its ideas at three depths, toggled in place. This is a different kind of depth: not another <em>tier</em> of the same explanations, but the actual mathematical objects — state spaces, density matrices, measurement operators — that a real course builds before it lets you near Shor&#39;s algorithm. Nothing here is hand-waved. Every claim either has a proof or says plainly that it doesn&#39;t.</p>
   <div class="fr-stats">
-    <div><b>17</b><span>topics live<br>of 17 planned</span></div>
-    <div><b>6</b><span>sections built<br>of 6</span></div>
+    <div><b>20</b><span>topics live<br>of 20 planned</span></div>
+    <div><b>7</b><span>sections built<br>of 7</span></div>
     <div><b>0</b><span>claims without<br>a proof or a source</span></div>
   </div>
 </header>
@@ -144,10 +144,10 @@
 <div class="card">
   <h3>Why this page exists, separately</h3>
   <p>Every quantum claim on this site — Shor&#39;s algorithm breaks ECDSA, a surface code suppresses errors exponentially, a decoder reads a syndrome — rests on the same handful of mathematical facts: what a quantum state <em>is</em>, how it evolves, what happens when you measure it, and what you provably cannot do to it. Those facts are usually asserted on the page that needs them and moved past quickly, because that page has its own job. This page is where they get built properly, once, so every other page can point back here instead of re-deriving them.</p>
-  <p style="margin-bottom:0">This page's six planned sections are now all built — a sixth, added 2026-08-21, once <a href="feasible.html#t17">The Feasible Region&#39;s</a> SDP/Max-Cut bridge existed for it to link back to. That doesn't mean quantum computing is exhausted — it means the load-bearing mathematics behind every other page on this site now has a proper home, once, instead of being asserted piecemeal.</p>
+  <p style="margin-bottom:0">This page's seven planned sections are now all built — a seventh, added 2026-08-26, once topics 16–17&#39;s own Hamiltonians existed to ask the natural next question: exactly how hard is finding one of these ground energies, in general? That doesn't mean quantum computing is exhausted — it means the load-bearing mathematics behind every other page on this site now has a proper home, once, instead of being asserted piecemeal.</p>
 </div>
 
-<p><em>Verification status: topics f01–f07 (postulates, evolution, measurement, no-cloning, teleportation, superdense coding, Schmidt decomposition) were referee-verified in an earlier session. Topics f08–f15 (Deutsch&#39;s through Holevo&#39;s bound) shipped 2026-08-20 and cleared a fresh-session hostile-referee pass the same day: all four companion Python scripts re-run clean, all 8 external citations independently re-checked, one Minor finding fixed (a continued-fraction convergent theorem was attributed to Khinchin; it is standardly Legendre&#39;s, 1798). <strong>Topics f16–f17 (QAOA &amp; VQE; Trotterization and the chemistry mapping), added 2026-08-21</strong> once OR-2&#39;s SDP/Max-Cut bridge on The Feasible Region existed to link back to: verified against exact linear algebra rather than any external circuit library — QAOA&#39;s cost/mixer construction checked by exact statevector simulation on the identical n=6 &quot;District 5&quot; trap graph already brute-forced on The Feasible Region and playable at Graph City, confirming every depth stays sandwiched in [0, max cut] and that p=1→2→3 closes the gap (74.0%→86.9%→93.1%); the variational principle checked across a full 40,000-point grid on an illustrative H₂-shaped Hamiltonian with zero violations; first-order Trotter error confirmed to shrink monotonically and to roughly halve with each doubling of steps (2.000 measured, n=64→128) against the exact matrix exponential. Verification code: <code>tools/verify_qaoa_vqe_trotter.py</code>. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+<p><em>Verification status: topics f01–f07 (postulates, evolution, measurement, no-cloning, teleportation, superdense coding, Schmidt decomposition) were referee-verified in an earlier session. Topics f08–f15 (Deutsch&#39;s through Holevo&#39;s bound) shipped 2026-08-20 and cleared a fresh-session hostile-referee pass the same day: all four companion Python scripts re-run clean, all 8 external citations independently re-checked, one Minor finding fixed (a continued-fraction convergent theorem was attributed to Khinchin; it is standardly Legendre&#39;s, 1798). Topics f16–f17 (QAOA &amp; VQE; Trotterization and the chemistry mapping), added 2026-08-21 once OR-2&#39;s SDP/Max-Cut bridge on The Feasible Region existed to link back to: verified against exact linear algebra rather than any external circuit library — QAOA&#39;s cost/mixer construction checked by exact statevector simulation on the identical n=6 &quot;District 5&quot; trap graph already brute-forced on The Feasible Region and playable at Graph City, confirming every depth stays sandwiched in [0, max cut] and that p=1→2→3 closes the gap (74.0%→86.9%→93.1%); the variational principle checked across a full 40,000-point grid on an illustrative H₂-shaped Hamiltonian with zero violations; first-order Trotter error confirmed to shrink monotonically and to roughly halve with each doubling of steps (2.000 measured, n=64→128) against the exact matrix exponential. Verification code: <code>tools/verify_qaoa_vqe_trotter.py</code>. <strong>Topics f18–f20 (QMA &amp; the local Hamiltonian problem; QMA-completeness; adiabatic universality &amp; the quantum PCP conjecture), added 2026-08-26:</strong> this is proof-theoretic material that can&#39;t be verified the way a numeric algorithm can, so what's actually checked here is the mechanism the proofs rest on — the Feynman–Kitaev clock construction was built by hand for a real toy circuit (1 qubit, gates H then Z) and exactly diagonalized: ground energy 0.0000000000, overlap with the hand-constructed history state 1.0000000000 to machine precision, a genuine spectral gap of 0.134 above it. The same Hamiltonian was then used as the endpoint of a real simulated adiabatic sweep from an easy Hamiltonian, confirming the final-state fidelity with that same ground state climbs from 0.3845 (T=2) to 0.9989 (T=60) as the sweep slows — the adiabatic theorem, watched happening rather than just cited. All eleven external citations (Kitaev-Shen-Vyalyi; Marriott &amp; Watrous; Bennett, Bernstein, Brassard &amp; Vazirani; Kempe &amp; Regev; Kempe, Kitaev &amp; Regev; Farhi, Goldstone, Gutmann &amp; Sipser; Aharonov et al.; Arora &amp; Safra; Arora, Lund, Motwani, Sudan &amp; Szegedy; Aharonov, Arad &amp; Vidick; Anshu, Breuckmann &amp; Nirkhe) were checked directly against their own abstracts/papers, not a secondary summary. Verification code: <code>tools/verify_qma_hamiltonian_complexity.py</code>. <strong>Not yet an independent fresh-session referee pass</strong> — same open status f16–f17 carried before their own review. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
 
 <h2 id="course"><span class="fr-secnum">The Formal Framework</span>Four topics, each taught four ways</h2>
 
@@ -163,7 +163,7 @@
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all seventeen</button>
+  <button type="button" id="fr-open">Open all twenty</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -171,7 +171,7 @@
 
 <div class="mod-progress-wrap" id="mod-progress-wrap">
   <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
-  <span id="mod-progress-label">Your progress: 0 of 17 understood</span>
+  <span id="mod-progress-label">Your progress: 0 of 20 understood</span>
 </div>
 
 <!-- ================= F01 ================= -->
@@ -422,9 +422,9 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
 <div class="fr-toc">
   <h3>The three protocols</h3>
   <ol>
-    <li><a href="#f05">Quantum teleportation<em>moving a state with no quantum channel</em></a></li>
+    <li><a href="#f05">Quantum teleportation<em>moving a state, no channel</em></a></li>
     <li><a href="#f06">Superdense coding<em>one qubit, two classical bits</em></a></li>
-    <li><a href="#f07">Schmidt decomposition<em>measuring how entangled something is</em></a></li>
+    <li><a href="#f07">Schmidt decomposition<em>a number for how entangled</em></a></li>
   </ol>
 </div>
 
@@ -1123,8 +1123,8 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
 <div class="fr-toc">
   <h3>The two topics</h3>
   <ol>
-    <li><a href="#f16">QAOA &amp; VQE<em>the same hybrid loop, aimed at graphs and at molecules</em></a></li>
-    <li><a href="#f17">Quantum simulation &amp; chemistry<em>Trotter's trick, and where that loop actually gets pointed</em></a></li>
+    <li><a href="#f16">QAOA &amp; VQE<em>the same loop, two different jobs</em></a></li>
+    <li><a href="#f17">Quantum simulation &amp; chemistry<em>Trotter's trick, aimed at a molecule</em></a></li>
   </ol>
 </div>
 
@@ -1392,12 +1392,217 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
     </div>
 
     <div class="mod-out">
-      <span style="color:var(--muted);font-size:.85rem">This closes The Machinery's full 17-topic scope — the original 15, plus QAOA/VQE and quantum simulation, added once their own dependency existed to link back to. Every algorithm elsewhere on this site now rests on machinery actually built and verified here, not just cited.</span>
+      <a href="#f18">Next: is estimating a molecule&#39;s own ground energy always this trustworthy — or is the general problem provably hard? ▸</a>
     </div>
   </div>
 </details>
 
-<footer>The Machinery: 6 of 6 planned sections, 17 of 17 planned topics — complete. Every topic is verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the biggest bounty we pay — <a href="corrections.html#report">tell us</a>.</footer>
+<h2 id="complexity"><span class="fr-secnum">Complexity theory</span>Three topics — how hard the general versions of this page&#39;s own problems actually are</h2>
+
+<p>Topics 16–17 built VQE: a loop that always reports an energy honestly no lower than the truth, because the variational principle proves it. What that loop does <em>not</em> come with is a promise that it ever <em>finds</em> the true ground energy in reasonable time, on a general Hamiltonian. This section asks the question directly: exactly how hard is "find this Hamiltonian&#39;s ground energy," as a decision problem — and does the answer explain, rather than just describe, why every near-term algorithm on this page ships without a speed guarantee?</p>
+
+<div class="fr-toc">
+  <h3>The three topics</h3>
+  <ol>
+    <li><a href="#f18">QMA &amp; the local Hamiltonian problem<em>the quantum analogue of NP</em></a></li>
+    <li><a href="#f19">QMA-completeness<em>the quantum Cook–Levin theorem</em></a></li>
+    <li><a href="#f20">Adiabatic universality &amp; the quantum PCP conjecture<em>one proven, one still open</em></a></li>
+  </ol>
+</div>
+
+<!-- ================= F18 ================= -->
+<details class="mod" id="f18">
+  <summary>
+    <span class="mod-n">18</span>
+    <span class="mod-t">QMA &amp; the local Hamiltonian problem</span>
+    <span class="mod-q">NP has a checkable-proof definition. What's the quantum version, and what problem is it actually about?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Merlin, an all-powerful but untrusted prover, sends a quantum witness state to Arthur, a trusted polynomial-time quantum verifier circuit. Two branches below: if x is a yes-instance, some witness makes Arthur accept with probability at least two-thirds. If x is a no-instance, every possible witness makes Arthur accept with probability at most one-third.">
+          <rect x="30" y="20" width="180" height="56" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+          <text class="lbl-b" x="120" y="44" text-anchor="middle" font-size="12.5">Merlin</text>
+          <text class="lbl-s" x="120" y="62" text-anchor="middle" font-size="10">sends witness |ψ⟩</text>
+
+          <path d="M212 48 H330" stroke="var(--muted)" stroke-width="2" marker-end="url(#af18a)"/>
+          <defs><marker id="af18a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+
+          <rect x="332" y="20" width="200" height="56" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+          <text class="lbl-b" x="432" y="44" text-anchor="middle" font-size="12.5">Arthur</text>
+          <text class="lbl-s" x="432" y="62" text-anchor="middle" font-size="10">poly-time quantum verifier</text>
+
+          <rect x="30" y="130" width="240" height="80" rx="8" fill="none" stroke="var(--teal)" stroke-width="2"/>
+          <text class="lbl-b tl" x="150" y="152" text-anchor="middle" font-size="11.5">x is a YES-instance</text>
+          <text class="lbl-s" x="150" y="172" text-anchor="middle" font-size="10">some |ψ⟩ makes Arthur</text>
+          <text class="lbl-s" x="150" y="188" text-anchor="middle" font-size="10">accept with Pr ≥ 2/3</text>
+
+          <rect x="300" y="130" width="240" height="80" rx="8" fill="none" stroke="var(--violet)" stroke-width="2"/>
+          <text class="lbl-b or" x="420" y="152" text-anchor="middle" font-size="11.5">x is a NO-instance</text>
+          <text class="lbl-s" x="420" y="172" text-anchor="middle" font-size="10">EVERY |ψ⟩ makes Arthur</text>
+          <text class="lbl-s" x="420" y="188" text-anchor="middle" font-size="10">accept with Pr ≤ 1/3</text>
+        </svg></div>
+        <figcaption><strong>Same shape as NP's own definition, with a quantum prover, a quantum proof, and a quantum verifier.</strong> The gap between 2/3 and 1/3 is arbitrary and can be pushed exponentially close to 1 and 0 without lengthening the witness — proven below.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p><strong>QMA</strong> (Quantum Merlin–Arthur) is what you get by taking NP's own definition — a claim is true if <em>some</em> short proof convinces a fast verifier, and false if <em>no</em> proof can — and making both the proof and the verifier quantum. NP already has a name for "make the verifier randomized instead of deterministic": that's MA. QMA takes the further step of letting the witness itself be a quantum state, not a bitstring, and letting the verifier be a quantum circuit acting on it.</p>
+      <p>QMA's own natural complete problem isn't a puzzle invented for the class — it's a direct generalisation of a physics question this page has already been building toward. Every Hamiltonian on this site (the transmon's, in <a href="circuits.html">circuits.html</a>; the surface code's stabilizers, in <a href="qec.html">qec.html</a>; the illustrative H₂ Hamiltonian topic 16 ran VQE against) has a lowest eigenvalue — its <strong>ground energy</strong>. The <strong>local Hamiltonian problem</strong> asks, as a decision problem: given a Hamiltonian built from many small pieces (each acting on only a handful of qubits — "k-local"), is its ground energy below one threshold or above another? That is the formal version of exactly what VQE is trying to estimate.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>Formally: L ∈ QMA if there is a uniform family of poly-size quantum circuits V (the verifier) taking an input x and a witness register of poly(|x|) qubits, such that</p>
+      <code class="eq">x ∈ L ⟹ ∃|ψ⟩: Pr[V accepts (x,|ψ⟩)] ≥ 2/3     (completeness)</code>
+      <code class="eq">x ∉ L ⟹ ∀|ψ⟩: Pr[V accepts (x,|ψ⟩)] ≤ 1/3     (soundness)</code>
+      <p>The constants 2/3 and 1/3 look arbitrary, and classically (for MA) fixing them up by repeating the protocol and taking a majority vote is routine. For QMA it is not: repeating naively means feeding <em>several independent copies</em> of the witness through several verifier runs, and a dishonest Merlin could in principle correlate those copies in ways a classical repeated proof never can, since there is no way to "photocopy" a quantum witness to check it is being reused honestly (the no-cloning theorem, <a href="#f04">topic 04</a>, again). Marriott &amp; Watrous (<em>Computational Complexity</em> 14(2), 122 (2005)) proved the error can still be pushed exponentially close to 0 without lengthening the witness at all — a genuinely non-trivial theorem, not a formality, and the reason QMA's constants can safely be treated as "far apart enough" throughout this page.</p>
+      <p>The <strong>k-local Hamiltonian problem</strong>: given H = Σᵢ Hᵢ, each Hᵢ Hermitian, ‖Hᵢ‖≤1, acting on at most k of n qubits, and thresholds a &lt; b with b−a ≥ 1/poly(n), decide whether the ground energy λ<sub>min</sub>(H) ≤ a or ≥ b (promised one holds). This is in QMA: the witness is a state close to the true ground state, and Arthur verifies it by estimating ⟨ψ|H|ψ⟩ — which he can do using exactly the machinery this page already built, Trotterized Hamiltonian simulation (<a href="#f17">topic 17</a>) inside phase estimation (<a href="#f12">topic 12</a>) — and accepting if the estimate lands below (a+b)/2. <span class="orbadge">⟦Proven⟧</span> Membership in QMA (Kitaev, Shen &amp; Vyalyi, <em>Classical and Quantum Computation</em>, AMS Graduate Studies in Mathematics vol. 47 (2002)); error-amplification without witness growth (Marriott &amp; Watrous, <em>Computational Complexity</em> 14(2), 122 (2005), <a href="https://arxiv.org/abs/cs/0506068">arXiv cs/0506068</a>).</p>
+      <p>This extends the containment chain <a href="quantum-mechanics.html#red">quantum-mechanics.html</a> already built (P⊆BPP⊆BQP⊆PP⊆PSPACE): BQP⊆QMA trivially (a verifier that ignores the witness and just runs a BQP algorithm is a valid QMA protocol), and QMA⊆PP (also Marriott &amp; Watrous). So the full chain is P⊆BPP⊆BQP⊆QMA⊆PP⊆PSPACE — and, exactly as before, none of these inclusions is known to be strict.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Why "no proof of speedup" isn't a gap waiting to be closed — for some problems it can't be</span>
+      This is the reason topics 16–17 stated plainly that nobody has proven QAOA or VQE beats its best classical rival: the general local Hamiltonian problem they're both heuristics for is (next topic) provably as hard as anything in QMA, which is believed to sit strictly above BQP — meaning even a perfect, error-corrected quantum computer running the exactly correct algorithm can't be expected to solve every instance quickly. And it's worth being precise about why <em>this</em> problem is the hard one while Shor's isn't: Grover's algorithm (<a href="play.html#grover">play.html</a>) gives only a quadratic speedup over unstructured search, and Bennett, Bernstein, Brassard &amp; Vazirani (<em>SIAM J. Comput.</em> 26(5), 1510 (1997)) proved that quadratic is the <em>most</em> any quantum algorithm can do against a generic, unstructured problem — which is exactly the shape most NP-complete problems present in the worst case. Factoring is the outlier precisely because it isn't generic: Shor's algorithm exploits real algebraic structure (the period-finding machinery of <a href="#f11">topics 11–13</a>) that most NP-complete problems simply don't have. "Why Grover isn't enough" and "why Shor is special" are the same fact stated twice.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#f19">Next: build the reduction by hand, on a circuit small enough to diagonalize ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= F19 ================= -->
+<details class="mod" id="f19">
+  <summary>
+    <span class="mod-n">19</span>
+    <span class="mod-t">QMA-completeness</span>
+    <span class="mod-q">Is the local Hamiltonian problem actually as hard as anything in QMA — and can you watch the reduction work on a circuit small enough to check by hand?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A timeline with three ticks, t equals zero, one, two. Above tick zero, the data qubit state ket zero. Above tick one, after applying a Hadamard gate, ket plus. Above tick two, after applying a Z gate, ket minus. A brace beneath all three ticks is labeled: the history state is an equal superposition of the data state at every tick, entangled with a clock register recording which tick.">
+          <path d="M60 90 H500" stroke="var(--border)" stroke-width="1.6"/>
+          <circle cx="90" cy="90" r="5" fill="var(--text)"/>
+          <circle cx="280" cy="90" r="5" fill="var(--text)"/>
+          <circle cx="470" cy="90" r="5" fill="var(--text)"/>
+          <text class="lbl-s" x="90" y="112" text-anchor="middle">t=0</text>
+          <text class="lbl-s" x="280" y="112" text-anchor="middle">t=1</text>
+          <text class="lbl-s" x="470" y="112" text-anchor="middle">t=2</text>
+          <text class="lbl-b" x="90" y="70" text-anchor="middle" font-size="13">|0⟩</text>
+          <text class="lbl-b" x="280" y="70" text-anchor="middle" font-size="13">|+⟩</text>
+          <text class="lbl-b" x="470" y="70" text-anchor="middle" font-size="13">|−⟩</text>
+          <text class="lbl-s" x="185" y="52" text-anchor="middle" font-size="9.5">apply H</text>
+          <text class="lbl-s" x="375" y="52" text-anchor="middle" font-size="9.5">apply Z</text>
+          <path d="M65 140 H495" stroke="var(--violet)" stroke-width="2"/>
+          <path d="M65 132 V140 M495 132 V140" stroke="var(--violet)" stroke-width="2"/>
+          <text class="lbl-b or" x="280" y="160" text-anchor="middle" font-size="11">history state: equal superposition over every tick,</text>
+          <text class="lbl-b or" x="280" y="176" text-anchor="middle" font-size="11">entangled with a clock register recording which one</text>
+        </svg></div>
+        <figcaption><strong>The Feynman–Kitaev clock, on the exact toy circuit verified below.</strong> One frame of a flipbook is one basis state; the history state is every frame superposed at once, tagged by a clock register so they never get confused with each other.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>The classical Cook–Levin theorem reduces any NP verifier's computation to a SAT instance: build one Boolean variable per bit of every step of the computation, and one clause per rule the computation must obey (this gate's output follows from its inputs; the last step accepts). Kitaev's construction — sometimes called the <strong>quantum Cook–Levin theorem</strong> — does the same job for QMA, but the "encode the whole computation as one object" trick has to become genuinely quantum, because a quantum computation is a superposition evolving through time, not a single deterministic trace.</p>
+      <p>The object that does it is the <strong>history state</strong>: instead of picking one moment of the computation, superpose <em>every</em> moment at once, each tagged by a "clock" register recording which step it is. Build a Hamiltonian whose terms penalize (a) a malformed clock, and (b) any step where the data register's content doesn't match what the verifier circuit's next gate should have produced from the previous step. A state gets low energy from this Hamiltonian if and only if it looks like a real, correctly-computed history of some run of the circuit — and if the verifier circuit accepts with high probability on some witness, the true history state built from that witness has energy at (or near) the true minimum. That correspondence — accepting computation ⟺ low ground energy — is the entire proof.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>For a circuit applying gates U₁,…,U<sub>T</sub> to a data register, with a clock register of T qubits in "unary" form (clock value t is represented as t ones followed by T−t zeros), the Hamiltonian is H = H<sub>clock</sub> + H<sub>in</sub> + H<sub>prop</sub>, where H<sub>clock</sub> penalizes any clock string that isn't a valid unary count, H<sub>in</sub> penalizes the wrong data value at clock=0, and each propagation term is</p>
+      <code class="eq">H<sub>t</sub> = ½( I⊗(P<sub>t−1</sub>+P<sub>t</sub>) − U<sub>t</sub>⊗|t⟩⟨t−1| − U<sub>t</sub><sup>†</sup>⊗|t−1⟩⟨t| )</code>
+      <p>where P<sub>t</sub> projects the clock onto its valid t-th value. <span class="orbadge">⟦Proven⟧</span> <strong>Built and diagonalized exactly</strong>, not just described: for the 1-qubit, 2-gate toy circuit in the figure (apply H, then Z, to data qubit |0⟩), this Hamiltonian is an 8×8 matrix (1 data + 2 clock qubits). Exact diagonalization gives ground energy 0.0000000000 and a ground state whose overlap with the constructed history state (|0⟩|00⟩+|+⟩|10⟩+|−⟩|11⟩)/√3 is 1.0000000000 to machine precision — the ground state <em>is</em> the history state, not merely close to it, with a real spectral gap of 0.134 above it separating it from every other configuration. (Without H<sub>in</sub>, this ground space is 2-dimensional — spanned by the histories of <em>every</em> possible starting data value — which is itself worth stating plainly: H<sub>in</sub> is what pins the reduction to one specific input rather than "some input or other." Script: <code>tools/verify_qma_hamiltonian_complexity.py</code>.)</p>
+      <p><strong>The locality this construction needs, and how far it's been pushed down.</strong> This toy example's terms touch at most 3 qubits (1 data + 2 clock) because its gates are single-qubit and its clock is short — but a construction robust to <em>any</em> circuit (multi-qubit gates, arbitrarily long clocks, checked only via local clock-adjacency) needs more room. Kitaev's original proof used 5-local terms (Kitaev, Shen &amp; Vyalyi, 2002). Kempe &amp; Regev reduced this to <strong>3-local</strong> (<em>Quantum Inf. Comput.</em> 3(3), 258 (2003), <a href="https://arxiv.org/abs/quant-ph/0302079">arXiv quant-ph/0302079</a>). Kempe, Kitaev &amp; Regev pushed it to <strong>2-local</strong> using "perturbative gadgets" — auxiliary qubits with large coupling constants whose low-energy effective behaviour approximates a higher-local term (<em>SIAM J. Comput.</em> 35(5), 1070 (2006), <a href="https://arxiv.org/abs/quant-ph/0406180">arXiv quant-ph/0406180</a>). <strong>1-local Hamiltonian is not QMA-complete</strong> — each term acts on a single qubit independently, so the ground energy is just the sum of each term's own lowest eigenvalue, achievable by an unentangled product state and found in polynomial time; it's in P, believed strictly easier than QMA-complete problems.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">The same Hamiltonian that proves hardness also turns out to be preparable a completely different way</span>
+      Nothing about the history-state Hamiltonian above is specific to <em>verifying</em> a circuit after the fact. It's a genuine, physical local Hamiltonian, meaning something else can ask about it: what if, instead of diagonalizing it on paper, you built a physical system with exactly this Hamiltonian and let it relax into its own ground state? That question — and a real, surprising answer — is next.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#f20">Next: relax a physical system into this same ground state — does that also compute? ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= F20 ================= -->
+<details class="mod" id="f20">
+  <summary>
+    <span class="mod-n">20</span>
+    <span class="mod-t">Adiabatic universality &amp; the quantum PCP conjecture</span>
+    <span class="mod-q">Can a physical system that just relaxes into its ground state be as powerful as a full quantum circuit — and how far can "squeeze a decision into an energy gap" be pushed before nobody knows the answer?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A bar chart. Sweep time T on the horizontal axis (2, 5, 10, 25, 60), final-state fidelity with the true ground state on the vertical axis. Bars rise from 0.3845 at T=2 to 0.9989 at T=60, converging toward 1 as the sweep gets slower.">
+          <path d="M40 160 H520" stroke="var(--border)" stroke-width="1.4"/>
+          <g class="sOr" stroke-width="30">
+            <path d="M90 160 V99"/>
+            <path d="M195 160 V70"/>
+            <path d="M300 160 V38"/>
+            <path d="M405 160 V21"/>
+            <path d="M480 160 V17"/>
+          </g>
+          <text class="lbl-s" x="90" y="176" text-anchor="middle">T=2</text>
+          <text class="lbl-s" x="195" y="176" text-anchor="middle">T=5</text>
+          <text class="lbl-s" x="300" y="176" text-anchor="middle">T=10</text>
+          <text class="lbl-s" x="405" y="176" text-anchor="middle">T=25</text>
+          <text class="lbl-s" x="480" y="176" text-anchor="middle">T=60</text>
+          <text class="lbl-b" x="90" y="93" text-anchor="middle" font-size="10.5">0.385</text>
+          <text class="lbl-b" x="195" y="64" text-anchor="middle" font-size="10.5">0.563</text>
+          <text class="lbl-b" x="300" y="32" text-anchor="middle" font-size="10.5">0.816</text>
+          <text class="lbl-b" x="405" y="15" text-anchor="middle" font-size="10.5">0.990</text>
+          <text class="lbl-b" x="480" y="11" text-anchor="middle" font-size="10.5">0.999</text>
+        </svg></div>
+        <figcaption><strong>Sweep slower, and the final state converges onto the true ground state — the history state from the previous topic.</strong> This is the adiabatic theorem, measured directly on the same Hamiltonian topic 19 diagonalized.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>The <strong>adiabatic theorem</strong>, a genuinely old fact from ordinary quantum mechanics, says a system that starts in a Hamiltonian's ground state and has that Hamiltonian deformed slowly enough stays in the ground state throughout — it "rides along" rather than getting kicked into an excited state. Farhi, Goldstone, Gutmann &amp; Sipser (<a href="https://arxiv.org/abs/quant-ph/0001106">arXiv quant-ph/0001106</a>, 2000) turned this into a proposed computing model: start a physical system in the easy-to-prepare ground state of a simple Hamiltonian H₀, slowly deform it toward a "problem Hamiltonian" H<sub>P</sub> whose ground state encodes an answer, and just let physics do the rest.</p>
+      <p>The obvious question is whether this is a genuinely different, perhaps weaker, model of computation than the circuit model this whole page has otherwise used — or the same power in different clothes. It's the same clothes: <strong>topic 19's history-state Hamiltonian is exactly the kind of object this model needs</strong>, because its ground state already <em>is</em> the record of a circuit's computation. Aharonov, van Dam, Kempe, Landau, Lloyd &amp; Regev proved the adiabatic model is polynomially equivalent to the standard circuit model — anything BQP can compute, adiabatic evolution can too, with only polynomial overhead, and vice versa.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>For H(s) = (1−s)H₀ + sH<sub>P</sub>, s going from 0 to 1 over total time T, the adiabatic theorem guarantees the system tracks the ground state provided T is large enough relative to how small the spectral gap gets along the path — the smaller the minimum gap, the longer the sweep must run. <span class="orbadge">⟦Proven⟧</span> <strong>Verified directly on topic 19's own toy Hamiltonian</strong>: with H₀ built so its unique, trivially-prepared ground state is the simple product state |0⟩⊗|clock=0⟩, and H<sub>P</sub> the exact history-state Hamiltonian from topic 19 (minimum spectral gap along the path: 0.134), a real time-evolved sweep gives a final-state fidelity with the true history-state ground state of 0.3845 at T=2, climbing to 0.5630 (T=5), 0.8156 (T=10), 0.9902 (T=25), and 0.9989 (T=60) — monotonically converging toward the exact answer as the sweep slows down, exactly as the theorem predicts. (This uses a simplified stand-in H₀ for clarity; the published proof's own initial Hamiltonian is a little more elaborate, also clock-based, so that its ground state can be checked cheaply too — the mechanism being demonstrated here is identical.) Aharonov, van Dam, Kempe, Landau, Lloyd &amp; Regev, <em>SIAM J. Comput.</em> 37(1), 166 (2007), <a href="https://arxiv.org/abs/quant-ph/0405098">arXiv quant-ph/0405098</a>. Kempe, Kitaev &amp; Regev's own 2-local paper (topic 19) proved the same equivalence holds even restricted to 2-local interactions — the locality reduction and the adiabatic-universality result come from the same techniques, in the same paper.</p>
+      <p><strong>The quantum PCP conjecture — the open question this machinery leads to.</strong> Classically, the PCP theorem (Arora &amp; Safra, <em>J. ACM</em> 45(1), 70 (1998); Arora, Lund, Motwani, Sudan &amp; Szegedy, <em>J. ACM</em> 45(3), 501 (1998)) says NP-hardness survives even when a solution only needs to be <em>approximately</em> satisfying — e.g. it's NP-hard to tell whether a 3-SAT instance is fully satisfiable or at most a constant fraction of its clauses can ever be satisfied at once, a gap that scales with the size of the instance rather than shrinking. <strong>The quantum PCP conjecture</strong> (Aharonov, Arad &amp; Vidick, <em>ACM SIGACT News</em> 44(2), 47 (2013), <a href="https://arxiv.org/abs/1309.7495">arXiv 1309.7495</a>) asks whether the local Hamiltonian problem is QMA-hard even to that same coarse, extensive precision — a constant fraction of the total energy scale — rather than only the 1/poly(n) precision topics 18–19 actually proved hardness for. <span class="orbadge">⟦Open⟧</span> <strong>Nobody knows.</strong> The obstruction is genuinely quantum: classical hardness-of-approximation proofs amplify a small gap into a large one by taking many independent copies of an instance, but a quantum witness's copies can be entangled with each other in ways that let a clever Merlin cheat a naive amplification scheme — the same no-cloning-flavoured obstruction topic 18 raised for QMA's own error bounds, one level higher up. One necessary consequence of the conjecture, the NLTS ("no low-energy trivial states") property, was proven true in 2022 (Anshu, Breuckmann &amp; Nirkhe, STOC 2023, <a href="https://arxiv.org/abs/2206.13228">arXiv 2206.13228</a>, from good quantum LDPC codes) — a real, checked result, and honestly stated: necessary for quantum PCP to hold, not sufficient to prove it. The conjecture itself remains open.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually matters</h4>
+      <p><span class="where">Why "the annealer works, sometimes" isn't a contradiction of anything proven here</span>
+      The physical quantum annealers on <a href="compare.html#annealing">compare.html</a> use exactly this adiabatic idea, but run far faster and hotter than the provably-safe adiabatic regime this topic describes — a deliberate engineering trade-off, not a violation of the theorem, and the honest reason <a href="compare.html#annealing">that section</a> already states plainly that a physical annealer solves one problem shape and offers no universal speed guarantee. And if the quantum PCP conjecture ever were resolved affirmatively, it would sharpen exactly what topics 16–17 already say about VQE and QAOA from the other direction: not just "nobody has proven a speedup," but a proof that no efficient quantum algorithm — not just the ones tried so far — can approximate some ground energies well, full stop.</p>
+    </div>
+
+    <div class="mod-out">
+      <span style="color:var(--muted);font-size:.85rem">This closes The Machinery's full 20-topic scope — the original 15, plus five more (QAOA/VQE, quantum simulation, and this section's three), added as their own dependencies came to exist. Every algorithm elsewhere on this site now rests on machinery actually built and verified here, not just cited.</span>
+    </div>
+  </div>
+</details>
+
+<footer>The Machinery: 7 of 7 planned sections, 20 of 20 planned topics — complete. Every topic is verified; nothing is a placeholder.<br>SymbiQ · Found an error? That&#39;s worth the biggest bounty we pay — <a href="corrections.html#report">tell us</a>.</footer>
 </div>
 
 <script type="application/ld+json">

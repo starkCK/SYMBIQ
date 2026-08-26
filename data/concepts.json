@@ -1088,7 +1088,7 @@
     {
       "id": "quantum-annealing",
       "term": "quantum annealing",
-      "aliases": ["adiabatic quantum computation", "adiabatic quantum computing", "D-Wave", "adiabatic evolution"],
+      "aliases": ["D-Wave"],
       "page": "compare.html",
       "anchor": "annealing",
       "tier": "g",
@@ -1134,6 +1134,56 @@
       "tier": "g",
       "kind": "concept",
       "blurb": "Noisy Intermediate-Scale Quantum, the era the field is actually in -- and the still-unsettled tug-of-war between Google's 2019 Sycamore claim and classical simulations that have matched, lost to, and matched it again since."
+    },
+    {
+      "id": "qma",
+      "term": "QMA",
+      "aliases": ["Quantum Merlin-Arthur", "Quantum Merlin Arthur"],
+      "page": "formalism.html",
+      "anchor": "f18",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The quantum analogue of NP: a claim is true if some quantum witness convinces a fast quantum verifier, false if every witness fails to."
+    },
+    {
+      "id": "local-hamiltonian-problem",
+      "term": "local Hamiltonian problem",
+      "aliases": ["k-local Hamiltonian problem"],
+      "page": "formalism.html",
+      "anchor": "f18",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The decision version of finding a Hamiltonian's ground energy -- the formal problem VQE is a heuristic for, and QMA's own natural complete problem."
+    },
+    {
+      "id": "qma-completeness",
+      "term": "QMA-completeness",
+      "aliases": ["quantum Cook-Levin theorem", "Feynman-Kitaev clock", "history state"],
+      "page": "formalism.html",
+      "anchor": "f19",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Kitaev's proof that the local Hamiltonian problem is as hard as anything in QMA, by encoding a quantum circuit's entire computation as one Hamiltonian's ground state."
+    },
+    {
+      "id": "adiabatic-quantum-computation",
+      "term": "adiabatic quantum computation",
+      "aliases": ["adiabatic universality"],
+      "page": "formalism.html",
+      "anchor": "f20",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Relaxing a physical system slowly into a Hamiltonian's ground state -- proven polynomially equivalent in power to the standard quantum circuit model."
+    },
+    {
+      "id": "quantum-pcp-conjecture",
+      "term": "quantum PCP conjecture",
+      "aliases": ["qPCP", "NLTS"],
+      "page": "formalism.html",
+      "anchor": "f20",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "The still-open question of whether the local Hamiltonian problem stays QMA-hard even at coarse, constant-fraction precision -- the quantum analogue of the classical PCP theorem."
     }
   ]
 }

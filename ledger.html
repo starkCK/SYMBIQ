@@ -3,36 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Question Archive — every question, with answers | SymbiQ</title>
-<meta name="description" content="Every question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
+<title>The Ledger — SymbiQ</title>
+<meta name="description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict. Pre-registered criteria, archived sources, two keys to resolve, and our own error rate published next to theirs.">
 <!-- social:start -->
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/archive.html">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/ledger.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/archive.html">
-<meta property="og:title" content="The Question Archive — every question, with answers | SymbiQ">
-<meta property="og:description" content="Every question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
-<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/question.png">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/ledger.html">
+<meta property="og:title" content="The Ledger — SymbiQ">
+<meta property="og:description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict — with our own error rate published next to theirs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="SymbiQ. One question, answered three ways.">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Question Archive — every question, with answers | SymbiQ">
-<meta name="twitter:description" content="Every question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
-<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/question.png">
+<meta name="twitter:title" content="The Ledger — SymbiQ">
+<meta name="twitter:description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="ledger.css">
 <script src="nav.js?v=7" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
-<script src="archive.js?v=1" defer></script>
+<script src="ledger.js?v=1" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -115,13 +116,13 @@
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
-      <a href="archive.html" class="navmain active">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
       <div class="navrow">
-        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html" class="navmain active">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
@@ -131,34 +132,77 @@
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
 </nav>
 
-<h1>The Question Archive</h1>
-<p class="tagline">Every question we have ever asked, with its answer and the full explanation at all three levels. Nothing is deleted, nothing is quietly edited — if we got one wrong it stays here with the correction attached.</p>
+<h1>The Ledger</h1>
+<p class="tagline">Every public, dated, falsifiable claim SymbiQ tracks about quantum computing — from
+labs, executives, and regulators — logged the day it's made, checked against sources named <em>before</em>
+we look, and resolved to <strong>Verified</strong>, <strong>Partially verified</strong>, <strong>Not
+verified</strong>, or <strong>Unfalsifiable</strong> only when the deadline arrives. No deleting misses.
+<strong>Nothing has resolved yet</strong> — the Ledger opened with <span id="ldg-seed-count">7</span>
+claims still tracking, which is the honest starting state, not a bug.</p>
 
-<div class="card" id="arch-summary">
-  <h3>Loading the archive…</h3>
-  <p style="margin-bottom:0">If this does not fill in, the archive file could not be fetched. It lives at <code>data/archive/index.json</code>.</p>
+<div class="card" id="ldg-summary">
+  <h3>Loading The Ledger…</h3>
+  <p style="margin-bottom:0">If this does not fill in, the data could not be fetched. It lives at
+  <code>data/claims/index.json</code>.</p>
 </div>
 
-<div id="arch-list"></div>
+<div id="ldg-mount"></div>
 
-<h2>How The Question works</h2>
-<p>One question at a time, at one of three levels — 🟢 beginner, 🟡 intermediate, 🔴 expert with real mathematics. Every answer carries an explanation at <em>all three</em> levels, so you can always drop down a tier if the explanation loses you, or climb one if it bores you. Expert questions are independently verified before they ship, and the sources are named.</p>
-<p>The current question is <a href="index.html#daily-q">on the homepage</a>, where it also tracks your streak.</p>
+<h2 id="scorecards">Claimant scorecards</h2>
+<p style="color:var(--muted);font-size:.92rem">Rebuilt every time a claim resolves. A claimant needs
+five resolved claims before we rank them — below that, the count is shown and the rate is withheld,
+rather than publishing a rate that one lucky or unlucky guess could swing by 20 points.</p>
+<div id="ldg-scorecards"><p class="archq-loading">Loading…</p></div>
+
+<h2 id="ours">Our own scorecard</h2>
+<p style="color:var(--muted);font-size:.92rem">Published with the same prominence as theirs. If we write
+criteria that turn out unscoreable, that's <em>our</em> error, not the claimant's — it counts here as
+void, not silently dropped.</p>
+<div id="ldg-ours"><p class="archq-loading">Loading…</p></div>
+
+<h2 id="how">How a claim moves through the Ledger — and the rules that make it credible</h2>
+<p>A claim only enters the Ledger if it is <strong>attributed</strong> to a named person or organisation,
+<strong>dated</strong>, <strong>falsifiable</strong> — there's a stated observation that would make it
+false — <strong>deadlined</strong>, and its resolution criteria are <strong>pre-registered</strong> before
+tracking starts. If a claim can't clear that bar as stated, we either rewrite it with an explicit
+SymbiQ-constructed interpretation (flagged as such — see
+<a href="#c-microsoft-topological-years-not-decades">Microsoft's entry</a> for a live example) or file it
+as unfalsifiable, which is itself a published verdict.</p>
+<ol class="asks" style="margin:16px 0 0;padding:0;list-style:none">
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Pre-registration and freeze.</strong>
+  Resolution criteria and resolver sources are locked the moment a claim starts tracking. Changing them
+  after the fact voids the claim from scoring, in public — never a quiet edit.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Two keys.</strong> Whoever captures
+  a claim does not resolve it. A second person writes the verdict.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Archive at intake.</strong> Every
+  source gets an independent snapshot the moment it's captured, so an edited or deleted press release
+  can't make a claim unprovable later.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Void is our failure, not
+  theirs.</strong> Unscoreable criteria are our mistake, published with the same weight as any other
+  correction.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Right of reply.</strong> Every
+  claimant gets a chance to respond before a <em>Not verified</em> verdict ships.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Claims, not people.</strong> The
+  verdict vocabulary has no word for lying, hype, or fraud — only whether what was said matches what
+  happened.</li>
+</ol>
+<p style="margin-top:14px;font-size:.9rem;color:var(--muted)">The full design — schema, scoring maths, the
+whole claim lifecycle — is in <code>outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md</code>.</p>
 
 <script>
-// One renderer, two mount points (index.html embeds the same component).
 (function () {
-  var host = document.getElementById("arch-list");
-  var sum  = document.getElementById("arch-summary");
+  var host = document.getElementById("ldg-mount");
+  var sum  = document.getElementById("ldg-summary");
   if (sum) sum.remove();
-  if (window.SymbiQ && SymbiQ.archive) SymbiQ.archive.mount(host, { heading: true });
-  else document.addEventListener("DOMContentLoaded", function () {
-    if (window.SymbiQ && SymbiQ.archive) SymbiQ.archive.mount(host, { heading: true });
-  });
+  function go() { if (window.SymbiQ && SymbiQ.ledger) SymbiQ.ledger.mount(host, { heading: true }); }
+  if (window.SymbiQ && SymbiQ.ledger) go();
+  else document.addEventListener("DOMContentLoaded", go);
 })();
 </script>
 
-<footer>Nothing is deleted. Nothing is quietly edited.<br>SymbiQ · Found an error in an old answer? That is worth the biggest bounty we pay — <a href="corrections.html#report">tell us</a>.</footer>
+<footer>Nothing here is a judgment of anyone's character — only of whether a dated, public claim came
+true.<br>SymbiQ · Think we got a resolution wrong? That's worth the biggest bounty we pay —
+<a href="corrections.html#report">tell us</a>.</footer>
 </div>
 </body>
 </html>

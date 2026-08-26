@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "generated": "2026-08-27",
+  "claimants": [
+    {
+      "slug": "ibm",
+      "name": "IBM",
+      "kind": "company",
+      "affiliation": null,
+      "canonical_url": "https://www.ibm.com/quantum"
+    },
+    {
+      "slug": "quantinuum",
+      "name": "Quantinuum",
+      "kind": "company",
+      "affiliation": null,
+      "canonical_url": "https://www.quantinuum.com"
+    },
+    {
+      "slug": "microsoft",
+      "name": "Microsoft",
+      "kind": "company",
+      "affiliation": null,
+      "canonical_url": "https://azure.microsoft.com/en-us/products/quantum"
+    },
+    {
+      "slug": "google",
+      "name": "Google",
+      "kind": "company",
+      "affiliation": "Google Quantum AI / Google Security Engineering",
+      "canonical_url": "https://quantumai.google"
+    },
+    {
+      "slug": "eo14412",
+      "name": "Executive Order 14412 (The White House)",
+      "kind": "agency",
+      "affiliation": "Executive Office of the President of the United States",
+      "canonical_url": "https://www.whitehouse.gov/presidential-actions/2026/06/securing-the-nation-against-advanced-cryptographic-attacks/"
+    },
+    {
+      "slug": "ionq",
+      "name": "IonQ",
+      "kind": "company",
+      "affiliation": null,
+      "canonical_url": "https://ionq.com"
+    },
+    {
+      "slug": "dwave",
+      "name": "D-Wave Quantum Inc.",
+      "kind": "company",
+      "affiliation": null,
+      "canonical_url": "https://www.dwavequantum.com"
+    }
+  ]
+}

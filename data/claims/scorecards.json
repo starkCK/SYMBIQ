@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "generated": "2026-08-27",
+  "claimants": [
+    {
+      "claimant": "ibm",
+      "name": "IBM",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "quantinuum",
+      "name": "Quantinuum",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "microsoft",
+      "name": "Microsoft",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "google",
+      "name": "Google",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "eo14412",
+      "name": "Executive Order 14412 (The White House)",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "ionq",
+      "name": "IonQ",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "dwave",
+      "name": "D-Wave Quantum Inc.",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    }
+  ],
+  "ours": {
+    "n_captured": 7,
+    "n_resolved": 0,
+    "n_void": 0,
+    "void_rate": 0.0,
+    "corrections_from_right_of_reply": 0,
+    "note": "Nothing has resolved yet -- the Ledger was just seeded. This scorecard is honest at zero, not broken; it fills in as claims resolve, exactly like race.html's scoreboard did before its first weekly update."
+  }
+}

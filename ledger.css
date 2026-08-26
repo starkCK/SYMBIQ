@@ -1,0 +1,88 @@
+/* SymbiQ — ledger.html only. Page-specific so it can change without a
+   16-page cache-buster bump (same rationale as feasible.css / signals.css).
+   Reuses .archq/.orbadge/.card/.verdict/.rows/.chip/.tier from style.css so
+   the page still looks like SymbiQ -- this file only adds what a claim card
+   and a scorecard table need that nothing else on the site needed yet. */
+
+.ldg-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.ldg-filters button {
+  background: var(--panel); color: var(--muted); border: 1px solid var(--border);
+  border-radius: 99px; padding: 6px 14px; font-size: .84rem; cursor: pointer;
+  min-height: 36px; transition: border-color .15s ease, color .15s ease;
+}
+.ldg-filters button:hover { border-color: var(--teal); color: var(--text); }
+.ldg-filters button.on { border-color: var(--teal); color: var(--teal); font-weight: 600; background: rgba(45,212,191,.08); }
+.ldg-filters .sep { width: 1px; align-self: stretch; background: var(--border); margin: 0 2px; }
+
+.ldg-count { font-size: .88rem; color: var(--muted); margin: 0 0 10px; }
+
+.ldg-item > summary { gap: 10px; }
+.ldg-claimant { font-weight: 600; color: var(--text); }
+.ldg-headline { display: block; color: var(--muted); font-weight: 400; margin-top: 2px; font-size: .92rem; }
+
+.status-badge {
+  display: inline-block; font-size: .68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .04em; border-radius: 99px; padding: 2px 9px; border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.status-badge.tracking { color: var(--teal); border-color: rgba(45,212,191,.4); }
+.status-badge.resolvable { color: var(--yellow); border-color: rgba(250,204,21,.4); }
+.status-badge.resolved { color: var(--violet); border-color: rgba(167,139,250,.4); }
+.status-badge.void { color: var(--red); border-color: rgba(248,113,113,.4); }
+.status-badge.draft, .status-badge.proposed, .status-badge.superseded { color: var(--muted); }
+
+.verdict-badge {
+  display: inline-block; font-size: .68rem; font-weight: 600; border-radius: 99px;
+  padding: 2px 9px; border: 1px solid var(--border); white-space: nowrap;
+}
+.verdict-badge.verified { color: var(--teal); border-color: rgba(45,212,191,.4); background: rgba(45,212,191,.08); }
+.verdict-badge.partially_verified { color: var(--yellow); border-color: rgba(250,204,21,.4); background: rgba(250,204,21,.08); }
+.verdict-badge.not_verified { color: var(--red); border-color: rgba(248,113,113,.4); background: rgba(248,113,113,.08); }
+.verdict-badge.unfalsifiable, .verdict-badge.overtaken { color: var(--muted); }
+
+.ldg-body { padding: 4px 22px 20px; }
+.ldg-quote {
+  margin: 4px 0 14px; padding: 12px 16px; border-left: 3px solid var(--teal);
+  background: var(--panel); border-radius: 0 8px 8px 0; font-style: italic;
+}
+.ldg-quote cite { display: block; font-style: normal; color: var(--muted); font-size: .84rem; margin-top: 6px; }
+.ldg-quote cite a { color: var(--link); }
+
+.ldg-section { margin: 16px 0; }
+.ldg-section h4 { margin: 0 0 6px; font-size: .88rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.ldg-section p { margin: 0; }
+
+.ldg-sourcing {
+  margin: 14px 0; padding: 10px 14px; border: 1px dashed var(--border); border-radius: 8px;
+  font-size: .86rem; color: var(--muted);
+}
+
+.ldg-timeline { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 10px; }
+.ldg-timeline li {
+  display: grid; grid-template-columns: 100px 1fr; gap: 4px 12px; padding-left: 14px;
+  border-left: 2px solid var(--border); position: relative;
+}
+.ldg-timeline li::before {
+  content: ""; position: absolute; left: -5px; top: 4px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--muted);
+}
+.ldg-timeline li.at_risk::before, .ldg-timeline li.off_track::before { background: var(--red); }
+.ldg-timeline li.on_track::before { background: var(--teal); }
+.ldg-timeline .tl-date { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ldg-timeline .tl-note { margin: 0; }
+.ldg-timeline .tl-note a { color: var(--link); font-size: .84rem; }
+
+.ldg-resolver-list { margin: 4px 0 0; padding-left: 20px; }
+.ldg-resolver-list li { color: var(--muted); font-size: .9rem; margin: 2px 0; }
+
+/* scorecards */
+.ldg-scorecard td.num, .ldg-scorecard th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.ldg-scorecard .n { color: var(--muted); font-size: .84rem; }
+.ldg-nr { color: var(--muted); font-style: italic; }
+
+.ldg-ours {
+  display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 10px 0 0;
+}
+.ldg-ours .stat { min-width: 120px; }
+.ldg-ours .stat b { display: block; font-size: 1.4rem; font-variant-numeric: tabular-nums; color: var(--teal); }
+.ldg-ours .stat span { font-size: .8rem; color: var(--muted); }

@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "speaker": "Dr. Rajeeb Hazra, CEO of Quantinuum",
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 1,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-08-27",
+      "signal": "on_track",
+      "note": "Interim milestone Helios (≈100 physical qubits, two-qubit gate error <5×10⁻⁴) launched commercially per Quantinuum's Nov 2025 announcements, one step on the path to Apollo -- named here as the check-in to track, not as evidence the 2030 claim itself has resolved.",
+      "source_url": "https://www.hpcwire.com/2025/11/05/quantinuum-introduces-helios-quantum-system-as-roadmap-advances-toward-apollo/",
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": null,
+  "slug": "quantinuum-apollo-2030",
+  "claimant": "quantinuum",
+  "verbatim": "Quantinuum's roadmap unveils its fifth-generation quantum computer, Apollo, which will be a fully fault-tolerant and universal quantum computer, capable of executing circuits with millions of gates, delivering scientific advantage and enabling a commercial tipping point.",
+  "headline": "Quantinuum will deliver universal, fully fault-tolerant quantum computing (system “Apollo”) by 2030.",
+  "source_url": "https://www.quantinuum.com/press-releases/quantinuum-unveils-accelerated-roadmap-to-achieve-universal-fault-tolerant-quantum-computing-by-2030",
+  "source_date": "2024-09-10",
+  "source_kind": "press release",
+  "kind": "milestone",
+  "domain": "quantum",
+  "resolution_criteria": "Resolves VERIFIED if Quantinuum has, by 31 Dec 2030, shipped or publicly operated a system matching the Apollo specification (universal, fully fault-tolerant, circuits of millions of gates) -- confirmed by a Quantinuum announcement plus independent technical reporting. Note the press release's own text separately targets Apollo itself for 2029, one year ahead of the “by 2030” headline claim; both dates are logged so either can be checked against what actually ships. PARTIALLY_VERIFIED if an earlier-generation system (Helios, Sol) ships on schedule but Apollo itself is delayed past 2030. NOT_VERIFIED otherwise.",
+  "resolver_sources": [
+    "https://www.quantinuum.com/press-releases",
+    "https://www.quantinuum.com/blog",
+    "https://thequantuminsider.com"
+  ],
+  "resolves_by": "2030-12-31",
+  "concept_ids": [
+    "fault-tolerance",
+    "logical-qubit"
+  ]
+}

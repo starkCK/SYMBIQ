@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "speaker": null,
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 1,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-08-27",
+      "signal": "no_signal",
+      "note": "Captured at seed. IBM Quantum Starling is IBM's stated terminal milestone on a roadmap with earlier named systems (Loon, Kookaburra, Cockatoo) due in the intervening years -- those intermediate milestones are the check-ins to watch for, not just the 2029 date.",
+      "source_url": null,
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": "ibm.com and research.ibm.com returned HTTP 403 to automated fetch during capture (2026-08-27), so this entry rests on independent technical reporting (The Quantum Insider) rather than IBM's own primary text. The specific numbers (2029 / 200 logical qubits / 100M operations) are corroborated by multiple independent outlets. Re-fetch ibm.com by hand before this claim resolves.",
+  "slug": "ibm-starling-2029",
+  "claimant": "ibm",
+  "verbatim": "IBM's published quantum roadmap sets 2029 as the delivery date for IBM Quantum Starling, described as capable of running 100 million quantum operations using 200 logical qubits.",
+  "headline": "IBM will deliver a large-scale, fault-tolerant quantum computer (“Starling”) by 2029, running 100 million quantum operations on 200 logical qubits.",
+  "source_url": "https://thequantuminsider.com/2025/06/12/engineering-fault-tolerance-ibms-modular-scalable-full-stack-quantum-roadmap/",
+  "source_date": "2025-06-10",
+  "source_kind": "technical roadmap, reported directly",
+  "kind": "milestone",
+  "domain": "quantum",
+  "resolution_criteria": "Resolves VERIFIED if IBM has, by 31 Dec 2029, publicly demonstrated a machine matching the Starling specification (fault-tolerant, ~200 logical qubits, capable of on the order of 100 million quantum operations) -- an IBM announcement plus independent technical reporting confirming the specification counts. PARTIALLY_VERIFIED if a materially smaller or delayed system ships under the Starling name. NOT_VERIFIED if no fault-tolerant system in this class has shipped by the deadline plus the 30-day grace period.",
+  "resolver_sources": [
+    "https://www.ibm.com/quantum/roadmap",
+    "https://research.ibm.com/blog",
+    "https://thequantuminsider.com"
+  ],
+  "resolves_by": "2029-12-31",
+  "concept_ids": [
+    "fault-tolerance",
+    "logical-qubit",
+    "surface-code"
+  ]
+}

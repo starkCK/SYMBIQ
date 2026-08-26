@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Race — SymbiQ</title>
-<meta name="description" content="The scoreboard on the labs racing to fault tolerance, our public prediction record, and an interactive look at the one number the race is actually scored on: the threshold.">
+<meta name="description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/race.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/race.html">
 <meta property="og:title" content="The Race — SymbiQ">
-<meta property="og:description" content="The scoreboard on the labs racing to fault tolerance, our public prediction record, and an interactive look at the one number the race is actually scored on: the threshold.">
+<meta property="og:description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="The Race — SymbiQ">
-<meta name="twitter:description" content="The scoreboard on the labs racing to fault tolerance, our public prediction record, and an interactive look at the one number the race is actually scored on: the threshold.">
+<meta name="twitter:description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=35">
@@ -129,6 +129,10 @@
         <a href="race.html" class="navmain active">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       </div>
     </details>
@@ -140,7 +144,7 @@
 
 
 <h1>The Race</h1>
-<p class="tagline">The scoreboard on the labs racing to fault tolerance — and our own prediction record, kept publicly. <strong>Both tables are still empty</strong>, and saying so is the point. We keep score on ourselves so you can decide whether to trust us.</p>
+<p class="tagline">The scoreboard on the labs racing to fault tolerance. Our own prediction record now lives on <a href="ledger.html">The Ledger</a>, tracked by the same public rules as every other claim we follow. <strong>The scoreboard below is still empty</strong>, and saying so is the point. We keep score on ourselves so you can decide whether to trust us.</p>
 
 <h2>What the race is actually scored on</h2>
 <p>Qubit counts make the headlines. They are close to meaningless on their own. The number that decides whether a machine is in this race at all is <strong>Λ</strong> — how much the logical error rate shrinks each time you make the code bigger.</p>
@@ -181,15 +185,20 @@
 </div>
 
 <h2>Our predictions</h2>
-<p>Every prediction we make is falsifiable, dated, and scored when it resolves. No deleting misses. <strong>None has been made yet.</strong> The first ships with the first real update, same as the scoreboard above — nothing below is a placeholder standing in for a real answer.</p>
-<div class="overflow">
-<table>
-  <tr><th>#</th><th>Prediction</th><th>Made</th><th>Resolves by</th><th>Status</th></tr>
-  <tr><td>1</td><td class="todo">— none made yet —</td><td>—</td><td>—</td><td>Not yet made</td></tr>
-</table>
-</div>
+<p>Every prediction we make is falsifiable, dated, and scored when it resolves. No deleting misses. As of
+2026-08-27 this table moved to <a href="ledger.html">The Ledger</a> — the same mechanism, generalised to
+track claims from anyone, not only from us. Our own predictions live there as ordinary entries
+(claimant = SymbiQ), scored by the exact same rules we hold everyone else to, published on
+<a href="ledger.html#ours">our own scorecard</a> rather than a separate table here. <strong>None has been
+made yet</strong> — the first ships with the first real update, same honest-empty state this page has
+always kept.</p>
+<p class="cta"><a href="ledger.html">See every tracked claim, ours included, on The Ledger →</a></p>
 
-<footer>The scoreboard nobody else keeps honest.<br>SymbiQ · <strong>The scoreboard and the prediction ledger above are not filled in yet</strong> — they wait on a real dated update that has not been written, and inventing lab statuses to fill a table is exactly what this page exists to argue against. Record so far: 0 resolved right, 0 resolved wrong, 0 predictions made.</footer>
+<footer>The scoreboard nobody else keeps honest.<br>SymbiQ · <strong>The lab scoreboard above is not
+filled in yet</strong> — it waits on a real dated update that has not been written, and inventing lab
+statuses to fill a table is exactly what this page exists to argue against. Our own prediction record now
+lives on <a href="ledger.html#ours">The Ledger</a>: 0 resolved right, 0 resolved wrong, 0 predictions made
+so far.</footer>
 </div>
 
 <script>

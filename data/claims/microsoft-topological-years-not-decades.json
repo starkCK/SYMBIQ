@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "speaker": null,
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 4,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-08-27",
+      "signal": "no_signal",
+      "note": "Captured at seed. No SymbiQ-tracked interim milestone yet -- see sourcing_note for the reason this claimant specifically needs independent replication, not just a press release, before any check-in here is marked on_track.",
+      "source_url": null,
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": "No individual speaker attributed in the primary write-up fetched (news.microsoft.com/source); stated as Microsoft's corporate position. Worth remembering when reading this claim back: Microsoft's own 2018 topological-qubit result (Nature) was retracted in 2021 after independent physicists could not reproduce it -- not evidence for or against THIS claim, but a reason the check-ins on this entry should demand unusually strong independent replication before crediting any interim milestone.",
+  "slug": "microsoft-topological-years-not-decades",
+  "claimant": "microsoft",
+  "verbatim": "the world's first quantum chip powered by a new Topological Core architecture that it expects will realize quantum computers capable of solving meaningful, industrial-scale problems in years, not decades.",
+  "headline": "Microsoft says its Majorana 1 / Topological Core approach puts industrial-scale, meaningful quantum computing “years, not decades” away.",
+  "source_url": "https://news.microsoft.com/source/features/innovation/microsofts-majorana-1-chip-carves-new-path-for-quantum-computing/",
+  "source_date": "2025-02-19",
+  "source_kind": "corporate announcement",
+  "kind": "timeline",
+  "domain": "quantum",
+  "resolution_criteria": "This claim names no specific year -- “years, not decades” is a hedge, not a deadline, so it fails intake rule 4 (deadlined) as stated. SymbiQ's own falsifiability construction, flagged as such rather than attributed to Microsoft: resolves NOT_VERIFIED if, by 19 Feb 2035 (ten years from the claim, the outer edge of what “years, not decades” can plausibly mean before it is simply wrong), no topological-qubit system from Microsoft has demonstrated a problem of genuine industrial scale and consequence that a classical computer could not also solve. VERIFIED if one has. This is deliberately a lenient, favourable-to-the-claimant reading of a vague sentence.",
+  "resolver_sources": [
+    "https://azure.microsoft.com/en-us/blog/quantum/",
+    "https://news.microsoft.com/source/topics/innovation/",
+    "https://thequantuminsider.com"
+  ],
+  "resolves_by": "2035-02-19",
+  "concept_ids": [
+    "topological-qubits",
+    "fault-tolerance"
+  ]
+}

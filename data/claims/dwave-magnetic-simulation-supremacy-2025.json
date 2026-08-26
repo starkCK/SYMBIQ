@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "speaker": "Dr. Alan Baratz, CEO, D-Wave Quantum Inc.",
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 0,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2025-03-07",
+      "signal": "at_risk",
+      "note": "Flatiron Institute (Joseph Tindall et al.) posted a classical belief-propagation approach to arXiv claiming it “demonstrably outperforms other reported methods” on the same spin-glass problem, with errors “noticeably lower than the quantum annealing approach” -- not yet peer-reviewed at time of posting.",
+      "source_url": "https://thequantuminsider.com/2025/03/13/d-wave-deep-dive-a-look-at-the-quantum-advantage-findings-and-the-questions-that-remain/",
+      "author": "desk"
+    },
+    {
+      "at": "2025-03-12",
+      "signal": "at_risk",
+      "note": "Linda Mauron and Giuseppe Carleo (EPFL) posted a separate classical approach (time-dependent variational Monte Carlo) to arXiv, reporting correlation errors below 7% on systems up to 128 spins -- “aligning with or surpassing” D-Wave's reported accuracy at that scale, though not yet tested at D-Wave's largest reported instances.",
+      "source_url": "https://thequantuminsider.com/2025/03/13/d-wave-deep-dive-a-look-at-the-quantum-advantage-findings-and-the-questions-that-remain/",
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": null,
+  "slug": "dwave-magnetic-simulation-supremacy-2025",
+  "claimant": "dwave",
+  "verbatim": "Our demonstration of quantum computational supremacy on a useful problem is an industry first.",
+  "headline": "D-Wave says its Advantage2 annealing quantum computer demonstrated quantum computational supremacy on a real-world magnetic-materials simulation problem, beating classical supercomputers.",
+  "source_url": "https://www.dwavequantum.com/company/newsroom/press-release/beyond-classical-d-wave-first-to-demonstrate-quantum-supremacy-on-useful-real-world-problem/",
+  "source_date": "2025-03-12",
+  "source_kind": "press release, tied to a peer-reviewed Science paper",
+  "kind": "scientific",
+  "domain": "quantum",
+  "resolution_criteria": "This is a claim about a result already published (Science, DOI 10.1126/science.ado6285, “Beyond-Classical Computation in Quantum Simulation”), not a future promise -- so what is being tracked is not whether it happens, but whether it HOLDS UP against classical rebuttals, which is exactly the kind of claim a credibility tracker exists for. Resolves VERIFIED if no classical algorithm has, by the resolution date, matched D-Wave's reported accuracy/runtime on the same problem instances at the same or larger scale. NOT_VERIFIED if a peer-reviewed classical method has matched or beaten it at comparable scale. PARTIALLY_VERIFIED if classical methods match it at smaller scales tested so far (as the two rebuttals below currently claim) but have not yet been shown to scale to D-Wave's largest reported instances.",
+  "resolver_sources": [
+    "https://www.science.org/doi/10.1126/science.ado6285",
+    "arXiv:2503.05384 (Flatiron Institute, Tindall et al.)",
+    "arXiv preprint, Mauron & Carleo, EPFL",
+    "https://thequantuminsider.com"
+  ],
+  "resolves_by": "2026-12-31",
+  "concept_ids": [
+    "quantum-annealing"
+  ]
+}

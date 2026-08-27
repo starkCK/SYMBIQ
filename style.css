@@ -390,8 +390,28 @@ nav .link.pathlink:hover { color: var(--violet); }
    every page. Empty until auth.js runs (progressive enhancement, same rule
    as the rest of nav) -- occupies no space and shows nothing broken if it
    never loads. Sized down from .sqform's page-body proportions to fit a
-   nav bar rather than a full page width. */
-.sq-auth { margin-left: auto; flex: 0 0 auto; }
+   nav bar rather than a full page width.
+
+   ALWAYS its own row, not a right-push on the nav's first line. Measured
+   2026-08-28: the category menu + The Solver's Path already need ~756px, and
+   .wrap's three width tiers cap nav's usable width at 740/840/1000px -- so
+   sq-auth's ~320px never actually fits beside them, at ANY viewport, on ANY
+   screen size. The old margin-left:auto rule was written for a line it can
+   never share, so it always wrapped alone, right-aligned, landing wherever
+   the wrap happened to fall -- which read as a stray floating box rather
+   than a deliberate part of the nav. Forcing the row explicitly (flex-basis:
+   100%) is the same outcome made intentional, with a hairline border to
+   anchor it as part of the nav rather than something bolted on. */
+.sq-auth {
+  flex-basis: 100%; order: 3;
+  display: flex; justify-content: flex-end;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+/* :empty guards the progressive-enhancement promise above: before auth.js
+   runs (or if it never loads), the div has no children, so this collapses it
+   back to zero footprint instead of showing a bare hairline with nothing
+   under it. */
+.sq-auth:empty { flex-basis: 0; padding: 0; border: none; }
 .sq-auth-form { margin: 0; gap: 6px; flex-wrap: nowrap; }
 .sq-auth-form input[type=email] { flex: 0 1 170px; min-width: 100px; padding: 6px 10px; font-size: .85rem; }
 .sq-auth-form button { padding: 6px 14px; min-height: 36px; font-size: .85rem; }
@@ -405,8 +425,11 @@ nav .link.pathlink:hover { color: var(--violet); }
   cursor: pointer; transition: border-color .15s ease, color .15s ease;
 }
 .sq-auth-me button:hover { border-color: var(--teal); color: var(--text); }
+/* The base rule above already puts this on its own row at every width;
+   narrow screens just swap the alignment -- a right-aligned form crowds the
+   input against the viewport edge on a phone, where left-aligned does not. */
 @media (max-width: 860px) {
-  .sq-auth { margin-left: 0; flex-basis: 100%; order: 3; padding-top: 8px; }
+  .sq-auth { justify-content: flex-start; }
 }
 
 #navtrig { display: none; }

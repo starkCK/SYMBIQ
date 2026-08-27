@@ -120,6 +120,64 @@
     margin-bottom: var(--sp-3, 12px);
   }
 
+  /* ---------------------------------------------------------------- §2b
+     THE BARE-nav LEAK — read this before adding another landmark here
+
+     rails.js builds two real landmarks, nav.sqrail-idx and nav.sqrail-ladder.
+     style.css styles the page header with FIVE bare element rules spelled
+     nav:not(.rung-rail) — base layout, the 720px sticky block, two mobile
+     overrides, and position: relative. A bare element selector matches every
+     nav on the page, so all five landed on both rails. What that looked like,
+     found on the live site 2026-08-28 from a screenshot:
+
+       align-items: center   every index entry and every rung centred on its
+                             own text width, so the list staggered in and out
+                             instead of aligning to one edge. The obvious one.
+       border-bottom         a rule under the last index entry, belonging to
+                             nothing.
+       margin-bottom 40px    a hole between the ladder and the card under it.
+       padding 18px 0        the index sitting low under its own label.
+       gap 18px              rows pushed apart, unrelated to the design.
+       position + z-index    sticky at z-index 40 INSIDE a scrolling column,
+                             tied with the page header.
+
+     This is the third time a bare nav rule has leaked into a component
+     landmark. The 2026-08-23 rung rail lost its own styling the same way and
+     was patched by adding one negation, which is what left the next nav to
+     find the same rake. The real repair is for style.css to target its header
+     positively rather than by element, and it belongs in that file the next
+     time there is a reason to touch it — style.css is 123KB shared by 24
+     pages and a bump costs every reader a refetch.
+
+     Until then this block wins on its own: nav.sqrail-idx is one element plus
+     one class, exactly the weight of nav:not(.rung-rail), and rails.css loads
+     after style.css, so a tie resolves here. Fixing it on this side also
+     repairs the page for anyone still holding a cached style.css, which a
+     change in that file could not do.
+
+     Every property the five rules set is restated, including the ones that
+     look harmless. backdrop-filter is the one to keep: a filtered ancestor
+     becomes the containing block for fixed descendants, which is how a stray
+     blur tears a fixed element off the viewport.
+     ---------------------------------------------------------------- */
+  nav.sqrail-idx,
+  nav.sqrail-ladder {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    position: static;
+    top: auto;
+    z-index: auto;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   /* ---------------------------------------------------------------- §3
      THE SCROLL SPINE
 
@@ -268,7 +326,7 @@
   .sqrail-fork {
     display: inline-flex;
     align-items: center;
-    gap: var(--sp-2, 8px);
+    gap: 7px;
     margin-top: var(--sp-3, 12px);
     padding: 5px 10px;
     border: 1px dashed var(--border);
@@ -280,7 +338,9 @@
     transition: border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
                 color var(--dur-base, 260ms) var(--ease-out-quint, ease);
   }
+  .sqrail-fork svg { flex: none; opacity: 0.85; }
   .sqrail-fork:hover { border-color: var(--teal); color: var(--text); }
+  .sqrail-fork:hover svg, .sqrail-fork.is-cur svg { opacity: 1; }
   .sqrail-fork.is-cur { border-style: solid; border-color: var(--teal); color: var(--teal); font-weight: 700; }
 
   /* ---------------------------------------------------------------- §6

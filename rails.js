@@ -97,6 +97,35 @@
     return n;
   }
 
+  /* The fork mark, drawn rather than typed. It was U+2482 BRANCH, which is
+     the right character and the wrong idea: it is in no common Windows UI
+     font, so Chrome fell back and rendered a small capital letter next to
+     "coupled circuits instead" — visible in a screenshot from the live site
+     on 2026-08-28. A glyph that depends on the reader having a font is not
+     an icon. Nine bytes of path says exactly what the ladder means by a
+     fork: one line running down, one branch leaving it, currentColor and
+     the same stroke weight as everything else in the rail. */
+  function forkMark() {
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = D.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 12 12');
+    svg.setAttribute('width', '11');
+    svg.setAttribute('height', '11');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '1.5');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    var stem = D.createElementNS(NS, 'path');
+    stem.setAttribute('d', 'M3.5 1.5v9');
+    var branch = D.createElementNS(NS, 'path');
+    branch.setAttribute('d', 'M3.5 6.75h3l2-2.5');
+    svg.appendChild(stem);
+    svg.appendChild(branch);
+    return svg;
+  }
+
   function page() {
     var p = location.pathname.split('/').pop();
     return p ? p : 'index.html';
@@ -234,9 +263,11 @@
       nav.appendChild(a);
     });
 
-    var f = el('a', 'sqrail-fork' + (isFork ? ' is-cur' : ''), '⑂ ' + FORK.label);
+    var f = el('a', 'sqrail-fork' + (isFork ? ' is-cur' : ''));
     f.href = FORK.href;
     if (isFork) f.setAttribute('aria-current', 'page');
+    f.appendChild(forkMark());
+    f.appendChild(el('span', null, FORK.label));
     nav.appendChild(f);
 
     mod.appendChild(nav);

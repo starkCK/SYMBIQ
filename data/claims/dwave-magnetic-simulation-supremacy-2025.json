@@ -49,7 +49,7 @@
   "resolution_criteria": "This is a claim about a result already published (Science, DOI 10.1126/science.ado6285, “Beyond-Classical Computation in Quantum Simulation”), not a future promise -- so what is being tracked is not whether it happens, but whether it HOLDS UP against classical rebuttals, which is exactly the kind of claim a credibility tracker exists for. Resolves VERIFIED if no classical algorithm has, by the resolution date, matched D-Wave's reported accuracy/runtime on the same problem instances at the same or larger scale. NOT_VERIFIED if a peer-reviewed classical method has matched or beaten it at comparable scale. PARTIALLY_VERIFIED if classical methods match it at smaller scales tested so far (as the two rebuttals below currently claim) but have not yet been shown to scale to D-Wave's largest reported instances.",
   "resolver_sources": [
     "https://www.science.org/doi/10.1126/science.ado6285",
-    "arXiv:2503.05384 (Flatiron Institute, Tindall et al.)",
+    "arXiv:2503.05693 (Flatiron Institute, Tindall, Mello, Fishman et al.)",
     "arXiv preprint, Mauron & Carleo, EPFL",
     "https://thequantuminsider.com"
   ],

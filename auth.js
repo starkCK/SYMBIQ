@@ -1,11 +1,20 @@
 /* SymbiQ — accounts (L1). Email magic-link only for now; no GitHub OAuth
  * yet (that needs a separate GitHub OAuth App, a later, optional step).
  *
- * PROGRESSIVE ENHANCEMENT, same rule as nav.js/tiers.js: this mounts into
- * `#sq-auth`, an empty div nav already ships on every page. If the
- * Supabase library fails to load, or supabase-config.js is missing, or
- * anything here throws, the div just stays empty -- nothing else on the
- * page depends on it, and no page is worse off than it was before L1.
+ * The account control (2026-08-28 redesign) is a small circular button in
+ * the nav -- a person icon signed out, the account's own initial signed in
+ * -- that opens a popover on click. It's a <details class="navcat"> like
+ * the five category menus beside it, so nav.js's existing dropdown
+ * coordination (one open at a time, outside-click and Escape close it)
+ * applies for free; nothing there had to change.
+ *
+ * PROGRESSIVE ENHANCEMENT, same rule as nav.js/tiers.js: `#sq-account`
+ * ships `hidden` in every page's nav, and this only clears that once a real
+ * Supabase client exists. If the library fails to load, or
+ * supabase-config.js is missing, or anything here throws, the button simply
+ * never appears -- nothing else on the page depends on it, and no page is
+ * worse off than it was before L1. `#sq-auth` is the popover's content div,
+ * inside the `<details>`, mounted the same way it always was.
  *
  * On sign-in, this hands the session to SymbiQ.save.connectRemote() so
  * local progress starts mirroring to the account. On sign-out, it calls
@@ -33,8 +42,10 @@
   }
 
   function init() {
-    var mount = document.getElementById('sq-auth');
-    if (!mount) return;
+    var mount = document.getElementById('sq-auth');       // the popover's content
+    var wrap = document.getElementById('sq-account');      // the <details> trigger + popover
+    var avatar = document.getElementById('sq-avatar');
+    if (!mount || !wrap) return;
     if (!window.SymbiQ.SUPABASE_URL || !window.SymbiQ.SUPABASE_ANON_KEY) return;
 
     loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js')
@@ -49,6 +60,16 @@
         window.SymbiQ.auth = API;
         var currentUser = null;
 
+        // Keeps the trigger button in sync with mount's content: the icon
+        // when signed out, the account initial once signed in -- so the
+        // "you're signed in" state is visible without opening the popover
+        // at all, which is the actual "have a profile" ask this answers.
+        function setTrigger(signedIn, label) {
+          wrap.classList.toggle('signed-in', signedIn);
+          var summary = wrap.querySelector('summary');
+          if (summary) summary.setAttribute('aria-label', label);
+        }
+
         function renderSignedOut(status) {
           mount.innerHTML =
             '<form id="sq-auth-form" class="sqform sq-auth-form">' +
@@ -56,6 +77,8 @@
               '<button type="submit">Sign in →</button>' +
             '</form>' +
             (status ? '<p class="sq-auth-status">' + esc(status) + '</p>' : '');
+          if (avatar) avatar.textContent = '👤';
+          setTrigger(false, 'Sign in');
           var form = document.getElementById('sq-auth-form');
           form.addEventListener('submit', function (ev) {
             ev.preventDefault();
@@ -84,6 +107,10 @@
               '</span>' +
               '<button id="sq-auth-out" type="button">Sign out</button>' +
             '</div>';
+          // The trigger becomes the account's own initial -- a real avatar,
+          // not just a menu that happens to contain profile info.
+          if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
+          setTrigger(true, name + ' — account menu');
           document.getElementById('sq-auth-out').addEventListener('click', function () {
             client.auth.signOut();
           });
@@ -122,6 +149,7 @@
           announce();
         }
 
+        wrap.hidden = false;   // the client is real -- safe to show the button now
         renderSignedOut(null);
 
         client.auth.getSession().then(function (res) {

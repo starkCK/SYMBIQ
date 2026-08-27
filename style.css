@@ -386,50 +386,79 @@ nav { position: relative; }
 nav .link.pathlink { color: var(--violet); font-weight: 600; }
 nav .link.pathlink:hover { color: var(--violet); }
 
-/* ── L1 accounts: #sq-auth, mounted by nav's own template so it appears on
-   every page. Empty until auth.js runs (progressive enhancement, same rule
-   as the rest of nav) -- occupies no space and shows nothing broken if it
-   never loads. Sized down from .sqform's page-body proportions to fit a
-   nav bar rather than a full page width.
+/* ── L1 accounts, redesigned 2026-08-28. History: this was first a right-
+   pushed inline form (broke, because there was never room -- see the "stray
+   floating box" writeup this replaces), then a forced full-width row (fixed
+   the wrap, but Chinmoy's actual ask was smaller than that: a compact
+   button, tucked to the side, that opens a profile once signed in).
 
-   ALWAYS its own row, not a right-push on the nav's first line. Measured
-   2026-08-28: the category menu + The Solver's Path already need ~756px, and
-   .wrap's three width tiers cap nav's usable width at 740/840/1000px -- so
-   sq-auth's ~320px never actually fits beside them, at ANY viewport, on ANY
-   screen size. The old margin-left:auto rule was written for a line it can
-   never share, so it always wrapped alone, right-aligned, landing wherever
-   the wrap happened to fall -- which read as a stray floating box rather
-   than a deliberate part of the nav. Forcing the row explicitly (flex-basis:
-   100%) is the same outcome made intentional, with a hairline border to
-   anchor it as part of the nav rather than something bolted on. */
-.sq-auth {
-  flex-basis: 100%; order: 3;
-  display: flex; justify-content: flex-end;
-  padding-top: 10px; border-top: 1px solid var(--border);
+   So it now reuses the SAME <details class="navcat"> mechanism the five
+   category menus already use, rather than inventing a second popover
+   pattern: nav.js's querySelectorAll('.navcat') is unscoped, so this gets
+   one-open-at-a-time, outside-click-closes and Escape for free, no JS
+   change needed there. The trigger is a plain circular icon button; the
+   panel is a .navpanel like every other menu, just right-edge-anchored
+   since this is the rightmost control and a left-aligned popover would run
+   off the viewport.
+
+   Visibility is handled in markup, not CSS: the <details> ships `hidden` in
+   every page's nav, and auth.js clears that attribute only once Supabase has
+   actually loaded and a client exists. That is a stricter version of the
+   old promise ("shows nothing if it never loads") -- previously an empty
+   CSS selector had to infer that state; now JS states it directly, so a
+   half-configured or slow-loading auth can't flash a dead button that opens
+   an empty popover. */
+.sq-account { margin-left: auto; }
+.sq-account > summary {
+  padding: 0; width: 40px; height: 40px;
+  border-radius: 50%; justify-content: center;
+  background: var(--panel); border: 1px solid var(--border);
 }
-/* :empty guards the progressive-enhancement promise above: before auth.js
-   runs (or if it never loads), the div has no children, so this collapses it
-   back to zero footprint instead of showing a bare hairline with nothing
-   under it. */
-.sq-auth:empty { flex-basis: 0; padding: 0; border: none; }
-.sq-auth-form { margin: 0; gap: 6px; flex-wrap: nowrap; }
-.sq-auth-form input[type=email] { flex: 0 1 170px; min-width: 100px; padding: 6px 10px; font-size: .85rem; }
-.sq-auth-form button { padding: 6px 14px; min-height: 36px; font-size: .85rem; }
-.sq-auth-status { flex-basis: 100%; margin: 4px 0 0; font-size: .78rem; color: var(--muted); }
-.sq-auth-me { display: flex; align-items: center; gap: 8px; }
-.sq-auth-name { font-size: .88rem; font-weight: 600; }
+.sq-account > summary::after { content: none; }   /* icon-only trigger -- no menu-label chevron */
+.sq-account > summary:hover { border-color: var(--teal); background: var(--rowhover); }
+.sq-account[open] > summary { border-color: var(--teal); background: var(--rowhover); }
+.sq-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%; font-size: 1.05rem; line-height: 1;
+}
+/* Signed in, the icon becomes an initial -- the actual "profile" cue Chinmoy
+   asked for, at a glance, without opening the panel. Brand gradient rather
+   than a flat fill so it reads as "you" and not a sixth nav-category icon. */
+.sq-account.signed-in .sq-avatar {
+  background: linear-gradient(135deg, var(--violet), var(--teal));
+  color: #04211d; font-weight: 700; border-radius: 50%;
+}
+.sq-account .navpanel { left: auto; right: 0; min-width: 220px; }
+
+.sq-auth-form { display: flex; gap: 6px; margin: 0; }
+.sq-auth-form input[type=email] { flex: 1 1 auto; min-width: 0; padding: 8px 10px; font-size: .85rem; }
+.sq-auth-form button { padding: 8px 14px; min-height: 40px; font-size: .85rem; white-space: nowrap; }
+.sq-auth-status { margin: 8px 0 0; font-size: .78rem; color: var(--muted); }
+.sq-auth-me { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.sq-auth-name { font-size: .92rem; font-weight: 600; }
 .sq-auth-no { color: var(--muted); font-weight: 400; }
 .sq-auth-me button {
+  align-self: stretch;
   background: none; border: 1px solid var(--border); color: var(--muted);
-  border-radius: 8px; padding: 5px 12px; min-height: 36px; font: inherit; font-size: .82rem;
+  border-radius: 8px; padding: 6px 12px; min-height: 36px; font: inherit; font-size: .82rem;
   cursor: pointer; transition: border-color .15s ease, color .15s ease;
 }
 .sq-auth-me button:hover { border-color: var(--teal); color: var(--text); }
-/* The base rule above already puts this on its own row at every width;
-   narrow screens just swap the alignment -- a right-aligned form crowds the
-   input against the viewport edge on a phone, where left-aligned does not. */
-@media (max-width: 860px) {
-  .sq-auth { justify-content: flex-start; }
+
+/* The 719px rule two blocks below sets EVERY .navcat to position:static so
+   an open category pushes the mobile accordion open inline. That is right
+   for the five link menus but wrong here: an account popover pushing the
+   rest of the nav down reads as broken, not helpful. Higher specificity
+   (two classes) wins over that rule regardless of source order, so this
+   control stays a floating popover -- the same "below or to the side"
+   behaviour -- at every viewport width, phone included. */
+@media (max-width: 719px) {
+  .sq-account.navcat { position: relative; }
+  .sq-account .navpanel {
+    position: absolute; top: 100%; margin-top: 8px;
+    border: 1px solid var(--border); box-shadow: 0 16px 40px -20px var(--shadow);
+    padding: 8px; background: var(--panel);
+  }
 }
 
 #navtrig { display: none; }

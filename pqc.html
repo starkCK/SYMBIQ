@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Every byte on this page is measured from a key your browser just generated. Not one number is copied from a table.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 <link rel="stylesheet" href="motion.css?v=2">
 <script type="application/ld+json">
 {
@@ -85,7 +85,7 @@
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=1" defer></script>
+<script src="auth.js?v=2" defer></script>
 <script type="module" src="pqc-tools.js?v=8"></script>
 <style>
 /* Page-local, per the feasible.css precedent: one page owns it, so it changes
@@ -548,7 +548,10 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
-  <div id="sq-auth" class="sq-auth"></div>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
 </nav>
 
 <h1>What does post-quantum cryptography cost on the wire?</h1>

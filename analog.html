@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 <link rel="stylesheet" href="motion.css?v=2">
 <style>
 .am-pair { display: flex; gap: 22px; align-items: center; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
@@ -103,7 +103,7 @@
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=1" defer></script>
+<script src="auth.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 </head>
 <body data-motion data-tiers data-rung="FORK">
@@ -202,7 +202,10 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
-  <div id="sq-auth" class="sq-auth"></div>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
 </nav>
 
 <h1>Can a classical machine out-optimise a quantum one?</h1>

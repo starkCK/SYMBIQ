@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="The honest version of the reverse loop: what quantum computing can and can't do for AI, why the data-loading problem kills most of the hype, and the one advantage that's actually real.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 <link rel="stylesheet" href="motion.css?v=2">
 <style>
 #loop-svg { display: block; margin: 0 auto; max-width: 460px; width: 100%; height: auto; }
@@ -105,7 +105,7 @@
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=1" defer></script>
+<script src="auth.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 </head>
 <body data-motion data-tiers data-rung="L2">
@@ -204,7 +204,10 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
-  <div id="sq-auth" class="sq-auth"></div>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
 </nav>
 
 

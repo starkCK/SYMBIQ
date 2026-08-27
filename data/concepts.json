@@ -1194,6 +1194,86 @@
       "tier": "y",
       "kind": "game",
       "blurb": "You configure a calibration agent's per-round behaviour -- Trust, Nudge or Recalibrate -- while a qubit's true detuning drifts out of sight; scored against a paired replay of the same drift under a fixed strategy."
+    },
+    {
+      "id": "greedy-algorithm",
+      "term": "greedy algorithm",
+      "aliases": ["greedy heuristic", "greedy method"],
+      "page": "feasible.html",
+      "anchor": "t21",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Build a solution by taking whatever looks best right now and never reconsidering -- sometimes provably optimal (matroids, minimum spanning tree), more often provably within a fixed factor of optimal."
+    },
+    {
+      "id": "approximation-guarantee",
+      "term": "approximation guarantee",
+      "aliases": ["approximation ratio", "approximation algorithm", "approximation algorithms"],
+      "page": "feasible.html",
+      "anchor": "t21",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "A proof, worked out before the algorithm is run, that its answer is always within a fixed factor of the true optimum -- the certificate that separates a trustworthy heuristic from a hopeful one."
+    },
+    {
+      "id": "submodular-optimization",
+      "term": "submodular optimization",
+      "aliases": ["submodularity", "diminishing returns", "submodular function"],
+      "page": "feasible.html",
+      "anchor": "t21",
+      "tier": "r",
+      "kind": "concept",
+      "blurb": "Set functions with diminishing returns, where greedy is a guaranteed (1 - 1/e)-approximation and provably nothing polynomial beats it -- the bound under sensor placement, feature selection and influence maximisation."
+    },
+    {
+      "id": "stochastic-optimization",
+      "term": "stochastic optimization",
+      "aliases": ["stochastic programming", "two-stage stochastic program", "optimization under uncertainty", "recourse decision"],
+      "page": "feasible.html",
+      "anchor": "t22",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Deciding now against a probability distribution over what comes later, minimising expected cost with a corrective 'recourse' decision once the uncertainty resolves -- how day-ahead power-grid unit commitment is actually solved."
+    },
+    {
+      "id": "robust-optimization",
+      "term": "robust optimization",
+      "aliases": ["robust optimisation", "worst-case optimization", "uncertainty set", "price of robustness"],
+      "page": "feasible.html",
+      "anchor": "t22",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "Optimising the worst case over a set of possible data rather than the average, buying a hard guarantee at a measurable cost in expected performance -- the same instinct as a noise-robust quantum control pulse."
+    },
+    {
+      "id": "newsvendor-model",
+      "term": "newsvendor model",
+      "aliases": ["newsvendor problem", "newsboy problem", "critical fractile", "critical ratio"],
+      "page": "feasible.html",
+      "anchor": "t22",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The one-decision stochastic problem: order Q before demand is known, and the optimal Q is the demand quantile at Cu/(Cu+Co) -- the rule behind airline seat protection and inventory safety stock alike."
+    },
+    {
+      "id": "multi-objective-optimization",
+      "term": "multi-objective optimization",
+      "aliases": ["multi-objective optimisation", "Pareto front", "Pareto frontier", "Pareto optimality", "efficient frontier", "epsilon-constraint method"],
+      "page": "feasible.html",
+      "anchor": "t23",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "When goals genuinely conflict, 'optimal' becomes a set -- the Pareto front of non-wasteful trade-offs -- and choosing a point on it is a values call, not a theorem; weighted-sum scalarisation silently misses the non-convex parts."
+    },
+    {
+      "id": "economic-order-quantity",
+      "term": "economic order quantity",
+      "aliases": ["EOQ", "inventory management", "inventory optimization", "reorder point", "safety stock", "bullwhip effect", "supply chain optimization"],
+      "page": "feasible.html",
+      "anchor": "t24",
+      "tier": "y",
+      "kind": "concept",
+      "blurb": "The oldest formula in operations research (Harris, 1913): order sqrt(2KD/h) at a time to balance ordering cost against holding cost -- with reorder points, safety stock, and the bullwhip effect it scales into across a supply chain."
     }
   ]
 }

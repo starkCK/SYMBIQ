@@ -94,7 +94,7 @@
       <summary>Optimisation</summary>
       <div class="navpanel">
       <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
-      <a href="feasible.html" class="navmain active">◆ The Feasible Region<span class="sub">Operations research, 20 topics</span></a>
+      <a href="feasible.html" class="navmain active">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
       <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
@@ -150,7 +150,7 @@
   <p class="fr-lede">Everything that is actually possible. Nothing that isn&#39;t.</p>
   <p class="fr-sub">Operations research is the mathematics of deciding well when you cannot have everything. It routed your parcel, staffed tonight&#39;s hospital shift, and priced your flight twice while you were looking at it — and it is the field quantum computing is most often accused of being about to revolutionise. This is a course in it, from the top.</p>
   <div class="fr-stats">
-    <div><b>20</b><span>topics, each built<br>picture → maths</span></div>
+    <div><b>24</b><span>topics, each built<br>picture → maths</span></div>
     <div><b>2</b><span>games where the<br>maths does the judging</span></div>
     <div><b>1937</b><span>the year it got its<br>name, at a radar station</span></div>
     <div><b>3</b><span>places it runs inside<br>a quantum computer</span></div>
@@ -174,7 +174,7 @@
 
 <p>So the honest order is: <strong>learn what the classical machinery does first.</strong> Then the quantum question becomes answerable instead of atmospheric. That is what this page is for, and why it sits beside the quantum material rather than inside it.</p>
 
-<h2 id="course"><span class="fr-secnum">The course</span>Twenty topics, each taught four ways</h2>
+<h2 id="course"><span class="fr-secnum">The course</span>Twenty-four topics, each taught four ways</h2>
 
 <div class="fr-toc">
   <h3>How each topic is built</h3>
@@ -200,11 +200,15 @@
     <li><a href="#t18">The transportation problem<em>network flow with no interior</em></a></li>
     <li><a href="#t19">Constraint satisfaction<em>no objective at all</em></a></li>
     <li><a href="#t20">Markov decision processes &amp; RL<em>when the edge slips</em></a></li>
+    <li><a href="#t21">Greedy algorithms &amp; guarantees<em>a rule of thumb, with a proof</em></a></li>
+    <li><a href="#t22">Stochastic &amp; robust optimization<em>deciding before you know</em></a></li>
+    <li><a href="#t23">Multi-objective optimization<em>more than one goal</em></a></li>
+    <li><a href="#t24">Inventory &amp; supply chain<em>the oldest formula in the field</em></a></li>
   </ol>
 </div>
 
 <div class="fr-allctl">
-  <button type="button" id="fr-open">Open all twenty</button>
+  <button type="button" id="fr-open">Open all twenty-four</button>
   <button type="button" id="fr-shut">Collapse all</button>
   <button type="button" id="fr-mathtoggle" aria-pressed="false">Hide the math</button>
   <span class="count" id="fr-count"></span>
@@ -212,7 +216,7 @@
 
 <div class="mod-progress-wrap" id="mod-progress-wrap">
   <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
-  <span id="mod-progress-label">Your progress: 0 of 20 understood</span>
+  <span id="mod-progress-label">Your progress: 0 of 24 understood</span>
 </div>
 
 <!-- ================= 01 ================= -->
@@ -1853,7 +1857,412 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
     <div class="mod-out">
       <a href="#t08">Where the equation first appeared: dynamic programming ▸</a>
       <a href="#t19">Previous: constraint satisfaction ▸</a>
+      <a href="#t21">Next: when a rule of thumb comes with a proof ▸</a>
       <a href="#bridges">The QUBO/Ising bridge — where CSP meets quantum annealing ▸</a>
+    </div>
+  </div>
+</details>
+
+<h2 id="modd"><span class="fr-secnum">Module D, completed</span>One more: when a rule of thumb comes with a proof attached</h2>
+
+<p>Topic 10 introduced metaheuristics as what you reach for once exact methods die. Topic 21 steps back one pace to the simplest heuristic there is — take the best-looking option now, never reconsider — and asks the question that separates operations research from folklore: <em>when is that provably good enough, and by how much?</em> Sometimes the answer is &ldquo;exactly optimal, always.&rdquo; More often it is a guaranteed fraction of optimal, proved in advance. That guarantee is the whole topic.</p>
+
+<!-- ================= 21 ================= -->
+<details class="mod" id="t21">
+  <summary>
+    <span class="mod-n">21</span>
+    <span class="mod-t">Greedy algorithms &amp; approximation guarantees</span>
+    <span class="mod-q">When is &quot;take the best-looking option now&quot; provably good enough?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A set-cover instance. Nine elements 1 to 9 sit in a row. Five available sets are shown as rows of membership dots below them: S1 covers 1,2,3,6,7,8; S2 covers 1,2,3,4,5; S3 covers 6,7,8,9; S4 covers 4,5; S5 covers 9. The greedy algorithm picks the largest set first, S1 with six elements, then S2 for two new elements, then S3 for one, using three sets in total. The true optimum is S2 together with S3, which covers all nine elements with only two sets. The greedy guarantee proved in advance is that it never uses more than H(6) times the optimum, where H(6) is about 2.45, so three sets against an optimum of two is well inside the bound.">
+          <g class="lbl-b" text-anchor="middle">
+            <text x="70" y="20">elements</text>
+          </g>
+          <g>
+            <circle cx="150" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="205" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="260" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="315" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="370" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="425" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="480" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="535" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="590" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+          </g>
+          <g class="lbl-b" text-anchor="middle">
+            <text x="150" y="49">1</text><text x="205" y="49">2</text><text x="260" y="49">3</text>
+            <text x="315" y="49">4</text><text x="370" y="49">5</text><text x="425" y="49">6</text>
+            <text x="480" y="49">7</text><text x="535" y="49">8</text><text x="590" y="49">9</text>
+          </g>
+
+          <g class="lbl-s">
+            <text x="20" y="94"  class="lbl-b" style="fill:var(--violet)">S1 · size 6 — greedy takes this first</text>
+            <text x="20" y="129" class="lbl-b or">S2 · size 5</text>
+            <text x="20" y="164" class="lbl-b" style="fill:var(--teal)">S3 · size 4</text>
+            <text x="20" y="199">S4 · size 2</text>
+            <text x="20" y="229">S5 · size 1</text>
+          </g>
+
+          <g stroke="var(--violet)" stroke-width="3"><line x1="150" y1="90" x2="260" y2="90"/><line x1="425" y1="90" x2="535" y2="90"/></g>
+          <g fill="var(--violet)">
+            <circle cx="150" cy="90" r="7"/><circle cx="205" cy="90" r="7"/><circle cx="260" cy="90" r="7"/>
+            <circle cx="425" cy="90" r="7"/><circle cx="480" cy="90" r="7"/><circle cx="535" cy="90" r="7"/>
+          </g>
+          <line x1="150" y1="125" x2="370" y2="125" stroke="var(--or)" stroke-width="3"/>
+          <g fill="var(--or)">
+            <circle cx="150" cy="125" r="7"/><circle cx="205" cy="125" r="7"/><circle cx="260" cy="125" r="7"/>
+            <circle cx="315" cy="125" r="7"/><circle cx="370" cy="125" r="7"/>
+          </g>
+          <line x1="425" y1="160" x2="590" y2="160" stroke="var(--teal)" stroke-width="3"/>
+          <g fill="var(--teal)">
+            <circle cx="425" cy="160" r="7"/><circle cx="480" cy="160" r="7"/><circle cx="535" cy="160" r="7"/><circle cx="590" cy="160" r="7"/>
+          </g>
+          <line x1="315" y1="195" x2="370" y2="195" stroke="var(--muted)" stroke-width="3"/>
+          <g fill="var(--muted)"><circle cx="315" cy="195" r="7"/><circle cx="370" cy="195" r="7"/></g>
+          <circle cx="590" cy="225" r="7" fill="var(--muted)"/>
+
+          <g class="lbl-s">
+            <text x="650" y="40" class="lbl-b" style="fill:var(--violet)">Greedy, largest-first:</text>
+            <text x="650" y="60">S1 (+6) → S2 (+2) → S3 (+1)</text>
+            <text x="650" y="78" class="lbl-b" style="fill:var(--violet)">= 3 sets</text>
+            <text x="650" y="112" class="lbl-b or">True optimum:</text>
+            <text x="650" y="132">S2 ∪ S3 covers all 9</text>
+            <text x="650" y="150" class="lbl-b or">= 2 sets</text>
+            <text x="650" y="188" class="lbl-b">Guarantee, proved first:</text>
+            <text x="650" y="208">greedy ≤ H(6) · OPT</text>
+            <text x="650" y="226">= 2.45 × 2 = 4.9</text>
+            <text x="650" y="252" style="fill:var(--muted)">3 ≤ 4.9 — inside the bound,</text>
+            <text x="650" y="268" style="fill:var(--muted)">on every instance, guaranteed.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>Set cover: pick the fewest sets whose union is everything.</strong> Greedy takes the largest remaining set each round — S1 (6 new), then S2 (2 new), then S3 (1 new): <b>three sets</b>. The optimum is just S2 and S3: <b>two</b>. Greedy is beaten here — but not by much, and never by much: it is proved in advance that greedy uses at most <b>H(k)</b> times the optimal count, where k is the largest set size and H(k) = 1 + 1/2 + &hellip; + 1/k. For k = 6 that is 2.45, and 3 sits comfortably under 2.45 &times; 2. The instance and both counts are brute-forced in the verification script below.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>A <strong>greedy algorithm</strong> builds a solution one commitment at a time, and each commitment is whatever looks best <em>right now</em> by some fixed local rule — cheapest edge, largest set, highest ratio — with no lookahead and no backtracking. It is the first thing anyone tries on a new problem, and usually the first thing they abandon, because it is so easy to build an instance where grabbing the shiny thing early forces three bad choices later.</p>
+      <p>Operations research keeps greedy in the toolkit anyway, for two precise reasons. <strong>First: on some problems greedy is not a heuristic at all — it is exactly optimal, provably, on every instance.</strong> Minimum spanning tree is the classic case: Kruskal&#39;s algorithm just adds the cheapest edge that doesn&#39;t form a cycle, forever, and the tree it ends on is the cheapest tree that exists. That is not luck, and topic 07 already hinted at why — it is a structural property of the problem, made precise below.</p>
+      <p><strong>Second: when greedy is not optimal, it often comes with a guarantee</strong> — a proof, worked out before you ever run it, that its answer is within a fixed factor of the best possible, no matter how adversarial the input. An algorithm that is always within 2&times; optimal, runs in a blink, and never needs tuning is worth a great deal, especially as the honest baseline a fancier method has to beat. This is the same role simulated annealing plays for quantum annealing in the bridges section below: you cannot claim a win without knowing what the cheap classical method already gets for free.</p>
+      <p>Greedy is also the degenerate corner of topic 10&#39;s picture: a metaheuristic with the exploration turned all the way off. Simulated annealing at zero temperature <em>is</em> greedy descent. Every method in that topic exists precisely because pure greed gets stuck — but knowing exactly how badly it can get stuck, as a theorem, is what tells you whether the extra machinery is worth it.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>When greedy is exactly optimal: matroids.</strong> An independence system is a ground set E with a family of &ldquo;independent&rdquo; subsets closed under taking subsets. It is a <strong>matroid</strong> if it also satisfies the exchange property: whenever independent sets A and B have |A| &lt; |B|, some element of B\A can be added to A keeping it independent. Rado (1957) and Edmonds (&ldquo;Matroids and the Greedy Algorithm,&rdquo; <em>Mathematical Programming</em> 1, 127&ndash;136 (1971)) proved the sharp statement: <strong>the greedy algorithm returns a maximum-weight independent set for every weighting if and only if the independence system is a matroid.</strong> Forests of a graph form a matroid (the graphic matroid), which is exactly why Kruskal&#39;s cheapest-edge rule is optimal for minimum spanning tree — and why the same trick fails for shortest path or the travelling salesman, whose feasible structures are not matroids. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>When greedy is not optimal: the approximation ratio.</strong> For a minimisation problem, an algorithm is a <strong>&rho;-approximation</strong> if on every instance it returns a solution of cost at most &rho; times the optimum, with &rho; fixed and known ahead of time. For set cover, greedy&#39;s ratio is the harmonic number:</p>
+      <code class="eq">greedy sets  ≤  H(k) · OPT ,    H(k) = 1 + 1/2 + 1/3 + ⋯ + 1/k  ≈  ln k
+k = size of the largest set</code>
+      <p>proved by Johnson (1974), Lovász (1975) and Chvátal (1979). The proof is a charging argument: when greedy covers a batch of new elements, charge 1/(batch size) to each; every set in the optimal cover absorbs at most H(k) in total charge, so greedy&#39;s count is at most H(k)&thinsp;&middot;&thinsp;OPT. And this is essentially the best any polynomial-time algorithm can do — Feige (&ldquo;A Threshold of ln n for Approximating Set Cover,&rdquo; <em>Journal of the ACM</em> 45(4), 634&ndash;652 (1998)) proved no polynomial algorithm achieves (1&nbsp;&minus;&nbsp;&epsilon;)&thinsp;ln&thinsp;n unless every NP problem has a slightly-superpolynomial algorithm; Dinur &amp; Steurer (2014) removed the last caveat. <strong>Greedy is not just good for set cover — it is optimal, and provably nothing does better.</strong> <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>The submodular generalisation.</strong> The reason set cover has such a clean bound is that its coverage function is <strong>submodular</strong>: adding an element to a smaller collection helps at least as much as adding it to a larger one — diminishing returns, made formal. Nemhauser, Wolsey &amp; Fisher (&ldquo;An Analysis of Approximations for Maximizing Submodular Set Functions&mdash;I,&rdquo; <em>Mathematical Programming</em> 14, 265&ndash;294 (1978)) proved that for maximising any monotone submodular function under a &ldquo;pick at most m items&rdquo; constraint, greedy is a <strong>(1&nbsp;&minus;&nbsp;1/e)</strong>-approximation &mdash; at least 63.2% of optimal &mdash; and that no polynomial algorithm beats 1&nbsp;&minus;&nbsp;1/e in general. That single bound now underwrites sensor placement, feature selection, influence maximisation and data summarisation across the field. (The verification script confirms this page&#39;s instance is submodular by checking the diminishing-returns inequality on every pair of nested collections.) <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>Where greedy has no constant guarantee at all: 0/1 knapsack</strong> (topic 05&#39;s and The Prune&#39;s problem). Sorting items by value-to-weight ratio and taking them greedily can be arbitrarily far from optimal &mdash; one heavy, slightly-better-ratio item can crowd out a perfect fill. The repair is almost embarrassingly small: return the better of the greedy pack and the single most valuable item that fits, and you have a <strong>1/2</strong>-approximation; sort out the rounding and it becomes a fully polynomial-time approximation scheme, optimal to any &epsilon; you name (Sahni, &ldquo;Approximate Algorithms for the 0/1 Knapsack Problem,&rdquo; <em>Journal of the ACM</em> 22(1), 115&ndash;124 (1975)). Verification script: <code>tools/verify_or5_or6.py</code> (desk repo).</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Every compression you have ever used</span>
+      Huffman coding builds an optimal prefix-free code by a pure greedy rule — repeatedly merge the two least-frequent symbols — and the code it produces is provably minimum-redundancy (Huffman, 1952). It is inside ZIP, PNG, JPEG, MP3 and HTTP/2 header compression. This is a greedy algorithm that is <em>exactly</em> optimal, for the matroid-adjacent reason that the merge order forms an optimal binary tree.</p>
+      <p><span class="where">Inside a quantum computer&#39;s real-time decoder</span>
+      Topic 07 showed that decoding the surface code is minimum-weight perfect matching. Exact matching is fast but not <em>quite</em> fast enough at scale, so a widely used alternative is the <strong>Union&ndash;Find decoder</strong> (Delfosse &amp; Nickerson, &ldquo;Almost-linear time decoding algorithm for topological codes,&rdquo; <em>Quantum</em> 5, 595 (2021)): it greedily grows clusters of flipped syndromes until each can be explained, trading a small, bounded loss of accuracy for near-linear runtime. It is a greedy approximation to the exact matcher, chosen for exactly the reason this topic exists &mdash; a provable, cheap bound beats an exact method you cannot afford to run in the microsecond you have. <a href="qec.html#duel">See the exact matcher lose a different way &mdash; the Decoder Duel &rarr;</a></p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t07">Where greedy is exactly optimal: matching &amp; matroids ▸</a>
+      <a href="#t10">The metaheuristics greedy is the zero-exploration corner of ▸</a>
+      <a href="#t20">Previous: Markov decision processes &amp; RL ▸</a>
+      <a href="#t22">Next: deciding before you know the world ▸</a>
+    </div>
+  </div>
+</details>
+
+<h2 id="mode"><span class="fr-secnum">Module E, completed</span>One more: deciding before the world reveals itself</h2>
+
+<p>Every topic so far has handed you the numbers before asking for a decision — the costs, the demands, the capacities, all known. Topic 22 removes that. You must commit now; the data arrives later; and the two honest ways to cope with that gap — average over what might happen, or armour against the worst of it — give genuinely different answers on the same problem.</p>
+
+<!-- ================= 22 ================= -->
+<details class="mod" id="t22">
+  <summary>
+    <span class="mod-n">22</span>
+    <span class="mod-t">Stochastic &amp; robust optimization</span>
+    <span class="mod-q">What do you optimise when the data isn&#39;t known yet?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="The newsvendor problem. You buy papers at cost 2 and sell at price 5, unsold papers are worthless. Demand is either 20 or 60 units, each with probability one half. A table shows profit for three candidate order quantities across the two demand outcomes, plus expected profit and worst-case profit. Ordering 20 gives profit 60 in both outcomes: expected 60, worst case 60 -- this is the robust max-min choice. Ordering 40, the plug-in-the-mean choice, gives 20 and 120: expected 70, worst case minus 20. Ordering 60, the stochastic optimum, gives minus 20 and 180: expected 80, worst case minus 20. With perfect information you would order exactly the demand for an expected profit of 120. The value of the stochastic solution is 80 minus 70 equals 10; the expected value of perfect information is 120 minus 80 equals 40; the critical ratio (5 minus 2) over (5 minus 0) equals 0.6 picks the order quantity 60.">
+          <g class="lbl-s">
+            <text x="20" y="24" class="lbl-b or">Buy at 2, sell at 5, unsold = worthless.  Demand D = 20 or 60, each ½.</text>
+          </g>
+          <g class="lbl-b" text-anchor="middle">
+            <text x="300" y="60">D = 20  (½)</text>
+            <text x="410" y="60">D = 60  (½)</text>
+            <text x="520" y="60">E[profit]</text>
+            <text x="630" y="60">worst case</text>
+          </g>
+          <line x1="20" y1="72" x2="700" y2="72" stroke="var(--border)" stroke-width="1.5"/>
+
+          <g class="lbl-s">
+            <text x="20" y="100" class="lbl-b">Q = 20  — robust</text>
+            <text x="300" y="100" text-anchor="middle">60</text>
+            <text x="410" y="100" text-anchor="middle">60</text>
+            <text x="520" y="100" text-anchor="middle">60</text>
+            <text x="630" y="100" text-anchor="middle" class="lbl-b or">60  ← max-min</text>
+
+            <text x="20" y="132" class="lbl-b">Q = 40  — &quot;use the mean&quot;</text>
+            <text x="300" y="132" text-anchor="middle">20</text>
+            <text x="410" y="132" text-anchor="middle">120</text>
+            <text x="520" y="132" text-anchor="middle">70</text>
+            <text x="630" y="132" text-anchor="middle" style="fill:var(--red)">−20</text>
+
+            <text x="20" y="164" class="lbl-b">Q = 60  — stochastic optimum</text>
+            <text x="300" y="164" text-anchor="middle" style="fill:var(--red)">−20</text>
+            <text x="410" y="164" text-anchor="middle">180</text>
+            <text x="520" y="164" text-anchor="middle" class="lbl-b or">80  ← max E</text>
+            <text x="630" y="164" text-anchor="middle" style="fill:var(--red)">−20</text>
+
+            <line x1="20" y1="180" x2="700" y2="180" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <text x="20" y="204">perfect information — order D exactly</text>
+            <text x="300" y="204" text-anchor="middle">60</text>
+            <text x="410" y="204" text-anchor="middle">180</text>
+            <text x="520" y="204" text-anchor="middle">120</text>
+            <text x="630" y="204" text-anchor="middle">—</text>
+          </g>
+
+          <g class="lbl-s">
+            <text x="20" y="248" class="lbl-b">Critical ratio (5−2)/(5−0) = 0.6</text>
+            <text x="20" y="266">→ smallest Q with P(D ≤ Q) ≥ 0.6 is Q = 60, matching max&nbsp;E above.</text>
+            <text x="20" y="292" class="lbl-b or">Value of the stochastic solution = 80 − 70 = 10.</text>
+            <text x="20" y="310" class="lbl-b">Expected value of perfect information = 120 − 80 = 40.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>One decision, made before demand is known.</strong> Averaging over the two outcomes says order <b>60</b> and expect <b>80</b> — but that plan loses money half the time. Armouring against the worst case says order <b>20</b> and lock in <b>60</b>, guaranteed, giving up 20 of expected profit for the certainty. Plugging in the mean demand and pretending it is certain — order 40 — is worse than both: it neither maximises the average (70 &lt; 80) nor protects the downside (&minus;20). Every figure is enumerated over the two scenarios in the verification script.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Real decisions are made before the facts are in. You order stock before you know demand, commit generating capacity before you know the wind, set a budget before you know the exchange rate. The naive move — take the average of each unknown, treat it as certain, solve the deterministic problem — is <strong>Flaw of Averages</strong> territory: it systematically misprices risk, because a plan that is fine on average can still be a disaster on the outcomes that actually matter. The figure above shows it directly, and topic 04&#39;s rounding trap and topic 18&#39;s northwest-corner trap were smaller versions of the same lesson: feasible-looking is not good.</p>
+      <p>There are two disciplined ways to handle the gap, and they answer different questions.</p>
+      <p><strong>Stochastic optimisation</strong> assumes you have a probability distribution over what might happen, and minimises <em>expected</em> cost (or maximises expected value). The standard shape is <strong>two-stage with recourse</strong>: choose a here-and-now decision x now, watch the random outcome &xi; land, then take a corrective wait-and-see decision y(&xi;). You are optimising x against the average cost of the best possible correction. This is the right frame when you trust your probabilities and you will face the situation many times, so the average is what you actually experience.</p>
+      <p><strong>Robust optimisation</strong> refuses to name probabilities. It takes an <strong>uncertainty set</strong> — a range each unknown could lie in — and optimises the <em>worst case</em> over that set. The answer comes with a hard guarantee: whatever happens inside the set, you do at least this well. That is the right frame for a decision you make once, where a single bad outcome is unacceptable and you would rather not bet the business on a distribution you had to guess.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>Two-stage stochastic program.</strong> With first-stage decision x, cost vector c, random data &xi; with distribution P, and a recourse cost Q(x, &xi;) equal to the optimal second-stage response:</p>
+      <code class="eq">minimise   cᵀx  +  E_ξ [ Q(x, ξ) ]
+Q(x, ξ) =  min { qᵀy : W y = h(ξ) − T(ξ) x ,  y ≥ 0 }</code>
+      <p>Founded by Dantzig (&ldquo;Linear Programming under Uncertainty,&rdquo; <em>Management Science</em> 1, 197&ndash;206 (1955)) and Beale the same year; the reference text is Birge &amp; Louveaux, <em>Introduction to Stochastic Programming</em> (Springer, 2nd ed., 2011). Two quantities score how much the uncertainty is costing you, and both are visible in the figure: the <strong>expected value of perfect information</strong> (EVPI) is what you would pay for a perfect forecast — here 120&nbsp;&minus;&nbsp;80&nbsp;=&nbsp;40 — and the <strong>value of the stochastic solution</strong> (VSS) is what the honest expected-value model earns over the lazy plug-in-the-mean model — here 80&nbsp;&minus;&nbsp;70&nbsp;=&nbsp;10. A large VSS is the number that justifies doing stochastic optimisation at all. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>The newsvendor</strong>, the one-line case everything reduces to: order Q, demand D random, underage cost C<sub>u</sub> per unit short, overage cost C<sub>o</sub> per unit unsold. Expected cost is convex in Q, and setting its derivative to zero gives the <strong>critical-fractile</strong> rule:</p>
+      <code class="eq">order Q* = smallest Q with  F(Q) ≥  Cᵤ / (Cᵤ + Cₒ)
+F = cumulative distribution of demand</code>
+      <p>Here C<sub>u</sub> = 5&nbsp;&minus;&nbsp;2 = 3, C<sub>o</sub> = 2&nbsp;&minus;&nbsp;0 = 2, the ratio is 0.6, and the smallest Q with P(D&nbsp;&le;&nbsp;Q)&nbsp;&ge;&nbsp;0.6 is 60 — which the script confirms is the exact argmax of expected profit over the whole grid. This same fractile returns in topic 24 as the service level behind safety stock, and it is exactly the rule airlines use to protect seats for late-booking full-fare passengers.</p>
+      <p><strong>Robust counterpart.</strong> Replace &ldquo;minimise cost&rdquo; with &ldquo;minimise the maximum cost over &xi; in an uncertainty set U.&rdquo; Soyster (1973) gave the first version — box uncertainty, famously over-conservative. Ben-Tal &amp; Nemirovski (<em>Mathematics of Operations Research</em> 23, 769&ndash;805 (1998)) showed an ellipsoidal U keeps a linear program solvable as a second-order cone program — tractable, not just definable. Bertsimas &amp; Sim (&ldquo;The Price of Robustness,&rdquo; <em>Operations Research</em> 52(1), 35&ndash;53 (2004)) added a budget parameter &Gamma; that dials how many unknowns may go bad at once, so you can buy exactly as much protection as you want and read off its cost in lost objective. On the figure&#39;s instance the max-min order is 20, guaranteeing profit 60; the stochastic order 60 expects 80 but risks &minus;20. The 20 you give up is the literal price of the guarantee. <span class="orbadge">⟦Proven⟧</span></p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Keeping the lights on, every day</span>
+      Grid operators solve <strong>unit commitment</strong> a day ahead — which generators to switch on — before they know tomorrow&#39;s demand or wind and solar output. It is a two-stage stochastic program in production use at system operators worldwide: commit plants now (first stage), redispatch against whatever the weather actually does (recourse), minimise expected cost while keeping a feasible response available for every scenario considered.</p>
+      <p><span class="where">And on the quantum side of this page</span>
+      A robust-control pulse is a gate designed to hold its fidelity not at one nominal set of hardware parameters but across a whole <em>band</em> of them — a detuning that could drift, a control amplitude that could be miscalibrated. That is robust optimisation in its exact form: an uncertainty set of Hamiltonian parameters, and a pulse chosen to maximise worst-case fidelity over the set. It is why <a href="circuits.html">DRAG and its descendants</a> exist, and it is the same worst-case-over-a-set instinct that topic 20&#39;s reinforcement-learning gate design (Baum et&nbsp;al., Q-CTRL, 2021) automates — train against a distribution of noise realisations so the learned gate is not brittle to the one you happened to model.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t03">Recourse decisions and shadow prices ▸</a>
+      <a href="#t20">Robust control as reinforcement learning ▸</a>
+      <a href="#t21">Previous: greedy algorithms &amp; guarantees ▸</a>
+      <a href="#t23">Next: when there is more than one goal ▸</a>
+    </div>
+  </div>
+</details>
+
+<h2 id="modf"><span class="fr-secnum">Module F, completed</span>The last two: more than one goal at once, and keeping the shelves stocked</h2>
+
+<p>Topic 19 stripped the objective out entirely. Topic 23 does the opposite — it hands you several objectives that genuinely conflict, so &ldquo;optimal&rdquo; stops being a point and becomes a curve. Topic 24 then closes the course on the oldest applied problem in the field, the one Ford Whitman Harris wrote a formula for in 1913, and shows how many of the threads of this course meet inside a warehouse.</p>
+
+<!-- ================= 23 ================= -->
+<details class="mod" id="t23">
+  <summary>
+    <span class="mod-n">23</span>
+    <span class="mod-t">Multi-objective optimization</span>
+    <span class="mod-q">What is &quot;best&quot; when you can&#39;t improve one goal without hurting another?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Eight candidate plans plotted by cost on the horizontal axis and delay on the vertical axis, both to be minimised. Six plans P1 through P6 form the Pareto front, connected by a line: P1 at cost 1 delay 10, P2 at 2 and 6, P3 at 3 and 4, P4 at 5 and 3, P5 at 8 and 2, P6 at 10 and 1. Two plans are dominated and sit above the front: P7 at cost 4 delay 8, and P8 at cost 7 delay 5. P5 is circled and flagged: it is Pareto-optimal, but sweeping the weight in a weighted-sum objective never selects it, because it lies in a non-convex dent of the front. The epsilon-constraint method -- minimise delay subject to cost at most 8 -- does select P5.">
+          <line x1="60" y1="300" x2="600" y2="300" stroke="var(--border)" stroke-width="1.5"/>
+          <line x1="60" y1="300" x2="60"  y2="30"  stroke="var(--border)" stroke-width="1.5"/>
+          <text x="330" y="330" text-anchor="middle" class="lbl-s">cost  →   (minimise)</text>
+          <text x="24" y="165" text-anchor="middle" class="lbl-s" transform="rotate(-90 24 165)">delay  →   (minimise)</text>
+
+          <polyline points="105,40 150,144 195,196 285,222 420,248 510,274" fill="none" stroke="var(--or)" stroke-width="2.5"/>
+
+          <g fill="var(--or)">
+            <circle cx="105" cy="40"  r="6"/><circle cx="150" cy="144" r="6"/><circle cx="195" cy="196" r="6"/>
+            <circle cx="285" cy="222" r="6"/><circle cx="510" cy="274" r="6"/>
+          </g>
+          <circle cx="420" cy="248" r="11" fill="none" stroke="var(--violet)" stroke-width="2.5"/>
+          <circle cx="420" cy="248" r="6" fill="var(--violet)"/>
+
+          <circle cx="240" cy="92"  r="6" fill="none" stroke="var(--muted)" stroke-width="2"/>
+          <circle cx="375" cy="170" r="6" fill="none" stroke="var(--muted)" stroke-width="2"/>
+
+          <g class="lbl-s">
+            <text x="105" y="30">P1 (1,10)</text>
+            <text x="160" y="144">P2 (2,6)</text>
+            <text x="205" y="196">P3 (3,4)</text>
+            <text x="295" y="222">P4 (5,3)</text>
+            <text x="430" y="244" class="lbl-b" style="fill:var(--violet)">P5 (8,2)</text>
+            <text x="520" y="274">P6 (10,1)</text>
+            <text x="250" y="90" style="fill:var(--muted)">P7 — dominated</text>
+            <text x="385" y="168" style="fill:var(--muted)">P8 — dominated</text>
+          </g>
+
+          <g class="lbl-s">
+            <text x="300" y="55" class="lbl-b" style="fill:var(--violet)">P5: Pareto-optimal —</text>
+            <text x="300" y="72" style="fill:var(--violet)">no weighted sum ever picks it.</text>
+            <text x="300" y="96">weighted sum  w·cost + (1−w)·delay :</text>
+            <text x="300" y="112">sweep w ∈ [0,1] → picks P1,P2,P3,P4,P6.</text>
+            <text x="300" y="132" class="lbl-b or">ε-constraint (min delay s.t. cost ≤ 8)</text>
+            <text x="300" y="148" class="or">→ picks P5.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>Cost against delay, both to be minimised.</strong> No single plan wins: P1 is cheapest, P6 is fastest, and P2&ndash;P5 trade between. The six form the <strong>Pareto front</strong> — the plans no other plan beats on both counts. P7 and P8 are <em>dominated</em> (some front plan is at least as good on cost and delay, better on one) and are simply off the table. The catch worth carrying away: <strong>P5 is a genuine Pareto point that the weighted-sum method can never return</strong>, whatever weight you choose, because it sits in a non-convex dent — you need the &epsilon;-constraint method to find it. Both facts are brute-forced in the script.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Almost every real decision has more than one axis of &ldquo;good&rdquo;: cost and risk, speed and quality, profit and emissions, coverage and privacy. This course spent twenty-two topics assuming those could be folded into a single objective number. Topic 23 is what you do when they honestly cannot — when the axes conflict, so pushing one down pushes another up, and there is no exchange rate between them that everyone would agree on.</p>
+      <p>The organising idea is <strong>Pareto optimality</strong> (Vilfredo Pareto, 1906). A solution is Pareto-optimal, or <em>efficient</em>, if you cannot improve any one objective without making at least one other worse. The set of all such solutions is the <strong>Pareto front</strong>, and it is the honest output of a multi-objective problem: not an answer, but the complete menu of non-wasteful trade-offs. Anything not on the front is <em>dominated</em> — beaten outright by something on it — and can be discarded with no argument. Choosing a point <em>on</em> the front is a values judgement, and the method&#39;s job is to present the front clearly, not to pretend it can make that call for you.</p>
+      <p>This is the exact mirror image of topic 19. There, constraint satisfaction had <em>no</em> objective and the only question was feasibility. Here there are <em>several</em> objectives and feasibility is easy — the difficulty has moved entirely into what &ldquo;best&rdquo; even means. Between them, the two topics bracket the assumption every other topic on this page quietly relied on: that there is exactly one number to optimise.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p>With objectives f<sub>1</sub>, &hellip;, f<sub>k</sub> all to be minimised over a feasible set X, point x <strong>dominates</strong> point x&prime; if f<sub>i</sub>(x) &le; f<sub>i</sub>(x&prime;) for every i and strictly less for at least one. x* is <strong>Pareto-optimal</strong> if nothing in X dominates it. The front is the image of all Pareto-optimal points in objective space. Two standard methods turn this back into ordinary single-objective problems:</p>
+      <code class="eq">weighted sum:   minimise  Σ wᵢ fᵢ(x) ,   wᵢ ≥ 0 ,  Σ wᵢ = 1
+ε-constraint:   minimise  f₁(x)   s.t.   fⱼ(x) ≤ εⱼ  for j ≠ 1</code>
+      <p><strong>Every weighted-sum optimum is Pareto-optimal</strong> (for strictly positive weights) — a one-line proof: if something dominated it, that something would have a strictly smaller weighted sum. But the converse fails, and the figure is a worked counterexample: <strong>P5 = (8, 2) is Pareto-optimal, yet no weight vector makes it the weighted-sum winner</strong>, because it lies above the lower convex hull of the front. Beating P4 in the weighted sum needs w &lt; 1/4; beating P6 needs w &gt; 1/3; no w does both. Sweeping 100,001 weight values in the script confirms it: the winners are P1, P2, P3, P4, P6 — never P5. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>The &epsilon;-constraint method has no such blind spot.</strong> Fixing &ldquo;cost &le; 8&rdquo; and minimising delay returns P5 directly, and varying the bound traces the entire front, convex dents included (Haimes, Lasdon &amp; Wismer, 1971). Its price is that each front point costs a fresh constrained optimisation, where weighted-sum only re-weights. For problems where the front is large and irregular, the workhorses are <strong>evolutionary</strong> — NSGA-II (Deb, Pratap, Agarwal &amp; Meyarivan, <em>IEEE Transactions on Evolutionary Computation</em> 6(2), 182&ndash;197 (2002)) evolves a whole population toward the front at once, keeping it spread out — which ties this topic straight back to topic 15&#39;s evolutionary dynamics and topic 10&#39;s metaheuristics. Verification script: <code>tools/verify_or5_or6.py</code>.</p>
+      <p>The classic instance is financial: Markowitz&#39;s <strong>efficient frontier</strong> (1952) is precisely the Pareto front of expected return against variance, and picking a point on it is the investor&#39;s risk appetite, not a theorem — work that shared the 1990 Nobel Memorial Prize in Economic Sciences.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Every engineered object you own</span>
+      An aircraft wing trades weight against drag against manufacturing cost; a chip layout trades speed against power against area; a delivery schedule trades fuel against on-time rate against driver hours. None has a natural exchange rate, so the standard practice is to compute the Pareto front — often with NSGA-II — hand it to the people who own the decision, and let them pick. The method&#39;s honesty is the point: it makes the trade-off explicit instead of smuggling a weighting in under the label &ldquo;the optimal design.&rdquo;</p>
+      <p><span class="where">And on the quantum side of this page</span>
+      Designing a control pulse for a quantum gate is multi-objective in practice: gate speed against fidelity against leakage out of the computational subspace, with no fixed rate between them. A faster gate is a noisier gate; suppressing leakage costs time. Pulse-engineering tools compute the trade-off surface and a human picks the operating point — the same shape as the wing, on a chip cooled to fifteen millikelvin. This is also why topic 22&#39;s robust pulses and this topic&#39;s Pareto pulses are usually built together: you want a point on the trade-off front that also survives the uncertainty set.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t19">The mirror image: no objective at all ▸</a>
+      <a href="#t15">Evolving a whole population toward the front ▸</a>
+      <a href="#t22">Previous: stochastic &amp; robust optimization ▸</a>
+      <a href="#t24">Next: keeping the shelves stocked ▸</a>
+    </div>
+  </div>
+</details>
+
+<!-- ================= 24 ================= -->
+<details class="mod" id="t24">
+  <summary>
+    <span class="mod-n">24</span>
+    <span class="mod-t">Inventory &amp; supply chain</span>
+    <span class="mod-q">How much to order, and when — the oldest formula in the field?</span>
+    <span class="mod-x" aria-hidden="true">+</span>
+  </summary>
+  <div class="mod-body">
+
+    <div class="layer see">
+      <h4>See it</h4>
+      <figure class="modfig">
+        <div class="modscroll"><svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="The economic order quantity cost curve. The horizontal axis is order quantity Q from 100 to 600; the vertical axis is annual cost. A falling curve is the annual ordering cost, demand 3600 times setup cost 50 divided by Q. A rising straight line is the annual holding cost, Q over 2 times holding cost 4. Their sum is a U-shaped total-cost curve with its minimum at Q equals 300, where ordering cost and holding cost are both 600 and the total is 1200. The two component curves cross at exactly that point. The total-cost curve is visibly flat near the bottom: at Q equals 250 and Q equals 360 the total is 1220, only 20 above the minimum. The optimal Q equals the square root of two times 50 times 3600 divided by 4, which is the square root of 90000, which is 300.">
+          <line x1="60" y1="300" x2="600" y2="300" stroke="var(--border)" stroke-width="1.5"/>
+          <line x1="60" y1="300" x2="60"  y2="30"  stroke="var(--border)" stroke-width="1.5"/>
+          <text x="330" y="330" text-anchor="middle" class="lbl-s">order quantity Q  →</text>
+          <text x="24" y="165" text-anchor="middle" class="lbl-s" transform="rotate(-90 24 165)">annual cost  →</text>
+
+          <polyline points="60,108 105,180 150,216 195,238 240,252 285,262 330,270 375,276 420,281 465,285 510,288"
+                    fill="none" stroke="var(--teal)" stroke-width="2"/>
+          <polyline points="60,300 105,288 150,276 195,264 240,252 285,240 330,228 375,216 420,204 465,192 510,180"
+                    fill="none" stroke="var(--or)" stroke-width="2"/>
+          <polyline points="60,84 105,144 150,168 195,178 240,180 285,178 330,174 375,168 420,161 465,153 510,144"
+                    fill="none" stroke="var(--violet)" stroke-width="2.75"/>
+
+          <line x1="240" y1="30" x2="240" y2="300" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <circle cx="240" cy="180" r="5" fill="var(--violet)"/>
+          <circle cx="240" cy="252" r="4" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+
+          <g class="lbl-s">
+            <text x="515" y="144" class="lbl-b" style="fill:var(--violet)">total</text>
+            <text x="515" y="182" class="or">holding ↑</text>
+            <text x="515" y="291" style="fill:var(--teal)">ordering ↓</text>
+            <text x="248" y="26" class="lbl-b">Q* = 300</text>
+            <text x="250" y="170" class="lbl-b" style="fill:var(--violet)">cost 1,200</text>
+            <text x="250" y="268" style="fill:var(--muted)">ordering = holding = 600</text>
+          </g>
+
+          <g class="lbl-s">
+            <text x="70" y="52" class="lbl-b or">Q* = √(2KD/h) = √(2·50·3600 / 4) = √90000 = 300</text>
+            <text x="70" y="70">Flat near the bottom: TC(250) = TC(360) = 1220, just 20 over.</text>
+          </g>
+        </svg></div>
+        <figcaption><strong>Economic order quantity: order in big batches and you pay to store them; order in small batches and you pay to place orders.</strong> The total is U-shaped, and its minimum sits exactly where the two costs are equal — here Q* = 300, with an annual cost of 1,200. Two properties the figure shows and the script confirms: the curve is <em>flat</em> near the optimum (a 20% error in Q costs under 2% in money), and doubling demand multiplies Q* by only &radic;2 &asymp; 1.41, not 2 — the square root is the whole character of the formula.</figcaption>
+      </figure>
+    </div>
+
+    <div class="layer">
+      <h4>The intuition</h4>
+      <p>Inventory exists to absorb the mismatch between how supply arrives and how demand draws it down. Hold too much and you pay to store it, insure it, and watch it go stale; hold too little and you stock out, losing the sale and sometimes the customer. Every inventory model is a way of pricing that trade-off precisely instead of by feel — and it is the problem operations research was arguably invented on, decades before it had the name: Ford Whitman Harris published the <strong>economic order quantity</strong> formula in 1913, while working at Westinghouse.</p>
+      <p>Three questions organise the whole area. <strong>How much to order at once</strong> — the batch-size trade-off in the figure. <strong>When to reorder</strong> — you cannot wait until the shelf is empty, because resupply takes time, so you trigger a new order once stock falls to a level that covers expected demand over that lead time. <strong>How much extra to carry as a cushion</strong> — <em>safety stock</em>, sized against demand variability and the service level you are willing to promise, which turns out to be topic 22&#39;s critical fractile wearing a different hat.</p>
+      <p>Scale this from one shelf to a chain of suppliers, factories, warehouses and retailers and a new problem appears that no single stage can see: the <strong>bullwhip effect</strong>. Small wobbles in retail demand get amplified at every step upstream, so the factory sees wild swings even when the shop floor is nearly steady — and one of its documented causes is a rationing scramble that is, precisely, a game in topic 11&#39;s sense.</p>
+    </div>
+
+    <div class="layer maths">
+      <h4>The mathematics</h4>
+      <p><strong>Economic order quantity.</strong> Demand D per year is steady, each order costs a fixed K to place regardless of size, holding one unit for a year costs h. Ordering Q at a time means D/Q orders a year and an average of Q/2 units on hand, so annual cost is</p>
+      <code class="eq">C(Q) = (D/Q)·K  +  (Q/2)·h        minimised at   Q* = √(2KD / h)</code>
+      <p>Setting C&prime;(Q) = 0 gives it in one line, and at Q* the two terms are equal — ordering cost exactly matches holding cost, which is the fastest way to sanity-check any EOQ answer. With K = 50, D = 3600, h = 4 the formula gives &radic;90000 = 300, an integer scan of C(Q) confirms 300 is the minimum, and C(300) = 600 + 600 = 1200. The cost curve&#39;s flatness is not incidental: because C is the sum of a term in 1/Q and a term in Q, near the optimum it behaves quadratically in the relative error, so being 20% off on Q costs about 1.7% in money — which is why rounded, practical order sizes lose almost nothing. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>Reorder point with uncertain lead-time demand.</strong> If demand over the resupply lead time is roughly normal with mean &mu; and standard deviation &sigma;, then to hold the probability of stocking out before resupply down to 1&nbsp;&minus;&nbsp;&alpha;,</p>
+      <code class="eq">reorder point = μ  +  z_α · σ            safety stock = z_α · σ</code>
+      <p>where z<sub>&alpha;</sub> is the standard-normal quantile for service level &alpha; — the same critical-fractile idea as the newsvendor, since &alpha; = C<sub>u</sub>/(C<sub>u</sub>+C<sub>o</sub>) with C<sub>u</sub> the stockout cost and C<sub>o</sub> the holding cost. For &mu; = 300, &sigma; = 50 and a 97.5% target, z = 1.96, so the reorder point is 300 + 1.96&middot;50 = 398 and the safety stock is 98 units — the price of moving from a coin-flip service level to 97.5%. Verification script: <code>tools/verify_or5_or6.py</code>.</p>
+      <p><strong>Optimal policy structure.</strong> When each order also carries a fixed cost, Scarf (1960) proved that the optimal dynamic policy is <strong>(s, S)</strong>: let stock fall to s, then order back up to S. That is a threshold rule produced by the same dynamic programming as topics 08 and 20 — the proof turns on a property called K-convexity — so inventory control is, underneath, a Bellman equation with a fixed charge in it. <span class="orbadge">⟦Proven⟧</span></p>
+      <p><strong>The bullwhip effect</strong> was quantified by Lee, Padmanabhan &amp; Whang (&ldquo;Information Distortion in a Supply Chain: The Bullwhip Effect,&rdquo; <em>Management Science</em> 43(4), 546&ndash;558 (1997)), who identified four structural causes — demand-forecast updating, order batching, price promotions, and a rationing game in which retailers inflate orders to win a larger share of a shortage, then cancel. That last one is a genuine game in the sense of topics 11&ndash;12, and the fix is a mechanism-design fix in the sense of topic 14: allocate shortages by past sales rather than by current orders, and the incentive to inflate disappears.</p>
+    </div>
+
+    <div class="layer real">
+      <h4>Where it actually runs</h4>
+      <p><span class="where">Every retailer you have ever bought from</span>
+      Continuous-review (s, S) and periodic base-stock policies, sized by EOQ-style batching and critical-fractile safety stock, are what replenishment systems at large retailers and distributors actually run, per stock-keeping unit, per location, nightly. Zara is the standard counter-example taught alongside them: it deliberately shortens and speeds its supply chain so that lead times are small, which shrinks the safety stock it must carry and damps the bullwhip it would otherwise amplify — a supply-chain design choice made to change the inputs to these formulas rather than to solve them harder.</p>
+      <p><span class="where">Where this course&#39;s threads meet</span>
+      This last topic deliberately has lower quantum cross-link density than the rest of the page — but it is where the operations-research threads themselves converge. The batch size is a calculus optimum (topic 01&#39;s spirit); the reorder point is topic 22&#39;s newsvendor; the (s, S) policy is topics 08 and 20&#39;s dynamic programming; the bullwhip&#39;s rationing game is topics 11&ndash;12; and its fix is topic 14&#39;s mechanism design. A warehouse is where the whole feasible region shows up at once.</p>
+    </div>
+
+    <div class="mod-out">
+      <a href="#t22">The critical fractile behind safety stock ▸</a>
+      <a href="#t08">The dynamic programming behind (s, S) ▸</a>
+      <a href="#t23">Previous: multi-objective optimization ▸</a>
+      <a href="#bridges">Where this touches quantum computing — the five bridges ▸</a>
     </div>
   </div>
 </details>
@@ -2025,12 +2434,12 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "The Feasible Region — operations research from the top",
-  "description": "A twenty-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
+  "description": "A twenty-four-topic course in operations research, including a full module on game theory. Each topic is taught as a picture, then an intuition, then the underlying mathematics, then a real problem it is used on.",
   "provider": { "@type": "Organization", "name": "SymbiQ" },
   "hasCourseInstance": {
     "@type": "CourseInstance",
     "courseMode": "online",
-    "courseWorkload": "PT4H30M"
+    "courseWorkload": "PT5H30M"
   },
   "about": ["Operations research", "Linear programming", "Integer programming", "Duality",
             "Branch and bound", "Network flow", "Matching", "Dynamic programming",
@@ -2038,7 +2447,11 @@ s.t.      Σⱼ xᵢⱼ = sᵢ     every source ships its whole supply
             "Shapley value", "Mechanism design", "Evolutionary game theory",
             "Simplex algorithm", "Quadratic programming", "Semidefinite programming",
             "Max-Cut", "Goemans-Williamson algorithm", "Transportation problem",
-            "Constraint satisfaction", "Total unimodularity", "Arc consistency"]
+            "Constraint satisfaction", "Total unimodularity", "Arc consistency",
+            "Greedy algorithms", "Approximation algorithms", "Submodular optimization",
+            "Stochastic programming", "Robust optimization", "Newsvendor model",
+            "Multi-objective optimization", "Pareto front", "Economic order quantity",
+            "Bullwhip effect"]
 }
 </script>
 
@@ -2161,7 +2574,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. <strong>Topics 18–19, added 2026-08-21:</strong> the transportation instance (2 sources, 3 destinations, optimum 240 against a northwest-corner plan of 300) was checked by exhaustive integer search cross-checked against scipy's LP relaxation, and the total unimodularity claim was checked directly by computing all 461 square submatrices of the instance's 5×6 constraint matrix; the Australia map-colouring assignment was checked against all nine adjacency constraints, and the AC-3 arc-consistency pruning (Northern Territory's and South Australia's domains shrinking from three colours to two once Western Australia is fixed) was produced by a real AC-3 implementation, not asserted — the verification code lives in <code>tools/verify_transportation_csp.py</code>. Every citation on those two topics — Hitchcock 1941, Koopmans 1949, the 1975 Nobel Memorial Prize to Koopmans and Kantorovich, Camm et al. 1997, Cook 1971, Schaefer 1978, Feder &amp; Vardi 1998, Bulatov 2017, Zhuk 2017, Mackworth 1977, Chaitin et al. 1981 — was checked against a primary or bibliographic source before use. <strong>A fresh-session hostile-referee pass ran 2026-08-21</strong> and re-derived both worked examples by hand (matching the script exactly), independently fetched the Bulatov and Zhuk FOCS 2017 proceedings PDFs directly rather than trusting a search summary (confirming pages 319–330 and 331–342), and confirmed every other citation, badge and cross-reference — one finding, fixed: a sentence cited graph k-colourability&#39;s NP-hardness to &quot;topic 04&#39;s Karp-1972 list,&quot; but topic 04 only invokes Karp 1972 for 0–1 integer programming and never discusses colouring — the underlying fact was true, the attribution wasn&#39;t. Now cited to Karp 1972 directly, with the misattribution named rather than quietly smoothed over. <strong>Topic 20, added 2026-08-21:</strong> the S–A–B–C–D Markov decision process was solved three independent ways and cross-checked against each other — exact backward induction, generic value iteration run from a deliberately wrong starting guess (converged to the identical fixed point), and 200,000 episodes of tabular Q-learning that never saw the transition probabilities or edge weights directly, only sampled rewards and next states, and still recovered the exact optimal action at all four decision states with its values within 0.044 of the true V*; with the slip probability set to zero the same code collapses to topic 08's own deterministic answer of 8, exactly. Verification code: <code>tools/verify_or4_mdp_rl.py</code> (desk repo). Citations — Bellman 1957, Watkins &amp; Dayan 1992, Baum et al. (Q-CTRL) 2021, Sivak/Morvan et al. (Google Quantum AI/DeepMind) 2026 — were checked against the arXiv preprints and journal records directly rather than a search summary; this topic has not yet had a fresh-session hostile-referee pass. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
+<footer>Everything that is actually possible. Nothing that isn&#39;t.<br>SymbiQ · Verification status: every figure on this page was computed before it was drawn — the linear programs in exact rational arithmetic, the max-flow and min-cut by algorithm, the assignment by exhaustive search over all six permutations, the shortest paths by Bellman–Ford, and the queueing points from the closed-form M/M/1 result. The game theory module (topics 11–15) is checked the same way: the Prisoner&#39;s Dilemma and Braess-network numbers by direct arithmetic, the Shapley value by hand over all six orderings of the glove game, and the Hawk–Dove mixed equilibrium by solving the payoff-equality condition exactly. <strong>Hostile-referee pass on the prose completed 2026-07-30</strong> (report: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>) — it found and fixed a mislabelled axis on the queueing figure (it plots time in the <em>system</em>, not queueing time), a branch-and-bound bound that had not been computed from the instance it was drawn against, and a 2⁶⁰ comparison that was wrong by ten orders of magnitude. <strong>Topics 16–17, added 2026-08-20:</strong> the simplex walk and the Klee–Minty n=3 cube (7 pivots, all 8 vertices) were checked by an independent tableau implementation; the Goemans–Williamson constant 0.878567 was checked by direct numerical minimisation of (2/π)·θ/(1−cosθ); the triangle-graph SDP value of 2.25 was checked by solving the actual semidefinite program (cvxpy, Clarabel solver) and cross-checked against the closed form 9/4, with 20,000 random-hyperplane trials confirming the 8/9 rounding ratio. Every citation on those two topics — Dantzig 1963, Klee–Minty 1972, Spielman–Teng 2004, Sahni 1974, Pardalos–Vavasis 1991, Goemans–Williamson 1995, Khot–Kindler–Mossel–O&#39;Donnell 2007, Farhi–Goldstone–Gutmann 2014, Marwaha 2021 — was checked against a primary source; the verification code lives in <code>tools/verify_simplex_sdp_maxcut.py</code>. <strong>A fresh-session hostile-referee pass ran 2026-08-20</strong> and found three real errors, all fixed: the shipped verification script never actually contained the SDP/hyperplane-rounding check its own filename and this page&#39;s figure caption claimed — the numbers were right, but nothing in the repo backed them up, so real cvxpy code proving the triangle-graph SDP value (2.25), the brute-force integral optimum (2) and the 20,000-trial rounding average (2.0) now lives in the script above; a sentence claimed Goemans–Williamson&#39;s bound was &quot;built for&quot; high-girth graphs, which no source supports (GW is a universal worst-case bound over every graph — the high-girth restriction is Marwaha&#39;s, coming from what a depth-p QAOA circuit can even see, not from GW&#39;s own construction); and a sentence claimed topic 10 already names Max-Cut and Max-SAT, which it does not — both fixed. <strong>Topics 18–19, added 2026-08-21:</strong> the transportation instance (2 sources, 3 destinations, optimum 240 against a northwest-corner plan of 300) was checked by exhaustive integer search cross-checked against scipy's LP relaxation, and the total unimodularity claim was checked directly by computing all 461 square submatrices of the instance's 5×6 constraint matrix; the Australia map-colouring assignment was checked against all nine adjacency constraints, and the AC-3 arc-consistency pruning (Northern Territory's and South Australia's domains shrinking from three colours to two once Western Australia is fixed) was produced by a real AC-3 implementation, not asserted — the verification code lives in <code>tools/verify_transportation_csp.py</code>. Every citation on those two topics — Hitchcock 1941, Koopmans 1949, the 1975 Nobel Memorial Prize to Koopmans and Kantorovich, Camm et al. 1997, Cook 1971, Schaefer 1978, Feder &amp; Vardi 1998, Bulatov 2017, Zhuk 2017, Mackworth 1977, Chaitin et al. 1981 — was checked against a primary or bibliographic source before use. <strong>A fresh-session hostile-referee pass ran 2026-08-21</strong> and re-derived both worked examples by hand (matching the script exactly), independently fetched the Bulatov and Zhuk FOCS 2017 proceedings PDFs directly rather than trusting a search summary (confirming pages 319–330 and 331–342), and confirmed every other citation, badge and cross-reference — one finding, fixed: a sentence cited graph k-colourability&#39;s NP-hardness to &quot;topic 04&#39;s Karp-1972 list,&quot; but topic 04 only invokes Karp 1972 for 0–1 integer programming and never discusses colouring — the underlying fact was true, the attribution wasn&#39;t. Now cited to Karp 1972 directly, with the misattribution named rather than quietly smoothed over. <strong>Topic 20, added 2026-08-21:</strong> the S–A–B–C–D Markov decision process was solved three independent ways and cross-checked against each other — exact backward induction, generic value iteration run from a deliberately wrong starting guess (converged to the identical fixed point), and 200,000 episodes of tabular Q-learning that never saw the transition probabilities or edge weights directly, only sampled rewards and next states, and still recovered the exact optimal action at all four decision states with its values within 0.044 of the true V*; with the slip probability set to zero the same code collapses to topic 08's own deterministic answer of 8, exactly. Verification code: <code>tools/verify_or4_mdp_rl.py</code> (desk repo). Citations — Bellman 1957, Watkins &amp; Dayan 1992, Baum et al. (Q-CTRL) 2021, Sivak/Morvan et al. (Google Quantum AI/DeepMind) 2026 — were checked against the arXiv preprints and journal records directly rather than a search summary; this topic has not yet had a fresh-session hostile-referee pass. <strong>Topics 21&ndash;24, added 2026-08-27:</strong> the set-cover instance (greedy 3 sets, brute-forced optimum 2, the H(6) &asymp; 2.45 guarantee, and the diminishing-returns inequality that makes the coverage function submodular) was checked by exhaustive subset search and a full nested-pair sweep; the newsvendor figures (stochastic optimum Q = 60 with expected profit 80, plug-in-the-mean Q = 40 at 70, robust max-min Q = 20 guaranteeing 60, VSS = 10, EVPI = 40, critical ratio 0.6) were enumerated over both demand scenarios and cross-checked against the closed-form critical fractile; the multi-objective example (six-point Pareto front by pairwise domination, and the confirmation that a 100,001-step weighted-sum sweep never selects the non-convex point P5 while &epsilon;-constraint does) was brute-forced; and the EOQ figures (Q* = &radic;90000 = 300, total cost 1,200 with ordering equal to holding, the flat cost curve TC(250) = TC(360) = 1220, the &radic;2 demand-scaling, and the 1.96&middot;50 = 98-unit safety stock for 97.5% service) were checked by closed form and an integer cost scan. Verification code: <code>tools/verify_or5_or6.py</code> (desk repo). Citations on these four topics — Rado 1957, Edmonds 1971, Johnson 1974, Lov&aacute;sz 1975, Chv&aacute;tal 1979, Nemhauser&ndash;Wolsey&ndash;Fisher 1978, Feige 1998, Sahni 1975, Huffman 1952, Delfosse&ndash;Nickerson 2021, Dantzig 1955, Birge&ndash;Louveaux 2011, Soyster 1973, Ben-Tal&ndash;Nemirovski 1998, Bertsimas&ndash;Sim 2004, Pareto 1906, Haimes&ndash;Lasdon&ndash;Wismer 1971, Deb et al. 2002, Markowitz 1952, Harris 1913, Scarf 1960, Lee&ndash;Padmanabhan&ndash;Whang 1997 — were checked against a primary or bibliographic source before use; these four topics have not yet had a fresh-session hostile-referee pass. Found something wrong anyway? <a href="corrections.html">It pays the biggest bounty here.</a></footer>
 </div>
 </body>
 </html>

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "slug": "real-time-decoding-at-scale",
+  "question": "Can a classical decoder keep pace with a megahertz-scale surface-code cycle at the code distances a useful fault-tolerant machine needs, or does the control loop become the limiting factor?",
+  "dek": "Error correction only works if the decoder returns a correction before the backlog of syndrome data outpaces it. Real-time neural-network and matching decoders have been demonstrated at small distances, but whether the same latency holds at the distances and qubit counts a useful machine requires — across many logical qubits at once — is not settled.",
+  "status": "open",
+  "evidence_tier": "y",
+  "opened_at": "2026-08-27",
+  "origin": {
+    "kind": "concept_gap",
+    "ref": "decoder",
+    "note": "SymbiQ teaches decoding on qec.html and cites a real-time FPGA neural-network decoder result. What that page does not claim, because it is not yet known, is that this scales — this question makes the gap explicit."
+  },
+  "concept_ids": [
+    "decoder",
+    "surface-code",
+    "fault-tolerance"
+  ],
+  "prompt_ref": "prompt.txt",
+  "prompt_sha": "91cf3777019fd608748452a9c4b03068c2a8d0677f286435b05c15fc7821a7da",
+  "model_answers": [],
+  "desk_answer": null,
+  "floor": null,
+  "background": "A distance-d rotated surface code produces a syndrome every measurement round, and rounds come roughly every microsecond on superconducting hardware. The decoder has to consume that stream and emit corrections fast enough that its lag does not grow without bound; if it falls behind, the logical error rate degrades no matter how good the physics is. Minimum-weight perfect matching is the standard baseline and has near-linear implementations; learned decoders can be more accurate on realistic noise but are heavier to run. Demonstrations of real-time decoding exist at small distance, and there is active work on parallel and windowed decoding to break the problem into pieces. The open part is the scaling: a useful machine runs many logical qubits simultaneously, lattice surgery couples their decoding problems, and the classical hardware budget — FPGAs, ASICs, the interconnect to the cryostat — is a real constraint. This question asks whether the decoder is a solved engineering problem waiting to be built, or a genuine bottleneck that could push useful fault tolerance back by years.",
+  "reading": [
+    {
+      "label": "SymbiQ — What is quantum error correction?",
+      "url": "qec.html"
+    },
+    {
+      "label": "SymbiQ — What is a logical qubit?",
+      "url": "logical-qubit.html"
+    },
+    {
+      "label": "Fowler et al., “Surface codes: Towards practical large-scale quantum computation” (2012)",
+      "url": "https://arxiv.org/abs/1208.0928"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

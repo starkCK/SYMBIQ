@@ -198,3 +198,121 @@ create policy "authenticated users can forecast"
 
 -- No update or delete policy on claim_forecasts anywhere in this file --
 -- append-only means append-only, enforced by RLS having nothing else to grant.
+
+-- ============================================================================
+-- L3 -- The Frontier: curated open questions + the model panel.
+-- Added 2026-08-27 (scaffold, ahead of the audience gate). Re-run the whole
+-- file again; everything above is idempotent.
+--
+-- SAME ARCHITECTURAL SPLIT AS L0/L2, read before touching this:
+--   * The QUESTIONS, the verbatim MODEL-PANEL ANSWERS, and the desk's own
+--     reviewed answer are desk-authored, permanent, and crawlable, so they
+--     live as git-committed JSON under site/data/frontier/*.json -- NOT as
+--     rows here. That is the same call already made for L0's claims (see the
+--     L2 note above) and for the same reasons: permanence, crawlability, a
+--     public tamper-evident history via `git log`.
+--   * This database holds only what the PUBLIC writes: proposed questions
+--     awaiting triage, community scores on model answers, and the cached
+--     Discord-thread summary a bot writes. `question_slug` is therefore a
+--     plain text column, not a foreign key -- tools/check_frontier.py keeps
+--     a slug honest against the real JSON files, not a DB constraint.
+--   * The design doc (outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md section 7.1)
+--     sketches `model_answers` as a table referencing `frontier_questions`;
+--     that is adapted here the same way section 5.2's `claims` table was.
+-- ============================================================================
+
+create table if not exists frontier_submissions (
+  id                  bigserial primary key,
+  submitter_id        uuid not null references profiles(id) on delete cascade,
+  question            text not null,
+  why_open            text,
+  reading             text,   -- a URL or citation the submitter thinks is relevant
+  status              text not null default 'queued'
+                        check (status in ('queued', 'promoted', 'rejected', 'duplicate')),
+  triage_note         text,
+  promoted_question_slug text, -- filled by hand once the desk writes the real question JSON
+  created_at          timestamptz not null default now()
+);
+
+comment on table frontier_submissions is
+  'Community-proposed Frontier questions, pre-triage. Nothing here is public '
+  'and nothing auto-publishes (locked rule 8) -- the desk reviews each one by '
+  'hand and, if promoted, writes a real site/data/frontier/<slug>.json '
+  'committed to git.';
+
+alter table frontier_submissions enable row level security;
+
+drop policy if exists "submitters can see their own frontier submissions" on frontier_submissions;
+create policy "submitters can see their own frontier submissions"
+  on frontier_submissions for select
+  using (auth.uid() = submitter_id);
+
+drop policy if exists "authenticated users can propose a question" on frontier_submissions;
+create policy "authenticated users can propose a question"
+  on frontier_submissions for insert
+  with check (auth.uid() = submitter_id);
+
+drop policy if exists "submitters can retract their own queued question" on frontier_submissions;
+create policy "submitters can retract their own queued question"
+  on frontier_submissions for delete
+  using (auth.uid() = submitter_id and status = 'queued');
+
+create table if not exists frontier_model_votes (
+  id            bigserial primary key,
+  question_slug text not null,   -- matched against site/data/frontier/*.json, not an FK
+  model_id      text not null,   -- the exact model string from the question JSON's model_answers[]
+  user_id       uuid not null references profiles(id) on delete cascade,
+  score         jsonb not null,  -- {"correct":1..5,"calibrated":1..5,"sourced":1..5}
+  note          text,
+  at            timestamptz not null default now()
+  -- append-only, same rule as claim_forecasts: revising a vote inserts a new
+  -- row. The design doc's model_answers.community_score is the reduction over
+  -- these rows, computed at read time (latest row per (user, model, question)).
+);
+
+comment on table frontier_model_votes is
+  'The community half of a model answer''s score (desk_score is authored in the '
+  'question JSON). Append-only. A model answer is never presented as '
+  'authoritative -- it is an entrant, graded like everyone else (design doc 7.1).';
+
+alter table frontier_model_votes enable row level security;
+
+drop policy if exists "model votes are publicly readable" on frontier_model_votes;
+create policy "model votes are publicly readable"
+  on frontier_model_votes for select
+  using (true);
+
+drop policy if exists "authenticated users can vote on a model answer" on frontier_model_votes;
+create policy "authenticated users can vote on a model answer"
+  on frontier_model_votes for insert
+  with check (auth.uid() = user_id);
+
+-- No update/delete policy on frontier_model_votes -- append-only, enforced by
+-- RLS having nothing else to grant.
+
+create table if not exists frontier_floor (
+  question_slug text primary key,  -- matched against site/data/frontier/*.json
+  thread_url    text not null,
+  participants  int not null default 0,
+  messages      int not null default 0,
+  top_excerpt   text,
+  updated_at    timestamptz not null default now()
+);
+
+comment on table frontier_floor is
+  'Cache of "The Floor" -- the live Discord discussion thread for a question. '
+  'Written ONLY by the summary bot (service role, bypasses RLS); the site '
+  'reads it to show participant/message counts and a top excerpt next to the '
+  'reviewed answers. This preserves the constitution (no on-site comment '
+  'system) and finally wires Discord to the site. Parked until Discord is '
+  'wired -- the table exists so the site code has a shape to read.';
+
+alter table frontier_floor enable row level security;
+
+drop policy if exists "the floor summary is publicly readable" on frontier_floor;
+create policy "the floor summary is publicly readable"
+  on frontier_floor for select
+  using (true);
+
+-- No insert/update/delete policy: the bot uses the service-role key, which
+-- bypasses RLS. An ordinary signed-in user has read and nothing else.

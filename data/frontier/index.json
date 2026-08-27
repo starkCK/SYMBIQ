@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "generated": "2026-08-27",
+  "entries": [
+    {
+      "slug": "first-useful-quantum-advantage-and-who",
+      "question": "When will a quantum computer first solve a problem of real commercial or scientific value faster or more cheaply than the best classical method — and which hardware approach gets there first?",
+      "status": "open",
+      "evidence_tier": "r",
+      "opened_at": "2026-08-27",
+      "origin_kind": "claim",
+      "n_model_answers": 0,
+      "has_desk_answer": false
+    },
+    {
+      "slug": "real-time-decoding-at-scale",
+      "question": "Can a classical decoder keep pace with a megahertz-scale surface-code cycle at the code distances a useful fault-tolerant machine needs, or does the control loop become the limiting factor?",
+      "status": "open",
+      "evidence_tier": "y",
+      "opened_at": "2026-08-27",
+      "origin_kind": "concept_gap",
+      "n_model_answers": 0,
+      "has_desk_answer": false
+    },
+    {
+      "slug": "which-quantum-route-to-better-ai",
+      "question": "Of the proposed routes from quantum computing to more capable AI — quantum-generated training data, sampling advantage, optimisation, and linear-algebra speedups like HHL — which, if any, delivers a real advantage on a problem people care about within ten years?",
+      "status": "open",
+      "evidence_tier": "y",
+      "opened_at": "2026-08-27",
+      "origin_kind": "desk",
+      "n_model_answers": 0,
+      "has_desk_answer": false
+    }
+  ]
+}

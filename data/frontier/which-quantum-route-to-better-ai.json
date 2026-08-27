@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "slug": "which-quantum-route-to-better-ai",
+  "question": "Of the proposed routes from quantum computing to more capable AI — quantum-generated training data, sampling advantage, optimisation, and linear-algebra speedups like HHL — which, if any, delivers a real advantage on a problem people care about within ten years?",
+  "dek": "This is SymbiQ's own thesis put to the panel. The site already ranks these four routes and argues the near-term winner is quantum-generated data while HHL-style speedups are the most oversold. Asking frontier models the same question, verbatim and graded, is the thesis executed rather than asserted.",
+  "status": "open",
+  "evidence_tier": "y",
+  "opened_at": "2026-08-27",
+  "origin": {
+    "kind": "desk",
+    "note": "ai.html sets out the four routes and ranks them. The model panel is asked to answer independently; where it agrees or disagrees with the desk is itself the interesting output."
+  },
+  "concept_ids": [
+    "quantum-machine-learning",
+    "hhl",
+    "barren-plateaus"
+  ],
+  "prompt_ref": "prompt.txt",
+  "prompt_sha": "72fc0b7c142370c9556d44f1a3d2b802017671fbdb12f3151891d8462358f2b0",
+  "model_answers": [],
+  "desk_answer": null,
+  "floor": null,
+  "background": "The four routes are not equally credible. Learning from data that a quantum process generated — where the training distribution is itself hard to produce classically — has the cleanest theoretical footing and some experimental support. A raw sampling advantage is real on contrived tasks but has struggled to attach to a problem anyone outside the field needs. Optimisation via QAOA or annealing is heavily studied and heavily contested: no general speedup over strong classical heuristics has been shown. HHL and its descendants promised exponential speedups for linear algebra but are hemmed in by the cost of loading classical data into a quantum state, by output-readout limits, and by dequantization results that produced comparable classical algorithms for several proposed applications. Barren plateaus — exponentially vanishing gradients — are a further obstacle for variational approaches at scale. The panel is asked to pick a route, commit to whether it clears the ten-year bar, and name the result that would confirm or kill it.",
+  "reading": [
+    {
+      "label": "SymbiQ — Will quantum computers make AI more powerful?",
+      "url": "ai.html"
+    },
+    {
+      "label": "Tang, “A quantum-inspired classical algorithm for recommendation systems” (2018)",
+      "url": "https://arxiv.org/abs/1807.04271"
+    },
+    {
+      "label": "McClean et al., “Barren plateaus in quantum neural network training landscapes” (2018)",
+      "url": "https://arxiv.org/abs/1803.11173"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

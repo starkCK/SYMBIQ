@@ -235,6 +235,7 @@
     font-size: 0.64rem;
     font-weight: 700;
     background: var(--panel);
+    background: color-mix(in srgb, var(--panel) 72%, transparent);
     transition: border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
                 background-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
                 color var(--dur-base, 260ms) var(--ease-out-quint, ease);
@@ -330,6 +331,16 @@
      hairline on top, not a filled call to action competing with the real one
      in the page.
      ---------------------------------------------------------------- */
+  /* The fill is translucent, and that is not a decorative choice. The
+     generative lattice draws at z-index -1 across the whole viewport, and
+     the place it was always most visible is exactly the empty margin this
+     file has just filled. A solid panel out here does not merely sit in
+     front of the lattice, it reads as having replaced it. At around 72% the
+     nodes and their cursor bonds still travel behind the card, the rail
+     still reads as a card, and the text keeps its contrast, because both
+     the panel and the page behind it are near-black in dark mode and
+     near-white in light. Solid first as the fallback for anything without
+     color-mix. Applies to the state module and the rung chips below too. */
   .sqrail-next {
     display: block;
     padding: var(--sp-3, 12px) var(--sp-4, 16px);
@@ -338,6 +349,10 @@
     border-radius: var(--r-md, 10px);
     background:
       linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(90deg, var(--violet), var(--teal)) border-box;
+    background:
+      linear-gradient(color-mix(in srgb, var(--panel) 72%, transparent),
+                      color-mix(in srgb, var(--panel) 72%, transparent)) padding-box,
       linear-gradient(90deg, var(--violet), var(--teal)) border-box;
     color: var(--muted);
     font-size: 0.76rem;
@@ -362,6 +377,7 @@
     border-radius: var(--r-md, 10px);
     padding: var(--sp-3, 12px) var(--sp-4, 16px);
     background: var(--panel);
+    background: color-mix(in srgb, var(--panel) 72%, transparent);
     font-size: 0.72rem;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
@@ -386,6 +402,7 @@
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--panel);
+    background: color-mix(in srgb, var(--panel) 72%, transparent);
     color: var(--muted);
     font-size: 0.7rem;
     cursor: pointer;
@@ -445,6 +462,62 @@
   }
 }
 
+/* ---------------------------------------------------------------- §12
+   WIDE BANDS — letting the non-prose blocks use the room
+
+   The 1040px cap is a rule about PROSE. A row of cards is not prose: its
+   legibility comes from the card, not from the line length of the column
+   holding it, so on a screen with room to spare it can be wider than the
+   text above it. This is the second half of filling a wide monitor — the
+   rails take the margins, and the blocks that can honestly use more width
+   take some of what is left.
+
+   WHY THE OFFSET IS WRITTEN THIS WAY. --sq-out is how far a band may hang
+   past the reading column on EACH side, and it is derived, not chosen. At
+   these widths the rail column is 248px centred in a gutter of
+   (100vw - 1040px) / 2, so its inner edge sits at a quarter of that gutter
+   plus 124px from the viewport edge. Solving "band edge stays clear of the
+   rail" gives (100vw - 1040px) / 4 minus a constant, which is the middle
+   term below. The constant was raised from 128 to 140 after measuring: 128
+   left a 20px channel between the rail text and the card border, which is
+   close enough to read as a collision rather than a gutter. 140 measures
+   32px and costs 12px of band width a side. It yields 25px a side at 1700,
+   80px at 1920, and hits the 140px cap at 2160 — always clear of the rails
+   by construction rather than by a number someone guessed and will not
+   re-check when the rail width changes.
+   clamp's lower bound of zero means that even if this query is ever widened
+   downward by mistake, the worst case is no breakout, never a band narrower
+   than the column it sits in.
+
+   The width is expressed against the containing block (100% of .wrap's
+   content box) rather than against the viewport, so the band stays centred
+   on the column whether or not a classic scrollbar is present. Only the
+   clearance term uses 100vw, where being a few pixels out costs nothing.
+
+   SCOPED TO DIRECT CHILDREN OF .wrap, and that is what makes it safe.
+   Measured across all 24 pages: every top-level grid holds 2, 3, 4 or 5
+   cards, and auto-fit lays each of those out in one full row at these
+   widths with no orphan. The only 6-card grids on the site are both nested
+   — one inside a foldsec panel on the homepage, one inside a wrapper on
+   play.html — and content inside a fold is bounded by the fold, so it
+   should not break out of it anyway. If a six-card grid is ever added at
+   top level, check it here before assuming this still holds: at 1184px
+   auto-fit resolves to five tracks and leaves one card alone on a second
+   row.
+   ---------------------------------------------------------------- */
+@media (min-width: 1700px) {
+  .wrap > .grid,
+  .wrap > .orhero {
+    --sq-out: clamp(0px, calc((100vw - 1040px) / 4 - 140px), 140px);
+    width: calc(100% + 2 * var(--sq-out));
+    margin-left: calc(0px - var(--sq-out));
+  }
+}
+
 /* Margin furniture is screen furniture. On paper the reading column is the
-   whole document. */
-@media print { .sqrail { display: none; } }
+   whole document, and a band that hangs past it has nothing to hang into. */
+@media print {
+  .sqrail { display: none; }
+  .wrap > .grid,
+  .wrap > .orhero { width: auto; margin-left: 0; }
+}

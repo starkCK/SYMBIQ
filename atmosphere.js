@@ -279,11 +279,28 @@
      is the same state as opening the site in a background tab. */
   function restart() { stop(); start(); }
 
+  /* The width at which rails.css puts furniture in the margins. Kept in step
+     with that file and with rails.js by hand; all three name the same number
+     for the same reason, and if one moves they all move. */
+  var WIDE = W.matchMedia ? W.matchMedia('(min-width: 1440px)') : null;
+
   function initLattice() {
-    /* Homepage only. Every other page can opt in by adding the canvas, but
-       the lattice belongs behind the hero that argues for it. */
     if (!D.body || !D.body.hasAttribute('data-motion')) return;
-    if (!D.body.hasAttribute('data-lattice')) return;
+    if (cvs) return;   /* already built: the wide-screen path can call twice */
+
+    /* WHERE THE LATTICE RUNS, revised 2026-08-28.
+       It began homepage-only, on the argument that it belongs behind the
+       hero that argues for it. That held while the margins on every other
+       page were empty background. They are not any more: rails.css now puts
+       a section index, the ladder and a progress readout out there at 1440px
+       and up, and a still background behind live furniture reads as the
+       furniture having replaced something. So on a screen wide enough to
+       have margins at all, every page gets the lattice; below that, nothing
+       changes and it stays exactly where it was. Phones and ordinary laptops
+       pay nothing new -- no canvas, no loop, no battery.
+       data-lattice still wins at every width, which is what keeps the
+       homepage's own reading intact on a narrow screen. */
+    if (!D.body.hasAttribute('data-lattice') && !(WIDE && WIDE.matches)) return;
 
     cvs = D.createElement('canvas');
     cvs.id = 'mo-lattice';
@@ -413,7 +430,20 @@
     ready: function () { return !!ctx; }
   };
 
-  function boot() { initLattice(); initSheen(); }
+  function boot() {
+    initLattice();
+    initSheen();
+    /* Someone who drags a window out to a second monitor should get the
+       lattice then, not on their next navigation. Only ever builds -- there
+       is no matching teardown, because a canvas that already exists costs a
+       rAF loop the page is paying for anyway, and tearing it down on every
+       drag of a window edge would flicker. initLattice returns early once
+       cvs exists, so this cannot build a second one. */
+    if (WIDE) {
+      if (WIDE.addEventListener) WIDE.addEventListener('change', initLattice);
+      else if (WIDE.addListener) WIDE.addListener(initLattice);
+    }
+  }
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();

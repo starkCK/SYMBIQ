@@ -32,7 +32,7 @@
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
-<link rel="stylesheet" href="rails.css?v=1">
+<link rel="stylesheet" href="rails.css?v=3">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -41,6 +41,13 @@
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=2" defer></script>
 <script src="archive.js?v=1" defer></script>
+<!-- The atmosphere layer: the generative lattice and the pointer-tracked card
+     sheen. Was homepage-only until 2026-08-28, which meant every other page
+     had a still background AND cards with no light source, since motion.css
+     reads --mo-x / --mo-y and only this file writes them. The lattice itself
+     still gates internally: data-lattice at any width, otherwise 1440px and
+     up, where rails.css has put furniture in the margins. -->
+<script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=1" defer></script>
 </head>

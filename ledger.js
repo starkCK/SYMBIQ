@@ -60,6 +60,106 @@
     }).join('') + '</ol>';
   }
 
+  // ---- L2: forecasting -----------------------------------------------------
+  // Slugs of currently-open (loaded) claim panels, so a sign-in/out event can
+  // re-render just the ones actually on screen rather than re-fetching
+  // everything. Populated in the toggle handler in mount(), read here.
+  var openForecasts = {};
+
+  function bucketPct(n) { return Math.round((n || 0) * 100); }
+
+  function crowdSummary(rows) {
+    if (!rows.length) return { n: 0 };
+    var sum = { verified: 0, partially_verified: 0, not_verified: 0 };
+    rows.forEach(function (r) {
+      var p = r.p || {};
+      sum.verified += +p.verified || 0;
+      sum.partially_verified += +p.partially_verified || 0;
+      sum.not_verified += +p.not_verified || 0;
+    });
+    var n = rows.length;
+    return {
+      n: n,
+      verified: sum.verified / n,
+      partially_verified: sum.partially_verified / n,
+      not_verified: sum.not_verified / n,
+    };
+  }
+
+  function forecastFormHTML(slug) {
+    return (
+      '<form class="sqform ldg-forecast-form" data-slug="' + esc(slug) + '">' +
+        '<div class="ldg-fsliders">' +
+          '<label>Verified<input type="number" min="0" max="100" step="1" value="34" data-k="verified"> %</label>' +
+          '<label>Partially<input type="number" min="0" max="100" step="1" value="33" data-k="partially_verified"> %</label>' +
+          '<label>Not verified<input type="number" min="0" max="100" step="1" value="33" data-k="not_verified"> %</label>' +
+        '</div>' +
+        '<textarea placeholder="Why (optional)" maxlength="500"></textarea>' +
+        '<button type="submit">Submit forecast →</button>' +
+        '<p class="ldg-nr ldg-fstatus"></p>' +
+      '</form>'
+    );
+  }
+
+  function renderForecastInner(slug, crowd, signedIn) {
+    var summary = crowd.n
+      ? '<p class="ldg-nr">' + crowd.n + ' forecast' + (crowd.n === 1 ? '' : 's') + ' so far — average ' +
+        bucketPct(crowd.verified) + '% verified / ' + bucketPct(crowd.partially_verified) + '% partial / ' +
+        bucketPct(crowd.not_verified) + '% not verified.</p>'
+      : '<p class="ldg-nr">No forecasts yet — be the first.</p>';
+    var action = signedIn
+      ? forecastFormHTML(slug)
+      : '<p class="ldg-nr">Sign in (top of the page) to add your own forecast.</p>';
+    return summary + action;
+  }
+
+  function wireForecast(slug, el) {
+    var auth = window.SymbiQ.auth;
+    if (!auth || !auth.client) {
+      el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">Checking sign-in status…</p>';
+      return; // symbiq:authchange fires once auth.js finishes loading; see mount()'s listener
+    }
+    Promise.resolve(auth.client.from('claim_forecasts').select('p').eq('claim_slug', slug))
+      .then(function (res) {
+        // supabase-js resolves (not rejects) on an API error, packing it into
+        // res.error -- checking res.data alone would silently read a real
+        // failure as "zero forecasts exist yet."
+        if (res && res.error) throw res.error;
+        var crowd = crowdSummary((res && res.data) || []);
+        var user = auth.getUser();
+        el.innerHTML = '<h4>Forecast</h4>' + renderForecastInner(slug, crowd, !!user);
+        var form = el.querySelector('.ldg-forecast-form');
+        if (!form) return;
+        form.addEventListener('submit', function (ev) {
+          ev.preventDefault();
+          var btn = form.querySelector('button'), status = form.querySelector('.ldg-fstatus');
+          var raw = {};
+          form.querySelectorAll('input[data-k]').forEach(function (inp) { raw[inp.dataset.k] = +inp.value || 0; });
+          var total = raw.verified + raw.partially_verified + raw.not_verified;
+          if (total <= 0) { status.textContent = 'Enter at least one non-zero percentage.'; return; }
+          var p = {
+            verified: raw.verified / total,
+            partially_verified: raw.partially_verified / total,
+            not_verified: raw.not_verified / total,
+          };
+          var rationale = (form.querySelector('textarea').value || '').trim().slice(0, 500);
+          btn.disabled = true; btn.textContent = 'Submitting…';
+          Promise.resolve(auth.client.from('claim_forecasts').insert({
+            claim_slug: slug, user_id: user.id, p: p, rationale: rationale || null
+          })).then(function (r) {
+            if (r && r.error) throw r.error;
+            wireForecast(slug, el); // re-render with the new forecast folded into the crowd summary
+          }).catch(function (err) {
+            btn.disabled = false; btn.textContent = 'Submit forecast →';
+            status.textContent = 'Could not submit (' + (err && err.message || 'unknown error') + ').';
+          });
+        });
+      })
+      .catch(function (err) {
+        el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">Could not load forecasts (' + esc(err.message) + ').</p>';
+      });
+  }
+
   function renderOne(c, claimantName) {
     var out = '';
     out += '<blockquote class="ldg-quote">“' + esc(c.verbatim) + '”' +
@@ -94,6 +194,12 @@
       out += '<div class="ldg-section"><h4>Right of reply</h4><p>' + esc(c.claimant_response) +
         (c.claimant_response_url ? ' <a href="' + esc(c.claimant_response_url) + '" rel="noopener noreferrer">→</a>' : '') +
         '</p></div>';
+    }
+
+    // Forecasting only makes sense while a verdict is still genuinely open.
+    if (c.status === 'tracking' || c.status === 'resolvable') {
+      out += '<div class="ldg-section ldg-forecast" id="ldgf-' + esc(c.slug) + '" data-slug="' + esc(c.slug) + '">' +
+        '<h4>Forecast</h4><p class="ldg-nr">Loading…</p></div>';
     }
 
     out += '<p class="ldg-nr">Domain: ' + esc(DOMAIN_LABEL[c.domain] || c.domain) +
@@ -247,6 +353,8 @@
           .then(function (c) {
             var cl = claimantMap[c.claimant];
             body.innerHTML = renderOne(c, cl ? cl.name : c.claimant);
+            var fEl = body.querySelector('.ldg-forecast');
+            if (fEl) { openForecasts[c.slug] = true; wireForecast(c.slug, fEl); }
           })
           .catch(function (err) {
             body.innerHTML = '<p class="archq-loading">Could not load this one (' + esc(err.message) + ').</p>';
@@ -277,5 +385,81 @@
     });
   }
 
-  window.SymbiQ.ledger = { mount: mount };
+  // Re-render every forecast panel currently open when sign-in state changes
+  // -- covers both "auth.js finished loading after this panel was opened"
+  // and "the user actually signed in/out while looking at this claim."
+  window.addEventListener('symbiq:authchange', function () {
+    Object.keys(openForecasts).forEach(function (slug) {
+      var el = document.getElementById('ldgf-' + slug);
+      if (el) wireForecast(slug, el);
+    });
+    var subEl = document.getElementById('ldg-submit');
+    if (subEl) wireSubmitForm(subEl);
+  });
+
+  // ---- L2: propose a claim --------------------------------------------------
+  function submitFormHTML() {
+    return (
+      '<form class="sqform" id="ldg-submit-form">' +
+        '<div class="sqfield">' +
+          '<label for="ldg-sub-url">Source URL</label>' +
+          '<input type="url" id="ldg-sub-url" required placeholder="https://…">' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="ldg-sub-quote">The claim, as close to verbatim as you can get it</label>' +
+          '<textarea id="ldg-sub-quote" required placeholder="Quote the actual sentence, and who said it"></textarea>' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="ldg-sub-why">Why this belongs on the Ledger (optional)</label>' +
+          '<textarea id="ldg-sub-why" placeholder="What would prove it true or false, and by when?"></textarea>' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="ldg-sub-deadline">Suggested deadline (optional)</label>' +
+          '<input type="date" id="ldg-sub-deadline">' +
+        '</div>' +
+        '<button type="submit">Submit for review →</button>' +
+        '<p class="ldg-nr" id="ldg-sub-status"></p>' +
+      '</form>'
+    );
+  }
+
+  function wireSubmitForm(container) {
+    var auth = window.SymbiQ.auth;
+    if (!auth || !auth.client) {
+      container.innerHTML = '<p class="ldg-nr">Checking sign-in status…</p>';
+      return;
+    }
+    var user = auth.getUser();
+    if (!user) {
+      container.innerHTML = '<p class="ldg-nr">Sign in (top of the page) to propose a claim. Every submission is reviewed by the desk before anything publishes — nothing here goes live automatically.</p>';
+      container.dataset.wired = '';
+      return;
+    }
+    container.innerHTML = submitFormHTML();
+    container.dataset.wired = '1';
+    var form = document.getElementById('ldg-submit-form');
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var btn = form.querySelector('button'), status = document.getElementById('ldg-sub-status');
+      var row = {
+        submitter_id: user.id,
+        raw_url: document.getElementById('ldg-sub-url').value.trim(),
+        raw_quote: document.getElementById('ldg-sub-quote').value.trim(),
+        why: document.getElementById('ldg-sub-why').value.trim() || null,
+        suggested_deadline: document.getElementById('ldg-sub-deadline').value || null,
+      };
+      btn.disabled = true; btn.textContent = 'Submitting…';
+      Promise.resolve(auth.client.from('claim_submissions').insert(row)).then(function (r) {
+        if (r && r.error) throw r.error;
+        container.innerHTML = '<p class="ldg-nr">Thank you — queued for review. Nothing publishes automatically; ' +
+          'if it clears the intake bar (attributed, dated, falsifiable, deadlined) the desk will write it up as ' +
+          'a real entry, criteria frozen before tracking starts.</p>';
+      }).catch(function (err) {
+        btn.disabled = false; btn.textContent = 'Submit for review →';
+        status.textContent = 'Could not submit (' + (err && err.message || 'unknown error') + ').';
+      });
+    });
+  }
+
+  window.SymbiQ.ledger = { mount: mount, wireSubmitForm: wireSubmitForm };
 })();

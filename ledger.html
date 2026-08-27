@@ -35,7 +35,7 @@
 <script src="forms.js?v=2" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=1" defer></script>
-<script src="ledger.js?v=1" defer></script>
+<script src="ledger.js?v=2" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -192,12 +192,22 @@ as unfalsifiable, which is itself a published verdict.</p>
 <p style="margin-top:14px;font-size:.9rem;color:var(--muted)">The full design — schema, scoring maths, the
 whole claim lifecycle — is in <code>outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md</code>.</p>
 
+<h2 id="propose">Seen a claim that belongs here?</h2>
+<p>Send it in. It clears the same bar as everything above — attributed, dated, falsifiable, deadlined —
+before the desk writes it up as a real entry with frozen criteria. Nothing publishes automatically.</p>
+<div id="ldg-submit"><p class="ldg-nr">Checking sign-in status…</p></div>
+
 <script>
 (function () {
   var host = document.getElementById("ldg-mount");
   var sum  = document.getElementById("ldg-summary");
+  var sub  = document.getElementById("ldg-submit");
   if (sum) sum.remove();
-  function go() { if (window.SymbiQ && SymbiQ.ledger) SymbiQ.ledger.mount(host, { heading: true }); }
+  function go() {
+    if (!(window.SymbiQ && SymbiQ.ledger)) return;
+    SymbiQ.ledger.mount(host, { heading: true });
+    SymbiQ.ledger.wireSubmitForm(sub);
+  }
   if (window.SymbiQ && SymbiQ.ledger) go();
   else document.addEventListener("DOMContentLoaded", go);
 })();

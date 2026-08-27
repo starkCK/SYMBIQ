@@ -111,3 +111,90 @@ drop trigger if exists profiles_touch_updated_at on profiles;
 create trigger profiles_touch_updated_at
   before update on profiles
   for each row execute function public.touch_updated_at();
+
+-- ============================================================================
+-- L2 — The Ledger goes live: community claim submissions + forecasts.
+-- Added 2026-08-27, appended to the same idempotent file -- re-run the whole
+-- thing again in the SQL Editor; every statement above is safe to repeat.
+--
+-- IMPORTANT ARCHITECTURAL NOTE, read before touching this section: L0's
+-- claims are NOT rows in this database. They are git-committed JSON files
+-- under site/data/claims/*.json (see outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md
+-- §5.7 for why -- permanence, crawlability, a tamper-evident public history).
+-- So `claim_slug` below is a plain text column, not a foreign key -- there is
+-- no `claims` table to reference. The design doc's own §5.2 schema assumed a
+-- `claims` table would exist by L2; it does not, by deliberate choice, and
+-- these two tables are adapted accordingly. tools/check_claims.py is what
+-- keeps a slug honest (checked against the real JSON files), not a DB
+-- constraint.
+-- ============================================================================
+
+create table if not exists claim_submissions (
+  id                 bigserial primary key,
+  submitter_id       uuid not null references profiles(id) on delete cascade,
+  raw_url            text not null,
+  raw_quote          text,
+  why                text,
+  suggested_deadline date,
+  status             text not null default 'queued'
+                       check (status in ('queued', 'promoted', 'rejected', 'duplicate')),
+  triage_note        text,
+  promoted_claim_slug text,   -- filled in by hand once the desk writes the real claim JSON
+  created_at         timestamptz not null default now()
+);
+
+comment on table claim_submissions is
+  'Community-proposed claims for The Ledger, pre-triage. Nothing here is '
+  'public and nothing auto-publishes -- the desk reviews each one by hand '
+  '(via the Supabase table editor, which bypasses RLS as project owner) and, '
+  'if promoted, writes a real site/data/claims/<slug>.json committed to git.';
+
+alter table claim_submissions enable row level security;
+
+drop policy if exists "submitters can see their own submissions" on claim_submissions;
+create policy "submitters can see their own submissions"
+  on claim_submissions for select
+  using (auth.uid() = submitter_id);
+
+drop policy if exists "authenticated users can submit a claim" on claim_submissions;
+create policy "authenticated users can submit a claim"
+  on claim_submissions for insert
+  with check (auth.uid() = submitter_id);
+
+drop policy if exists "submitters can retract their own queued submission" on claim_submissions;
+create policy "submitters can retract their own queued submission"
+  on claim_submissions for delete
+  using (auth.uid() = submitter_id and status = 'queued');
+
+create table if not exists claim_forecasts (
+  id         bigserial primary key,
+  claim_slug text not null,   -- see the architectural note above -- no FK, matched against the JSON files
+  user_id    uuid not null references profiles(id) on delete cascade,
+  p          jsonb not null,  -- {"verified":0.2,"partially_verified":0.5,"not_verified":0.3}
+  rationale  text,
+  at         timestamptz not null default now()
+  -- append-only by design: revising a forecast inserts a new row rather than
+  -- updating one, so the trail of how someone's belief changed over time is
+  -- itself the record. No update policy exists below -- that omission is
+  -- the enforcement.
+);
+
+comment on table claim_forecasts is
+  'Append-only forecast history. Scoring (Brier skill against the crowd, per '
+  'design doc §5.5) is computed client-side for L2 -- fetch every forecast '
+  'for a claim, the crowd median is the set of p values at read time.';
+
+alter table claim_forecasts enable row level security;
+
+drop policy if exists "forecasts are publicly readable" on claim_forecasts;
+create policy "forecasts are publicly readable"
+  on claim_forecasts for select
+  using (true);
+
+drop policy if exists "authenticated users can forecast" on claim_forecasts;
+create policy "authenticated users can forecast"
+  on claim_forecasts for insert
+  with check (auth.uid() = user_id);
+
+-- No update or delete policy on claim_forecasts anywhere in this file --
+-- append-only means append-only, enforced by RLS having nothing else to grant.

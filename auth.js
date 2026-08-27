@@ -41,7 +41,11 @@
       .then(function () {
         if (!window.supabase || !window.supabase.createClient) throw new Error('supabase-js did not load');
         var client = window.supabase.createClient(window.SymbiQ.SUPABASE_URL, window.SymbiQ.SUPABASE_ANON_KEY);
-        var API = { getUser: function () { return currentUser; }, signOut: function () { return client.auth.signOut(); } };
+        var API = {
+          client: client,
+          getUser: function () { return currentUser; },
+          signOut: function () { return client.auth.signOut(); }
+        };
         window.SymbiQ.auth = API;
         var currentUser = null;
 
@@ -85,6 +89,15 @@
           });
         }
 
+        // Other modules (ledger.js's forecast/submission forms) don't know
+        // when auth.js's async CDN load resolves, so they can't just read
+        // getUser() once at their own render time -- they listen for this
+        // event instead, fired on every state change including the initial
+        // one, same shape as SymbiQ.save's own onchange.
+        function announce() {
+          window.dispatchEvent(new CustomEvent('symbiq:authchange', { detail: { user: currentUser } }));
+        }
+
         function onSignedIn(user) {
           currentUser = user;
           Promise.resolve(
@@ -97,6 +110,7 @@
           if (window.SymbiQ.save && window.SymbiQ.save.connectRemote) {
             window.SymbiQ.save.connectRemote(client, user.id);
           }
+          announce();
         }
 
         function onSignedOut() {
@@ -105,6 +119,7 @@
             window.SymbiQ.save.disconnectRemote();
           }
           renderSignedOut(null);
+          announce();
         }
 
         renderSignedOut(null);
@@ -112,6 +127,7 @@
         client.auth.getSession().then(function (res) {
           var session = res && res.data && res.data.session;
           if (session && session.user) onSignedIn(session.user);
+          else announce();
         });
 
         client.auth.onAuthStateChange(function (event, session) {

@@ -27,6 +27,11 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=36">
+<!-- The motion layer ships as its own file, with its own cache-buster, for the
+     same reason the hero CTA rule below is page-local: style.css is shared by
+     24 pages and touching it forces a bump on every one of them (the
+     2026-07-24 scar). Motion should never be a 24-page deploy. -->
+<link rel="stylesheet" href="motion.css?v=2">
 <style>
 /* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
@@ -40,7 +45,7 @@
   .herocta-alt { text-align: center; padding: 10px 0; }   /* keeps the 44px touch minimum */
 }
 </style>
-<script src="nav.js?v=7" defer></script>
+<script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
 <script src="analytics.js?v=2" defer></script>
@@ -48,8 +53,19 @@
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=1" defer></script>
 <script src="archive.js?v=1" defer></script>
+<script src="atmosphere.js?v=1" defer></script>
+<script src="qubit.js?v=1" defer></script>
 </head>
-<body>
+<!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover
+       physics on cards and the live border on #tryit. NOT scroll reveals --
+       nav.js already owns those site-wide, and motion.css §3 explains at
+       length why a second reveal system is not merely redundant but breaks
+       the first one. Now on all 24 pages, after verifying on every one that
+       turning it on re-anchors no absolutely-positioned element and moves no
+       sticky bar.
+     data-lattice  asks atmosphere.js for the generative background. Homepage
+       only -- the lattice belongs behind the hero that argues for it. -->
+<body data-motion data-lattice>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

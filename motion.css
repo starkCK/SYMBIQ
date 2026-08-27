@@ -1,0 +1,404 @@
+/* ================================================================
+   MOTION LAYER (2026-08-27)
+
+   A SEPARATE stylesheet on purpose. style.css is 117KB across 24 pages and
+   index.html already records the 2026-07-24 scar: touching it forces a
+   cache-buster bump on every page that loads it. Nothing in here is needed
+   by style.css and nothing in style.css is needed by this, so it ships as
+   its own file with its own version query. Adding motion should never be a
+   24-page deploy.
+
+   TWO TIERS, DELIBERATELY SPLIT:
+
+     - Everything under §1 and §2 is safe on every page and ships everywhere.
+       Tokens are additive (no existing name is redefined) and view
+       transitions degrade to "the navigation you already had".
+
+     - Everything under §3 onward is gated behind [data-motion] on <body>.
+       Scroll reveals and hover changes touch layout-adjacent properties, and
+       23 of these pages have widgets this file has never been tested
+       against. So pages opt IN, one attribute at a time, rather than
+       inheriting motion by surprise. index.html is the first opt-in.
+
+   THE TRANSFORM RULE (read before adding anything here):
+   reveals animate `translate`, NEVER `transform`. style.css already uses
+   transform for hover lifts (.card:hover, .introute-card:hover). A running
+   animation with fill:both beats a normal declaration in the cascade, so
+   animating transform here would silently kill every hover lift on the page.
+   `translate` and `transform` are independent properties that compose, so
+   the reveal and the lift coexist. This is the one rule that is not
+   negotiable in this file.
+   ================================================================ */
+
+/* ---------------------------------------------------------------- §1
+   MOTION TOKENS
+
+   The 12 @keyframes already in style.css were each invented locally --
+   every one picked its own duration and its own easing, because there was
+   nothing to inherit. Same problem --sp-* / --r-* solved for spacing on
+   2026-08-23; this is that fix applied to time. Additive only: no existing
+   animation is retimed, these exist so the NEXT one doesn't guess.
+   ---------------------------------------------------------------- */
+:root {
+  --dur-fast: 140ms;    /* state echo: press, toggle, focus */
+  --dur-base: 260ms;    /* the default; matches the .18s-.3s already in use */
+  --dur-slow: 620ms;    /* arrivals and departures */
+  --dur-amble: 8s;      /* ambient loops that must never draw the eye */
+
+  /* Decelerating, no overshoot. Things arrive and settle; nothing bounces.
+     A site whose thesis is "the mathematics does the judging" should not
+     have springy furniture. */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---------------------------------------------------------------- §2
+   CROSS-DOCUMENT VIEW TRANSITIONS
+
+   The single highest ratio of perceived quality to lines of code available
+   to this site. 24 static pages that currently flash white between every
+   click become one continuous surface. Chromium and Safari 18.2+ honour it;
+   Firefox is still behind a flag at time of writing and simply gets today's
+   navigation, which is the correct fallback -- nothing to detect, nothing
+   to polyfill.
+
+   REQUIRES the rule on BOTH the outgoing and incoming page, which is why
+   this file ships site-wide even though §3 does not.
+   ---------------------------------------------------------------- */
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) { animation-duration: var(--dur-base); }
+  ::view-transition-new(root) {
+    animation: mo-vt-in var(--dur-slow) var(--ease-out-quint) both;
+  }
+  @keyframes mo-vt-in {
+    from { opacity: 0; translate: 0 10px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+}
+
+/* The brand and the page title are the two things genuinely shared by all 24
+   pages, so they morph across the navigation instead of cross-fading with
+   everything else. Verified 2026-08-27: exactly one <h1> and one .brand per
+   page on all 24 -- a duplicate name aborts the whole transition, so if a
+   page ever grows a second h1 this is the rule that breaks. */
+nav .brand { view-transition-name: mo-brand; }
+.wrap > h1 { view-transition-name: mo-title; }
+
+/* prefers-reduced-motion still gets the transition -- it is a cross-fade,
+   not movement -- but loses the travel. Killing it entirely would be worse:
+   the white flash it replaces is itself a motion event. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation-duration: 1ms !important; }
+}
+
+/* ================================================================
+   §3 ONWARD: opt-in. Requires <body data-motion>.
+   ================================================================ */
+
+/* ---------------------------------------------------------------- §3
+   SCROLL REVEALS -- DELIBERATELY NOT HERE.
+
+   This file briefly shipped a scroll-driven reveal (`animation: mo-rise`
+   on a `view()` timeline). It was removed on 2026-08-27, the same day, and
+   it must not come back. Read this before adding one.
+
+   THE SITE ALREADY HAS SCROLL REVEALS. nav.js builds them: it tags
+   `h2, .card, .grid, table, .formula, .cabs, .gate` with `.reveal`, adds
+   `.in` from an IntersectionObserver, and style.css:899-913 does the rest --
+   including a per-child stagger via fadeUp and the growbar sweep on
+   `h2::before`. It also carries three safety properties this file cannot
+   reproduce: nav.js is the ONLY thing that ever adds `.reveal`, so a script
+   failure leaves the page fully visible; reduced motion bails out before
+   anything is hidden; and a 2.5s timer force-reveals everything no matter
+   what.
+
+   WHY A SECOND ONE IS ACTIVELY BROKEN, not merely redundant: `.reveal` sets
+   `opacity: 0` as a normal declaration. A CSS animation with `fill: both`
+   outranks a normal declaration, so mo-rise forced those elements visible
+   BEFORE the observer fired -- content appeared pre-shown, sitting 14px low,
+   and then snapped into place when `.in` finally landed. The site's own
+   reveal never got to play.
+
+   If more elements should reveal -- `section`, `.introute`, `.spine` and
+   `footer` are the current gaps -- the fix is ONE LINE in nav.js's target
+   selector, not a second mechanism here. One reveal system.
+
+   Removing this is also what keeps the rest of this file safe to enable
+   page by page: with no `translate` animation in play, nothing here creates
+   a containing block, so no `position: sticky` or `fixed` descendant can be
+   torn off the viewport by turning motion on. Verified against the three
+   sticky elements on this site (nav, .tbar, and pqc.html's .pq-jump).
+   ---------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------- §4
+   HOVER PHYSICS
+
+   style.css already lifts .card and .introute-card. This does not replace
+   that -- it retimes it onto the shared easing and adds the one thing the
+   flat version is missing: a light source. --mo-x/--mo-y are written by
+   atmosphere.js from the pointer, so the sheen tracks the cursor across the
+   card instead of sitting in a fixed corner. With JS off the fallback is a
+   centred highlight, which is a still-fine card.
+   ---------------------------------------------------------------- */
+@property --mo-sheen { syntax: "<number>"; initial-value: 0; inherits: false; }
+
+[data-motion] .card,
+[data-motion] .introute-card {
+  position: relative;
+  transition: transform var(--dur-base) var(--ease-out-quint),
+              border-color var(--dur-base) var(--ease-out-quint),
+              box-shadow var(--dur-base) var(--ease-out-quint),
+              --mo-sheen var(--dur-base) linear;
+}
+[data-motion] .card::after,
+[data-motion] .introute-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--mo-sheen, 0);
+  background: radial-gradient(
+    360px circle at var(--mo-x, 50%) var(--mo-y, 50%),
+    rgba(45, 212, 191, 0.10),
+    rgba(139, 92, 246, 0.06) 38%,
+    transparent 66%
+  );
+}
+[data-motion] .card:hover,
+[data-motion] .introute-card:hover { --mo-sheen: 1; }
+
+/* The lift itself, deepened slightly. .card already moved -3px; the extra
+   is in the shadow, not the travel, so nothing reflows further than it
+   used to. */
+[data-motion] .card:hover { box-shadow: 0 14px 34px var(--shadow); }
+[data-motion] .introute-card:hover { box-shadow: 0 10px 24px var(--shadow); }
+
+/* .bigplay gets the shared EASING and nothing else. No lift, no scale, no
+   pulse -- deliberately.
+
+   That restraint is not a style preference, it is the standing outcome of
+   three rounds of feedback on this exact control (2026-08-06, 08-07, 08-20),
+   each one asking for less than the last. The translateY(-2px) hover lift
+   was removed outright in the third round. Re-adding one here because "the
+   motion layer touches buttons now" would silently undo a decision that was
+   made three times. Brightness and shadow already carry the hover state and
+   they are enough.
+
+   If a future pass wants the primary CTA more noticeable, reach for shape,
+   not size or motion -- that is what the pill radius is already doing. */
+[data-motion] .bigplay {
+  transition: box-shadow var(--dur-base) var(--ease-out-quint),
+              filter var(--dur-base) var(--ease-out-quint);
+}
+
+/* ---------------------------------------------------------------- §5
+   THE LIVE BORDER
+
+   Exactly one element gets this, and it is the playable teaser. #tryit is
+   the only thing on the homepage that asks to be touched, so it is the only
+   thing allowed to look like it is awake. Eight seconds per revolution and
+   low alpha: it reads as "powered", not "urgent". If a second element ever
+   wants this rule, the answer is almost certainly no.
+
+   @property is what makes the angle interpolate at all -- a plain custom
+   property is a string to the animation engine and would step, not sweep.
+   ---------------------------------------------------------------- */
+@property --mo-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
+@supports (background: conic-gradient(from var(--mo-angle), red, blue)) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-motion] #tryit {
+      position: relative;
+      border-color: transparent;
+      background:
+        linear-gradient(var(--panel), var(--panel)) padding-box,
+        conic-gradient(from var(--mo-angle),
+          rgba(139, 92, 246, 0.55),
+          rgba(45, 212, 191, 0.55) 25%,
+          rgba(139, 92, 246, 0.10) 50%,
+          rgba(45, 212, 191, 0.55) 75%,
+          rgba(139, 92, 246, 0.55)) border-box;
+      animation: mo-spin var(--dur-amble) linear infinite;
+    }
+    @keyframes mo-spin { to { --mo-angle: 360deg; } }
+  }
+}
+
+/* ---------------------------------------------------------------- §6
+   THE LATTICE
+
+   The generative background, drawn by atmosphere.js. Fixed, behind
+   everything, and deliberately NOT a video: the brand mark is a lattice and
+   this site has never shipped a single photographic byte, so the honest
+   version of "dynamic background" here is the lattice actually behaving like
+   one. Costs ~4KB and no network request.
+
+   z-index -1 puts it in the same plane as body::before (the glows and the
+   26px dot grid). Later in the DOM, so it paints on top of them -- both are
+   transparent, so what you get is the static lattice with a live one moving
+   through it, which is the intended read.
+   ---------------------------------------------------------------- */
+#mo-lattice {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;   /* clicks pass through; atmosphere.js listens on window */
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-out-quint);
+}
+#mo-lattice.on { opacity: 1; }
+
+/* ---------------------------------------------------------------- §7
+   STATE
+
+   Two fixed overlays and one readout. See qubit.js for what drives them.
+
+   ONE overlay, not two, and backdrop-filter rather than filter. Three
+   reasons, all of them load-bearing:
+
+     - `filter` on an ancestor becomes the containing block for fixed
+       descendants, which would tear the sticky nav and the ambient layer off
+       the viewport. A backdrop-filter sibling changes no containing block.
+
+     - invert() and hue-rotate() must apply IN THAT ORDER. Splitting them
+       across a mix-blend-mode layer and a backdrop-filter layer makes the
+       order depend on paint order and on how a given engine builds its
+       backdrop root. One filter chain on one element is unambiguous.
+
+     - inversion is the whole point. invert() is what the X gate does to a
+       basis state, so the CSS primitive and the physics are the same
+       operation. That is why this maps to a filter and not to a theme class.
+
+   THE TWO CHANNELS. Lightness carries the bit, hue carries the phase, and
+   they stay independent:
+     --qz-inv  = |beta|^2      -> how far the page is toward |1>
+     --qz-hue  = 180deg * |beta|^2  + the relative phase in degrees
+   The 180deg term is compensation, not decoration: inverting RGB also
+   complements the hue, so rotating back by 180 restores the brand colours at
+   inverted lightness. Without it a measured |1> renders teal as red, which
+   would mean a bit flip had silently changed the phase channel too.
+
+   Filter is dropped entirely at |0> (see the .idle class) so an untouched
+   page pays nothing for a full-viewport backdrop filter it is not using.
+   ---------------------------------------------------------------- */
+#qz-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  backdrop-filter: invert(var(--qz-inv, 0)) hue-rotate(var(--qz-hue, 0deg));
+  -webkit-backdrop-filter: invert(var(--qz-inv, 0)) hue-rotate(var(--qz-hue, 0deg));
+  transition: backdrop-filter var(--dur-slow) var(--ease-in-out),
+              -webkit-backdrop-filter var(--dur-slow) var(--ease-in-out);
+}
+#qz-fx.idle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* The readout. Ships dim and says only "|0⟩" -- enough that someone who
+   reads it twice notices it is describing the page itself, not enough to
+   explain anything. It brightens the moment a gate lands. */
+#qz-pill {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 9998;   /* above #qz-fx: the readout reports the state, so it must
+                      not be inverted along with it */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill, 999px);
+  background: var(--nav-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  opacity: 0.34;
+  transition: opacity var(--dur-base) var(--ease-out-quint),
+              border-color var(--dur-base) var(--ease-out-quint),
+              color var(--dur-base) var(--ease-out-quint);
+}
+/* 44px touch minimum without a 44px-tall pill. Same trick nav a.link already
+   uses for the Path link, and for the same reason given there: the box has to
+   stay tight to its text, so it grows an invisible band inside itself instead.
+   Measured at 41x29 before this rule, which would have been the one control on
+   the site under the floor. */
+#qz-pill::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+  transform: translate(-50%, -50%);
+}
+#qz-pill:hover { opacity: 0.72; }
+#qz-pill.live {
+  opacity: 1;
+  color: var(--text);
+  border-color: rgba(45, 212, 191, 0.45);
+}
+#qz-pill .qz-ket { font-weight: 700; }
+#qz-pill .qz-gate {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgba(139, 92, 246, 0.18);
+  color: var(--violet);
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+#qz-pill .qz-hint { color: var(--muted); font-size: 0.68rem; }
+#qz-pill.flash { animation: mo-flash var(--dur-slow) var(--ease-out-quint); }
+@keyframes mo-flash {
+  0%   { border-color: var(--teal); box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4); }
+  100% { border-color: rgba(45, 212, 191, 0.45); box-shadow: 0 0 0 14px rgba(45, 212, 191, 0); }
+}
+
+/* Screen-reader announcement target for state changes. Visually gone,
+   still read: the page changing colour under someone is worth a word. */
+.qz-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 560px) {
+  #qz-pill { right: 10px; bottom: 10px; font-size: 0.7rem; padding: 5px 10px; }
+  #qz-pill .qz-hint { display: none; }
+}
+
+/* ---------------------------------------------------------------- §8
+   REDUCED MOTION
+
+   style.css already carries 14 of these blocks; this file honours the same
+   contract. State still CHANGES -- the qubit is the point, and someone who
+   turned motion down did not ask to be locked out of it -- it just stops
+   travelling to get there.
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  #qz-fx { transition-duration: 1ms; }
+  #mo-lattice { transition-duration: 1ms; }
+  #qz-pill.flash { animation: none; }
+}

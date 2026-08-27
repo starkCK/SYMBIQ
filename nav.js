@@ -62,7 +62,25 @@
 (function () {
   try {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var targets = [].slice.call(document.querySelectorAll('h2, .card, .grid, table, .formula, .cabs, .gate'))
+    /* .introute, .spine and footer added 2026-08-27, closing the gap that made
+       the footer the one block on every page that never animated in.
+
+       `section` was CONSIDERED AND DELIBERATELY LEFT OUT. It looks like the
+       obvious fourth addition -- index.html's three .orhero blocks are
+       sections -- but a revealed container drags its children with it:
+       `.reveal.in > *` fires fadeUp, which has fill `both` and ends at
+       opacity 1, so it would force any child that is ITSELF a pending
+       .reveal to become visible before its own observer fired. Every
+       <section> on this site contains an h2, and h2 is a target. The result
+       would be a coarse whole-block fade REPLACING the per-element reveals
+       those sections already get, which is worse, not better.
+
+       That is the test any future addition has to pass: does the new
+       selector match anything that contains an existing target? Measured
+       across all 24 pages before this change -- .introute, .spine and footer
+       swallow nothing, and no page loses a single existing reveal. */
+    var targets = [].slice.call(document.querySelectorAll(
+        'h2, .card, .grid, table, .formula, .cabs, .gate, .introute, .spine, footer'))
       .filter(function (el) {
         return !el.closest('nav') && !el.closest('.lattice') &&
                !(el.parentElement && el.parentElement.closest('.card'));

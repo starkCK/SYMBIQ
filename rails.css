@@ -235,7 +235,11 @@
     flex: none;
     width: 7px;
     height: 7px;
-    margin-top: 4px;
+    /* 5px, not the 4px that looks right in the source. Measured: the dot
+       centred at 14.5px from the row top while the first text line centres
+       at 15.42px, so the dot sat a pixel high against the word beside it.
+       Optical alignment is what the eye reads, not the box model. */
+    margin-top: 5px;
     border-radius: 999px;
     border: 1.5px solid var(--border);
     background: transparent;
@@ -253,10 +257,16 @@
   .sqrail-item:hover .sqrail-dot { border-color: var(--violet); }
   .sqrail-item.is-cur { color: var(--text); font-weight: 600; }
   .sqrail-item.is-cur .sqrail-dot { border-color: var(--violet); background: var(--violet); }
-  /* Sections already scrolled past read one notch back from the ones ahead,
-     so the index says "behind you" and "ahead of you" without a second
-     colour. */
-  .sqrail-item.is-done { opacity: 0.62; }
+  /* WHERE YOU HAVE BEEN, carried by the dot rather than by dimming the row.
+     The first version faded passed entries to opacity 0.62, which measured
+     3.64:1 against the page — under the 4.5:1 floor, so every section you
+     had already read became the least legible thing in the rail. Exactly
+     backwards, and the kind of defect that only shows up when you measure
+     the composited colour instead of the declared one.
+     Now the text stays at full strength in all three states and the dot
+     carries the distinction: hollow ahead of you, filled behind you, filled
+     violet where you are. Three states, no contrast spent. */
+  .sqrail-item.is-done .sqrail-dot { background: var(--muted); border-color: var(--muted); }
 
   /* ---------------------------------------------------------------- §5
      THE LADDER, VERTICAL
@@ -303,7 +313,9 @@
   .sqrail-rung + .sqrail-rung::before {
     content: "";
     position: absolute;
-    left: 11.5px;
+    left: 11.25px;   /* chip centre measured at 12.0px; a 1.5px line starting
+                        at 11.5 centres at 12.25 and leaned right of its own
+                        rungs. */
     top: -5px;
     height: 10px;
     width: 1.5px;
@@ -458,7 +470,15 @@
     display: inline-flex;
     align-items: center;
     gap: var(--sp-2, 8px);
-    padding: 5px 10px;
+    /* 32px, up from the 24px the padding alone produced. The rails only
+       exist at 1440px and up, which is a pointer surface, so the site's 44px
+       touch floor is not the governing number here -- but 24px is small for
+       a real button under any input, and this is the only true button in
+       either rail. The dense index entries below stay at their own rhythm on
+       purpose: a section list is scanned, and 44px a row would push most
+       pages' index into a scroller for no gain to a mouse. */
+    min-height: 32px;
+    padding: 6px 12px;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--panel);
@@ -510,6 +530,33 @@
   @keyframes sqrail-in {
     from { opacity: 0; translate: 0 8px; }
     to   { opacity: 1; translate: 0 0; }
+  }
+
+  /* ---------------------------------------------------------------- §11
+     PRESS
+
+     Every control in both rails had a default, a hover and a focus ring, and
+     nothing for the moment of the click itself. On a fast connection the
+     page moves before you notice; on a slow one the rail looked inert while
+     the navigation was already underway.
+
+     One idea, applied everywhere rather than six unrelated effects: pressing
+     a control fills its accent violet, which is the same mark the rail uses
+     for "this is where you are". Press previews arrival. The fork keeps teal
+     because teal is what the fork means throughout the site, and a press is
+     not the place to change an element's colour language.
+     ---------------------------------------------------------------- */
+  .sqrail-item:active .sqrail-dot { background: var(--violet); border-color: var(--violet); }
+  .sqrail-rung:active .sqrail-id { background: var(--violet); border-color: var(--violet); color: #04021f; }
+  .sqrail-fork:active { border-style: solid; border-color: var(--teal); }
+  /* An inset ring rather than a border colour: the next card paints its
+     border from a gradient through border-box, which no border-color can
+     reach. */
+  .sqrail-next:active { box-shadow: inset 0 0 0 1px var(--violet); }
+  .sqrail-meter:active .sqrail-bar { box-shadow: inset 0 0 0 1px var(--violet); }
+  .sqrail-top:active { border-color: var(--violet); color: var(--text); }
+  @media (prefers-color-scheme: light) {
+    .sqrail-rung:active .sqrail-id { color: #f8fafc; }
   }
 
   /* Focus stays visible: these are real links a keyboard reader can tab

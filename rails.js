@@ -338,11 +338,17 @@
     col.appendChild(mod);
   }
 
+  /* No eyebrow over this one, unlike the modules above it. "Where next" sat
+     directly above the card's own bold title, which is a kicker over a
+     heading — the heading was already carrying the sentence, and the label
+     only repeated the arrow. The other rail labels stay because each of them
+     IS its module's heading with no second heading beneath: a bare list of
+     section names could be site navigation, and L0 through L4 mean nothing
+     unless something says "The Ladder". */
   function buildNext(col) {
     var n = NEXT[page()];
     if (!n) return;
     var mod = el('div', 'sqrail-mod');
-    mod.appendChild(el('div', 'sqrail-lab', 'Where next'));
     var a = el('a', 'sqrail-next');
     a.href = n[0];
     a.appendChild(el('b', null, n[1] + ' →'));
@@ -374,7 +380,13 @@
       if (!stateShown) {
         stateShown = true;
         stateBox.hidden = false;
-        stateBox.appendChild(el('div', 'sqrail-lab', 'This page'));
+        /* Deliberately unlabelled. It read "This page", one line under a
+           left rail already labelled "On this page" — two headings saying
+           the same three words in one viewport, for two unrelated things.
+           Dropping it also suits what this module is: the only other trace
+           of the keyboard layer is a dim readout in the corner that explains
+           nothing either. A reader who has got this far does not need a
+           caption; a reader who has not should not be handed one. */
       }
       var pct = Math.round(s.p1 * 100);
       var dl = stateBox.querySelector('dl');

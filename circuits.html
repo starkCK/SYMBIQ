@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Strip away the Bloch sphere and the bra-kets: a superconducting qubit is a capacitor wired across one nonlinear component. Live, driven, and turned into the same gate the homepage widget already uses.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 <style>
 .cw-grid { display: grid; grid-template-columns: 1fr 170px; gap: 16px; align-items: center; }
 .cw-scope { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
@@ -97,6 +97,8 @@
 <script src="rung.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js?v=1" defer></script>
 </head>
 <body data-tiers data-rung="L0">
 <div class="wrap">
@@ -193,6 +195,7 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <div id="sq-auth" class="sq-auth"></div>
 </nav>
 
 <h1>What is a qubit actually made of?</h1>

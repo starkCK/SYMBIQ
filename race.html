@@ -26,12 +26,14 @@
 <meta name="twitter:description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 <script src="nav.js?v=7" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js?v=1" defer></script>
 <style>
 #thr-svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; height: auto; }
 .bar { transition: height .45s cubic-bezier(.2,.7,.3,1), y .45s cubic-bezier(.2,.7,.3,1), fill .3s ease; }
@@ -138,6 +140,7 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <div id="sq-auth" class="sq-auth"></div>
 </nav>
 
 

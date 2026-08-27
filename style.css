@@ -386,6 +386,29 @@ nav { position: relative; }
 nav .link.pathlink { color: var(--violet); font-weight: 600; }
 nav .link.pathlink:hover { color: var(--violet); }
 
+/* ── L1 accounts: #sq-auth, mounted by nav's own template so it appears on
+   every page. Empty until auth.js runs (progressive enhancement, same rule
+   as the rest of nav) -- occupies no space and shows nothing broken if it
+   never loads. Sized down from .sqform's page-body proportions to fit a
+   nav bar rather than a full page width. */
+.sq-auth { margin-left: auto; flex: 0 0 auto; }
+.sq-auth-form { margin: 0; gap: 6px; flex-wrap: nowrap; }
+.sq-auth-form input[type=email] { flex: 0 1 170px; min-width: 100px; padding: 6px 10px; font-size: .85rem; }
+.sq-auth-form button { padding: 6px 14px; min-height: 36px; font-size: .85rem; }
+.sq-auth-status { flex-basis: 100%; margin: 4px 0 0; font-size: .78rem; color: var(--muted); }
+.sq-auth-me { display: flex; align-items: center; gap: 8px; }
+.sq-auth-name { font-size: .88rem; font-weight: 600; }
+.sq-auth-no { color: var(--muted); font-weight: 400; }
+.sq-auth-me button {
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  border-radius: 8px; padding: 5px 12px; min-height: 36px; font: inherit; font-size: .82rem;
+  cursor: pointer; transition: border-color .15s ease, color .15s ease;
+}
+.sq-auth-me button:hover { border-color: var(--teal); color: var(--text); }
+@media (max-width: 860px) {
+  .sq-auth { margin-left: 0; flex-basis: 100%; order: 3; padding-top: 8px; }
+}
+
 #navtrig { display: none; }
 #navcats { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
 

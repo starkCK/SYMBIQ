@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 <style>
 .pk-wrap { display: flex; gap: 26px; justify-content: center; align-items: flex-start; flex-wrap: wrap; margin: 8px 0; }
 .pk-col { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 160px; }
@@ -87,6 +87,8 @@
 <script src="rung.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js?v=1" defer></script>
 </head>
 <body data-tiers data-rung="L3">
 <div class="wrap">
@@ -183,6 +185,7 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <div id="sq-auth" class="sq-auth"></div>
 </nav>
 
 <h1>Why do Grover's and Shor's algorithms actually work?</h1>

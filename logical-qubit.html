@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits — what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 <style>
 .preset { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; margin: 0 6px 6px 0; cursor: pointer; font-size: .85rem; transition: border-color .15s, color .15s, transform .15s; }
 .preset:hover { border-color: var(--teal); transform: translateY(-1px); }
@@ -86,6 +86,8 @@
 <script src="rung.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js?v=1" defer></script>
 </head>
 <body data-tiers data-rung="L2">
 <div class="wrap">
@@ -182,6 +184,7 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <div id="sq-auth" class="sq-auth"></div>
 </nav>
 
 

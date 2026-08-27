@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it — with an interactive surface code you can break yourself.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 <style>
 #qec-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
 .pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
@@ -98,6 +98,8 @@
 <script src="rung.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js?v=1" defer></script>
 </head>
 <body data-tiers data-rung="L2">
 <div class="wrap">
@@ -194,6 +196,7 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <div id="sq-auth" class="sq-auth"></div>
 </nav>
 
 

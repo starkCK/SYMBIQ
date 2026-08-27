@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
 <script src="games.js?v=14"></script>
@@ -37,6 +37,8 @@
 <script src="tiers.js?v=3" defer></script>
 <script src="analytics.js?v=2" defer></script>
 <script src="forms.js?v=2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="auth.js?v=1" defer></script>
 <style>
 /* ---------------- The Solver's Path ---------------- */
 .journey { display: grid; grid-template-columns: minmax(0, 330px) 1fr; gap: 24px; align-items: start; margin-top: 6px; }
@@ -362,6 +364,7 @@
     </details>
   </div>
   <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <div id="sq-auth" class="sq-auth"></div>
 </nav>
 
 

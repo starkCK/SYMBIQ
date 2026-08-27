@@ -1,0 +1,132 @@
+/* SymbiQ — accounts (L1). Email magic-link only for now; no GitHub OAuth
+ * yet (that needs a separate GitHub OAuth App, a later, optional step).
+ *
+ * PROGRESSIVE ENHANCEMENT, same rule as nav.js/tiers.js: this mounts into
+ * `#sq-auth`, an empty div nav already ships on every page. If the
+ * Supabase library fails to load, or supabase-config.js is missing, or
+ * anything here throws, the div just stays empty -- nothing else on the
+ * page depends on it, and no page is worse off than it was before L1.
+ *
+ * On sign-in, this hands the session to SymbiQ.save.connectRemote() so
+ * local progress starts mirroring to the account. On sign-out, it calls
+ * disconnectRemote() -- local storage keeps working exactly as it always did.
+ *
+ * API: window.SymbiQ.auth = { getUser(), signOut() }
+ */
+(function () {
+  window.SymbiQ = window.SymbiQ || {};
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src; s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('failed to load ' + src)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function init() {
+    var mount = document.getElementById('sq-auth');
+    if (!mount) return;
+    if (!window.SymbiQ.SUPABASE_URL || !window.SymbiQ.SUPABASE_ANON_KEY) return;
+
+    loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js')
+      .then(function () {
+        if (!window.supabase || !window.supabase.createClient) throw new Error('supabase-js did not load');
+        var client = window.supabase.createClient(window.SymbiQ.SUPABASE_URL, window.SymbiQ.SUPABASE_ANON_KEY);
+        var API = { getUser: function () { return currentUser; }, signOut: function () { return client.auth.signOut(); } };
+        window.SymbiQ.auth = API;
+        var currentUser = null;
+
+        function renderSignedOut(status) {
+          mount.innerHTML =
+            '<form id="sq-auth-form" class="sqform sq-auth-form">' +
+              '<input type="email" id="sq-auth-email" placeholder="you@example.com" required aria-label="Email for a sign-in link">' +
+              '<button type="submit">Sign in →</button>' +
+            '</form>' +
+            (status ? '<p class="sq-auth-status">' + esc(status) + '</p>' : '');
+          var form = document.getElementById('sq-auth-form');
+          form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var email = document.getElementById('sq-auth-email').value.trim();
+            if (!email) return;
+            var btn = form.querySelector('button');
+            btn.disabled = true; btn.textContent = 'Sending…';
+            client.auth.signInWithOtp({
+              email: email,
+              options: { emailRedirectTo: location.href.split('#')[0] }
+            }).then(function (res) {
+              if (res && res.error) throw res.error;
+              renderSignedOut('Check ' + email + ' for a sign-in link.');
+            }).catch(function (err) {
+              renderSignedOut('Could not send a link (' + (err && err.message || 'unknown error') + ').');
+            });
+          });
+        }
+
+        function renderSignedIn(user, profile) {
+          var name = (profile && profile.handle) || (user.email || '').split('@')[0];
+          mount.innerHTML =
+            '<div class="sq-auth-me">' +
+              '<span class="sq-auth-name">' + esc(name) +
+              (profile && profile.symbiont_no ? ' <span class="sq-auth-no">#' + esc(profile.symbiont_no) + '</span>' : '') +
+              '</span>' +
+              '<button id="sq-auth-out" type="button">Sign out</button>' +
+            '</div>';
+          document.getElementById('sq-auth-out').addEventListener('click', function () {
+            client.auth.signOut();
+          });
+        }
+
+        function onSignedIn(user) {
+          currentUser = user;
+          Promise.resolve(
+            client.from('profiles').select('handle,symbiont_no').eq('id', user.id).single()
+          ).then(function (res) {
+            renderSignedIn(user, res && res.data);
+          }).catch(function () {
+            renderSignedIn(user, null);
+          });
+          if (window.SymbiQ.save && window.SymbiQ.save.connectRemote) {
+            window.SymbiQ.save.connectRemote(client, user.id);
+          }
+        }
+
+        function onSignedOut() {
+          currentUser = null;
+          if (window.SymbiQ.save && window.SymbiQ.save.disconnectRemote) {
+            window.SymbiQ.save.disconnectRemote();
+          }
+          renderSignedOut(null);
+        }
+
+        renderSignedOut(null);
+
+        client.auth.getSession().then(function (res) {
+          var session = res && res.data && res.data.session;
+          if (session && session.user) onSignedIn(session.user);
+        });
+
+        client.auth.onAuthStateChange(function (event, session) {
+          if (session && session.user) onSignedIn(session.user);
+          else onSignedOut();
+        });
+      })
+      .catch(function (err) {
+        try { console.warn('SymbiQ auth: not available', err); } catch (e) {}
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

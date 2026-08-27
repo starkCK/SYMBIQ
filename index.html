@@ -32,6 +32,11 @@
      24 pages and touching it forces a bump on every one of them (the
      2026-07-24 scar). Motion should never be a 24-page deploy. -->
 <link rel="stylesheet" href="motion.css?v=2">
+<!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
+     has one: style.css is shared by 24 pages and touching it forces a bump on
+     every one of them. Nothing here is required for any page to work -- below
+     1440px rails.js builds nothing at all. -->
+<link rel="stylesheet" href="rails.css?v=1">
 <style>
 /* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
@@ -55,6 +60,7 @@
 <script src="archive.js?v=1" defer></script>
 <script src="atmosphere.js?v=1" defer></script>
 <script src="qubit.js?v=1" defer></script>
+<script src="rails.js?v=1" defer></script>
 </head>
 <!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover
        physics on cards and the live border on #tryit. NOT scroll reveals --
@@ -65,7 +71,7 @@
        sticky bar.
      data-lattice  asks atmosphere.js for the generative background. Homepage
        only -- the lattice belongs behind the hero that argues for it. -->
-<body data-motion data-lattice>
+<body data-motion data-rails data-lattice>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -238,9 +244,9 @@
       quantum: acts || formalism
         ? (acts ? acts + ' of 6 acts cleared' : '') +
           (acts && formalism ? ' · ' : '') +
-          (formalism ? formalism + ' of 17 topics' : '')
+          (formalism ? formalism + ' of 20 topics' : '')
         : '',
-      or:  orTopics ? orTopics + ' of 20 topics understood' : '',
+      or:  orTopics ? orTopics + ' of 24 topics understood' : '',
       pqc: pqcStarted ? 'your estate is saved here' : ''
     };
     var any = state.quantum || state.or || state.pqc;

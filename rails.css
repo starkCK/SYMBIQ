@@ -1,0 +1,450 @@
+/* SymbiQ — rails.css: the peripheral layer (added 2026-08-28).
+ *
+ * WHAT THIS IS FOR
+ * The reading column is capped at 780 / 880 / 1040px by design: prose past
+ * about 75 characters a line stops being readable, so widening .wrap is not
+ * the fix for a wide monitor. Measured on the homepage at 1920x1000, that
+ * cap leaves 432px of empty background on the left and 447px on the right,
+ * and past 2000px it is over 700px a side. This file puts orientation into
+ * that space — where you are in the page, where you are on the Ladder, what
+ * you have already cleared, where to go next — without touching the measure.
+ *
+ * THE ARCHITECTURE RULE, SAME AS motion.css
+ * None of this lives in style.css. That file is 123KB shared by 24 pages and
+ * carries the 2026-07-24 scar: touching it forces a cache-buster bump on
+ * every page. A peripheral layer should never be a 24-page deploy, so it
+ * ships as its own stylesheet with its own version query, exactly as the
+ * motion layer does.
+ *
+ * PROGRESSIVE ENHANCEMENT, SAME AS rung.js AND nav.js
+ * Nothing here is required for any page to work. rails.js inserts the rails
+ * only when the viewport is at least 1440px wide, and only on a page whose
+ * body carries data-rails. If the script fails, is served stale, or throws,
+ * what remains is the page exactly as it was before this file existed.
+ *
+ * GEOMETRY — why the offsets are written as calc(50% + 520px)
+ * Each rail claims the whole gutter between one viewport edge and the
+ * reading column, then centres a narrow column inside it. The inner edge is
+ * expressed against 50% of the viewport rather than against 100vw because
+ * 100vw includes the classic scrollbar in several engines and the rails
+ * would sit a few pixels off. 520px is half of the widest .wrap tier
+ * (1040px), which is the only tier that exists above the 1440px gate.
+ *
+ * NOTE FOR ANY FUTURE EDIT OF THE COMMENTS IN THIS FILE
+ * A literal star followed by a literal slash closes a CSS comment, and no
+ * escape exists inside one. That mistake silently killed the rung rail's own
+ * styling for five days in August 2026, because a rule whose selector fails
+ * to parse is dropped whole, declarations included. Do not let a star and a
+ * slash land next to each other in this file, not even when describing the
+ * bug. Write token-family names as prose instead of as a wildcard.
+ */
+
+/* ---------------------------------------------------------------- §0
+   THE FLOOR
+
+   This one declaration lives OUTSIDE the gate, and it is the difference
+   between a graceful narrow viewport and a broken one. Every other rule in
+   this file sits inside a min-width query, so below the gate a .sqrail
+   element has no styling of its own at all: it would fall back to a plain
+   block box in the normal document flow and dump the section index, the
+   ladder and the next-page card as loose content at the foot of the page.
+
+   rails.js does remove the rails when the query stops matching, but the
+   stylesheet must be correct without the script — a resize, a zoom step or
+   a device rotation can outrun a listener, and a matchMedia change event
+   that never arrives (as happens under some emulated viewports) must be a
+   non-event, not a layout collapse. Found by resizing a built page from
+   1920 to 1280 and watching the rails reappear in the flow.
+   ---------------------------------------------------------------- */
+.sqrail { display: none; }
+
+/* ---------------------------------------------------------------- §1
+   THE GATE
+
+   Everything below is inside one min-width query. rails.js runs the same
+   1440px test in matchMedia and only builds the DOM when it passes, so the
+   markup and the styling can never disagree — resize below the gate and the
+   rails are removed rather than merely hidden.
+   ---------------------------------------------------------------- */
+@media (min-width: 1440px) {
+
+  /* ---------------------------------------------------------------- §2
+     THE GUTTER ZONES
+
+     z-index 30 sits deliberately below the sticky header nav (40) and below
+     the nav dropdown panels (45). The rails never overlap either one
+     horizontally, but a page that grows a wider element later should have
+     the header win, not the margin furniture.
+
+     Both zones are pointer-events: none so that the empty parts of the
+     gutter stay click-through; only the inner column takes the pointer
+     back. Without this a 440px-wide invisible box on each side would eat
+     text-selection drags that start in the margin.
+     ---------------------------------------------------------------- */
+  .sqrail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .sqrail-l { left: 0; right: calc(50% + 520px); }
+  .sqrail-r { right: 0; left: calc(50% + 520px); }
+
+  .sqrail-col {
+    pointer-events: auto;
+    width: min(248px, calc(100% - 36px));
+    max-height: calc(100vh - 150px);   /* clears the state readout, which is
+                                          fixed 14px from the bottom right */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5, 20px);
+    scrollbar-width: thin;
+  }
+  .sqrail-col::-webkit-scrollbar { width: 4px; }
+  .sqrail-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+
+  /* The eyebrow that labels each module. Same treatment as the rung rail's
+     own label, so the two read as one family. */
+  .sqrail-lab {
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: var(--sp-3, 12px);
+  }
+
+  /* ---------------------------------------------------------------- §3
+     THE SCROLL SPINE
+
+     A hairline at the inner edge of the left gutter, running the full
+     height of the viewport, with the read portion filled violet-to-teal.
+     It is the one element here that is allowed to be full height: it is a
+     measurement of the page, so its length should be the page.
+
+     scaleY on a pseudo-element, not height, so the fill costs no layout on
+     every scroll frame. It is a pseudo-element of a fixed, non-transformed
+     parent, so it creates no containing block anything else depends on.
+     ---------------------------------------------------------------- */
+  .sqrail-spine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 2px;
+    background: var(--border);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .sqrail-spine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--violet), var(--teal));
+    transform-origin: top;
+    transform: scaleY(var(--sq-read, 0));
+  }
+
+  /* ---------------------------------------------------------------- §4
+     ON THIS PAGE — the left index
+
+     Built from the page's own h2 elements by rails.js. Each entry is a dot
+     on a track plus a label clamped to two lines, because several section
+     titles on this site are full sentences and a 248px column cannot hold
+     them. The full text stays in the title attribute and in the link text
+     itself for assistive technology, so nothing is lost, only wrapped.
+     ---------------------------------------------------------------- */
+  .sqrail-idx { display: flex; flex-direction: column; }
+  .sqrail-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3, 12px);
+    padding: 7px 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  .sqrail-item .sqrail-dot {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin-top: 4px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    transition: border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                background-color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  .sqrail-item .sqrail-txt {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .sqrail-item:hover { color: var(--text); }
+  .sqrail-item:hover .sqrail-dot { border-color: var(--violet); }
+  .sqrail-item.is-cur { color: var(--text); font-weight: 600; }
+  .sqrail-item.is-cur .sqrail-dot { border-color: var(--violet); background: var(--violet); }
+  /* Sections already scrolled past read one notch back from the ones ahead,
+     so the index says "behind you" and "ahead of you" without a second
+     colour. */
+  .sqrail-item.is-done { opacity: 0.62; }
+
+  /* ---------------------------------------------------------------- §5
+     THE LADDER, VERTICAL
+
+     On a page carrying data-rung, rails.js draws the same five rungs the
+     horizontal pill draws — and hides that pill, because two copies of one
+     fact is clutter, not reinforcement. Below 1440px the vertical rail is
+     never built, so the horizontal pill is the only version and nothing is
+     lost. The class is set on the html element by rails.js so the rule can
+     be scoped without a body-attribute guess.
+     ---------------------------------------------------------------- */
+  html.sq-vrung .rung-rail { display: none; }
+
+  .sqrail-ladder { display: flex; flex-direction: column; }
+  .sqrail-rung {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3, 12px);
+    padding: 5px 0;
+    color: var(--muted);
+    font-size: 0.76rem;
+    text-decoration: none;
+    transition: color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  .sqrail-rung .sqrail-id {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    font-size: 0.64rem;
+    font-weight: 700;
+    background: var(--panel);
+    transition: border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                background-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  /* The connector between two rungs. Drawn on the entry rather than as its
+     own element so the markup stays one node per rung. */
+  .sqrail-rung + .sqrail-rung::before {
+    content: "";
+    position: absolute;
+    left: 11.5px;
+    top: -5px;
+    height: 10px;
+    width: 1.5px;
+    background: var(--border);
+  }
+  .sqrail-rung:hover { color: var(--text); }
+  .sqrail-rung:hover .sqrail-id { border-color: var(--violet); }
+  .sqrail-rung.is-cur { color: var(--text); font-weight: 700; }
+  .sqrail-rung.is-cur .sqrail-id { border-color: var(--violet); background: var(--violet); color: #04021f; }
+  /* Same correction style.css already carries for the horizontal rail's own
+     current dot, and for the same reason. --violet darkens to 7c3aed in
+     light mode, and the near-black label that reads cleanly on the light
+     violet measures 3.57:1 against it -- under the 4.5:1 floor for a badge
+     set at roughly ten pixels. Flipping the label to the page's own near-
+     white takes it to 5.4:1. */
+  @media (prefers-color-scheme: light) {
+    .sqrail-rung.is-cur .sqrail-id { color: #f8fafc; }
+  }
+
+  .sqrail-fork {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2, 8px);
+    margin-top: var(--sp-3, 12px);
+    padding: 5px 10px;
+    border: 1px dashed var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.7rem;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  .sqrail-fork:hover { border-color: var(--teal); color: var(--text); }
+  .sqrail-fork.is-cur { border-style: solid; border-color: var(--teal); color: var(--teal); font-weight: 700; }
+
+  /* ---------------------------------------------------------------- §6
+     YOUR PROGRESS
+
+     Read out of the same two localStorage keys the homepage router already
+     reads. Rendered only when there is something to report — a first-time
+     visitor gets no empty meters, because an empty meter is a reproach.
+     ---------------------------------------------------------------- */
+  .sqrail-prog { display: flex; flex-direction: column; gap: var(--sp-3, 12px); }
+  .sqrail-meter { display: block; text-decoration: none; color: var(--muted); }
+  .sqrail-meter .sqrail-mtop {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--sp-2, 8px);
+    font-size: 0.72rem;
+    margin-bottom: 5px;
+  }
+  .sqrail-meter .sqrail-mnum {
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    font-weight: 700;
+  }
+  .sqrail-bar {
+    height: 3px;
+    border-radius: 999px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .sqrail-bar i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--violet), var(--teal));
+    transform-origin: left;
+    transform: scaleX(var(--sq-p, 0));
+  }
+  .sqrail-meter:hover { color: var(--text); }
+
+  /* ---------------------------------------------------------------- §7
+     WHERE NEXT
+
+     One link, not a menu. The site already has a full navigation; the point
+     of this module is to answer "and then?" without asking the reader to
+     open anything. Restrained on purpose: the button trend on this site is
+     monotonically less flash, so this is a bordered chip with a gradient
+     hairline on top, not a filled call to action competing with the real one
+     in the page.
+     ---------------------------------------------------------------- */
+  .sqrail-next {
+    display: block;
+    padding: var(--sp-3, 12px) var(--sp-4, 16px);
+    border: 1px solid var(--border);
+    border-top: 2px solid transparent;
+    border-radius: var(--r-md, 10px);
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(90deg, var(--violet), var(--teal)) border-box;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  .sqrail-next b { display: block; color: var(--text); font-size: 0.84rem; margin-bottom: 2px; }
+  .sqrail-next:hover { color: var(--text); }
+
+  /* ---------------------------------------------------------------- §8
+     THE STATE MODULE
+
+     Hidden until the reader has already found the keyboard layer for
+     themselves. It reports what their own gates composed to; it never names
+     a key. Someone who has not pressed anything sees nothing here, which is
+     the point — this is a reward for discovery, not a hint toward it.
+     ---------------------------------------------------------------- */
+  .sqrail-state {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md, 10px);
+    padding: var(--sp-3, 12px) var(--sp-4, 16px);
+    background: var(--panel);
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .sqrail-state dl { display: grid; grid-template-columns: auto 1fr; gap: 3px var(--sp-3, 12px); margin: 0; }
+  .sqrail-state dt { color: var(--muted); }
+  .sqrail-state dd { margin: 0; color: var(--text); text-align: right; }
+  .sqrail-state .sqrail-ket { color: var(--teal); font-weight: 700; }
+
+  /* ---------------------------------------------------------------- §9
+     BACK TO TOP
+
+     Appears once the reader is a screen and a half down. Sits at the foot of
+     the left column so it never competes with the index above it.
+     ---------------------------------------------------------------- */
+  .sqrail-top {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2, 8px);
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--muted);
+    font-size: 0.7rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                visibility var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                border-color var(--dur-base, 260ms) var(--ease-out-quint, ease),
+                color var(--dur-base, 260ms) var(--ease-out-quint, ease);
+  }
+  .sqrail-top.is-on { opacity: 1; visibility: visible; }
+  .sqrail-top:hover { border-color: var(--violet); color: var(--text); }
+
+  /* ---------------------------------------------------------------- §10
+     ARRIVAL
+
+     One fade, once, on build. Deliberately not a scroll reveal: nav.js has
+     owned scroll reveals site-wide since long before this file, and a second
+     reveal system does not merely duplicate the first, it overrides it —
+     an animation with fill both outranks the normal opacity declaration
+     that .reveal relies on. See motion.css section 3 for the full account.
+     The rails are outside .wrap and carry no .reveal, so they are invisible
+     to nav.js and this local fade cannot collide with it.
+
+     translate, never transform: a running animation with fill both would
+     otherwise outrank every hover lift declared in style.css.
+
+     SCOPED TO .sqrail-mod, NOT TO EVERY CHILD OF THE COLUMN, and that is
+     load-bearing rather than tidy. An animation with fill both outranks a
+     normal declaration of the same property. The back-to-top button is also
+     a direct child of the column and holds itself hidden with a normal
+     opacity: 0; had this animation matched it, its end state of opacity 1
+     would have pinned it visible from first paint and no amount of class
+     toggling could have hidden it again. Every module carries .sqrail-mod;
+     the button deliberately does not.
+     ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .sqrail-mod { animation: sqrail-in var(--dur-slow, 620ms) var(--ease-out-quint, ease) both; }
+    .sqrail-mod:nth-child(2) { animation-delay: 90ms; }
+    .sqrail-mod:nth-child(3) { animation-delay: 180ms; }
+    .sqrail-mod:nth-child(4) { animation-delay: 270ms; }
+    .sqrail-spine::after { transition: transform 120ms linear; }
+    .sqrail-bar i { transition: transform var(--dur-slow, 620ms) var(--ease-out-quint, ease); }
+  }
+  @keyframes sqrail-in {
+    from { opacity: 0; translate: 0 8px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+
+  /* Focus stays visible: these are real links a keyboard reader can tab
+     into, and they sit on a background the default outline can vanish
+     against. */
+  .sqrail :focus-visible {
+    outline: 2px solid var(--violet);
+    outline-offset: 3px;
+    border-radius: var(--r-sm, 6px);
+  }
+}
+
+/* Margin furniture is screen furniture. On paper the reading column is the
+   whole document. */
+@media print { .sqrail { display: none; } }

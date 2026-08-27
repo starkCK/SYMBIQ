@@ -28,6 +28,11 @@
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=40">
 <link rel="stylesheet" href="motion.css?v=2">
+<!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
+     has one: style.css is shared by 24 pages and touching it forces a bump on
+     every one of them. Nothing here is required for any page to work -- below
+     1440px rails.js builds nothing at all. -->
+<link rel="stylesheet" href="rails.css?v=1">
 <style>
 .am-pair { display: flex; gap: 22px; align-items: center; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
 .am-pair svg { width: 150px; height: 90px; }
@@ -105,8 +110,9 @@
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
+<script src="rails.js?v=1" defer></script>
 </head>
-<body data-motion data-tiers data-rung="FORK">
+<body data-motion data-rails data-tiers data-rung="FORK">
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

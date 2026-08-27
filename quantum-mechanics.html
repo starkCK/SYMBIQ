@@ -28,6 +28,11 @@
 <!-- social:end -->
 <link rel="stylesheet" href="style.css?v=40">
 <link rel="stylesheet" href="motion.css?v=2">
+<!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
+     has one: style.css is shared by 24 pages and touching it forces a bump on
+     every one of them. Nothing here is required for any page to work -- below
+     1440px rails.js builds nothing at all. -->
+<link rel="stylesheet" href="rails.css?v=1">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -103,8 +108,9 @@
 }
 </script>
 <script src="qubit.js?v=1" defer></script>
+<script src="rails.js?v=1" defer></script>
 </head>
-<body data-motion data-tiers data-rung="L1">
+<body data-motion data-rails data-tiers data-rung="L1">
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

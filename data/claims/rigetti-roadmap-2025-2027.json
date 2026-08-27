@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "speaker": null,
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 1,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-08-27",
+      "signal": "no_signal",
+      "note": "Captured at seed. Worth noting for context: Rigetti's public roadmap has moved before -- an earlier iteration of this same roadmap targeted 100+ qubits with 99.5% median two-qubit fidelity specifically \"by the end of 2025,\" reported the same week -- so the 2025 leg of this claim is the nearest-term thing to watch first.",
+      "source_url": null,
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": "No individual executive quote was found attached to these specific year-by-year figures -- they are Rigetti's own reported roadmap targets rather than a spoken quotation, the same shape of sourcing already used for the IBM Starling entry. Rigetti.com itself was not directly fetchable during capture; the figures are corroborated by an independent trade publication's direct reporting on the Q3 2025 earnings call.",
+  "slug": "rigetti-roadmap-2025-2027",
+  "claimant": "rigetti",
+  "verbatim": "2025 Target: delivery of a 100+ qubit chiplet-based quantum system. 2026 Target: deployment of a 150+ qubit system. 2027 Target: deployment of a 1,000+ qubit system.",
+  "headline": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
+  "source_url": "https://quantumcomputingreport.com/rigetti-computing-reports-on-its-q3-2025-financial-results-unveils-aggressive-qubit-roadmap-to-1000-qubits/",
+  "source_date": "2025-11-11",
+  "source_kind": "Q3 2025 earnings report / roadmap update, reported",
+  "kind": "milestone",
+  "domain": "quantum",
+  "resolution_criteria": "Resolves VERIFIED if Rigetti has, by 31 Dec 2027 (plus grace), shipped or operated a system matching each named year's qubit-count target within that year -- checked against Rigetti's own quarterly technical updates and independent reporting, not press-release qubit counts alone (this project's own recurring lesson: a qubit count without connectivity/fidelity context is close to meaningless -- see race.html). PARTIALLY_VERIFIED if the 2025/2026 interim targets slip but the 2027 endpoint is still substantially met. NOT_VERIFIED if the 2027 target is missed outright.",
+  "resolver_sources": [
+    "https://www.rigetti.com/news",
+    "https://investors.rigetti.com",
+    "https://thequantuminsider.com",
+    "https://quantumcomputingreport.com"
+  ],
+  "resolves_by": "2027-12-31",
+  "concept_ids": [
+    "gate-fidelity"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "speaker": "Jensen Huang, CEO, NVIDIA",
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 4,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-08-27",
+      "signal": "no_signal",
+      "note": "Captured at seed, 19 months after the remark. Real-world consequence worth noting for context (not evidence toward the verdict): the comment briefly wiped tens of billions of dollars off publicly traded quantum companies' market capitalisation the same week, and Huang has since visibly softened the framing at subsequent public appearances -- a check-in for the desk to track is whether he has ever named a revised range, which would be a genuine restatement worth logging as its own event.",
+      "source_url": null,
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": "A secondary source (Quantum Computing Report) is used as source_url because it directly transcribes the Q&A exchange; no single official NVIDIA transcript of the CES Q&A session was found. The quote is corroborated verbatim across multiple independent outlets covering the same CES 2025 session, which is why it is treated as reliably attributed despite the indirect source.",
+  "slug": "huang-useful-quantum-15-30-years",
+  "claimant": "nvidia",
+  "verbatim": "We're probably five or six orders of magnitudes away, 15 years for useful quantum computers and that would be on the early side. 30 years is probably on the late side. If you picked 20 years a whole bunch of us would believe it.",
+  "headline": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
+  "source_url": "https://quantumcomputingreport.com/our-thoughts-on-jensen-huangs-truly-useful-in-15-30-years-quantum-statements/",
+  "source_date": "2025-01-07",
+  "source_kind": "Q&A remarks at CES 2025, reported",
+  "kind": "timeline",
+  "domain": "quantum",
+  "resolution_criteria": "A genuinely hedged range, not a point claim, so it is tracked at both ends rather than forced into one deadline. EARLY-END check (this claim's primary resolves_by, 15 years out): if a quantum computer has, by 6 Jan 2040, solved a problem of real commercial or scientific value faster or cheaper than the best available classical alternative -- independently verified, not a vendor's own benchmark -- that falsifies even Huang's optimistic bound (NOT_VERIFIED: he was wrong on the early side too). If no such result exists by then, log a check-in and continue tracking toward the LATE-END gate, 6 Jan 2055 (30 years): if by then still no such result exists, that falsifies the claim from the other direction (NOT_VERIFIED: even the generous bound was too generous). VERIFIED only if the first genuine instance lands inside the window itself, closest to the ~20-year midpoint he named as the figure most people in the field would actually believe.",
+  "resolver_sources": [
+    "https://thequantuminsider.com",
+    "https://www.nature.com",
+    "https://www.science.org"
+  ],
+  "resolves_by": "2040-01-06",
+  "concept_ids": [
+    "fault-tolerance"
+  ]
+}

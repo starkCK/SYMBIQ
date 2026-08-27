@@ -3,52 +3,28 @@
   "generated": "2026-08-27",
   "entries": [
     {
-      "slug": "ibm-starling-2029",
-      "claimant": "ibm",
-      "headline": "IBM will deliver a large-scale, fault-tolerant quantum computer (“Starling”) by 2029, running 100 million quantum operations on 200 logical qubits.",
+      "slug": "atom-computing-microsoft-24-logical-qubits-2025",
+      "claimant": "atom-computing",
+      "headline": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
       "domain": "quantum",
-      "kind": "milestone",
-      "status": "tracking",
+      "kind": "commercial",
+      "status": "resolvable",
       "verdict": null,
-      "resolves_by": "2029-12-31",
+      "resolves_by": "2025-12-31",
       "evidence_tier": "y",
-      "source_date": "2025-06-10"
+      "source_date": "2024-11-19"
     },
     {
-      "slug": "quantinuum-apollo-2030",
-      "claimant": "quantinuum",
-      "headline": "Quantinuum will deliver universal, fully fault-tolerant quantum computing (system “Apollo”) by 2030.",
+      "slug": "dwave-magnetic-simulation-supremacy-2025",
+      "claimant": "dwave",
+      "headline": "D-Wave says its Advantage2 annealing quantum computer demonstrated quantum computational supremacy on a real-world magnetic-materials simulation problem, beating classical supercomputers.",
       "domain": "quantum",
-      "kind": "milestone",
+      "kind": "scientific",
       "status": "tracking",
       "verdict": null,
-      "resolves_by": "2030-12-31",
+      "resolves_by": "2026-12-31",
       "evidence_tier": "y",
-      "source_date": "2024-09-10"
-    },
-    {
-      "slug": "microsoft-topological-years-not-decades",
-      "claimant": "microsoft",
-      "headline": "Microsoft says its Majorana 1 / Topological Core approach puts industrial-scale, meaningful quantum computing “years, not decades” away.",
-      "domain": "quantum",
-      "kind": "timeline",
-      "status": "tracking",
-      "verdict": null,
-      "resolves_by": "2035-02-19",
-      "evidence_tier": "y",
-      "source_date": "2025-02-19"
-    },
-    {
-      "slug": "google-pqc-migration-2029",
-      "claimant": "google",
-      "headline": "Google has set 2029 as its internal deadline to complete post-quantum cryptography migration across its infrastructure.",
-      "domain": "crypto",
-      "kind": "security",
-      "status": "tracking",
-      "verdict": null,
-      "resolves_by": "2029-12-31",
-      "evidence_tier": "y",
-      "source_date": "2026-03-25"
+      "source_date": "2025-03-12"
     },
     {
       "slug": "eo14412-pqc-key-establishment-2030",
@@ -63,6 +39,42 @@
       "source_date": "2026-06-22"
     },
     {
+      "slug": "google-pqc-migration-2029",
+      "claimant": "google",
+      "headline": "Google has set 2029 as its internal deadline to complete post-quantum cryptography migration across its infrastructure.",
+      "domain": "crypto",
+      "kind": "security",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2029-12-31",
+      "evidence_tier": "y",
+      "source_date": "2026-03-25"
+    },
+    {
+      "slug": "huang-useful-quantum-15-30-years",
+      "claimant": "nvidia",
+      "headline": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
+      "domain": "quantum",
+      "kind": "timeline",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2040-01-06",
+      "evidence_tier": "y",
+      "source_date": "2025-01-07"
+    },
+    {
+      "slug": "ibm-starling-2029",
+      "claimant": "ibm",
+      "headline": "IBM will deliver a large-scale, fault-tolerant quantum computer (“Starling”) by 2029, running 100 million quantum operations on 200 logical qubits.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2029-12-31",
+      "evidence_tier": "y",
+      "source_date": "2025-06-10"
+    },
+    {
       "slug": "ionq-five-nines-2025",
       "claimant": "ionq",
       "headline": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
@@ -75,16 +87,40 @@
       "source_date": "2024-07-22"
     },
     {
-      "slug": "dwave-magnetic-simulation-supremacy-2025",
-      "claimant": "dwave",
-      "headline": "D-Wave says its Advantage2 annealing quantum computer demonstrated quantum computational supremacy on a real-world magnetic-materials simulation problem, beating classical supercomputers.",
+      "slug": "microsoft-topological-years-not-decades",
+      "claimant": "microsoft",
+      "headline": "Microsoft says its Majorana 1 / Topological Core approach puts industrial-scale, meaningful quantum computing “years, not decades” away.",
       "domain": "quantum",
-      "kind": "scientific",
+      "kind": "timeline",
       "status": "tracking",
       "verdict": null,
-      "resolves_by": "2026-12-31",
+      "resolves_by": "2035-02-19",
       "evidence_tier": "y",
-      "source_date": "2025-03-12"
+      "source_date": "2025-02-19"
+    },
+    {
+      "slug": "quantinuum-apollo-2030",
+      "claimant": "quantinuum",
+      "headline": "Quantinuum will deliver universal, fully fault-tolerant quantum computing (system “Apollo”) by 2030.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2030-12-31",
+      "evidence_tier": "y",
+      "source_date": "2024-09-10"
+    },
+    {
+      "slug": "rigetti-roadmap-2025-2027",
+      "claimant": "rigetti",
+      "headline": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2027-12-31",
+      "evidence_tier": "y",
+      "source_date": "2025-11-11"
     }
   ]
 }

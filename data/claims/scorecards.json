@@ -71,10 +71,40 @@
       "weighted_rate": null,
       "slip_days_median": null,
       "rankable": false
+    },
+    {
+      "claimant": "nvidia",
+      "name": "NVIDIA",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "rigetti",
+      "name": "Rigetti Computing",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "atom-computing",
+      "name": "Atom Computing",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
     }
   ],
   "ours": {
-    "n_captured": 7,
+    "n_captured": 10,
     "n_resolved": 0,
     "n_void": 0,
     "void_rate": 0.0,

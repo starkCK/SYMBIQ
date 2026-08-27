@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "speaker": "Ben Bloom, CEO, Atom Computing",
+  "source_archive_url": null,
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-08-27",
+  "hedge_score": 1,
+  "stated_confidence": null,
+  "status": "resolvable",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-08-27",
+      "signal": "on_track",
+      "note": "A January 2025 report describes an on-premise system from the same Atom Computing/Microsoft partnership supporting up to 50 logical qubits -- more than this claim's own 24, which is why this is logged on_track rather than off_track. Not treated as a resolution: the desk still needs to confirm this is the SAME delivery the original claim described, not a different, larger, later system being counted as satisfying an earlier, smaller promise.",
+      "source_url": "https://www.hpcwire.com/2025/01/20/atom-computing-microsoft-roll-out-on-premise-system-supporting-50-logical-qubits/",
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27",
+  "sourcing_note": "Deadline (31 Dec 2025 + 30-day grace = 30 Jan 2026) has passed as of capture (2026-08-27). Flagged resolvable by the seeding pass, NOT resolved -- a January 2025 follow-up report (HPCwire) described Atom Computing and Microsoft rolling out an on-premise system supporting up to 50 logical qubits, which reads as meeting or exceeding this claim, but the desk should verify the exact 24-logical-qubit specification was what actually shipped before writing a VERIFIED verdict, per the two-key rule.",
+  "slug": "atom-computing-microsoft-24-logical-qubits-2025",
+  "claimant": "atom-computing",
+  "verbatim": "By coupling our state-of-the-art neutral-atom qubits with Microsoft's qubit-virtualization system, we are now able to offer reliable logical qubits on a commercial quantum machine.",
+  "headline": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
+  "source_url": "https://thequantuminsider.com/2024/11/19/in-step-toward-scientific-advantage-microsoft-and-atom-computing-announce-the-launch-of-quantum-machine-with-record-breaking-logical-qubits/",
+  "source_date": "2024-11-19",
+  "source_kind": "joint press announcement, reported",
+  "kind": "commercial",
+  "domain": "quantum",
+  "resolution_criteria": "Resolves VERIFIED if a commercial customer actually received and operated a system matching the 24-entangled-logical-qubit specification by 31 Dec 2025 (plus grace) -- an order or a demo does not count, an operating delivered system does. PARTIALLY_VERIFIED if a related but differently-specified system shipped in the window (e.g. a different logical-qubit count) instead of the exact one announced. NOT_VERIFIED if no delivery happened in the stated window at all.",
+  "resolver_sources": [
+    "https://atom-computing.com/news",
+    "https://azure.microsoft.com/en-us/blog/quantum/",
+    "https://www.hpcwire.com",
+    "https://thequantuminsider.com"
+  ],
+  "resolves_by": "2025-12-31",
+  "concept_ids": [
+    "logical-qubit",
+    "fault-tolerance"
+  ]
+}

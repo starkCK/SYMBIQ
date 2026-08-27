@@ -132,12 +132,26 @@ body::after {
    uncomfortably long text lines. */
 @media (min-width: 1024px) { .wrap { max-width: 880px; } }
 @media (min-width: 1440px) { .wrap { max-width: 1040px; } }
-nav {
+/* :not(.rung-rail) on every bare `nav` rule below, header through mobile
+   overrides: rung.js (2026-08-23) creates its own <nav class="rung-rail">
+   landmark for "The Ladder", and a bare element selector matches BOTH navs,
+   not just the header. Most of what leaked through was harmless -- .rung-
+   rail's own class rule (higher specificity) already overrides display,
+   gap, padding and margin -- but position and z-index are never redeclared
+   there, so this header rule's position + z-index:40 passed straight
+   through, giving the rail its OWN stacking context at the SAME z-index as
+   the header nav. Tied z-index resolves by DOM order, and the rail comes
+   after the header in the document, so it painted ON TOP of an open nav
+   dropdown (.navpanel's z-index:45 only outranks siblings inside the
+   header's own stacking context -- it says nothing about a second, later,
+   equal-z-index context outside it). Found 2026-08-28: the dropdown was
+   rendering behind the rail on any page carrying data-rung. */
+nav:not(.rung-rail) {
   display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
   padding: 18px 0; border-bottom: 1px solid var(--border); margin-bottom: 40px;
 }
 @media (min-width: 720px) {
-  nav {
+  nav:not(.rung-rail) {
     position: sticky; top: 0; z-index: 40;
     background: var(--nav-bg);
     backdrop-filter: blur(10px);
@@ -194,10 +208,40 @@ p { margin-bottom: 14px; }
 .spine a:hover { text-decoration-color: var(--teal); }
 
 /* The rung rail (rung.js). First real use of the item-07 token scale above:
-   spacing/radius come from --sp-*/--r-*, not new one-off numbers. Violet for
-   the five linear rungs, teal for the fork -- the same split the homepage
-   spine and analog.html already use, so the colour means the same thing
-   everywhere it appears rather than being decided fresh per page. */
+   spacing and radius come from the sp and r-pill tokens defined near the
+   top of this file, not new one-off numbers. Violet for the five linear
+   rungs, teal for the fork -- the same split the homepage spine and
+   analog.html already use, so the colour means the same thing everywhere
+   it appears rather than being decided fresh per page.
+
+   FOUND 2026-08-28, fixed in the same commit as the nav-scoping z-index fix
+   below. The previous wording of this comment named the two token
+   families by writing them asterisk-then-slash-then-dashes back to back,
+   with no space between the star and the slash. Those two symbols
+   adjacent, in that order, are how a CSS comment ends -- there is no way
+   to escape that inside a comment -- so it closed this comment right
+   there, several lines early. Everything after that point, up to the
+   comment's REAL intended ending, was then handed to the CSS parser as
+   actual code. It is plain English prose, so it cannot form a valid
+   selector, and a rule whose selector fails to parse is thrown away
+   completely, declarations and all -- and the next opening brace the
+   parser reached after that point belonged to this file's own .rung-rail
+   rule. So THAT rule -- background, border, radius, padding, margin, font
+   size, all of it -- was the one silently discarded, every time this file
+   loaded, since the day it was added.
+
+   It went unnoticed because the dots and the fork chip inside the rail set
+   their own border and radius independently and still looked right; only
+   the outer pill -- the rail's own background and border -- was ever
+   missing. Confirmed by testing the rule in isolation (it parsed and
+   applied perfectly on its own) and by counting this file's comment
+   delimiters, which came up one closing mark ahead of its opening marks,
+   exactly the signature of one comment closing twice.
+
+   The lesson for next time: in a comment near shorthand token names, never
+   let a literal star and a literal slash end up next to each other, even
+   by coincidence of two unrelated tokens sitting side by side -- write the
+   token names with a word or a space between them instead. */
 .rung-rail {
   display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
   margin: var(--sp-2) 0 var(--sp-5); padding: var(--sp-2) var(--sp-4);
@@ -364,7 +408,7 @@ input[type=range] { height: 44px; cursor: pointer; accent-color: var(--teal); }
 ::selection { background: rgba(139, 92, 246, 0.4); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
 @media (max-width: 719px) {
-  nav { gap: 10px; padding: 14px 0; margin-bottom: 30px; }
+  nav:not(.rung-rail) { gap: 10px; padding: 14px 0; margin-bottom: 30px; }
   nav a.link { font-size: 0.86rem; }
   nav .brand { font-size: 1.02rem; }
   nav .brand svg { width: 26px; height: 26px; }
@@ -372,7 +416,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-
 /* keep the bar on ONE row on a phone: shed the optional words, not the meaning */
 @media (max-width: 460px) {
   .longword { display: none; }
-  nav { gap: 8px; }
+  nav:not(.rung-rail) { gap: 8px; }
 }
 
 /* ================================================================
@@ -382,7 +426,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-
    either way. No search box — the categories ARE the navigation. Every
    link is still a real <a>, so crawlability is unchanged.
    ================================================================ */
-nav { position: relative; }
+nav:not(.rung-rail) { position: relative; }
 nav .link.pathlink { color: var(--violet); font-weight: 600; }
 nav .link.pathlink:hover { color: var(--violet); }
 

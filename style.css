@@ -1,3 +1,28 @@
+/* ---- Inter, self-hosted (2026-08-28) ---------------------------------
+   Latin-subset, weight-axis (100-900) VARIABLE Inter, vendored in
+   fonts/ -- see fonts/README.md and fonts/inter-OFL.txt (SIL OFL 1.1).
+   The font stack has always named "Inter" first, but nothing ever
+   loaded it, so the font-feature-settings on `body` below (cv05 / cv08 /
+   ss03) was a no-op for every visitor who did not happen to have Inter
+   installed. This makes it real. Two files, ~98KB total; font-display:
+   swap, so first paint is never blocked -- a brief fallback flash is the
+   right trade for that. Italic is a real cut, not a synthesised slant,
+   which matters on a site this dense with cited <em> titles. */
+@font-face {
+  font-family: "InterVariable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/inter-latin-wght-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "InterVariable";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/inter-latin-wght-italic.woff2") format("woff2");
+}
+
 :root {
   --bg: #0b0f1a;
   --panel: #131a2b;
@@ -109,7 +134,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, "Segoe UI", -apple-system, system-ui, sans-serif;
+  font-family: InterVariable, Inter, "Segoe UI", -apple-system, system-ui, sans-serif;
   /* Inter character variants: cv05 gives the lowercase l a tail and cv08
      puts serifs on the uppercase I, so l / I / 1 stop colliding -- worth
      having on a site this dense with notation and ket vectors. ss03 rounds

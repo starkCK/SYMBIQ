@@ -24,50 +24,50 @@ colors:
   row-hover: "rgba(148, 163, 184, 0.06)"
 typography:
   display:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "1.9rem"
     fontWeight: 700
     lineHeight: 1.25
     letterSpacing: "normal"
   display-vivid:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "clamp(2.05rem, 1.3rem + 3.4vw, 3rem)"
     fontWeight: 800
     lineHeight: 1.12
     letterSpacing: "-0.022em"
   headline:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 700
     lineHeight: 1.3
     letterSpacing: "normal"
   title:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "1.05rem"
     fontWeight: 700
     lineHeight: 1.35
     letterSpacing: "normal"
   body:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.65
     letterSpacing: "normal"
     fontFeature: "'cv05' 1, 'cv08' 1, 'ss03' 1"
   body-sm:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "0.9rem"
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "normal"
   label:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "0.7rem"
     fontWeight: 700
     lineHeight: 1.3
     letterSpacing: "0.12em"
   numeric:
-    fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
+    fontFamily: "InterVariable, Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 700
     lineHeight: 1.1
@@ -194,9 +194,9 @@ A near-monochrome dark ground carrying exactly two chromatic accents plus one re
 
 ## Typography
 
-**Display / Body / Label Font:** Inter, with `"Segoe UI", -apple-system, system-ui, sans-serif` fallback. One family, everywhere.
+**Display / Body / Label Font:** Inter, **self-hosted** as a Latin-subset, weight-axis (100–900) variable woff2 — family name `InterVariable`, upright + a real italic cut, `font-display: swap`, ~98KB total, vendored in `fonts/` under SIL OFL 1.1. The stack is `InterVariable, Inter, "Segoe UI", -apple-system, system-ui, sans-serif` — the self-hosted file, then a locally-installed Inter, then the system fallback. One family, everywhere.
 
-**Character:** Neutral, technical, unshowy — the type of a lab instrument's readout, not a magazine. Confidence comes from weight and tight leading on headings against generous 1.65 body leading, and from a gradient-clipped hero line that is the single expressive typographic moment on the page. `body` sets `font-feature-settings: "cv05" 1, "cv08" 1, "ss03" 1` — Inter's tailed lowercase `l`, serifed uppercase `I`, and round quotes — which sharpen the minority who have Inter installed and are silent no-ops on Segoe UI / San Francisco (Inter is named in the stack but not loaded).
+**Character:** Neutral, technical, unshowy — the type of a lab instrument's readout, not a magazine. Confidence comes from weight and tight leading on headings against generous 1.65 body leading, and from a gradient-clipped hero line that is the single expressive typographic moment on the page. `body` sets `font-feature-settings: "cv05" 1, "cv08" 1, "ss03" 1` — Inter's tailed lowercase `l`, serifed uppercase `I`, and round quotes — so `l` / `I` / `1` stop colliding in a page this dense with notation. Now that Inter is self-hosted these actually render for every visitor.
 
 ### Hierarchy
 
@@ -314,7 +314,7 @@ Borders are always `1px`, always the Hairline token or an accent-tinted mix of i
 - **Don't** enlarge, animate, lift or pulse the primary CTA. Three separate rounds of feedback removed exactly those; re-adding one silently reverses a settled decision.
 - **Don't** gradient-fill any text except the h1. h2 gets the ramp as a bar.
 - **Don't** brighten a contrast-locked light-mode colour for visual punch. Enrich the glow, dot-grid and gradient-stop tokens instead, and re-measure the rendered element.
-- **Don't** introduce a second type family for hierarchy. Weight, size and colour do that job.
+- **Don't** introduce a second type family for hierarchy. Weight, size and colour do that job. The vendored `InterVariable` is a **Latin-only** subset — non-Latin text falls through to the system stack, which is acceptable for an English-only site but is the reason not to lean on Inter-specific glyph rendering for anything user-generated.
 - **Don't** add a second scroll-reveal mechanism — `nav.js` owns `.reveal` and is the only thing that may add that class, so a script failure leaves the page fully visible. Extend its selector instead.
 - **Don't** ship a photographic image. The generative lattice and inline SVG are the house substitutes; the site has never shipped a photographic byte.
 - **Don't** run `git add -A` in the site repo, and don't edit `style.css` for a change that only touches a handful of pages.

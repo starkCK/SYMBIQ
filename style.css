@@ -130,6 +130,14 @@
   }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+/* Form controls do not inherit font-family from the page -- the UA stylesheet
+   pins <button>/<input> to a platform default (Arial on Windows). Almost every
+   button component on the site already works around this with `font: inherit`,
+   but a handful never did (#navtrig, bare .preset, the Bloch gate buttons, the
+   daily-question options, the qubit-pill ket). Harmless while the body font was
+   ~Segoe UI anyway; visible now that InterVariable actually loads. One reset,
+   family only -- components keep whatever size/weight they set. */
+button, input, select, textarea { font-family: inherit; }
 html { scroll-behavior: smooth; }
 body {
   background: var(--bg);

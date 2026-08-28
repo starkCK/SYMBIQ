@@ -221,7 +221,23 @@ body[data-vivid] .introute-card:hover {
   border-color: color-mix(in oklab, var(--teal) 58%, var(--border));
   box-shadow:
     inset 0 1px 0 color-mix(in oklab, #ffffff 9%, transparent),
-    0 22px 46px -20px color-mix(in oklab, var(--indigo) 42%, var(--shadow));
+    0 22px 46px -20px color-mix(in oklab, var(--indigo) 42%, var(--shadow)),
+    0 0 26px -6px color-mix(in oklab, var(--violet) 24%, transparent);
+}
+
+/* motion.css §4 already floats a pointer-tracked sheen across a card
+   when [data-motion] is set (atmosphere.js writes --mo-x/--mo-y). Here
+   that light source is re-tinted to the vivid spectrum so the thing
+   the cursor lights up matches the rest of the page. Same radius, same
+   opt-in gate, colour only. */
+body[data-vivid][data-motion] .card::after,
+body[data-vivid][data-motion] .introute-card::after {
+  background: radial-gradient(
+    360px circle at var(--mo-x, 50%) var(--mo-y, 50%),
+    color-mix(in oklab, var(--teal) 20%, transparent),
+    color-mix(in oklab, var(--violet) 13%, transparent) 40%,
+    transparent 68%
+  );
 }
 
 /* The three section heroes on the homepage (OR / games / PQC) and
@@ -237,6 +253,23 @@ body[data-vivid] .orhero {
   border-color: var(--border);
   border-color: color-mix(in oklab, var(--indigo) 22%, var(--border));
   box-shadow: 0 30px 70px -46px color-mix(in oklab, var(--indigo) 60%, transparent);
+}
+/* The two corner lights drift, slowly, on a long alternating loop --
+   the hero reads as powered rather than printed. 26s and a ~15% travel:
+   you notice it only if you stop and watch, which is the bar every
+   ambient loop on this site is held to. The gradient is layered
+   [teal-glow, violet-glow, panel]; only the two glows get a moving
+   position, the panel fill stays put. Killed by style.css's global
+   reduced-motion rule. */
+@media (prefers-reduced-motion: no-preference) {
+  body[data-vivid] .orhero {
+    background-size: 200% 200%, 200% 200%, auto;
+    animation: vv-aurora 26s ease-in-out infinite alternate;
+  }
+}
+@keyframes vv-aurora {
+  from { background-position: 0% 0%, 100% 100%, 0 0; }
+  to   { background-position: 18% 12%, 82% 88%, 0 0; }
 }
 
 /* ---------------------------------------------------------------- §5
@@ -297,13 +330,96 @@ body[data-vivid] nav a.link.active {
 }
 
 /* ---------------------------------------------------------------- §6
-   REDUCED MOTION
+   MOTION & LIFE
 
-   This layer adds no @keyframes and no new transitions -- every
-   moving part it touches (the drift bar, the h1 fadeUp, the card
-   hover) is already governed by style.css's global reduced-motion
-   block. This stanza exists so that contract is stated here too:
-   nothing in vivid.css animates on its own. */
+   Ambient, low-amplitude, and every piece of it collapses under
+   style.css's global `*, *::before, *::after { animation: none }`
+   reduced-motion rule -- verified, not assumed. None of it animates
+   `transform` or `opacity` on a `.reveal` target or on any element
+   that wraps the sticky nav, which is the rule motion.css §3/§4
+   established and this file keeps: reveals and hover lifts must not
+   be disturbed, and nothing may become a containing block for the
+   fixed layers.
+
+   1. THE ACCENT BAR CHARGES.
+   style.css already draws each h2's bar in with `growbar` the first
+   time it scrolls into view (via nav.js's `.reveal.in`). This adds a
+   one-shot glow bloom on the same trigger -- the bar looks like it
+   takes current -- and lands exactly on the resting glow §3 gave it,
+   so nothing flickers when the animation ends. growbar is kept: both
+   run from the shorthand list. */
+@media (prefers-reduced-motion: no-preference) {
+  body[data-vivid] .reveal.in h2::before {
+    animation:
+      growbar 0.5s cubic-bezier(0.22, 0.7, 0.3, 1) both,
+      vv-bar-charge 1.15s cubic-bezier(0.22, 0.7, 0.3, 1) 0.08s both;
+  }
+}
+@keyframes vv-bar-charge {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--teal) 0%, transparent); }
+  35%  { box-shadow: 0 0 20px 1px color-mix(in oklab, var(--teal) 72%, transparent); }
+  100% { box-shadow: 0 0 12px -2px color-mix(in oklab, var(--teal) 55%, transparent); }
+}
+
+/* 2. THE PAGE BREATHES.
+   body::before carries the two ambient glows and the lattice dot
+   grid. A 20s scale/opacity cycle of ~4% makes the whole ground
+   settle in and out -- the dot grid drifting with it is the lattice
+   quietly behaving like one. It is a fixed, -1 z-index, empty
+   pseudo-element: scaling it composites and touches nothing else. */
+@media (prefers-reduced-motion: no-preference) {
+  body[data-vivid]::before {
+    animation: vv-breathe 20s ease-in-out infinite;
+  }
+}
+@keyframes vv-breathe {
+  0%, 100% { transform: scale(1);     opacity: 1;    }
+  50%      { transform: scale(1.045); opacity: 0.9;  }
+}
+
+/* 3. A SCROLL-PROGRESS SPECTRUM LINE.
+   One new dynamic feature: a 2px fill along the bottom edge that
+   tracks how far down the page you are, in the site's own spectrum.
+   Pure CSS via a scroll-driven animation -- no JS, no scroll
+   listener. `@supports`-gated, so a browser without
+   animation-timeline (Safari/Firefox at time of writing) simply
+   never shows it; the base state is scaleX(0), so reduced motion
+   (which nulls the animation) hides it too. Scoped to pages that do
+   NOT already carry the tiers.js reading-progress bar -- i.e. the
+   homepage -- so the two never stack. */
+body[data-vivid]:not([data-tiers]) .wrap::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--spectrum);
+  opacity: 0.85;
+  z-index: 55;               /* under the drift bar (60) and #qz-fx (9997) */
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body[data-vivid]:not([data-tiers]) .wrap::after {
+      animation: vv-scrollfill linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes vv-scrollfill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ---------------------------------------------------------------- §7
+   REDUCED MOTION -- explicit belt-and-braces on top of the global
+   rule, for the two loops that would otherwise be the most
+   noticeable if a UA ever regressed the global `!important` block. */
 @media (prefers-reduced-motion: reduce) {
-  body[data-vivid]::after { animation: none; }
+  body[data-vivid]::before,
+  body[data-vivid]::after,
+  body[data-vivid] .orhero { animation: none; }
 }

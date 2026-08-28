@@ -156,7 +156,7 @@ The deliberate anti-references: no springy or bouncing motion (a site whose thes
 - **Tonal depth.** A two-step surface ladder plus 1px hairlines carry hierarchy; shadow is a response to state, never a decoration.
 - **One Inter voice** from the 1.9rem hero to the 0.7rem label; hierarchy comes from weight, size and colour, not from a second family.
 - **Motion is feedback plus one ambient layer.** Nothing bounces; the only self-starting motion is a sub-threshold lattice and a slow background breath.
-- **Layered stylesheets.** `style.css` is the shared 24-page base; `motion.css`, `rails.css` and `vivid.css` are opt-in, separately cache-busted layers.
+- **Layered stylesheets.** `style.css` is the shared 24-page base; `motion.css`, `rails.css`, `vivid.css` and `alive.css` are opt-in, separately cache-busted layers.
 
 ## Colors
 
@@ -189,6 +189,8 @@ A near-monochrome dark ground carrying exactly two chromatic accents plus one re
 **The Colour Law.** Mint means AI / real / OR / shipping. Lavender means quantum / theory / ahead. Amber means "check your own system." Muted grey is scaffolding. A colour on this site is a claim about *which half of the argument* you are looking at; if a new element's colour does not answer that question, it should be muted.
 
 **The Contrast Lock.** In light mode, `ink`, `ink-muted`, `teal-accent`, `link`, `green`, `amber` and `red` are the exact values a full per-node sweep proved clear 4.5:1. They are never brightened "for vibrancy" — a wrong colour still renders, passes every test, and is only caught by measuring. Enrich decorative tokens (glows, dot grid, gradient stops) instead.
+
+**The Browser-Surface Rule.** The four surfaces nobody draws — `::selection`, the caret, the scrollbar, the list marker — are part of the palette and carry both theme values like everything else. A default scrollbar down the side of a `#0b0f1a` page belongs to no design system, and it is on every long page here.
 
 **The Two-Value Rule.** Every colour token is defined once unconditionally (that value *is* the dark theme) and once inside `@media (prefers-color-scheme: light)`. A scoped override layer must redeclare the *full* set in its own light block, or an unconditional `[data-*]` selector (specificity 0,2,0) leaks its dark value past the base `@media light :root` (0,1,0).
 
@@ -293,7 +295,10 @@ Borders are always `1px`, always the Hairline token or an accent-tinted mix of i
 - **Collapsibles** (`.foldsec`, `.gamerules`): `14px` rounded, a faint Mint→Lavender gradient wash, a custom `+`/`×` toggle glyph that rotates `180°` on open. One visual language for "there is more here."
 - **Inline-SVG figures** (`.figcard` / `.figscroll`): diagrams ship as HTML SVG, never JS-rendered, inside a horizontally-scrollable frame with a `470px` min-width so labels never shrink below legibility on a phone. Figure colour obeys the Colour Law: mint = AI/real, violet = quantum/theory, yellow = look-here, muted = scaffolding.
 - **The Lattice** (`atmosphere.js`, `#mo-lattice`): a generative canvas of drifting, coupling nodes behind everything — the brand mark behaving like itself. Themed from `--violet`/`--teal`, pointer-reactive, one static frame under reduced motion.
-- **The vivid layer** (`vivid.css`, `body[data-vivid]`): an opt-in structural richening on the six landing/pillar pages. The **palette stays within a hair of the base** (dialled back on 2026-08-28) — `--bg` a shade deeper, `--violet`/`--teal` a shade more saturated, nothing else. What "vivid" means here is structure: a larger 800-weight hero, the h1/`h2::before` spectral three-stop ramp (the site's own violet through a soft indigo to its own teal), a top-light sheen and hue-tinted shadow on cards, and an ambient motion set (breathing background, aurora heroes, a bottom scroll-progress line). `.bigplay` is untouched. Reversible by removing one attribute.
+- **The vivid layer** (`vivid.css`, `body[data-vivid]`): an opt-in structural richening on the six landing/pillar pages. The **palette stays within a hair of the base** (dialled back on 2026-08-28) — `--bg` a shade deeper, `--violet`/`--teal` a shade more saturated, nothing else. What "vivid" means here is structure: a larger 800-weight hero, the h1/`h2::before` spectral three-stop ramp (the site's own violet through a soft indigo to its own teal), a top-light sheen and hue-tinted shadow on cards, and an ambient motion set (breathing background, aurora heroes, and the shared `.readbar` progress line taking the spectrum and a third pixel). `.bigplay` is untouched. Reversible by removing one attribute.
+- **The response layer** (`alive.css` + `alive.js`, `body[data-alive]`, all 24 pages): the site's *replies*, as distinct from its atmosphere. Three moments, each triggered only by something the visitor did, none of them self-starting or looping. **Arrival** — resolving a deep link flares the target for ~1.3s (a 1px accent ring and a 9%-alpha wash; on a heading, its own `h2::before` bar brightens and thickens instead). It is deliberately motionless: the target is already where it belongs, so only light resolves, never position. **The section permalink** — every `h2[id]`/`h3[id]` grows a drawn two-link chain button that copies its own deep link, inline by default and promoted into the left gutter only between 1100px and 1439px, where that gutter is empty of rails. **The unfold** — `<details>` animates its height open and closed (180–420ms, exit at 0.72×) instead of jump-cutting; past 2,600px of new content the height is left alone and only the content resolves, because a full-page relayout per frame buys nothing nobody can watch.
+
+  **Never invents an id.** A permalink to a generated slug breaks the first time the page is edited, so the button appears only where an authored id already exists.
 
 ## Do's and Don'ts
 
@@ -304,7 +309,7 @@ Borders are always `1px`, always the Hairline token or an accent-tinted mix of i
 - **Do** give every control an explicit `min-height: 44px` (and `min-width` for icon-width buttons). A control that clears 44px by accident of its label does not clear it.
 - **Do** keep the primary action a full pill at its current size. If it needs to be more noticeable, reach for the pill silhouette or the gradient — never size, weight, lift or pulse.
 - **Do** define every new colour token in both the unconditional block *and* the `@media (prefers-color-scheme: light)` block, with the light value measured to 4.5:1 for anything that renders as text.
-- **Do** ship new motion or heavy visual layers as their own separately cache-busted stylesheet (`motion.css` / `rails.css` / `vivid.css`). Editing `style.css` is a 24-page deploy.
+- **Do** ship new motion or heavy visual layers as their own separately cache-busted stylesheet (`motion.css` / `rails.css` / `vivid.css` / `alive.css`). Editing `style.css` is a 24-page deploy.
 - **Do** let exactly one atmospheric moment run per section — one glow, one wash. Ambient loops run `≥8s` (`--dur-amble`) at under ~5% amplitude and must never draw the eye.
 - **Do** render diagrams as inline SVG in the HTML, inside `.figscroll`, so they are crawlable, survive JS-off, and stay legible at 375px.
 

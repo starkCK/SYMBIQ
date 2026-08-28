@@ -27,13 +27,15 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=43">
+<link rel="stylesheet" href="style.css?v=44">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
+<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="hud.css?v=1">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
 <script src="games.js?v=14"></script>
@@ -77,8 +79,10 @@
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=3" defer></script>
+<script src="alive.js?v=1" defer></script>
+<script src="hud.js?v=1" defer></script>
 </head>
-<body data-motion data-rails>
+<body data-motion data-rails data-alive>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

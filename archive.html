@@ -27,13 +27,15 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/question.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=43">
+<link rel="stylesheet" href="style.css?v=44">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
+<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="hud.css?v=1">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -51,8 +53,10 @@
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=3" defer></script>
+<script src="alive.js?v=1" defer></script>
+<script src="hud.js?v=1" defer></script>
 </head>
-<body data-motion data-rails>
+<body data-motion data-rails data-alive>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -164,7 +168,7 @@
 
 <div id="arch-list"></div>
 
-<h2>How The Question works</h2>
+<h2 id="how-the-question-works">How The Question works</h2>
 <p>One question at a time, at one of three levels — 🟢 beginner, 🟡 intermediate, 🔴 expert with real mathematics. Every answer carries an explanation at <em>all three</em> levels, so you can always drop down a tier if the explanation loses you, or climb one if it bores you. Expert questions are independently verified before they ship, and the sources are named.</p>
 <p>The current question is <a href="index.html#daily-q">on the homepage</a>, where it also tracks your streak.</p>
 

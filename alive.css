@@ -1,0 +1,310 @@
+/* SymbiQ — alive.css
+ * ============================================================================
+ * THE RESPONSE LAYER.  Opt-in via <body data-alive>.
+ *
+ * Its own file with its own cache-buster, for the reason motion.css, rails.css
+ * and vivid.css each have one: style.css is shared by 24 pages and touching it
+ * forces a bump on every one of them (the 2026-07-24 scar).
+ *
+ * WHAT THIS LAYER IS FOR.  The site already has atmosphere -- the lattice
+ * drifts, the heroes glow, cards lift under the pointer.  What it did not have
+ * was a reply.  Follow one of the several hundred deep links this site runs on
+ * and you arrive in silence, with no confirmation of which of the forty things
+ * on the page you were sent to.  Open one of the several hundred <details> and
+ * the page jump-cuts: 3,000px of new content appears between one frame and the
+ * next, and the thing you were reading is somewhere else now.  Neither is a
+ * missing decoration; both are a missing answer.
+ *
+ * So the rule for everything in this file: it fires because the visitor did
+ * something, it says what happened, and then it gets out of the way.  Nothing
+ * here starts on its own, nothing here loops, and nothing here moves in a way
+ * that would violate the house rule against springy or overshooting easing --
+ * arrival does not move AT ALL, it resolves in place.
+ *
+ * Every rule below is scoped to body[data-alive] plus a JS-added class or
+ * attribute, so a page that does not opt in is byte-for-byte unchanged, and a
+ * page whose alive.js fails to load keeps working exactly as it does today.
+ * ==========================================================================*/
+
+body[data-alive] {
+  /* Local aliases so this file never depends on a token style.css might not
+     have defined at parse time.  Values match the house scale. */
+  --al-ease: cubic-bezier(0.22, 1, 0.36, 1);   /* the house --ease-out-quint */
+  --al-quick: 0.16s;
+  --al-base: 0.26s;
+}
+
+/* ── 1. ARRIVAL ────────────────────────────────────────────────────────────
+   You followed a link to #something.  This is the page confirming which
+   something.
+
+   Deliberately motionless.  The house rule is that nothing bounces and nothing
+   overshoots; the honest reading of that rule for an arrival cue is that it
+   must not travel either -- the target is already exactly where it belongs,
+   and sliding it in would be a lie about its position.  So what resolves is
+   light, not geometry: a 1px accent ring and a very low-alpha wash come up
+   over ~260ms, hold, and leave over ~700ms.  The element never moves a pixel,
+   which is also why this needs no separate reduced-motion path for movement.
+
+   Uses `outline` rather than `border` or `box-shadow`: an outline draws
+   outside the box without participating in layout, so a card cannot reflow, a
+   table cannot shift a column, and a heading's own ::before accent bar is not
+   pushed off its 3px. */
+body[data-alive] [data-sq-arrived] {
+  outline: 1px solid transparent;
+  outline-offset: 4px;
+  border-radius: var(--r-sm);   /* on the house 6/10/14 scale, not an ad-hoc 4px */
+  animation: sq-arrive 1.35s var(--al-ease) both;
+}
+/* A heading's arrival is carried by the accent bar it already has, brightened,
+   rather than by a ring drawn around a line of text -- that bar IS the
+   heading's mark everywhere else on this site, so flaring it is the more
+   literal answer to "this one". */
+body[data-alive] h2[data-sq-arrived],
+body[data-alive] h3[data-sq-arrived] { animation-name: sq-arrive-text; }
+body[data-alive] h2[data-sq-arrived]::before {
+  transform-origin: left center;   /* thicken into the gutter, not over the text */
+  animation: sq-arrive-bar 1.35s var(--al-ease) both;
+}
+
+@keyframes sq-arrive {
+  0%   { outline-color: transparent;
+         background-color: transparent; }
+  19%  { outline-color: color-mix(in srgb, var(--teal) 62%, transparent);
+         background-color: color-mix(in srgb, var(--teal) 9%, transparent); }
+  46%  { outline-color: color-mix(in srgb, var(--teal) 62%, transparent);
+         background-color: color-mix(in srgb, var(--teal) 9%, transparent); }
+  100% { outline-color: transparent;
+         background-color: transparent; }
+}
+@keyframes sq-arrive-text {
+  0%   { color: inherit; }
+  19%  { color: var(--teal); }
+  46%  { color: var(--teal); }
+  100% { color: inherit; }
+}
+@keyframes sq-arrive-bar {
+  0%   { filter: none;                           transform: scaleX(1); }
+  19%  { filter: brightness(1.5) saturate(1.25); transform: scaleX(1.9); }
+  46%  { filter: brightness(1.5) saturate(1.25); transform: scaleX(1.9); }
+  100% { filter: none;                           transform: scaleX(1); }
+}
+
+/* No color-mix (Safari before 16.2, older Chromium): fall back to the flat
+   accent at a fixed alpha rather than dropping the cue entirely. */
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  @keyframes sq-arrive {
+    0%   { outline-color: transparent; }
+    19%  { outline-color: rgba(45, 212, 191, 0.62); }
+    46%  { outline-color: rgba(45, 212, 191, 0.62); }
+    100% { outline-color: transparent; }
+  }
+}
+
+/* ── 2. THE SECTION PERMALINK ──────────────────────────────────────────────
+   A reference site whose entire navigation is deep links had no way to GET a
+   deep link.  The nav chips know that qec.html#qec-widget exists; a reader who
+   wanted to send that to someone had to read it out of the source.
+
+   The control is drawn, not typographic: a two-link chain at a 1.7px stroke,
+   the same weight as every other piece of inline SVG here.
+
+   It ships INLINE, after the heading text, because that is the placement that
+   is correct at every width.  In one band -- wide enough for an empty gutter,
+   narrow enough that the peripheral rails have not claimed it -- it is
+   promoted out into that gutter, where it costs the heading no width at all.
+   The band is bounded on both sides deliberately: below 1100px there is no
+   gutter, and at 1440px rails.js fills both gutters with the section index and
+   the progress readout (measured: the left rail column ends at x=204 and a
+   hanging button would start at x=206).
+
+   Never `display:none` and never `visibility:hidden`: it stays in the tab
+   order and reachable by a screen reader at every width.  Only opacity is
+   conditional, and only where there is a pointer to reveal it with. */
+body[data-alive] .sq-permalink {
+  --sq-pl-size: 30px;
+  position: relative;      /* the 44px hit band below anchors to this */
+  vertical-align: middle;
+  margin-left: 4px;
+  opacity: 0.42;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sq-pl-size);
+  height: var(--sq-pl-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: opacity var(--al-base) var(--al-ease),
+              color var(--al-quick) var(--al-ease),
+              background-color var(--al-quick) var(--al-ease);
+}
+/* The 44px touch minimum without a 44px-tall button.  Exactly the trick
+   `nav a.link` and `#qz-pill` already use, for the same reason each of them
+   gives: the visible box has to stay tight to a 15px glyph sitting beside a
+   heading, so it grows an invisible band inside itself instead.  Measured at
+   30x30 before this rule -- under the floor on every touch device, which is
+   the one place this control is permanently visible. */
+body[data-alive] .sq-permalink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+body[data-alive] .sq-permalink svg {
+  width: 15px; height: 15px; display: block;
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+body[data-alive] .sq-permalink .sq-pl-done { display: none; }
+body[data-alive] .sq-permalink[data-copied] .sq-pl-link { display: none; }
+body[data-alive] .sq-permalink[data-copied] .sq-pl-done { display: block; }
+body[data-alive] .sq-permalink[data-copied] { color: var(--teal); opacity: 1; }
+
+/* With a pointer, it stays out of the way until the heading is under it --
+   twelve faintly visible icons down a reading page is furniture. Without one
+   (touch), there is no hover to reveal it with, so the 0.42 above stands: a
+   control that cannot be discovered is not a control. */
+@media (hover: hover) {
+  body[data-alive] .sq-permalink { opacity: 0; }
+}
+body[data-alive] .sq-anchored:hover > .sq-permalink,
+body[data-alive] .sq-permalink:hover,
+body[data-alive] .sq-permalink:focus-visible { opacity: 1; }
+body[data-alive] .sq-permalink:hover { color: var(--teal); background: var(--rowhover); }
+body[data-alive] .sq-permalink:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* h2 already sets position:relative for its accent bar; h3 and the rest do
+   not, and both the promoted button and the confirmation note are positioned
+   against their heading. */
+body[data-alive] .sq-anchored { position: relative; }
+
+/* The band with an empty gutter.  `hover: hover` as well, because the reveal
+   this placement depends on is a hover -- on a touch device the button would
+   simply be invisible out there. */
+@media (min-width: 1100px) and (max-width: 1439px) and (hover: hover) {
+  body[data-alive] .sq-permalink {
+    position: absolute;
+    left: calc(var(--sq-pl-size) * -1 - 6px);
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+  }
+}
+
+/* The confirmation is a word, in the house label style, not a floating toast.
+   aria-live sits on this element so the same word reaches a screen reader at
+   the moment it reaches everyone else. */
+body[data-alive] .sq-pl-note {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 2px;
+  font-size: 0.7rem;             /* the documented label step */
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: sq-note 1.9s var(--al-ease) both;
+}
+@keyframes sq-note {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── 3. THE UNFOLD ─────────────────────────────────────────────────────────
+   This site is built out of <details>: 24 curriculum topics, every .foldsec,
+   every .gamerules, every Ledger claim, every Frontier question.  Native
+   <details> has exactly one transition between its two states, which is none:
+   the content is not there, and then it is, and everything below it is
+   somewhere else now.  On a topic that opens 3,000px of content that is not a
+   small infelicity -- the reader loses their place, on the single most common
+   interaction the site has.
+
+   alive.js animates the height and hands the duration to CSS through a
+   per-element variable.  The attribute below exists only while a fold is in
+   motion; the moment it settles the element is untouched markup again, so an
+   interrupted transition cannot leave a page in a broken state.
+
+   ON `transition: height`.  This is a deliberate exception to "never animate a
+   layout property", taken with the cost understood and bounded, not by
+   oversight.  The usual substitute -- a `grid-template-rows: 0fr -> 1fr`
+   wrapper -- needs a single wrapping child, and only ONE of the four fold
+   families here has one (`.mod > .mod-body`); `.foldsec`, `.gamerules` and the
+   Ledger claims each hold several loose children, so adopting it would mean a
+   markup change on 24 pages to animate a box.  The cost is instead capped
+   three ways: nothing over FOLD_CAP of new content animates at all, the
+   duration tops out at 420ms, and reduced motion removes it entirely. */
+body[data-alive] details[data-sq-folding] {
+  overflow: hidden;
+  transition: height var(--sq-fold-dur, 0.3s) var(--al-ease);
+}
+/* The tall tier.  Past alive.js's FOLD_CAP the height is not animated at all
+   -- the content resolves in place instead -- so this state must NOT take the
+   height transition or the overflow clip with it. */
+body[data-alive] details[data-sq-folding="fade"] {
+  overflow: visible;
+  transition: none;
+}
+/* The content resolves slightly out of phase with the height, so the fold
+   reads as one gesture rather than as a box growing with the text already
+   sitting inside it. */
+body[data-alive] details[data-sq-folding] > :not(summary) {
+  animation: sq-unfold-in var(--sq-fold-dur, 0.3s) var(--al-ease) both;
+}
+body[data-alive] details[data-sq-folding="out"] > :not(summary) {
+  animation-name: sq-unfold-out;
+  animation-duration: calc(var(--sq-fold-dur, 0.3s) * 0.7);   /* exit faster than entrance */
+}
+@keyframes sq-unfold-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sq-unfold-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ── REDUCED MOTION ────────────────────────────────────────────────────────
+   Reduced motion means less movement, not less information.
+
+   style.css line ~1178 takes the nuclear option under this query:
+
+       *, *::before, *::after { animation: none !important; transition: none !important; }
+
+   That is the right call for decoration, and the wrong one for a cue whose
+   whole job is to answer "which of the forty things on this page did I just
+   ask for?".  Measured in a real browser with the preference set, arrival
+   rendered as literally nothing: `animation-name: none`, outline transparent.
+   The rule cannot be argued with -- it is `!important` on a universal selector
+   -- so the cue is re-expressed instead of re-fought.  The attribute sits on
+   the element for ~1.3s either way, so a plainly PAINTED ring carries exactly
+   the same information with exactly zero movement, which is what the
+   preference actually asks for.
+
+   No `color-mix` here on purpose: a solid 1px accent ring needs no alpha maths
+   and is theme-correct in both modes from the token alone.  The wash is
+   dropped -- it exists to soften an animated flare, and there is no flare now.
+
+   `.sq-pl-note` needs nothing: its `sq-note` keyframes only fade it in and out,
+   so with animations off it simply renders at its natural full opacity and the
+   JS removes it on schedule.  The copy confirmation stays visible.
+
+   The unfold is the one thing here that genuinely changes geometry, so it is
+   the one thing that goes entirely: alive.js tests the same query and never
+   starts a fold, and this is the belt to that pair of braces. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-alive] details[data-sq-folding] {
+    transition: none;
+    height: auto !important;
+  }
+  body[data-alive] [data-sq-arrived] { outline-color: var(--teal); }
+  body[data-alive] h2[data-sq-arrived],
+  body[data-alive] h3[data-sq-arrived] { color: var(--teal); }
+  body[data-alive] h2[data-sq-arrived]::before { filter: brightness(1.5) saturate(1.25); }
+}

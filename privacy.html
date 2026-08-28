@@ -27,13 +27,15 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=43">
+<link rel="stylesheet" href="style.css?v=44">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
+<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="hud.css?v=1">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -50,8 +52,10 @@
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=3" defer></script>
+<script src="alive.js?v=1" defer></script>
+<script src="hud.js?v=1" defer></script>
 </head>
-<body data-motion data-rails>
+<body data-motion data-rails data-alive>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -159,31 +163,31 @@
 <h1>Privacy</h1>
 <p class="lede">The short version: SymbiQ has no accounts, sets no advertising cookies, and stores your progress on your own device. The long version is below, and it is the whole of it.</p>
 
-<h2>What is stored on your device, not ours</h2>
+<h2 id="what-is-stored-on-your-device-not-ours">What is stored on your device, not ours</h2>
 <p>Your progress through The Solver's Path, your streak on The Question, and any depth preference you set are held in your browser's <strong>localStorage</strong>. That data never leaves your machine and we cannot read it. Clearing your browser data deletes it permanently — there is no server copy to restore from, which is the trade-off for not asking you to make an account.</p>
 
-<h2>What we measure</h2>
+<h2 id="what-we-measure">What we measure</h2>
 <p>We use <a href="https://www.goatcounter.com/">GoatCounter</a> for analytics. It is cookieless and does not track individuals across sites. It records the page requested, the referring page, a coarse country, and a browser and screen-size category. It does not store IP addresses after processing and does not build a profile of you. This is why the site shows no cookie banner: there is no consent to collect, because there is nothing being set on your device for us.</p>
 
-<h2>What you choose to send us</h2>
+<h2 id="what-you-choose-to-send-us">What you choose to send us</h2>
 <p>Two forms exist on this site: the newsletter signup and the correction report. Both are delivered to our inbox through <a href="https://web3forms.com/">Web3Forms</a>, which passes the message on and does not retain it for other purposes. We only ever receive what you type into the form. An email address given for the newsletter is used to send the newsletter and for nothing else — it is never sold, rented, or shared, and every issue carries an unsubscribe link.</p>
 
-<h2>Where the site is served from</h2>
+<h2 id="where-the-site-is-served-from">Where the site is served from</h2>
 <p>The site is static and hosted on <strong>GitHub Pages</strong>. Like any web host, GitHub processes the network requests needed to serve pages to you; their handling is covered by <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. We do not run a server of our own and hold no server-side logs.</p>
 
-<h2>Community spaces</h2>
+<h2 id="community-spaces">Community spaces</h2>
 <p>Our Discord server is operated by Discord and governed by <a href="https://discord.com/privacy">their privacy policy</a> in addition to our own rules. What you post there is visible to other members. Nothing you do on this website is linked to your Discord identity.</p>
 
-<h2>Children</h2>
+<h2 id="children">Children</h2>
 <p>SymbiQ is written for a general audience and is not directed at children under 13. We do not knowingly collect personal data from children. If you believe a child has sent us personal data, write to us and we will delete it.</p>
 
-<h2>Your rights</h2>
+<h2 id="your-rights">Your rights</h2>
 <p>Depending on where you live — under India's Digital Personal Data Protection Act, the UK/EU GDPR, or similar law — you may have the right to ask what personal data we hold about you, to have it corrected, to have it deleted, or to withdraw consent. In practice we hold almost nothing: an email address if you subscribed, and whatever you typed into a form. Write to the address below and we will act on any such request, and in any case within 30 days.</p>
 
-<h2>Changes</h2>
+<h2 id="changes">Changes</h2>
 <p>If this policy changes materially we will say so on the site rather than quietly editing the page. The date below is the last substantive change.</p>
 
-<h2>Contact</h2>
+<h2 id="contact">Contact</h2>
 <p>Questions about privacy, or a request about your data: <strong>[FILL: contact email]</strong>.</p>
 <p class="verif">Last updated: [FILL: date]. Operated by [FILL: name or registered entity], [FILL: city, country].</p>
 <footer>SymbiQ &middot; No accounts, no ad cookies, no profile of you. <a href="terms.html">Terms</a></footer>

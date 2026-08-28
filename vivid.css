@@ -362,41 +362,36 @@ body[data-vivid] nav a.link.active {
   50%      { transform: scale(1.045); opacity: 0.9;  }
 }
 
-/* 3. A SCROLL-PROGRESS SPECTRUM LINE.
-   One new dynamic feature: a 2px fill along the bottom edge that
-   tracks how far down the page you are, in the site's own spectrum.
-   Pure CSS via a scroll-driven animation -- no JS, no scroll
-   listener. `@supports`-gated, so a browser without
-   animation-timeline (Safari/Firefox at time of writing) simply
-   never shows it; the base state is scaleX(0), so reduced motion
-   (which nulls the animation) hides it too. Scoped to pages that do
-   NOT already carry the tiers.js reading-progress bar -- i.e. the
-   homepage -- so the two never stack. */
-body[data-vivid]:not([data-tiers]) .wrap::after {
-  content: "";
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 100%;
-  transform: scaleX(0);
-  transform-origin: left;
+/* 3. THE SCROLL-PROGRESS LINE IS SPECTRAL HERE.
+   This used to be a SECOND progress bar: a 2px scroll-driven fill along
+   the bottom edge, guarded `:not([data-tiers])` on the belief that the
+   `data-tiers` attribute is what puts tiers.js's `.readbar` on a page.
+   It isn't -- tiers.js calls buildProgress() unconditionally, so the
+   readbar is on all 23 pages that load the script, the homepage very much
+   included. The guard therefore excluded nothing it meant to, and the
+   homepage rendered two independent progress indicators tracking the same
+   scroll: a teal->violet hairline along the top and a spectral one along
+   the bottom. Found 2026-08-28 by measuring both.
+
+   Resolved in favour of the component that already exists everywhere. The
+   readbar is universal, works without `animation-timeline` (Safari and
+   Firefox never saw the line below), and already sits out under reduced
+   motion. What the vivid layer contributes now is what vivid always
+   contributes: not a new object, a richer one. The readbar's fill takes
+   the three-stop spectrum instead of the two-stop ramp, and thickens by a
+   pixel -- so vivid pages still read as vivid, with one bar. */
+body[data-vivid] .readbar { height: 3px; }
+body[data-vivid] .readbar i {
   background: var(--spectrum);
-  opacity: 0.85;
-  z-index: 55;               /* under the drift bar (60) and #qz-fx (9997) */
-  pointer-events: none;
+  /* The fill's width is animated by tiers.js on every scroll frame. Give it
+     a short transition and the bar stops being a raw scroll readout and
+     starts behaving like a needle: it settles into position rather than
+     snapping to it. Same easing as everything else here -- decelerate, do
+     not rebound. */
+  transition: width 0.14s var(--ease-out-quint, cubic-bezier(0.22, 1, 0.36, 1));
 }
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    body[data-vivid]:not([data-tiers]) .wrap::after {
-      animation: vv-scrollfill linear both;
-      animation-timeline: scroll(root block);
-    }
-  }
-}
-@keyframes vv-scrollfill {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  body[data-vivid] .readbar i { transition: none; }
 }
 
 /* ---------------------------------------------------------------- §7

@@ -27,13 +27,15 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=43">
+<link rel="stylesheet" href="style.css?v=44">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
+<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="hud.css?v=1">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -50,8 +52,10 @@
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=3" defer></script>
+<script src="alive.js?v=1" defer></script>
+<script src="hud.js?v=1" defer></script>
 </head>
-<body data-motion data-rails>
+<body data-motion data-rails data-alive>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -159,34 +163,34 @@
 <h1>Terms of use</h1>
 <p class="lede">Use the site, learn from it, share it. Don't republish it as your own, and don't rely on it for decisions that need a professional.</p>
 
-<h2>What SymbiQ is</h2>
+<h2 id="what-symbiq-is">What SymbiQ is</h2>
 <p>SymbiQ is an educational platform about the relationship between artificial intelligence and quantum computing. Everything here is published for general information and education.</p>
 
-<h2>No professional advice</h2>
+<h2 id="no-professional-advice">No professional advice</h2>
 <p><strong>Nothing on this site is financial, investment, legal, or security advice.</strong> The pages about Bitcoin and post-quantum cryptography discuss published research and public standards; they describe how attacks and migrations work in general, not what you or your organisation should do. The cryptography tools on this site run entirely in your browser and are teaching instruments, not audits. Do not treat any output from them as a compliance assessment, a penetration test, or a substitute for a qualified security professional.</p>
 
-<h2>Accuracy, and what we do about being wrong</h2>
+<h2 id="accuracy-and-what-we-do-about-being-wrong">Accuracy, and what we do about being wrong</h2>
 <p>We verify claims before publishing and cite primary sources, and every quantitative claim carries an evidence tier. We will still get things wrong. When we do, the correction runs on the <a href="corrections.html">corrections page</a>, credited to whoever caught it. But the site is provided <em>as is</em>: we make no warranty that it is complete, current, or error-free, and we are not liable for any loss arising from relying on it. If a decision matters, check the primary source — we link them for exactly that reason.</p>
 
-<h2>Our content</h2>
+<h2 id="our-content">Our content</h2>
 <p>The text, diagrams, games, code and design of SymbiQ are © [FILL: name or entity] and are protected by copyright. You may read, link to, quote briefly with attribution, and share the pages. You may not republish substantial portions, mirror the site, or present the material as your own work — including as training data or bulk-scraped content — without written permission. Third-party research we cite belongs to its authors and is used here under fair dealing for education and commentary.</p>
 
-<h2>Your contributions</h2>
+<h2 id="your-contributions">Your contributions</h2>
 <p>If you send us a correction, a question, or a forum or Discord post, you keep ownership of it, and you give us permission to publish it on SymbiQ with credit. We edit for length and clarity. Nothing you submit is published automatically — a person reviews it first.</p>
 
-<h2>Acceptable use</h2>
+<h2 id="acceptable-use">Acceptable use</h2>
 <p>Don't use SymbiQ to break the law, harass anyone, or attack the site or its infrastructure. Don't scrape it at a volume that degrades it for others. Don't misrepresent our content or imply we endorse you.</p>
 
-<h2>Links out</h2>
+<h2 id="links-out">Links out</h2>
 <p>We link to arXiv papers, company research blogs and standards bodies. We don't control those sites and aren't responsible for their content — a link is a citation, not an endorsement.</p>
 
-<h2>Availability</h2>
+<h2 id="availability">Availability</h2>
 <p>SymbiQ is free and offered without any guarantee of uptime. We may change, suspend, or discontinue any part of it at any time.</p>
 
-<h2>Governing law</h2>
+<h2 id="governing-law">Governing law</h2>
 <p>These terms are governed by the laws of [FILL: India, or your jurisdiction], and the courts of [FILL: city] have exclusive jurisdiction over any dispute.</p>
 
-<h2>Contact</h2>
+<h2 id="contact">Contact</h2>
 <p><strong>[FILL: contact email]</strong>.</p>
 <p class="verif">Last updated: [FILL: date].</p>
 <footer>SymbiQ &middot; Educational content, not advice. <a href="privacy.html">Privacy</a></footer>

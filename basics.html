@@ -27,13 +27,15 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=43">
+<link rel="stylesheet" href="style.css?v=44">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
+<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="hud.css?v=1">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -50,8 +52,10 @@
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=3" defer></script>
+<script src="alive.js?v=1" defer></script>
+<script src="hud.js?v=1" defer></script>
 </head>
-<body data-motion data-rails data-tiers>
+<body data-motion data-rails data-tiers data-alive>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -235,19 +239,19 @@
 <span class="tier y" id="yellow">🟡 Some math</span>
 <p class="tier-lede">The mechanism, one worked number, and the picture you should have in your head. No derivations — those are in 🔴.</p>
 
-<h2>The mechanism</h2>
+<h2 id="the-mechanism">The mechanism</h2>
 
 <p>Physical qubits fail constantly — roughly <strong>1 error per 1,000 operations</strong> on good hardware. The fix is not a better qubit; it is redundancy with a twist. You encode one <em>logical</em> qubit across many physical ones in a <strong>surface code</strong>, then never measure the data at all.</p>
 
 <p>Instead, extra <strong>measurement qubits</strong> sitting between the data qubits run parity checks — <strong>syndrome measurements</strong>. Each one asks only whether its neighbours <em>agree</em>, never what they are. That distinction is the entire trick: a parity check extracts the fact that something flipped without extracting the value that would collapse the superposition. A <strong>decoder</strong> then infers the most likely error pattern from the history of those checks, the way a doctor diagnoses from symptoms rather than by opening the patient.</p>
 
-<h2>The picture to hold in your head</h2>
+<h2 id="the-picture-to-hold-in-your-head">The picture to hold in your head</h2>
 
 <p>Draw a checkerboard. Every <em>corner</em> is a data qubit, holding part of your one logical qubit. Every <em>square</em> is a measurement qubit that watches the four corners touching it and reports a single bit: <em>even</em> or <em>odd</em>. The squares alternate between two flavours — one watches for bit flips, the other for phase flips — because a qubit can fail in two independent ways and you need to catch both.</p>
 
 <p>Run every square once and you get a snapshot: mostly zeros, with a few squares lit up. A single flipped data qubit lights the squares around it. A <em>chain</em> of flips lights only the two squares at its <strong>ends</strong> — everything in the middle cancels. So the decoder never sees the error; it sees a scattering of endpoints and has to guess the cheapest set of chains that would produce exactly those endpoints. That is why decoding is a matching problem, and why a 1965 graph algorithm ended up inside a quantum computer.</p>
 
-<h2>The number that explains the whole overhead</h2>
+<h2 id="the-number-that-explains-the-whole-overhead">The number that explains the whole overhead</h2>
 
 <p>Here is the one calculation worth doing by hand, because it explains every "1,000 qubits to make 1" headline you have read.</p>
 
@@ -298,7 +302,7 @@
   <figcaption><strong>Step 3 is the whole story.</strong> Steps 1, 2 and 4 are physics and plumbing; step 3 is <em>inference</em> — and inference is what machine learning is for. There is a hard constraint hiding in that return arrow: the decoder has to finish inside the lap. Fall behind and the backlog grows forever, which is why an accurate decoder that is too slow does not count. <a href="qec.html">How the checks actually work ▸</a></figcaption>
 </figure>
 
-<h2>Where the AI walked in</h2>
+<h2 id="where-the-ai-walked-in">Where the AI walked in</h2>
 
 <p>The classic decoder — <strong>minimum-weight perfect matching</strong> — assumes errors are independent and simple. Real hardware is not: errors correlate across neighbours, qubits leak out of the computational space entirely, and the noise drifts between calibrations. Matching cannot express any of that, because its model has no vocabulary for it.</p>
 
@@ -323,7 +327,7 @@
 
 <p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits, so a patch costs 2<em>d</em>²−1 physical qubits. Stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding is inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors — <em>not</em> the most probable error, which is a different and worse objective.</p>
 
-<h2>Where the exponent comes from</h2>
+<h2 id="where-the-exponent-comes-from">Where the exponent comes from</h2>
 
 <p>The scaling law quoted everywhere is worth deriving once, because the exponent is where the recurring off-by-one in this field lives.</p>
 
@@ -403,7 +407,7 @@
   <figcaption><strong>d = 3, drawn exactly.</strong> Nine data qubits, eight stabilizers — four weight-4 plaquettes in the bulk, four weight-2 checks on the boundary, alternating X and Z so that every pair overlaps in an even number of qubits and commutes. The yellow chain is a logical X̄ operator: it commutes with all eight stabilizers, so it is <em>undetectable</em> — and the shortest such chain has weight 3, which is precisely why this code is called distance 3. Verified by exhaustive search over all 2⁹ Pauli supports: no nontrivial logical operator of weight 1 or 2 exists. Layout per Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a>; the same lattice drives <a href="qec.html#qec-widget">the interactive decoder</a>.</figcaption>
 </figure>
 
-<h2>Decoders</h2>
+<h2 id="decoders">Decoders</h2>
 
 <p>MWPM solves the inference on a decoder graph with edge weights drawn from an assumed independent-Pauli plus phenomenological noise model — provably good under that model, degraded under correlated noise, leakage, cross-talk and non-Markovian drift. The failure is structural rather than computational: the model has no term for the thing that is happening.</p>
 
@@ -411,7 +415,7 @@
 
 <p>Below threshold, a decoder that effectively raises p<sub>th</sub> or sharpens the exponent compounds through every future distance increase. Decoder quality is hardware you do not have to build — which is the entire economic argument for this site's thesis.</p>
 
-<h2>What is actually open</h2>
+<h2 id="what-is-actually-open">What is actually open</h2>
 
 <p>Stated as problems rather than as a roadmap, because the honest answer to most of these is that nobody knows.</p>
 
@@ -423,7 +427,7 @@
   <li><strong>Threshold versus pseudo-threshold.</strong> The single number "p<sub>th</sub> ≈ 1%" is model-, decoder- and geometry-dependent. Quoting it without those three qualifiers is the most common way this field's own literature is misread.</li>
 </ol>
 
-<h2>Primary sources</h2>
+<h2 id="primary-sources">Primary sources</h2>
 <div class="card refs">
   <p>• <strong>AlphaQubit</strong> — Bausch et al., "Learning high-accuracy error decoding for quantum processors," <em>Nature</em> <strong>635</strong>, 834 (2024). <a href="https://arxiv.org/abs/2310.05900">arXiv:2310.05900</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
   • <strong>Below-threshold surface code (Willow)</strong> — Google Quantum AI, "Quantum error correction below the surface code threshold," <em>Nature</em> <strong>638</strong>, 920 (2025). <a href="https://arxiv.org/abs/2408.13687">arXiv:2408.13687</a> — source of Λ = 2.14 ± 0.02, measured <em>d</em> = 5 → 7<br>

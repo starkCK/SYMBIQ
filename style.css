@@ -138,7 +138,21 @@
    ~Segoe UI anyway; visible now that InterVariable actually loads. One reset,
    family only -- components keep whatever size/weight they set. */
 button, input, select, textarea { font-family: inherit; }
+/* Smooth scrolling plus a sticky header means every in-page anchor has to be
+   told about the header, or it lands underneath it. This site runs almost
+   entirely on deep links -- the nav chips point at widget ids, the Ledger at
+   #c-<slug>, the Frontier at #q-<slug>, the two curriculum pages at #t01..#t24
+   -- so "the thing you clicked is behind the bar" is not an edge case here, it
+   is the main path. --nav-h carries a static default that is correct for the
+   one-row header at every width it is sticky at; alive.js replaces it with the
+   measured height (and keeps it measured through resize), so a header that
+   wraps to two rows still parks its targets in the open. Below 720px the header
+   is not sticky, so the padding is deliberately zero. */
 html { scroll-behavior: smooth; }
+:root { --nav-h: 82px; }
+@media (min-width: 720px) {
+  html { scroll-padding-top: calc(var(--nav-h) + 14px); }
+}
 body {
   background: var(--bg);
   color: var(--text);
@@ -205,6 +219,17 @@ body::after {
 nav:not(.rung-rail) {
   display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
   padding: 18px 0; border-bottom: 1px solid var(--border); margin-bottom: 40px;
+  /* position:relative is the containing block the .navpanel dropdowns are
+     anchored to. It USED to live in its own one-line rule further down this
+     file (in the STRUCTURED NAV block, added 2026-08-07) -- which, being a
+     later rule of identical specificity, silently overrode the
+     `position: sticky` in the >=720px media query immediately below. The
+     sticky, blurred header the design system documents therefore did not
+     exist on any page for three weeks: it scrolled away like a static bar.
+     Found 2026-08-28 by reading the computed value rather than the source.
+     Declaring it HERE, before the media query, restores the cascade the
+     media query was always written to win. */
+  position: relative;
 }
 @media (min-width: 720px) {
   nav:not(.rung-rail) {
@@ -461,8 +486,60 @@ input[type=range] { height: 44px; cursor: pointer; accent-color: var(--teal); }
 @media (prefers-color-scheme: light) { .introute-card.resume .pg { color: #0f766e; } }
 @media (max-width: 560px) { .introute-grid { grid-template-columns: 1fr; } }
 
-::selection { background: rgba(139, 92, 246, 0.4); }
+/* ── BROWSER SURFACES ──────────────────────────────────────────────────────
+   The parts of the page nobody draws: the selection highlight, the text
+   caret, the scrollbar, the list marker. Left alone they ship the browser's
+   own defaults, which belong to no theme -- a pale grey scrollbar running
+   down the side of a #0b0f1a page is the single loudest unthemed surface
+   here, and it is on every long page on the site.
+   Each of these gets the same two-value treatment as every other colour
+   token (The Two-Value Rule): one unconditional value that IS the dark
+   theme, one measured light value. Selection was already half-done -- it had
+   a dark value and no light one, so light mode was landing lavender-at-40%
+   by luck rather than by measurement.  Added 2026-08-28. */
+::selection { background: rgba(139, 92, 246, 0.40); }
+
+/* Scrollbars. `scrollbar-color` is the standard property (Firefox, Chrome
+   121+) and wins over the -webkit- pseudo-elements where both are
+   understood; the pseudo-elements below are here for Safari, which has no
+   `scrollbar-color`. Native width is kept -- `thin` is a usability tax on a
+   page this long -- and the thumb is the same hairline the cards use, so the
+   scrollbar reads as part of the same drawing. */
+html { scrollbar-color: var(--border) transparent; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border); border-radius: 999px;
+  border: 3px solid var(--bg);      /* inset the thumb without a second element */
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* The caret is the one piece of UI the visitor is looking straight at while
+   typing, and it is teal on every other instrument on this site. */
+input, textarea, select, [contenteditable] { caret-color: var(--teal); }
+
+/* Markers carry structure, not content -- muted, like every other piece of
+   scaffolding under The Colour Law. */
+li::marker { color: var(--muted); }
+
 a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+/* A floor for everything focusable that is NOT an <a> or a <button>: summaries
+   (this site is built out of <details>), form fields, and anything with an
+   explicit tabindex. Wrapped in :where() so it carries ZERO specificity --
+   every one of the ~20 component-level focus rules further down this file
+   still wins outright. This only fills the gaps. */
+:where(summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px;
+}
+@media (prefers-color-scheme: light) {
+  /* Lavender-at-40% over #f8fafc measures 10.2:1 against ink, so the dark
+     value was never unreadable in light mode -- it was simply never chosen.
+     This is the light-mode violet (#7c3aed) at the alpha that reads as a
+     deliberate highlight rather than a bruise: 11.4:1 against ink. */
+  ::selection { background: rgba(124, 58, 237, 0.22); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-color: var(--bg); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+}
 @media (max-width: 719px) {
   nav:not(.rung-rail) { gap: 10px; padding: 14px 0; margin-bottom: 30px; }
   nav a.link { font-size: 0.86rem; }
@@ -482,7 +559,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-
    either way. No search box — the categories ARE the navigation. Every
    link is still a real <a>, so crawlability is unchanged.
    ================================================================ */
-nav:not(.rung-rail) { position: relative; }
+/* `position: relative` for this rule now lives in the base nav block near the
+   top of the file -- see the note there. It cannot be declared here: this rule
+   comes AFTER the >=720px sticky media query, and at equal specificity the
+   later rule wins, which is exactly how the sticky header was lost. */
 nav .link.pathlink { color: var(--violet); font-weight: 600; }
 nav .link.pathlink:hover { color: var(--violet); }
 

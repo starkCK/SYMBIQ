@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-28T00:00:00Z",
+  "title": "Design System: SymbiQ",
+  "extensions": {
+    "colorMeta": {
+      "canvas": { "role": "neutral", "displayName": "Void", "canonical": "#0b0f1a", "lightValue": "#f8fafc", "tonalRamp": ["#05070c", "#080b14", "#0b0f1a", "#131a2b", "#1c2740", "#2b3a5c", "#5a6b8f", "#aab6d0"] },
+      "surface": { "role": "neutral", "displayName": "Slate Panel", "canonical": "#131a2b", "lightValue": "#ffffff", "tonalRamp": ["#0a0e18", "#0f1422", "#131a2b", "#1a2338", "#243050", "#33436b", "#5f7096", "#b3bdd6"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#e8ecf6", "lightValue": "#0f172a", "tonalRamp": ["#20242e", "#3a4150", "#565f73", "#7b8399", "#9aa5bd", "#c1c9db", "#e8ecf6", "#f6f8fc"] },
+      "ink-muted": { "role": "neutral", "displayName": "Ink Muted", "canonical": "#9aa5bd", "lightValue": "#526180", "tonalRamp": ["#20242e", "#333b4c", "#4a556d", "#63708c", "#7f8ca6", "#9aa5bd", "#c0c8d8", "#e2e7f1"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#232d45", "lightValue": "#dbe2ef", "tonalRamp": ["#121826", "#1a2235", "#232d45", "#2f3c5b", "#3f5079", "#5a6d9c", "#8f9ec4", "#dbe2ef"] },
+      "violet-accent": { "role": "primary", "displayName": "Lattice Lavender", "canonical": "#a78bfa", "lightValue": "#7c3aed", "tonalRamp": ["#241a3f", "#3a2a66", "#4f398c", "#6b52b8", "#8a6ee0", "#a78bfa", "#c4b0ff", "#e4dbff"] },
+      "teal-accent": { "role": "primary", "displayName": "Electric Mint", "canonical": "#2dd4bf", "lightValue": "#0f766e", "tonalRamp": ["#0a2e2a", "#0f4a44", "#12665f", "#188f84", "#22b8a6", "#2dd4bf", "#7fe9dc", "#c4f5ee"] },
+      "amber": { "role": "tertiary", "displayName": "Signal Amber", "canonical": "#facc15", "lightValue": "#b45309", "tonalRamp": ["#3a2c05", "#5c470a", "#856910", "#b38f16", "#e0b41f", "#facc15", "#ffe066", "#fff2b8"] },
+      "green": { "role": "semantic", "displayName": "Verdict Green", "canonical": "#4ade80", "lightValue": "#15803d", "tonalRamp": ["#0c2e1a", "#124a2a", "#18663a", "#218f52", "#2fb56c", "#4ade80", "#8ceaae", "#c8f7db"] },
+      "red": { "role": "semantic", "displayName": "Fault Red", "canonical": "#f87171", "lightValue": "#b91c1c", "tonalRamp": ["#3a1414", "#5c1e1e", "#852c2c", "#b33e3e", "#e05656", "#f87171", "#ffa3a3", "#ffd4d4"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display / h1", "purpose": "One per page. Ink to Lavender to Mint gradient, background-clip: text. The single expressive typographic moment." },
+      "display-vivid": { "displayName": "Display (vivid)", "purpose": "Enlarged hero on the six body[data-vivid] pages. Same ramp, -0.022em tracking, dark-mode violet drop-shadow bloom." },
+      "headline": { "displayName": "Headline / h2", "purpose": "Section headers, always preceded by a 3px Lavender-to-Mint accent bar that draws in with growbar on first view." },
+      "title": { "displayName": "Title / h3", "purpose": "Card and sub-section headings." },
+      "body": { "displayName": "Body", "purpose": "Running prose at 1.65 line-height. No max-width beyond the .wrap container." },
+      "body-sm": { "displayName": "Body small", "purpose": "Captions, honest-model notes, secondary UI." },
+      "label": { "displayName": "Label / eyebrow", "purpose": "0.7rem, uppercase, +0.12em tracking, Ink Muted. Section kickers, HUD labels, table headers. The one place tracking opens up." },
+      "numeric": { "displayName": "Numeric", "purpose": "tabular-nums on live figures in widgets (.hud-score). Changing numbers must not reflow." }
+    },
+    "shadows": [
+      { "name": "elev-1-rest", "value": "0 1px 2px rgba(0,0,0,0.3)", "purpose": "All but invisible. Used only where a single hairline reads as ambiguous." },
+      { "name": "elev-2-lift", "value": "0 10px 28px rgba(0,0,0,0.3)", "purpose": "The card/hero :hover state, paired with translateY(-3px) and a border shift toward Mint." },
+      { "name": "bloom-vivid", "value": "0 0 26px -6px color-mix(in oklab, var(--violet) 24%, transparent)", "purpose": "vivid layer only. Soft accent-tinted outer glow on .card:hover, never at rest." }
+    ],
+    "motion": [
+      { "name": "dur-fast", "value": "140ms", "purpose": "State echo: press, toggle, focus." },
+      { "name": "dur-base", "value": "260ms", "purpose": "The default; matches the 0.18s-0.3s already in use." },
+      { "name": "dur-slow", "value": "620ms", "purpose": "Arrivals and departures." },
+      { "name": "dur-amble", "value": "8s", "purpose": "Ambient loops that must never draw the eye. Minimum for any self-starting motion." },
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default. Decelerates and settles, no overshoot. Nothing bounces." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.65, 0, 0.35, 1)", "purpose": "Symmetric transitions where both ends matter." }
+    ],
+    "breakpoints": [
+      { "name": "xs", "value": "460px" },
+      { "name": "sm", "value": "560px" },
+      { "name": "md", "value": "720px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1440px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single primary action. A full pill so its silhouette marks it without extra size. No lift, no scale, no pulse on hover.",
+      "html": "<button class=\"ds-bigplay\">Play The Solver's Path <span class=\"ds-kbd\">no signup</span></button>",
+      "css": ".ds-bigplay { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 18px; border: none; border-radius: 999px; font: 700 0.88rem/1 Inter, 'Segoe UI', system-ui, sans-serif; letter-spacing: 0.01em; color: #04211d; background: linear-gradient(135deg, var(--teal, #2dd4bf), #22b8a6); box-shadow: 0 3px 10px rgba(45,212,191,0.14); cursor: pointer; transition: box-shadow 0.18s ease, filter 0.18s ease; } .ds-bigplay:hover { filter: brightness(1.04); box-shadow: 0 5px 14px rgba(45,212,191,0.2); } .ds-bigplay:active { filter: brightness(0.97); } .ds-bigplay:focus-visible { outline: 2px solid var(--teal, #2dd4bf); outline-offset: 2px; } .ds-kbd { font-size: 0.72rem; font-weight: 600; opacity: 0.82; }"
+    },
+    {
+      "name": "Secondary / Toggle Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Preset picker and in-widget toggle. Explicit 44x44 minimum. Selected state turns border and label Mint.",
+      "html": "<button class=\"ds-preset\">X</button><button class=\"ds-preset ds-on\">H</button>",
+      "css": ".ds-preset { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; margin: 0 6px 6px 0; padding: 6px 12px; border: 1px solid var(--border, #232d45); border-radius: 8px; background: var(--panel, #131a2b); color: var(--text, #e8ecf6); font: 400 0.85rem Inter, 'Segoe UI', system-ui, sans-serif; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease; } .ds-preset:hover { border-color: var(--teal, #2dd4bf); transform: translateY(-1px); } .ds-preset:active { transform: translateY(1px) scale(0.985); } .ds-preset:focus-visible { outline: 2px solid var(--teal, #2dd4bf); outline-offset: 2px; } .ds-preset.ds-on { border-color: var(--teal, #2dd4bf); color: var(--teal, #2dd4bf); font-weight: 600; }"
+    },
+    {
+      "name": "Tier Chip",
+      "kind": "chip",
+      "refersTo": "chip-tier",
+      "description": "The 3-green / 2-amber / 1-red depth marker. Low-alpha tint of the semantic colour; text is the contrast-locked semantic value.",
+      "html": "<span class=\"ds-tier ds-tier-g\">Beginner</span> <span class=\"ds-tier ds-tier-y\">Some math</span> <span class=\"ds-tier ds-tier-r\">Real math</span>",
+      "css": ".ds-tier { display: inline-block; margin-bottom: 10px; padding: 2px 10px; border: 1px solid var(--border, #232d45); border-radius: 999px; font: 600 0.8rem Inter, 'Segoe UI', system-ui, sans-serif; } .ds-tier-g { color: var(--green, #4ade80); background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.3); } .ds-tier-y { color: var(--yellow, #facc15); background: rgba(250,204,21,0.08); border-color: rgba(250,204,21,0.3); } .ds-tier-r { color: var(--red, #f87171); background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.3); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Every raised block. Flat at rest with a 1px hairline; lifts 3px with an accent-tinted shadow on hover.",
+      "html": "<div class=\"ds-card\"><h3>What is a logical qubit?</h3><p>Why a thousand physical qubits make one you can trust.</p><a class=\"ds-cta\" href=\"#\">The calculator &rarr;</a></div>",
+      "css": ".ds-card { border: 1px solid var(--border, #232d45); border-radius: 12px; background: var(--panel, #131a2b); color: var(--text, #e8ecf6); padding: 20px 22px; transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), border-color 0.18s ease, box-shadow 0.18s ease; } .ds-card:hover { transform: translateY(-3px); border-color: rgba(45,212,191,0.45); box-shadow: 0 10px 28px rgba(0,0,0,0.3); } .ds-card h3 { margin: 0 0 8px; font: 700 1.05rem Inter, 'Segoe UI', system-ui, sans-serif; } .ds-card p { margin: 0 0 12px; line-height: 1.65; } .ds-cta { display: inline-flex; align-items: center; min-height: 44px; color: var(--teal, #2dd4bf); text-decoration: none; font-weight: 600; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Filled with the page canvas colour (a well below the surface it sits on). Focus replaces the outline with a Mint border shift.",
+      "html": "<label class=\"ds-field\"><span>Email</span><input type=\"email\" class=\"ds-input\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-field { display: block; } .ds-field > span { display: block; margin-bottom: 5px; font: 400 0.86rem Inter, 'Segoe UI', system-ui, sans-serif; color: var(--muted, #9aa5bd); } .ds-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border, #232d45); border-radius: 8px; background: var(--bg, #0b0f1a); color: var(--text, #e8ecf6); font: 400 0.95rem Inter, 'Segoe UI', system-ui, sans-serif; transition: border-color 0.18s cubic-bezier(0.22,1,0.36,1); } .ds-input::placeholder { color: var(--muted, #9aa5bd); } .ds-input:focus { outline: none; border-color: var(--teal, #2dd4bf); }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Ink Muted going to Ink on hover; the active item is Ink with a 2px Mint underline. An invisible 44px hit band keeps the target honest without growing the text box.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-navlink\" href=\"#\">The Race</a><a class=\"ds-navlink ds-active\" href=\"#\">Corrections</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 18px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border, #232d45); } .ds-navlink { position: relative; color: var(--muted, #9aa5bd); text-decoration: none; font: 400 0.92rem Inter, 'Segoe UI', system-ui, sans-serif; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: color 0.15s ease, border-color 0.15s ease; } .ds-navlink::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); } .ds-navlink:hover { color: var(--text, #e8ecf6); } .ds-navlink.ds-active { color: var(--text, #e8ecf6); border-bottom-color: var(--teal, #2dd4bf); }"
+    },
+    {
+      "name": "Verdict Banner",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The shared widget-kit result banner. Mint = good/feasible/verified, Red = bad/infeasible, Lavender = split/interpretive.",
+      "html": "<p class=\"ds-verdict ds-verdict-good\">Feasible. Every constraint is satisfied.</p><p class=\"ds-verdict ds-verdict-split\">Split decision. It depends on what you count.</p>",
+      "css": ".ds-verdict { margin: 0 0 10px; padding: 11px 15px; border: 1px solid transparent; border-radius: 10px; font: 600 1rem Inter, 'Segoe UI', system-ui, sans-serif; } .ds-verdict-good { color: var(--teal, #2dd4bf); background: rgba(45,212,191,0.12); border-color: rgba(45,212,191,0.45); } .ds-verdict-bad { color: var(--red, #f87171); background: rgba(248,113,113,0.11); border-color: rgba(248,113,113,0.42); } .ds-verdict-split { color: var(--violet, #a78bfa); background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.45); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument",
+    "overview": "SymbiQ is a precise measuring instrument that happens to be alive. Its whole promise is that the mathematics does the judging — every game par is an optimum found by exhaustive search, every probability on screen is computed rather than chosen, every claim carries a date and a falsification condition. The visual system exists to make that trustworthy: the chrome recedes, the reading is what you look at, and the one thing that moves on its own is a faint generative lattice behind everything — the same object the site is about, actually behaving like one.\n\nThe surface is dark by default (#0b0f1a, a near-black with a blue cast) with a fully realised light theme that swaps in measured, contrast-locked values rather than naive inversions. Two accent hues carry meaning, not decoration: a lattice lavender for the quantum/theoretical half of every topic, an electric mint for the AI/operations-research/shipping half, and a signal amber reserved for \"check your own systems.\" Depth is tonal and hairline-drawn, not shadowed. Type is a single Inter voice from the gradient-clipped hero line down to 0.7rem uppercase labels. Motion is almost entirely feedback plus one ambient layer held deliberately below the threshold of notice.\n\nThe deliberate anti-references: no springy or bouncing motion; no oversized or pulsing primary CTA; no photographic imagery anywhere; no accent used purely to look designed.",
+    "keyCharacteristics": [
+      "Dark-first, dual-theme. Every token has a measured light-mode value; the light theme is a real design, not an inversion.",
+      "Semantic two-hue accent — lavender = quantum/theory, mint = AI/real/OR, amber = security. The colour tells you which half of the argument you are reading.",
+      "Tonal depth. A two-step surface ladder plus 1px hairlines carry hierarchy; shadow is a response to state, never a decoration.",
+      "One Inter voice from the 1.9rem hero to the 0.7rem label; hierarchy comes from weight, size and colour, not from a second family.",
+      "Motion is feedback plus one ambient layer. Nothing bounces; the only self-starting motion is a sub-threshold lattice and a slow background breath.",
+      "Layered stylesheets. style.css is the shared 24-page base; motion.css, rails.css and vivid.css are opt-in, separately cache-busted layers."
+    ],
+    "rules": [
+      { "name": "The Colour Law", "body": "Mint means AI / real / OR / shipping. Lavender means quantum / theory / ahead. Amber means \"check your own system.\" Muted grey is scaffolding. A colour on this site is a claim about which half of the argument you are looking at; if a new element's colour does not answer that question, it should be muted.", "section": "colors" },
+      { "name": "The Contrast Lock", "body": "In light mode, ink, ink-muted, teal-accent, link, green, amber and red are the exact values a full per-node sweep proved clear 4.5:1. They are never brightened \"for vibrancy\" — a wrong colour still renders, passes every test, and is only caught by measuring. Enrich decorative tokens instead.", "section": "colors" },
+      { "name": "The Two-Value Rule", "body": "Every colour token is defined once unconditionally (that value is the dark theme) and once inside @media (prefers-color-scheme: light). A scoped override layer must redeclare the full set in its own light block, or an unconditional [data-*] selector (specificity 0,2,0) leaks its dark value past the base @media light :root (0,1,0).", "section": "colors" },
+      { "name": "The One Voice Rule", "body": "Inter carries display through label. Hierarchy is weight (400 body / 700 heading / 800 vivid hero), size, and colour — never a second family. Code samples are the only exception and use the platform monospace stack.", "section": "typography" },
+      { "name": "The Gradient Belongs to h1", "body": "The Ink-to-Lavender-to-Mint background-clip: text ramp is the hero line's alone. h2 gets the same ramp as a 3px bar, not as text. No other text is gradient-filled.", "section": "typography" },
+      { "name": "Tracking Tightens With Size", "body": "The vivid hero runs -0.022em; labels run +0.12em; body runs 0. If a new display size is added, its tracking is negative and scales with the size.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "A surface at rest has a hairline and nothing else. If you reach for box-shadow, it is a hover, focus or drag response — state, not decoration — and it is tinted to the accent, never pure black.", "section": "elevation" },
+      { "name": "The Tonal-Ladder Rule", "body": "Nesting depth is expressed by stepping up the surface ladder, not by stacking shadows. Canvas holds surface; surface holds a nested --bg-filled well (inputs, figure frames, .hud).", "section": "elevation" }
+    ],
+    "dos": [
+      "Do answer the Colour Law with every new element: mint = AI/real/OR, lavender = quantum/theory, amber = check-your-system, muted = scaffolding. If the colour makes no such claim, use muted.",
+      "Do carry depth with the tonal ladder and a 1px hairline. Reach for box-shadow only as a hover/focus/drag response, and tint it to the accent.",
+      "Do give every control an explicit min-height: 44px (and min-width for icon-width buttons). A control that clears 44px by accident of its label does not clear it.",
+      "Do keep the primary action a full pill at its current size. If it needs to be more noticeable, reach for the pill silhouette or the gradient — never size, weight, lift or pulse.",
+      "Do define every new colour token in both the unconditional block and the @media (prefers-color-scheme: light) block, with the light value measured to 4.5:1 for anything that renders as text.",
+      "Do ship new motion or heavy visual layers as their own separately cache-busted stylesheet. Editing style.css is a 24-page deploy.",
+      "Do let exactly one atmospheric moment run per section — one glow, one wash. Ambient loops run at least 8s at under ~5% amplitude and must never draw the eye.",
+      "Do render diagrams as inline SVG in the HTML, inside .figscroll, so they are crawlable, survive JS-off, and stay legible at 375px."
+    ],
+    "donts": [
+      "Don't add springy, bouncing or overshooting easing. Motion decelerates and settles; nothing rebounds.",
+      "Don't enlarge, animate, lift or pulse the primary CTA. Three separate rounds of feedback removed exactly those; re-adding one silently reverses a settled decision.",
+      "Don't gradient-fill any text except the h1. h2 gets the ramp as a bar.",
+      "Don't brighten a contrast-locked light-mode colour for visual punch. Enrich the glow, dot-grid and gradient-stop tokens instead, and re-measure the rendered element.",
+      "Don't introduce a second type family for hierarchy. Weight, size and colour do that job.",
+      "Don't add a second scroll-reveal mechanism — nav.js owns .reveal and is the only thing that may add that class, so a script failure leaves the page fully visible. Extend its selector instead.",
+      "Don't ship a photographic image. The generative lattice and inline SVG are the house substitutes.",
+      "Don't run git add -A in the site repo, and don't edit style.css for a change that only touches a handful of pages."
+    ]
+  }
+}

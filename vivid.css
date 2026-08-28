@@ -1,0 +1,309 @@
+/* ================================================================
+   VIVID LAYER (2026-08-28)
+
+   A bolder visual world for the six pages people actually land on:
+   index.html and the five explainer pillars (bitcoin, qec, ai,
+   compare, logical-qubit). Everything is scoped under
+   `body[data-vivid]`, so:
+
+     - the other 19 pages are byte-for-byte untouched, and
+     - the whole layer is reversible by removing one attribute.
+
+   It ships as its own file with its own cache-buster for the exact
+   reason motion.css and rails.css do: style.css is shared by 24
+   pages and the 2026-07-24 scar says touching it is a 24-page
+   deploy. A visual-direction experiment must never be that.
+
+   WHAT THIS IS. Not a rewrite -- a re-pitch. The layout, the
+   semantic colour law (teal = AI/OR/real, violet = quantum/theory,
+   yellow = security/check-this), every contrast fix and every
+   tap-target rule survive intact. What changes is the register:
+
+     1. A deeper, cooler ground so the accents have room to sing.
+     2. A real three-stop SPECTRUM (violet -> indigo -> teal) instead
+        of the two-stop violet->teal. `--indigo` is the new bridge
+        colour and it is decorative only -- it never carries body
+        text, in either scheme.
+     3. Punchier accent chroma in dark mode (which has the headroom);
+        in light mode every contrast-locked token is left exactly as
+        the 2026-08-06 sweep set it, and only the decorative tokens
+        (glows, dot grid, gradient stops) are enriched.
+     4. Dimensional surfaces: a hair of top light on cards, borders
+        and shadows tinted to the hue instead of to black.
+
+   THE ONE DELIBERATE NON-CHANGE. `.bigplay` keeps its size, its
+   pill and its motion profile. Three rounds of feedback
+   (2026-08-06 / 08-07 / 08-20) each asked that control to be
+   quieter than the last; the hover lift was removed outright. This
+   layer deepens its gradient and warms its shadow and does nothing
+   else to it. Vibrance here is colour and light, not a louder CTA.
+
+   color-mix() is load-bearing below. Support is ~95%+ (Chrome 111 /
+   Safari 16.2 / Firefox 113, all early 2023). Where a missing value
+   would break structure (backgrounds, border colours) a plain
+   fallback is declared first; where it would only drop a glow or a
+   shadow the degradation is silent and fine.
+   ================================================================ */
+
+/* ---------------------------------------------------------------- §1
+   THE PALETTE, RE-PITCHED
+
+   body[data-vivid] is specificity (0,2,0): it outranks :root and
+   the light-mode :root block, and it is an ancestor of everything,
+   so every token below cascades to the whole page. */
+body[data-vivid] {
+  --bg: #06090f;
+  --panel: #0f1524;
+  --panel-2: #151d30;
+  --text: #edf1fb;
+  --muted: #97a3be;
+
+  --violet: #b492ff;
+  --indigo: #6d8cff;      /* NEW: the spectrum's middle stop. Decorative only. */
+  --teal: #1fe3c6;
+  --link: #3fe6cf;
+
+  --border: #283350;
+  --green: #55e08a;
+  --yellow: #ffd23d;
+  --red: #ff7d7d;
+
+  --nav-bg: rgba(6, 9, 15, 0.82);
+  --dot: rgba(120, 138, 255, 0.09);
+  --glow1: rgba(139, 92, 246, 0.20);
+  --glow2: rgba(31, 227, 198, 0.13);
+  --glow3: rgba(109, 140, 255, 0.12);   /* NEW: third ambient light */
+  --shadow: rgba(3, 6, 16, 0.5);
+
+  --h1-a: #ffffff;
+  --h1-b: #b492ff;
+  --h1-c: #1fe3c6;
+  --rowhover: rgba(148, 163, 184, 0.07);
+
+  /* The spectrum. One gradient, used on every accent surface below,
+     so "the fork" reads as one visual idea across the page instead
+     of a fresh two-colour ramp per component. */
+  --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
+}
+
+/* The base block above is unconditional, so in the cascade it is DARK
+   and it outranks style.css's own `@media light :root` block on
+   specificity (0,2,0 vs 0,1,0) regardless of the media query. That
+   means every token it sets must be re-set here, or its dark value
+   leaks into light mode. So this block re-declares the full set --
+   the contrast-locked tokens (--text, --muted, --teal, --link,
+   --green, --yellow, --red, --rowhover) get back exactly the values
+   the 2026-08-06 sweep put in style.css, unchanged; only the
+   decorative tokens are enriched. */
+@media (prefers-color-scheme: light) {
+  body[data-vivid] {
+    --bg: #f4f7fc;
+    --panel: #ffffff;
+    --panel-2: #eef3fb;
+    --text: #0f172a;
+    --muted: #526180;
+
+    --violet: #7c3aed;
+    --indigo: #4457d6;      /* decorative only; never body text */
+    --teal: #0f766e;        /* contrast-locked */
+    --link: #0f766e;        /* contrast-locked */
+
+    --border: #d6deee;
+    --green: #15803d;       /* contrast-locked */
+    --yellow: #b45309;      /* contrast-locked */
+    --red: #b91c1c;         /* contrast-locked */
+
+    --nav-bg: rgba(244, 247, 252, 0.85);
+    --dot: rgba(80, 70, 200, 0.06);
+    --glow1: rgba(109, 40, 217, 0.10);
+    --glow2: rgba(13, 148, 136, 0.09);
+    --glow3: rgba(68, 87, 214, 0.07);
+    --shadow: rgba(30, 41, 80, 0.10);
+    --rowhover: rgba(15, 23, 42, 0.04);
+
+    --h1-a: #0b1220;
+    --h1-b: #6d28d9;
+    --h1-c: #0d9488;
+    --spectrum: linear-gradient(100deg, #6d28d9, #4457d6 46%, #0f766e);
+  }
+}
+
+/* ---------------------------------------------------------------- §2
+   THE AMBIENT FIELD
+
+   Same two-glows-plus-dot-grid idea as style.css's body::before,
+   opened up: bigger radii, a third light in the new indigo, a
+   slightly more present grid. Still fixed, still z-index -1, still
+   pointer-events:none -- it composes under atmosphere.js's live
+   lattice exactly as before. */
+body[data-vivid]::before {
+  background-image:
+    radial-gradient(780px circle at 4% -8%, var(--glow1), transparent 60%),
+    radial-gradient(900px circle at 98% 6%, var(--glow3), transparent 58%),
+    radial-gradient(920px circle at 92% 110%, var(--glow2), transparent 60%),
+    radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
+  background-size: auto, auto, auto, 26px 26px;
+}
+
+/* The top hairline becomes a full spectral sweep. The drift
+   animation and 200% background-size are inherited from style.css;
+   only the gradient and thickness change. Reduced motion still stops
+   the drift via style.css's global rule. */
+body[data-vivid]::after {
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--violet), var(--indigo) 25%, var(--teal) 50%,
+    var(--indigo) 75%, var(--violet));
+  background-size: 200% 100%;
+  opacity: 0.92;
+}
+
+/* ---------------------------------------------------------------- §3
+   TYPE
+
+   The h1 gets bigger and tighter and takes the full ramp. Weight to
+   800, tracking pulled in -- a display line, not a heading. The
+   fadeUp entrance is inherited untouched. */
+body[data-vivid] h1 {
+  font-size: clamp(2.05rem, 1.3rem + 3.4vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  font-weight: 800;
+  background-image: linear-gradient(96deg, var(--h1-a) 20%, var(--h1-b) 62%, var(--h1-c) 100%);
+}
+/* A faint coloured bloom behind the display line. Dark mode only:
+   on a light background a tinted drop-shadow muddies the letterforms
+   rather than lifting them. */
+@media (prefers-color-scheme: dark) {
+  body[data-vivid] h1 {
+    filter: drop-shadow(0 2px 24px color-mix(in oklab, var(--violet) 20%, transparent));
+  }
+}
+
+body[data-vivid] h2 {
+  font-size: 1.32rem;
+  letter-spacing: -0.01em;
+}
+body[data-vivid] h2::before {
+  width: 4px;
+  background: var(--spectrum);
+  box-shadow: 0 0 12px -2px color-mix(in oklab, var(--teal) 55%, transparent);
+}
+
+/* The homepage spine marker, same spectral treatment as h2. */
+body[data-vivid] .spine::before,
+body[data-vivid] .spine-tag + .spine::before {
+  width: 4px;
+  background: var(--spectrum);
+}
+
+/* ---------------------------------------------------------------- §4
+   SURFACES
+
+   Cards stop being flat panels. A sub-1% violet wash from the top
+   edge, a border mixed toward indigo instead of grey, and a shadow
+   tinted to the hue. The hover state keeps style.css's -3px lift
+   (this only enriches colour and depth, it adds no travel). */
+body[data-vivid] .card,
+body[data-vivid] .introute-card {
+  background: var(--panel);   /* fallback for no color-mix */
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--violet) 6%, var(--panel)),
+    var(--panel) 44%);
+  border-color: var(--border);
+  border-color: color-mix(in oklab, var(--indigo) 24%, var(--border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #ffffff 6%, transparent),
+    0 12px 30px -18px var(--shadow);
+}
+body[data-vivid] .card:hover,
+body[data-vivid] .introute-card:hover {
+  border-color: color-mix(in oklab, var(--teal) 58%, var(--border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #ffffff 9%, transparent),
+    0 22px 46px -20px color-mix(in oklab, var(--indigo) 42%, var(--shadow));
+}
+
+/* The three section heroes on the homepage (OR / games / PQC) and
+   their reuse on pillar pages. Richer corner lights, an outer bloom,
+   an indigo-leaning border. Each hero's semantic top-border colour
+   (teal / violet / yellow) is set by style.css and left alone. */
+body[data-vivid] .orhero {
+  background: var(--panel);   /* fallback */
+  background:
+    radial-gradient(130% 150% at 4% 0%, color-mix(in oklab, var(--teal) 16%, transparent), transparent 60%),
+    radial-gradient(130% 150% at 100% 100%, color-mix(in oklab, var(--violet) 18%, transparent), transparent 58%),
+    var(--panel);
+  border-color: var(--border);
+  border-color: color-mix(in oklab, var(--indigo) 22%, var(--border));
+  box-shadow: 0 30px 70px -46px color-mix(in oklab, var(--indigo) 60%, transparent);
+}
+
+/* ---------------------------------------------------------------- §5
+   ACCENTS
+
+   The primary CTA: deepen the gradient toward indigo at the far
+   end, warm the shadow. NO size, weight, motion or lift change --
+   see the header note. */
+body[data-vivid] .bigplay {
+  background: linear-gradient(135deg,
+    var(--teal),
+    color-mix(in oklab, var(--indigo) 52%, var(--teal)));
+  box-shadow:
+    0 4px 16px -4px color-mix(in oklab, var(--teal) 48%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.22);
+}
+@media (prefers-color-scheme: light) {
+  body[data-vivid] .bigplay {
+    background: linear-gradient(135deg, #0f766e, #3b3aa8);
+    color: #ffffff;
+    box-shadow:
+      0 4px 16px -4px rgba(59, 58, 168, 0.32),
+      0 2px 6px rgba(30, 41, 80, 0.12);
+  }
+}
+
+/* The "up next" completion CTA: swap its two-colour tint for a wash
+   off the spectrum. (.orjump keeps style.css's own treatment -- its
+   left rule is a load-bearing wayfinding cue, not decoration, and
+   re-tinting it here adds nothing.) */
+body[data-vivid] .nextup {
+  background: var(--panel);   /* fallback */
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--teal) 12%, var(--panel)),
+    color-mix(in oklab, var(--violet) 10%, var(--panel)));
+  border-color: color-mix(in oklab, var(--teal) 55%, var(--border));
+}
+
+/* Tier chips read louder: fill and border alpha up, text colour
+   (which is contrast-locked) untouched. */
+body[data-vivid] .tier.g {
+  background: color-mix(in oklab, var(--green) 15%, transparent);
+  border-color: color-mix(in oklab, var(--green) 50%, transparent);
+}
+body[data-vivid] .tier.y {
+  background: color-mix(in oklab, var(--yellow) 15%, transparent);
+  border-color: color-mix(in oklab, var(--yellow) 50%, transparent);
+}
+body[data-vivid] .tier.r {
+  background: color-mix(in oklab, var(--red) 15%, transparent);
+  border-color: color-mix(in oklab, var(--red) 50%, transparent);
+}
+
+/* The active nav underline picks up a faint teal bloom so the
+   current section is unmistakable against the busier ground. */
+body[data-vivid] nav a.link.active {
+  box-shadow: 0 3px 10px -4px color-mix(in oklab, var(--teal) 65%, transparent);
+}
+
+/* ---------------------------------------------------------------- §6
+   REDUCED MOTION
+
+   This layer adds no @keyframes and no new transitions -- every
+   moving part it touches (the drift bar, the h1 fadeUp, the card
+   hover) is already governed by style.css's global reduced-motion
+   block. This stanza exists so that contract is stated here too:
+   nothing in vivid.css animates on its own. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-vivid]::after { animation: none; }
+}

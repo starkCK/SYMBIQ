@@ -46,85 +46,85 @@
    ================================================================ */
 
 /* ---------------------------------------------------------------- §1
-   THE PALETTE, RE-PITCHED
+   THE PALETTE, NUDGED
 
-   body[data-vivid] is specificity (0,2,0): it outranks :root and
-   the light-mode :root block, and it is an ancestor of everything,
-   so every token below cascades to the whole page. */
+   Revised 2026-08-28 on the maintainer's call: pull the colour back
+   to within a hair of the original. This layer is no longer a
+   re-pitch of the palette -- it keeps the site's own violet / teal /
+   navy almost exactly, and the "vivid" now lives in the structure
+   (a larger hero, the spectral h1/bar, dimensional surfaces, the
+   motion layer, the scroll line), not in a bolder set of hues.
+   Every token below sits one small step off the style.css value.
+
+   body[data-vivid] is specificity (0,2,0): it outranks :root and the
+   light-mode :root block regardless of the media query, so §1's
+   light block must re-declare the FULL token set or a dark value
+   leaks into light mode. */
 body[data-vivid] {
-  --bg: #06090f;
-  --panel: #0f1524;
-  --panel-2: #151d30;
-  --text: #edf1fb;
-  --muted: #97a3be;
+  --bg: #090d17;          /* style.css #0b0f1a -- a hair deeper, same hue */
+  --panel: #121a2c;       /* style.css #131a2b */
+  --panel-2: #172035;
+  --text: #e8ecf6;        /* unchanged from style.css */
+  --muted: #9aa5bd;       /* unchanged */
 
-  --violet: #b492ff;
-  --indigo: #6d8cff;      /* NEW: the spectrum's middle stop. Decorative only. */
-  --teal: #1fe3c6;
-  --link: #3fe6cf;
+  --violet: #ab90fb;      /* style.css #a78bfa -- barely brighter */
+  --indigo: #7f8cf3;      /* NEW: a muted violet-teal midpoint for the spectrum. Decorative only. */
+  --teal: #2ed9c4;        /* style.css #2dd4bf -- barely more vivid */
+  --link: #2dd4bf;        /* unchanged -- keep the exact contrast-checked value */
 
-  --border: #283350;
-  --green: #55e08a;
-  --yellow: #ffd23d;
-  --red: #ff7d7d;
+  --border: #26314a;      /* style.css #232d45 -- a touch lifted so edges read */
+  --green: #4ade80;       /* unchanged from style.css */
+  --yellow: #facc15;      /* unchanged */
+  --red: #f87171;         /* unchanged */
 
-  --nav-bg: rgba(6, 9, 15, 0.82);
-  --dot: rgba(120, 138, 255, 0.09);
-  --glow1: rgba(139, 92, 246, 0.20);
-  --glow2: rgba(31, 227, 198, 0.13);
-  --glow3: rgba(109, 140, 255, 0.12);   /* NEW: third ambient light */
-  --shadow: rgba(3, 6, 16, 0.5);
+  --nav-bg: rgba(9, 13, 23, 0.82);
+  --dot: rgba(167, 139, 250, 0.08);          /* style.css .07 */
+  --glow1: rgba(139, 92, 246, 0.16);         /* style.css .14 */
+  --glow2: rgba(45, 212, 191, 0.11);         /* style.css .10 */
+  --glow3: rgba(127, 140, 243, 0.08);        /* NEW: faint third light */
+  --shadow: rgba(0, 0, 0, 0.34);             /* style.css rgba(0,0,0,.3) */
 
-  --h1-a: #ffffff;
-  --h1-b: #b492ff;
-  --h1-c: #1fe3c6;
-  --rowhover: rgba(148, 163, 184, 0.07);
+  --h1-a: #e8ecf6;        /* the h1 ramp is back to style.css exactly */
+  --h1-b: #a78bfa;
+  --h1-c: #2dd4bf;
+  --rowhover: rgba(148, 163, 184, 0.06);     /* unchanged */
 
-  /* The spectrum. One gradient, used on every accent surface below,
-     so "the fork" reads as one visual idea across the page instead
-     of a fresh two-colour ramp per component. */
+  /* The spectrum: still a three-stop ramp for the h1 and the accent
+     bars, but now from the site's own violet through a soft indigo to
+     the site's own teal -- a gentler gradient than before. */
   --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
 }
 
-/* The base block above is unconditional, so in the cascade it is DARK
-   and it outranks style.css's own `@media light :root` block on
-   specificity (0,2,0 vs 0,1,0) regardless of the media query. That
-   means every token it sets must be re-set here, or its dark value
-   leaks into light mode. So this block re-declares the full set --
-   the contrast-locked tokens (--text, --muted, --teal, --link,
-   --green, --yellow, --red, --rowhover) get back exactly the values
-   the 2026-08-06 sweep put in style.css, unchanged; only the
-   decorative tokens are enriched. */
 @media (prefers-color-scheme: light) {
   body[data-vivid] {
-    --bg: #f4f7fc;
+    --bg: #f8fafc;         /* style.css exactly */
     --panel: #ffffff;
     --panel-2: #eef3fb;
     --text: #0f172a;
     --muted: #526180;
 
-    --violet: #7c3aed;
-    --indigo: #4457d6;      /* decorative only; never body text */
-    --teal: #0f766e;        /* contrast-locked */
-    --link: #0f766e;        /* contrast-locked */
+    --violet: #7c3aed;     /* style.css exactly */
+    --indigo: #4a5ad0;     /* decorative only; never body text */
+    --teal: #0f766e;       /* contrast-locked */
+    --link: #0f766e;       /* contrast-locked */
 
-    --border: #d6deee;
-    --green: #15803d;       /* contrast-locked */
-    --yellow: #b45309;      /* contrast-locked */
-    --red: #b91c1c;         /* contrast-locked */
+    --border: #dbe2ef;     /* style.css exactly */
+    --green: #15803d;      /* contrast-locked */
+    --yellow: #b45309;     /* contrast-locked */
+    --red: #b91c1c;        /* contrast-locked */
 
-    --nav-bg: rgba(244, 247, 252, 0.85);
-    --dot: rgba(80, 70, 200, 0.06);
-    --glow1: rgba(109, 40, 217, 0.10);
-    --glow2: rgba(13, 148, 136, 0.09);
-    --glow3: rgba(68, 87, 214, 0.07);
-    --shadow: rgba(30, 41, 80, 0.10);
+    --nav-bg: rgba(248, 250, 252, 0.85);
+    --dot: rgba(124, 58, 237, 0.06);
+    --glow1: rgba(124, 58, 237, 0.09);       /* style.css .08 */
+    --glow2: rgba(13, 148, 136, 0.08);       /* style.css .07 */
+    --glow3: rgba(74, 90, 208, 0.06);
+    --shadow: rgba(15, 23, 42, 0.09);        /* style.css .08 */
     --rowhover: rgba(15, 23, 42, 0.04);
 
-    --h1-a: #0b1220;
-    --h1-b: #6d28d9;
+    --h1-a: #0f172a;       /* style.css h1 ramp exactly */
+    --h1-b: #7c3aed;
     --h1-c: #0d9488;
-    --spectrum: linear-gradient(100deg, #6d28d9, #4457d6 46%, #0f766e);
+    --spectrum: linear-gradient(100deg, #7c3aed, #4a5ad0 46%, #0f766e);
   }
 }
 
@@ -275,26 +275,11 @@ body[data-vivid] .orhero {
 /* ---------------------------------------------------------------- §5
    ACCENTS
 
-   The primary CTA: deepen the gradient toward indigo at the far
-   end, warm the shadow. NO size, weight, motion or lift change --
-   see the header note. */
-body[data-vivid] .bigplay {
-  background: linear-gradient(135deg,
-    var(--teal),
-    color-mix(in oklab, var(--indigo) 52%, var(--teal)));
-  box-shadow:
-    0 4px 16px -4px color-mix(in oklab, var(--teal) 48%, transparent),
-    0 2px 6px rgba(0, 0, 0, 0.22);
-}
-@media (prefers-color-scheme: light) {
-  body[data-vivid] .bigplay {
-    background: linear-gradient(135deg, #0f766e, #3b3aa8);
-    color: #ffffff;
-    box-shadow:
-      0 4px 16px -4px rgba(59, 58, 168, 0.32),
-      0 2px 6px rgba(30, 41, 80, 0.12);
-  }
-}
+   The primary CTA is NOT touched here. vivid once deepened its
+   gradient toward indigo; that was reverted 2026-08-28 with the rest
+   of the colour nudge, so .bigplay is exactly style.css's button --
+   the slightly-more-vivid --teal is the only difference, and it
+   comes through on its own. */
 
 /* The "up next" completion CTA: swap its two-colour tint for a wash
    off the spectrum. (.orjump keeps style.css's own treatment -- its

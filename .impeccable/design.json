@@ -6,6 +6,8 @@
     "colorMeta": {
       "canvas": { "role": "neutral", "displayName": "Void", "canonical": "#0b0f1a", "lightValue": "#f8fafc", "tonalRamp": ["#05070c", "#080b14", "#0b0f1a", "#131a2b", "#1c2740", "#2b3a5c", "#5a6b8f", "#aab6d0"] },
       "surface": { "role": "neutral", "displayName": "Slate Panel", "canonical": "#131a2b", "lightValue": "#ffffff", "tonalRamp": ["#0a0e18", "#0f1422", "#131a2b", "#1a2338", "#243050", "#33436b", "#5f7096", "#b3bdd6"] },
+      "surface-2": { "role": "neutral", "displayName": "Slate Panel +2", "canonical": "#182134", "lightValue": "#f1f5fb", "tonalRamp": ["#0b0f18", "#111826", "#182134", "#1f2b45", "#2c3c60", "#3f5480", "#6c7fa6", "#b8c2d8"], "purpose": "First deeper ladder step: a surface sitting on a panel (code chips, .formula blocks)." },
+      "surface-3": { "role": "neutral", "displayName": "Slate Panel +3", "canonical": "#1e293f", "lightValue": "#e9eff8", "tonalRamp": ["#0d1220", "#141c2e", "#1e293f", "#283651", "#374a71", "#4f6893", "#7d90b6", "#c3cde0"], "purpose": "Second deeper ladder step, reserved for a surface nested two levels in." },
       "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#e8ecf6", "lightValue": "#0f172a", "tonalRamp": ["#20242e", "#3a4150", "#565f73", "#7b8399", "#9aa5bd", "#c1c9db", "#e8ecf6", "#f6f8fc"] },
       "ink-muted": { "role": "neutral", "displayName": "Ink Muted", "canonical": "#9aa5bd", "lightValue": "#526180", "tonalRamp": ["#20242e", "#333b4c", "#4a556d", "#63708c", "#7f8ca6", "#9aa5bd", "#c0c8d8", "#e2e7f1"] },
       "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#232d45", "lightValue": "#dbe2ef", "tonalRamp": ["#121826", "#1a2235", "#232d45", "#2f3c5b", "#3f5079", "#5a6d9c", "#8f9ec4", "#dbe2ef"] },
@@ -20,7 +22,7 @@
       "display-vivid": { "displayName": "Display (vivid)", "purpose": "Enlarged hero on the six body[data-vivid] pages. Same ramp, -0.022em tracking, dark-mode violet drop-shadow bloom." },
       "headline": { "displayName": "Headline / h2", "purpose": "Section headers, always preceded by a 3px Lavender-to-Mint accent bar that draws in with growbar on first view." },
       "title": { "displayName": "Title / h3", "purpose": "Card and sub-section headings." },
-      "body": { "displayName": "Body", "purpose": "Running prose at 1.65 line-height. No max-width beyond the .wrap container." },
+      "body": { "displayName": "Body", "purpose": "Running prose at 1.65 line-height. No max-width beyond the .wrap container. Carries font-feature-settings: 'cv05' 1, 'cv08' 1, 'ss03' 1 — Inter disambiguation glyphs plus round quotes; silent no-op where Inter is not the resolved font." },
       "body-sm": { "displayName": "Body small", "purpose": "Captions, honest-model notes, secondary UI." },
       "label": { "displayName": "Label / eyebrow", "purpose": "0.7rem, uppercase, +0.12em tracking, Ink Muted. Section kickers, HUD labels, table headers. The one place tracking opens up." },
       "numeric": { "displayName": "Numeric", "purpose": "tabular-nums on live figures in widgets (.hud-score). Changing numbers must not reflow." }

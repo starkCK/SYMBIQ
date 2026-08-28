@@ -13,6 +13,8 @@ colors:
   amber: "#facc15"
   green: "#4ade80"
   red: "#f87171"
+  surface-2: "#182134"
+  surface-3: "#1e293f"
   h1-ramp-a: "#e8ecf6"
   h1-ramp-b: "#a78bfa"
   h1-ramp-c: "#2dd4bf"
@@ -51,6 +53,7 @@ typography:
     fontWeight: 400
     lineHeight: 1.65
     letterSpacing: "normal"
+    fontFeature: "'cv05' 1, 'cv08' 1, 'ss03' 1"
   body-sm:
     fontFamily: "Inter, 'Segoe UI', -apple-system, system-ui, sans-serif"
     fontSize: "0.9rem"
@@ -172,6 +175,7 @@ A near-monochrome dark ground carrying exactly two chromatic accents plus one re
 
 - **Void** (`#0b0f1a`, light `#f8fafc`): the page canvas. Near-black with a blue cast; never pure `#000`.
 - **Slate Panel** (`#131a2b`, light `#ffffff`): surface-1 — every card, hero, collapsible, HUD and input sits on this one step up from canvas.
+- **Slate Panel +2 / +3** (`#182134` / `#1e293f`, light `#f1f5fb` / `#e9eff8`): the two deeper ladder steps for a surface that sits *on* a panel — `code` chips and `.formula` blocks are the first two consumers. Additive, in the spirit of the `--sp` / `--r` scales: a named step to reach for, not forced onto anything.
 - **Hairline** (`#232d45`, light `#dbe2ef`): the 1px border on every card, input and divider. Hierarchy is drawn, not shadowed.
 - **Ink** (`#e8ecf6`, light `#0f172a`): body and heading text.
 - **Ink Muted** (`#9aa5bd`, light `#526180`): taglines, captions, eyebrows, table headers, secondary metadata. Measured to clear 4.5:1 in both themes.
@@ -192,7 +196,7 @@ A near-monochrome dark ground carrying exactly two chromatic accents plus one re
 
 **Display / Body / Label Font:** Inter, with `"Segoe UI", -apple-system, system-ui, sans-serif` fallback. One family, everywhere.
 
-**Character:** Neutral, technical, unshowy — the type of a lab instrument's readout, not a magazine. Confidence comes from weight and tight leading on headings against generous 1.65 body leading, and from a gradient-clipped hero line that is the single expressive typographic moment on the page.
+**Character:** Neutral, technical, unshowy — the type of a lab instrument's readout, not a magazine. Confidence comes from weight and tight leading on headings against generous 1.65 body leading, and from a gradient-clipped hero line that is the single expressive typographic moment on the page. `body` sets `font-feature-settings: "cv05" 1, "cv08" 1, "ss03" 1` — Inter's tailed lowercase `l`, serifed uppercase `I`, and round quotes — which sharpen the minority who have Inter installed and are silent no-ops on Segoe UI / San Francisco (Inter is named in the stack but not loaded).
 
 ### Hierarchy
 
@@ -239,7 +243,7 @@ Shadow is a **response to state**. It appears on `:hover` and `:focus`, tinted t
 
 **The Flat-By-Default Rule.** A surface at rest has a hairline and nothing else. If you reach for `box-shadow`, it is a hover, focus or drag response — state, not decoration — and it is tinted to the accent, never pure black.
 
-**The Tonal-Ladder Rule.** Nesting depth is expressed by stepping up the surface ladder, not by stacking shadows. Canvas holds surface; surface holds a nested `--bg`-filled well (inputs, figure frames, `.hud`).
+**The Tonal-Ladder Rule.** Nesting depth is expressed by stepping the surface ladder, not by stacking shadows. Canvas (`--bg`) holds surface-1 (`--panel`). A surface sitting *on* a panel steps up to `--surface-2` / `--surface-3` (`code`, `.formula`); a deep inset *well* steps the other way, back down to `--bg` (inputs, figure frames, `.hud`). Either direction, one step, no shadow.
 
 ## Shapes
 
@@ -289,7 +293,7 @@ Borders are always `1px`, always the Hairline token or an accent-tinted mix of i
 - **Collapsibles** (`.foldsec`, `.gamerules`): `14px` rounded, a faint Mint→Lavender gradient wash, a custom `+`/`×` toggle glyph that rotates `180°` on open. One visual language for "there is more here."
 - **Inline-SVG figures** (`.figcard` / `.figscroll`): diagrams ship as HTML SVG, never JS-rendered, inside a horizontally-scrollable frame with a `470px` min-width so labels never shrink below legibility on a phone. Figure colour obeys the Colour Law: mint = AI/real, violet = quantum/theory, yellow = look-here, muted = scaffolding.
 - **The Lattice** (`atmosphere.js`, `#mo-lattice`): a generative canvas of drifting, coupling nodes behind everything — the brand mark behaving like itself. Themed from `--violet`/`--teal`, pointer-reactive, one static frame under reduced motion.
-- **The vivid layer** (`vivid.css`, `body[data-vivid]`): an opt-in re-pitch on the six landing/pillar pages — deeper ground, a three-stop violet→indigo→teal spectrum, dimensional surfaces, and an ambient motion set (breathing background, aurora heroes, a bottom scroll-progress line). Reversible by removing one attribute.
+- **The vivid layer** (`vivid.css`, `body[data-vivid]`): an opt-in structural richening on the six landing/pillar pages. The **palette stays within a hair of the base** (dialled back on 2026-08-28) — `--bg` a shade deeper, `--violet`/`--teal` a shade more saturated, nothing else. What "vivid" means here is structure: a larger 800-weight hero, the h1/`h2::before` spectral three-stop ramp (the site's own violet through a soft indigo to its own teal), a top-light sheen and hue-tinted shadow on cards, and an ambient motion set (breathing background, aurora heroes, a bottom scroll-progress line). `.bigplay` is untouched. Reversible by removing one attribute.
 
 ## Do's and Don'ts
 

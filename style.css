@@ -25,6 +25,16 @@
   --h1-c: #2dd4bf;
   --rowhover: rgba(148, 163, 184, 0.06);
 
+  /* Surface ladder. --bg is the canvas, --panel is surface-1 (every card,
+     hero, input). --surface-2 / -3 are the deeper steps for a surface that
+     sits ON a panel -- a code chip, a formula block, a nested well -- so
+     nesting reads by tone rather than by stacking a shadow. Additive, in the
+     same spirit as the --sp / --r scale above: nothing is forced onto it,
+     it exists so a nested surface has a named step to reach for. `code` and
+     `.formula` are the first two things that use it. */
+  --surface-2: #182134;
+  --surface-3: #1e293f;
+
   /* ---- Spacing / radius / elevation scale (added 2026-08-23, item 07 of
      "The Ladder"). Additive only: the ~700 existing ad-hoc px values in this
      file are untouched -- refactoring every one to match would be a
@@ -88,6 +98,10 @@
     --green: #15803d;
     --yellow: #b45309;
     --red: #b91c1c;
+    /* Surface ladder, light. --panel is white; a surface sitting on it steps
+       DOWN in lightness (toward the canvas and past it) so it reads as inset. */
+    --surface-2: #f1f5fb;
+    --surface-3: #e9eff8;
   }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -96,6 +110,15 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Inter, "Segoe UI", -apple-system, system-ui, sans-serif;
+  /* Inter character variants: cv05 gives the lowercase l a tail and cv08
+     puts serifs on the uppercase I, so l / I / 1 stop colliding -- worth
+     having on a site this dense with notation and ket vectors. ss03 rounds
+     the quotes and commas. All three are no-ops on Segoe UI / San Francisco
+     (the fonts most visitors actually get -- Inter is named but not loaded),
+     and font-feature-settings does not switch off the default kern/liga/calt.
+     If Inter is ever self-hosted, this is already in place. */
+  font-feature-settings: "cv05" 1, "cv08" 1, "ss03" 1;
+  font-optical-sizing: auto;
   line-height: 1.65;
 }
 /* ambient layer: two soft glows + the lattice dot grid (the Lattice IS the brand) */
@@ -325,9 +348,9 @@ tr:hover td { background: var(--rowhover); }
 .overflow { overflow-x: auto; }
 footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.88rem; }
 .todo { color: var(--yellow); font-size: 0.85rem; }
-code { background: var(--panel); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 0.9em; }
+code { background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 0.9em; }
 .formula {
-  background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--violet);
+  background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--violet);
   border-radius: 8px; padding: 12px 16px; margin: 12px 0;
   font-family: "Cambria Math", Georgia, serif; overflow-x: auto;
 }

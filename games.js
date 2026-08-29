@@ -60,7 +60,7 @@
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Heuristic⟧',
       or: 'Simulated annealing is a <b>metaheuristic</b> — operations research’s answer to problems too hard to solve exactly. It is the classical baseline quantum annealing has to beat.'
     },
-    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps.',
+    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps. The <strong>🔴 Ruthless</strong> card ("the Deep Country") runs five harder landscapes on a tighter <strong>10-epoch</strong> budget; each pass mark was re-established the same way — below crash-cooling is impossible, and a shaped schedule found by search clears it by at least three points.',
     // Landscapes verified offline: every global minimum unique; pass marks set
     // below the best schedule found by search, above what crash-cooling scores.
     // `crash` = the measured clear rate of a crash-cool (all-Cool) schedule on
@@ -83,8 +83,33 @@
     ],
     COOL: 0.60, HOLD: 1.00, STOKE: 1.70, TMIN: 0.02, TMAX: 8.0, EPOCH: 20, EPOCHS: 12, REPLAYS: 500,
 
+    /* 🔴 RUTHLESS — "The Deep Country". Five harder landscapes on a TIGHTER
+       10-epoch budget (Standard is 12). `bar` is a pass mark, not a proven
+       optimum — annealing is heuristic — so tools/verify_volcano_ruthless.py
+       re-establishes each one: the global minimum is unique, crash-cooling's
+       clear rate sits below `bar`, and a search over cooling-shaped schedules
+       finds a rate at least three points above it. `crash`/`best` are the
+       display percentages, transcribed from that run. verify_frame.mjs drives
+       the shipped engine on this budget. */
+    LV_RUTHLESS: [
+      { n: 'The Antechamber', h: [7,5,3,1,3,5,7,5,3,1,3,2,1,0,1,2], start: 0, T0: 2.5, bar: 0.30, best: 0.38, crash: 1, gmin: 13,
+        note: 'Two basins with a seven-high wall between them, and only ten moves to get over it hot and back down cold. The first basin is not the floor.' },
+      { n: 'The Serrated Ridge', h: [9,7,9,6,8,5,7,4,6,3,5,2,4,1,3,0,2], start: 0, T0: 2.0, bar: 0.22, best: 0.29, crash: 0, gmin: 15,
+        note: 'A descending saw: every tooth is a trap two or three deep, and cold anywhere on it ends the run in whichever one you are nearest.' },
+      { n: 'The Deep Well', h: [6,4,2,1,3,5,3,1,3,4,3,2,1,2,3,2,0,2], start: 0, T0: 2.5, bar: 0.17, best: 0.22, crash: 0, gmin: 16,
+        note: 'The true floor is buried past two decoy basins that look, from a distance, just as deep. You have to stay hot across both.' },
+      { n: 'The Two Passes', h: [6,3,1,4,7,4,1,3,5,3,1,0,2,3], start: 0, T0: 2.5, bar: 0.30, best: 0.39, crash: 0, gmin: 11,
+        note: 'Two ridges, three ditches, one floor. Survive the first pass and the second takes you if you have already gone cold.' },
+      { n: 'The Long Haul', h: [9,8,7,6,4,2,3,4,5,4,3,1,2,3,4,3,1,0,1,2,3], start: 0, T0: 3.0, bar: 0.22, best: 0.27, crash: 1, gmin: 17,
+        note: 'The longest country on the card, and the same ten moves. Shape the whole descent — there is no budget left for a second try.' }
+    ],
+
     mount: function (root, opts) {
       var g = this, mission = opts && opts.mode === 'mission';
+      var ruthless = !mission && opts && opts.level === 'ruthless';
+      var LV = ruthless ? g.LV_RUTHLESS : g.LV;
+      var EPOCHS = ruthless ? 10 : g.EPOCHS;
+      var winIdx = ruthless ? LV.length - 1 : 1;   // Standard: Twin Calderas. Ruthless: The Long Haul.
       root.innerHTML =
         '<div class="holes" data-r="chips"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
@@ -105,7 +130,7 @@
       var svg = $(root, '.vterrain'), li = 0, cleared = [], st = null;
 
       function fresh() {
-        var L = g.LV[li];
+        var L = LV[li];
         st = { x: L.start, T: L.T0, e: 0, sched: [], seen: {}, best: L.h[L.start], over: false, rate: null };
         st.seen[L.start] = 1;
       }
@@ -144,7 +169,7 @@
       }
 
       function drawTerrain() {
-        var L = g.LV[li], gm = geom(L), i;
+        var L = LV[li], gm = geom(L), i;
         svg.innerHTML = '';
         var defs = el('defs', {}), grad = el('linearGradient', { id: 'vgrad', x1: '0', y1: '0', x2: '0', y2: '1' });
         grad.appendChild(el('stop', { offset: '0', 'stop-color': 'var(--violet)', 'stop-opacity': '.22' }));
@@ -175,7 +200,7 @@
       }
 
       function drawChips() {
-        $(root, '[data-r=chips]').innerHTML = g.LV.map(function (L, i) {
+        $(root, '[data-r=chips]').innerHTML = LV.map(function (L, i) {
           return '<span class="hole' + (i === li ? ' now' : '') + (cleared[i] ? ' done' : '') + '" data-l="' + i +
                  '" title="' + L.n + '">' + (i + 1) + '</span>';
         }).join('');
@@ -186,7 +211,7 @@
 
       function drawSched() {
         var out = '';
-        for (var i = 0; i < g.EPOCHS; i++) {
+        for (var i = 0; i < EPOCHS; i++) {
           var m = st.sched[i], k = m === g.COOL ? 'c' : m === g.STOKE ? 's' : m === g.HOLD ? 'h' : '';
           var t = m === g.COOL ? '▼' : m === g.STOKE ? '▲' : m === g.HOLD ? '═' : (i + 1);
           out += '<span class="vslot ' + k + (i === st.e && !st.over ? ' now' : '') + '">' + t + '</span>';
@@ -203,18 +228,18 @@
       }
 
       function verdict(msg) {
-        var L = g.LV[li], p = $(root, '[data-r=say]');
+        var L = LV[li], p = $(root, '[data-r=say]');
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; return; }
         p.className = 'verdict';
-        p.innerHTML = '<strong>' + L.n + '.</strong> Twelve choices, twenty steps each. End <em>standing on</em> the floor — finding it is not keeping it. ' +
+        p.innerHTML = '<strong>' + L.n + '.</strong> ' + EPOCHS + ' choices, ' + g.EPOCH + ' steps each. End <em>standing on</em> the floor — finding it is not keeping it. ' +
           '<span style="color:var(--muted)">Pass mark: a schedule that wins <strong>' + Math.round(L.bar * 100) + '%</strong> of the time.</span>';
       }
 
       function rows() {
-        var L = g.LV[li];
+        var L = LV[li];
         var here = L.h[st.x], floor = L.h[L.gmin];
         $(root, '[data-r=rows]').innerHTML =
-          '<dt>Epoch</dt><dd>' + Math.min(st.e, g.EPOCHS) + ' of ' + g.EPOCHS + ' &nbsp;<span style="color:var(--muted)">(' + (g.EPOCHS - Math.min(st.e, g.EPOCHS)) * g.EPOCH + ' steps left)</span></dd>' +
+          '<dt>Epoch</dt><dd>' + Math.min(st.e, EPOCHS) + ' of ' + EPOCHS + ' &nbsp;<span style="color:var(--muted)">(' + (EPOCHS - Math.min(st.e, EPOCHS)) * g.EPOCH + ' steps left)</span></dd>' +
           '<dt>Temperature</dt><dd>' + st.T.toFixed(2) + ' &nbsp;<span style="color:var(--muted)">' +
             (st.T >= 2 ? 'molten — it will climb almost anything' : st.T >= 0.6 ? 'warm — small climbs only' : 'frozen — downhill or nothing') + '</span></dd>' +
           '<dt>Standing on</dt><dd>depth ' + here + (here === floor ? ' — <strong style="color:var(--teal)">the floor</strong>' : '') + '</dd>' +
@@ -231,35 +256,35 @@
            very array this sampler is walking. Nothing here reads back, and no
            replay, pass mark or acceptance test consults a listener. */
         if (opts && typeof opts.onState === 'function') {
-          var L = g.LV[li];
+          var L = LV[li];
           try {
             opts.onState({ phase: st.over ? 'finished' : 'render',
                            li: li, name: L.n, heights: L.h.slice(), gmin: L.gmin,
                            x: st.x, pos: st.x / Math.max(1, L.h.length - 1),
                            T: st.T, Tnorm: Math.max(0, Math.min(1, st.T / 4)),
-                           epoch: Math.min(st.e, g.EPOCHS), epochs: g.EPOCHS,
+                           epoch: Math.min(st.e, EPOCHS), epochs: EPOCHS,
                            here: L.h[st.x], floor: L.h[L.gmin], best: st.best,
                            onFloor: L.h[st.x] === L.h[L.gmin],
                            rate: st.rate, bar: L.bar, over: st.over,
-                           cleared: cleared.filter(Boolean).length, total: g.LV.length });
+                           cleared: cleared.filter(Boolean).length, total: LV.length });
           } catch (e) {}
         }
       }
 
       function step(mult) {
         if (st.over) return;
-        var L = g.LV[li];
+        var L = LV[li];
         st.T = Math.min(g.TMAX, Math.max(g.TMIN, st.T * mult));
         st.sched.push(mult);
         st.x = epoch(L.h, st.x, st.T, st.seen);
         if (L.h[st.x] < st.best) st.best = L.h[st.x];
         st.e++;
-        if (st.e >= g.EPOCHS) return finish();
+        if (st.e >= EPOCHS) return finish();
         render();
       }
 
       function finish() {
-        var L = g.LV[li], floor = L.h[L.gmin], frozeRight = L.h[st.x] === floor;
+        var L = LV[li], floor = L.h[L.gmin], frozeRight = L.h[st.x] === floor;
         st.over = true;
         st.rate = scheduleRate(L, st.sched);           // 500 honest replays of YOUR schedule
         var passed = st.rate >= L.bar;
@@ -284,7 +309,7 @@
           else hint = ' <span style="color:var(--muted)">Try holding the heat while it crosses the ridges, then cooling hard over the last few epochs.</span>';
         }
 
-        var firstWin = (passed && li === 1) ? win('volcano', opts) : false;   // Twin Calderas is the mission
+        var firstWin = (passed && li === winIdx) ? win('volcano', opts) : false;   // Twin Calderas (Std) / The Long Haul (Ruthless)
 
         /* FRAME — arcade only; mission mode has missions.js's own scene layer. */
         var frame = '';
@@ -2171,7 +2196,7 @@
       standard: { icon: '🟡', label: 'Standard',
                   blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
       ruthless: { icon: '🔴', label: 'Ruthless',
-                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors; Max-Cut: the Frustrated Ward), you get that instead.' }
+                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors; Max-Cut: the Frustrated Ward; the Volcano: the Deep Country), you get that instead.' }
     };
     /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
        it says what the buttons do, never changes what they do. */

@@ -1888,13 +1888,21 @@
       link: 'circuits.html#calibration', linkText: 'The physics this reuses ▸', tier: '⟦Proven⟧',
       or: 'Choosing when to explore vs. exploit under a fixed budget is a bandit problem'
     },
-    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. Verification script: <code>tools/verify_calibration_agent.py</code>.',
+    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>.',
     OMEGA: 1.5, TMAX: 2.6, NBINS: 26, SHOTS: 24, ROUNDS: 10, PJUMP: 0.25, DDRIFT: 0.05,
     DMIN: -1.6, DMAX: 1.6, NPROBES: 6, NUDGEWIN: 1,
 
     mount: function (root, opts) {
       var g = this, NSVG = NS;
       var NBINS = g.NBINS, TMAX = g.TMAX, OMEGA = g.OMEGA;
+      /* 🔴 RUTHLESS — "Budget Crunch". Half the shots per round (12, not 24).
+         Every probe is read from far fewer samples, so a coarse Recalibrate
+         scan (2 shots per probe) can no longer pay for itself. Measured over
+         8,000 games by tools/verify_calibration_ruthless.py: Recalibrate falls
+         from 0.667 to 0.602 — below Trust (0.640) — while a reactive reader
+         still clears every fixed strategy (0.655). Only SHOTS changes. */
+      var ruthless = opts && opts.mode !== 'mission' && opts.level === 'ruthless';
+      var SHOTS = ruthless ? 12 : g.SHOTS;
       var TGRID = []; for (var i = 0; i < NBINS; i++) TGRID.push(0.05 + (TMAX - 0.05) * i / (NBINS - 1));
 
       function p1(t, delta) {
@@ -1918,7 +1926,7 @@
           idxs = [];
           for (var j = Math.max(0, lastIdx - g.NUDGEWIN); j <= Math.min(NBINS - 1, lastIdx + g.NUDGEWIN); j++) idxs.push(j);
         }
-        var per = Math.floor(g.SHOTS / idxs.length), extra = g.SHOTS - per * idxs.length;
+        var per = Math.floor(SHOTS / idxs.length), extra = SHOTS - per * idxs.length;
         var best = idxs[0], bestEst = -1;
         idxs.forEach(function (idx, k) {
           var n = per + (k < extra ? 1 : 0);
@@ -1984,7 +1992,8 @@
         $(root, '[data-r=hud]').innerHTML =
           '<div class="hud-side"><span class="hud-label">Round</span><span class="hud-score">' +
             Math.min(S.round + 1, g.ROUNDS) + ' / ' + g.ROUNDS + '</span></div>' +
-          '<div class="hud-mid">Detuning drifts every round.<br>You never see it directly.</div>' +
+          '<div class="hud-mid">Detuning drifts every round.<br>You never see it directly.' +
+            (ruthless ? '<br><span style="color:var(--red)">12 shots a round — half the usual.</span>' : '') + '</div>' +
           '<div class="hud-side right"><span class="hud-label">Avg fidelity</span><span class="hud-score" style="color:' +
             fidColor(avg) + '">' + (100 * avg).toFixed(1) + '%</span></div>';
       }
@@ -2313,7 +2322,7 @@
       standard: { icon: '🟡', label: 'Standard',
                   blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
       ruthless: { icon: '🔴', label: 'Ruthless',
-                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors; Max-Cut: the Frustrated Ward; the Volcano: the Deep Country; Quantum Tic-Tac-Toe: the Adversary), you get that instead.' }
+                  blurb: 'No orientation, no legend, rules closed — and every cabinet has a harder card: the Back Nine, the Long Corridors, the Frustrated Ward, the Deep Country, the Adversary, Budget Crunch.' }
     };
     /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
        it says what the buttons do, never changes what they do. */

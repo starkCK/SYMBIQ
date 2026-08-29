@@ -2137,6 +2137,14 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   background: linear-gradient(90deg, var(--teal), var(--violet)); }
 
 /* --- the corrections log ------------------------------------------------- */
+/* The per-entry rules (.corr, .corr-head, .corr-where, .corr-kind + the
+   .k-num/.k-lab/.k-code kind tints, .corr dl/dt/dd, .corr-caught, .corr-lesson,
+   .corr-filters, .tbar-links) were removed 2026-08-29. They dressed the
+   21-entry filterable log that was retired on 2026-08-15 when the page reset
+   to "0 corrections -- the count starts at launch"; `<ol class="corr-log">` is
+   now empty and no page or script references any of them. What stays is what
+   the live page still uses: the summary cards, the empty log container, the
+   .corr-f filter buttons tiers.js queries, and the format note. */
 .corr-summary h3 { margin-top: 0; }
 .corr-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px; margin: 18px 0; }
@@ -2144,10 +2152,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   background: rgba(255,255,255,.02); }
 .corr-stats b { display: block; font-size: 1.6rem; line-height: 1.1; color: var(--teal); }
 .corr-stats span { display: block; font-size: .8rem; color: var(--muted); margin-top: 4px; line-height: 1.45; }
-.corr-lesson { font-size: .93rem; color: var(--muted); border-top: 1px solid var(--border);
-  padding-top: 14px; margin-bottom: 0; }
 
-.corr-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 26px 0 18px; }
 .corr-f { font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer;
   color: var(--muted); background: transparent; border: 1px solid var(--border);
   border-radius: 99px; padding: 8px 14px; min-height: 44px; transition: color .18s, border-color .18s; }
@@ -2156,34 +2161,11 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .corr-f.is-on { color: var(--text); border-color: var(--teal); background: rgba(45,212,191,.10); }
 
 .corr-log { list-style: none; padding: 0; margin: 0; counter-reset: corr; }
-.corr { border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px;
-  margin-bottom: 14px; background: var(--panel); }
-.corr[hidden] { display: none; }
-.corr-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
-  padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
-.corr-head time { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--text); font-size: .9rem; }
-.corr-where { color: var(--muted); font-size: .9rem; }
-.corr-where code { font-size: .85em; }
-.corr-kind { margin-left: auto; font-size: .72rem; letter-spacing: .05em; text-transform: uppercase;
-  font-weight: 700; border: 1px solid var(--border); border-radius: 99px; padding: 3px 10px; color: var(--muted); }
-.k-num  .corr-kind { color: var(--yellow); border-color: rgba(250,204,21,.4); }
-.k-lab  .corr-kind { color: var(--violet); border-color: rgba(139,92,246,.4); }
-.k-code .corr-kind { color: var(--teal);   border-color: rgba(45,212,191,.4); }
-.corr dl { margin: 0; }
-.corr dt { font-size: .72rem; letter-spacing: .09em; text-transform: uppercase;
-  font-weight: 700; color: var(--muted); margin-top: 12px; }
-.corr dt:first-child { margin-top: 0; }
-.corr dd { margin: 5px 0 0; line-height: 1.7; }
-.corr-caught { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--border);
-  font-size: .85rem; color: var(--muted); }
-.corr-caught span { font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
-  font-size: .72rem; margin-right: 6px; }
 .corr-format { color: var(--muted); font-size: .93rem; margin: 22px 0 8px; }
 
 @media (max-width: 620px) {
   .tbar { position: static; gap: 8px; padding: 12px; }
   .tbar-blurb { margin-left: 0; width: 100%; }
-  .corr-kind { margin-left: 0; }
 }
 a.tbtn { text-decoration: none; }
 
@@ -2253,4 +2235,3 @@ a.tbtn { text-decoration: none; }
   .tbtn, .corr-f, .scene-audio, .ms-leave, .ms-tell, .hole, .orjump, .ms-opt, .lv, .ctrlbtn, .pick,
   .mc-node, .duelwrap .dq, .dial-detent circle, .ornode.open circle { transition: none; }
 }
-.tbar-links .tbtn.is-on { cursor: default; }

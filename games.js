@@ -553,7 +553,7 @@
       learn: 'Why quantum search is <em>quadratically</em> faster — √N, not exponential — and that a measurement is a dice-roll you can load but never force.',
       link: 'ai.html', linkText: 'Where speedups help ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game. The rotation itself is phase kickback plus interference — the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a> — scaled up from a single query to about √N of them.',
+    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game. The rotation itself is phase kickback plus interference — the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a> — scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict — only a measurement taken at the peak lights the corridor.',
     mount: function (root, opts) {
       // Display-only voice layer (see Circuit Golf). Rue's fixation is timing:
       // the arcade says "par", the corridor says "the moment to look".
@@ -585,7 +585,17 @@
         '<dl class="rows" data-r="rows"></dl>';
 
       var barsEl = $(root, '[data-r=bars]');
-      var CORR = [{n:4,par:1},{n:8,par:2},{n:16,par:3},{n:32,par:4},{n:64,par:6}];
+      var CORR_STD = [{n:4,par:1},{n:8,par:2},{n:16,par:3},{n:32,par:4},{n:64,par:6}];
+      /* 🔴 RUTHLESS — "The Long Corridors". Every N longer than the Standard
+         card's longest, so you can no longer eyeball a dozen bars: you have to
+         know the peak sits near (π/4)√N and count to it. `par` is the FIRST
+         maximum of sin²((2k+1)θ), proven by tools/verify_grover_ruthless.py and
+         mirrored here; verify_frame.mjs drives the shipped engine to each peak.
+         And the clear is strict — see finish(): only a measurement AT the peak
+         ticks the corridor, a lucky early/late escape does not. */
+      var CORR_RUTHLESS = [{n:96,par:7},{n:140,par:9},{n:192,par:10},{n:256,par:12},{n:384,par:15},{n:512,par:17}];
+      var ruthless = !mission && opts && opts.level === 'ruthless';
+      var CORR = ruthless ? CORR_RUTHLESS : CORR_STD;
       var ci = 0, k = 0, mark = 0, measured = false, busy = false, bestP = 0, solved = [];
 
       /* OUTBOUND ONLY. A narrative layer (scene.js / missions.js) needs to know
@@ -675,9 +685,13 @@
         var n = CORR[ci].n, par = CORR[ci].par, pm = pExit(n, k), p = $(root, '[data-r=say]');
         if (landed === mark) {
           var firstWin = win('grover', opts);
-          if (solved[ci] == null || k === par) solved[ci] = k;
+          /* Standard: any escape records the corridor. 🔴 Ruthless: only a
+             measurement taken AT the peak counts — a lucky early or late draw
+             gets you through the door but leaves the corridor unlit. */
+          if (k === par || (!ruthless && solved[ci] == null)) solved[ci] = k;
           p.className = 'verdict good';
           p.innerHTML = '<strong>Escaped.</strong> ' + (k === par ? VO.peak : k < par ? VO.early(par) : VO.late) +
+            (ruthless && k !== par ? ' <strong>Off the peak — the corridor still stands.</strong>' : '') +
             ' A classical searcher averages ~' + (n/2) + ' door' + (n/2 === 1 ? '' : 's') + '; you used <strong>' + k + '</strong>.';
           if (!mission && k === par) {
             p.innerHTML += FRAME.ceremony('grover', {
@@ -2131,7 +2145,7 @@
       standard: { icon: '🟡', label: 'Standard',
                   blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
       ruthless: { icon: '🔴', label: 'Ruthless',
-                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine), you get that instead.' }
+                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors), you get that instead.' }
     };
     /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
        it says what the buttons do, never changes what they do. */

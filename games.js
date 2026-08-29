@@ -912,9 +912,19 @@
       learn: 'Superposition, entanglement and measurement-collapse — as a faithful <em>analogy</em>, not a literal qubit simulation.',
       link: 'quantum-mechanics.html#chsh', linkText: 'Real entanglement ▸', tier: 'analogy'
     },
-    honest: 'Honest model: this is Allan Goff’s Quantum Tic-Tac-Toe (<em>Am. J. Phys.</em> <strong>74</strong>, 962 (2006)), a teaching game — a faithful <em>analogy</em> for superposition, entanglement and measurement, not a simulation of a physical qubit system. What is genuinely quantum-like: marks exist in two places until measured, a closed loop of entanglement forces a measurement, and a collapse has exactly two consistent outcomes. What is stylised: the collapse is <em>chosen</em> by a player rather than drawn at random, which is a game-design decision Goff made to keep it strategic. The collapse engine here was verified on 4,000 randomly generated entanglement tangles — every one produced a valid assignment with two distinct outcomes.',
+    honest: 'Honest model: this is Allan Goff’s Quantum Tic-Tac-Toe (<em>Am. J. Phys.</em> <strong>74</strong>, 962 (2006)), a teaching game — a faithful <em>analogy</em> for superposition, entanglement and measurement, not a simulation of a physical qubit system. What is genuinely quantum-like: marks exist in two places until measured, a closed loop of entanglement forces a measurement, and a collapse has exactly two consistent outcomes. What is stylised: the collapse is <em>chosen</em> by a player rather than drawn at random, which is a game-design decision Goff made to keep it strategic. The collapse engine here was verified on 4,000 randomly generated entanglement tangles — every one produced a valid assignment with two distinct outcomes. The <strong>🔴 Ruthless</strong> card ("the Adversary") replaces the second person with a one-ply heuristic O: on a forced measurement it takes the collapse that denies you a line and builds one for itself, and on its own turn it plays its open lines and avoids handing you the choice. It is a sparring partner, not a solver — tested by playing it against a random opponent, where it wins by a wide margin.',
     mount: function (root, opts) {
       var mission = opts && opts.mode === 'mission';
+      /* 🔴 RUTHLESS — "The Adversary". O is played by a one-ply heuristic
+         instead of a second person: on a forced measurement it picks the
+         collapse that denies you a line and takes one for itself; on its own
+         turn it plays into its open lines, blocks yours, and avoids handing
+         you the collapse. A sparring partner, not a solver — QTTT is a
+         teaching analogy and the honest note says so. Verified behaviourally:
+         verify_frame.mjs plays 120 games and checks it beats a random O by a
+         clear margin and never stalls; tools/verify_qttt_ruthless.py unit-
+         tests the two pure decision functions. */
+      var ruthless = !mission && opts && opts.level === 'ruthless';
       root.innerHTML =
         '<div class="turnbar"><span class="who X on" data-r="wx">X</span>' +
         '<span style="color:var(--muted);font-size:.85rem" data-r="phase">pick two squares</span>' +
@@ -1132,15 +1142,21 @@
       window.addEventListener('resize', drawThreads);
       function click(s) {
         if (phase === 'collapse' || phase === 'over' || classical[s]) return;
+        if (ruthless && turn === 'O') return;        // O is the AI's to play
         var k = sel.indexOf(s);
         if (k >= 0) { sel.splice(k, 1); draw('Pick two squares for ' + turn + '<sub>' + moveNo + '</sub>.'); return; }
         if (sel.length === 2) return;
         sel.push(s);
         if (sel.length < 2) { draw('Now pick the second square — the mark will live in both.'); return; }
-        moves.push({ p: turn, n: moveNo, a: sel[0], b: sel[1] });
         var placed = sel.slice(); sel = [];
+        commitPair(placed[0], placed[1]);
+      }
+      /* Place `turn`'s pair, resolve the ring question, advance. Extracted from
+         click() so the Ruthless AI drives the identical path a finger does. */
+      function commitPair(a, b) {
+        moves.push({ p: turn, n: moveNo, a: a, b: b });
         var all = edgesOf(), nid = all.length - 1;
-        if (findCycle(all.filter(function (e) { return e[0] !== nid; }), placed[0], placed[1])) {
+        if (findCycle(all.filter(function (e) { return e[0] !== nid; }), a, b)) {
           pending = { opts: [collapse(0), collapse(1)] };
           phase = 'collapse';
           var chooser = turn === 'X' ? 'O' : 'X';
@@ -1154,11 +1170,17 @@
           draw('<strong>' + last.p + '<sub>' + last.n + '</sub> is now in two squares at once.</strong> ' +
             'The thread between them is real — neither square is decided until something forces the question. No ring yet.');
         }
+        maybeAI();
       }
       function chooseGhost(sq, mi) {
+        if (ruthless && turn === 'O') return;        // O's collapse is the AI's to make
         var o = pending.opts;
         var pick = (o[0] && o[0][sq] === mi) ? 0 : ((o[1] && o[1][sq] === mi) ? 1 : -1);
         if (pick < 0) return;
+        applyChoice(pick);
+      }
+      function applyChoice(pick) {
+        var o = pending.opts;
         clearPreview();
         applyCollapse(o[pick]);
         pending = null; phase = 'place'; moveNo++;
@@ -1183,7 +1205,102 @@
         }
         turn = turn === 'X' ? 'O' : 'X';
         draw('Collapsed. The ghosts in that tangle are now real. Play on.', 'good');
+        maybeAI();
       }
+
+      /* ---- 🔴 The Adversary: a one-ply heuristic O ------------------------ */
+      // Lines completed for each side under a classical map (hypothetical or real).
+      function tallyLines(cm) {
+        var x = 0, o = 0;
+        LINES.forEach(function (L) {
+          if (!L.every(function (s) { return cm[s]; })) return;
+          var ps = {}; L.forEach(function (s) { ps[cm[s].p] = 1; });
+          if (Object.keys(ps).length === 1) { if (ps.X) x++; else o++; }
+        });
+        return { x: x, o: o };
+      }
+      // "open threats": lines with two of one side classical and the third empty.
+      function threats(cm) {
+        var x = 0, o = 0;
+        LINES.forEach(function (L) {
+          var cx = 0, co = 0, empty = 0;
+          L.forEach(function (s) { var c = cm[s]; if (!c) empty++; else if (c.p === 'X') cx++; else co++; });
+          if (empty === 1 && cx === 2) x++;
+          if (empty === 1 && co === 2) o++;
+        });
+        return { x: x, o: o };
+      }
+      function hypo(assign) {
+        var cm = {}; for (var s in classical) cm[s] = classical[s];
+        Object.keys(assign).forEach(function (sq) { var m = moves[assign[sq]]; cm[sq] = { p: m.p, n: m.n }; });
+        return cm;
+      }
+      // Higher = better FOR O. X lines are catastrophic; O lines are the goal.
+      function scoreOutcome(assign) {
+        var cm = hypo(assign), l = tallyLines(cm), t = threats(cm);
+        return 1000 * l.o - 1200 * l.x + 8 * t.o - 10 * t.x;
+      }
+      function aiCollapse() {
+        var o = pending.opts;
+        applyChoice(scoreOutcome(o[0]) >= scoreOutcome(o[1]) ? 0 : 1);
+      }
+      // Score a candidate O pair (a, b). A ring-closing move is judged by the
+      // outcome O is FORCED into (X will pick the collapse worst for O); a
+      // non-closing move by how it builds O's lines and blunts X's.
+      function placementScore(a, b) {
+        moves.push({ p: 'O', n: moveNo, a: a, b: b });
+        var all = edgesOf(), nid = all.length - 1;
+        var closes = !!findCycle(all.filter(function (e) { return e[0] !== nid; }), a, b);
+        var forced = null;
+        if (closes) {
+          // X, the chooser, minimises O's score -> O plans for the worse one
+          forced = Math.min(scoreOutcome(collapse(0)), scoreOutcome(collapse(1)));
+        }
+        moves.pop();
+        if (closes) return forced - 15;            // -15: handing X the choice is a mild cost
+
+        // presence: classical = 1, each ghost in a square = 0.5
+        var pres = [];
+        for (var s = 0; s < 9; s++) pres[s] = { X: 0, O: 0 };
+        for (var s2 = 0; s2 < 9; s2++) if (classical[s2]) pres[s2][classical[s2].p] = 1;
+        moves.forEach(function (m) {
+          if (!classical[m.a]) pres[m.a][m.p] += 0.5;
+          if (!classical[m.b]) pres[m.b][m.p] += 0.5;
+        });
+        var sc = 0, oNear = 0;
+        LINES.forEach(function (L) {
+          var px = 0, po = 0;
+          L.forEach(function (s) {
+            px += pres[s].X;
+            po += pres[s].O + ((s === a || s === b) ? 0.5 : 0);
+          });
+          if (px === 0 && po > 0) { sc += po * po * 4; if (po >= 2) oNear++; }   // O's own line
+          if (po === 0 && px > 0) sc += px * px * 2.4;                           // sit on X's line
+        });
+        if (oNear >= 2) sc += 25;                  // a double threat X cannot answer in one move
+        return sc;
+      }
+      function aiPlace() {
+        var empt = [];
+        for (var s = 0; s < 9; s++) if (!classical[s]) empt.push(s);
+        if (empt.length < 2) { phase = 'over'; draw('The board is full — a draw. <strong>New game</strong>.', 'split'); return; }
+        var bp = null, bs = -Infinity;
+        for (var i = 0; i < empt.length; i++) for (var j = i + 1; j < empt.length; j++) {
+          var v = placementScore(empt[i], empt[j]);
+          if (v > bs) { bs = v; bp = [empt[i], empt[j]]; }
+        }
+        commitPair(bp[0], bp[1]);
+      }
+      var aiDelay = (opts && typeof opts.aiDelayMs === 'number') ? opts.aiDelayMs : 460;  // 0 = test seam
+      function maybeAI() {
+        if (!ruthless || phase === 'over' || turn !== 'O') return;
+        setTimeout(function () {
+          if (turn !== 'O' || phase === 'over') return;
+          if (phase === 'collapse' && pending) aiCollapse();
+          else if (phase === 'place') aiPlace();
+        }, aiDelay);
+      }
+
       $(root, '[data-a=new]').addEventListener('click', reset);
       reset();
     }
@@ -2196,7 +2313,7 @@
       standard: { icon: '🟡', label: 'Standard',
                   blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
       ruthless: { icon: '🔴', label: 'Ruthless',
-                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors; Max-Cut: the Frustrated Ward; the Volcano: the Deep Country), you get that instead.' }
+                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors; Max-Cut: the Frustrated Ward; the Volcano: the Deep Country; Quantum Tic-Tac-Toe: the Adversary), you get that instead.' }
     };
     /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
        it says what the buttons do, never changes what they do. */

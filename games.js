@@ -573,12 +573,12 @@
     hook: 'A vault of identical doors, one exit — and a way to find it in far fewer tries than knocking.',
     about: {
       goal: 'Measure the exit using about <strong>√N</strong> tries, where knocking door-to-door needs roughly half of all N.',
-      how: 'Hit <strong>Amplify</strong> to pump the exit’s odds up its bar, then <strong>Measure</strong> at the peak. Amplify too many times and you overshoot — the odds fall back down.',
+      how: 'Hit <strong>Amplify</strong> to pump the exit’s odds up its bar, then <strong>Measure</strong> at the peak. Amplify too many times and you overshoot — the odds fall back down. <strong>Deep Dive</strong> mode makes it endless: the door count grows every corridor, the peak marker is hidden after the second, and one amplification budget runs the whole dive — poke around blindly and it runs dry. Score is how deep you get.',
       inspired: "Grover's search algorithm (1996) — after Shor's, the most famous quantum speedup there is.",
       learn: 'Why quantum search is <em>quadratically</em> faster — √N, not exponential — and that a measurement is a dice-roll you can load but never force.',
       link: 'ai.html', linkText: 'Where speedups help ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game. The rotation itself is phase kickback plus interference — the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a> — scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict — only a measurement taken at the peak lights the corridor.',
+    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game. The rotation itself is phase kickback plus interference — the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a> — scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict — only a measurement taken at the peak lights the corridor. <strong>Deep Dive</strong> (a Standard-mode option) never stops: N grows as <em>nextN = round(1.7·N)</em> from 4, the par is recomputed live as <em>round(π/(4·asin(1/√N)) − ½)</em> and hidden after the second corridor, and a single amplification budget — starting at par+12, growing by par+3 per corridor cleared, spending one per Amplify — makes blind probing unaffordable. Every N, its par, the ≥90% peak probability and the budget maths are checked in <code>tools/verify_grover_deepdive.py</code>.',
     mount: function (root, opts) {
       // Display-only voice layer (see Circuit Golf). Rue's fixation is timing:
       // the arcade says "par", the corridor says "the moment to look".
@@ -599,6 +599,14 @@
         rowCleared: 'Corridors cleared'
       };
       root.innerHTML =
+        (mission || ruthless ? '' :
+          '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
+            'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
+            '<span style="color:var(--muted)">Mode</span>' +
+            '<button class="preset" type="button" data-gm="corridors">Corridors</button>' +
+            '<button class="preset" type="button" data-gm="dd">Deep Dive</button>' +
+            '<span data-r="ddbest" style="color:var(--muted)"></span>' +
+          '</div>') +
         '<div class="holes" data-r="corr"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
         '<div class="gr-bars" data-r="bars" aria-label="Probability of each door being the exit"></div>' +
@@ -623,6 +631,41 @@
       var CORR = ruthless ? CORR_RUTHLESS : CORR_STD;
       var ci = 0, k = 0, mark = 0, measured = false, busy = false, bestP = 0, solved = [];
 
+      /* ---- DEEP DIVE ----------------------------------------------------------
+         The "amplitude game" as a score-chase instead of a five-rung ladder you
+         clear once. Corridors never stop; N grows each time you escape; and the
+         par (the peak) is hidden after the second corridor, so from there on you
+         are running on "the peak sits near (π/4)√N" and nothing else. One
+         amplification budget for the whole run — grown by par+3 each corridor,
+         spent one per Amplify — so poking blindly at the bars empties it in a
+         few rooms. A missed measurement ends the run. Score = corridors cleared;
+         your deepest run is saved. Every N and its par are recomputed live from
+         the exact Grover curve (verified: tools/verify_grover_deepdive.py). */
+      var SAVE = window.SymbiQ && SymbiQ.save;
+      var DD_KEY = 'grover.deepdive.best';
+      function parOf(n) { return Math.round(Math.PI / (4 * Math.asin(1 / Math.sqrt(n))) - 0.5); }
+      function nextN(n) { return Math.min(4096, 2 * Math.round(n * 1.7 / 2)); }
+      var dd = { on: false, n: 4, depth: 0, budget: 0, over: false,
+                 best: (SAVE && SAVE.get) ? (+SAVE.get(DD_KEY, 0) || 0) : 0, newBest: false };
+      function ddReset() {
+        dd.n = 4; dd.depth = 0; dd.over = false; dd.newBest = false;
+        dd.budget = parOf(4) + 12;   // a cushion for early fumbles; +3/corridor after
+        CORR = [{ n: dd.n, par: parOf(dd.n) }]; ci = 0; fresh();
+      }
+      function ddAdvance() {
+        dd.depth++;
+        if (dd.depth > dd.best) { dd.best = dd.depth; dd.newBest = true;
+          if (SAVE && SAVE.set) SAVE.set(DD_KEY, dd.depth); }
+        dd.n = nextN(dd.n);
+        dd.budget += parOf(dd.n) + 3;
+        CORR = [{ n: dd.n, par: parOf(dd.n) }]; ci = 0; fresh();
+      }
+      function ddBestLabel() {
+        var b = $(root, '[data-r=ddbest]');
+        if (b) b.textContent = dd.best > 0 ? ('· best dive: ' + dd.best + ' corridor' + (dd.best === 1 ? '' : 's')) : '';
+      }
+      function ddShowPar() { return dd.depth < 2; }   // par hidden from the 3rd corridor on
+
       /* OUTBOUND ONLY. A narrative layer (scene.js / missions.js) needs to know
          when the player is standing on the peak so Rue can be wrong out loud.
          This pushes a snapshot out; nothing here ever reads anything back, and
@@ -641,6 +684,17 @@
       function pExit(n, kk) { var s = Math.sin((2*kk + 1) * theta(n)); return s * s; }
       function fresh() { k = 0; measured = false; bestP = pExit(CORR[ci].n, 0); mark = Math.floor(Math.random() * CORR[ci].n); }
       function chips() {
+        if (dd.on) {
+          $(root, '[data-r=corr]').innerHTML =
+            '<div style="text-align:center;font-size:.9rem">' +
+              '<strong>Corridor ' + (dd.depth + 1) + '</strong> · ' + dd.n + ' doors' +
+              (ddShowPar() ? ' · <span style="color:var(--muted)">peak at ' + CORR[0].par + '</span>'
+                           : ' · <span style="color:var(--muted)">peak ≈ (π/4)√N, uncounted</span>') +
+              '<br><span style="color:var(--muted)">amplifications left this dive: </span>' +
+              '<strong style="color:' + (dd.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + dd.budget + '</strong>' +
+            '</div>';
+          return;
+        }
         $(root, '[data-r=corr]').innerHTML = CORR.map(function (c, i) {
           return '<span class="hole' + (i === ci ? ' now' : '') + (solved[i] != null ? ' done' : '') + '" data-c="' + i +
                  '" title="' + c.n + ' doors — par ' + c.par + '">' + c.n + '</span>';
@@ -662,6 +716,14 @@
       }
       function rowsHTML() {
         var n = CORR[ci].n;
+        if (dd.on) {
+          return '<dt>Amplifications</dt><dd>' + k +
+              (ddShowPar() ? ' &nbsp;<span style="color:var(--muted)">(peak ' + CORR[ci].par + ')</span>' : '') + '</dd>' +
+            '<dt>Exit odds now</dt><dd>' + (pExit(n,k)*100).toFixed(1) + '% &nbsp;<span style="color:var(--muted)">this run peaked at ' + (bestP*100).toFixed(1) + '%</span></dd>' +
+            '<dt>Dive budget</dt><dd>' + dd.budget + ' amplification' + (dd.budget === 1 ? '' : 's') + ' left</dd>' +
+            '<dt>Corridors cleared</dt><dd><strong>' + dd.depth + '</strong>' +
+              (dd.best > 0 ? ' &nbsp;<span style="color:var(--muted)">best dive ' + dd.best + '</span>' : '') + '</dd>';
+        }
         return '<dt>Amplifications</dt><dd>' + k + ' &nbsp;<span style="color:var(--muted)">(par ' + CORR[ci].par + ' = the peak)</span></dd>' +
           '<dt>Exit odds now</dt><dd>' + (pExit(n,k)*100).toFixed(1) + '% &nbsp;<span style="color:var(--muted)">best this run ' + (bestP*100).toFixed(1) + '%</span></dd>' +
           '<dt>Classical vs you</dt><dd>~' + (n/2) + ' doors tried on average · you need √N ≈ ' + Math.round(Math.sqrt(n)) + '</dd>' +
@@ -673,15 +735,26 @@
         chips(); bars();
         var p = $(root, '[data-r=say]');
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
+        else if (dd.on) {
+          p.className = 'verdict';
+          p.innerHTML = ddShowPar()
+            ? '<strong>Corridor ' + (dd.depth + 1) + '.</strong> ' + n + ' doors, peak at ' + CORR[ci].par + '. Exit odds now: <strong>' + Math.round(pm*100) + '%</strong>.'
+            : '<strong>Corridor ' + (dd.depth + 1) + '.</strong> ' + n + ' doors, no peak marker — it sits near (π/4)√N, and every stray Amplify is spent from your dive budget. Exit odds now: <strong>' + Math.round(pm*100) + '%</strong>.';
+        }
         else {
           p.className = 'verdict';
           p.innerHTML = VO.ask(n, CORR[ci].par) + ' Exit odds now: <strong>' + Math.round(pm*100) + '%</strong>.';
         }
         $(root, '[data-r=rows]').innerHTML = rowsHTML();
-        emit('render');
+        emit(dd.on ? 'dd-render' : 'render');
       }
       $(root, '[data-a=amp]').addEventListener('click', function () {
         if (busy || measured) return;
+        if (dd.on) {
+          if (dd.over) return;
+          if (dd.budget <= 0) { render({ k: 'bad', t: '<strong>Dive budget spent.</strong> No amplifications left for this run — <strong>Measure</strong> from where you are.' }); return; }
+          dd.budget--;
+        }
         var n = CORR[ci].n, par = CORR[ci].par;
         if (k >= par * 2 + 3) { render({ k: 'split', t: 'The odds just <strong>oscillate</strong> from here — that is Grover being a rotation, not a ratchet. <strong>Reset</strong> and stop at the peak.' }); return; }
         var pprev = pExit(n, k); k++;
@@ -706,7 +779,33 @@
           }
         }, 90);
       });
+      function ddFinish(landed) {
+        var n = CORR[ci].n, par = CORR[ci].par, p = $(root, '[data-r=say]'), usedK = k;
+        if (landed === mark) {
+          ddAdvance();                       // grows dd.n, dd.depth, dd.budget; may set dd.newBest
+          bars();                            // redraw for the new (larger) door count
+          p.className = 'verdict good';
+          p.innerHTML = '<strong>Corridor ' + dd.depth + ' cleared</strong> in ' + usedK + ' amplification' + (usedK === 1 ? '' : 's') +
+            (usedK === par ? ' — dead on the peak.' : usedK < par ? ' — a step early; the draw was kind.' : ' — past the peak, and it still landed.') +
+            ' Ahead: <strong>' + dd.n + ' doors</strong>, ' + dd.budget + ' amplifications banked.' +
+            (dd.newBest ? ' <strong style="color:var(--yellow)">Deepest dive yet: ' + dd.best + '.</strong>' : '');
+        } else {
+          dd.over = true;
+          p.className = 'verdict bad';
+          p.innerHTML = '<strong>Wrong door — the dive ends here.</strong> Measured with <strong>' + Math.round(pExit(n, k) * 100) +
+            '%</strong> on the exit' + (k > par ? ', past the peak.' : k < par ? ', short of the peak.' : ' — the peak, and still a losing roll.') +
+            ' You went <strong>' + dd.depth + ' corridor' + (dd.depth === 1 ? '' : 's') + '</strong> deep' +
+            (dd.depth > 0 && dd.depth >= dd.best ? ' — your best.' : dd.best > 0 ? ' · best is ' + dd.best + '.' : '.') +
+            ' <button class="preset" type="button" data-a="ddnew">New dive</button>';
+          var nb = p.querySelector('[data-a=ddnew]');
+          if (nb) nb.addEventListener('click', function () { if (busy) return; ddReset(); syncGmode(); render(); });
+        }
+        $(root, '[data-r=rows]').innerHTML = rowsHTML(); chips();
+        if ($(root, '[data-a=reset]')) $(root, '[data-a=reset]').style.display = dd.over ? 'none' : '';
+        emit('dd-measured', { escaped: landed === mark, depth: dd.depth, doors: dd.n, over: dd.over });
+      }
       function finish(landed) {
+        if (dd.on) { ddFinish(landed); return; }
         var n = CORR[ci].n, par = CORR[ci].par, pm = pExit(n, k), p = $(root, '[data-r=say]');
         if (landed === mark) {
           var firstWin = win('grover', opts);
@@ -741,7 +840,43 @@
         $(root, '[data-r=rows]').innerHTML = rowsHTML(); chips();
         emit('measured', { escaped: landed === mark, landed: landed, atPeak: k === par });
       }
-      $(root, '[data-a=reset]').addEventListener('click', function () { if (busy) return; fresh(); render(); });
+      $(root, '[data-a=reset]').addEventListener('click', function () {
+        if (busy) return;
+        if (dd.on && dd.over) return;   // a finished dive restarts with "New dive", not Reset
+        fresh(); render();
+      });
+
+      /* ---- Deep Dive mode toggle (arcade Standard / Guided only) ---------- */
+      function syncGmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        ['corridors', 'dd'].forEach(function (m) {
+          var b = bar.querySelector('[data-gm=' + m + ']');
+          if (!b) return;
+          var on = ((m === 'dd') === dd.on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+        var rb = $(root, '[data-a=reset]');
+        if (rb) rb.style.display = (dd.on && dd.over) ? 'none' : '';
+        ddBestLabel();
+      }
+      (function wireGmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        bar.querySelector('[data-gm=corridors]').addEventListener('click', function () {
+          if (busy) return;
+          dd.on = false; CORR = ruthless ? CORR_RUTHLESS : CORR_STD; ci = 0; solved = [];
+          fresh(); syncGmode(); render();
+        });
+        bar.querySelector('[data-gm=dd]').addEventListener('click', function () {
+          if (busy) return;
+          dd.on = true; ddReset(); syncGmode(); render();
+        });
+        syncGmode();
+      })();
+
       fresh(); render();
     }
   };

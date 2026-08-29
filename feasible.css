@@ -130,7 +130,19 @@ body.fr h2::before { background: var(--or) !important; }
   transition: transform .22s cubic-bezier(.22,.7,.3,1);
 }
 .mod[open] .mod-x { transform: rotate(45deg); color: var(--or); }
-.mod-body { padding: 4px 20px 22px; border-top: 1px solid var(--border); }
+.mod-body {
+  padding: 4px 20px 22px; border-top: 1px solid var(--border);
+  /* A closed module hides this box (native <details>), so this is inert until
+     "open all twenty-four" -- and there it earns its keep: the browser paints
+     the module bodies (and their SVG figures) actually on screen instead of
+     all 24 at once. Deliberately NOT on .mod itself: a closed module's height
+     must stay exact, or the deep-link scroll into #t21 lands hundreds of px
+     short. contain-intrinsic-size is a rough open-body height; `auto` pins the
+     real size once seen. Every byte stays in the DOM -- crawlable, Ctrl-F
+     finds it, the a11y tree keeps it. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 3000px;
+}
 
 /* the four layers, always in this order */
 .layer { margin: 20px 0 0; }

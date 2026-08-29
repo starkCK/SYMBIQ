@@ -340,7 +340,7 @@
       learn: 'Superposition and phase, and why quantum gates are <em>rotations</em> rather than 0-to-1 flips.',
       link: 'quantum-mechanics.html#bloch', linkText: 'See the sphere ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable.',
+    honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable. The <strong>🔴 Ruthless</strong> card (“the Back Nine”) swaps in nine longer holes, par 3–5, every target off every Bloch pole so a T gate is unavoidable; their pars were proven minimal the same exhaustive way.',
     mount: function (root, opts) {
       // In-world voice. Display strings only — never logic, so the Path and the
       // Arcade run the identical engine and only the words differ.
@@ -389,7 +389,7 @@
       }
       var Z0 = [[1,0],[0,0]];
       function seq(l) { var s = Z0; l.forEach(function (g) { s = ap(g, s); }); return s; }
-      var HOLES = [
+      var HOLES_STD = [
         { name: '|1⟩',        path: ['X'],         par: 1, hint: 'The bit flip.' },
         { name: '|+⟩',        path: ['H'],         par: 1, hint: 'An even superposition of 0 and 1.' },
         { name: '|−⟩',        path: ['X','H'],     par: 2, hint: 'Like |+⟩, but the two halves carry opposite sign.' },
@@ -400,6 +400,25 @@
         { name: 'S H |1⟩',    path: ['X','H','S'], par: 3, hint: 'Same place as hole 6. Try a different route.' },
         { name: 'T T H |0⟩',  path: ['H','S'],     par: 2, hint: 'Two T gates equal one S. Find the short way.' }
       ];
+      /* 🔴 RUTHLESS — "The Back Nine". Nine longer holes, par 3–5, every target
+         off every Bloch pole so a T is unavoidable. Each par is a PROVEN
+         minimum: tools/verify_golf_backnine.py exhausts every gate word of every
+         shorter length (up to 1,555 of them) in exact Z[ζ8] arithmetic and
+         confirms none reaches the target. This array mirrors that script's
+         BACK_NINE, checked by tools/verify_frame.mjs — keep them in step. */
+      var HOLES_RUTHLESS = [
+        { name: 'H T H',     path: ['H','T','H'],         par: 3, hint: 'Tilt to the equator, an eighth-turn of phase, tilt back. Off every pole — no Clifford route exists, and none of two gates.' },
+        { name: 'H T H S',   path: ['H','T','H','S'],     par: 4, hint: 'The H T H tilt, then a quarter-turn of phase on top. Nothing under four gates closes the gap.' },
+        { name: 'H T H Z',   path: ['H','T','H','Z'],     par: 4, hint: 'The tilt, then a half-turn of phase — or move the flip inside. H T X H lands the same state in the same four.' },
+        { name: 'H S T H',   path: ['H','S','T','H'],     par: 4, hint: 'A three-eighths turn on the equator, then tilt back. More than one four-gate route reaches it; no shorter one does.' },
+        { name: 'H T H T',   path: ['H','T','H','T'],     par: 4, hint: 'Tilt, phase, tilt, phase — two eighth-turns about different axes. Every one of the 259 shorter words misses.' },
+        { name: 'X H T H',   path: ['X','H','T','H'],     par: 4, hint: 'Flip to |1⟩, then the H T H tilt. Same place as H T H X and H T Z H — four gates whichever end the flip goes.' },
+        { name: 'H T H T H', path: ['H','T','H','T','H'], par: 5, hint: 'Three tilts, two eighth-turns between them. All 1,555 shorter words miss.' },
+        { name: 'H T H T X', path: ['H','T','H','T','X'], par: 5, hint: 'The H T H T run, then a flip to the far side. The flip will not fold back in.' },
+        { name: 'H T H S T', path: ['H','T','H','S','T'], par: 5, hint: 'Tilt, phase, tilt, quarter-phase, eighth-phase. Five things, in order, no four-gate shortcut.' }
+      ];
+      var ruthless = !mission && opts && opts.level === 'ruthless';
+      var HOLES = ruthless ? HOLES_RUTHLESS : HOLES_STD;
       /* `done` MUST be pre-filled to full length. It used to start as [] and be
          written sparsely, so after clearing hole 1 it had length 1 -- and the
          auto-advance below, which does done.findIndex(d == null && i > hi),
@@ -2112,7 +2131,7 @@
       standard: { icon: '🟡', label: 'Standard',
                   blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
       ruthless: { icon: '🔴', label: 'Ruthless',
-                  blurb: 'No orientation, no legend, rules closed. Cabinet-specific constraints are still in the workshop.' }
+                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine), you get that instead.' }
     };
     /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
        it says what the buttons do, never changes what they do. */
@@ -2252,8 +2271,14 @@
          without the game or the page wiring anything. The game's own
          onState (if the caller passed one) is chained, not replaced. */
       var caller = opts.onState;
+      /* The Contract of the Day is a Standard-mode ritual: its checks are
+         written against the Standard cabinets (specific holes, districts,
+         corridors). A 🔴 Ruthless run is a different challenge with different
+         pars, so it does not feed the contract — a Ruthless player who wants
+         the day's contract plays it on Standard. */
+      var feedsContract = opts.level !== 'ruthless';
       opts.onState = function (s) {
-        try { FRAME.contract._observe(id, s); } catch (e) {}
+        if (feedsContract) { try { FRAME.contract._observe(id, s); } catch (e) {} }
         if (typeof caller === 'function') { try { caller(s); } catch (e) {} }
       };
       try { g.mount(elm, opts); return true; }

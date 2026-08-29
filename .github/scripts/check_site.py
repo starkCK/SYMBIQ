@@ -15,6 +15,7 @@ witness, so one runs here on every push.
 
 Exit code 0 = clean, 1 = at least one FAIL.
 """
+import hashlib
 import json
 import os
 import re
@@ -323,6 +324,74 @@ else:
                                    f"(dated {d}) -- the feed has gone stale")
         except Exception:
             pass
+
+# 8. CACHE-BUSTERS MATCH THE BYTES THEY STAND FOR --------------------------
+# Section 2 proves every page agrees on a version. It cannot prove the version
+# is the RIGHT one: edit tiers.js, leave it at ?v=3, and all 22 pages still
+# agree -- on a number that now points browsers at a cached copy of the OLD
+# file. That exact bug has shipped twice, once on JS and once on CSS, in a
+# single session.
+#
+# data/asset-versions.json records the sha256 each ?v= stands for. Recompute
+# and compare: if the bytes moved and the number did not, the build fails here
+# instead of on a reader's stale cache. Regenerate with the desk repo's
+# `python tools/bump_assets.py`, which does the bump and the rewrite for you.
+MANIFEST = os.path.join(ROOT, "data", "asset-versions.json")
+if not os.path.exists(MANIFEST):
+    warn("cache-bust", "data/asset-versions.json is missing -- an edited asset "
+                       "can still ship under its old ?v=. Run tools/bump_assets.py.")
+else:
+    try:
+        recorded = json.load(open(MANIFEST, encoding="utf-8")).get("assets", {})
+    except Exception as e:
+        recorded = {}
+        fail("cache-bust", f"data/asset-versions.json does not parse -> {e}")
+
+    # What the pages actually ask for right now, parsed (never regex over prose).
+    asked = {}
+    for f, (p_, _) in pages.items():
+        for href, _tag in p_.links:
+            path, _, query = href.partition("?")
+            path = path.lstrip("./")
+            if not path.lower().endswith((".js", ".mjs", ".css")):
+                continue
+            if path.startswith(("http://", "https://", "//")):
+                continue
+            m = re.fullmatch(r"v=(\d+)", query) if query else None
+            if m:
+                asked.setdefault(path, set()).add(int(m.group(1)))
+
+    stale, moved, n_ok = [], [], 0
+    for path, rec in sorted(recorded.items()):
+        full = os.path.join(ROOT, path)
+        if not os.path.exists(full):
+            stale.append(f"{path} is in the manifest but not in the repo")
+            continue
+        h = hashlib.sha256()
+        with open(full, "rb") as fh:
+            for chunk in iter(lambda: fh.read(65536), b""):
+                h.update(chunk)
+        digest = h.hexdigest()
+        if digest != rec.get("sha256"):
+            moved.append(path)
+            continue
+        want = rec.get("v")
+        got = asked.get(path)
+        if got is not None and got != {want}:
+            stale.append(f"{path} is recorded at v={want} but the pages ask for "
+                         f"v={','.join(str(x) for x in sorted(got))}")
+            continue
+        n_ok += 1
+
+    if moved:
+        fail("cache-bust", f"{len(moved)} asset(s) changed without a ?v= bump -- "
+                           f"readers would be served the cached old copy: "
+                           + ", ".join(moved[:6])
+                           + ". Run `python tools/bump_assets.py` in the desk repo.")
+    for line in stale:
+        fail("cache-bust", line)
+    if not moved and not stale:
+        ok(f"cache-bust: all {n_ok} versioned asset(s) match the sha256 their ?v= stands for")
 
 # --------------------------------------------------------------------------
 print("=" * 66)

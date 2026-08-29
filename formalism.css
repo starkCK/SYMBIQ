@@ -56,17 +56,28 @@ body.fr h2::before { background: var(--violet) !important; }
 .fr-toc ol { list-style: none; counter-reset: t; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 2px 18px; }
 .fr-toc li { counter-increment: t; }
+/* Number left, title right, subtitle UNDER the title -- the same three-part
+   shape `.mod > summary` already uses below (mod-n / mod-t / mod-q), so the
+   contents rail and the modules it points at read as one component.
+
+   This was a flex row until 2026-08-28, with the subtitle pushed right by
+   `margin-left:auto; flex: 0 0 auto`. In a 232px-minimum grid column there is
+   no room to push anything: the subtitle sat at its full max-content width and
+   OVERLAPPED the next column's number and title on desktop, while on mobile it
+   pushed the whole document to 388px -- a horizontal scrollbar at 375px, found
+   by tools/smoke.mjs. Stacking removes the competition for the same row. */
 .fr-toc a {
-  display: flex; gap: 10px; align-items: baseline; padding: 7px 8px; border-radius: 8px;
+  display: grid; grid-template-columns: auto 1fr; gap: 1px 10px;
+  align-items: baseline; padding: 7px 8px; border-radius: 8px;
   text-decoration: none; color: var(--text); font-size: .92rem;
   min-height: 44px;
 }
 .fr-toc a::before {
   content: counter(t, decimal-leading-zero); color: var(--violet); font-weight: 700;
-  font-size: .75rem; font-variant-numeric: tabular-nums; flex: 0 0 auto;
+  font-size: .75rem; font-variant-numeric: tabular-nums; grid-row: span 2;
 }
 .fr-toc a:hover { background: var(--rowhover); }
-.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 0 auto; }
+.fr-toc a em { grid-column: 2; font-style: normal; color: var(--muted); font-size: .8rem; min-width: 0; }
 
 /* ---- a curriculum module --------------------------------------------- */
 .mod {

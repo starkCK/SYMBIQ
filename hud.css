@@ -1,0 +1,98 @@
+/* ===================================================================
+   hud.css — the progress chip in the nav, and the homepage return card.
+   Injected by hud.js; see that file's header for why both exist.
+
+   Kept OUT of style.css on purpose, the same rule motion.css, rails.css,
+   vivid.css and alive.css follow: style.css is the shared 2,000-line base
+   every page depends on, so an additive layer that only some readers ever
+   see gets its own file and can be reverted by deleting one <link>.
+
+   The gradient is the site's existing brand pair (violet -> teal), the same
+   one .sq-account.signed-in already uses. Restrained on purpose: this is a
+   readout, not a trophy. It must never out-shout the nav it sits in.
+   =================================================================== */
+
+/* ---- the nav chip ---------------------------------------------------- */
+/* margin-left:auto so the chip is pushed to the right end of the nav, the
+   same way .sq-account is. With both present the chip claims the slack and
+   the avatar sits immediately after it -- two 40px discs, "where you are"
+   then "who you are". */
+.hud-slot { display: inline-flex; align-items: center; margin-left: auto; }
+
+/* Forty pixels round, the same footprint as .sq-account's avatar, because
+   that is the entire budget: the nav's first row fits a 40-49px control and
+   wraps at 50 (measured). A wrap would add 58px of header to every page. */
+.hud-chip {
+  position: relative; flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  text-decoration: none; color: var(--text);
+  /* The ring IS the coherence value: a conic sweep to --hud-p, the rest track.
+     Set on the element by hud.js so there is one number in one place. */
+  background: conic-gradient(var(--hud-ring, var(--violet)) var(--hud-p, 0%),
+                             var(--border) 0);
+  transition: transform .2s ease;
+}
+/* The inner disc that turns the sweep into a ring and gives the numeral a
+   surface. Inset 3px = a 3px ring, thick enough to read at a glance. */
+.hud-chip::before {
+  content: ''; position: absolute; inset: 3px;
+  border-radius: 50%; background: var(--panel);
+}
+.hud-chip:hover { transform: scale(1.06); }
+.hud-chip:hover::before { background: var(--rowhover); }
+.hud-chip:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.hud-num {
+  position: relative;                       /* above ::before */
+  font-size: .62rem; font-weight: 700; line-height: 1;
+  font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+  color: var(--text);
+}
+
+/* coherence.js's four levels, the one place colour carries meaning.
+   Below 15% the Static is winning and the ring should say so without a word. */
+.hud-chip[data-level="high"]   { --hud-ring: var(--teal); }
+.hud-chip[data-level="mid"]    { --hud-ring: var(--violet); }
+.hud-chip[data-level="low"]    { --hud-ring: #b45309; }
+.hud-chip[data-level="static"] { --hud-ring: #b3324a; }
+
+/* The chip's full sentence, for screen readers; the dial is a summary. */
+.hud-sr {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+
+/* ---- the homepage return card ---------------------------------------- */
+.hud-return {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px;
+  margin: 14px 0 0; padding: 11px 15px;
+  border: 1px solid var(--border); border-left: 3px solid var(--teal);
+  border-radius: 10px;
+  background: linear-gradient(100deg, rgba(45,212,191,.10), transparent 70%);
+  font-size: .92rem; color: var(--muted);
+}
+.hud-return b { color: var(--text); font-weight: 700; }
+.hud-return-lab {
+  font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--teal);
+}
+/* --border is a hairline colour; as a text glyph it renders as a gap rather
+   than a separator. --muted at half strength reads as punctuation without
+   competing with the facts on either side. */
+.hud-dot { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+.hud-return-go {
+  font-weight: 600; color: var(--teal);
+  text-decoration: none; white-space: nowrap;
+}
+.hud-return-go:hover { text-decoration: underline; }
+/* No margin-left:auto here on purpose. Pushing the link to the right edge
+   fits at some progress states and misses by a few pixels at others (the act
+   names are different lengths), and when it misses, a wrapped flex item that
+   still carries an auto margin lands alone on the right of its own line --
+   which looks like a bug rather than a layout. Letting it flow as the last
+   clause of the sentence wraps like prose, i.e. correctly, at every width. */
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-coh > i, .hud-chip { transition: none; }
+}

@@ -93,6 +93,31 @@
    which looks like a bug rather than a layout. Letting it flow as the last
    clause of the sentence wraps like prose, i.e. correctly, at every width. */
 
+/* ---- the homepage Contract-of-the-Day line -------------------------- */
+/* A sibling of .hud-return. The return card says "where was I on the Path";
+   this says "today's cross-arcade Contract and the streak riding on it". It
+   reads the same symbiq_contract_v1 the Arcade card writes, so no games.js is
+   needed on the homepage. Violet left-accent (the return card's is teal) so
+   two stacked lines never read as one card shown twice. Homepage only, and
+   nothing at all for someone who has never taken a Contract. */
+/* Plain block, not flex: the streak reads "🔥 4-day streak" and the "4" must
+   sit tight against "-day", which a flex gap between children would break. The
+   link flows as the last clause and wraps like prose -- the same reasoning as
+   .hud-return-go's note below. */
+.hud-contract {
+  margin: 10px 0 0; padding: 10px 15px;
+  border: 1px solid var(--border); border-left: 3px solid var(--violet);
+  border-radius: 10px;
+  font-size: .9rem; line-height: 1.55; color: var(--muted);
+}
+.hud-contract b { color: var(--text); font-weight: 700; }
+.hud-c-lab {
+  font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--violet); margin-right: 4px;
+}
+.hud-contract .hud-return-go { margin-left: 4px; }
+.hud-c-ok { color: var(--teal); font-weight: 700; }
+
 @media (prefers-reduced-motion: reduce) {
   .hud-coh > i, .hud-chip { transition: none; }
 }

@@ -63,17 +63,22 @@
     honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps.',
     // Landscapes verified offline: every global minimum unique; pass marks set
     // below the best schedule found by search, above what crash-cooling scores.
+    // `crash` = the measured clear rate of a crash-cool (all-Cool) schedule on
+    // that landscape, transcribed from the honest-model note above: miss rates
+    // 88/93/98/93% on the four structured levels -> clears 12/7/2/7; the Salt
+    // Flat is the inversion where crash-cooling is the BEST play, at 69%.
+    // Display only -- the engine never reads it.
     LV: [
-      { n: 'The First Ditch', h: [8,6,4,2,3,4,5,4,3,2,1,0,1,2,3], start: 0, T0: 2.0, bar: 0.50, best: 0.71, gmin: 11,
+      { n: 'The First Ditch', h: [8,6,4,2,3,4,5,4,3,2,1,0,1,2,3], start: 0, T0: 2.0, bar: 0.50, best: 0.71, crash: 12, gmin: 11,
         note: 'One shallow ditch on the way down, one true floor beyond it. Cool too fast and you will spend the rest of the run in the ditch — that is not a metaphor, it happens in 88% of runs, measured.' },
-      { n: 'The Twin Calderas', h: [7,5,3,1,2,3,4,5,4,3,2,1,0,1,2,3,5], start: 0, T0: 2.5, bar: 0.40, best: 0.55, gmin: 12,
+      { n: 'The Twin Calderas', h: [7,5,3,1,2,3,4,5,4,3,2,1,0,1,2,3,5], start: 0, T0: 2.5, bar: 0.40, best: 0.55, crash: 7, gmin: 12,
         note: 'Two deep basins, and the first one you fall into is the wrong one. The ridge between them is four units tall — the walker can only cross it while it is hot enough to accept climbing.' },
-      { n: 'The Comb', h: [8,7,8,6,7,5,6,4,5,3,4,2,3,1,2,0,2], start: 0, T0: 2.0, bar: 0.50, best: 0.66, gmin: 15,
+      { n: 'The Comb', h: [8,7,8,6,7,5,6,4,5,3,4,2,3,1,2,0,2], start: 0, T0: 2.0, bar: 0.50, best: 0.66, crash: 2, gmin: 15,
         note: 'Seven little traps, every one only a single unit deep. No single trap is dangerous. Being cold near any of them is — crash-cooling ends the run stuck in one of them 98% of the time, and rarely the first.' },
-      { n: 'The Salt Flat', h: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,5,5,5,5,5,5,5,5], start: 0, T0: 2.0, bar: 0.50, best: 0.69, gmin: 14,
+      { n: 'The Salt Flat', h: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,5,5,5,5,5,5,5,5], start: 0, T0: 2.0, bar: 0.50, best: 0.69, crash: 69, gmin: 14,
         flat: true,
         note: 'A dead flat plain with one hole in it. Out on the plain every move costs exactly nothing, so temperature <em>provably</em> cannot change your odds of stumbling onto the hole. It only decides whether you stay once you fall in — which is why crash-cooling, the worst play on every other volcano, is the best play here. This level is built to humble the method.' },
-      { n: 'The Long Descent', h: [9,7,5,3,4,5,6,5,4,2,3,4,3,2,1,0,1,2], start: 0, T0: 3.0, bar: 0.40, best: 0.55, gmin: 15,
+      { n: 'The Long Descent', h: [9,7,5,3,4,5,6,5,4,2,3,4,3,2,1,0,1,2], start: 0, T0: 3.0, bar: 0.40, best: 0.55, crash: 7, gmin: 15,
         note: 'Two traps, then the floor. Survive the first ridge and the second will take you if you have already gone cold. Shape the whole descent, not just the start.' }
     ],
     COOL: 0.60, HOLD: 1.00, STOKE: 1.70, TMIN: 0.02, TMAX: 8.0, EPOCH: 20, EPOCHS: 12, REPLAYS: 500,
@@ -270,17 +275,38 @@
           : 'Replayed ' + g.REPLAYS + ' times, this schedule wins only <strong>' + Math.round(st.rate * 100) + '%</strong> of the time' +
             (frozeRight ? ' — so that run was luck. ' : '. ') + 'The mark is ' + Math.round(L.bar * 100) + '%.';
 
-        var hint = '';
+        var hint = '', allCool = false, noCool = false;
         if (!passed) {
-          var allCool = st.sched.every(function (m) { return m === g.COOL; });
-          var noCool = st.sched.every(function (m) { return m !== g.COOL; });
+          allCool = st.sched.every(function (m) { return m === g.COOL; });
+          noCool = st.sched.every(function (m) { return m !== g.COOL; });
           if (allCool && !L.flat) hint = ' <span style="color:var(--muted)">You cooled from the first move, so the walker could never accept a single uphill step. It went downhill until it could not, and stopped.</span>';
           else if (noCool) hint = ' <span style="color:var(--muted)">You never went cold, so nothing ever settled — the walker was still wandering when the run ended. Heat finds; cold keeps.</span>';
           else hint = ' <span style="color:var(--muted)">Try holding the heat while it crosses the ridges, then cooling hard over the last few epochs.</span>';
         }
 
-        if (passed && li === 1) win('volcano', opts);   // the Twin Calderas is the mission
-        render({ k: passed ? 'good' : (frozeRight ? 'split' : 'bad'), t: runLine + judge + hint });
+        var firstWin = (passed && li === 1) ? win('volcano', opts) : false;   // Twin Calderas is the mission
+
+        /* FRAME — arcade only; mission mode has missions.js's own scene layer. */
+        var frame = '';
+        if (!mission && !passed) {
+          var line = FRAME.loss('volcano', (allCool && !L.flat) ? 'crashcooled'
+                                          : noCool ? 'neversettled'
+                                          : frozeRight ? 'luck' : 'trapped');
+          if (line) frame = '<div class="g-mentor">Vesh: ' + line + '</div>';
+        } else if (!mission && passed) {
+          frame = FRAME.ceremony('volcano', {
+            first: firstWin, head: 'Schedule holds',
+            lines: [
+              'Your schedule clears <strong>' + Math.round(st.rate * 100) + '%</strong> of ' + g.REPLAYS +
+                ' replays — pass mark ' + Math.round(L.bar * 100) + '%, and the best schedule we found reaches ' +
+                Math.round(L.best * 100) + '%.',
+              'Crash-cooling — the fastest schedule there is — clears ' + (L.n) + ' about <strong>' + L.crash + '%</strong>' +
+                (L.flat ? ' of the time. On the flat, that is the <em>best</em> play there is.' : '.')
+            ]
+          });
+        }
+
+        render({ k: passed ? 'good' : (frozeRight ? 'split' : 'bad'), t: runLine + judge + hint + frame });
         if (passed && L.flat) {
           $(root, '[data-r=say]').innerHTML += '<br><span style="color:var(--muted)">Notice what just happened: on this level even <em>cooling instantly</em> passes. ' +
             'The plain is flat, so every step is accepted at any temperature — your control did nothing until the walker stumbled into the hole. That is <strong>No Free Lunch</strong>, felt rather than stated.</span>';
@@ -610,16 +636,30 @@
       function finish(landed) {
         var n = CORR[ci].n, par = CORR[ci].par, pm = pExit(n, k), p = $(root, '[data-r=say]');
         if (landed === mark) {
-          win('grover', opts);
+          var firstWin = win('grover', opts);
           if (solved[ci] == null || k === par) solved[ci] = k;
           p.className = 'verdict good';
           p.innerHTML = '<strong>Escaped.</strong> ' + (k === par ? VO.peak : k < par ? VO.early(par) : VO.late) +
             ' A classical searcher averages ~' + (n/2) + ' door' + (n/2 === 1 ? '' : 's') + '; you used <strong>' + k + '</strong>.';
+          if (!mission && k === par) {
+            p.innerHTML += FRAME.ceremony('grover', {
+              first: firstWin, head: 'Corridor cleared',
+              lines: [
+                'You escaped in <strong>' + k + '</strong> amplification' + (k === 1 ? '' : 's') +
+                  ' — par is ' + par + ', the peak of the curve.',
+                'A classical search of ' + n + ' doors averages <strong>' + (n / 2) + '</strong> checks; you used ' + k + '.'
+              ]
+            });
+          }
         } else {
           p.className = 'verdict bad';
           p.innerHTML = '<strong>Wrong door.</strong> You measured with only <strong>' + Math.round(pm*100) + '%</strong> on the exit' +
             (k > par ? ' — you had rotated past the peak.' : k < par ? ' — amplify closer to the peak (par ' + par + ') first.'
              : ' — even at the peak it is a weighted draw. Unlucky roll.') + ' <strong>Reset corridor</strong> to try again.';
+          if (!mission) {
+            var line = FRAME.loss('grover', k > par ? 'overrotated' : k < par ? 'early' : 'peak');
+            if (line) p.innerHTML += '<div class="g-mentor">Rue: ' + line + '</div>';
+          }
         }
         $(root, '[data-r=rows]').innerHTML = rowsHTML(); chips();
         emit('measured', { escaped: landed === mark, landed: landed, atPeak: k === par });
@@ -1775,9 +1815,96 @@
     }
   };
 
+  /* ==================================================================== *
+   *  THE FRAME — the cross-cutting layer, shared by every cabinet.       *
+   *                                                                      *
+   *  Scorekeeper plan, Part 4: the engines are correct and the framing   *
+   *  undersells them — flat wins, failure without drama, no seed for a   *
+   *  daily challenge. The FRAME adds those WITHOUT reaching into a        *
+   *  verified engine: it only builds strings a game appends to the       *
+   *  verdict it was already going to show, and a deterministic RNG the   *
+   *  Contract of the Day (next) will seed from.                          *
+   *                                                                      *
+   *    FRAME.rng(seed)          mulberry32 — same seed, same stream      *
+   *    FRAME.daySeed(id[,date]) a stable 32-bit seed for "today + game"  *
+   *    FRAME.loss(id, tags)     the mentor's line for THIS failure — in  *
+   *                             their voice, about the flaw their act is *
+   *                             built on. Character + consequence only;  *
+   *                             the physics stays in `honest`.           *
+   *    FRAME.ceremony(id, o)    a small "you cleared it" panel: the win, *
+   *                             the already-true comparison to the       *
+   *                             verified baseline, a codex line once.    *
+   *                                                                      *
+   *  Nothing here is scored, replayed, or read back by an engine.        *
+   * ==================================================================== */
+  var FRAME = (function () {
+    function rng(seed) {
+      var a = seed >>> 0;
+      return function () {
+        a = (a + 0x6D2B79F5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function daySeed(id, date) {
+      var s = (date || new Date().toISOString().slice(0, 10)) + ':' + (id || '');
+      var h = 2166136261;
+      for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+      return h >>> 0;
+    }
+
+    /* Every act is built on a flaw (see 12_ §3). This is that flaw spoken at
+       the moment the player has just felt it. Keyed game -> failure tag. */
+    var LOSS = {
+      volcano: {
+        crashcooled: 'You slammed it shut on the first move. The walker went downhill until it could not, and there it has sat since. Heat is what finds a floor — you never gave it any.',
+        neversettled: 'You never once let it go cold. It wandered the whole budget and was still wandering when the run ended. Heat finds; cold keeps — you only did the first half.',
+        trapped: 'You shaped it, and then went cold with the walker still on the wrong side of the ridge. A trap you can see is still a trap you are standing in.',
+        luck: 'That descent froze on the floor — and replayed five hundred times, this same schedule mostly does not. One good run is not a rule. I know that better than anyone.'
+      },
+      grover: {
+        overrotated: 'I said one more would make it certain. It made it worse — the exit’s odds fell as the turn carried past it. That one is on me. Stop at the top, not when I say so.',
+        early: 'You committed while the exit was still climbing. Take it to the peak, then measure — not a step before.',
+        peak: 'The peak, and it still went wide. That is the draw, not a mistake you made — even a tall bar is a gamble. Run the corridor again.'
+      }
+    };
+    function loss(id, tags) {
+      var t = LOSS[id] || {}, list = [].concat(tags || []);
+      for (var i = 0; i < list.length; i++) if (t[list[i]]) return t[list[i]];
+      return '';
+    }
+
+    /* One line per game, shown only on a first-ever clear. Mirrors the Codex
+       entry missions.js writes in mission mode — here it is just a sentence. */
+    var CODEX = {
+      volcano: 'Vesh: a schedule is a promise about when to stop looking. Made too early it traps you; made too late it never lands.',
+      grover: 'Rue: amplitude is a rotation, not a climb. Past the peak, every extra turn is a step back toward the noise.',
+      golf: 'Ada: the shortest word to a state is a fact about the state, not about your cleverness. Some doors have no two-gate key.',
+      maxcut: 'Cordon: an odd loop cannot be split in two. The gap you cannot close is a theorem, not a shortfall of effort.',
+      chsh: 'Kai & Lyra: the correlation breaks the classical ceiling and still cannot carry a word. Both are provable; neither is intuitive.',
+      duel: 'Halden: the reading is never wrong about what it sees. It is wrong about what it cannot see — that is where you come in.'
+    };
+
+    function ceremony(id, o) {
+      o = o || {};
+      var lines = [].concat(o.lines || []).filter(Boolean)
+        .map(function (l) { return '<div class="g-cr-line">' + l + '</div>'; }).join('');
+      var codex = (o.first && CODEX[id])
+        ? '<div class="g-cr-codex">Codex — ' + CODEX[id] + '</div>' : '';
+      return '<div class="g-ceremony">' +
+        '<div class="g-cr-head">' + (o.head || 'Cleared') +
+          (o.first ? ' <span class="g-cr-first">first time</span>' : '') + '</div>' +
+        lines + codex + '</div>';
+    }
+
+    return { rng: rng, daySeed: daySeed, loss: loss, ceremony: ceremony, CODEX: CODEX };
+  })();
+
   /* -------------------------------------------------------------------- */
   window.SymbiQ.games = {
     all: G,
+    frame: FRAME,
     list: ['golf', 'grover', 'maxcut', 'volcano', 'qttt', 'calibration'].map(function (k) {
       return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
     }),

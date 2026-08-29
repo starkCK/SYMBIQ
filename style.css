@@ -895,6 +895,29 @@ nav .link.pathlink:hover { color: var(--violet); }
 .verdict.good { background: rgba(45, 212, 191, 0.12); border-color: rgba(45, 212, 191, 0.45); color: var(--teal); }
 .verdict.bad { background: rgba(248, 113, 113, 0.11); border-color: rgba(248, 113, 113, 0.42); color: var(--red); }
 .verdict.split { background: rgba(167, 139, 250, 0.12); border-color: rgba(167, 139, 250, 0.45); color: var(--violet); }
+
+/* THE FRAME (games.js) — a mentor's line on a loss, and a small stat panel on
+   a clear. Both live INSIDE a .verdict, so they inherit its colour; these rules
+   only set weight, rhythm and a divider. Restrained on purpose. */
+.g-mentor {
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid currentColor;
+  font-weight: 400; font-style: italic; font-size: 0.9rem; opacity: 0.92;
+}
+.g-ceremony { margin-top: 10px; padding-top: 10px; border-top: 1px solid currentColor; }
+.g-cr-head {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  margin-bottom: 6px;
+}
+.g-cr-first {
+  font-weight: 600; letter-spacing: 0.04em; opacity: 0.75;
+  border: 1px solid currentColor; border-radius: 99px; padding: 0 6px; margin-left: 4px;
+}
+.g-cr-line { font-weight: 400; font-size: 0.9rem; line-height: 1.55; margin: 3px 0; }
+.g-cr-codex {
+  font-weight: 400; font-style: italic; font-size: 0.86rem; line-height: 1.55;
+  margin-top: 7px; opacity: 0.85;
+}
+
 .rows { display: grid; grid-template-columns: auto 1fr; gap: 5px 12px; font-size: 0.9rem; align-items: baseline; }
 .rows dt { color: var(--muted); white-space: nowrap; }
 .rows dd { margin: 0; }

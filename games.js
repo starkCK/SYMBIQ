@@ -54,13 +54,13 @@
     hook: 'You are not the climber. You are the temperature — and the only question that matters is how fast you let it fall.',
     about: {
       goal: 'End the run <strong>frozen on the deepest point</strong> of the landscape. Not merely visit it — finish there.',
-      how: 'Twelve times, choose <strong>Cool</strong>, <strong>Hold</strong> or <strong>Stoke</strong>. Each choice runs twenty random steps at that temperature. Hot lets the walker climb out of valleys; cold locks it wherever it stands.',
+      how: 'Twelve times, choose <strong>Cool</strong>, <strong>Hold</strong> or <strong>Stoke</strong>. Each choice runs twenty random steps at that temperature. Hot lets the walker climb out of valleys; cold locks it wherever it stands. <strong>The Descent</strong> mode makes it endless: a fresh landscape every time, one 10-choice schedule, and a pass mark you must beat over 500 replays. Clear it and the next one is deeper. Score is how far down you get.',
       inspired: 'Simulated annealing (Kirkpatrick, Gelatt &amp; Vecchi, <em>Science</em> 1983) — metallurgy borrowed as an algorithm, and the classical baseline that quantum annealers are measured against.',
       learn: 'The exploration/exploitation trade-off you can feel in your hands, and why a method that never accepts a worse move can never escape a valley.',
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Heuristic⟧',
       or: 'Simulated annealing is a <b>metaheuristic</b> — operations research’s answer to problems too hard to solve exactly. It is the classical baseline quantum annealing has to beat.'
     },
-    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps. The <strong>🔴 Ruthless</strong> card ("the Deep Country") runs five harder landscapes on a tighter <strong>10-epoch</strong> budget; each pass mark was re-established the same way — below crash-cooling is impossible, and a shaped schedule found by search clears it by at least three points.',
+    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps. The <strong>🔴 Ruthless</strong> card ("the Deep Country") runs five harder landscapes on a tighter <strong>10-epoch</strong> budget; each pass mark was re-established the same way — below crash-cooling is impossible, and a shaped schedule found by search clears it by at least three points. <strong>The Descent</strong> (a Standard-mode option) generates each landscape at run time from a seed and a difficulty that rises every time you clear one; the pass mark adapts as <em>max(0.44 − 0.05·d, crash + 0.12)</em>, floored at 18%, and the game only serves a landscape once it has measured that some cooling ramp beats that mark by a margin — so no generated level is ever a dud. The generator, the accept rule and the pass mark are all proven in <code>tools/verify_volcano_deepdive.py</code>.',
     // Landscapes verified offline: every global minimum unique; pass marks set
     // below the best schedule found by search, above what crash-cooling scores.
     // `crash` = the measured clear rate of a crash-cool (all-Cool) schedule on
@@ -110,7 +110,130 @@
       var LV = ruthless ? g.LV_RUTHLESS : g.LV;
       var EPOCHS = ruthless ? 10 : g.EPOCHS;
       var winIdx = ruthless ? LV.length - 1 : 1;   // Standard: Twin Calderas. Ruthless: The Long Haul.
+
+      /* ---- THE DESCENT: an endless, generated score-chase ------------------
+         Standard/Guided arcade only (Ruthless + missions untouched). Each
+         landscape is generated from (seed, difficulty d); you get one 10-epoch
+         cooling schedule; clearing = your schedule, replayed 500x, beats an
+         ADAPTIVE pass mark, max(passFloor(d), crash + 0.12), where crash is the
+         all-Cool schedule's own clear rate. Clear -> d rises (deeper, harder,
+         lower pass floor). Fail -> the descent ends. Score = descents cleared,
+         saved. The generator, the accept rule and the pass mark are proven in
+         tools/verify_volcano_deepdive.py (same PRNG, same engine). */
+      var SAVE = window.SymbiQ && SymbiQ.save;
+      var DESC_KEY = 'volcano.descent.best';
+      var descent = { on: false, d: 0, over: false, crash: 0, passMark: 0,
+                      best: (SAVE && SAVE.get) ? (+SAVE.get(DESC_KEY, 0) || 0) : 0, newBest: false };
+      function mulberry32(a) {
+        a = a >>> 0;
+        return function () {
+          a = (a + 0x6D2B79F5) >>> 0;
+          var t = a;
+          t = Math.imul(t ^ (t >>> 15), 1 | a) >>> 0;
+          t = (t + (Math.imul(t ^ (t >>> 7), 61 | t) >>> 0)) >>> 0;
+          t = (t ^ (t >>> 14)) >>> 0;
+          return t / 4294967296;
+        };
+      }
+      function dPassFloor(d) { return Math.max(0.18, 0.44 - 0.05 * d); }
+      function dPassMark(d, crash) { return Math.max(dPassFloor(d), crash + 0.12); }
+      function dCrashCeil(d) { return Math.max(0.16, 0.52 - 0.03 * d); }
+      function genLandscape(seed, d) {
+        var rnd = mulberry32(seed >>> 0);
+        function ri(lo, hi) { return lo + Math.floor(rnd() * (hi - lo + 1)); }
+        var nTraps = Math.min(1 + Math.floor(d / 4), 2);
+        var basins = nTraps + 1;
+        var ridgeH = Math.min(3 + Math.floor(d / 5), 4);
+        var T0 = Math.max(2.4, 2.9 - d * 0.02);
+        var targetLen = Math.min(13 + d, 19);
+        var ridgeCells = 3 * (basins - 1);
+        var segLen = Math.max(2, Math.floor((targetLen - ridgeCells) / basins));
+        var h = [], topBase = ridgeH + 2, b, c;
+        for (b = 0; b < basins; b++) {
+          var isLast = b === basins - 1;
+          if (b > 0) {
+            var peak = ridgeH + (isLast ? 1 : ri(0, 1));
+            h.push(Math.max(1, peak - 1)); h.push(peak); h.push(Math.max(1, peak - 1));
+          }
+          var bf = isLast ? 1 : ri(1, 2);
+          var descTop = b === 0 ? topBase : Math.max(bf + 1, ridgeH - 1);
+          var cells = segLen + (isLast ? 2 : 0);
+          for (c = 0; c < cells; c++) {
+            var frac = cells <= 1 ? 1 : c / (cells - 1);
+            h.push(Math.max(1, Math.round(descTop - (descTop - bf) * frac)));
+          }
+        }
+        var gi = h.length - 1 - ri(0, 1);
+        h[gi] = 0;
+        if (gi - 1 >= 0) h[gi - 1] = Math.max(1, h[gi - 1]);
+        if (gi + 1 < h.length) h[gi + 1] = Math.max(1, h[gi + 1]);
+        return { h: h, start: 0, T0: T0, gmin: gi, n: 'Descent ' + (d + 1),
+                 bar: 0, best: 0, crash: 0, flat: false };
+      }
+      function schedOf() {
+        var out = [];
+        for (var i = 0; i < arguments.length; i += 2)
+          for (var k = 0; k < arguments[i + 1]; k++) out.push(arguments[i]);
+        return out;
+      }
+      var DCANON = [
+        schedOf(g.STOKE,2,g.HOLD,3,g.COOL,5), schedOf(g.STOKE,3,g.HOLD,3,g.COOL,4),
+        schedOf(g.STOKE,4,g.HOLD,2,g.COOL,4), schedOf(g.STOKE,4,g.HOLD,3,g.COOL,3),
+        schedOf(g.STOKE,5,g.HOLD,2,g.COOL,3), schedOf(g.STOKE,5,g.HOLD,3,g.COOL,2),
+        schedOf(g.STOKE,6,g.HOLD,1,g.COOL,3), schedOf(g.STOKE,2,g.HOLD,5,g.COOL,3),
+        schedOf(g.STOKE,1,g.HOLD,4,g.COOL,5), schedOf(g.HOLD,5,g.COOL,5),
+        schedOf(g.STOKE,3,g.HOLD,1,g.COOL,6), schedOf(g.STOKE,6,g.HOLD,2,g.COOL,2)
+      ];
+      var DCOOL10 = schedOf(g.COOL, 10);
+      function quickRate(L, sched, n) {
+        var w = 0, floor = L.h[L.gmin];
+        for (var i = 0; i < n; i++) if (L.h[replay(L, sched)] === floor) w++;
+        return w / n;
+      }
+      function descAccepts(L, d) {
+        var crash = quickRate(L, DCOOL10, 150);
+        L.crash = crash;
+        if (crash > dCrashCeil(d)) return false;
+        for (var i = 0, best = 0; i < DCANON.length; i++) {
+          best = Math.max(best, quickRate(L, DCANON[i], 150));
+          if (best >= dPassMark(d, crash) + 0.06) return true;
+        }
+        return false;
+      }
+      function makeDescent(d) {
+        var base = ((Date.now() >>> 0) ^ Math.imul(d + 1, 2654435761)) >>> 0;
+        for (var att = 0; att < 8; att++) {
+          var L = genLandscape((base + att) >>> 0, d);
+          if (descAccepts(L, d)) return L;
+        }
+        // never a dud: fall back to a hand-authored Standard volcano
+        var fb = g.LV[d % g.LV.length];
+        var F = { h: fb.h.slice(), start: fb.start, T0: fb.T0, gmin: 0,
+                  n: fb.n + ' (reserve)', bar: 0, best: 0, crash: 0, flat: !!fb.flat };
+        F.gmin = F.h.indexOf(Math.min.apply(null, F.h));
+        F.crash = quickRate(F, DCOOL10, 150);
+        return F;
+      }
+      function startDescentLevel() {
+        var L = makeDescent(descent.d);
+        descent.crash = L.crash;
+        descent.passMark = dPassMark(descent.d, L.crash);
+        L.bar = descent.passMark;
+        L.best = Math.min(0.62, descent.passMark + 0.12);   // display only
+        LV = [L]; li = 0; EPOCHS = 10;
+        cleared = [];
+        fresh();
+      }
+
       root.innerHTML =
+        (mission || ruthless ? '' :
+          '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
+            'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
+            '<span style="color:var(--muted)">Mode</span>' +
+            '<button class="preset" type="button" data-gm="volc">Volcanoes</button>' +
+            '<button class="preset" type="button" data-gm="desc">The Descent</button>' +
+            '<span data-r="descbest" style="color:var(--muted)"></span>' +
+          '</div>') +
         '<div class="holes" data-r="chips"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
         '<div class="vwrap">' +
@@ -200,6 +323,14 @@
       }
 
       function drawChips() {
+        if (descent.on) {
+          $(root, '[data-r=chips]').innerHTML =
+            '<div style="text-align:center;font-size:.9rem"><strong>Descent ' + (descent.d + 1) + '</strong> · ' +
+            LV[0].h.length + ' cells · schedule must clear <strong>' + Math.round(descent.passMark * 100) + '%</strong>' +
+            (descent.d > 0 ? ' &nbsp;<span style="color:var(--muted)">' + descent.d + ' behind you' +
+              (descent.best > 0 ? ' · deepest ' + descent.best : '') + '</span>' : '') + '</div>';
+          return;
+        }
         $(root, '[data-r=chips]').innerHTML = LV.map(function (L, i) {
           return '<span class="hole' + (i === li ? ' now' : '') + (cleared[i] ? ' done' : '') + '" data-l="' + i +
                  '" title="' + L.n + '">' + (i + 1) + '</span>';
@@ -283,7 +414,49 @@
         render();
       }
 
+      function descentFinish() {
+        var L = LV[0], floor = L.h[L.gmin], frozeRight = L.h[st.x] === floor, frozeDepth = L.h[st.x];
+        st.over = true;
+        descent.newBest = false;
+        // capture BEFORE startDescentLevel() replaces `st` and descent.passMark
+        var myRate = scheduleRate(L, st.sched);        // 500 honest replays of YOUR schedule
+        var mark = descent.passMark, touched = st.best === floor;
+        st.rate = myRate;
+        if (myRate >= mark) {
+          descent.d++;
+          if (descent.d > descent.best) {
+            descent.best = descent.d; descent.newBest = true;
+            if (SAVE && SAVE.set) SAVE.set(DESC_KEY, descent.d);
+          }
+          startDescentLevel();
+          syncVmode();
+          render({ k: 'good', t:
+            '<strong>Descent ' + descent.d + ' cleared.</strong> Your schedule froze on the floor <strong>' +
+            Math.round(myRate * 100) + '%</strong> of 500 replays, past its ' + Math.round(mark * 100) + '% mark. ' +
+            'Ahead: <strong>' + LV[0].h.length + ' cells</strong>, ' + Math.round(descent.passMark * 100) + '% to clear.' +
+            (descent.newBest ? ' <strong style="color:var(--yellow)">Deepest descent yet: ' + descent.best + '.</strong>' : '') });
+          return;
+        }
+        descent.over = true;
+        var head = frozeRight
+          ? '<strong>Froze on the floor — but the schedule does not hold.</strong> '
+          : (touched ? '<strong>You touched the floor and drifted off it.</strong> '
+             : '<strong>Froze at depth ' + frozeDepth + '</strong> — a trap, not the floor. ');
+        render({ k: frozeRight ? 'split' : 'bad', t: head +
+          'Replayed 500 times it clears only <strong>' + Math.round(myRate * 100) + '%</strong> (mark ' +
+          Math.round(mark * 100) + '%). <strong>The descent ends at ' + descent.d + '.</strong>' +
+          (descent.d > 0 && descent.d >= descent.best ? ' Your best.' : descent.best > 0 ? ' Best: ' + descent.best + '.' : '') +
+          ' <button class="preset" type="button" data-a="descnew">New descent</button>' });
+        syncVmode();
+        var nb = $(root, '[data-r=say]').querySelector('[data-a=descnew]');
+        if (nb) nb.addEventListener('click', function () {
+          descent.d = 0; descent.over = false; descent.newBest = false;
+          startDescentLevel(); syncVmode(); render();
+        });
+      }
+
       function finish() {
+        if (descent.on) return descentFinish();
         var L = LV[li], floor = L.h[L.gmin], frozeRight = L.h[st.x] === floor;
         st.over = true;
         st.rate = scheduleRate(L, st.sched);           // 500 honest replays of YOUR schedule
@@ -344,7 +517,45 @@
           step(a === 'cool' ? g.COOL : a === 'stoke' ? g.STOKE : g.HOLD);
         });
       });
-      $(root, '[data-a=reset]').addEventListener('click', function () { fresh(); render(); });
+      $(root, '[data-a=reset]').addEventListener('click', function () {
+        if (descent.on && descent.over) {
+          descent.d = 0; descent.over = false; descent.newBest = false;
+          startDescentLevel(); syncVmode();
+        } else {
+          fresh();
+        }
+        render();
+      });
+
+      /* ---- The Descent mode toggle (arcade Standard/Guided only) ---------- */
+      function syncVmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        var cur = descent.on ? 'desc' : 'volc';
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
+          var on = b.getAttribute('data-gm') === cur;
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+        var db = $(root, '[data-r=descbest]');
+        if (db) db.textContent = descent.best > 0 ? ('· deepest descent: ' + descent.best) : '';
+      }
+      (function wireVmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        bar.querySelector('[data-gm=volc]').addEventListener('click', function () {
+          descent.on = false; descent.over = false;
+          LV = ruthless ? g.LV_RUTHLESS : g.LV;
+          EPOCHS = ruthless ? 10 : g.EPOCHS;
+          li = 0; cleared = []; fresh(); syncVmode(); render();
+        });
+        bar.querySelector('[data-gm=desc]').addEventListener('click', function () {
+          descent.on = true; descent.d = 0; descent.over = false; descent.newBest = false;
+          startDescentLevel(); syncVmode(); render();
+        });
+        syncVmode();
+      })();
 
       fresh(); render();
     }

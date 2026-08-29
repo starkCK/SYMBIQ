@@ -27,6 +27,33 @@
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function node(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
 
+  /* ---- the ceremony through-line -------------------------------------------
+     The Arcade's clear-screen (games.js FRAME.ceremony) does two things a
+     mission consequence beat did not: on ANY clear it names the day's lesson
+     in one canonical sentence, and it marks a genuine first-ever clear. Mission
+     mode has its own, richer .ms-codex box -- but only on the turning-point
+     branch, so a mission cleared any other way (escaped without telling Rue she
+     was wrong, split the districts without the confrontation) taught the
+     sentence nowhere and never acknowledged a first.
+
+     This closes exactly that gap and nothing more. It is additive: a quiet
+     footer under the ending, carrying the SAME string the Arcade shows
+     (SymbiQ.games.frame.CODEX[engine], the single source of truth -- mentor
+     attribution included, so it cannot drift), plus a first-clearance mark.
+     The canonical sentence is suppressed when the branch already renders the
+     full .ms-codex box (that box is the deeper version of the same idea); the
+     first-clearance mark still shows there. Nothing here is scored or read back
+     by an engine -- same rule as FRAME itself. */
+  function throughLine(C, richCodexShown) {
+    if (!C || !C.cleared) return '';
+    var GF = window.SymbiQ.games && window.SymbiQ.games.frame;
+    var codex = (!richCodexShown && GF && GF.CODEX && GF.CODEX[C.mission.engine]) || '';
+    if (!C.firstClear && !codex) return '';
+    return '<p class="ms-through">' +
+      (C.firstClear ? '<span class="ms-through-b">First clearance</span> ' : '') +
+      codex + '</p>';
+  }
+
   /* ==================================================================== *
    *  ACT II — RUE — GROVER'S ESCAPE                                      *
    *                                                                      *
@@ -133,7 +160,7 @@
 
         C.games.mount(C.mission.engine, engine, {
           mode: 'mission',
-          onWin: function () { /* scoring stays entirely the engine's business */ },
+          onWin: function (id, first) { C.mark(first); },   // engine declares this act's win
           onState: function (s) {
             last = s;
             /* The world reads the same number the game reads. `b` carries how
@@ -243,11 +270,12 @@
                  '<p class="ms-note">That is the physics, not the game being unfair — which is exactly why you load the dice before you roll them.</p>';
         }
 
+        var through = throughLine(C, !!tag);
         panel.appendChild(node(
           '<div class="ms-end">' +
             '<div class="ms-face" data-r="face"></div>' +
             '<h3 class="ms-endh">' + head + '</h3>' +
-            '<div class="ms-say">' + body + '</div>' + tag +
+            '<div class="ms-say">' + body + '</div>' + tag + through +
             '<div data-r="share"></div>' +
             '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
             '<button type="button" class="preset" data-r="exit">Leave the corridor</button></p>' +
@@ -494,11 +522,12 @@
                  '<p class="ms-note">She is not angry. That is the part she cannot explain to you: being asked is the only way ' +
                  'she knows how to be useful, and it is the thing that empties her out.</p>';
         }
+        var through = throughLine(C, !!tag);
         panel.appendChild(node(
           '<div class="ms-end">' +
             '<div class="ms-face" data-r="face"></div>' +
             '<h3 class="ms-endh">' + head + '</h3>' +
-            '<div class="ms-say">' + body + '</div>' + tag +
+            '<div class="ms-say">' + body + '</div>' + tag + through +
             '<div data-r="share"></div>' +
             '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
             '<button type="button" class="preset" data-r="exit">Leave the hall</button></p>' +
@@ -607,7 +636,7 @@
 
         C.games.mount(C.mission.engine, engine, {
           mode: 'mission',
-          onWin: function () {},
+          onWin: function (id, first) { C.mark(first); },   // engine declares this act's win
           onState: function (s) {
             last = s;
             // the border on screen is drawn as far as you have satisfied it,
@@ -696,11 +725,12 @@
                  '<p class="ms-note">That is a perfectly good proof. It is just the one that does not scale: ' +
                  'eight splits here, and more than a billion by thirty districts.</p>';
         }
+        var through = throughLine(C, !!tag);
         panel.appendChild(node(
           '<div class="ms-end">' +
             '<div class="ms-face" data-r="face"></div>' +
             '<h3 class="ms-endh">' + head + '</h3>' +
-            '<div class="ms-say">' + body + '</div>' + tag +
+            '<div class="ms-say">' + body + '</div>' + tag + through +
             '<div data-r="share"></div>' +
             '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
             '<button type="button" class="preset" data-r="exit">Leave the city</button></p>' +
@@ -811,7 +841,7 @@
 
         C.games.mount(C.mission.engine, engine, {
           mode: 'mission',
-          onWin: function () {},
+          onWin: function (id, first) { C.mark(first); },   // engine declares this act's win
           onState: function (s) {
             /* THE BACKGROUND IS THE DATA. Push the level's own height array
                into the shader and the silhouette behind the game becomes the
@@ -945,11 +975,12 @@
           body = '<p>You let him keep the rule. It is a good rule and it will keep working, right up until it does not &mdash; ' +
                  'and on the flat it has already been beaten by a schedule with no thought in it at all.</p>' + scores;
         }
+        var through = throughLine(C, !!tag);
         panel.appendChild(node(
           '<div class="ms-end">' +
             '<div class="ms-face" data-r="face"></div>' +
             '<h3 class="ms-endh">' + head + '</h3>' +
-            '<div class="ms-say">' + body + '</div>' + tag +
+            '<div class="ms-say">' + body + '</div>' + tag + through +
             '<div data-r="share"></div>' +
             '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
             '<button type="button" class="preset" data-r="exit">Leave the ridge</button></p>' +
@@ -1084,7 +1115,7 @@
 
         C.games.mount(C.mission.engine, engine, {
           mode: 'mission',
-          onWin: function () {},
+          onWin: function (id, first) { C.mark(first); },   // a real 2-s.e. breach is this act's win
           onState: function (s) {
             // the two tides move together exactly as far as the pair is correlated
             C.bg.set({ a: s.rounds ? Math.max(0, Math.min(1, (s.rate - 0.5) / 0.36)) : 0.4,
@@ -1215,11 +1246,12 @@
                  '<p class="ms-note">The numbers are already on the table. Kai&rsquo;s side reads the same whatever Lyra does &mdash; ' +
                  'and that is not a measurement problem, it is a theorem.</p>' + scores;
         }
+        var through = throughLine(C, !!tag);
         panel.appendChild(node(
           '<div class="ms-end">' +
             '<div class="ms-face ms-face-pair" data-r="face"></div>' +
             '<h3 class="ms-endh">' + head + '</h3>' +
-            '<div class="ms-say">' + body + '</div>' + tag +
+            '<div class="ms-say">' + body + '</div>' + tag + through +
             '<div data-r="share"></div>' +
             '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
             '<button type="button" class="preset" data-r="exit">Leave the shore</button></p>' +
@@ -1672,11 +1704,12 @@
             : '<br><br>You asked only for the parity. The wound stays closed, and you will not find out.') +
           '</div>';
 
+        var through = throughLine(C, !!tag);
         panel.appendChild(node(
           '<div class="ms-end">' +
             '<div class="ms-face" data-r="face"></div>' +
             '<h3 class="ms-endh">' + head + '</h3>' +
-            '<div class="ms-say">' + body + '</div>' + tag + tier +
+            '<div class="ms-say">' + body + '</div>' + tag + tier + through +
             '<div data-r="share"></div>' +
             '<p class="ms-again"><button type="button" class="preset" data-r="again">Walk it again</button> ' +
             '<button type="button" class="preset" data-r="exit">Leave the Knot</button></p>' +
@@ -1805,6 +1838,7 @@
                mentor: M[k].mentor, blurb: M[k].blurb };
     }),
     get: function (id) { return M[id]; },
+    _through: throughLine,               // test seam — see tools/verify_mission_ceremony.mjs
 
     mount: function (id, host, opts) {
       var m = M[id], S = window.SymbiQ.scene, GS = window.SymbiQ.games;
@@ -1844,7 +1878,21 @@
         bg: bg,
         coherence: window.SymbiQ.coherence || null,
         outcome: null,
+        // Set by mark() below the first time this run reaches a genuine clear.
+        // `cleared` gates the consequence beat's through-line; `firstClear` is
+        // the save's "first ever" verdict for this engine, latched to the first
+        // mark() call so a replay or a second onWin cannot flip it.
+        cleared: false, firstClear: false,
         click: function () { S.audio.click(); },
+        /* Record that this run cleared, and whether it was the first ever.
+           The four engine-win acts hand their first-clear verdict here through
+           the mount's onWin(id, first); Acts I and VI, whose objective the
+           engine cannot see, route through clear() just below. Idempotent and
+           latched -- calling it again with a later, falser verdict is a no-op. */
+        mark: function (first) {
+          if (!C.cleared) C.firstClear = !!first;
+          C.cleared = true;
+        },
         /* A mission's objective is the MISSION's business, not the engine's.
            Four of the five acts finish exactly where their engine already
            declares a win, so games.js writes the save itself and nothing more
@@ -1855,7 +1903,9 @@
            engine that already fired costs nothing. */
         clear: function () {
           var SV = window.SymbiQ && window.SymbiQ.save;
-          return SV ? SV.completeMission(id) : false;
+          var f = SV ? SV.completeMission(id) : false;
+          C.mark(f);
+          return f;
         },
         // Grover hears its own mistake: the pitch rises with the amplitude and
         // FALLS on over-rotation, so you hear the error before you read it.

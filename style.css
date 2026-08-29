@@ -1860,6 +1860,15 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
   background: rgba(45,212,191,.08); border: 1px solid rgba(45,212,191,.30); color: var(--text);
 }
 .ms-codex span { color: var(--muted); }
+/* The ceremony through-line: missions.js appends this on any clear that the
+   richer .ms-codex box does not already cover, so every clear names the day's
+   lesson once and marks a first — the parity with the Arcade's FRAME.ceremony.
+   Quiet on purpose: it sits under the ending, not beside the .ms-codex box. */
+.ms-through { margin: 14px 0 0; font-size: .84rem; line-height: 1.55; color: var(--muted); }
+.ms-through-b {
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--teal); margin-right: 6px;
+}
 .ms-again { margin: 18px 0 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .ms-bar { position: absolute; right: 12px; top: 12px; z-index: 4; display: flex; align-items: center; gap: 8px; }
 

@@ -925,7 +925,40 @@
          clear margin and never stalls; tools/verify_qttt_ruthless.py unit-
          tests the two pure decision functions. */
       var ruthless = !mission && opts && opts.level === 'ruthless';
+
+      /* ---- A1–A3: opponent + pass-a-link -----------------------------------
+         Orthogonal to the 🟢/🟡/🔴 level system. 🔴 Ruthless keeps its
+         meaning — "The Adversary" — so it locks the hard AI and hides the
+         picker. Everywhere else the picker defaults to pass-and-play, which
+         is exactly the two-human hot-seat that shipped. A game can also be
+         handed back and forth by link: the whole board state rides in a
+         ?qg= query param, no server involved. */
+      var opponent = ruthless ? 'ai' : 'human';   // 'human' | 'ai'
+      var aiStrength = 'hard';                      // 'easy' | 'hard'
+      var linkMode = false, localSide = 'X';
+      var LINKPARAM = 'qg';
+      var incoming = null;
+      if (!mission && !ruthless) {
+        try {
+          var _qg = new URLSearchParams(location.search || '').get(LINKPARAM);
+          if (_qg) incoming = decodeState(_qg);
+        } catch (e) { incoming = null; }
+      }
+
       root.innerHTML =
+        (mission || ruthless ? '' :
+          '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
+            'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
+            '<span style="color:var(--muted)">Opponent</span>' +
+            '<button class="preset" type="button" data-opp="human">Pass &amp; play</button>' +
+            '<button class="preset" type="button" data-opp="ai">vs Computer</button>' +
+            '<button class="preset" type="button" data-opp="link">Pass a link</button>' +
+            '<span data-r="diffwrap" style="display:none;align-items:center;gap:6px">' +
+              '<span style="color:var(--muted)">·&nbsp;level</span>' +
+              '<button class="preset" type="button" data-diff="easy">Easy</button>' +
+              '<button class="preset" type="button" data-diff="hard">Hard</button>' +
+            '</span>' +
+          '</div>') +
         '<div class="turnbar"><span class="who X on" data-r="wx">X</span>' +
         '<span style="color:var(--muted);font-size:.85rem" data-r="phase">pick two squares</span>' +
         '<span class="who O" data-r="wo">O</span></div>' +
@@ -938,6 +971,7 @@
         '<div class="verdict" style="text-align:center;margin-top:14px" data-r="say"></div>' +
         '<p style="margin:8px 0 4px;text-align:center">' +
           '<button class="preset" data-a="new">New game</button></p>' +
+        '<div data-r="linkpanel" style="display:none;max-width:460px;margin:10px auto 0;text-align:center"></div>' +
         '<dl class="rows" data-r="rows"></dl>';
 
       var grid = $(root, '[data-r=grid]');
@@ -1137,12 +1171,14 @@
           (ringN ? '<dt>Ring closed</dt><dd><strong style="color:var(--yellow)">' + ringN +
             ' squares</strong> are being measured together — two ways it can fall</dd>' : '') +
           '<dt>Score</dt><dd>X ' + score.X + ' · O ' + score.O + '</dd>';
+        refreshLinkPanel();
       }
       // threads are measured from live layout, so they must be re-measured on resize
       window.addEventListener('resize', drawThreads);
       function click(s) {
         if (phase === 'collapse' || phase === 'over' || classical[s]) return;
-        if (ruthless && turn === 'O') return;        // O is the AI's to play
+        if (opponent === 'ai' && turn === 'O') return;   // O is the computer's to play
+        if (linkMode && turn !== localSide) return;       // wait for the other player's link
         var k = sel.indexOf(s);
         if (k >= 0) { sel.splice(k, 1); draw('Pick two squares for ' + turn + '<sub>' + moveNo + '</sub>.'); return; }
         if (sel.length === 2) return;
@@ -1173,7 +1209,8 @@
         maybeAI();
       }
       function chooseGhost(sq, mi) {
-        if (ruthless && turn === 'O') return;        // O's collapse is the AI's to make
+        if (opponent === 'ai' && turn === 'O') return;   // O's collapse is the computer's to make
+        if (linkMode && turn !== localSide) return;       // not this device's collapse to choose
         var o = pending.opts;
         var pick = (o[0] && o[0][sq] === mi) ? 0 : ((o[1] && o[1][sq] === mi) ? 1 : -1);
         if (pick < 0) return;
@@ -1291,18 +1328,155 @@
         }
         commitPair(bp[0], bp[1]);
       }
+      /* Easy computer: a legal-but-thoughtless O — random pair, random
+         collapse. The heuristic O above (used by 🔴 Ruthless and by the
+         "Hard" pick) is the sparring partner; this is the one a newcomer
+         can actually beat while learning the rules. */
+      function aiPlaceEasy() {
+        var empt = [];
+        for (var s = 0; s < 9; s++) if (!classical[s]) empt.push(s);
+        if (empt.length < 2) { phase = 'over'; draw('The board is full — a draw. <strong>New game</strong>.', 'split'); return; }
+        var i = Math.floor(Math.random() * empt.length), j;
+        do { j = Math.floor(Math.random() * empt.length); } while (j === i);
+        commitPair(empt[i], empt[j]);
+      }
+      function aiCollapseEasy() { applyChoice(Math.random() < 0.5 ? 0 : 1); }
       var aiDelay = (opts && typeof opts.aiDelayMs === 'number') ? opts.aiDelayMs : 460;  // 0 = test seam
       function maybeAI() {
-        if (!ruthless || phase === 'over' || turn !== 'O') return;
+        if (opponent !== 'ai' || phase === 'over' || turn !== 'O') return;
         setTimeout(function () {
           if (turn !== 'O' || phase === 'over') return;
-          if (phase === 'collapse' && pending) aiCollapse();
-          else if (phase === 'place') aiPlace();
+          if (phase === 'collapse' && pending) (aiStrength === 'easy' ? aiCollapseEasy : aiCollapse)();
+          else if (phase === 'place') (aiStrength === 'easy' ? aiPlaceEasy : aiPlace)();
         }, aiDelay);
       }
 
-      $(root, '[data-a=new]').addEventListener('click', reset);
-      reset();
+      /* ---- pass-a-link: serialise the whole board into a URL --------------- */
+      function b64urlEnc(s) { return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+      function b64urlDec(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return atob(s); }
+      function assignToArr(a) { return a ? Object.keys(a).map(function (k) { return [+k, a[k]]; }) : null; }
+      function arrToAssign(x) { var o = {}; (x || []).forEach(function (p) { o[p[0]] = p[1]; }); return o; }
+      function encodeState() {
+        var st = {
+          v: 1,
+          m: moves.map(function (x) { return [x.p === 'X' ? 0 : 1, x.n, x.a, x.b]; }),
+          c: Object.keys(classical).map(function (k) { return [+k, classical[k].p === 'X' ? 0 : 1, classical[k].n]; }),
+          t: turn, mn: moveNo, ph: phase,
+          pd: (phase === 'collapse' && pending) ? [assignToArr(pending.opts[0]), assignToArr(pending.opts[1])] : null,
+          s: [score.X, score.O]
+        };
+        return b64urlEnc(JSON.stringify(st));
+      }
+      function decodeState(code) {
+        try {
+          var st = JSON.parse(b64urlDec(code));
+          if (!st || st.v !== 1 || !Array.isArray(st.m)) return null;
+          for (var i = 0; i < st.m.length; i++) {
+            var mm = st.m[i];
+            if (!mm || mm.length !== 4 || mm[2] < 0 || mm[2] > 8 || mm[3] < 0 || mm[3] > 8) return null;
+          }
+          return st;
+        } catch (e) { return null; }
+      }
+      function applyIncoming(st) {
+        moves = st.m.map(function (a) { return { p: a[0] ? 'O' : 'X', n: a[1], a: a[2], b: a[3] }; });
+        classical = {}; (st.c || []).forEach(function (a) { classical[a[0]] = { p: a[1] ? 'O' : 'X', n: a[2] }; });
+        turn = st.t === 'O' ? 'O' : 'X';
+        moveNo = st.mn || (moves.length + 1);
+        phase = (st.ph === 'collapse' || st.ph === 'over') ? st.ph : 'place';
+        sel = [];
+        score = { X: (st.s && st.s[0]) || 0, O: (st.s && st.s[1]) || 0 };
+        pending = (phase === 'collapse' && st.pd) ? { opts: [arrToAssign(st.pd[0]), arrToAssign(st.pd[1])] } : null;
+      }
+      function refreshLinkPanel() {
+        var panel = $(root, '[data-r=linkpanel]');
+        if (!panel) return;
+        if (!linkMode) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+        panel.style.display = 'block';
+        if (phase === 'over') {
+          panel.innerHTML = '<span style="color:var(--muted);font-size:.85rem">Game over. ' +
+            '<b>New game</b> starts a fresh one — you play X and send the first link.</span>';
+          return;
+        }
+        if (turn === localSide) {
+          panel.innerHTML = '<span style="color:var(--muted);font-size:.85rem">You are <strong>' + localSide +
+            '</strong>. Make your move' + (phase === 'collapse' ? ' — choose the collapse' : '') +
+            '; a link to send back will appear here.</span>';
+          return;
+        }
+        var url = location.origin + location.pathname + '?' + LINKPARAM + '=' + encodeState() + '#play/qttt';
+        panel.innerHTML =
+          '<span style="color:var(--muted);font-size:.85rem">Your move is in. Send this link to <strong>' + turn + '</strong>:</span>' +
+          '<span style="display:flex;gap:6px;margin-top:6px">' +
+            '<input type="text" readonly data-r="linkinput" value="' + url.replace(/"/g, '&quot;') + '" ' +
+              'style="flex:1;min-width:0;font-size:.78rem;padding:6px 8px;border:1px solid var(--muted);' +
+              'border-radius:6px;background:transparent;color:inherit">' +
+            '<button class="preset" type="button" data-a="copylink">Copy</button>' +
+          '</span>' +
+          '<span data-r="copymsg" style="display:block;color:var(--teal);font-size:.78rem;min-height:1.1em;margin-top:4px"></span>';
+        var inp = $(panel, '[data-r=linkinput]');
+        $(panel, '[data-a=copylink]').addEventListener('click', function () {
+          var say = function () { var m = $(panel, '[data-r=copymsg]'); if (m) m.textContent = 'Copied — paste it to the other player.'; };
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(inp.value).then(say, function () { inp.select(); say(); });
+            } else { inp.select(); try { document.execCommand('copy'); } catch (e) {} say(); }
+          } catch (e) { try { inp.select(); } catch (e2) {} }
+        });
+      }
+      function newMatch() { if (linkMode) localSide = 'X'; reset(); }
+      function wireModeBar() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-opp]'), function (b) {
+          b.addEventListener('click', function () {
+            var v = b.getAttribute('data-opp');
+            if (v === 'link') { linkMode = true; opponent = 'human'; localSide = 'X'; }
+            else { linkMode = false; opponent = v; }
+            try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+            syncModeUI(); reset();
+          });
+        });
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-diff]'), function (b) {
+          b.addEventListener('click', function () { aiStrength = b.getAttribute('data-diff'); syncModeUI(); reset(); });
+        });
+      }
+      function syncModeUI() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        var cur = linkMode ? 'link' : opponent;
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-opp]'), function (b) {
+          var on = b.getAttribute('data-opp') === cur;
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+        var dw = $(root, '[data-r=diffwrap]');
+        if (dw) dw.style.display = (opponent === 'ai' && !linkMode) ? 'inline-flex' : 'none';
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-diff]'), function (b) {
+          var on = b.getAttribute('data-diff') === aiStrength;
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+      }
+
+      $(root, '[data-a=new]').addEventListener('click', newMatch);
+      wireModeBar();
+      syncModeUI();
+      if (incoming) {
+        linkMode = true; opponent = 'human';
+        applyIncoming(incoming);
+        localSide = turn;
+        try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+        syncModeUI();
+        draw((phase === 'collapse'
+          ? '<strong>A game arrived by link — you are ' + localSide + '.</strong> The last move closed a ring: choose how it falls. Hover a glowing mark to preview the whole outcome, then click it.'
+          : '<strong>A game arrived by link — you are ' + localSide + '.</strong> Make your move, then send the link back.'),
+          phase === 'collapse' ? 'split' : '');
+      } else {
+        reset();
+      }
     }
   };
 

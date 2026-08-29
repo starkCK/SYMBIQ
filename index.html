@@ -686,8 +686,50 @@
   function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
   function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function daysBetween(a, b) {   // whole days from ISO date a to ISO date b
+    return Math.floor((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+  }
+
+  /* The daily pipeline has never run (no repo secrets), so data/today.json can
+     sit frozen for weeks. Rather than show one stale question forever, once it
+     is more than two days old (the same threshold check_site.py warns at) the
+     widget rotates through the referee-verified questions that DID run, one per
+     calendar day, drawn from data/qbank.json -> data/archive/<date>.json. The
+     served object's date is set to today so it is answerable fresh and the
+     heatmap lines up; qnum becomes a monotonic day counter so the streak still
+     grows honestly (you did show up N days running) and is shown as an archive
+     note, not a number. When the pipeline resumes, today.json is fresh again
+     and none of this runs. */
+  function fromBank(stale) {
+    return fetch('data/qbank.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (bank) {
+        var pool = bank.pool || [];
+        if (!pool.length) throw 0;
+        var since = daysBetween(bank.anchor, todayISO());
+        if (since < 0) since = 0;
+        var pick = pool[((since % pool.length) + pool.length) % pool.length];
+        return fetch('data/archive/' + pick + '.json', { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+          .then(function (A) {
+            A.date = todayISO();
+            A.qnum = ((stale && stale.qnum) || 7) + since;
+            A._fromArchive = true;
+            return A;
+          });
+      })
+      .catch(function () { return stale; });   // bank unreachable: the stale one still beats nothing
+  }
+
   fetch('data/today.json', { cache: 'no-store' })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (D) {
+      return (D && D.date && daysBetween(D.date, todayISO()) > 2) ? fromBank(D) : D;
+    })
     .then(init)
     .catch(function () {
       document.getElementById('dq-out').innerHTML =
@@ -703,9 +745,12 @@
     // about. The streak is the honest evergreen thing to show instead: it is
     // the reader's own real progress, and it never goes out of date.
     var streak = s.streak || 0;
+    var label = D._fromArchive
+      ? '<span style="color:var(--muted)"> From the archive — the daily feed is paused</span>'
+      : '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>';
     document.getElementById('dq-meta').innerHTML =
       '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
-      '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>' +
+      label +
       (streak > 0 ? ' <span class="dq-streak">🔥 ' + streak + '-question streak</span>' : '');
     document.getElementById('dq-q').textContent = q.text;
 

@@ -325,6 +325,33 @@ else:
         except Exception:
             pass
 
+# 7b. data/qbank.json --------------------------------------------------------
+# When today.json goes stale (>2 days) the homepage widget rotates through the
+# questions that already ran, one per day, listed here as ids into data/archive/.
+# A broken pool degrades to showing the stale question, but a dangling id would
+# 404 -- so validate it like the feed above.
+QBANK = os.path.join(ROOT, "data", "qbank.json")
+if os.path.exists(QBANK):
+    try:
+        qb = json.load(open(QBANK, encoding="utf-8"))
+    except Exception as e:
+        qb = None
+        fail("qbank.json", f"does not parse -> {e}")
+    if qb is not None:
+        anchor = qb.get("anchor", "")
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(anchor)):
+            fail("qbank.json", f"anchor must be YYYY-MM-DD, got {anchor!r}")
+        pool = qb.get("pool")
+        if not isinstance(pool, list) or not pool:
+            fail("qbank.json", "pool must be a non-empty list of archive ids")
+        else:
+            missing = [p for p in pool
+                       if not os.path.exists(os.path.join(ROOT, "data", "archive", f"{p}.json"))]
+            if missing:
+                fail("qbank.json", f"pool ids with no data/archive/<id>.json: {', '.join(missing)}")
+        if not [f for f in FAILS if f.startswith("qbank.json")]:
+            ok(f"qbank.json: {len(pool)} archived question(s) in the stale-feed rotation")
+
 # 8. CACHE-BUSTERS MATCH THE BYTES THEY STAND FOR --------------------------
 # Section 2 proves every page agrees on a version. It cannot prove the version
 # is the RIGHT one: edit tiers.js, leave it at ?v=3, and all 22 pages still

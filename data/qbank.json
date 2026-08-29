@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "note": "Fallback pool for the homepage Question when data/today.json is more than two days old. Each id is a file in data/archive/. Rotates one per calendar day from `anchor`. When the daily pipeline resumes, today.json goes fresh and this file is not consulted. Add new ids here as questions are archived so the rotation keeps growing.",
+  "anchor": "2026-08-05",
+  "pool": [
+    "2026-07-19",
+    "2026-07-25",
+    "2026-07-27",
+    "2026-07-30",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-04"
+  ]
+}

@@ -736,9 +736,10 @@
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Proven⟧',
       or: 'Max-Cut is a classic <b>operations research</b> problem — NP-hard since Karp 1972, and the reason the whole QUBO/Ising bridge exists.'
     },
-    honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped.',
+    honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs — including the Petersen graph and a patch of triangular lattice — with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts.',
     mount: function (root, opts) {
       var mission = opts && opts.mode === 'mission';
+      var ruthless = !mission && opts && opts.level === 'ruthless';
       root.innerHTML =
         '<div class="holes" data-r="dist"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
@@ -749,7 +750,7 @@
         '<dl class="rows" data-r="rows"></dl>';
 
       var svg = $(root, '.mcsvg');
-      var DIST = [
+      var DIST_STD = [
         { n:3, E:[[0,1],[1,2],[2,0]], par:2, name:'the triangle',
           note:'An odd loop — you can never satisfy all three roads. Something must clash, and that unavoidable clash is called <em>frustration</em>. It is real physics, not a flaw in your play.' },
         { n:4, E:[[0,1],[1,2],[2,3],[3,0]], par:4, name:'the square',
@@ -763,6 +764,31 @@
         { n:6, E:[[0,1],[1,2],[2,0],[3,4],[4,5],[5,3],[0,3],[1,4],[2,5]], par:7, name:'the prism',
           note:'Two triangles braced together. Seven of nine — find the split.' }
       ];
+      /* 🔴 RUTHLESS — "The Frustrated Ward". Four larger graphs; each par is the
+         true maximum cut, brute-forced over all 2ⁿ colourings by
+         tools/verify_maxcut_ruthless.py and mirrored here (verify_frame.mjs
+         drives the shipped engine to each par). Districts 3 and 4 are traps in
+         the District-5 sense: steepest-ascent single-flip search reaches the
+         maximum from only ~6% of starts on the lattice, and "the basin" opens
+         two roads short of a split that exists, with no single flip that helps. */
+      var DIST_RUTHLESS = [
+        { n:6, name:'the full council',
+          E:[[0,1],[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,3],[2,4],[2,5],[3,4],[3,5],[4,5]],
+          par:9, note:'Every district borders every other. Only a perfect 3–3 split reaches par; six roads can never be satisfied, whatever you do.' },
+        { n:10, name:'the pentagram',
+          E:[[0,1],[1,2],[2,3],[3,4],[4,0],[5,7],[7,9],[9,6],[6,8],[8,5],[0,5],[1,6],[2,7],[3,8],[4,9]],
+          par:12, note:'The Petersen graph. No two-colouring beats 12 of its 15 roads, and there are five different ways to reach that — none obvious.' },
+        { n:12, name:'the frustrated lattice',
+          E:[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[8,9],[9,10],[10,11],
+             [0,4],[1,5],[2,6],[3,7],[1,4],[2,5],[3,6],
+             [4,8],[5,9],[6,10],[7,11],[5,8],[6,9],[7,10]],
+          par:17, note:'A patch of triangular lattice — every face an odd loop. This is the geometric frustration a real antiferromagnet cannot escape, and greedy clicking almost never finds the true maximum.' },
+        { n:12, name:'the basin', start:[0,0,1,1,0,1,0,0,1,1,0,1],
+          E:[[4,5],[3,5],[0,5],[1,3],[2,4],[0,2],[10,11],[9,11],[6,11],[7,9],[8,10],[6,8]],
+          par:12, note:'You open in a valley: every single flip holds the cut or drops it, and a perfect split still exists — it just takes more than one move at once to reach. The wall annealing and QAOA are for.' }
+      ];
+      var DIST = ruthless ? DIST_RUTHLESS : DIST_STD;
+      var winIdx = ruthless ? DIST.length - 1 : 4;    // Standard: the trap (D5). Ruthless: the basin.
       var di = 0, color = [], solved = [];
       function initDist() {
         var d = DIST[di];
@@ -799,7 +825,7 @@
         var cut = cutVal(), W = d.E.length, energy = W - 2*cut, groundE = W - 2*d.par;
         var newlyOptimal = cut === d.par && !solved[di];
         if (newlyOptimal) solved[di] = true;
-        var firstCut = (cut === d.par && di === 4) ? win('maxcut', opts) : false;
+        var firstCut = (cut === d.par && di === winIdx) ? win('maxcut', opts) : false;
         var p = $(root, '[data-r=say]');
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
         else if (cut === d.par) {
@@ -2145,7 +2171,7 @@
       standard: { icon: '🟡', label: 'Standard',
                   blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
       ruthless: { icon: '🔴', label: 'Ruthless',
-                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors), you get that instead.' }
+                  blurb: 'No orientation, no legend, rules closed — and where a cabinet has a harder card (Circuit Golf: the Back Nine; Grover: the Long Corridors; Max-Cut: the Frustrated Ward), you get that instead.' }
     };
     /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
        it says what the buttons do, never changes what they do. */

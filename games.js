@@ -571,12 +571,12 @@
     hook: 'Golf, but the ball is a qubit and every club is a rotation.',
     about: {
       goal: 'Turn a qubit from <span class="ket">|0⟩</span> into a given target state in as few gates as you can.',
-      how: 'Tap gates to rotate the qubit until your <span style="color:var(--teal)">solid arrow</span> lands on the <span style="color:var(--violet)">dashed target</span>. <strong>Par is a proven minimum</strong> — no shorter route exists anywhere.',
+      how: 'Tap gates to rotate the qubit until your <span style="color:var(--teal)">solid arrow</span> lands on the <span style="color:var(--violet)">dashed target</span>. <strong>Par is a proven minimum</strong> — no shorter route exists anywhere. <strong>The Long Game</strong> mode makes it endless: the par climbs 1→5, the target name is hidden after the second hole, and one gate budget runs the whole game — miss and it empties. Score is how many holes deep you get.',
       inspired: 'The Bloch sphere and the real one-qubit gate set — X, Y, Z, H, S, T — that every quantum program is built from.',
       learn: 'Superposition and phase, and why quantum gates are <em>rotations</em> rather than 0-to-1 flips.',
       link: 'quantum-mechanics.html#bloch', linkText: 'See the sphere ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable. The <strong>🔴 Ruthless</strong> card (“the Back Nine”) swaps in nine longer holes, par 3–5, every target off every Bloch pole so a T gate is unavoidable; their pars were proven minimal the same exhaustive way.',
+    honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable. The <strong>🔴 Ruthless</strong> card (“the Back Nine”) swaps in nine longer holes, par 3–5, every target off every Bloch pole so a T gate is unavoidable; their pars were proven minimal the same exhaustive way. <strong>The Long Game</strong> (a Standard-mode option) is a curated rotating ladder through par classes 1–5 rather than a generator — from |0⟩ the one-qubit gate set reaches only a handful of distinct states at each short length, so novelty runs out where the physics does — and every one of its 17 targets has a proven-minimal par (<code>tools/verify_golf_longgame.py</code>, exact Z[ζ8] BFS). One gate budget runs the whole game: par+8 to start, +par+2 per hole cleared, −1 per gate.',
     mount: function (root, opts) {
       // In-world voice. Display strings only — never logic, so the Path and the
       // Arcade run the identical engine and only the words differ.
@@ -600,7 +600,16 @@
         rowA: 'This hole', rowB: 'Holes done', rowC: 'Total',
         allDone: 'perfect round'
       };
+      var ruthless = !mission && opts && opts.level === 'ruthless';   // needed by the mode bar below
       root.innerHTML =
+        (mission || ruthless ? '' :
+          '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
+            'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
+            '<span style="color:var(--muted)">Mode</span>' +
+            '<button class="preset" type="button" data-gm="holes">Holes</button>' +
+            '<button class="preset" type="button" data-gm="lg">The Long Game</button>' +
+            '<span data-r="lgbest" style="color:var(--muted)"></span>' +
+          '</div>') +
         '<div class="holes" data-r="holes"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
         '<svg class="golfsvg" viewBox="0 0 260 250" xmlns="' + NS + '" aria-label="Bloch sphere: your state against the target"></svg>' +
@@ -653,8 +662,59 @@
         { name: 'H T H T X', path: ['H','T','H','T','X'], par: 5, hint: 'The H T H T run, then a flip to the far side. The flip will not fold back in.' },
         { name: 'H T H S T', path: ['H','T','H','S','T'], par: 5, hint: 'Tilt, phase, tilt, quarter-phase, eighth-phase. Five things, in order, no four-gate shortcut.' }
       ];
-      var ruthless = !mission && opts && opts.level === 'ruthless';
       var HOLES = ruthless ? HOLES_RUTHLESS : HOLES_STD;
+
+      /* ---- THE LONG GAME: an endless, par-ascending score-chase -------------
+         Standard/Guided arcade only. From |0> the one-qubit gate set reaches
+         only a handful of distinct states at each short word length, so this is
+         a curated ROTATING LADDER through par classes 1..5, not a generator —
+         and every par in it is a proven minimum (tools/verify_golf_longgame.py,
+         exact Z[zeta8] BFS). One gate budget runs the whole game (starts par+8,
+         +par+2 per hole cleared, -1 per gate); par is shown for the first two
+         holes then hidden; the run ends when the budget empties before you land
+         on the target. Score = holes cleared, best saved. */
+      var G_SAVE = window.SymbiQ && SymbiQ.save;
+      var LG_KEY = 'golf.longgame.best';
+      var LG_LADDER = { 1:['X','H'], 2:['XH','HS','HT'], 3:['HTH','XHS','HTS','HTZ'],
+                        4:['HTHS','HTHZ','HSTH','HTHT','XHTH'], 5:['HTHTH','HTHTX','HTHST'] };
+      var LG_HINT = { 1:'A single gate lands it.', 2:'Two gates — a tilt and a turn.',
+                      3:'Three gates. Off a pole now: a T is in there somewhere.',
+                      4:'Four gates, two axes. No Clifford shortcut exists.',
+                      5:'Five gates in order. Nothing shorter reaches it — proven.' };
+      var lg = { on:false, d:0, budget:0, over:false, cleared:0, newBest:false,
+                 best:(G_SAVE&&G_SAVE.get)?(+G_SAVE.get(LG_KEY,0)||0):0 };
+      function lgParClass(d) { return Math.min(5, 1 + Math.floor((d + 1) / 2)); }
+      function lgShowPar() { return lg.cleared < 2; }
+      function lgMakeHole(d) {
+        var cls = lgParClass(d), pool = LG_LADDER[cls];
+        var idx = (lg.cleared + d * 3 + (cls * 7)) % pool.length;
+        var route = pool[idx].split('');
+        return { name: (lgShowPar() ? pool[idx] : '???'), path: route, par: cls,
+                 hint: LG_HINT[cls] };
+      }
+      function lgStart(d) {
+        lg.d = d;
+        HOLES = [ lgMakeHole(d) ];
+        hi = 0; cur = Z0; moves = []; done = [null];
+      }
+      function lgReset() {
+        lg.d = 0; lg.cleared = 0; lg.over = false; lg.newBest = false;
+        HOLES = [ lgMakeHole(0) ];
+        lg.budget = HOLES[0].par + 8;
+        hi = 0; cur = Z0; moves = []; done = [null]; strokes = 0;
+      }
+      function lgAdvance() {
+        lg.cleared++;
+        if (lg.cleared > lg.best) { lg.best = lg.cleared; lg.newBest = true;
+          if (G_SAVE && G_SAVE.set) G_SAVE.set(LG_KEY, lg.cleared); }
+        lgStart(lg.d + 1);
+        lg.budget += HOLES[0].par + 2;
+      }
+      function lgBestLabel() {
+        var b = $(root, '[data-r=lgbest]');
+        if (b) b.textContent = lg.best > 0 ? ('· longest game: ' + lg.best + ' hole' + (lg.best === 1 ? '' : 's')) : '';
+      }
+
       /* `done` MUST be pre-filled to full length. It used to start as [] and be
          written sparsely, so after clearing hole 1 it had length 1 -- and the
          auto-advance below, which does done.findIndex(d == null && i > hi),
@@ -694,20 +754,35 @@
         tDot.setAttribute('cx', pt[0]); tDot.setAttribute('cy', pt[1]);
         vLine.setAttribute('x2', pm[0]); vLine.setAttribute('y2', pm[1]);
         vDot.setAttribute('cx', pm[0]); vDot.setAttribute('cy', pm[1]);
-        $(root, '[data-r=holes]').innerHTML = HOLES.map(function (h, i) {
-          return '<span class="hole' + (i === hi ? ' now' : '') + (done[i] != null ? (done[i] <= h.par ? ' done' : ' over') : '') +
-                 '" data-h="' + i + '" title="' + VO.unit + ' ' + (i+1) + ' — par ' + h.par + '">' + (i+1) + '</span>';
-        }).join('');
-        Array.prototype.forEach.call(root.querySelectorAll('[data-r=holes] .hole'), function (b) {
-          b.addEventListener('click', function () { hi = +b.getAttribute('data-h'); cur = Z0; moves = []; render(); });
-        });
+        if (lg.on) {
+          $(root, '[data-r=holes]').innerHTML =
+            '<div style="text-align:center;font-size:.9rem"><strong>Hole ' + (lg.cleared + 1) + '</strong> · target ' +
+            (lgShowPar() ? '<strong>' + H.name + '</strong> in ' + H.par : '<strong>hidden</strong> (par ' + H.par + ' unshown)') +
+            '<br><span style="color:var(--muted)">gates left this game: </span>' +
+            '<strong style="color:' + (lg.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + lg.budget + '</strong></div>';
+        } else {
+          $(root, '[data-r=holes]').innerHTML = HOLES.map(function (h, i) {
+            return '<span class="hole' + (i === hi ? ' now' : '') + (done[i] != null ? (done[i] <= h.par ? ' done' : ' over') : '') +
+                   '" data-h="' + i + '" title="' + VO.unit + ' ' + (i+1) + ' — par ' + h.par + '">' + (i+1) + '</span>';
+          }).join('');
+          Array.prototype.forEach.call(root.querySelectorAll('[data-r=holes] .hole'), function (b) {
+            b.addEventListener('click', function () { hi = +b.getAttribute('data-h'); cur = Z0; moves = []; render(); });
+          });
+        }
         var p = $(root, '[data-r=say]'), hit = same(me, tgt);
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
         else if (hit && moves.length) { p.className = 'verdict good'; p.innerHTML = 'Reached <strong>' + H.name + '</strong>.'; }
+        else if (lg.on) {
+          p.className = 'verdict';
+          p.innerHTML = '<strong>Hole ' + (lg.cleared + 1) + '.</strong> ' +
+            (lgShowPar() ? 'Reach <strong>' + H.name + '</strong> in <strong>' + H.par + '</strong> gate' + (H.par === 1 ? '' : 's') + '. '
+                         : 'The target is off the board — no par shown. ') +
+            '<span style="color:var(--muted);font-weight:400">' + H.hint + ' Every gate spends your game budget.</span>';
+        }
         else { p.className = 'verdict'; p.innerHTML = VO.ask(hi+1, H.name, H.par) + ' <span style="color:var(--muted);font-weight:400">' + H.hint + '</span>'; }
         var totPar = HOLES.reduce(function (a, h) { return a + h.par; }, 0);
         var played = done.filter(function (d) { return d != null; }).length;
-        if (played === HOLES.length) {
+        if (!lg.on && played === HOLES.length) {
           var firstGolf = win('golf', opts);
           if (!mission && !roundCeremony) {
             roundCeremony = true;
@@ -724,11 +799,21 @@
             });
           }
         }
-        $(root, '[data-r=rows]').innerHTML =
-          '<dt>' + VO.rowA + '</dt><dd>' + moves.length + ' / par ' + H.par + (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
-          '<dt>' + VO.rowB + '</dt><dd>' + played + ' of ' + HOLES.length + '</dd>' +
-          '<dt>' + VO.rowC + '</dt><dd>' + strokes + ' ' + VO.turns + ', par ' + totPar +
-            (played === HOLES.length ? (strokes === totPar ? ' — <strong style="color:var(--teal)">' + VO.allDone + '</strong>' : ' — ' + (strokes - totPar) + ' over') : '') + '</dd>';
+        if (lg.on) {
+          $(root, '[data-r=rows]').innerHTML =
+            '<dt>Gates this hole</dt><dd>' + moves.length +
+              (lgShowPar() ? ' / par ' + H.par : '') +
+              (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
+            '<dt>Game budget</dt><dd>' + lg.budget + ' gate' + (lg.budget === 1 ? '' : 's') + ' left</dd>' +
+            '<dt>Holes cleared</dt><dd><strong>' + lg.cleared + '</strong>' +
+              (lg.best > 0 ? ' &nbsp;<span style="color:var(--muted)">longest game ' + lg.best + '</span>' : '') + '</dd>';
+        } else {
+          $(root, '[data-r=rows]').innerHTML =
+            '<dt>' + VO.rowA + '</dt><dd>' + moves.length + ' / par ' + H.par + (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
+            '<dt>' + VO.rowB + '</dt><dd>' + played + ' of ' + HOLES.length + '</dd>' +
+            '<dt>' + VO.rowC + '</dt><dd>' + strokes + ' ' + VO.turns + ', par ' + totPar +
+              (played === HOLES.length ? (strokes === totPar ? ' — <strong style="color:var(--teal)">' + VO.allDone + '</strong>' : ' — ' + (strokes - totPar) + ' over') : '') + '</dd>';
+        }
         /* OUTBOUND ONLY — see the note on Grover's emitter. Act I's scene needs
            to know which door is open and whether it was opened at par; it never
            writes back, and no par, stroke or scoring path reads a listener. */
@@ -741,11 +826,34 @@
           } catch (e) {}
         }
       }
+      function lgFinishHole() {
+        var used = moves.length, oldPar = HOLES[0].par;
+        lgAdvance();                       // cleared++, maybe best, regen HOLES[0], grant budget, reset cur/moves/done
+        syncGGmode();
+        render({ k: 'good', t:
+          '<strong>Hole ' + lg.cleared + ' cleared</strong> in ' + used + ' gate' + (used === 1 ? '' : 's') +
+          (used === oldPar ? ' — at par.' : ' — ' + (used - oldPar) + ' over par.') +
+          ' Budget: <strong>' + lg.budget + '</strong> gates.' +
+          (lg.newBest ? ' <strong style="color:var(--yellow)">Longest game yet: ' + lg.best + '.</strong>' : '') });
+      }
+      function lgOut() {
+        lg.over = true;
+        syncGGmode();
+        render({ k: 'bad', t:
+          '<strong>Out of gates — the game ends here.</strong> You cleared <strong>' + lg.cleared + '</strong> hole' +
+          (lg.cleared === 1 ? '' : 's') +
+          (lg.cleared > 0 && lg.cleared >= lg.best ? ' — your best.' : lg.best > 0 ? ' (best: ' + lg.best + ').' : '.') +
+          ' <button class="preset" type="button" data-a="lgnew">New game</button>' });
+        var nb = $(root, '[data-r=say]').querySelector('[data-a=lgnew]');
+        if (nb) nb.addEventListener('click', function () { lgReset(); syncGGmode(); render(); });
+      }
       function play(g) {
         var H = HOLES[hi];
-        if (done[hi] != null) return;
+        if (done[hi] != null || (lg.on && lg.over)) return;
         cur = ap(g, cur); moves.push(g);
+        if (lg.on) lg.budget--;
         if (same(bloch(cur), bloch(seq(H.path)))) {
+          if (lg.on) { lgFinishHole(); return; }
           done[hi] = moves.length; strokes += moves.length;
           var par = moves.length === H.par;
           var overLine = (!par && !mission) ? FRAME.loss('golf', 'overpar') : '';
@@ -755,7 +863,9 @@
           var nxt = done.findIndex(function (d, i) { return d == null && i > hi; });
           if (nxt < 0) nxt = done.findIndex(function (d) { return d == null; });
           if (nxt >= 0) setTimeout(function () { hi = nxt; cur = Z0; moves = []; render(); }, 1400);
-        } else if (moves.length >= H.par + 4) {
+        } else if (lg.on && lg.budget <= 0) {
+          lgOut();
+        } else if (!lg.on && moves.length >= H.par + 4) {
           var forceLine = !mission ? FRAME.loss('golf', 'forcing') : '';
           render({ k: 'bad', t: VO.lost + (forceLine ? '<div class="g-mentor">Ada: ' + forceLine + '</div>' : '') });
         } else render();
@@ -764,13 +874,49 @@
         b.addEventListener('click', function () { play(b.getAttribute('data-g')); });
       });
       $(root, '[data-a=undo]').addEventListener('click', function () {
-        if (!moves.length || done[hi] != null) return;
+        if (lg.on || !moves.length || done[hi] != null) return;
         moves.pop(); cur = seq(moves); render();
       });
       $(root, '[data-a=retry]').addEventListener('click', function () {
+        if (lg.on) return;
         if (done[hi] != null) { strokes -= done[hi]; done[hi] = null; roundCeremony = false; }
         cur = Z0; moves = []; render();
       });
+
+      /* ---- The Long Game mode toggle (arcade Standard/Guided only) -------- */
+      function syncGGmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        ['holes', 'lg'].forEach(function (m) {
+          var b = bar.querySelector('[data-gm=' + m + ']');
+          if (!b) return;
+          var on = ((m === 'lg') === lg.on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+        ['undo', 'retry'].forEach(function (a) {
+          var b = $(root, '[data-a=' + a + ']');
+          if (b) b.style.display = lg.on ? 'none' : '';
+        });
+        lgBestLabel();
+      }
+      (function wireGGmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        bar.querySelector('[data-gm=holes]').addEventListener('click', function () {
+          lg.on = false; lg.over = false;
+          HOLES = ruthless ? HOLES_RUTHLESS : HOLES_STD;
+          done = []; for (var i = 0; i < HOLES.length; i++) done.push(null);
+          hi = 0; cur = Z0; moves = []; strokes = 0; roundCeremony = false;
+          syncGGmode(); render();
+        });
+        bar.querySelector('[data-gm=lg]').addEventListener('click', function () {
+          lg.on = true; lgReset(); syncGGmode(); render();
+        });
+        syncGGmode();
+      })();
+
       render();
     }
   };
@@ -809,6 +955,7 @@
         late: 'You <strong>over-amplified</strong> past the peak, yet the draw still landed home.',
         rowCleared: 'Corridors cleared'
       };
+      var ruthless = !mission && opts && opts.level === 'ruthless';   // needed by the mode bar below
       root.innerHTML =
         (mission || ruthless ? '' :
           '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
@@ -838,7 +985,6 @@
          And the clear is strict — see finish(): only a measurement AT the peak
          ticks the corridor, a lucky early/late escape does not. */
       var CORR_RUTHLESS = [{n:96,par:7},{n:140,par:9},{n:192,par:10},{n:256,par:12},{n:384,par:15},{n:512,par:17}];
-      var ruthless = !mission && opts && opts.level === 'ruthless';
       var CORR = ruthless ? CORR_RUTHLESS : CORR_STD;
       var ci = 0, k = 0, mark = 0, measured = false, busy = false, bestP = 0, solved = [];
 
@@ -1101,17 +1247,25 @@
     hook: 'Split a city in two so the fewest neighbours end up on the same side — the moment operations research and quantum become the same problem.',
     about: {
       goal: 'Colour every district one of two colours to satisfy the most roads — a road counts when its two ends differ. Par is the true maximum.',
-      how: 'Click a district to flip its colour; <span style="color:var(--yellow)">bright roads</span> are satisfied, dim ones wasted. District 5 hides a trap where no single flip helps — that is the whole lesson.',
+      how: 'Click a district to flip its colour; <span style="color:var(--yellow)">bright roads</span> are satisfied, dim ones wasted. District 5 hides a trap where no single flip helps — that is the whole lesson. <strong>The Sprawl</strong> mode makes it endless: a fresh, larger, more frustrated city every time, generated with its true maximum cut brute-forced at load, on one flip budget. Score is how many cities you clear.',
       inspired: "Max-Cut, one of Karp's original NP-hard problems (1972), and its Ising form (Lucas 2014) — the exact thing a quantum annealer or QAOA solves.",
       learn: 'How a hard optimisation problem becomes “find the Ising ground state”, and why local search gets stuck — the reason annealing exists.',
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Proven⟧',
       or: 'Max-Cut is a classic <b>operations research</b> problem — NP-hard since Karp 1972, and the reason the whole QUBO/Ising bridge exists.'
     },
-    honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs — including the Petersen graph and a patch of triangular lattice — with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts.',
+    honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs — including the Petersen graph and a patch of triangular lattice — with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts. <strong>The Sprawl</strong> (a Standard-mode option) generates each city from a seed and a difficulty that rises every time you clear one, on a circulant frustration core plus random chords; its maximum cut is brute-forced over all 2ⁿ colourings at generation (n ≤ 12) — a proven par — and you open at least two flips below it with no single-flip shortcut. One flip budget runs the whole run: opening-distance + 6, then +next-distance + 2 per city, −1 per click. Generator and accept rule proven in <code>tools/verify_maxcut_longgame.py</code>.',
     mount: function (root, opts) {
       var mission = opts && opts.mode === 'mission';
       var ruthless = !mission && opts && opts.level === 'ruthless';
       root.innerHTML =
+        (mission || ruthless ? '' :
+          '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
+            'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
+            '<span style="color:var(--muted)">Mode</span>' +
+            '<button class="preset" type="button" data-gm="dist">Districts</button>' +
+            '<button class="preset" type="button" data-gm="sprawl">The Sprawl</button>' +
+            '<span data-r="spbest" style="color:var(--muted)"></span>' +
+          '</div>') +
         '<div class="holes" data-r="dist"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
         '<svg class="mcsvg" viewBox="0 0 300 250" xmlns="' + NS + '" aria-label="A city graph — click a district to recolour it"></svg>' +
@@ -1161,6 +1315,120 @@
       var DIST = ruthless ? DIST_RUTHLESS : DIST_STD;
       var winIdx = ruthless ? DIST.length - 1 : 4;    // Standard: the trap (D5). Ruthless: the basin.
       var di = 0, color = [], solved = [];
+
+      /* ---- THE SPRAWL: an endless, generated score-chase -------------------
+         Standard/Guided arcade only. Each city is generated from (seed, d) on a
+         circulant frustration core (every three consecutive districts a
+         triangle) plus long chords; the true maximum cut is brute-forced over
+         all 2^n colourings at generation (n<=12) — a PROVEN par, exactly like
+         the fixed districts — and you open at least two flips below it, so
+         single-flip greedy is stuck. One flip budget runs the whole run
+         (starts opening-distance + 6, +next-distance + 2 per city cleared, -1
+         per click); reach the max cut and the city grows; run out and it ends.
+         Score = cities cleared. Generator + accept rule proven in
+         tools/verify_maxcut_longgame.py. */
+      var MC_SAVE = window.SymbiQ && SymbiQ.save;
+      var SP_KEY = 'maxcut.sprawl.best';
+      var sp = { on:false, d:0, over:false, budget:0, cleared:0, newBest:false,
+                 dist:0, opts:null,
+                 best:(MC_SAVE&&MC_SAVE.get)?(+MC_SAVE.get(SP_KEY,0)||0):0 };
+      function spMul(a) {
+        a = a >>> 0;
+        return function () {
+          a = (a + 0x6D2B79F5) >>> 0;
+          var t = a;
+          t = Math.imul(t ^ (t >>> 15), 1 | a) >>> 0;
+          t = (t + (Math.imul(t ^ (t >>> 7), 61 | t) >>> 0)) >>> 0;
+          t = (t ^ (t >>> 14)) >>> 0;
+          return t / 4294967296;
+        };
+      }
+      function spNodes(d) { return Math.min(5 + Math.floor(d / 2), 12); }
+      function cutBits(E, bits) {
+        var c = 0;
+        for (var i = 0; i < E.length; i++) if ((((bits >> E[i][0]) ^ (bits >> E[i][1])) & 1)) c++;
+        return c;
+      }
+      function popcount(x) { x = x - ((x >> 1) & 0x55555555); x = (x & 0x33333333) + ((x >> 2) & 0x33333333); return (((x + (x >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24; }
+      function spAnalyse(n, E) {
+        var par = -1, opts = [], OPTCAP = 4096;
+        for (var b = 0; b < (1 << n); b++) {
+          var c = cutBits(E, b);
+          if (c > par) { par = c; opts = [b]; }
+          else if (c === par && opts.length < OPTCAP) opts.push(b);
+        }
+        return { par: par, opts: opts };
+      }
+      function spDistTo(bits, opts) {
+        var m = 99;
+        for (var i = 0; i < opts.length; i++) { var h = popcount(bits ^ opts[i]); if (h < m) m = h; }
+        return m;
+      }
+      function spStrictLocalOpt(n, E, bits) {
+        var base = cutBits(E, bits);
+        for (var i = 0; i < n; i++) if (cutBits(E, bits ^ (1 << i)) > base) return false;
+        return true;
+      }
+      function spRawGraph(rnd, n, d) {
+        var ri = function (lo, hi) { return lo + Math.floor(rnd() * (hi - lo + 1)); };
+        var E = [], seen = {};
+        function addE(a, b) { if (a === b) return; var k = a < b ? a + ',' + b : b + ',' + a; if (seen[k]) return; seen[k] = 1; E.push(a < b ? [a, b] : [b, a]); }
+        for (var i = 0; i < n; i++) { addE(i, (i + 1) % n); addE(i, (i + 2) % n); }
+        var nCh = Math.max(1, Math.round(n * (0.20 + 0.05 * d))), added = 0, tries = 0;
+        while (added < nCh && tries < 600) { tries++; var a = ri(0, n - 1), b = ri(0, n - 1); var k = a < b ? a + ',' + b : b + ',' + a; if (a !== b && !seen[k]) { seen[k] = 1; E.push(a < b ? [a, b] : [b, a]); added++; } }
+        return E;
+      }
+      function spGenGraph(seed, d) {
+        var rnd = spMul(seed >>> 0);
+        var ri = function (lo, hi) { return lo + Math.floor(rnd() * (hi - lo + 1)); };
+        var n = spNodes(d);
+        for (var regen = 0; regen < 3; regen++) {
+          var E = spRawGraph(rnd, n, d);
+          var A = spAnalyse(n, E), par = A.par, opts = A.opts;
+          var best = null, bestScore = -1;
+          for (var t = 0; t < 12; t++) {
+            var bits = 0;
+            for (var i = 0; i < n; i++) if (ri(0, 1)) bits |= (1 << i);
+            if (cutBits(E, bits) >= par) continue;
+            var dd = spDistTo(bits, opts);
+            if (dd < 2) continue;
+            var sc = dd + (spStrictLocalOpt(n, E, bits) ? 1000 : 0);
+            if (sc > bestScore) { bestScore = sc; best = bits; }
+          }
+          if (best !== null)
+            return { n: n, E: E, par: par, opts: opts, startBits: best,
+                     start: bitsToCol(best, n), dist: spDistTo(best, opts),
+                     name: 'City ' + (d + 1) };
+        }
+        var E2 = spRawGraph(rnd, n, d), A2 = spAnalyse(n, E2);
+        return { n: n, E: E2, par: A2.par, opts: A2.opts, startBits: 0,
+                 start: bitsToCol(0, n), dist: spDistTo(0, A2.opts), name: 'City ' + (d + 1) };
+      }
+      function bitsToCol(bits, n) { var c = []; for (var i = 0; i < n; i++) c.push((bits >> i) & 1); return c; }
+      function spStartLevel() {
+        var G = spGenGraph(((Date.now() >>> 0) ^ Math.imul(sp.d + 1, 2654435761)) >>> 0, sp.d);
+        sp.dist = G.dist; sp.opts = G.opts;
+        DIST = [G]; di = 0; solved = [];
+        initDist();
+      }
+      function spReset() {
+        sp.d = 0; sp.cleared = 0; sp.over = false; sp.newBest = false;
+        spStartLevel();
+        sp.budget = sp.dist + 6;
+      }
+      function spAdvance() {
+        sp.cleared++;
+        if (sp.cleared > sp.best) { sp.best = sp.cleared; sp.newBest = true;
+          if (MC_SAVE && MC_SAVE.set) MC_SAVE.set(SP_KEY, sp.cleared); }
+        sp.d++;
+        spStartLevel();
+        sp.budget += sp.dist + 2;
+      }
+      function spBestLabel() {
+        var b = $(root, '[data-r=spbest]');
+        if (b) b.textContent = sp.best > 0 ? ('· biggest sprawl: ' + sp.best + ' cit' + (sp.best === 1 ? 'y' : 'ies')) : '';
+      }
+
       function initDist() {
         var d = DIST[di];
         color = d.start ? d.start.slice() : [];
@@ -1173,6 +1441,15 @@
         return out;
       }
       function chips() {
+        if (sp.on) {
+          var g = DIST[0];
+          $(root, '[data-r=dist]').innerHTML =
+            '<div style="text-align:center;font-size:.9rem"><strong>City ' + (sp.cleared + 1) + '</strong> · ' +
+            g.n + ' districts · target cut <strong>' + g.par + '</strong>' +
+            '<br><span style="color:var(--muted)">flips left this run: </span>' +
+            '<strong style="color:' + (sp.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + sp.budget + '</strong></div>';
+          return;
+        }
         $(root, '[data-r=dist]').innerHTML = DIST.map(function (d, i) {
           return '<span class="hole' + (i === di ? ' now' : '') + (solved[i] ? ' done' : '') + '" data-d="' + i +
                  '" title="District ' + (i+1) + ' — par ' + d.par + '">' + (i+1) + '</span>';
@@ -1190,15 +1467,25 @@
         });
         P.forEach(function (p, i) {
           var c = el('circle', { 'class': 'mc-node ' + (color[i] ? 'B' : 'A'), cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 15 });
-          c.addEventListener('click', function () { color[i] = color[i] ? 0 : 1; render(); });
+          c.addEventListener('click', function () {
+            color[i] = color[i] ? 0 : 1;
+            if (sp.on) { sprawlClick(); } else render();
+          });
           svg.appendChild(c);
         });
         var cut = cutVal(), W = d.E.length, energy = W - 2*cut, groundE = W - 2*d.par;
-        var newlyOptimal = cut === d.par && !solved[di];
+        var newlyOptimal = !sp.on && cut === d.par && !solved[di];
         if (newlyOptimal) solved[di] = true;
-        var firstCut = (cut === d.par && di === winIdx) ? win('maxcut', opts) : false;
+        var firstCut = (!sp.on && cut === d.par && di === winIdx) ? win('maxcut', opts) : false;
         var p = $(root, '[data-r=say]');
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
+        else if (sp.on) {
+          p.className = 'verdict';
+          p.innerHTML = '<strong>City ' + (sp.cleared + 1) + ' — ' + d.n + ' districts.</strong> ' +
+            'Two-colour it to <strong>cut ' + d.par + '</strong> of ' + W + ' roads — the proven maximum. ' +
+            '<span style="color:var(--muted)">You open ' + sp.dist + ' flip' + (sp.dist === 1 ? '' : 's') +
+            ' short, and no single flip is a shortcut. Every click spends a flip from your run budget.</span>';
+        }
         else if (cut === d.par) {
           p.className = 'verdict good';
           p.innerHTML = '<strong>Maximum cut — ' + cut + '/' + d.par + '.</strong> This colouring is the Ising ground state (energy ' + groundE + '). ' + d.note;
@@ -1220,7 +1507,11 @@
         $(root, '[data-r=rows]').innerHTML =
           '<dt>Cut</dt><dd>' + cut + ' / ' + d.par + (cut === d.par ? ' — <strong style="color:var(--teal)">optimal</strong>' : '') + '</dd>' +
           '<dt>Ising energy</dt><dd>' + energy + ' <span style="color:var(--muted)">(ground state at ' + groundE + ')</span></dd>' +
-          '<dt>Districts solved</dt><dd>' + solved.filter(Boolean).length + ' of ' + DIST.length + '</dd>';
+          (sp.on
+            ? '<dt>Flip budget</dt><dd>' + sp.budget + ' left</dd>' +
+              '<dt>Cities cleared</dt><dd><strong>' + sp.cleared + '</strong>' +
+                (sp.best > 0 ? ' &nbsp;<span style="color:var(--muted)">biggest sprawl ' + sp.best + '</span>' : '') + '</dd>'
+            : '<dt>Districts solved</dt><dd>' + solved.filter(Boolean).length + ' of ' + DIST.length + '</dd>');
         chips();
         /* OUTBOUND ONLY — see Grover's emitter. Act III's scene needs to know
            how far the border has been drawn and whether this district is one
@@ -1235,10 +1526,65 @@
         }
       }
       $(root, '[data-a=invert]').addEventListener('click', function () {
+        if (sp.on && sp.over) return;
         for (var i = 0; i < DIST[di].n; i++) color[i] = color[i] ? 0 : 1;
         render({ k: 'split', t: '<strong>Same cut.</strong> Swapping every colour gives the identical partition — the two sides are interchangeable. That symmetry is why the Ising ground state always comes as a matched pair.' });
       });
-      $(root, '[data-a=reset]').addEventListener('click', function () { initDist(); render(); });
+      $(root, '[data-a=reset]').addEventListener('click', function () { if (sp.on) return; initDist(); render(); });
+
+      /* ---- The Sprawl: run flow + mode toggle (arcade Standard/Guided) ---- */
+      function sprawlClick() {
+        if (sp.over) { render(); return; }
+        sp.budget--;
+        var cut = cutVal();
+        if (cut === DIST[0].par) {
+          spAdvance();                 // cleared++, best, sp.d++, new city, budget += dist+2
+          syncMCmode();
+          render({ k: 'good', t:
+            '<strong>City ' + sp.cleared + ' cleared</strong> — cut maximised. Next: <strong>' + DIST[0].n +
+            ' districts</strong>, target cut ' + DIST[0].par + ', ' + sp.budget + ' flips banked.' +
+            (sp.newBest ? ' <strong style="color:var(--yellow)">Biggest sprawl yet: ' + sp.best + '.</strong>' : '') });
+        } else if (sp.budget <= 0) {
+          sp.over = true;
+          syncMCmode();
+          render({ k: 'bad', t:
+            '<strong>Out of flips — the sprawl ends here.</strong> You cleared <strong>' + sp.cleared + '</strong> cit' +
+            (sp.cleared === 1 ? 'y' : 'ies') +
+            (sp.cleared > 0 && sp.cleared >= sp.best ? ' — your best.' : sp.best > 0 ? ' (best: ' + sp.best + ').' : '.') +
+            ' <button class="preset" type="button" data-a="spnew">New sprawl</button>' });
+          var nb = $(root, '[data-r=say]').querySelector('[data-a=spnew]');
+          if (nb) nb.addEventListener('click', function () { spReset(); syncMCmode(); render(); });
+        } else render();
+      }
+      function syncMCmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        ['dist', 'sprawl'].forEach(function (m) {
+          var b = bar.querySelector('[data-gm=' + m + ']');
+          if (!b) return;
+          var on = ((m === 'sprawl') === sp.on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+        var rb = $(root, '[data-a=reset]');
+        if (rb) rb.style.display = sp.on ? 'none' : '';
+        spBestLabel();
+      }
+      (function wireMCmode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        bar.querySelector('[data-gm=dist]').addEventListener('click', function () {
+          sp.on = false; sp.over = false;
+          DIST = ruthless ? DIST_RUTHLESS : DIST_STD; di = 0; solved = [];
+          initDist(); syncMCmode(); render();
+        });
+        bar.querySelector('[data-gm=sprawl]').addEventListener('click', function () {
+          sp.on = true; spReset(); syncMCmode(); render();
+        });
+        syncMCmode();
+      })();
+
       initDist(); render();
     }
   };

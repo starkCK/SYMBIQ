@@ -409,7 +409,7 @@
          engine from Act I's dial, where nobody clicks a hole chip by hand.
          Pars, scoring and physics are untouched by this -- it only fixes which
          hole you are standing on. */
-      var hi = 0, cur = Z0, moves = [], strokes = 0, done = [];
+      var hi = 0, cur = Z0, moves = [], strokes = 0, done = [], roundCeremony = false;
       for (var _h = 0; _h < HOLES.length; _h++) done.push(null);
       var AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
       function proj(v) {
@@ -452,7 +452,23 @@
         else { p.className = 'verdict'; p.innerHTML = VO.ask(hi+1, H.name, H.par) + ' <span style="color:var(--muted);font-weight:400">' + H.hint + '</span>'; }
         var totPar = HOLES.reduce(function (a, h) { return a + h.par; }, 0);
         var played = done.filter(function (d) { return d != null; }).length;
-        if (played === HOLES.length) win('golf', opts);
+        if (played === HOLES.length) {
+          var firstGolf = win('golf', opts);
+          if (!mission && !roundCeremony) {
+            roundCeremony = true;
+            var perfect = strokes === totPar;
+            p.innerHTML += FRAME.ceremony('golf', {
+              first: firstGolf, head: perfect ? 'Perfect round' : 'Round complete',
+              lines: [
+                'All ' + HOLES.length + ' holes in <strong>' + strokes + '</strong> gates against a total par of ' + totPar +
+                  (perfect ? ' — matched exactly.' : '.'),
+                perfect
+                  ? 'Every route was a proven minimum, and there is no shorter round. Breadth-first search says so.'
+                  : 'Retry the holes you went long on — each par is a proven minimum, so each is reachable.'
+              ]
+            });
+          }
+        }
         $(root, '[data-r=rows]').innerHTML =
           '<dt>' + VO.rowA + '</dt><dd>' + moves.length + ' / par ' + H.par + (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
           '<dt>' + VO.rowB + '</dt><dd>' + played + ' of ' + HOLES.length + '</dd>' +
@@ -477,13 +493,16 @@
         if (same(bloch(cur), bloch(seq(H.path)))) {
           done[hi] = moves.length; strokes += moves.length;
           var par = moves.length === H.par;
+          var overLine = (!par && !mission) ? FRAME.loss('golf', 'overpar') : '';
           render({ k: par ? 'good' : 'split', t: '<strong>' + H.name + ' reached.</strong> ' +
-            (par ? VO.par : VO.over(moves.length, H.par)) });
+            (par ? VO.par : VO.over(moves.length, H.par)) +
+            (overLine ? '<div class="g-mentor">Ada: ' + overLine + '</div>' : '') });
           var nxt = done.findIndex(function (d, i) { return d == null && i > hi; });
           if (nxt < 0) nxt = done.findIndex(function (d) { return d == null; });
           if (nxt >= 0) setTimeout(function () { hi = nxt; cur = Z0; moves = []; render(); }, 1400);
         } else if (moves.length >= H.par + 4) {
-          render({ k: 'bad', t: VO.lost });
+          var forceLine = !mission ? FRAME.loss('golf', 'forcing') : '';
+          render({ k: 'bad', t: VO.lost + (forceLine ? '<div class="g-mentor">Ada: ' + forceLine + '</div>' : '') });
         } else render();
       }
       Array.prototype.forEach.call(root.querySelectorAll('.gatebtn'), function (b) {
@@ -494,7 +513,7 @@
         moves.pop(); cur = seq(moves); render();
       });
       $(root, '[data-a=retry]').addEventListener('click', function () {
-        if (done[hi] != null) { strokes -= done[hi]; done[hi] = null; }
+        if (done[hi] != null) { strokes -= done[hi]; done[hi] = null; roundCeremony = false; }
         cur = Z0; moves = []; render();
       });
       render();
@@ -686,6 +705,7 @@
     },
     honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped.',
     mount: function (root, opts) {
+      var mission = opts && opts.mode === 'mission';
       root.innerHTML =
         '<div class="holes" data-r="dist"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
@@ -744,11 +764,28 @@
           svg.appendChild(c);
         });
         var cut = cutVal(), W = d.E.length, energy = W - 2*cut, groundE = W - 2*d.par;
-        if (cut === d.par && !solved[di]) solved[di] = true;
-        if (cut === d.par && di === 4) win('maxcut', opts);
+        var newlyOptimal = cut === d.par && !solved[di];
+        if (newlyOptimal) solved[di] = true;
+        var firstCut = (cut === d.par && di === 4) ? win('maxcut', opts) : false;
         var p = $(root, '[data-r=say]');
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
-        else if (cut === d.par) { p.className = 'verdict good'; p.innerHTML = '<strong>Maximum cut — ' + cut + '/' + d.par + '.</strong> This colouring is the Ising ground state (energy ' + groundE + '). ' + d.note; }
+        else if (cut === d.par) {
+          p.className = 'verdict good';
+          p.innerHTML = '<strong>Maximum cut — ' + cut + '/' + d.par + '.</strong> This colouring is the Ising ground state (energy ' + groundE + '). ' + d.note;
+          if (newlyOptimal && !mission) {
+            var frustrated = d.par < W, shortfall = W - d.par;
+            p.innerHTML += FRAME.ceremony('maxcut', {
+              first: firstCut, head: 'Cut maximised',
+              lines: [
+                'Cut <strong>' + cut + '</strong> of ' + W + ' roads on ' + d.name + ' — the proven maximum, brute-forced over all 2<sup>' + d.n + '</sup> colourings.',
+                frustrated
+                  ? 'The ' + shortfall + ' road' + (shortfall === 1 ? '' : 's') + ' left unsatisfied ' + (shortfall === 1 ? 'is' : 'are') +
+                    ' frustration — an odd-loop theorem, not a shortfall of effort.'
+                  : 'Every road satisfied — an even graph splits clean in two.'
+              ]
+            });
+          }
+        }
         else { p.className = 'verdict'; p.innerHTML = 'District ' + (di+1) + ' — <strong>' + d.name + '</strong>. Satisfy as many roads as you can (par <strong>' + d.par + '</strong>). <span style="color:var(--muted)">' + d.note + '</span>'; }
         $(root, '[data-r=rows]').innerHTML =
           '<dt>Cut</dt><dd>' + cut + ' / ' + d.par + (cut === d.par ? ' — <strong style="color:var(--teal)">optimal</strong>' : '') + '</dd>' +
@@ -793,6 +830,7 @@
     },
     honest: 'Honest model: this is Allan Goff’s Quantum Tic-Tac-Toe (<em>Am. J. Phys.</em> <strong>74</strong>, 962 (2006)), a teaching game — a faithful <em>analogy</em> for superposition, entanglement and measurement, not a simulation of a physical qubit system. What is genuinely quantum-like: marks exist in two places until measured, a closed loop of entanglement forces a measurement, and a collapse has exactly two consistent outcomes. What is stylised: the collapse is <em>chosen</em> by a player rather than drawn at random, which is a game-design decision Goff made to keep it strategic. The collapse engine here was verified on 4,000 randomly generated entanglement tangles — every one produced a valid assignment with two distinct outcomes.',
     mount: function (root, opts) {
+      var mission = opts && opts.mode === 'mission';
       root.innerHTML =
         '<div class="turnbar"><span class="who X on" data-r="wx">X</span>' +
         '<span style="color:var(--muted);font-size:.85rem" data-r="phase">pick two squares</span>' +
@@ -1042,13 +1080,20 @@
         pending = null; phase = 'place'; moveNo++;
         var w = winners();
         if (w.length) {
-          win('qttt', opts);
+          var firstQttt = win('qttt', opts);
           var best = w.slice().sort(function (a, b) { return a.max - b.max; });
           if (w.length === 1) score[best[0].p] += 1;
           else { score[best[0].p] += 1; if (best[1].p !== best[0].p) score[best[1].p] += 0.5; }
+          var cer = mission ? '' : FRAME.ceremony('qttt', {
+            first: firstQttt, head: best[0].p + ' completed a line',
+            lines: [
+              'Three real marks — and every one of them began life in two squares at once.',
+              'Each collapse was forced by a closed loop of entanglement: a chain of pushes that closes on itself has to agree with itself, and only two arrangements can.'
+            ]
+          });
           draw('<strong>' + best[0].p + ' takes a line.</strong> ' +
             (w.length > 1 ? 'Two lines formed — the one completed with the lower move number scores full. ' : '') +
-            'Score: X ' + score.X + ' · O ' + score.O + '. <strong>New game</strong> to play again.', 'good');
+            'Score: X ' + score.X + ' · O ' + score.O + '. <strong>New game</strong> to play again.' + cer, 'good');
           phase = 'over';
           return;
         }
@@ -1094,6 +1139,7 @@
       var AA = [0, Math.PI / 2], BB = [Math.PI / 4, -Math.PI / 4];
       var CLASSICAL = 0.75, QUANTUM = Math.cos(Math.PI / 8) * Math.cos(Math.PI / 8);
       var quantum = true, n = 0, wins = 0, curve = [];
+      var breached = false;
       // marginals[y][a] — how often Alice answered a, split by Bob's setting
       var marg = [[0, 0], [0, 0]], margN = [0, 0];
 
@@ -1194,7 +1240,25 @@
           '<dt>Rounds</dt><dd>' + n.toLocaleString('en-US') + '</dd>' +
           '<dt>Win rate</dt><dd><strong>' + (100 * rate).toFixed(1) + '%</strong>' + (n ? ' — ' + line : '') + '</dd>' +
           '<dt>Theory says</dt><dd>' + (quantum ? '85.4%' : '75.0%') + '</dd>';
-        if (quantum && real) win('chsh', opts);      // only a real breach counts
+        if (quantum && real) {                        // only a real breach counts
+          var firstChsh = win('chsh', opts);
+          if (!mission) {
+            // re-appended every breached draw (draw() rewrites the verdict each
+            // round) — the badge + codex show only on the first breach render.
+            v.innerHTML += FRAME.ceremony('chsh', {
+              first: firstChsh && !breached, head: 'Classical ceiling broken',
+              lines: [
+                'Win rate <strong>' + (100 * rate).toFixed(1) + '%</strong> over ' + n.toLocaleString('en-US') +
+                  ' rounds — past 75% by more than two standard errors. No strategy agreed in advance can stand here.',
+                'And Alice’s answer split stays the same whichever setting Bob used — this correlation still carries no message.'
+              ]
+            });
+            breached = true;
+          }
+        } else if (!quantum && n >= 200 && !mission) {
+          // draw() rebuilds the verdict each round, so a plain re-append never doubles up
+          v.innerHTML += '<div class="g-mentor">Kai &amp; Lyra: ' + FRAME.loss('chsh', 'classicalwall') + '</div>';
+        }
         emit(last, real, se);
       }
       function emit(last, real, se) {
@@ -1218,6 +1282,7 @@
       function batch(k) { var last = null; for (var i = 0; i < k; i++) last = play(); draw(last); }
       function setMode(q) {
         quantum = q; n = 0; wins = 0; curve = []; marg = [[0, 0], [0, 0]]; margN = [0, 0];
+        breached = false;
         $(root, '[data-a=q]').className = 'preset' + (q ? ' on' : '');
         $(root, '[data-a=c]').className = 'preset' + (q ? '' : ' on');
         draw(null);
@@ -1540,29 +1605,38 @@
       }
 
       function finalWord() {
-        var cls, lead;
+        var cls, lead, frame = '';
         if (Gm.you > Gm.dec) {
           cls = 'good';
           lead = 'You beat minimum-weight matching, ' + Gm.you + '–' + Gm.dec + '. ' +
             'You did it the only way it can be done: you stopped assuming the chip was textbook and learned what it actually does. ' +
             'That is exactly AlphaQubit’s edge — a decoder that reads a real device’s noise off its own data instead of being handed an idealised model of it. ' +
             '(The architecture is new too: a recurrent transformer that eats the analog readout signal, not just a 0 or a 1.)';
+          var firstDuel = win('duel', opts);
+          if (!mission) frame = FRAME.ceremony('duel', {
+            first: firstDuel, head: 'You out-read the decoder',
+            lines: [
+              'Final <strong>' + Gm.you + '–' + Gm.dec + '</strong>. You beat minimum-weight matching by reading this chip, not the textbook model it was handed.',
+              'That is AlphaQubit’s edge in a sentence: the reading is never wrong about what it sees — only about what it cannot.'
+            ]
+          });
         } else if (Gm.you === Gm.dec) {
           cls = 'split';
           lead = 'Dead heat, ' + Gm.you + '–' + Gm.dec + '. Matching is genuinely hard to beat — it is optimal ' +
             'right up until its noise model is wrong. Run it again and watch which alarms keep lying to you.';
+          if (!mission) { var tiedLine = FRAME.loss('duel', 'tied'); if (tiedLine) frame = '<div class="g-mentor">Halden: ' + tiedLine + '</div>'; }
         } else {
           cls = 'bad';
           lead = 'Matching won, ' + Gm.dec + '–' + Gm.you + '. No shame: it is a very good algorithm, ' +
             'and the field has agreed with it since 2001. The way past it is not to out-think it round by round — it is to notice the pattern it is structurally blind to.';
+          if (!mission) { var lostLine = FRAME.loss('duel', 'lost'); if (lostLine) frame = '<div class="g-mentor">Halden: ' + lostLine + '</div>'; }
         }
         out.innerHTML = '<div class="verdict ' + cls + '" style="font-weight:400">' + lead + '</div>' +
           '<p style="margin:0">The defect on this chip: <strong>q' + Gm.pair[0] + ' ↔ q' + Gm.pair[1] + '</strong> — coupled neighbours that flipped together. ' +
           'Matching was handed the textbook noise model, not this chip’s, so it always bought the single cheapest flip instead — and paid for it in logical errors. ' +
           'Tell a matching decoder about this pair and it wins most of those rounds back; the whole point is that nobody has to tell a learned decoder. ' +
-          '<strong>New chip</strong> moves the defect.</p>';
+          '<strong>New chip</strong> moves the defect.</p>' + frame;
         renderLog();
-        if (Gm.you > Gm.dec) win('duel', opts);
         emit();
       }
 
@@ -1867,6 +1941,17 @@
         overrotated: 'I said one more would make it certain. It made it worse — the exit’s odds fell as the turn carried past it. That one is on me. Stop at the top, not when I say so.',
         early: 'You committed while the exit was still climbing. Take it to the peak, then measure — not a step before.',
         peak: 'The peak, and it still went wide. That is the draw, not a mistake you made — even a tall bar is a gamble. Run the corridor again.'
+      },
+      golf: {
+        overpar: 'You reached it — but not by the short road. Par here is a proven minimum: every gate past it is one the state did not need. Undo and look for the shorter word.',
+        forcing: 'You are well past par and still turning. Reset the hole and find the key — I searched every gate word, and a shorter one exists.'
+      },
+      chsh: {
+        classicalwall: 'That is the wall, and it is a theorem. The best script wins three of the four input pairs and loses the fourth every time — seventy-five percent, and no arrangement of answers agreed in advance gets past it. Only the shared pair does.'
+      },
+      duel: {
+        lost: 'Matching out-scored you. It is a strong algorithm handed the wrong map — the way past it is to learn this chip, not to out-guess it round by round.',
+        tied: 'A draw. Matching is optimal right up until its noise model is wrong; you have to catch the rounds where the alarm it trusts is the alarm that is lying.'
       }
     };
     function loss(id, tags) {
@@ -1883,7 +1968,8 @@
       golf: 'Ada: the shortest word to a state is a fact about the state, not about your cleverness. Some doors have no two-gate key.',
       maxcut: 'Cordon: an odd loop cannot be split in two. The gap you cannot close is a theorem, not a shortfall of effort.',
       chsh: 'Kai & Lyra: the correlation breaks the classical ceiling and still cannot carry a word. Both are provable; neither is intuitive.',
-      duel: 'Halden: the reading is never wrong about what it sees. It is wrong about what it cannot see — that is where you come in.'
+      duel: 'Halden: the reading is never wrong about what it sees. It is wrong about what it cannot see — that is where you come in.',
+      qttt: 'Kai & Lyra: a mark in two places is not indecision — it is the board owing reality an answer. A closed loop is reality collecting the debt.'
     };
 
     function ceremony(id, o) {

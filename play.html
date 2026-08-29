@@ -36,9 +36,25 @@
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=1">
+<style>
+/* The Contract of the Day card. Page-local: it lives only on the Arcade for now,
+   and style.css is shared by 24 pages (the 2026-07-24 scar). Same restrained
+   language as .showcase — an accented card, nothing louder. */
+.contract-card { border-left: 3px solid var(--teal); }
+.contract-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.contract-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--teal);
+}
+.contract-streak { font-size: .82rem; font-weight: 600; color: var(--teal); }
+.contract-card p { margin: 0 0 8px; }
+.contract-go { margin-left: 8px; }
+.contract-status .ok { color: var(--teal); font-weight: 600; }
+.contract-status .todo { color: var(--muted); }
+</style>
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=15"></script>
+<script src="games.js?v=16"></script>
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=8"></script>
 <script src="nav.js?v=8" defer></script>
@@ -213,6 +229,17 @@
 </div>
 
 <div id="floor" hidden>
+  <!-- The Contract of the Day. Mounted by the inline script once games.js is
+       up; stays absent (not empty) if the module fails to load. -->
+  <div class="card contract-card" id="contract-card" hidden>
+    <div class="contract-head">
+      <span class="contract-tag">Contract of the day</span>
+      <span class="contract-streak" id="contract-streak"></span>
+    </div>
+    <p id="contract-text"></p>
+    <div class="contract-status" id="contract-status"></div>
+  </div>
+
   <!-- The showcase. One mission rebuilt to the new bar, shipped here first so a
        player meets it as a thing on its own rather than being dropped into a
        rebuilt Act II after an unchanged Act I. The bare engine is still on the
@@ -445,6 +472,39 @@
   }
   window.addEventListener('popstate', route);
   route();
+
+  /* -------------------------------------------------------------------
+   * THE CONTRACT OF THE DAY. games.js owns the challenge, the check and
+   * the streak; this just paints the card and routes "Play it" to the
+   * right cabinet. Every cabinet feeds its state to the contract through
+   * the mount wrapper, so clearing it anywhere updates this in place.
+   * ----------------------------------------------------------------- */
+  (function () {
+    var C = GS.frame && GS.frame.contract, card = document.getElementById('contract-card');
+    if (!C || !card) return;
+    var elText = document.getElementById('contract-text');
+    var elStreak = document.getElementById('contract-streak');
+    var elStatus = document.getElementById('contract-status');
+
+    function paint() {
+      var t = C.today(), st = C.state();
+      elText.innerHTML = t.text +
+        ' <button class="preset contract-go" id="contract-go">Play it &#9656;</button>';
+      elStreak.textContent = st.streak > 0 ? '🔥 ' + st.streak + '-day streak' : '';
+      elStatus.innerHTML = t.done
+        ? '<span class="ok">✓ Cleared today.</span> The next one lands tomorrow.'
+        : '<span class="todo">Not cleared yet today — do it in any cabinet, or here on the Path.</span>';
+      card.hidden = false;
+      var go = document.getElementById('contract-go');
+      if (go) go.addEventListener('click', function () {
+        var t2 = C.today();
+        if (GS.get(t2.game)) showStage(t2.game);
+      });
+    }
+
+    C.onchange = paint;
+    paint();
+  })();
 })();
 </script>
 </body>

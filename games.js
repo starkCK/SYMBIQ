@@ -1898,7 +1898,106 @@
         lines + codex + '</div>';
     }
 
-    return { rng: rng, daySeed: daySeed, loss: loss, ceremony: ceremony, CODEX: CODEX };
+    /* ---- THE CONTRACT OF THE DAY ------------------------------------------
+       One challenge across the whole arcade, the same for everyone on a given
+       date, drawn from daySeed. It is checked against the `onState` payload a
+       cabinet already emits -- no engine change, no new scoring path. Clearing
+       it feeds its own streak (symbiq_contract_v1), the daily-ritual sibling of
+       the Question's streak. The public `mount` wrapper below feeds every
+       cabinet's state here automatically, so any page that mounts a game
+       advances the contract without wiring anything. */
+    var CKEY = 'symbiq_contract_v1';
+
+    function daysBetween(a, b) {
+      return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+    }
+    function cLoad() { try { return JSON.parse(localStorage.getItem(CKEY)) || {}; } catch (e) { return {}; } }
+    function cSave(s) { try { localStorage.setItem(CKEY, JSON.stringify(s)); } catch (e) {} }
+
+    /* Every check reads only fields the named game's emit() already sends.
+       Pars are proven minima, so "<=" can only ever be met with equality --
+       it is written that way so a contract can never be literally impossible. */
+    var CONTRACTS = [
+      { game: 'grover', text: 'Grover’s Escape — clear the <b>16-door</b> corridor in <b>3 amplifications</b> (the peak).',
+        check: function (s) { return s.phase === 'measured' && s.escaped && s.n === 16 && s.k <= 3; } },
+      { game: 'grover', text: 'Grover’s Escape — clear the <b>64-door</b> corridor in <b>6 amplifications or fewer</b>.',
+        check: function (s) { return s.phase === 'measured' && s.escaped && s.n === 64 && s.k <= 6; } },
+      { game: 'grover', text: 'Grover’s Escape — clear the <b>8-door</b> corridor without over-rotating (measure at <b>k ≤ 2</b>).',
+        check: function (s) { return s.phase === 'measured' && s.escaped && s.n === 8 && s.k <= 2; } },
+      { game: 'golf', text: 'Circuit Golf — finish <b>Hole 6, |−i⟩</b>, at its proven par of <b>3</b>.',
+        check: function (s) { return s.holeDone && s.hi === 5 && s.holeScore <= 3; } },
+      { game: 'golf', text: 'Circuit Golf — finish <b>Hole 9, T T H |0⟩</b>, at par <b>2</b> (find the short way).',
+        check: function (s) { return s.holeDone && s.hi === 8 && s.holeScore <= 2; } },
+      { game: 'golf', text: 'Circuit Golf — clear <b>Holes 1 through 3</b> in one visit, each at par.',
+        check: function (s) { return s.holeDone && s.hi <= 2 && s.played >= 3
+          && s.holeScore <= [1, 1, 2][s.hi]; } },
+      { game: 'maxcut', text: 'Max-Cut — reach the maximum cut on <b>the prism</b> (7 of 9 roads).',
+        check: function (s) { return s.di === 5 && (s.optimal || s.cut === s.par); } },
+      { game: 'maxcut', text: 'Max-Cut — reach the maximum cut on <b>the ring of five</b> (4 of 5).',
+        check: function (s) { return s.di === 2 && (s.optimal || s.cut === s.par); } },
+      { game: 'maxcut', text: 'Max-Cut — escape <b>the trap</b>: get its cut to <b>6</b> (it starts stuck at 5).',
+        check: function (s) { return s.di === 4 && (s.optimal || s.cut === s.par); } },
+      { game: 'volcano', text: 'The Annealing Volcano — clear <b>The Twin Calderas</b> (schedule past its 40% mark).',
+        check: function (s) { return s.phase === 'finished' && s.li === 1 && s.rate >= s.bar; } },
+      { game: 'volcano', text: 'The Annealing Volcano — clear <b>The Comb</b> with a schedule scoring <b>≥ 55%</b> over 500 replays.',
+        check: function (s) { return s.phase === 'finished' && s.li === 2 && s.rate >= 0.55; } },
+      { game: 'volcano', text: 'The Annealing Volcano — clear <b>The Long Descent</b> (schedule past its 40% mark).',
+        check: function (s) { return s.phase === 'finished' && s.li === 4 && s.rate >= s.bar; } },
+      { game: 'chsh', text: 'The CHSH Game — break the classical 75% ceiling with real significance over <b>≥ 200 quantum rounds</b>.',
+        check: function (s) { return s.quantum && s.beatsClassical && s.rounds >= 200; } },
+      { game: 'duel', text: 'The Decoder Duel — beat the reading by <b>3 or more</b> across the ten rounds.',
+        check: function (s) { return s.phase === 'finished' && (s.you - s.dec) >= 3; } },
+      { game: 'duel', text: 'The Decoder Duel — out-score the reading <b>at all</b> over the ten rounds, then name the coupled pair.',
+        check: function (s) { return s.phase === 'finished' && s.you > s.dec; } },
+      { game: 'calibration', text: 'The Calibration — finish the run with an <b>average fidelity ≥ 0.70</b>.',
+        check: function (s) { return s.over && typeof s.avg === 'number' && s.avg >= 0.70; } }
+    ];
+
+    function contractFor(date) {
+      date = date || new Date().toISOString().slice(0, 10);
+      var c = CONTRACTS[daySeed('contract', date) % CONTRACTS.length];
+      var s = cLoad(), h = (s.history && s.history[date]) || null;
+      return { game: c.game, text: c.text, check: c.check, date: date, done: !!(h && h.done) };
+    }
+    function contractState() {
+      var s = cLoad();
+      return { streak: s.streak || 0, lastDate: s.lastDate || null,
+               graceDate: s.graceDate || null, history: s.history || {} };
+    }
+    function contractRecord(t) {
+      var s = cLoad();
+      s.history = s.history || {};
+      if (s.history[t.date] && s.history[t.date].done) return false;
+      s.history[t.date] = { game: t.game, done: true };
+      var gap = s.lastDate ? daysBetween(s.lastDate, t.date) : null;
+      if (gap === null || gap === 1) s.streak = (s.streak || 0) + 1;
+      else if (gap <= 0) { /* same day or a backward clock: leave the streak be */ }
+      else if (gap === 2 && (!s.graceDate || daysBetween(s.graceDate, t.date) > 7)) {
+        s.streak = (s.streak || 0) + 1; s.graceDate = t.date;
+      } else s.streak = 1;
+      s.lastDate = t.date;
+      cSave(s);
+      return true;
+    }
+    var contract = {
+      onchange: null,
+      today: contractFor,
+      state: contractState,
+      list: CONTRACTS,
+      _observe: function (gameId, s) {
+        var t = contractFor();
+        if (t.done || gameId !== t.game || !s) return;
+        var ok = false;
+        try { ok = !!t.check(s); } catch (e) { ok = false; }
+        if (!ok) return;
+        if (contractRecord(t) && typeof contract.onchange === 'function') {
+          try { contract.onchange(contractFor(), contractState()); } catch (e) {}
+        }
+      }
+    };
+
+    return { rng: rng, daySeed: daySeed, loss: loss, ceremony: ceremony,
+             CODEX: CODEX, contract: contract };
   })();
 
   /* -------------------------------------------------------------------- */
@@ -1938,7 +2037,16 @@
     mount: function (id, elm, opts) {
       var g = G[id];
       if (!g || !elm) return false;
-      try { g.mount(elm, opts || {}); return true; }
+      opts = opts || {};
+      /* Feed every cabinet's state to the Contract of the Day, on any page,
+         without the game or the page wiring anything. The game's own
+         onState (if the caller passed one) is chained, not replaced. */
+      var caller = opts.onState;
+      opts.onState = function (s) {
+        try { FRAME.contract._observe(id, s); } catch (e) {}
+        if (typeof caller === 'function') { try { caller(s); } catch (e) {} }
+      };
+      try { g.mount(elm, opts); return true; }
       catch (e) { elm.innerHTML = '<p style="color:var(--muted)">This mission could not start. Reload the page.</p>'; return false; }
     }
   };

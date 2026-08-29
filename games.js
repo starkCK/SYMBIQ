@@ -2086,10 +2086,125 @@
              CODEX: CODEX, contract: contract };
   })();
 
+  /* ==================================================================== *
+   *  DIFFICULTY — one selector, in the site's own language, in the chrome *
+   *                                                                      *
+   *  Scorekeeper plan, Part 4: "every cabinet gets 🟢 First time (guided, *
+   *  narrated), 🟡 Standard (today's game), 🔴 Ruthless (new constraints).*
+   *  One selector component in games.js chrome, not per-engine forks."    *
+   *                                                                      *
+   *  It never reaches into an engine. All it does:                       *
+   *    - persist ONE global choice (games.level in the save bag)         *
+   *    - stamp data-glevel on the game root so CSS can show or hide the  *
+   *      guidance the engine ALREADY renders (the .legend strips, the    *
+   *      rules panel) — this is INFORMATION, not softened physics, the   *
+   *      same honesty the Calibration's "training wheels are info" note  *
+   *      already states.                                                 *
+   *    - hand the engine opts.level, which today's engines ignore. That  *
+   *      is the seam the per-game Ruthless levels (each with its own     *
+   *      tools/verify_*.py) will read later.                             *
+   * ==================================================================== */
+  var LEVELS = (function () {
+    var IDS = ['guided', 'standard', 'ruthless'];
+    var META = {
+      guided:   { icon: '🟢', label: 'Guided',
+                  blurb: 'Every hint on screen, the rules open, and a plain-language orientation for the cabinet.' },
+      standard: { icon: '🟡', label: 'Standard',
+                  blurb: 'The game as it is built — pars, bars and the honest model, nothing added or removed.' },
+      ruthless: { icon: '🔴', label: 'Ruthless',
+                  blurb: 'No orientation, no legend, rules closed. Cabinet-specific constraints are still in the workshop.' }
+    };
+    /* One plain sentence per cabinet, shown ONLY at 🟢. Chrome text, no logic —
+       it says what the buttons do, never changes what they do. */
+    var ORIENT = {
+      golf:        'Tap a gate to rotate the qubit. Land the solid teal arrow on the dashed target in as few gates as par allows.',
+      grover:      'Amplify pumps the exit’s odds up; Measure takes the shot. Stop at the peak — extra amplifies push the odds back down.',
+      maxcut:      'Click a district to flip its colour. A road counts only when its two ends differ. Match par and you have the Ising ground state.',
+      volcano:     'You set the temperature, not the walker. Hot lets it climb out of traps; cold locks it in place. End the run frozen on the floor.',
+      qttt:        'Each turn you place one mark in TWO squares at once. When your marks close a loop, that loop is measured — and your opponent picks how it falls.',
+      calibration: 'You configure the agent, never the qubit. Each round pick Trust, Nudge or Recalibrate while the detuning drifts out of sight.',
+      chsh:        'Pick a strategy and play rounds. Best classical tops out at 75%; the entangled pair reaches 85.4% — and still cannot send a message.',
+      duel:        'Read the alarms, click the qubits you would repair, then Commit. The truth shows after every round — that history is your training data.'
+    };
+    var LKEY = 'games.level', LS = 'symbiq_games_level', mem = null, subs = [];
+
+    function get() {
+      var v = mem;
+      try {
+        if (window.SymbiQ && SymbiQ.save && SymbiQ.save.get) { var sv = SymbiQ.save.get(LKEY, null); if (sv != null) v = sv; }
+        if (v == null) v = localStorage.getItem(LS);
+      } catch (e) {}
+      return IDS.indexOf(v) >= 0 ? v : 'standard';
+    }
+    function set(id) {
+      if (IDS.indexOf(id) < 0) return get();
+      mem = id;
+      try {
+        if (window.SymbiQ && SymbiQ.save && SymbiQ.save.set) SymbiQ.save.set(LKEY, id);
+        else localStorage.setItem(LS, id);
+      } catch (e) {}
+      for (var i = 0; i < subs.length; i++) { try { subs[i](id); } catch (e) {} }
+      return id;
+    }
+    function onChange(fn) { if (typeof fn === 'function') subs.push(fn); }
+
+    function orientInner(id) {
+      return (get() === 'guided' && ORIENT[id])
+        ? '<p class="glevel-orient">🟢 ' + ORIENT[id] + '</p>' : '';
+    }
+    // selector + an orientation slot the wiring refills on change
+    function chromeHTML(id) {
+      var cur = get();
+      return '<div class="gamechrome">' +
+        '<div class="glevel" role="group" aria-label="Difficulty">' +
+          IDS.map(function (k) {
+            var m = META[k];
+            return '<button type="button" class="glevel-b" data-lvl="' + k + '" aria-pressed="' +
+              (k === cur ? 'true' : 'false') + '">' +
+              '<span class="glevel-i" aria-hidden="true">' + m.icon + '</span>' + m.label + '</button>';
+          }).join('') +
+          '<p class="glevel-blurb" data-r="blurb">' + META[cur].blurb + '</p>' +
+        '</div>' +
+        '<div class="glevel-orient-slot" data-r="orient">' + orientInner(id) + '</div>' +
+      '</div>';
+    }
+    /* Wire a rendered selector. `scope` holds the .glevel; `gameEl` (optional)
+       is the mounted game root to re-stamp; `rules` (optional) is the <details>
+       to open/close. Live — no remount — so a game in progress is untouched. */
+    function wire(scope, gameEl, id, rules) {
+      if (!scope) return;
+      var pick = scope.querySelector('.glevel');
+      if (!pick) return;
+      var blurb = pick.querySelector('[data-r=blurb]');
+      var slot = scope.querySelector('[data-r=orient]');
+      Array.prototype.forEach.call(pick.querySelectorAll('.glevel-b'), function (b) {
+        b.addEventListener('click', function () {
+          var v = set(b.getAttribute('data-lvl'));
+          Array.prototype.forEach.call(pick.querySelectorAll('.glevel-b'), function (x) {
+            x.setAttribute('aria-pressed', x.getAttribute('data-lvl') === v ? 'true' : 'false');
+          });
+          if (blurb) blurb.textContent = META[v].blurb;
+          if (slot) slot.innerHTML = orientInner(id);
+          if (gameEl) gameEl.setAttribute('data-glevel', v);
+          if (rules) rules.open = (v === 'guided');
+        });
+      });
+    }
+
+    return { IDS: IDS, get: get, set: set, onChange: onChange,
+             chromeHTML: chromeHTML, orientInner: orientInner, wire: wire };
+  })();
+
   /* -------------------------------------------------------------------- */
   window.SymbiQ.games = {
     all: G,
     frame: FRAME,
+    levels: LEVELS.IDS,
+    level: LEVELS.get,
+    setLevel: LEVELS.set,
+    onLevelChange: LEVELS.onChange,
+    chromeHTML: function (id) { return LEVELS.chromeHTML(id); },
+    wireLevel: function (scope, gameEl, id, rules) { return LEVELS.wire(scope, gameEl, id, rules); },
     list: ['golf', 'grover', 'maxcut', 'volcano', 'qttt', 'calibration'].map(function (k) {
       return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
     }),
@@ -2104,7 +2219,10 @@
       var S = window.SymbiQ && SymbiQ.save;
       var seen = S && S.get ? S.get('rules.seen.' + id, false) : false;
       if (S && S.set) S.set('rules.seen.' + id, true);
-      return '<details class="gamerules"' + (seen ? '' : ' open') + '>' +
+      // difficulty overrides the seen-once default: 🟢 always open, 🔴 always shut
+      var lvl = LEVELS.get();
+      var open = lvl === 'guided' || (lvl !== 'ruthless' && !seen);
+      return '<details class="gamerules"' + (open ? ' open' : '') + '>' +
         '<summary><span class="gr-ico" aria-hidden="true">🕹️</span>' +
           '<span class="gr-txt"><b>How to play</b>' +
           '<i>the goal, the rules, and what you will get a feel for</i></span>' +
@@ -2124,6 +2242,12 @@
       var g = G[id];
       if (!g || !elm) return false;
       opts = opts || {};
+      /* Difficulty stamp — CSS reads data-glevel to show/hide the guidance the
+         engine already renders. opts.level is the seam the per-game Ruthless
+         levels will read; today's engines ignore it (no fork). */
+      elm.setAttribute('data-g', id);
+      elm.setAttribute('data-glevel', LEVELS.get());
+      if (opts.level == null) opts.level = LEVELS.get();
       /* Feed every cabinet's state to the Contract of the Day, on any page,
          without the game or the page wiring anything. The game's own
          onState (if the caller passed one) is chained, not replaced. */

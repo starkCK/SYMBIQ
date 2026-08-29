@@ -1147,6 +1147,27 @@ nav .link.pathlink:hover { color: var(--violet); }
                    border-radius: 99px; padding: 1px 8px; margin-left: 4px; white-space: nowrap; }
 .gameabout a { font-weight: 600; white-space: nowrap; }
 
+/* ---------- difficulty selector (games.js LEVELS) ----------
+   One chrome control, no engine fork. 🟢 shows an orientation line and forces
+   the rules open; 🔴 hides the on-screen guidance the engine renders (the
+   legend strip) and keeps the rules shut. Information, never physics. */
+.gamechrome { margin: 2px 0 14px; }
+.glevel { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.glevel-b { font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+  border-radius: 999px; border: 1px solid var(--border); background: var(--panel);
+  color: var(--muted); transition: border-color .18s ease, color .18s ease, background .18s ease; }
+.glevel-b:hover { border-color: rgba(45,212,191,.42); color: var(--text); }
+.glevel-b[aria-pressed="true"] { color: var(--text); border-color: var(--teal);
+  background: linear-gradient(180deg, rgba(45,212,191,.14), rgba(45,212,191,.05)); }
+.glevel-b:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.glevel-i { font-size: .9em; line-height: 1; }
+.glevel-blurb { flex-basis: 100%; margin: 4px 0 0; font-size: .8rem; color: var(--muted); line-height: 1.5; }
+.glevel-orient-slot:empty { display: none; }
+.glevel-orient { margin: 9px 0 0; font-size: .9rem; line-height: 1.55; color: var(--text);
+  border-left: 2px solid var(--teal); padding: 2px 0 2px 12px; }
+[data-glevel="ruthless"] .legend { display: none; }
+
 /* ---------- motion layer: restrained, premium, never bouncy ----------
    Rules of thumb used here: one property pair (opacity + small translate),
    short durations (<= 520ms), a single easing curve, no loops except where a

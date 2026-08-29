@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=46">
+<link rel="stylesheet" href="style.css?v=47">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -54,7 +54,7 @@
 </style>
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=18"></script>
+<script src="games.js?v=19"></script>
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=8"></script>
 <script src="nav.js?v=8" defer></script>
@@ -302,6 +302,7 @@
   </div>
   <h2 id="stage-title"></h2>
   <p id="stage-hook"></p>
+  <div id="stage-chrome"></div>
   <div id="stage-about"></div>
   <div class="card" id="stage-game"></div>
   <div id="stage-next"></div>
@@ -384,11 +385,15 @@
     document.getElementById('stage-title').textContent = g.title;
     document.getElementById('stage-hook').textContent = g.hook;
     document.getElementById('stage-mentor').textContent = g.mentor ? ('On the Path this is ' + g.mentor + "'s mission") : 'No mission on the Path — also lives natively on circuits.html';
+    document.getElementById('stage-chrome').innerHTML = GS.chromeHTML ? GS.chromeHTML(id) : '';
     document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
     document.getElementById('stage-honest').innerHTML = g.honest || '';
     document.getElementById('stage-next').innerHTML = '';
     stage.hidden = false;
-    GS.mount(id, document.getElementById('stage-game'), { mode: 'arcade', onWin: function () { onGameWin(id); } });
+    var stageGame = document.getElementById('stage-game');
+    GS.mount(id, stageGame, { mode: 'arcade', onWin: function () { onGameWin(id); } });
+    if (GS.wireLevel) GS.wireLevel(document.getElementById('stage-chrome'), stageGame, id,
+                                  document.querySelector('#stage-about .gamerules'));
     if (push !== false) history.pushState(null, '', '#play/' + id);
     window.scrollTo(0, 0);
   }

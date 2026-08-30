@@ -44,7 +44,10 @@
 <!-- The spatial-glass layer. Own file, own cache-buster, same rule as
      motion.css / vivid.css: additive, opt-in via one body attribute,
      reverts by deleting this <link> and the attribute. -->
-<link rel="stylesheet" href="glass.css?v=1">
+<link rel="stylesheet" href="glass.css?v=2">
+<!-- The premium-feel response layer. Rides glass.css's data-glass gate;
+     pairs with dynamics.js. Feedback motion only, no ambient. -->
+<link rel="stylesheet" href="dynamics.css?v=1">
 <style>
 /* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
@@ -71,6 +74,7 @@
 <script src="rails.js?v=3" defer></script>
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
+<script src="dynamics.js?v=1" defer></script>
 </head>
 <!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover
        physics on cards and the live border on #tryit. NOT scroll reveals --

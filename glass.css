@@ -70,10 +70,15 @@
    light block below must re-declare the FULL set or a dark value
    leaks into light mode (the same rule vivid.css §1 documents). */
 body[data-glass] {
-  /* translucent fills */
-  --gl-tint:   rgba(18, 26, 44, 0.56);   /* ~ --panel at 56% */
-  --gl-tint-2: rgba(23, 32, 53, 0.66);   /* floating menus: a touch more opaque */
-  --gl-nav:    rgba(9, 13, 23, 0.55);    /* the sticky header */
+  /* translucent fills. The blur + rim light are what read as "glass"
+     here -- NOT see-through-ness -- so these sit high enough that text
+     on the surface stays solid against anything behind it. The menus
+     in particular overlay the gradient-clipped hero headline, so
+     --gl-tint-2 is near-opaque (0.66 shipped first and the h1 bled
+     straight through it -- fixed 2026-08-30). */
+  --gl-tint:   rgba(18, 26, 44, 0.74);   /* cards / route cards */
+  --gl-tint-2: rgba(19, 27, 45, 0.95);   /* floating menus -- must stay readable over the h1 */
+  --gl-nav:    rgba(9, 13, 23, 0.72);    /* the sticky header */
 
   /* blur strengths -- heavy for surfaces that overlap scrolling
      content, moderate for in-flow cards so a long page stays cheap */
@@ -97,9 +102,9 @@ body[data-glass] {
 
 @media (prefers-color-scheme: light) {
   body[data-glass] {
-    --gl-tint:   rgba(255, 255, 255, 0.62);
-    --gl-tint-2: rgba(238, 243, 251, 0.72);
-    --gl-nav:    rgba(248, 250, 252, 0.60);
+    --gl-tint:   rgba(255, 255, 255, 0.78);
+    --gl-tint-2: rgba(244, 247, 252, 0.96);
+    --gl-nav:    rgba(248, 250, 252, 0.80);
 
     --gl-blur:      16px;
     --gl-blur-card: 10px;

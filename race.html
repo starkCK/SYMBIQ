@@ -182,7 +182,7 @@
   <div class="thr-controls">
     <span class="lam" id="thr-lam"></span>
     <input type="range" id="thr-slider" min="40" max="400" step="2" value="214"
-           aria-label="Lambda: error suppression per two steps of code distance">
+           aria-label="Lambda: error suppression per two units of code distance (d to d+2)">
   </div>
   <p style="margin:0 0 6px">
     <button class="preset" data-lam="214">Willow (measured Λ=2.14)</button>
@@ -192,9 +192,10 @@
   <div class="verdict" id="thr-verdict"></div>
   <svg id="thr-svg" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg"
        aria-label="Logical error rate versus code distance, relative to distance 3"></svg>
-  <p class="legend" style="text-align:center">Logical error per round, relative to d=3 — <strong>shorter is better</strong>. <strong>Logarithmic scale</strong>: the axis runs from 10⁻⁴ (floor) to 10² (full height), so a bar that is one sixth of the axis shorter than its neighbour is ten times better, and one that is half the axis shorter is a thousand times better. Read the number on the bar, not the picture.</p>
+  <p class="legend" style="text-align:center">Logical error per round, relative to d=3 — <strong>shorter is better</strong>. <strong>Logarithmic scale</strong>, no gridlines by design: the axis runs from 10⁻⁴ (floor) to 10² (full height), so a bar that is one sixth of the axis shorter than its neighbour is ten times better, and one that is half the axis shorter is a thousand times better. Read the number on the bar, not the picture. The count under each bar is 2d²−1 — data + ancilla for a rotated surface code; Willow's distance-7 code added 4 leakage-removal qubits, 101 in total.</p>
   <dl class="rows" id="thr-rows" style="margin-top:12px"></dl>
-  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">Honest model: this is the standard below-threshold scaling form p<sub>L</sub> ∝ (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, plotted as a <em>ratio</em> to d=3 — which is why no fitted prefactor appears and none is needed. It is the shape of the curve, not a prediction of any specific chip's error rate. Real devices depart from it near threshold, and Λ itself drifts with calibration. One more honest note on Λ: here it is set by the slider as the suppression-per-two-steps directly, and the scaling form above is what ties that to the ratio p/p<sub>th</sub> — in a real device the two agree only as well as the model does. Willow's Λ = 2.14 ± 0.02 is a <em>measured</em> suppression factor for increasing the code distance by two, quoted for the d = 5 → 7 step of a d = 3, 5, 7 series (<a href="https://arxiv.org/abs/2408.13687">arXiv 2408.13687</a>, <em>Nature</em> 638, 920 (2025)).</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">Honest model: this is the standard below-threshold scaling form p<sub>L</sub> ∝ (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, plotted as a <em>ratio</em> to d=3 — which is why no fitted prefactor appears and none is needed. It is the shape of the curve, not a prediction of any specific chip's error rate. Real devices depart from it near threshold, and Λ itself drifts with calibration. One more honest note on Λ: here it is set by the slider as the suppression per d → d+2 directly, and the scaling form above is what ties that to the ratio p/p<sub>th</sub> — in a real device the two agree only as well as the model does. Willow's Λ = 2.14 ± 0.02 is a <em>measured</em> suppression factor for increasing the code distance by two, obtained by fitting the log of the logical error rate against distance across the d = 3, 5, 7 series — not a single-step reading (the lone 5 → 7 ratio is ≈ 2.1) (<a href="https://arxiv.org/abs/2408.13687">arXiv 2408.13687</a>, <em>Nature</em> 638, 920 (2025)).</p>
+  <p style="font-size:0.8rem;color:var(--muted);margin:8px 0 0"><em>Verification status: widget arithmetic (the ⌊(d+1)/2⌋ exponent, prefactor cancellation, the 2d²−1 qubit counts, a full Λ sweep for monotonicity and range) verified programmatically at build time. Hostile-referee pass completed 2026-08-30 — five findings, all applied: the Λ = 2.14 provenance (a regression fit across d = 3, 5, 7, not the 5 → 7 step; the same fix landed on <a href="qec.html#red">the QEC page</a>), a "÷" label that could appear on a worse-than-d=3 bar, the unstated 2d²−1 formula and Willow's 101-qubit d=7, and "step" used with two meanings. Report: <code>outputs/VERIFY_THRESHOLD.md</code>. Errors we still missed pay <a href="corrections.html">the bounty</a>.</em></p>
 </div>
 
 <h2 id="scoreboard">Scoreboard</h2>
@@ -261,7 +262,8 @@ so far.</footer>
   function fmt(E) {
     if (E >= 100) return Math.round(E) + '×';
     if (E >= 1.5) return E.toFixed(1) + '×';
-    if (E > 0.995 && E < 1.005) return '1×';
+    if (E > 1.005) return E.toFixed(2) + '×';   // anything above unity reads as ×, never ÷ (a worse bar)
+    if (E >= 0.995) return '1×';
     if (E >= 0.01) return '÷' + (1 / E).toFixed(1);
     return '÷' + Math.round(1 / E);
   }

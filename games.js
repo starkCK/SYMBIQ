@@ -2755,13 +2755,13 @@
     hook: 'You never touch the qubit. You configure the agent that has to find it, blind, while it drifts underneath you.',
     about: {
       goal: 'Ten rounds. Each round, choose the agent\'s behaviour, then see the TRUE fidelity it actually achieved. Beat your own best-fixed-strategy replay on the identical drift you just faced.',
-      how: '<strong>Trust</strong>: spend the whole shot budget refining the last calibration, no exploring. <strong>Recalibrate</strong>: a coarse scan across the full range, rediscovering roughly where the peak is. <strong>Nudge</strong>: a narrow, precise scan near the last answer — catches small drift cheaply, misses big jumps completely.',
+      how: '<strong>Trust</strong>: spend the whole shot budget refining the last calibration, no exploring. <strong>Recalibrate</strong>: a coarse scan across the full range, rediscovering roughly where the peak is. <strong>Nudge</strong>: a narrow, precise scan near the last answer — catches small drift cheaply, misses big jumps completely. <strong>The Long Watch</strong> mode makes it endless: successive ten-round shifts, each with a target average you must clear, the churn rising and the shot budget shrinking as you go. Score is how many shifts you hold.',
       inspired: 'Real closed-loop qubit calibration under reinforcement learning: Baum et al. (Q-CTRL), <em>PRX Quantum</em> 2, 040324 (2021) — RL designing gates directly against real superconducting hardware, no model supplied; and Sivak, Morvan et al., arXiv:2511.08493 (<em>Nature</em>, 2026) — RL steering Google\'s Willow processor\'s own error correction in real time.',
       learn: 'Why real qubits need periodic recalibration at all, and the explore/exploit trade-off that decides how often.',
       link: 'circuits.html#calibration', linkText: 'The physics this reuses ▸', tier: '⟦Proven⟧',
       or: 'Choosing when to explore vs. exploit under a fixed budget is a bandit problem'
     },
-    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>.',
+    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. <strong>The Long Watch</strong> (a Standard-mode option) is an endless run of ten-round shifts. The physics is <em>unchanged</em> &mdash; same detuning range, same Rabi formula &mdash; but each shift raises the jump rate and the drift speed, shrinks the shot budget, and lifts the target average you must hit, from a gentle 58.5% toward 71% &mdash; which sits at a reactive reader&rsquo;s mean plus about one standard deviation, so a strong shift clears it and an average one does not. Clear a shift and the next is harder; miss the target and the watch ends. Measured over 6,000 games per shift by <code>tools/verify_calibration_longwatch.py</code>: a reactive reader beats the best fixed strategy on average fidelity at <em>every</em> difficulty (by 2.4&ndash;3.4 points), its clear rate exceeds any fixed strategy&rsquo;s by 6&ndash;13 points once the target bites, and stays above 37% even at the hardest shift &mdash; a stretch, never a wall. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>, <code>tools/verify_calibration_longwatch.py</code>.',
     OMEGA: 1.5, TMAX: 2.6, NBINS: 26, SHOTS: 24, ROUNDS: 10, PJUMP: 0.25, DDRIFT: 0.05,
     DMIN: -1.6, DMAX: 1.6, NPROBES: 6, NUDGEWIN: 1,
 
@@ -2774,9 +2774,31 @@
          8,000 games by tools/verify_calibration_ruthless.py: Recalibrate falls
          from 0.667 to 0.602 — below Trust (0.640) — while a reactive reader
          still clears every fixed strategy (0.655). Only SHOTS changes. */
-      var ruthless = opts && opts.mode !== 'mission' && opts.level === 'ruthless';
+      var mission = opts && opts.mode === 'mission';
+      var ruthless = !mission && opts && opts.level === 'ruthless';
       var SHOTS = ruthless ? 12 : g.SHOTS;
       var TGRID = []; for (var i = 0; i < NBINS; i++) TGRID.push(0.05 + (TMAX - 0.05) * i / (NBINS - 1));
+
+      /* ---- THE LONG WATCH: an endless, escalating score-chase --------------
+         Standard/Guided arcade only (Ruthless + missions untouched). Each
+         "shift" is a full 10-round run; clearing = your average fidelity >=
+         wMark(d). Clear -> d rises: more jumps, faster drift, fewer shots, a
+         higher target. Miss the target -> the watch ends. Score = shifts held.
+         The detuning RANGE and the Rabi formula are unchanged from the base
+         game -- only the churn, the budget and the mark move with d. Every
+         property (skill-ordered at every d, target always below the reactive
+         ceiling, monotone difficulty) is proved over 8,000 games/shift in
+         tools/verify_calibration_longwatch.py. */
+      var W_SAVE = window.SymbiQ && SymbiQ.save, WATCH_KEY = 'calibration.watch.best';
+      var watch = { on: false, d: 0, shifts: 0, over: false, newBest: false,
+                    best: (W_SAVE && W_SAVE.get) ? (+W_SAVE.get(WATCH_KEY, 0) || 0) : 0 };
+      function wPjump(d)  { return Math.min(0.20 + 0.025 * d, 0.55); }
+      function wDdrift(d) { return 0.05 + 0.010 * d; }
+      function wShots(d)  { return Math.max(14, 24 - 2 * Math.floor(d / 4)); }
+      function wMark(d)   { return Math.min(0.71, 0.585 + 0.014 * d); }
+      function curShots()  { return watch.on ? wShots(watch.d) : SHOTS; }
+      function curPjump()  { return watch.on ? wPjump(watch.d) : g.PJUMP; }
+      function curDdrift() { return watch.on ? wDdrift(watch.d) : g.DDRIFT; }
 
       function p1(t, delta) {
         var omEff = Math.sqrt(OMEGA * OMEGA + delta * delta);
@@ -2799,7 +2821,8 @@
           idxs = [];
           for (var j = Math.max(0, lastIdx - g.NUDGEWIN); j <= Math.min(NBINS - 1, lastIdx + g.NUDGEWIN); j++) idxs.push(j);
         }
-        var per = Math.floor(SHOTS / idxs.length), extra = SHOTS - per * idxs.length;
+        var shots = curShots();
+        var per = Math.floor(shots / idxs.length), extra = shots - per * idxs.length;
         var best = idxs[0], bestEst = -1;
         idxs.forEach(function (idx, k) {
           var n = per + (k < extra ? 1 : 0);
@@ -2811,10 +2834,10 @@
       }
 
       function newDelta(prev) {
-        if (prev === null || Math.random() < g.PJUMP) {
+        if (prev === null || Math.random() < curPjump()) {
           return { delta: g.DMIN + Math.random() * (g.DMAX - g.DMIN), jumped: prev !== null };
         }
-        var d = prev + (Math.random() * 2 - 1) * g.DDRIFT * 1.6;
+        var d = prev + (Math.random() * 2 - 1) * curDdrift() * 1.6;
         return { delta: Math.max(g.DMIN, Math.min(g.DMAX, d)), jumped: false };
       }
 
@@ -2824,6 +2847,14 @@
       };
 
       root.innerHTML =
+        (mission || ruthless ? '' :
+          '<div class="qmodebar" data-r="modebar" style="display:flex;flex-wrap:wrap;gap:8px 10px;' +
+            'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
+            '<span style="color:var(--muted)">Mode</span>' +
+            '<button class="preset" type="button" data-gm="cal">Calibration</button>' +
+            '<button class="preset" type="button" data-gm="watch">The Long Watch</button>' +
+            '<span data-r="watchbest" style="color:var(--muted)"></span>' +
+          '</div>') +
         '<div class="hud" data-r="hud"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say">Round 1 of ' + g.ROUNDS + ' — the qubit is already drifting. Pick a behaviour.</div>' +
         '<svg viewBox="0 0 480 150" xmlns="' + NSVG + '" data-r="svg" style="display:block;width:100%;max-width:480px;margin:8px auto" aria-label="This round\'s measurement shots along the drive-duration axis"></svg>' +
@@ -2862,11 +2893,16 @@
 
       function renderHud() {
         var avg = S.fidHistory.length ? S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length : 0;
+        var mid = watch.on
+          ? 'Shift ' + (watch.shifts + 1) + ' — hold an average of <strong>' + (100 * wMark(watch.d)).toFixed(1) +
+            '%</strong>.<br><span style="color:var(--muted)">' + wShots(watch.d) + ' shots/round · jumps ' +
+            Math.round(wPjump(watch.d) * 100) + '% likely' + (watch.best > 0 ? ' · longest watch ' + watch.best : '') + '</span>'
+          : 'Detuning drifts every round.<br>You never see it directly.' +
+            (ruthless ? '<br><span style="color:var(--red)">12 shots a round — half the usual.</span>' : '');
         $(root, '[data-r=hud]').innerHTML =
-          '<div class="hud-side"><span class="hud-label">Round</span><span class="hud-score">' +
-            Math.min(S.round + 1, g.ROUNDS) + ' / ' + g.ROUNDS + '</span></div>' +
-          '<div class="hud-mid">Detuning drifts every round.<br>You never see it directly.' +
-            (ruthless ? '<br><span style="color:var(--red)">12 shots a round — half the usual.</span>' : '') + '</div>' +
+          '<div class="hud-side"><span class="hud-label">' + (watch.on ? 'Shift ' + (watch.shifts + 1) + ' · Round' : 'Round') +
+            '</span><span class="hud-score">' + Math.min(S.round + 1, g.ROUNDS) + ' / ' + g.ROUNDS + '</span></div>' +
+          '<div class="hud-mid">' + mid + '</div>' +
           '<div class="hud-side right"><span class="hud-label">Avg fidelity</span><span class="hud-score" style="color:' +
             fidColor(avg) + '">' + (100 * avg).toFixed(1) + '%</span></div>';
       }
@@ -2921,9 +2957,72 @@
         return total / S.deltaHistory.length;
       }
 
-      function finish() {
+      function avgFid() { return S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length; }
+
+      /* THE LONG WATCH — one shift resolved. Clear = your average >= wMark(d).
+         The fixed-strategy replay is still shown, for context, but the GATE is
+         the absolute mark (verify_calibration_longwatch.py proves the mark is
+         skill-ordered and always below the reactive ceiling). */
+      function watchFinish() {
         S.over = true;
-        var avg = S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length;
+        var avg = avgFid(), mark = wMark(watch.d);
+        var base = { trust: replayFixed('trust'), nudge: replayFixed('nudge'), recalibrate: replayFixed('recalibrate') };
+        var bestFixed = Math.max(base.trust, base.nudge, base.recalibrate);
+        $(root, '[data-r=summary]').innerHTML =
+          '<dt>Your average this shift</dt><dd><strong style="color:' + fidColor(avg) + '">' + (100 * avg).toFixed(1) + '%</strong></dd>' +
+          '<dt>Shift target</dt><dd>' + (100 * mark).toFixed(1) + '%</dd>' +
+          '<dt>Best fixed strategy, same drift</dt><dd>' + (100 * bestFixed).toFixed(1) + '%</dd>';
+        var v = $(root, '[data-r=say]');
+        if (avg >= mark) {
+          watch.shifts++;
+          if (watch.shifts === 1) win('calibration', opts);   // first shift held = the mission tick, once
+          if (watch.shifts > watch.best) {
+            watch.best = watch.shifts; watch.newBest = true;
+            if (W_SAVE && W_SAVE.set) W_SAVE.set(WATCH_KEY, watch.shifts);
+          }
+          watch.d++;
+          watchStartShift();
+          syncCalMode();
+          v.className = 'verdict good';
+          v.innerHTML = '<strong>Shift ' + watch.shifts + ' held.</strong> Average <strong>' + (100 * avg).toFixed(1) +
+            '%</strong>, past the ' + (100 * mark).toFixed(1) + '% mark. Next: target <strong>' +
+            (100 * wMark(watch.d)).toFixed(1) + '%</strong>, ' + wShots(watch.d) + ' shots/round, jumps ' +
+            Math.round(wPjump(watch.d) * 100) + '% likely.' +
+            (watch.newBest ? ' <strong style="color:var(--yellow)">Longest watch yet: ' + watch.best + '.</strong>' : '');
+          return;
+        }
+        watch.over = true;
+        syncCalMode();
+        ['trust', 'nudge', 'recalibrate'].forEach(function (n) { $(root, '[data-a=' + n + ']').disabled = true; });
+        v.className = 'verdict bad';
+        v.innerHTML = '<strong>Below the ' + (100 * mark).toFixed(1) + '% mark — the watch ends.</strong> You held <strong>' +
+          watch.shifts + '</strong> shift' + (watch.shifts === 1 ? '' : 's') +
+          (watch.shifts > 0 && watch.shifts >= watch.best ? ' — your best.' : watch.best > 0 ? ' (best: ' + watch.best + ').' : '.') +
+          ' <button class="preset" data-a="wnew">New watch</button>';
+        var nb = $(root, '[data-r=say]').querySelector('[data-a=wnew]');
+        if (nb) nb.addEventListener('click', function () { watchReset(); syncCalMode(); });
+        emit();
+      }
+      function watchStartShift() {
+        S.round = 0; S.lastIdx = Math.floor(NBINS / 2); S.delta = null;
+        S.deltaHistory = []; S.fidHistory = []; S.lastProbes = []; S.over = false;
+        ['trust', 'nudge', 'recalibrate'].forEach(function (n) { var b = $(root, '[data-a=' + n + ']'); if (b) b.disabled = false; });
+        $(root, '[data-r=summary]').innerHTML = '';
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        renderHud(); renderDots();
+      }
+      function watchReset() {
+        watch.d = 0; watch.shifts = 0; watch.over = false; watch.newBest = false;
+        watchStartShift();
+        $(root, '[data-r=say]').className = 'verdict';
+        $(root, '[data-r=say]').innerHTML = 'Shift 1 — hold an average of <strong>' + (100 * wMark(0)).toFixed(1) +
+          '%</strong> over ' + g.ROUNDS + ' rounds. The drift is already moving.';
+      }
+
+      function finish() {
+        if (watch.on) { watchFinish(); return; }
+        S.over = true;
+        var avg = avgFid();
         var baselines = { trust: replayFixed('trust'), nudge: replayFixed('nudge'), recalibrate: replayFixed('recalibrate') };
         var bestFixed = Math.max(baselines.trust, baselines.nudge, baselines.recalibrate);
         var beat = avg > bestFixed;
@@ -2940,7 +3039,7 @@
         ['trust', 'nudge', 'recalibrate'].forEach(function (n) { $(root, '[data-a=' + n + ']').disabled = true; });
         var again = $(root, '[data-a=again]');
         if (again) again.addEventListener('click', reset);
-        if (beat) { win('calibration', opts); try { MEDALS.bump('calibration'); } catch (e) {} }
+        if (beat) win('calibration', opts);   // the endless-mode best (The Long Watch) is what carries the medal
         emit();
       }
 
@@ -2960,10 +3059,39 @@
         try {
           opts.onState({
             phase: 'render', round: S.round, rounds: g.ROUNDS, over: S.over,
-            fidHistory: S.fidHistory.slice(), avg: S.fidHistory.length ? S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length : 0
+            fidHistory: S.fidHistory.slice(), avg: S.fidHistory.length ? avgFid() : 0,
+            watch: watch.on, shift: watch.shifts, wd: watch.d, watchOver: watch.over
           });
         } catch (e) {}
       }
+
+      /* ---- The Long Watch mode toggle (arcade Standard/Guided only) ------- */
+      function syncCalMode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        ['cal', 'watch'].forEach(function (m) {
+          var b = bar.querySelector('[data-gm=' + m + ']');
+          if (!b) return;
+          var on = ((m === 'watch') === watch.on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.style.borderColor = on ? 'var(--teal)' : '';
+          b.style.color = on ? 'var(--teal)' : '';
+        });
+        var wb = $(root, '[data-r=watchbest]');
+        if (wb) wb.textContent = watch.best > 0 ? ('· longest watch: ' + watch.best + ' shift' + (watch.best === 1 ? '' : 's')) : '';
+      }
+      (function wireCalMode() {
+        var bar = $(root, '[data-r=modebar]');
+        if (!bar) return;
+        bar.querySelector('[data-gm=cal]').addEventListener('click', function () {
+          watch.on = false; watch.over = false;
+          reset(); syncCalMode();
+        });
+        bar.querySelector('[data-gm=watch]').addEventListener('click', function () {
+          watch.on = true; watchReset(); syncCalMode();
+        });
+        syncCalMode();
+      })();
 
       ['trust', 'nudge', 'recalibrate'].forEach(function (n) {
         $(root, '[data-a=' + n + ']').addEventListener('click', function () { playRound(n); });
@@ -3181,11 +3309,11 @@
    *  counter, written from the same win path the ceremony already fires  *
    *  on (a save-bag write, exactly like grover.deepdive.best).           *
    *                                                                      *
-   *    golf / grover / maxcut / volcano                                  *
+   *    golf / grover / maxcut / volcano / calibration                    *
    *        -> the endless mode's own saved best (holes / corridors /     *
-   *           cities / descents)                                         *
-   *    calibration -> clean runs: games that beat every fixed strategy   *
-   *    qttt        -> wins against The Adversary (the Hard computer)     *
+   *           cities / descents / shifts)                                *
+   *    qttt -> wins against The Adversary (the Hard computer): the one   *
+   *           cabinet with no score-chase, so a plain +1 counter        *
    *                                                                      *
    *  THRESHOLDS are difficulty calls, NOT proven optima — the same       *
    *  status as the Ruthless `bar` pass marks. tools/verify_medals.py     *
@@ -3193,27 +3321,27 @@
    *  endless bronze == 1 (= clear the mode's first level, which that     *
    *  mode's own accept gate already proves winnable); every endless      *
    *  gold below its mode's structural ceiling and reachable by flawless  *
-   *  play (it re-uses the budget_perfect proof from each mode's own      *
-   *  verifier); the count thresholds ascending positive integers.       *
+   *  play (it re-uses the budget_perfect / longwatch proof from each     *
+   *  mode's own verifier); the qttt thresholds ascending positive ints.  *
    * ==================================================================== */
   var MEDALS = (function () {
-    // The key each cabinet's best lives under. The first four are the exact
-    // keys the endless modes already write (see DD_KEY / DESC_KEY / SP_KEY /
-    // LG_KEY above); the last two are new, written only by bump() below.
+    // The key each cabinet's best lives under. The first five are the exact
+    // keys the endless modes already write (DD_KEY / DESC_KEY / SP_KEY /
+    // LG_KEY / WATCH_KEY above); qttt is new, written only by bump() below.
     var KEY = {
       golf: 'golf.longgame.best', grover: 'grover.deepdive.best',
       maxcut: 'maxcut.sprawl.best', volcano: 'volcano.descent.best',
-      calibration: 'calibration.medalcount', qttt: 'qttt.medalcount'
+      calibration: 'calibration.watch.best', qttt: 'qttt.medalcount'
     };
     // bronze < silver < gold, per cabinet. verify_medals.py enforces the order
     // and the attainability of gold.
     var TIERS = {
-      golf:        { bronze: 1, silver: 6, gold: 12, unit: 'holes',      mode: 'The Long Game' },
-      grover:      { bronze: 1, silver: 5, gold: 10, unit: 'corridors',  mode: 'Deep Dive' },
-      maxcut:      { bronze: 1, silver: 5, gold: 10, unit: 'cities',     mode: 'The Sprawl' },
-      volcano:     { bronze: 1, silver: 4, gold: 8,  unit: 'descents',   mode: 'The Descent' },
-      calibration: { bronze: 1, silver: 5, gold: 12, unit: 'clean runs', mode: 'beat every fixed strategy' },
-      qttt:        { bronze: 1, silver: 5, gold: 12, unit: 'wins',       mode: 'vs The Adversary' }
+      golf:        { bronze: 1, silver: 6, gold: 12, unit: 'holes',     mode: 'The Long Game' },
+      grover:      { bronze: 1, silver: 5, gold: 10, unit: 'corridors', mode: 'Deep Dive' },
+      maxcut:      { bronze: 1, silver: 5, gold: 10, unit: 'cities',    mode: 'The Sprawl' },
+      volcano:     { bronze: 1, silver: 4, gold: 8,  unit: 'descents',  mode: 'The Descent' },
+      calibration: { bronze: 1, silver: 4, gold: 8,  unit: 'shifts',    mode: 'The Long Watch' },
+      qttt:        { bronze: 1, silver: 5, gold: 12, unit: 'wins',      mode: 'vs The Adversary' }
     };
     var ORDER = ['golf', 'grover', 'maxcut', 'volcano', 'qttt', 'calibration'];
 
@@ -3223,11 +3351,11 @@
       var v = (S && S.get) ? +S.get(KEY[id], 0) : 0;
       return (isFinite(v) && v > 0) ? Math.floor(v) : 0;
     }
-    // +1 to a COUNT cabinet's tally (calibration / qttt). The four endless
-    // modes never call this — they write their own best directly.
+    // +1 to the COUNT cabinet's tally (qttt only -- it has no score-chase).
+    // The five endless modes never call this; they write their own best.
     function bump(id) {
       var S = save();
-      if (!S || !S.set || (id !== 'calibration' && id !== 'qttt')) return bestOf(id);
+      if (!S || !S.set || id !== 'qttt') return bestOf(id);
       var n = bestOf(id) + 1;
       try { S.set(KEY[id], n); } catch (e) {}
       return n;

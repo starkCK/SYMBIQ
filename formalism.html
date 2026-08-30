@@ -39,6 +39,13 @@
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
+<!-- The spatial-glass layer. Own file, own cache-buster, same rule as
+     motion.css / vivid.css: additive, opt-in via one body attribute,
+     reverts by deleting this <link> and the attribute. -->
+<link rel="stylesheet" href="glass.css?v=3">
+<!-- The premium-feel response layer. Rides glass.css's data-glass gate;
+     pairs with dynamics.js. Feedback motion only, no ambient. -->
+<link rel="stylesheet" href="dynamics.css?v=3">
 <link rel="stylesheet" href="formalism.css?v=6">
 <script src="save.js"></script>
 <script src="nav.js?v=8" defer></script>
@@ -61,8 +68,9 @@
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
 <script src="theme.js?v=1" defer></script>
+<script src="dynamics.js?v=3" defer></script>
 </head>
-<body data-motion data-rails class="fr" data-rung="L3" data-alive>
+<body data-motion data-rails class="fr" data-rung="L3" data-alive data-glass>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

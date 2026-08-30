@@ -1,17 +1,17 @@
 /* ================================================================
    DYNAMICS LAYER (2026-08-30)
 
-   Rides the same gate as glass.css -- `body[data-glass]`, the six
-   `data-vivid` pages -- and pairs with `dynamics.js`. Where glass.css
-   is the MATERIAL (frosted panes, rim light, depth), this is the
-   RESPONSE: the premium-feel motion the glass pages were missing.
+   Rides the same gate as glass.css -- `body[data-glass]`, all 24
+   pages as of 2026-08-30 -- and pairs with `dynamics.js`. Where
+   glass.css is the MATERIAL (frosted panes, rim light, depth), this
+   is the RESPONSE: the premium-feel motion the pages were missing.
 
    It does NOT add ambient motion. The site's motion law stands
    (DESIGN.md: "motion is feedback plus one ambient layer; nothing
    bounces"), and the existing system already carries the ambient
    half -- atmosphere.js's lattice, motion.css's pointer sheen,
    nav.js's scroll reveals, alive.js's animated unfold. What was
-   still missing on the six glass pages:
+   still missing:
 
      1. the category dropdowns blinked open instead of arriving,
      2. the glass never caught the light -- it sat inert,

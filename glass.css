@@ -1,12 +1,12 @@
 /* ================================================================
    GLASS LAYER (2026-08-30)
 
-   A spatial-glass / frosted-material pass for the six pages that
-   already carry the vivid layer: index.html and the five explainer
-   pillars (bitcoin, qec, ai, compare, logical-qubit). Everything is
+   A spatial-glass / frosted-material pass. Shipped 2026-08-30 on the
+   six vivid pages (index + bitcoin, qec, ai, compare, logical-qubit);
+   extended to all 24 the same day at Chinmoy's ask. Everything is
    scoped under `body[data-glass]`, so:
 
-     - the other 18 pages are byte-for-byte untouched, and
+     - a page without the attribute is byte-for-byte untouched, and
      - the whole layer reverts by deleting one attribute + one <link>.
 
    It ships as its own file with its own cache-buster for the same
@@ -57,9 +57,10 @@
      fixed peripheral rails (those are body-level), so the fixed
      layers are unaffected. Verified against rails.css / tiers.js.
 
-   color-mix() and `--indigo` are borrowed from vivid.css: every
-   page that sets `data-glass` also sets `data-vivid`, so the token
-   is always defined. A literal fallback is passed to var() anyway.
+   color-mix() and `--indigo` are borrowed from vivid.css. On the six
+   vivid pages the token is always defined; on the other 18 it is not,
+   so every var(--indigo ...) here passes a literal fallback and the
+   layer degrades to the plain --border edge.
    ================================================================ */
 
 /* ---------------------------------------------------------------- §1

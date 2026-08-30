@@ -1,7 +1,7 @@
 /* SymbiQ — dynamics.js
  * ============================================================================
- * Pairs with dynamics.css; gated on <body data-glass>.  Two pointer/scroll
- * feeds the CSS cannot get on its own:
+ * Pairs with dynamics.css; gated on <body data-glass> (all 24 pages as of
+ * 2026-08-30).  Two pointer/scroll feeds the CSS cannot get on its own:
  *
  *   1. SCROLLED   sets data-scrolled on <html> once the page passes ~40px,
  *                 so the frosted header can deepen its cast (dynamics.css §4)

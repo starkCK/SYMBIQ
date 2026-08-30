@@ -60,7 +60,7 @@
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Heuristic⟧',
       or: 'Simulated annealing is a <b>metaheuristic</b> — operations research’s answer to problems too hard to solve exactly. It is the classical baseline quantum annealing has to beat.'
     },
-    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps. The <strong>🔴 Ruthless</strong> card ("the Deep Country") runs five harder landscapes on a tighter <strong>10-epoch</strong> budget; each pass mark was re-established the same way — below crash-cooling is impossible, and a shaped schedule found by search clears it by at least three points. <strong>The Descent</strong> (a Standard-mode option) generates each landscape at run time from a seed and a difficulty that rises every time you clear one; the pass mark adapts as <em>max(0.44 − 0.05·d, crash + 0.12)</em>, floored at 18%, and the game only serves a landscape once it has measured that some cooling ramp beats that mark by a margin — so no generated level is ever a dud. The generator, the accept rule and the pass mark are all proven in <code>tools/verify_volcano_deepdive.py</code>.',
+    honest: 'Honest model: this is real simulated annealing. Each step proposes a move to an adjacent cell and accepts it outright if the landscape drops; if it rises by ΔE it is accepted with probability <strong>exp(−ΔE/T)</strong> — the Metropolis rule, which is why a hot walker can climb out of a valley and a cold one cannot. Proposals that would leave the landscape are rejected, keeping the proposal symmetric as detailed balance requires. Every landscape here was checked by brute force (each global minimum is unique) and every claim the game makes was measured over 20,000 simulated runs per volcano. Crash-cooling misses the true floor on <strong>88 / 93 / 98 / 93%</strong> of runs across the four landscapes that have structure. On the three with a single trap it freezes in that first ditch specifically (76–93%); on the Comb it freezes in whichever of the seven traps it happens to be nearest, which is why "the first ditch" is the wrong picture there and only 12% of its runs end in the first one. Against that, a shaped schedule wins about <strong>six-fold</strong> on the gentlest of the four and about <strong>forty-fold</strong> on the cruellest. Clearing is judged on your <em>schedule</em>, replayed 500 times — because a single win proves nothing. The honest limit: annealing is <strong>⟦heuristic⟧</strong>. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice: the deepest barrier here is 4, so that schedule needs ~3,000 steps just to reach T = 0.5 (twelve times this game’s entire 240-step budget) and ~500 million to reach T = 0.2. It converges precisely because it refuses to cool. And the Salt Flat is the counter-example on purpose: <strong>no search method beats any other averaged over all possible landscapes</strong> (No Free Lunch — Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing helps. The <strong>🔴 Ruthless</strong> card ("the Deep Country") runs five harder landscapes on a tighter <strong>10-epoch</strong> budget; each pass mark was re-established the same way — below crash-cooling is impossible, and a shaped schedule found by search clears it by at least three points. <strong>The Descent</strong> (a Standard-mode option) generates each landscape at run time from a seed and a difficulty that rises every time you clear one; the pass mark adapts as <em>max(0.44 − 0.05·d, crash + 0.12)</em>, floored at 18%, and the game only serves a landscape once it has measured that some cooling ramp beats that mark by a margin — so no generated level is ever a dud. The generator, the accept rule and the pass mark are all proven in <code>tools/verify_volcano_deepdive.py</code>. A <strong>Daily Descent</strong> option seeds the whole sequence — including the acceptance check — from the date, so every browser gets the identical descent today, with a per-day best kept beside the all-time one (<code>tools/verify_daily.py</code>).',
     // Landscapes verified offline: every global minimum unique; pass marks set
     // below the best schedule found by search, above what crash-cooling scores.
     // `crash` = the measured clear rate of a crash-cool (all-Cool) schedule on
@@ -122,7 +122,7 @@
          tools/verify_volcano_deepdive.py (same PRNG, same engine). */
       var SAVE = window.SymbiQ && SymbiQ.save;
       var DESC_KEY = 'volcano.descent.best';
-      var descent = { on: false, d: 0, over: false, crash: 0, passMark: 0,
+      var descent = { on: false, daily: false, d: 0, over: false, crash: 0, passMark: 0,
                       best: (SAVE && SAVE.get) ? (+SAVE.get(DESC_KEY, 0) || 0) : 0, newBest: false };
       function mulberry32(a) {
         a = a >>> 0;
@@ -185,33 +185,42 @@
         schedOf(g.STOKE,3,g.HOLD,1,g.COOL,6), schedOf(g.STOKE,6,g.HOLD,2,g.COOL,2)
       ];
       var DCOOL10 = schedOf(g.COOL, 10);
-      function quickRate(L, sched, n) {
+      function quickRate(L, sched, n, rnd) {
         var w = 0, floor = L.h[L.gmin];
-        for (var i = 0; i < n; i++) if (L.h[replay(L, sched)] === floor) w++;
+        for (var i = 0; i < n; i++) if (L.h[replay(L, sched, rnd)] === floor) w++;
         return w / n;
       }
-      function descAccepts(L, d) {
-        var crash = quickRate(L, DCOOL10, 150);
+      function descAccepts(L, d, rnd) {
+        var crash = quickRate(L, DCOOL10, 150, rnd);
         L.crash = crash;
         if (crash > dCrashCeil(d)) return false;
         for (var i = 0, best = 0; i < DCANON.length; i++) {
-          best = Math.max(best, quickRate(L, DCANON[i], 150));
+          best = Math.max(best, quickRate(L, DCANON[i], 150, rnd));
           if (best >= dPassMark(d, crash) + 0.06) return true;
         }
         return false;
       }
       function makeDescent(d) {
-        var base = ((Date.now() >>> 0) ^ Math.imul(d + 1, 2654435761)) >>> 0;
+        // Daily mode: a seed fixed for (game, today) so every browser gets the
+        // same descent. Practice mode: a fresh seed each run. In Daily mode the
+        // acceptance check runs on a seeded PRNG too, so the reseed loop lands
+        // on the same landscape everywhere -- not just the same generator input.
+        var base = descent.daily
+          ? (FRAME.daily.seed('volcano') ^ Math.imul(d + 1, 2654435761)) >>> 0
+          : ((Date.now() >>> 0) ^ Math.imul(d + 1, 2654435761)) >>> 0;
         for (var att = 0; att < 8; att++) {
-          var L = genLandscape((base + att) >>> 0, d);
-          if (descAccepts(L, d)) return L;
+          var seed = (base + att) >>> 0;
+          var L = genLandscape(seed, d);
+          var accRnd = descent.daily ? mulberry32((seed ^ 0x9e3779b9) >>> 0) : null;
+          if (descAccepts(L, d, accRnd)) return L;
         }
         // never a dud: fall back to a hand-authored Standard volcano
         var fb = g.LV[d % g.LV.length];
         var F = { h: fb.h.slice(), start: fb.start, T0: fb.T0, gmin: 0,
                   n: fb.n + ' (reserve)', bar: 0, best: 0, crash: 0, flat: !!fb.flat };
         F.gmin = F.h.indexOf(Math.min.apply(null, F.h));
-        F.crash = quickRate(F, DCOOL10, 150);
+        F.crash = quickRate(F, DCOOL10, 150,
+          descent.daily ? mulberry32((base ^ 0x51ed2701) >>> 0) : null);
         return F;
       }
       function startDescentLevel() {
@@ -232,6 +241,7 @@
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="volc">Volcanoes</button>' +
             '<button class="preset" type="button" data-gm="desc">The Descent</button>' +
+            '<button class="preset" type="button" data-gm="daily">Daily Descent</button>' +
             '<span data-r="descbest" style="color:var(--muted)"></span>' +
           '</div>') +
         '<div class="holes" data-r="chips"></div>' +
@@ -259,22 +269,26 @@
       }
       function acc(dE, T) { return dE <= 0 ? 1 : Math.exp(-dE / T); }
 
-      // one epoch of EPOCH proposals at temperature T — the whole engine
-      function epoch(h, x, T, seen) {
+      // one epoch of EPOCH proposals at temperature T — the whole engine.
+      // `rnd` (optional): a seeded 0..1 source. Live play passes none (uses
+      // Math.random); the Daily-mode ACCEPTANCE check passes a seeded one so
+      // every browser generates the identical landscape.
+      function epoch(h, x, T, seen, rnd) {
+        var rand = rnd || Math.random;
         for (var i = 0; i < g.EPOCH; i++) {
-          var y = x + (Math.random() < 0.5 ? 1 : -1);
+          var y = x + (rand() < 0.5 ? 1 : -1);
           if (y < 0 || y >= h.length) continue;          // out of range: reject, stay put
           var dE = h[y] - h[x];
-          if (dE <= 0 || Math.random() < Math.exp(-dE / T)) { x = y; if (seen) seen[x] = (seen[x] || 0) + 1; }
+          if (dE <= 0 || rand() < Math.exp(-dE / T)) { x = y; if (seen) seen[x] = (seen[x] || 0) + 1; }
         }
         return x;
       }
       // replay a schedule from scratch — used for the 500-run honesty check
-      function replay(L, sched) {
+      function replay(L, sched, rnd) {
         var x = L.start, T = L.T0;
         for (var i = 0; i < sched.length; i++) {
           T = Math.min(g.TMAX, Math.max(g.TMIN, T * sched[i]));
-          x = epoch(L.h, x, T, null);
+          x = epoch(L.h, x, T, null, rnd);
         }
         return x;
       }
@@ -324,11 +338,17 @@
 
       function drawChips() {
         if (descent.on) {
+          var dailyBest = descent.daily ? FRAME.daily.best('volcano') : 0;
           $(root, '[data-r=chips]').innerHTML =
-            '<div style="text-align:center;font-size:.9rem"><strong>Descent ' + (descent.d + 1) + '</strong> · ' +
+            '<div style="text-align:center;font-size:.9rem"><strong>' +
+            (descent.daily ? 'Daily Descent ' : 'Descent ') + (descent.d + 1) + '</strong> · ' +
             LV[0].h.length + ' cells · schedule must clear <strong>' + Math.round(descent.passMark * 100) + '%</strong>' +
-            (descent.d > 0 ? ' &nbsp;<span style="color:var(--muted)">' + descent.d + ' behind you' +
-              (descent.best > 0 ? ' · deepest ' + descent.best : '') + '</span>' : '') + '</div>';
+            (descent.daily
+              ? ' &nbsp;<span style="color:var(--muted)">' + FRAME.daily.date() +
+                (dailyBest > 0 ? ' · today’s best ' + dailyBest : '') +
+                (descent.best > 0 ? ' · all-time ' + descent.best : '') + '</span>'
+              : (descent.d > 0 ? ' &nbsp;<span style="color:var(--muted)">' + descent.d + ' behind you' +
+                  (descent.best > 0 ? ' · deepest ' + descent.best : '') + '</span>' : '')) + '</div>';
           return;
         }
         $(root, '[data-r=chips]').innerHTML = LV.map(function (L, i) {
@@ -428,6 +448,7 @@
             descent.best = descent.d; descent.newBest = true;
             if (SAVE && SAVE.set) SAVE.set(DESC_KEY, descent.d);
           }
+          if (descent.daily) FRAME.daily.record('volcano', descent.d);
           startDescentLevel();
           syncVmode();
           render({ k: 'good', t:
@@ -531,7 +552,7 @@
       function syncVmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = descent.on ? 'desc' : 'volc';
+        var cur = !descent.on ? 'volc' : descent.daily ? 'daily' : 'desc';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -539,21 +560,26 @@
           b.style.color = on ? 'var(--teal)' : '';
         });
         var db = $(root, '[data-r=descbest]');
-        if (db) db.textContent = descent.best > 0 ? ('· deepest descent: ' + descent.best) : '';
+        if (db) db.textContent = descent.daily
+          ? (FRAME.daily.best('volcano') > 0 ? '· today: ' + FRAME.daily.best('volcano') : '')
+          : (descent.best > 0 ? ('· deepest descent: ' + descent.best) : '');
       }
       (function wireVmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=volc]').addEventListener('click', function () {
-          descent.on = false; descent.over = false;
+          descent.on = false; descent.daily = false; descent.over = false;
           LV = ruthless ? g.LV_RUTHLESS : g.LV;
           EPOCHS = ruthless ? 10 : g.EPOCHS;
           li = 0; cleared = []; fresh(); syncVmode(); render();
         });
-        bar.querySelector('[data-gm=desc]').addEventListener('click', function () {
-          descent.on = true; descent.d = 0; descent.over = false; descent.newBest = false;
+        function startDescent(isDaily) {
+          descent.on = true; descent.daily = isDaily; descent.d = 0;
+          descent.over = false; descent.newBest = false;
           startDescentLevel(); syncVmode(); render();
-        });
+        }
+        bar.querySelector('[data-gm=desc]').addEventListener('click', function () { startDescent(false); });
+        bar.querySelector('[data-gm=daily]').addEventListener('click', function () { startDescent(true); });
         syncVmode();
       })();
 
@@ -576,7 +602,7 @@
       learn: 'Superposition and phase, and why quantum gates are <em>rotations</em> rather than 0-to-1 flips.',
       link: 'quantum-mechanics.html#bloch', linkText: 'See the sphere ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable. The <strong>🔴 Ruthless</strong> card (“the Back Nine”) swaps in nine longer holes, par 3–5, every target off every Bloch pole so a T gate is unavoidable; their pars were proven minimal the same exhaustive way. <strong>The Long Game</strong> (a Standard-mode option) is a curated rotating ladder through par classes 1–5 rather than a generator — from |0⟩ the one-qubit gate set reaches only a handful of distinct states at each short length, so novelty runs out where the physics does — and every one of its 17 targets has a proven-minimal par (<code>tools/verify_golf_longgame.py</code>, exact Z[ζ8] BFS). One gate budget runs the whole game: par+8 to start, +par+2 per hole cleared, −1 per gate.',
+    honest: 'Honest model: the six gates are the real 2×2 unitaries and the sphere is a projection of the actual complex arithmetic — the same engine as <a href="quantum-mechanics.html#bloch">the Bloch sphere explorer</a>. Par values were computed by breadth-first search over all gate words and independently re-checked by exhaustive search at every shorter length, so each is a <strong>proven minimum</strong> rather than a designer’s guess. States are compared by Bloch vector, which ignores global phase — as physics does, since global phase is unobservable. The <strong>🔴 Ruthless</strong> card (“the Back Nine”) swaps in nine longer holes, par 3–5, every target off every Bloch pole so a T gate is unavoidable; their pars were proven minimal the same exhaustive way. <strong>The Long Game</strong> (a Standard-mode option) is a curated rotating ladder through par classes 1–5 rather than a generator — from |0⟩ the one-qubit gate set reaches only a handful of distinct states at each short length, so novelty runs out where the physics does — and every one of its 17 targets has a proven-minimal par (<code>tools/verify_golf_longgame.py</code>, exact Z[ζ8] BFS). One gate budget runs the whole game: par+8 to start, +par+2 per hole cleared, −1 per gate. A <strong>Daily Ladder</strong> option rotates the whole ladder by a per-day offset seeded from the date — different targets from each par-class pool, the same pars (still proven minima), the same for every browser — with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>).',
     mount: function (root, opts) {
       // In-world voice. Display strings only — never logic, so the Path and the
       // Arcade run the identical engine and only the words differ.
@@ -608,6 +634,7 @@
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="holes">Holes</button>' +
             '<button class="preset" type="button" data-gm="lg">The Long Game</button>' +
+            '<button class="preset" type="button" data-gm="daily">Daily Ladder</button>' +
             '<span data-r="lgbest" style="color:var(--muted)"></span>' +
           '</div>') +
         '<div class="holes" data-r="holes"></div>' +
@@ -681,13 +708,17 @@
                       3:'Three gates. Off a pole now: a T is in there somewhere.',
                       4:'Four gates, two axes. No Clifford shortcut exists.',
                       5:'Five gates in order. Nothing shorter reaches it — proven.' };
-      var lg = { on:false, d:0, budget:0, over:false, cleared:0, newBest:false,
+      var lg = { on:false, daily:false, d:0, budget:0, over:false, cleared:0, newBest:false,
                  best:(G_SAVE&&G_SAVE.get)?(+G_SAVE.get(LG_KEY,0)||0):0 };
       function lgParClass(d) { return Math.min(5, 1 + Math.floor((d + 1) / 2)); }
       function lgShowPar() { return lg.cleared < 2; }
+      // Daily mode rotates the whole ladder by a per-day offset, so today's run
+      // draws different targets from each par-class pool than the practice run.
+      // The pars are unchanged -- still proven minima (verify_golf_longgame.py).
+      function lgDayOff() { return lg.daily ? (FRAME.daily.seed('golf') >>> 0) : 0; }
       function lgMakeHole(d) {
         var cls = lgParClass(d), pool = LG_LADDER[cls];
-        var idx = (lg.cleared + d * 3 + (cls * 7)) % pool.length;
+        var idx = (lg.cleared + d * 3 + (cls * 7) + lgDayOff()) % pool.length;
         var route = pool[idx].split('');
         return { name: (lgShowPar() ? pool[idx] : '???'), path: route, par: cls,
                  hint: LG_HINT[cls] };
@@ -707,12 +738,16 @@
         lg.cleared++;
         if (lg.cleared > lg.best) { lg.best = lg.cleared; lg.newBest = true;
           if (G_SAVE && G_SAVE.set) G_SAVE.set(LG_KEY, lg.cleared); }
+        if (lg.daily) FRAME.daily.record('golf', lg.cleared);
         lgStart(lg.d + 1);
         lg.budget += HOLES[0].par + 2;
       }
       function lgBestLabel() {
         var b = $(root, '[data-r=lgbest]');
-        if (b) b.textContent = lg.best > 0 ? ('· longest game: ' + lg.best + ' hole' + (lg.best === 1 ? '' : 's')) : '';
+        if (!b) return;
+        b.textContent = lg.daily
+          ? (FRAME.daily.best('golf') > 0 ? '· today: ' + FRAME.daily.best('golf') + ' hole' + (FRAME.daily.best('golf') === 1 ? '' : 's') : '')
+          : (lg.best > 0 ? ('· longest game: ' + lg.best + ' hole' + (lg.best === 1 ? '' : 's')) : '');
       }
 
       /* `done` MUST be pre-filled to full length. It used to start as [] and be
@@ -755,9 +790,13 @@
         vLine.setAttribute('x2', pm[0]); vLine.setAttribute('y2', pm[1]);
         vDot.setAttribute('cx', pm[0]); vDot.setAttribute('cy', pm[1]);
         if (lg.on) {
+          var lgDB = lg.daily ? FRAME.daily.best('golf') : 0;
           $(root, '[data-r=holes]').innerHTML =
-            '<div style="text-align:center;font-size:.9rem"><strong>Hole ' + (lg.cleared + 1) + '</strong> · target ' +
+            '<div style="text-align:center;font-size:.9rem"><strong>' + (lg.daily ? 'Daily Hole ' : 'Hole ') + (lg.cleared + 1) +
+            '</strong> · target ' +
             (lgShowPar() ? '<strong>' + H.name + '</strong> in ' + H.par : '<strong>hidden</strong> (par ' + H.par + ' unshown)') +
+            (lg.daily ? ' <span style="color:var(--muted)">· ' + FRAME.daily.date() +
+              (lgDB > 0 ? ' · today’s best ' + lgDB : '') + (lg.best > 0 ? ' · all-time ' + lg.best : '') + '</span>' : '') +
             '<br><span style="color:var(--muted)">gates left this game: </span>' +
             '<strong style="color:' + (lg.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + lg.budget + '</strong></div>';
         } else {
@@ -887,10 +926,9 @@
       function syncGGmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        ['holes', 'lg'].forEach(function (m) {
-          var b = bar.querySelector('[data-gm=' + m + ']');
-          if (!b) return;
-          var on = ((m === 'lg') === lg.on);
+        var cur = !lg.on ? 'holes' : lg.daily ? 'daily' : 'lg';
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
+          var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
           b.style.borderColor = on ? 'var(--teal)' : '';
           b.style.color = on ? 'var(--teal)' : '';
@@ -905,14 +943,17 @@
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=holes]').addEventListener('click', function () {
-          lg.on = false; lg.over = false;
+          lg.on = false; lg.daily = false; lg.over = false;
           HOLES = ruthless ? HOLES_RUTHLESS : HOLES_STD;
           done = []; for (var i = 0; i < HOLES.length; i++) done.push(null);
           hi = 0; cur = Z0; moves = []; strokes = 0; roundCeremony = false;
           syncGGmode(); render();
         });
         bar.querySelector('[data-gm=lg]').addEventListener('click', function () {
-          lg.on = true; lgReset(); syncGGmode(); render();
+          lg.on = true; lg.daily = false; lgReset(); syncGGmode(); render();
+        });
+        bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
+          lg.on = true; lg.daily = true; lgReset(); syncGGmode(); render();
         });
         syncGGmode();
       })();
@@ -935,7 +976,7 @@
       learn: 'Why quantum search is <em>quadratically</em> faster — √N, not exponential — and that a measurement is a dice-roll you can load but never force.',
       link: 'ai.html', linkText: 'Where speedups help ▸', tier: '⟦Proven⟧'
     },
-    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game. The rotation itself is phase kickback plus interference — the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a> — scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict — only a measurement taken at the peak lights the corridor. <strong>Deep Dive</strong> (a Standard-mode option) never stops: N grows as <em>nextN = round(1.7·N)</em> from 4, the par is recomputed live as <em>round(π/(4·asin(1/√N)) − ½)</em> and hidden after the second corridor, and a single amplification budget — starting at par+12, growing by par+3 per corridor cleared, spending one per Amplify — makes blind probing unaffordable. Every N, its par, the ≥90% peak probability and the budget maths are checked in <code>tools/verify_grover_deepdive.py</code>.',
+    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N — so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong> — √N versus N — and Grover is <strong>⟦proven⟧</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble — that is the physics, not the game. The rotation itself is phase kickback plus interference — the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a> — scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict — only a measurement taken at the peak lights the corridor. <strong>Deep Dive</strong> (a Standard-mode option) never stops: N grows as <em>nextN = round(1.7·N)</em> from 4, the par is recomputed live as <em>round(π/(4·asin(1/√N)) − ½)</em> and hidden after the second corridor, and a single amplification budget — starting at par+12, growing by par+3 per corridor cleared, spending one per Amplify — makes blind probing unaffordable. Every N, its par, the ≥90% peak probability and the budget maths are checked in <code>tools/verify_grover_deepdive.py</code>. A <strong>Daily Dive</strong> option fixes the exit door of every corridor from the date (the N sequence and pars are already deterministic), so everyone searches the identical dive today, with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>).',
     mount: function (root, opts) {
       // Display-only voice layer (see Circuit Golf). Rue's fixation is timing:
       // the arcade says "par", the corridor says "the moment to look".
@@ -963,6 +1004,7 @@
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="corridors">Corridors</button>' +
             '<button class="preset" type="button" data-gm="dd">Deep Dive</button>' +
+            '<button class="preset" type="button" data-gm="daily">Daily Dive</button>' +
             '<span data-r="ddbest" style="color:var(--muted)"></span>' +
           '</div>') +
         '<div class="holes" data-r="corr"></div>' +
@@ -1002,7 +1044,7 @@
       var DD_KEY = 'grover.deepdive.best';
       function parOf(n) { return Math.round(Math.PI / (4 * Math.asin(1 / Math.sqrt(n))) - 0.5); }
       function nextN(n) { return Math.min(4096, 2 * Math.round(n * 1.7 / 2)); }
-      var dd = { on: false, n: 4, depth: 0, budget: 0, over: false,
+      var dd = { on: false, daily: false, n: 4, depth: 0, budget: 0, over: false,
                  best: (SAVE && SAVE.get) ? (+SAVE.get(DD_KEY, 0) || 0) : 0, newBest: false };
       function ddReset() {
         dd.n = 4; dd.depth = 0; dd.over = false; dd.newBest = false;
@@ -1013,13 +1055,17 @@
         dd.depth++;
         if (dd.depth > dd.best) { dd.best = dd.depth; dd.newBest = true;
           if (SAVE && SAVE.set) SAVE.set(DD_KEY, dd.depth); }
+        if (dd.daily) FRAME.daily.record('grover', dd.depth);
         dd.n = nextN(dd.n);
         dd.budget += parOf(dd.n) + 3;
         CORR = [{ n: dd.n, par: parOf(dd.n) }]; ci = 0; fresh();
       }
       function ddBestLabel() {
         var b = $(root, '[data-r=ddbest]');
-        if (b) b.textContent = dd.best > 0 ? ('· best dive: ' + dd.best + ' corridor' + (dd.best === 1 ? '' : 's')) : '';
+        if (!b) return;
+        b.textContent = dd.daily
+          ? (FRAME.daily.best('grover') > 0 ? '· today: ' + FRAME.daily.best('grover') + ' corridor' + (FRAME.daily.best('grover') === 1 ? '' : 's') : '')
+          : (dd.best > 0 ? ('· best dive: ' + dd.best + ' corridor' + (dd.best === 1 ? '' : 's')) : '');
       }
       function ddShowPar() { return dd.depth < 2; }   // par hidden from the 3rd corridor on
 
@@ -1039,14 +1085,25 @@
       }
       function theta(n) { return Math.asin(1 / Math.sqrt(n)); }
       function pExit(n, kk) { var s = Math.sin((2*kk + 1) * theta(n)); return s * s; }
-      function fresh() { k = 0; measured = false; bestP = pExit(CORR[ci].n, 0); mark = Math.floor(Math.random() * CORR[ci].n); }
+      function fresh() {
+        k = 0; measured = false; bestP = pExit(CORR[ci].n, 0);
+        // Daily mode: the exit door is fixed for (game, day, depth) so every
+        // browser searches the identical corridor. The N-sequence and pars are
+        // already deterministic; this closes the last bit of variance.
+        mark = (dd.on && dd.daily)
+          ? ((FRAME.daily.seed('grover') ^ Math.imul(dd.depth + 1, 2654435761)) >>> 0) % CORR[ci].n
+          : Math.floor(Math.random() * CORR[ci].n);
+      }
       function chips() {
         if (dd.on) {
+          var ddDB = dd.daily ? FRAME.daily.best('grover') : 0;
           $(root, '[data-r=corr]').innerHTML =
             '<div style="text-align:center;font-size:.9rem">' +
-              '<strong>Corridor ' + (dd.depth + 1) + '</strong> · ' + dd.n + ' doors' +
+              '<strong>' + (dd.daily ? 'Daily Corridor ' : 'Corridor ') + (dd.depth + 1) + '</strong> · ' + dd.n + ' doors' +
               (ddShowPar() ? ' · <span style="color:var(--muted)">peak at ' + CORR[0].par + '</span>'
                            : ' · <span style="color:var(--muted)">peak ≈ (π/4)√N, uncounted</span>') +
+              (dd.daily ? ' <span style="color:var(--muted)">· ' + FRAME.daily.date() +
+                (ddDB > 0 ? ' · today’s best ' + ddDB : '') + (dd.best > 0 ? ' · all-time ' + dd.best : '') + '</span>' : '') +
               '<br><span style="color:var(--muted)">amplifications left this dive: </span>' +
               '<strong style="color:' + (dd.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + dd.budget + '</strong>' +
             '</div>';
@@ -1207,10 +1264,9 @@
       function syncGmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        ['corridors', 'dd'].forEach(function (m) {
-          var b = bar.querySelector('[data-gm=' + m + ']');
-          if (!b) return;
-          var on = ((m === 'dd') === dd.on);
+        var cur = !dd.on ? 'corridors' : dd.daily ? 'daily' : 'dd';
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
+          var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
           b.style.borderColor = on ? 'var(--teal)' : '';
           b.style.color = on ? 'var(--teal)' : '';
@@ -1224,12 +1280,16 @@
         if (!bar) return;
         bar.querySelector('[data-gm=corridors]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = false; CORR = ruthless ? CORR_RUTHLESS : CORR_STD; ci = 0; solved = [];
+          dd.on = false; dd.daily = false; CORR = ruthless ? CORR_RUTHLESS : CORR_STD; ci = 0; solved = [];
           fresh(); syncGmode(); render();
         });
         bar.querySelector('[data-gm=dd]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = true; ddReset(); syncGmode(); render();
+          dd.on = true; dd.daily = false; ddReset(); syncGmode(); render();
+        });
+        bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
+          if (busy) return;
+          dd.on = true; dd.daily = true; ddReset(); syncGmode(); render();
         });
         syncGmode();
       })();
@@ -1253,7 +1313,7 @@
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: '⟦Proven⟧',
       or: 'Max-Cut is a classic <b>operations research</b> problem — NP-hard since Karp 1972, and the reason the whole QUBO/Ising bridge exists.'
     },
-    honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs — including the Petersen graph and a patch of triangular lattice — with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts. <strong>The Sprawl</strong> (a Standard-mode option) generates each city from a seed and a difficulty that rises every time you clear one, on a circulant frustration core plus random chords; its maximum cut is brute-forced over all 2ⁿ colourings at generation (n ≤ 12) — a proven par — and you open at least two flips below it with no single-flip shortcut. One flip budget runs the whole run: opening-distance + 6, then +next-distance + 2 per city, −1 per click. Generator and accept rule proven in <code>tools/verify_maxcut_longgame.py</code>.',
+    honest: 'Honest model: this is Max-Cut, and it is <strong>⟦proven⟧</strong> NP-hard (Karp 1972) — no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>⟦proven⟧</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>⟦heuristic⟧</strong> and unproven — classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs — including the Petersen graph and a patch of triangular lattice — with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts. <strong>The Sprawl</strong> (a Standard-mode option) generates each city from a seed and a difficulty that rises every time you clear one, on a circulant frustration core plus random chords; its maximum cut is brute-forced over all 2ⁿ colourings at generation (n ≤ 12) — a proven par — and you open at least two flips below it with no single-flip shortcut. One flip budget runs the whole run: opening-distance + 6, then +next-distance + 2 per city, −1 per click. Generator and accept rule proven in <code>tools/verify_maxcut_longgame.py</code>. A <strong>Daily Sprawl</strong> option seeds the city sequence from the date — the generator is pure, so it is byte-identical in every browser — with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>).',
     mount: function (root, opts) {
       var mission = opts && opts.mode === 'mission';
       var ruthless = !mission && opts && opts.level === 'ruthless';
@@ -1264,6 +1324,7 @@
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="dist">Districts</button>' +
             '<button class="preset" type="button" data-gm="sprawl">The Sprawl</button>' +
+            '<button class="preset" type="button" data-gm="daily">Daily Sprawl</button>' +
             '<span data-r="spbest" style="color:var(--muted)"></span>' +
           '</div>') +
         '<div class="holes" data-r="dist"></div>' +
@@ -1329,7 +1390,7 @@
          tools/verify_maxcut_longgame.py. */
       var MC_SAVE = window.SymbiQ && SymbiQ.save;
       var SP_KEY = 'maxcut.sprawl.best';
-      var sp = { on:false, d:0, over:false, budget:0, cleared:0, newBest:false,
+      var sp = { on:false, daily:false, d:0, over:false, budget:0, cleared:0, newBest:false,
                  dist:0, opts:null,
                  best:(MC_SAVE&&MC_SAVE.get)?(+MC_SAVE.get(SP_KEY,0)||0):0 };
       function spMul(a) {
@@ -1406,7 +1467,13 @@
       }
       function bitsToCol(bits, n) { var c = []; for (var i = 0; i < n; i++) c.push((bits >> i) & 1); return c; }
       function spStartLevel() {
-        var G = spGenGraph(((Date.now() >>> 0) ^ Math.imul(sp.d + 1, 2654435761)) >>> 0, sp.d);
+        // Daily mode: a seed fixed for (game, today), so every browser gets the
+        // same city sequence. spGenGraph is pure -- no Math.random -- so this is
+        // exactly identical everywhere. Practice mode: a fresh seed each run.
+        var seed = sp.daily
+          ? (FRAME.daily.seed('maxcut') ^ Math.imul(sp.d + 1, 2654435761)) >>> 0
+          : ((Date.now() >>> 0) ^ Math.imul(sp.d + 1, 2654435761)) >>> 0;
+        var G = spGenGraph(seed, sp.d);
         sp.dist = G.dist; sp.opts = G.opts;
         DIST = [G]; di = 0; solved = [];
         initDist();
@@ -1420,13 +1487,17 @@
         sp.cleared++;
         if (sp.cleared > sp.best) { sp.best = sp.cleared; sp.newBest = true;
           if (MC_SAVE && MC_SAVE.set) MC_SAVE.set(SP_KEY, sp.cleared); }
+        if (sp.daily) FRAME.daily.record('maxcut', sp.cleared);
         sp.d++;
         spStartLevel();
         sp.budget += sp.dist + 2;
       }
       function spBestLabel() {
         var b = $(root, '[data-r=spbest]');
-        if (b) b.textContent = sp.best > 0 ? ('· biggest sprawl: ' + sp.best + ' cit' + (sp.best === 1 ? 'y' : 'ies')) : '';
+        if (!b) return;
+        b.textContent = sp.daily
+          ? (FRAME.daily.best('maxcut') > 0 ? '· today: ' + FRAME.daily.best('maxcut') : '')
+          : (sp.best > 0 ? ('· biggest sprawl: ' + sp.best + ' cit' + (sp.best === 1 ? 'y' : 'ies')) : '');
       }
 
       function initDist() {
@@ -1442,10 +1513,12 @@
       }
       function chips() {
         if (sp.on) {
-          var g = DIST[0];
+          var g = DIST[0], dBest = sp.daily ? FRAME.daily.best('maxcut') : 0;
           $(root, '[data-r=dist]').innerHTML =
-            '<div style="text-align:center;font-size:.9rem"><strong>City ' + (sp.cleared + 1) + '</strong> · ' +
-            g.n + ' districts · target cut <strong>' + g.par + '</strong>' +
+            '<div style="text-align:center;font-size:.9rem"><strong>' + (sp.daily ? 'Daily City ' : 'City ') + (sp.cleared + 1) +
+            '</strong> · ' + g.n + ' districts · target cut <strong>' + g.par + '</strong>' +
+            (sp.daily ? ' <span style="color:var(--muted)">· ' + FRAME.daily.date() +
+              (dBest > 0 ? ' · today’s best ' + dBest : '') + (sp.best > 0 ? ' · all-time ' + sp.best : '') + '</span>' : '') +
             '<br><span style="color:var(--muted)">flips left this run: </span>' +
             '<strong style="color:' + (sp.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + sp.budget + '</strong></div>';
           return;
@@ -1559,10 +1632,9 @@
       function syncMCmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        ['dist', 'sprawl'].forEach(function (m) {
-          var b = bar.querySelector('[data-gm=' + m + ']');
-          if (!b) return;
-          var on = ((m === 'sprawl') === sp.on);
+        var cur = !sp.on ? 'dist' : sp.daily ? 'daily' : 'sprawl';
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
+          var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
           b.style.borderColor = on ? 'var(--teal)' : '';
           b.style.color = on ? 'var(--teal)' : '';
@@ -1575,12 +1647,15 @@
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=dist]').addEventListener('click', function () {
-          sp.on = false; sp.over = false;
+          sp.on = false; sp.daily = false; sp.over = false;
           DIST = ruthless ? DIST_RUTHLESS : DIST_STD; di = 0; solved = [];
           initDist(); syncMCmode(); render();
         });
         bar.querySelector('[data-gm=sprawl]').addEventListener('click', function () {
-          sp.on = true; spReset(); syncMCmode(); render();
+          sp.on = true; sp.daily = false; spReset(); syncMCmode(); render();
+        });
+        bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
+          sp.on = true; sp.daily = true; spReset(); syncMCmode(); render();
         });
         syncMCmode();
       })();
@@ -2761,7 +2836,7 @@
       link: 'circuits.html#calibration', linkText: 'The physics this reuses ▸', tier: '⟦Proven⟧',
       or: 'Choosing when to explore vs. exploit under a fixed budget is a bandit problem'
     },
-    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. <strong>The Long Watch</strong> (a Standard-mode option) is an endless run of ten-round shifts. The physics is <em>unchanged</em> &mdash; same detuning range, same Rabi formula &mdash; but each shift raises the jump rate and the drift speed, shrinks the shot budget, and lifts the target average you must hit, from a gentle 58.5% toward 71% &mdash; which sits at a reactive reader&rsquo;s mean plus about one standard deviation, so a strong shift clears it and an average one does not. Clear a shift and the next is harder; miss the target and the watch ends. Measured over 6,000 games per shift by <code>tools/verify_calibration_longwatch.py</code>: a reactive reader beats the best fixed strategy on average fidelity at <em>every</em> difficulty (by 2.4&ndash;3.4 points), its clear rate exceeds any fixed strategy&rsquo;s by 6&ndash;13 points once the target bites, and stays above 37% even at the hardest shift &mdash; a stretch, never a wall. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>, <code>tools/verify_calibration_longwatch.py</code>.',
+    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. <strong>The Long Watch</strong> (a Standard-mode option) is an endless run of ten-round shifts. The physics is <em>unchanged</em> &mdash; same detuning range, same Rabi formula &mdash; but each shift raises the jump rate and the drift speed, shrinks the shot budget, and lifts the target average you must hit, from a gentle 58.5% toward 71% &mdash; which sits at a reactive reader&rsquo;s mean plus about one standard deviation, so a strong shift clears it and an average one does not. Clear a shift and the next is harder; miss the target and the watch ends. Measured over 6,000 games per shift by <code>tools/verify_calibration_longwatch.py</code>: a reactive reader beats the best fixed strategy on average fidelity at <em>every</em> difficulty (by 2.4&ndash;3.4 points), its clear rate exceeds any fixed strategy&rsquo;s by 6&ndash;13 points once the target bites, and stays above 37% even at the hardest shift &mdash; a stretch, never a wall. A <strong>Daily Watch</strong> option keeps a per-day best of the shift count: the escalation curve is already a pure function of the shift number, so it is the same challenge for everyone today, and only the drift luck differs &mdash; the same honesty the base game already states. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>, <code>tools/verify_calibration_longwatch.py</code>, <code>tools/verify_daily.py</code>.',
     OMEGA: 1.5, TMAX: 2.6, NBINS: 26, SHOTS: 24, ROUNDS: 10, PJUMP: 0.25, DDRIFT: 0.05,
     DMIN: -1.6, DMAX: 1.6, NPROBES: 6, NUDGEWIN: 1,
 
@@ -2790,7 +2865,7 @@
          ceiling, monotone difficulty) is proved over 8,000 games/shift in
          tools/verify_calibration_longwatch.py. */
       var W_SAVE = window.SymbiQ && SymbiQ.save, WATCH_KEY = 'calibration.watch.best';
-      var watch = { on: false, d: 0, shifts: 0, over: false, newBest: false,
+      var watch = { on: false, daily: false, d: 0, shifts: 0, over: false, newBest: false,
                     best: (W_SAVE && W_SAVE.get) ? (+W_SAVE.get(WATCH_KEY, 0) || 0) : 0 };
       function wPjump(d)  { return Math.min(0.20 + 0.025 * d, 0.55); }
       function wDdrift(d) { return 0.05 + 0.010 * d; }
@@ -2853,6 +2928,7 @@
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="cal">Calibration</button>' +
             '<button class="preset" type="button" data-gm="watch">The Long Watch</button>' +
+            '<button class="preset" type="button" data-gm="daily">Daily Watch</button>' +
             '<span data-r="watchbest" style="color:var(--muted)"></span>' +
           '</div>') +
         '<div class="hud" data-r="hud"></div>' +
@@ -2893,10 +2969,13 @@
 
       function renderHud() {
         var avg = S.fidHistory.length ? S.fidHistory.reduce(function (a, b) { return a + b; }, 0) / S.fidHistory.length : 0;
+        var wTail = watch.daily
+          ? ' · ' + FRAME.daily.date() + (FRAME.daily.best('calibration') > 0 ? ' · today ' + FRAME.daily.best('calibration') : '')
+          : (watch.best > 0 ? ' · longest watch ' + watch.best : '');
         var mid = watch.on
           ? 'Shift ' + (watch.shifts + 1) + ' — hold an average of <strong>' + (100 * wMark(watch.d)).toFixed(1) +
             '%</strong>.<br><span style="color:var(--muted)">' + wShots(watch.d) + ' shots/round · jumps ' +
-            Math.round(wPjump(watch.d) * 100) + '% likely' + (watch.best > 0 ? ' · longest watch ' + watch.best : '') + '</span>'
+            Math.round(wPjump(watch.d) * 100) + '% likely' + wTail + '</span>'
           : 'Detuning drifts every round.<br>You never see it directly.' +
             (ruthless ? '<br><span style="color:var(--red)">12 shots a round — half the usual.</span>' : '');
         $(root, '[data-r=hud]').innerHTML =
@@ -2980,6 +3059,7 @@
             watch.best = watch.shifts; watch.newBest = true;
             if (W_SAVE && W_SAVE.set) W_SAVE.set(WATCH_KEY, watch.shifts);
           }
+          if (watch.daily) FRAME.daily.record('calibration', watch.shifts);
           watch.d++;
           watchStartShift();
           syncCalMode();
@@ -3007,13 +3087,16 @@
         S.round = 0; S.lastIdx = Math.floor(NBINS / 2); S.delta = null;
         S.deltaHistory = []; S.fidHistory = []; S.lastProbes = []; S.over = false;
         ['trust', 'nudge', 'recalibrate'].forEach(function (n) { var b = $(root, '[data-a=' + n + ']'); if (b) b.disabled = false; });
-        $(root, '[data-r=summary]').innerHTML = '';
+        // the summary is NOT cleared here: on a held shift it carries the shift
+        // you just cleared into the next one as context, and is overwritten when
+        // the next shift ends. watchReset() clears it for a fresh watch.
         while (svg.firstChild) svg.removeChild(svg.firstChild);
         renderHud(); renderDots();
       }
       function watchReset() {
         watch.d = 0; watch.shifts = 0; watch.over = false; watch.newBest = false;
         watchStartShift();
+        $(root, '[data-r=summary]').innerHTML = '';
         $(root, '[data-r=say]').className = 'verdict';
         $(root, '[data-r=say]').innerHTML = 'Shift 1 — hold an average of <strong>' + (100 * wMark(0)).toFixed(1) +
           '%</strong> over ' + g.ROUNDS + ' rounds. The drift is already moving.';
@@ -3069,26 +3152,30 @@
       function syncCalMode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        ['cal', 'watch'].forEach(function (m) {
-          var b = bar.querySelector('[data-gm=' + m + ']');
-          if (!b) return;
-          var on = ((m === 'watch') === watch.on);
+        var cur = !watch.on ? 'cal' : watch.daily ? 'daily' : 'watch';
+        Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
+          var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
           b.style.borderColor = on ? 'var(--teal)' : '';
           b.style.color = on ? 'var(--teal)' : '';
         });
         var wb = $(root, '[data-r=watchbest]');
-        if (wb) wb.textContent = watch.best > 0 ? ('· longest watch: ' + watch.best + ' shift' + (watch.best === 1 ? '' : 's')) : '';
+        if (wb) wb.textContent = watch.daily
+          ? (FRAME.daily.best('calibration') > 0 ? '· today: ' + FRAME.daily.best('calibration') + ' shift' + (FRAME.daily.best('calibration') === 1 ? '' : 's') : '')
+          : (watch.best > 0 ? ('· longest watch: ' + watch.best + ' shift' + (watch.best === 1 ? '' : 's')) : '');
       }
       (function wireCalMode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=cal]').addEventListener('click', function () {
-          watch.on = false; watch.over = false;
+          watch.on = false; watch.daily = false; watch.over = false;
           reset(); syncCalMode();
         });
         bar.querySelector('[data-gm=watch]').addEventListener('click', function () {
-          watch.on = true; watchReset(); syncCalMode();
+          watch.on = true; watch.daily = false; watchReset(); syncCalMode();
+        });
+        bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
+          watch.on = true; watch.daily = true; watchReset(); syncCalMode();
         });
         syncCalMode();
       })();
@@ -3293,7 +3380,47 @@
       }
     };
 
-    return { rng: rng, daySeed: daySeed, loss: loss, ceremony: ceremony,
+    /* ---- THE DAILY CHALLENGE (B3) ---------------------------------------
+       The Contract of the Day is ONE curated challenge for the whole
+       arcade. This is its per-cabinet sibling: each endless mode can seed
+       its generator from `daily.seed(id)` -- a value fixed for (game, day)
+       and identical in every browser -- so everyone faces the same
+       generated run today, and a per-day best is kept beside the all-time
+       one. It is pure localStorage; the per-day record rolls over on its
+       own when the date changes. This is the substrate a leaderboard (B4)
+       reads: daily.todayAll() is a ready payload. */
+    var DKEY = 'symbiq_daily_v1';
+    function dToday() { return new Date().toISOString().slice(0, 10); }
+    function dLoad() { try { return JSON.parse(localStorage.getItem(DKEY)) || {}; } catch (e) { return {}; } }
+    function dSave(s) { try { localStorage.setItem(DKEY, JSON.stringify(s)); } catch (e) {} }
+    var daily = {
+      date: dToday,
+      // a 32-bit seed unique to (game, date); the same everywhere, new at midnight
+      seed: function (id, date) { return daySeed('daily:' + (id || ''), date || dToday()); },
+      // this browser's best for `id` on `date` (default today); 0 if none
+      best: function (id, date) {
+        date = date || dToday();
+        var rec = dLoad()[id];
+        return (rec && rec.date === date) ? (rec.best || 0) : 0;
+      },
+      // keep the max score for the day; roll over on a new date. Returns true
+      // on a new personal daily best (for a "new best!" flourish).
+      record: function (id, score, date) {
+        date = date || dToday();
+        var s = dLoad(), rec = s[id];
+        if (!rec || rec.date !== date) { s[id] = { date: date, best: score }; dSave(s); return true; }
+        if (score > (rec.best || 0)) { rec.best = score; dSave(s); return true; }
+        return false;
+      },
+      // {id: best} for every cabinet recorded today -- a leaderboard payload
+      todayAll: function () {
+        var s = dLoad(), t = dToday(), out = {};
+        for (var k in s) if (s.hasOwnProperty(k) && s[k] && s[k].date === t) out[k] = s[k].best;
+        return out;
+      }
+    };
+
+    return { rng: rng, daySeed: daySeed, loss: loss, ceremony: ceremony, daily: daily,
              CODEX: CODEX, contract: contract };
   })();
 

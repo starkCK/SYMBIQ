@@ -192,19 +192,114 @@
   }
 }
 
-/* ---------------------------------------------------------------- §5
+/* ---------------------------------------------------------------- §6
+   THE SMALL STUFF
+
+   A handful of one-line responses that cost nothing and are the
+   difference between "a website" and "a made thing". Each is
+   feedback (hover / open / select), each eases on a motion.css
+   token, none of them move layout.
+
+   6a. THE CHEVRON TURNS. `.navcat > summary::after` is a "▾"; it
+       flips to point up when the menu is open. A `transition` on a
+       pseudo-element's `transform` -- not a `fill:both` animation --
+       so the motion.css "never animate transform" rule (which is
+       about animations stealing the hover-lift cascade) does not
+       apply.
+   6b. THE NAV UNDERLINE WIPES IN. Today a nav link's underline is a
+       2px border that snaps between transparent and teal. This lays
+       a scaleX(0->1) bar under it that grows from the left on hover
+       and for the active link. `nav a.link` is already
+       position:relative; `::after` is taken by style.css (the 44px
+       touch band) so this is `::before`. The existing border is
+       left alone -- on the active link the two 2px lines simply
+       coincide.
+   6c. MENU ITEMS LEAN IN. `.navmain` shifts 3px right on hover
+       (`translate`, its own property). The row highlight it already
+       has now has somewhere to go.
+   6d. SELECTION IS ON-BRAND. Dragging to select text picks up a
+       teal wash instead of the OS blue.
+   6e. THE SCROLLBAR BELONGS. Thin, violet, transparent track --
+       on the page scroller (via :has, so the rule still only fires
+       on a glass page) and every inner scroll area. */
+@media (prefers-reduced-motion: no-preference) {
+  /* 6a */
+  body[data-glass] .navcat > summary::after {
+    display: inline-block;
+    transition: transform var(--dur-fast, 140ms) var(--ease-out-quint, ease-out),
+                opacity var(--dur-fast, 140ms) var(--ease-out-quint, ease-out);
+  }
+  body[data-glass] .navcat[open] > summary::after {
+    transform: rotate(180deg);
+    opacity: 0.9;
+  }
+
+  /* 6b */
+  body[data-glass] nav a.link::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: var(--teal);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-base, 260ms) var(--ease-out-quint, ease-out);
+  }
+  body[data-glass] nav a.link:hover::before,
+  body[data-glass] nav a.link:focus-visible::before,
+  body[data-glass] nav a.link.active::before {
+    transform: scaleX(1);
+  }
+  /* the wipe bar IS the underline now -- drop style.css's static
+     border on the active link so the two 2px lines don't stack */
+  body[data-glass] nav a.link.active { border-bottom-color: transparent; }
+
+  /* 6c */
+  body[data-glass] .navmain {
+    transition: background var(--dur-fast, 140ms) var(--ease-out-quint, ease-out),
+                translate var(--dur-fast, 140ms) var(--ease-out-quint, ease-out);
+  }
+  body[data-glass] .navmain:hover { translate: 3px 0; }
+}
+
+/* 6d -- not motion-gated, it is a colour */
+body[data-glass] ::selection {
+  background: color-mix(in oklab, var(--teal) 30%, transparent);
+}
+
+/* 6e -- not motion-gated, it is chrome */
+html:has(body[data-glass]) {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--violet) 42%, transparent) transparent;
+}
+body[data-glass] ::-webkit-scrollbar { width: 10px; height: 10px; }
+body[data-glass] ::-webkit-scrollbar-track { background: transparent; }
+body[data-glass] ::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--violet) 34%, transparent);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+body[data-glass] ::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--teal) 42%, transparent);
+  background-clip: padding-box;
+}
+
+/* ---------------------------------------------------------------- §7
    REDUCED MOTION -- belt and braces
 
-   §1-§3 are already inside no-preference queries; this kills the two
-   things that would still move (the menu translate on a UA that
-   ignores the query, the header cast transition) for anyone who
-   asked. */
+   §1-§3, §6 are already inside no-preference queries; this kills the
+   things that would still move on a UA that ignores the query. */
 @media (prefers-reduced-motion: reduce) {
   body[data-glass] .navcat > .navpanel,
   body[data-glass] .sq-account .navpanel,
   body[data-glass] #navcats,
   body[data-glass] nav:not(.rung-rail),
-  body[data-glass] nav:not(.rung-rail)::before {
+  body[data-glass] nav:not(.rung-rail)::before,
+  body[data-glass] nav a.link::before,
+  body[data-glass] .navcat > summary::after,
+  body[data-glass] .navmain {
     transition: none;
     translate: none;
   }

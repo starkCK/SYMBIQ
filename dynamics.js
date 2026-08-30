@@ -94,4 +94,45 @@
     }
   } catch (e) { /* no glint; the frost still stands on its own */ }
 
+  /* ======================================================================
+     3. HOVER-OPEN  — the category menus open on approach, not just click
+     ----------------------------------------------------------------------
+     Desktop, fine-pointer only.  The five <details class="navcat"> menus
+     open on pointer-enter and close a beat after leave; nav.js's own
+     `toggle` listener still closes the siblings, so exclusivity is free.
+     Everything native survives: click still toggles, the summary is still
+     a real focus target, and keyboard use is unaffected (the close is
+     cancelled while focus is inside the menu).  The account menu is left
+     click-only on purpose -- a user menu that springs open on a passing
+     cursor reads as a misfire, not a feature.
+     ==================================================================== */
+  try {
+    var fine = window.matchMedia &&
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (fine && window.innerWidth >= 720) {
+      var menus = [].slice.call(document.querySelectorAll('.navcat'));
+
+      menus.forEach(function (cat) {
+        if (cat.classList.contains('sq-account')) return;
+        var shutT;
+
+        cat.addEventListener('pointerenter', function (ev) {
+          if (ev.pointerType === 'touch') return;
+          window.clearTimeout(shutT);
+          if (!cat.open) cat.open = true;
+        });
+
+        cat.addEventListener('pointerleave', function (ev) {
+          if (ev.pointerType === 'touch') return;
+          window.clearTimeout(shutT);
+          shutT = window.setTimeout(function () {
+            /* don't yank a menu the keyboard is still inside */
+            if (!cat.contains(document.activeElement)) cat.open = false;
+          }, 220);
+        });
+      });
+    }
+  } catch (e) { /* menus stay click-to-open, exactly as before */ }
+
 })();

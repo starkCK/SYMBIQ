@@ -37,6 +37,10 @@
 <link rel="stylesheet" href="vivid.css?v=4">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=3">
+<!-- The spatial-glass layer. Own file, own cache-buster, same rule as
+     motion.css / vivid.css: additive, opt-in via one body attribute,
+     reverts by deleting this <link> and the attribute. -->
+<link rel="stylesheet" href="glass.css?v=1">
 <style>
 .preset { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; margin: 0 6px 6px 0; cursor: pointer; font-size: .85rem; transition: border-color .15s, color .15s, transform .15s; }
 .preset:hover { border-color: var(--teal); transform: translateY(-1px); }
@@ -110,7 +114,7 @@
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
 </head>
-<body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive>
+<body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

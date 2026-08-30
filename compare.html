@@ -37,6 +37,10 @@
 <link rel="stylesheet" href="vivid.css?v=4">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=3">
+<!-- The spatial-glass layer. Own file, own cache-buster, same rule as
+     motion.css / vivid.css: additive, opt-in via one body attribute,
+     reverts by deleting this <link> and the attribute. -->
+<link rel="stylesheet" href="glass.css?v=1">
 <style>
 .modtabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 16px; }
 .modtab { flex: 1 1 auto; min-width: 120px; text-align: left; }
@@ -117,7 +121,7 @@
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
 </head>
-<body data-motion data-rails data-tiers data-rung="L1" data-vivid data-alive>
+<body data-motion data-rails data-tiers data-rung="L1" data-vivid data-alive data-glass>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

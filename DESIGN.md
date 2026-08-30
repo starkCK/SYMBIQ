@@ -156,7 +156,7 @@ The deliberate anti-references: no springy or bouncing motion (a site whose thes
 - **Tonal depth.** A two-step surface ladder plus 1px hairlines carry hierarchy; shadow is a response to state, never a decoration.
 - **One Inter voice** from the 1.9rem hero to the 0.7rem label; hierarchy comes from weight, size and colour, not from a second family.
 - **Motion is feedback plus one ambient layer.** Nothing bounces; the only self-starting motion is a sub-threshold lattice and a slow background breath.
-- **Layered stylesheets.** `style.css` is the shared 24-page base; `motion.css`, `rails.css`, `vivid.css` and `alive.css` are opt-in, separately cache-busted layers.
+- **Layered stylesheets.** `style.css` is the shared 24-page base; `motion.css`, `rails.css`, `vivid.css`, `alive.css` and `glass.css` are opt-in, separately cache-busted layers.
 
 ## Colors
 
@@ -300,6 +300,8 @@ Borders are always `1px`, always the Hairline token or an accent-tinted mix of i
 
   **Never invents an id.** A permalink to a generated slug breaks the first time the page is edited, so the button appears only where an authored id already exists.
 
+- **The glass layer** (`glass.css`, `body[data-glass]`, the same six `data-vivid` pages): a spatial-glass *re-surface*, not a re-theme. A short list of chrome surfaces — the sticky header, the dropdown/account/mobile menus, `.card` / `.introute-card`, `.orhero`, `.gate`, and the two HUD cards — stop being flat opaque panels and read as frosted panes floating over the vivid field: a translucent fill with `backdrop-filter: blur() saturate()`, a 1px top rim light, a hue-tinted (`--indigo`) hairline, and a wide soft downward depth shadow. **No text colour, no contrast-locked token, and `.bigplay` all untouched**; only background, border, box-shadow and backdrop-filter move. **No keyframe animation** — glass here is a static material, so there is nothing for reduced-motion to disable. Translucency lives inside `@supports (backdrop-filter)` with an opaque value declared first, and `@media (prefers-reduced-transparency: reduce)` forces the whole set back to solid. Reversible by removing one attribute and one `<link>`.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -309,7 +311,7 @@ Borders are always `1px`, always the Hairline token or an accent-tinted mix of i
 - **Do** give every control an explicit `min-height: 44px` (and `min-width` for icon-width buttons). A control that clears 44px by accident of its label does not clear it.
 - **Do** keep the primary action a full pill at its current size. If it needs to be more noticeable, reach for the pill silhouette or the gradient — never size, weight, lift or pulse.
 - **Do** define every new colour token in both the unconditional block *and* the `@media (prefers-color-scheme: light)` block, with the light value measured to 4.5:1 for anything that renders as text.
-- **Do** ship new motion or heavy visual layers as their own separately cache-busted stylesheet (`motion.css` / `rails.css` / `vivid.css` / `alive.css`). Editing `style.css` is a 24-page deploy.
+- **Do** ship new motion or heavy visual layers as their own separately cache-busted stylesheet (`motion.css` / `rails.css` / `vivid.css` / `alive.css` / `glass.css`). Editing `style.css` is a 24-page deploy.
 - **Do** let exactly one atmospheric moment run per section — one glow, one wash. Ambient loops run `≥8s` (`--dur-amble`) at under ~5% amplitude and must never draw the eye.
 - **Do** render diagrams as inline SVG in the HTML, inside `.figscroll`, so they are crawlable, survive JS-off, and stay legible at 375px.
 

@@ -316,3 +316,71 @@ create policy "the floor summary is publicly readable"
 
 -- No insert/update/delete policy: the bot uses the service-role key, which
 -- bypasses RLS. An ordinary signed-in user has read and nothing else.
+
+-- ---------------------------------------------------------------------------
+-- B4 — the daily arcade leaderboard (Scorekeeper plan Part 4).
+--
+-- games.js's Daily modes (B3) seed each endless cabinet from the date, so
+-- everyone faces the identical generated run today. This table is where a
+-- signed-in player's daily score lands so it can be compared. Append-only,
+-- same rule as claim_forecasts: a better run inserts a new row, and the
+-- leaderboard is the reduction (max score per user/game/date) computed at
+-- read time. No trust is placed in these numbers beyond a friendly board --
+-- they are self-reported client scores, never a badge or a tier input
+-- (design doc §7.3, the same rule profiles.progress carries).
+-- ---------------------------------------------------------------------------
+
+create table if not exists daily_scores (
+  id       bigserial primary key,
+  user_id  uuid not null references profiles(id) on delete cascade,
+  game     text not null
+             check (game in ('golf','grover','maxcut','volcano','calibration')),
+  day      date not null,
+  score    int  not null check (score >= 0 and score <= 10000),
+  at       timestamptz not null default now()
+);
+
+comment on table daily_scores is
+  'Self-reported daily arcade scores for the leaderboard (B4). Append-only; '
+  'the board is max(score) per (user_id, game, day). Friendly comparison only '
+  '-- never an input to a badge, tier or certificate.';
+
+create index if not exists daily_scores_board_idx
+  on daily_scores (day, game, score desc);
+
+alter table daily_scores enable row level security;
+
+drop policy if exists "daily scores are publicly readable" on daily_scores;
+create policy "daily scores are publicly readable"
+  on daily_scores for select
+  using (true);
+
+drop policy if exists "a user submits only their own daily score" on daily_scores;
+create policy "a user submits only their own daily score"
+  on daily_scores for insert
+  with check (auth.uid() = user_id and day = current_date);
+
+-- No update/delete policy: append-only, enforced by RLS having nothing else
+-- to grant. `day = current_date` in the insert check means a client cannot
+-- backfill or post-date a score.
+
+-- A convenience view for the site's read: the best score per person per game
+-- today, newest name first on ties. The client can also just select+reduce;
+-- this keeps the common query one round trip.
+create or replace view daily_leaderboard as
+  select
+    d.game,
+    d.day,
+    d.user_id,
+    p.handle,
+    p.symbiont_no,
+    max(d.score) as best
+  from daily_scores d
+  join profiles p on p.id = d.user_id
+  where d.day = current_date
+  group by d.game, d.day, d.user_id, p.handle, p.symbiont_no
+  order by d.game, best desc;
+
+comment on view daily_leaderboard is
+  'Today''s best score per player per game. Read-only projection of '
+  'daily_scores; RLS on the base tables still applies through the view.';

@@ -77,6 +77,26 @@
 .medal-meta { display: block; font-size: .78rem; color: var(--muted); }
 .medal-meta b { color: inherit; }
 .medals-foot { font-size: .8rem; color: var(--muted); margin: 10px 0 0; }
+
+/* Today's leaderboard (B4). Page-local, same restraint. Ships hidden and is
+   only ever revealed by leaderboard.js once a signed-in Supabase client
+   exists — with no back end it never appears and makes no request. */
+.lb-card { border-left: 3px solid var(--teal); }
+.lb-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.lb-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--teal);
+}
+.lb-date { font-size: .82rem; color: var(--muted); }
+.lb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.lb-col h4 { margin: 0 0 6px; font-size: .9rem; }
+.lb-list { list-style: none; margin: 0; padding: 0; }
+.lb-list li { display: flex; align-items: baseline; gap: 8px; font-size: .82rem; padding: 2px 0; }
+.lb-rank { color: var(--muted); width: 1.2em; flex: none; }
+.lb-who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-score { font-weight: 700; }
+.lb-unit { font-size: .72rem; color: var(--muted); margin: 4px 0 0; }
+.lb-empty, .lb-foot { font-size: .8rem; color: var(--muted); margin: 6px 0 0; }
 </style>
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
@@ -90,6 +110,7 @@
 <script src="forms.js?v=2" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=2" defer></script>
+<script src="leaderboard.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -276,6 +297,11 @@
     <div class="medals-grid" id="medals-grid"></div>
     <p class="medals-foot">Bronze the first time you clear a mode, then silver and gold for depth. Local to this browser — your <a href="journey.html">Path save</a> carries them, and a save code moves them between devices.</p>
   </div>
+
+  <!-- Today's leaderboard (B4). Ships hidden; leaderboard.js reveals it only
+       when a signed-in Supabase client exists. With no back end it stays
+       absent and makes no request. -->
+  <div class="card lb-card" id="leaderboard" hidden></div>
 
   <!-- The showcase. One mission rebuilt to the new bar, shipped here first so a
        player meets it as a thing on its own rather than being dropped into a

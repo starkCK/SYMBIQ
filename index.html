@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>SymbiQ — Two broken geniuses, fixing each other.</title>
 <meta name="description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with nine games where the mathematics does the judging.">
 <!-- social:start -->
@@ -41,6 +42,8 @@
 <link rel="stylesheet" href="vivid.css?v=4">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=3">
+<!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
+<link rel="stylesheet" href="theme.css?v=1">
 <!-- The spatial-glass layer. Own file, own cache-buster, same rule as
      motion.css / vivid.css: additive, opt-in via one body attribute,
      reverts by deleting this <link> and the attribute. -->
@@ -74,6 +77,7 @@
 <script src="rails.js?v=3" defer></script>
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
+<script src="theme.js?v=1" defer></script>
 <script src="dynamics.js?v=2" defer></script>
 </head>
 <!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover

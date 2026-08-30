@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>What does post-quantum cryptography cost on the wire? | SymbiQ</title>
 <meta name="description" content="Post-quantum TLS is not slower because the maths is slow. It is slower because the keys and signatures are large. Measure the real byte cost in your own browser, with real ML-KEM and ML-DSA keys.">
 <!-- social:start -->
@@ -36,6 +37,8 @@
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=3">
+<!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
+<link rel="stylesheet" href="theme.css?v=1">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -469,6 +472,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <script src="rails.js?v=3" defer></script>
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
+<script src="theme.js?v=1" defer></script>
 </head>
 <body data-motion data-rails data-rung="L4" data-alive>
 <div class="wrap">

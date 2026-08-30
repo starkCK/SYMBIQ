@@ -1,0 +1,395 @@
+/* ================================================================
+   THEME LAYER (2026-08-30)   —   site-wide, all 24 pages
+
+   Turns the site's implicit "follow the OS" scheme into an explicit,
+   remembered CHOICE: System / Light / Dim / Dark, plus two comfort
+   switches (reduce motion, reduce transparency). Pairs with
+   `theme.js`, which writes `data-theme` / `data-motion-pref` /
+   `data-transparency-pref` on <html> and builds the footer control.
+
+   WHY A MIRROR FILE, NOT AN EDIT TO style.css.
+   The whole codebase themes through `@media (prefers-color-scheme)`.
+   An attribute cannot re-trigger a media query, so forcing a scheme
+   against the OS means the token sets have to be re-declared under an
+   attribute selector. Editing style.css to do that is a 24-page
+   cache bump on the shared 2,300-line base; this project's standing
+   rule (see DESIGN.md) is that a scheme experiment must not be that.
+   So the token sets are MIRRORED here, exactly as vivid.css already
+   mirrors style.css's token structure. Specificity + load order do
+   the overriding; nothing existing is touched.
+
+   KEEP IN SYNC. The blocks below mirror, value for value:
+     - base    : style.css  :root (dark) + @media light :root
+     - vivid   : vivid.css  body[data-vivid] (dark) + its light block
+     - glass   : glass.css  body[data-glass] light block (--gl-*)
+     - 7 component rules that style.css only gave an @media-light form
+       (nav active colour, .bigplay, .sqform button, a few more)
+   If any of those move in the source, move them here too. A drift
+   check is cheap: force Light on a light-OS machine and diff against
+   the media-query rendering.
+
+   HOW "SYSTEM" WORKS. theme.js removes the attribute entirely for
+   System, so `@media (prefers-color-scheme)` in style.css is back in
+   charge and this file contributes nothing. Every `[data-theme=...]`
+   block here is inert until a real choice is made.
+   ================================================================ */
+
+/* ---------------------------------------------------------------- §1
+   BASE TOKENS  (mirror of style.css :root + @media light :root)
+
+   `:root[data-theme="light"]` is (0,2,0); style.css's `@media light
+   :root` is (0,1,0); the bare `:root` is (0,1,0). So each block here
+   wins regardless of the OS setting, which is the point. */
+:root[data-theme="light"] {
+  --bg: #f8fafc;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --muted: #526180;
+  --violet: #7c3aed;
+  --teal: #0f766e;
+  --link: #0f766e;
+  --border: #dbe2ef;
+  --nav-bg: rgba(248, 250, 252, 0.85);
+  --dot: rgba(124, 58, 237, 0.06);
+  --glow1: rgba(124, 58, 237, 0.08);
+  --glow2: rgba(13, 148, 136, 0.07);
+  --shadow: rgba(15, 23, 42, 0.08);
+  --h1-a: #0f172a;
+  --h1-b: #7c3aed;
+  --h1-c: #0d9488;
+  --rowhover: rgba(15, 23, 42, 0.04);
+  --green: #15803d;
+  --yellow: #b45309;
+  --red: #b91c1c;
+  --surface-2: #f1f5fb;
+  --surface-3: #e9eff8;
+  color-scheme: light;
+}
+
+/* Dark and Dim share the full dark set; Dim then nudges the surfaces
+   and text softer in §1b. (mirror of style.css :root) */
+:root[data-theme="dark"],
+:root[data-theme="dim"] {
+  --bg: #0b0f1a;
+  --panel: #131a2b;
+  --text: #e8ecf6;
+  --muted: #9aa5bd;
+  --violet: #a78bfa;
+  --teal: #2dd4bf;
+  --link: #2dd4bf;
+  --border: #232d45;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --red: #f87171;
+  --nav-bg: rgba(11, 15, 26, 0.82);
+  --dot: rgba(167, 139, 250, 0.07);
+  --glow1: rgba(139, 92, 246, 0.14);
+  --glow2: rgba(45, 212, 191, 0.10);
+  --shadow: rgba(0, 0, 0, 0.3);
+  --h1-a: #e8ecf6;
+  --h1-b: #a78bfa;
+  --h1-c: #2dd4bf;
+  --rowhover: rgba(148, 163, 184, 0.06);
+  --surface-2: #182134;
+  --surface-3: #1e293f;
+  color-scheme: dark;
+}
+
+/* §1b  DIM — a softer dark. Same hues, same accents, same contrast
+   law; the canvas lifts a little off true black, the text steps back
+   from pure white, the hairlines ease. Nothing here carries meaning
+   that the tier colours or the violet/teal split depend on. */
+:root[data-theme="dim"] {
+  --bg: #0e1420;
+  --panel: #171f30;
+  --text: #d9deea;
+  --muted: #949fb6;
+  --border: #2b3752;
+  --shadow: rgba(0, 0, 0, 0.22);
+  --surface-2: #1c2537;
+  --surface-3: #232e44;
+  --rowhover: rgba(148, 163, 184, 0.05);
+}
+
+/* ---------------------------------------------------------------- §2
+   VIVID TOKENS  (mirror of vivid.css body[data-vivid] + its light
+   block). `data-theme` lives on <html>, so the selector is
+   `:root[data-theme] body[data-vivid]` -- (0,3,1), which outranks
+   vivid.css's own `body[data-vivid]` (0,2,0) whatever the media. */
+:root[data-theme="light"] body[data-vivid] {
+  --bg: #f8fafc;
+  --panel: #ffffff;
+  --panel-2: #eef3fb;
+  --text: #0f172a;
+  --muted: #526180;
+  --violet: #7c3aed;
+  --indigo: #4a5ad0;
+  --teal: #0f766e;
+  --link: #0f766e;
+  --border: #dbe2ef;
+  --green: #15803d;
+  --yellow: #b45309;
+  --red: #b91c1c;
+  --nav-bg: rgba(248, 250, 252, 0.85);
+  --dot: rgba(124, 58, 237, 0.06);
+  --glow1: rgba(124, 58, 237, 0.09);
+  --glow2: rgba(13, 148, 136, 0.08);
+  --glow3: rgba(74, 90, 208, 0.06);
+  --shadow: rgba(15, 23, 42, 0.09);
+  --rowhover: rgba(15, 23, 42, 0.04);
+  --h1-a: #0f172a;
+  --h1-b: #7c3aed;
+  --h1-c: #0d9488;
+  --spectrum: linear-gradient(100deg, #7c3aed, #4a5ad0 46%, #0f766e);
+}
+
+:root[data-theme="dark"] body[data-vivid],
+:root[data-theme="dim"] body[data-vivid] {
+  --bg: #090d17;
+  --panel: #121a2c;
+  --panel-2: #172035;
+  --text: #e8ecf6;
+  --muted: #9aa5bd;
+  --violet: #ab90fb;
+  --indigo: #7f8cf3;
+  --teal: #2ed9c4;
+  --link: #2dd4bf;
+  --border: #26314a;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --red: #f87171;
+  --nav-bg: rgba(9, 13, 23, 0.82);
+  --dot: rgba(167, 139, 250, 0.08);
+  --glow1: rgba(139, 92, 246, 0.16);
+  --glow2: rgba(45, 212, 191, 0.11);
+  --glow3: rgba(127, 140, 243, 0.08);
+  --shadow: rgba(0, 0, 0, 0.34);
+  --h1-a: #e8ecf6;
+  --h1-b: #a78bfa;
+  --h1-c: #2dd4bf;
+  --rowhover: rgba(148, 163, 184, 0.06);
+  --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
+}
+
+:root[data-theme="dim"] body[data-vivid] {
+  --bg: #0c1220;
+  --panel: #151d30;
+  --panel-2: #1b2437;
+  --text: #d9deea;
+  --muted: #949fb6;
+  --border: #2b3752;
+  --shadow: rgba(0, 0, 0, 0.26);
+}
+
+/* ---------------------------------------------------------------- §3
+   GLASS TINTS  (mirror of glass.css body[data-glass] light block).
+   Dark and Dim both use glass.css's own dark tints -- they already
+   read correctly over the dimmer canvas -- so only Light is restated. */
+:root[data-theme="light"] body[data-glass] {
+  --gl-tint:   rgba(255, 255, 255, 0.78);
+  --gl-tint-2: rgba(244, 247, 252, 0.96);
+  --gl-nav:    rgba(248, 250, 252, 0.80);
+  --gl-blur:      16px;
+  --gl-blur-card: 10px;
+  --gl-blur-hero: 6px;
+  --gl-sat:       1.4;
+  --gl-rim:    rgba(255, 255, 255, 0.75);
+  --gl-rim-hi: rgba(255, 255, 255, 0.92);
+  --gl-edge: color-mix(in oklab, var(--indigo, #4a5ad0) 20%, var(--border));
+  --gl-depth:    0 20px 44px -26px rgba(15, 23, 42, 0.18);
+  --gl-depth-hi: 0 28px 58px -28px rgba(15, 23, 42, 0.22);
+  --gl-cast:     color-mix(in oklab, var(--violet) 12%, transparent);
+}
+
+/* ---------------------------------------------------------------- §4
+   COMPONENT RULES THAT WERE @media-LIGHT ONLY
+
+   style.css darkens teal-as-text and re-pairs the CTA gradient for
+   light backgrounds inside `@media (prefers-color-scheme: light)`.
+   Those never fire when Light is FORCED on a dark-OS machine, so the
+   contrast fixes they carry would be lost. Re-key them to
+   `[data-theme="light"]`; and because forcing Dark/Dim on a LIGHT-OS
+   machine makes the media versions fire wrongly, restate the dark
+   forms too. (0,2,x) — beats the (0,1,x) media rules. */
+
+/* -- forced LIGHT -- */
+:root[data-theme="light"] .navcat[open] > summary,
+:root[data-theme="light"] .navcat.navcat-cur > summary,
+:root[data-theme="light"] .navmain.active,
+:root[data-theme="light"] .navchip { color: #0f766e; }
+
+:root[data-theme="light"] .bigplay {
+  background: linear-gradient(135deg, #0f766e, #115e59);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(17, 94, 89, 0.18);
+}
+:root[data-theme="light"] .bigplay:hover { box-shadow: 0 5px 14px rgba(17, 94, 89, 0.24); }
+:root[data-theme="light"] .bigplay.ghost {
+  background: transparent; color: #0f766e; border-color: #0f766e;
+}
+
+:root[data-theme="light"] .sqform button {
+  background: linear-gradient(135deg, #0f766e, #115e59);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(17, 94, 89, 0.22);
+}
+:root[data-theme="light"] .sqform button:hover { box-shadow: 0 10px 22px rgba(17, 94, 89, 0.3); }
+:root[data-theme="light"] .sqform button.ghost { color: #0f766e; border-color: #0f766e; }
+
+:root[data-theme="light"] .introute-card.resume .pg { color: #0f766e; }
+:root[data-theme="light"] .rung-dot.is-cur { color: #f8fafc; }
+:root[data-theme="light"] ::selection { background: rgba(124, 58, 237, 0.22); }
+
+/* -- forced DARK / DIM on a light-OS machine: hold the dark forms -- */
+:root[data-theme="dark"] .bigplay,
+:root[data-theme="dim"] .bigplay {
+  background: linear-gradient(135deg, var(--violet), var(--teal));
+  color: #04211d;
+}
+:root[data-theme="dark"] .bigplay.ghost,
+:root[data-theme="dim"] .bigplay.ghost {
+  background: transparent; color: var(--teal); border-color: var(--teal);
+}
+:root[data-theme="dark"] .sqform button,
+:root[data-theme="dim"] .sqform button {
+  background: linear-gradient(135deg, var(--teal), #22b8a6);
+  color: #04211d;
+  box-shadow: 0 6px 16px rgba(45, 212, 191, 0.22);
+}
+:root[data-theme="dark"] .navcat[open] > summary,
+:root[data-theme="dim"] .navcat[open] > summary,
+:root[data-theme="dark"] .navmain.active,
+:root[data-theme="dim"] .navmain.active,
+:root[data-theme="dark"] .navchip,
+:root[data-theme="dim"] .navchip { color: var(--teal); }
+
+/* ---------------------------------------------------------------- §5
+   THE TWO COMFORT SWITCHES
+
+   `prefers-reduced-motion` / `prefers-reduced-transparency` are the
+   right primary signal and every layer already honours them. These
+   let a visitor dial the same thing back explicitly, per-site, when
+   their OS setting says otherwise. Broad `!important` sweeps, the
+   same shape a UA reset uses. */
+:root[data-motion-pref="reduce"] *,
+:root[data-motion-pref="reduce"] *::before,
+:root[data-motion-pref="reduce"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+:root[data-motion-pref="reduce"] { scroll-behavior: auto !important; }
+
+:root[data-transparency-pref="reduce"] *,
+:root[data-transparency-pref="reduce"] *::before,
+:root[data-transparency-pref="reduce"] *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* with the blur gone the frosted surfaces must not be left see-through */
+:root[data-transparency-pref="reduce"] body[data-glass] nav:not(.rung-rail) { background: var(--nav-bg) !important; }
+:root[data-transparency-pref="reduce"] body[data-glass] .navpanel,
+:root[data-transparency-pref="reduce"] body[data-glass] #navcats,
+:root[data-transparency-pref="reduce"] body[data-glass] .sq-account .navpanel,
+:root[data-transparency-pref="reduce"] body[data-glass] .card,
+:root[data-transparency-pref="reduce"] body[data-glass] .introute-card,
+:root[data-transparency-pref="reduce"] body[data-glass] .hud-return,
+:root[data-transparency-pref="reduce"] body[data-glass] .hud-contract { background: var(--panel) !important; }
+
+/* ---------------------------------------------------------------- §6
+   THE APPEARANCE CONTROL   (built by theme.js, appended to <footer>)
+
+   A quiet block: a label, a four-way segmented switch, and two
+   toggles. Uses the site's own tokens and the --sp / --r scale, so
+   it re-themes with everything else and needs no dark/light fork. */
+.sq-appear {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  font-size: 0.8rem;
+}
+.sq-appear-lab {
+  font-size: 0.7rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+.sq-seg {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill, 999px);
+  background: var(--surface-2);
+}
+.sq-seg button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  min-height: 32px;
+  border-radius: var(--r-pill, 999px);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.sq-seg button:hover { color: var(--text); }
+.sq-seg button[aria-pressed="true"] {
+  color: var(--text);
+  background: var(--panel);
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.sq-seg button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.sq-appear-tog {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.sq-appear-tog input {
+  appearance: none;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  flex: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sq-appear-tog input::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--muted);
+  transform: translateY(-50%);
+  transition: transform 0.16s var(--ease-out-quint, ease-out), background 0.15s ease;
+}
+.sq-appear-tog input:checked {
+  background: color-mix(in oklab, var(--teal) 30%, var(--surface-2));
+  border-color: color-mix(in oklab, var(--teal) 50%, var(--border));
+}
+.sq-appear-tog input:checked::after {
+  transform: translateY(-50%) translateX(14px);
+  background: var(--teal);
+}
+.sq-appear-tog input:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sq-seg button, .sq-appear-tog input, .sq-appear-tog input::after { transition: none; }
+}

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>Privacy — SymbiQ</title>
 <meta name="description" content="What SymbiQ stores, measures and never collects. No accounts, no advertising cookies, cookieless analytics, and progress kept on your own device.">
 <!-- social:start -->
@@ -36,6 +37,8 @@
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=3">
+<!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
+<link rel="stylesheet" href="theme.css?v=1">
 <script src="nav.js?v=8" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=3" defer></script>
@@ -54,6 +57,7 @@
 <script src="rails.js?v=3" defer></script>
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
+<script src="theme.js?v=1" defer></script>
 </head>
 <body data-motion data-rails data-alive>
 <div class="wrap">

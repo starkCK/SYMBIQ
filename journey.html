@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Solver's Path — SymbiQ</title>
 <meta name="description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real quantum mechanics, wearing an adventure.">
 <!-- social:start -->
@@ -36,6 +37,8 @@
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="alive.css?v=1">
 <link rel="stylesheet" href="hud.css?v=3">
+<!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
+<link rel="stylesheet" href="theme.css?v=1">
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
 <script src="games.js?v=35"></script>
@@ -287,6 +290,7 @@
 <script src="rails.js?v=3" defer></script>
 <script src="alive.js?v=1" defer></script>
 <script src="hud.js?v=2" defer></script>
+<script src="theme.js?v=1" defer></script>
 </head>
 <body data-motion data-rails data-alive>
 <div id="static-veil" aria-hidden="true"></div>

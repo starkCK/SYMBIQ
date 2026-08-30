@@ -51,10 +51,36 @@
 .contract-go { margin-left: 8px; }
 .contract-status .ok { color: var(--teal); font-weight: 600; }
 .contract-status .todo { color: var(--muted); }
+
+/* Your medals. Page-local for the same reason the Contract card is: it lives
+   only on the Arcade, and style.css is shared by 24 pages. Restrained — a
+   tinted card, a small grid, no louder than .showcase. */
+.medals-card { border-left: 3px solid var(--violet); }
+.medals-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.medals-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--violet);
+}
+.medals-sum { font-size: .82rem; font-weight: 600; color: var(--muted); }
+.medals-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.medal-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px;
+}
+.medal-ico { font-size: 1.3rem; line-height: 1; width: 1.4em; text-align: center; flex: none; }
+.medal-ico.none { filter: grayscale(1); opacity: .35; }
+.medal-body { min-width: 0; }
+.medal-name { display: block; font-weight: 600; font-size: .9rem; }
+.medal-meta { display: block; font-size: .78rem; color: var(--muted); }
+.medal-meta b { color: inherit; }
+.medals-foot { font-size: .8rem; color: var(--muted); margin: 10px 0 0; }
 </style>
 <script src="save.js"></script>
 <script src="coherence.js?v=1"></script>
-<script src="games.js?v=29"></script>
+<script src="games.js?v=30"></script>
 <script src="scene.js?v=4"></script>
 <script src="missions.js?v=9"></script>
 <script src="nav.js?v=8" defer></script>
@@ -240,6 +266,17 @@
     <div class="contract-status" id="contract-status"></div>
   </div>
 
+  <!-- Your medals. Mounted by the inline script once games.js is up; stays
+       absent (not empty) if the module fails to load or you have no bests. -->
+  <div class="card medals-card" id="medals-card" hidden>
+    <div class="medals-head">
+      <span class="medals-tag">Your medals</span>
+      <span class="medals-sum" id="medals-sum"></span>
+    </div>
+    <div class="medals-grid" id="medals-grid"></div>
+    <p class="medals-foot">Bronze the first time you clear a mode, then silver and gold for depth. Local to this browser — your <a href="journey.html">Path save</a> carries them, and a save code moves them between devices.</p>
+  </div>
+
   <!-- The showcase. One mission rebuilt to the new bar, shipped here first so a
        player meets it as a thing on its own rather than being dropped into a
        rebuilt Act II after an unchanged Act I. The bare engine is still on the
@@ -411,6 +448,7 @@
 
   function onGameWin(id) {
     drawCabs();
+    paintMedals();
     // Same problem the Path had: winning left you at the bottom of a
     // finished machine with nothing saying where to go. Say it, loudly.
     var order = GS.list.map(function (g) { return g.id; });
@@ -510,6 +548,64 @@
     C.onchange = paint;
     paint();
   })();
+
+  /* -------------------------------------------------------------------
+   * YOUR MEDALS. games.js owns the bests, the thresholds and the medal
+   * logic (SymbiQ.games.medals); this paints the card. Nothing for a
+   * browser with no bests at all — an empty scoreboard is clutter, same
+   * rule as hud.js. Repaints on any game win and on any save change.
+   * ----------------------------------------------------------------- */
+  var ICON = { gold: '🥇', silver: '🥈', bronze: '🥉', none: '🏅' };
+  function paintMedals() {
+    var M = GS.medals, card = document.getElementById('medals-card');
+    if (!M || !card) return;
+    var rows;
+    try { rows = M.table(); } catch (e) { return; }
+    var any = rows.some(function (r) { return r.best > 0; });
+    if (!any) { card.hidden = true; return; }
+
+    var sum = M.summary();
+    var parts = [];
+    if (sum.gold)   parts.push(sum.gold + ' ' + ICON.gold);
+    if (sum.silver) parts.push(sum.silver + ' ' + ICON.silver);
+    if (sum.bronze) parts.push(sum.bronze + ' ' + ICON.bronze);
+    document.getElementById('medals-sum').textContent = parts.join('  ');
+
+    document.getElementById('medals-grid').innerHTML = rows.map(function (r) {
+      var meta;
+      if (r.best === 0) {
+        meta = 'not started — ' + r.mode;
+      } else if (r.next) {
+        meta = '<b>' + r.best + '</b> ' + r.unit + ' · ' + r.next.tier + ' at ' + r.next.at;
+      } else {
+        meta = '<b>' + r.best + '</b> ' + r.unit + ' · gold, maxed';
+      }
+      return '<div class="medal-row">' +
+        '<span class="medal-ico ' + r.medal + '">' + ICON[r.medal] + '</span>' +
+        '<span class="medal-body">' +
+          '<span class="medal-name">' + r.title + '</span>' +
+          '<span class="medal-meta">' + meta + '</span>' +
+        '</span></div>';
+    }).join('');
+    card.hidden = false;
+  }
+  paintMedals();
+  // Chain save.onchange so a bump/best anywhere repaints the card. Chaining,
+  // not claiming: whatever is already there (hud.js chains it too) keeps working.
+  try {
+    var SV = window.SymbiQ && SymbiQ.save;
+    if (SV && !SV._medalsChained) {
+      var prevOnChange = SV.onchange;
+      SV.onchange = function () {
+        if (typeof prevOnChange === 'function') { try { prevOnChange.apply(this, arguments); } catch (e) {} }
+        paintMedals();
+      };
+      SV._medalsChained = true;
+    }
+    window.addEventListener('storage', function (e) {
+      if (!e || e.key === null || e.key === 'symbiq.solverpath.v1') paintMedals();
+    });
+  } catch (e) {}
 })();
 </script>
 </body>

@@ -1919,6 +1919,13 @@
           var best = w.slice().sort(function (a, b) { return a.max - b.max; });
           if (w.length === 1) score[best[0].p] += 1;
           else { score[best[0].p] += 1; if (best[1].p !== best[0].p) score[best[1].p] += 0.5; }
+          // B1 medals: a win by the human (X) against the Hard computer / the
+          // Ruthless Adversary is one tick toward a Quantum Tic-Tac-Toe medal.
+          // Pass & play and "Pass a link" (opponent 'human') never count, nor
+          // does the Easy computer.
+          if (opponent === 'ai' && aiStrength === 'hard' && best[0].p === 'X') {
+            try { MEDALS.bump('qttt'); } catch (e) {}
+          }
           var cer = mission ? '' : FRAME.ceremony('qttt', {
             first: firstQttt, head: best[0].p + ' completed a line',
             lines: [
@@ -2933,7 +2940,7 @@
         ['trust', 'nudge', 'recalibrate'].forEach(function (n) { $(root, '[data-a=' + n + ']').disabled = true; });
         var again = $(root, '[data-a=again]');
         if (again) again.addEventListener('click', reset);
-        if (beat) win('calibration', opts);
+        if (beat) { win('calibration', opts); try { MEDALS.bump('calibration'); } catch (e) {} }
         emit();
       }
 
@@ -3163,6 +3170,95 @@
   })();
 
   /* ==================================================================== *
+   *  MEDALS — personal bests + bronze / silver / gold, per cabinet.      *
+   *                                                                      *
+   *  Scorekeeper plan, Part 4 (B1): the arcade records a best for each   *
+   *  score-chase cabinet and shows almost none of it. This surfaces one  *
+   *  number per machine and puts a medal on it. localStorage ONLY — no   *
+   *  back end (that is B4). It never touches an engine's physics: for    *
+   *  the four endless modes it just READS the best the mode already      *
+   *  saves; for the two that had no score-chase it adds a plain +1       *
+   *  counter, written from the same win path the ceremony already fires  *
+   *  on (a save-bag write, exactly like grover.deepdive.best).           *
+   *                                                                      *
+   *    golf / grover / maxcut / volcano                                  *
+   *        -> the endless mode's own saved best (holes / corridors /     *
+   *           cities / descents)                                         *
+   *    calibration -> clean runs: games that beat every fixed strategy   *
+   *    qttt        -> wins against The Adversary (the Hard computer)     *
+   *                                                                      *
+   *  THRESHOLDS are difficulty calls, NOT proven optima — the same       *
+   *  status as the Ruthless `bar` pass marks. tools/verify_medals.py     *
+   *  proves what can be proved: strict ordering everywhere; every        *
+   *  endless bronze == 1 (= clear the mode's first level, which that     *
+   *  mode's own accept gate already proves winnable); every endless      *
+   *  gold below its mode's structural ceiling and reachable by flawless  *
+   *  play (it re-uses the budget_perfect proof from each mode's own      *
+   *  verifier); the count thresholds ascending positive integers.       *
+   * ==================================================================== */
+  var MEDALS = (function () {
+    // The key each cabinet's best lives under. The first four are the exact
+    // keys the endless modes already write (see DD_KEY / DESC_KEY / SP_KEY /
+    // LG_KEY above); the last two are new, written only by bump() below.
+    var KEY = {
+      golf: 'golf.longgame.best', grover: 'grover.deepdive.best',
+      maxcut: 'maxcut.sprawl.best', volcano: 'volcano.descent.best',
+      calibration: 'calibration.medalcount', qttt: 'qttt.medalcount'
+    };
+    // bronze < silver < gold, per cabinet. verify_medals.py enforces the order
+    // and the attainability of gold.
+    var TIERS = {
+      golf:        { bronze: 1, silver: 6, gold: 12, unit: 'holes',      mode: 'The Long Game' },
+      grover:      { bronze: 1, silver: 5, gold: 10, unit: 'corridors',  mode: 'Deep Dive' },
+      maxcut:      { bronze: 1, silver: 5, gold: 10, unit: 'cities',     mode: 'The Sprawl' },
+      volcano:     { bronze: 1, silver: 4, gold: 8,  unit: 'descents',   mode: 'The Descent' },
+      calibration: { bronze: 1, silver: 5, gold: 12, unit: 'clean runs', mode: 'beat every fixed strategy' },
+      qttt:        { bronze: 1, silver: 5, gold: 12, unit: 'wins',       mode: 'vs The Adversary' }
+    };
+    var ORDER = ['golf', 'grover', 'maxcut', 'volcano', 'qttt', 'calibration'];
+
+    function save() { return window.SymbiQ && SymbiQ.save; }
+    function bestOf(id) {
+      var S = save();
+      var v = (S && S.get) ? +S.get(KEY[id], 0) : 0;
+      return (isFinite(v) && v > 0) ? Math.floor(v) : 0;
+    }
+    // +1 to a COUNT cabinet's tally (calibration / qttt). The four endless
+    // modes never call this — they write their own best directly.
+    function bump(id) {
+      var S = save();
+      if (!S || !S.set || (id !== 'calibration' && id !== 'qttt')) return bestOf(id);
+      var n = bestOf(id) + 1;
+      try { S.set(KEY[id], n); } catch (e) {}
+      return n;
+    }
+    function medalOf(id) {
+      var t = TIERS[id], b = bestOf(id);
+      var got = b >= t.gold ? 'gold' : b >= t.silver ? 'silver' : b >= t.bronze ? 'bronze' : 'none';
+      var next = got === 'gold' ? null
+               : got === 'silver' ? { tier: 'gold', at: t.gold }
+               : got === 'bronze' ? { tier: 'silver', at: t.silver }
+               : { tier: 'bronze', at: t.bronze };
+      return { medal: got, best: b, next: next };
+    }
+    function table() {
+      return ORDER.map(function (id) {
+        var m = medalOf(id), t = TIERS[id];
+        return { id: id, title: (G[id] && G[id].title) || id, mode: t.mode, unit: t.unit,
+                 best: m.best, medal: m.medal, next: m.next,
+                 bronze: t.bronze, silver: t.silver, gold: t.gold };
+      });
+    }
+    function summary() {
+      var c = { gold: 0, silver: 0, bronze: 0, none: 0 };
+      ORDER.forEach(function (id) { c[medalOf(id).medal]++; });
+      return c;
+    }
+    return { KEY: KEY, TIERS: TIERS, order: ORDER,
+             bestOf: bestOf, bump: bump, medalOf: medalOf, table: table, summary: summary };
+  })();
+
+  /* ==================================================================== *
    *  DIFFICULTY — one selector, in the site's own language, in the chrome *
    *                                                                      *
    *  Scorekeeper plan, Part 4: "every cabinet gets 🟢 First time (guided, *
@@ -3275,6 +3371,7 @@
   window.SymbiQ.games = {
     all: G,
     frame: FRAME,
+    medals: MEDALS,
     levels: LEVELS.IDS,
     level: LEVELS.get,
     setLevel: LEVELS.set,

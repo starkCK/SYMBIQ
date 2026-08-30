@@ -1702,6 +1702,7 @@
          ?qg= query param, no server involved. */
       var opponent = ruthless ? 'ai' : 'human';   // 'human' | 'ai'
       var aiStrength = 'hard';                      // 'easy' | 'hard'
+      var handoff = false;                          // A2: pass-the-device interstitial (pass & play only)
       var linkMode = false, localSide = 'X';
       var LINKPARAM = 'qg';
       var incoming = null;
@@ -1725,11 +1726,13 @@
               '<button class="preset" type="button" data-diff="easy">Easy</button>' +
               '<button class="preset" type="button" data-diff="hard">Hard</button>' +
             '</span>' +
+            '<label data-r="handoffwrap" style="display:none;align-items:center;gap:5px;color:var(--muted);cursor:pointer">' +
+              '<input type="checkbox" data-r="handoff"> pass-the-device prompt</label>' +
           '</div>') +
         '<div class="turnbar"><span class="who X on" data-r="wx">X</span>' +
         '<span style="color:var(--muted);font-size:.85rem" data-r="phase">pick two squares</span>' +
         '<span class="who O" data-r="wo">O</span></div>' +
-        '<div class="qboard">' +
+        '<div class="qboard" style="position:relative">' +
           '<div class="qgrid" data-r="grid"></div>' +
           '<svg class="qthreads" data-r="threads" aria-hidden="true"></svg>' +
         '</div>' +
@@ -1748,6 +1751,8 @@
       function reset() {
         moves = []; classical = {}; turn = 'X'; sel = []; moveNo = 1;
         phase = 'place'; pending = null; score = { X: 0, O: 0 };
+        var veil = root.querySelector('.qhandoff');
+        if (veil && veil.parentNode) veil.parentNode.removeChild(veil);
         draw('Place a mark in <strong>two</strong> squares — it lives in both until a loop forces a measurement.');
       }
       function edgesOf() { return moves.map(function (m, i) { return [i, m.a, m.b]; }); }
@@ -1942,6 +1947,33 @@
       }
       // threads are measured from live layout, so they must be re-measured on resize
       window.addEventListener('resize', drawThreads);
+
+      /* A2 — the pass-the-device interstitial. Opt-in (a checkbox in the mode
+         bar), pass & play only. On a turn change it lays a veil over the board
+         naming whose turn it now is, cleared by a "ready" tap. QTTT is open
+         information, so this is a turn-boundary marker on a shared device, not
+         a secrecy screen -- and it is off by default, because the two-human
+         hot-seat already worked without it. Inline-styled like the mode bars. */
+      function showHandoff() {
+        if (!handoff || linkMode || opponent !== 'human' || phase === 'over') return;
+        var board = $(root, '.qboard');
+        if (!board) return;
+        var old = board.querySelector('.qhandoff');
+        if (old) old.parentNode.removeChild(old);
+        var veil = document.createElement('div');
+        veil.className = 'qhandoff';
+        veil.setAttribute('style',
+          'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;' +
+          'background:var(--panel,#0d1117);border-radius:10px;z-index:5;text-align:center');
+        veil.innerHTML =
+          '<div><p style="margin:0 0 10px;font-size:.95rem">Pass the device to <strong>' + turn + '</strong>.</p>' +
+          '<button type="button" class="preset" data-r="handoff-go">' + turn + ' is ready ▸</button></div>';
+        veil.querySelector('[data-r=handoff-go]').addEventListener('click', function () {
+          if (veil.parentNode) veil.parentNode.removeChild(veil);
+        });
+        board.appendChild(veil);
+      }
+
       function click(s) {
         if (phase === 'collapse' || phase === 'over' || classical[s]) return;
         if (opponent === 'ai' && turn === 'O') return;   // O is the computer's to play
@@ -1973,6 +2005,7 @@
           draw('<strong>' + last.p + '<sub>' + last.n + '</sub> is now in two squares at once.</strong> ' +
             'The thread between them is real — neither square is decided until something forces the question. No ring yet.');
         }
+        showHandoff();
         maybeAI();
       }
       function chooseGhost(sq, mi) {
@@ -2016,6 +2049,7 @@
         }
         turn = turn === 'X' ? 'O' : 'X';
         draw('Collapsed. The ghosts in that tangle are now real. Play on.', 'good');
+        showHandoff();
         maybeAI();
       }
 
@@ -2214,6 +2248,8 @@
         Array.prototype.forEach.call(bar.querySelectorAll('[data-diff]'), function (b) {
           b.addEventListener('click', function () { aiStrength = b.getAttribute('data-diff'); syncModeUI(); reset(); });
         });
+        var hb = $(root, '[data-r=handoff]');
+        if (hb) hb.addEventListener('change', function () { handoff = !!this.checked; });
       }
       function syncModeUI() {
         var bar = $(root, '[data-r=modebar]');
@@ -2227,6 +2263,8 @@
         });
         var dw = $(root, '[data-r=diffwrap]');
         if (dw) dw.style.display = (opponent === 'ai' && !linkMode) ? 'inline-flex' : 'none';
+        var hw = $(root, '[data-r=handoffwrap]');
+        if (hw) hw.style.display = (opponent === 'human' && !linkMode) ? 'inline-flex' : 'none';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-diff]'), function (b) {
           var on = b.getAttribute('data-diff') === aiStrength;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -2836,7 +2874,7 @@
       link: 'circuits.html#calibration', linkText: 'The physics this reuses ▸', tier: '⟦Proven⟧',
       or: 'Choosing when to explore vs. exploit under a fixed budget is a bandit problem'
     },
-    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. <strong>The Long Watch</strong> (a Standard-mode option) is an endless run of ten-round shifts. The physics is <em>unchanged</em> &mdash; same detuning range, same Rabi formula &mdash; but each shift raises the jump rate and the drift speed, shrinks the shot budget, and lifts the target average you must hit, from a gentle 58.5% toward 71% &mdash; which sits at a reactive reader&rsquo;s mean plus about one standard deviation, so a strong shift clears it and an average one does not. Clear a shift and the next is harder; miss the target and the watch ends. Measured over 6,000 games per shift by <code>tools/verify_calibration_longwatch.py</code>: a reactive reader beats the best fixed strategy on average fidelity at <em>every</em> difficulty (by 2.4&ndash;3.4 points), its clear rate exceeds any fixed strategy&rsquo;s by 6&ndash;13 points once the target bites, and stays above 37% even at the hardest shift &mdash; a stretch, never a wall. A <strong>Daily Watch</strong> option keeps a per-day best of the shift count: the escalation curve is already a pure function of the shift number, so it is the same challenge for everyone today, and only the drift luck differs &mdash; the same honesty the base game already states. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>, <code>tools/verify_calibration_longwatch.py</code>, <code>tools/verify_daily.py</code>.',
+    honest: 'Honest model: the physics is the generalized detuned Rabi formula, P1(t;&Omega;,&Delta;) = (&Omega;&sup2;/(&Omega;&sup2;+&Delta;&sup2;))&middot;sin&sup2;(&radic;(&Omega;&sup2;+&Delta;&sup2;)&middot;t/2) — standard driven-two-level-system physics, and at &Delta;=0 it reduces <strong>exactly</strong> to <a href="circuits.html#calibration">circuits.html\'s own shipped Rabi formula</a> (checked to machine precision). &Omega; is fixed, a device constant; only the detuning &Delta; drifts round to round (small continuous drift, plus a 25% chance each round of a real jump to a fresh value) — the realistic scenario, since drive amplitude is normally calibrated separately from the resonance frequency drift that flux and TLS noise actually cause. Every measurement shown is a genuine Bernoulli sample of the true P1 at that drive duration, not an exact readout. <strong>Found empirically, not tuned to look good:</strong> Trust averages 0.640 fidelity, Nudge 0.634, Recalibrate 0.668, all measured over 8,000 simulated games — and a simple reactive rule (Recalibrate only right after a low-fidelity round, else Nudge) reaches 0.693, beating every fixed strategy, confirmed across three independent seed blocks and four reactive thresholds. That margin is real but not total: on some individual drift trajectories a fixed strategy still wins (checked directly — Nudge alone beats the reactive rule on 2 of 5 example seeds), because reading a genuinely noisy signal and reacting to it is better <em>on average</em>, not a guarantee. A human reading the actual scan trace below has more information than this simple threshold rule ever used, and may well do better still. The <strong>🔴 Ruthless</strong> card ("Budget Crunch") halves the shot budget to 12 a round: measured the same way over 8,000 games, Recalibrate — the best fixed play at full budget — <strong>collapses from 0.667 to 0.602, below Trust at 0.640</strong>, because a two-shot probe is mostly noise; a reactive reader still clears every fixed strategy at 0.655. <strong>The Long Watch</strong> (a Standard-mode option) is an endless run of ten-round shifts. The physics is <em>unchanged</em> &mdash; same detuning range, same Rabi formula &mdash; but each shift raises the jump rate and the drift speed, shrinks the shot budget, and lifts the target average you must hit, from a gentle 58.5% toward 71% &mdash; which sits at a reactive reader&rsquo;s mean plus about one standard deviation, so a strong shift clears it and an average one does not. Clear a shift and the next is harder; miss the target and the watch ends. Measured over 6,000 games per shift by <code>tools/verify_calibration_longwatch.py</code>: a reactive reader beats the best fixed strategy on average fidelity at <em>every</em> difficulty (by 2.4&ndash;3.4 points), its clear rate exceeds any fixed strategy&rsquo;s by 6&ndash;13 points once the target bites, and stays above 37% even at the hardest shift &mdash; a stretch, never a wall. A <strong>Daily Watch</strong> option keeps a per-day best of the shift count: the escalation curve is already a pure function of the shift number, so it is the same challenge for everyone today, and only the drift luck differs &mdash; the same honesty the base game already states. That also makes it the two-player mode: both players run the day&rsquo;s Daily Watch and compare shift counts, on the leaderboard or side by side. Verification scripts: <code>tools/verify_calibration_agent.py</code>, <code>tools/verify_calibration_ruthless.py</code>, <code>tools/verify_calibration_longwatch.py</code>, <code>tools/verify_daily.py</code>.',
     OMEGA: 1.5, TMAX: 2.6, NBINS: 26, SHOTS: 24, ROUNDS: 10, PJUMP: 0.25, DDRIFT: 0.05,
     DMIN: -1.6, DMAX: 1.6, NPROBES: 6, NUDGEWIN: 1,
 

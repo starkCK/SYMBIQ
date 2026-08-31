@@ -1,4 +1,4 @@
-/* SymbiQ — The Question archive, defined once and mounted anywhere.
+/* SymbiQ, The Question archive, defined once and mounted anywhere.
  *
  *   SymbiQ.archive.mount(el, { limit, open })
  *
@@ -8,7 +8,7 @@
  * WHY IT IS ON THE HOMEPAGE: the archive existed from 2026-07-29 but was
  * reachable only from inside the Lattice overlay. A reader standing on the
  * homepage, noticing yesterday's question had gone, had no visible way back
- * to it — so as far as they were concerned the questions still vanished.
+ * to it, so as far as they were concerned the questions still vanished.
  * Reported by Chinmoy 2026-07-30. Discoverability is not a smaller problem
  * than storage; a thing you cannot find is a thing you do not have.
  */
@@ -53,7 +53,7 @@
 
         host.innerHTML =
           (o.heading ? '<p class="archq-count">' + entries.length + ' question' +
-            (entries.length === 1 ? '' : 's') + ' asked so far. Newest first — open any one for the answer ' +
+            (entries.length === 1 ? '' : 's') + ' asked so far. Newest first, open any one for the answer ' +
             'and all three explanations.</p>' : '') +
           shown.map(function (e) {
             return '<details class="archq" data-date="' + esc(e.date) + '">' +

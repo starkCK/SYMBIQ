@@ -1,4 +1,4 @@
-/* SymbiQ — alive.js
+/* SymbiQ, alive.js
  * ============================================================================
  * THE RESPONSE LAYER.  Pairs with alive.css; both are gated on
  * <body data-alive>.  Three things, all of them replies to something the
@@ -8,6 +8,7 @@
  *   2. PERMALINK    every id'd heading can hand you its own deep link
  *   3. UNFOLD       <details> opens and closes with a height instead of a cut
  *   4. READBAR      the one page that never got tiers.js gets its progress bar
+ *   5. VERDICT      a widget re-answers -> the banner resolves in its own colour
  *
  * SAFETY CONTRACT, same as nav.js's: this file is pure enhancement.  It adds
  * no class that hides content, it removes nothing from the DOM, every entry
@@ -459,11 +460,85 @@
     } catch (e) {}
   }
 
+  /* ======================================================================
+     5. THE VERDICT
+     ----------------------------------------------------------------------
+     Every widget answers you through a .verdict banner. The first answer
+     fades up (style.css); the ones after it just swap text. This marks a
+     .verdict for ~0.9s whenever its content actually changes AFTER the
+     page has settled, so alive.css can resolve light in the banner's own
+     colour. #dq-out (the daily Question's result box) carries no .verdict
+     class of its own but plays the same role, so it is watched too.
+
+     One MutationObserver per element, childList + characterData + subtree.
+     A short arm-delay after boot keeps the initial render from counting as
+     a change. The attribute is cleared on animationend with a timeout
+     backstop, exactly like arrival. Pure enhancement: no observer, no
+     harm; the widgets already worked without this.
+     ==================================================================== */
+  var VERDICT_MS = 900;
+
+  function flareVerdict(el) {
+    try {
+      if (el.hasAttribute('data-sq-verdict')) return;
+      function clr(e) {
+        if (e && e.target !== el) return;
+        el.removeEventListener('animationend', clr);
+        el.removeAttribute('data-sq-verdict');
+      }
+      el.addEventListener('animationend', clr);
+      window.setTimeout(function () { clr(null); }, VERDICT_MS + 350);
+      /* force the animation to restart even if the attribute was just cleared */
+      el.removeAttribute('data-sq-verdict');
+      void el.offsetWidth;
+      el.setAttribute('data-sq-verdict', '');
+    } catch (e) {}
+  }
+
+  function bindVerdicts() {
+    if (!('MutationObserver' in window)) return;
+    var seen = [];
+    function watch(el) {
+      if (!el || seen.indexOf(el) !== -1) return;
+      seen.push(el);
+      var armed = false;
+      window.setTimeout(function () { armed = true; }, 400);
+      var pending = 0;
+      var mo = new MutationObserver(function () {
+        if (!armed) return;
+        /* debounce a burst of mutations into one flare; setTimeout rather
+           than rAF so a backgrounded tab still resolves it on return */
+        window.clearTimeout(pending);
+        pending = window.setTimeout(function () {
+          if (el.offsetParent !== null || el.getClientRects().length) flareVerdict(el);
+        }, 40);
+      });
+      try {
+        mo.observe(el, { childList: true, characterData: true, subtree: true });
+      } catch (e) {}
+    }
+    /* .verdict is the banner class, but most widgets start their result box
+       WITHOUT it and add it on the first answer. Watch those boxes too, by
+       the id shapes this codebase uses for them, so the observer is already
+       in place before the class ever lands. */
+    var SEL = '.verdict, #dq-out, #tryit-out, [id$="-out"], [id$="-verdict"],'
+            + ' [id$="-readout"], [id$="-say"], [id$="-out2"]';
+    function sweep() {
+      try { [].slice.call(document.querySelectorAll(SEL)).forEach(watch); } catch (e) {}
+    }
+    sweep();
+    /* Cabinets and tools that mount on first click bring their result box in
+       later; a few spaced re-sweeps catch them without a document-wide
+       observer running on every game frame. */
+    [700, 1800, 4000].forEach(function (t) { window.setTimeout(sweep, t); });
+  }
+
   function boot() {
     try { measureNav(); } catch (e) {}
     try { buildPermalinks(); } catch (e) {}
     try { bindFolds(); } catch (e) {}
     try { buildReadbar(); } catch (e) {}
+    try { bindVerdicts(); } catch (e) {}
 
     try {
       if ('ResizeObserver' in window) {

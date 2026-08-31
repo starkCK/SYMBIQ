@@ -1,4 +1,4 @@
-/* SymbiQ — leaderboard.js: the daily arcade leaderboard (Scorekeeper Part 4 / B4).
+/* SymbiQ, leaderboard.js: the daily arcade leaderboard (Scorekeeper Part 4 / B4).
  *
  * B3 gave every endless cabinet a Daily mode seeded from the date, so everyone
  * faces the identical generated run today. This submits a signed-in player's
@@ -6,7 +6,7 @@
  *
  * GATED, and honest about it: like auth.js this is pure progressive
  * enhancement. It does nothing at all unless
- *   - SymbiQ.auth.client exists (a real Supabase client — needs the back end
+ *   - SymbiQ.auth.client exists (a real Supabase client, needs the back end
  *     Chinmoy has not stood up yet: schema.sql unrun, no completed sign-in), AND
  *   - a user is signed in, AND
  *   - SymbiQ.games.frame.daily is present (games.js loaded).
@@ -95,7 +95,7 @@
     if (!any) {
       h.innerHTML = '<div class="lb-head"><span class="lb-tag">Today’s leaderboard</span>' +
         '<span class="lb-date">' + esc(D && D.date()) + '</span></div>' +
-        '<p class="lb-empty">No daily runs logged yet. Play a <strong>Daily</strong> mode in any cabinet — your best is submitted automatically.</p>';
+        '<p class="lb-empty">No daily runs logged yet. Play a <strong>Daily</strong> mode in any cabinet, your best is submitted automatically.</p>';
       h.hidden = false;
       return;
     }
@@ -116,7 +116,7 @@
       '<div class="lb-head"><span class="lb-tag">Today’s leaderboard</span>' +
       '<span class="lb-date">' + esc(D && D.date()) + '</span></div>' +
       '<div class="lb-grid">' + cols + '</div>' +
-      '<p class="lb-foot">Everyone plays the same date-seeded run. Self-reported scores — a friendly board, nothing more.</p>';
+      '<p class="lb-foot">Everyone plays the same date-seeded run. Self-reported scores, a friendly board, nothing more.</p>';
     h.hidden = false;
   }
 

@@ -1,10 +1,10 @@
-/* SymbiQ — THE PQC TOOLS (pqc.html only)
+/* SymbiQ, THE PQC TOOLS (pqc.html only)
  * =============================================================================
  * Four tools that only ever appear together, on one page, in this order:
  * discover what you have (the Inventory) → position it against the wire cost
  * (the Size Cliff) → sequence a migration (the Sequencer) → price the wait
  * against a real survey (the Odds). Merged from four separate files into one
- * on 2026-08-07 — they were never independently reusable, so four files was
+ * on 2026-08-07, they were never independently reusable, so four files was
  * fragmentation, not modularity. Nothing below was rewritten; each section
  * keeps its own IIFE exactly as it shipped, so this is a concatenation with
  * the file-level banners tightened, not a rewrite. Diff the git history
@@ -21,13 +21,13 @@ import { slh_dsa_sha2_128s } from './vendor/pq/slh-dsa.mjs';
  *
  * THE RULE THIS WIDGET IS BUILT ON: every cryptographic byte on screen is the
  * .length of a key, ciphertext or signature that THIS BROWSER JUST GENERATED.
- * Nothing is copied from a table. That is not a stylistic preference — it is
+ * Nothing is copied from a table. That is not a stylistic preference, it is
  * the only defence against the failure this project keeps repeating, where a
  * correct formula is fed an input nobody checked. It has already paid for
  * itself: the published secondary sources say an ML-DSA-65 signature is 3,293
  * bytes. Measured, it is 3,309. FIPS 204 agrees with the measurement.
  *
- * WHAT IS MEASURED AND WHAT IS MODELLED — the distinction is load-bearing and
+ * WHAT IS MEASURED AND WHAT IS MODELLED, the distinction is load-bearing and
  * is surfaced per row in the UI, never averaged away:
  *   MEASURED  keys, ciphertexts, signatures. Exact, from real operations.
  *   MODELLED  TLS record/handshake framing and X.509 certificate structure.
@@ -39,7 +39,7 @@ import { slh_dsa_sha2_128s } from './vendor/pq/slh-dsa.mjs';
  *
  * SECURITY: the vendored @noble/post-quantum tree is NOT independently audited
  * and has no side-channel protection. This is a measuring instrument. It must
- * never be used to protect a real secret, and it never handles one here — every
+ * never be used to protect a real secret, and it never handles one here, every
  * key generated is discarded on the next render.
  * ────────────────────────────────────────────────────────────────────── */
 (function () {
@@ -47,7 +47,7 @@ import { slh_dsa_sha2_128s } from './vendor/pq/slh-dsa.mjs';
 
 /* --- the wire limits we are measuring against ---------------------------- */
 /* A 1500-byte Ethernet MTU less 20 bytes IPv4 and 20 bytes TCP leaves 1460
- * bytes of payload. A ClientHello past that is split across two packets — the
+ * bytes of payload. A ClientHello past that is split across two packets, the
  * boundary a generation of middleboxes silently assumed would never be crossed.
  * initcwnd 10 is the Linux default since kernel 2.6.39 (May 2011); the IETF
  * standardized the same value two years later as RFC 6928 (April 2013): ten
@@ -90,7 +90,7 @@ async function webcryptoLen(algo, usages, want) {
  * P1363 form; X.509 carries it DER-encoded, and that encoding overhead belongs
  * to the certificate framing model rather than to the signature itself.
  * Measuring the public key and then labelling the SIGNATURE row from that flag
- * was the original bug here — the tag has to name the quantity it describes. */
+ * was the original bug here, the tag has to name the quantity it describes. */
 async function webcryptoSigLen(algo, signAlgo, want) {
   try {
     const kp = await crypto.subtle.generateKey(algo, true, ['sign', 'verify']);
@@ -103,7 +103,7 @@ async function webcryptoSigLen(algo, signAlgo, want) {
 
 /* --- key exchange options -------------------------------------------------
  * The client sends a key share; the server answers with one. For ML-KEM the
- * server's share is the CIPHERTEXT, not a public key — a detail that decides
+ * server's share is the CIPHERTEXT, not a public key, a detail that decides
  * which direction actually grows, and one most size comparisons get wrong. */
 const KEX = {
   x25519: {
@@ -114,12 +114,12 @@ const KEX = {
     },
   },
   x25519mlkem768: {
-    label: 'X25519MLKEM768', note: 'hybrid — what Chrome ships today', tier: 'hybrid',
+    label: 'X25519MLKEM768', note: 'hybrid, what Chrome ships today', tier: 'hybrid',
     async sizes() {
       const c = await webcryptoLen({ name: 'X25519' }, ['deriveBits'], 32);
       const k = ml_kem768.keygen();
       const { cipherText } = ml_kem768.encapsulate(k.publicKey);
-      // the hybrid share is a concatenation — shown as arithmetic, not hidden
+      // the hybrid share is a concatenation, shown as arithmetic, not hidden
       return {
         client: k.publicKey.length + c.n, server: cipherText.length + c.n,
         measured: c.measured, pq: k.publicKey.length,
@@ -146,8 +146,8 @@ const KEX = {
 };
 
 /* --- signature options ----------------------------------------------------
- * THE TRAP LIVES HERE. SLH-DSA has a 32-byte public key — smaller than
- * ML-DSA-65's 1,952 and the same as Ed25519's — and a 7,856-byte signature.
+ * THE TRAP LIVES HERE. SLH-DSA has a 32-byte public key, smaller than
+ * ML-DSA-65's 1,952 and the same as Ed25519's, and a 7,856-byte signature.
  * Choosing a signature scheme by key size gives exactly the wrong answer, and
  * a certificate chain carries far more signatures than public keys. */
 const SIG = {
@@ -172,7 +172,7 @@ const SIG = {
   mldsa65: { label: 'ML-DSA-65', note: 'post-quantum, the likely default', tier: 'pq', async sizes() { return dsa(ml_dsa65); } },
   mldsa87: { label: 'ML-DSA-87', note: 'post-quantum, highest level', tier: 'pq', async sizes() { return dsa(ml_dsa87); } },
   slhdsa: {
-    label: 'SLH-DSA-128s', note: 'hash-based — tiny key, enormous signature', tier: 'pq',
+    label: 'SLH-DSA-128s', note: 'hash-based, tiny key, enormous signature', tier: 'pq',
     async sizes() { return dsa(slh_dsa_sha2_128s); },
   },
 };
@@ -186,7 +186,7 @@ function dsa(alg) {
 /* --- the computation ------------------------------------------------------
  * A chain of depth d carries d certificates. Each is signed by its issuer, so
  * each contributes one public key and one issuer signature. CertificateVerify
- * adds one more signature — the handshake's proof of possession. */
+ * adds one more signature, the handshake's proof of possession. */
 async function compute(opts) {
   const kex = KEX[opts.kex], sig = SIG[opts.sig];
   const k = await kex.sizes(), s = await sig.sizes();
@@ -231,7 +231,7 @@ function bar(bytes, limit, longLabel, shortLabel, segs) {
   const pct = (v) => (v / scale) * 100;
   const at = pct(limit);
   /* The limit caption sits beside its marker line. Past halfway there is not
-   * enough room to its right, so it flips to the other side — otherwise it
+   * enough room to its right, so it flips to the other side, otherwise it
    * runs off the bar and takes the whole page sideways with it, which is
    * exactly what it did at 375px the first time. */
   const flip = at > 50;
@@ -306,15 +306,15 @@ function mount(root, opts) {
          <b>Every new connection pays an extra round trip</b> before the page starts loading.</div>`
       : r.chOverMtu
       ? `<div class="verdict split">The ClientHello no longer fits one packet.
-         Chrome and Firefox split it across two on purpose — a middlebox that cannot cope drops the connection.</div>`
+         Chrome and Firefox split it across two on purpose, a middlebox that cannot cope drops the connection.</div>`
       : `<div class="verdict good">Everything fits. ClientHello in one packet, server flight inside the initial congestion window.</div>`;
 
     out.innerHTML = `
       ${verdict}
       <h4 class="sc-h">ClientHello <span>${n(r.clientHello)} bytes</span></h4>
-      ${bar(r.clientHello, MSS, '1,460 B — one packet', '1,460 B', chSegs)}
+      ${bar(r.clientHello, MSS, '1,460 B, one packet', '1,460 B', chSegs)}
       <h4 class="sc-h">Server flight <span>${n(r.serverFlight)} bytes</span></h4>
-      ${bar(r.serverFlight, INITCWND, '14,600 B — initial congestion window', '14,600 B', sfSegs)}
+      ${bar(r.serverFlight, INITCWND, '14,600 B, initial congestion window', '14,600 B', sfSegs)}
       <div class="sc-grid">
         ${row('Client key share', r.k.client, r.k.measured === false ? 'mod' : 'meas')}
         ${row('Server key share' + (r.kex.tier === 'classical' ? '' : ' (ciphertext)'), r.k.server, r.k.measured === false ? 'mod' : 'meas')}
@@ -347,8 +347,8 @@ function mount(root, opts) {
 })();
 
 /* ── 2 · THE INVENTORY ───────────────────────────────────────────────────
- * Paste the cryptographic artefacts you already have. This reads them — really
- * reads them, byte by byte, out of the DER — and tells you what you are holding,
+ * Paste the cryptographic artefacts you already have. This reads them, really
+ * reads them, byte by byte, out of the DER, and tells you what you are holding,
  * what breaks, and in what order. Then it writes a CycloneDX 1.6 cryptographic
  * bill of materials, which is the artefact CISA has to define the minimum
  * elements of by roughly 20 March 2027 (Executive Order 14412, 270 days).
@@ -359,14 +359,14 @@ function mount(root, opts) {
  * certificate states its algorithms, its key size, its validity and its issuer
  * in bytes that cannot be misremembered. Everything in the table below is read
  * out of the artefact. Nothing is entered, and nothing is looked up in a table
- * of expected values — the failure mode this project keeps catching is a correct
+ * of expected values, the failure mode this project keeps catching is a correct
  * formula fed a wrong constant, and a parser that measures cannot have one.
  *
  * THE PARSE IS CHECKED AGAINST A SECOND IMPLEMENTATION. For every key the
  * browser's own WebCrypto can import, we import it and read the algorithm and
  * size back from the browser rather than from us. When the two agree the row is
- * tagged CONFIRMED. When WebCrypto has no algorithm for it — ML-DSA, SLH-DSA,
- * and Ed25519 on older browsers — the row is tagged PARSED, meaning our decoder
+ * tagged CONFIRMED. When WebCrypto has no algorithm for it, ML-DSA, SLH-DSA,
+ * and Ed25519 on older browsers, the row is tagged PARSED, meaning our decoder
  * alone read it. The tag names exactly which quantity was double-checked, which
  * is the discipline the rest of this site is held to.
  *
@@ -375,7 +375,7 @@ function mount(root, opts) {
  * sign it. They are usually different, they usually belong to different people,
  * and an inventory that records one field per certificate silently loses half
  * the estate. Rotating a leaf to ML-DSA changes nothing while the CA above it
- * still signs with RSA — and if that CA is public, the migration is not yours
+ * still signs with RSA, and if that CA is public, the migration is not yours
  * to schedule at all.
  *
  * AND THE ONE IT WILL NOT LET YOU MISS. Your certificates do not contain your
@@ -386,7 +386,7 @@ function mount(root, opts) {
  * the retroactive risk, and this tool says so rather than quietly scoring you.
  *
  * NOTHING LEAVES YOUR BROWSER. There is no server to send it to. Paste a real
- * certificate if you like — they are public objects — but the point is that it
+ * certificate if you like, they are public objects, but the point is that it
  * would not matter either way.
  * ────────────────────────────────────────────────────────────────────── */
 (function () {
@@ -427,7 +427,7 @@ function mount(root, opts) {
   }
 
   /* First arc packs two numbers: value = 40*X + Y, X in {0,1,2}. When the value
-   * is 80 or more, X is 2 and Y is value-80 — the case every naive decoder gets
+   * is 80 or more, X is 2 and Y is value-80, the case every naive decoder gets
    * wrong, and the case every NIST OID (2.16.840.1.101...) lands in. */
   function oid(b, t) {
     var s = [], n = 0, first = true;
@@ -580,7 +580,7 @@ function mount(root, opts) {
 
     /* The two algorithms. The outer one is what the ISSUER used; the inner copy
      * inside the TBS must match it, and RFC 5280 says a mismatch means the
-     * certificate is malformed — so it is worth actually checking. */
+     * certificate is malformed, so it is worth actually checking. */
     var sigK = kids(b, sigAlgT);
     out.sigOid = oid(b, sigK[0]);
     out.sigInnerOid = oid(b, kids(b, innerSig)[0]);
@@ -656,7 +656,7 @@ function mount(root, opts) {
    * WebCrypto expects, which turns "we think this is a 3072-bit RSA key" into
    * something the browser will either accept or reject. A malformed encoding is
    * refused, so acceptance is evidence about the parse and not just about us.
-   * OIDs are encoded from their dotted form rather than pasted in as bytes —
+   * OIDs are encoded from their dotted form rather than pasted in as bytes,
    * the same rule the rest of this page runs on. */
   function dLen(n) {
     if (n < 0x80) return [n];
@@ -716,7 +716,7 @@ function mount(root, opts) {
   }
 
   /* A JWKS is usually pasted on its own, but people paste it alongside a chain
-   * too — so the whole blob is tried first and then any embedded JSON object
+   * too, so the whole blob is tried first and then any embedded JSON object
    * that actually looks like key material. Anything else is left alone rather
    * than guessed at. */
   function parseJWKS(text) {
@@ -762,8 +762,8 @@ function mount(root, opts) {
   /* ========================================================================
    * 5. What breaks, and how
    * Two different failure modes that people constantly merge into one score.
-   * Confidentiality fails RETROACTIVELY — traffic captured today is decrypted
-   * whenever the capability arrives. Authentication fails from Q-day FORWARD —
+   * Confidentiality fails RETROACTIVELY, traffic captured today is decrypted
+   * whenever the capability arrives. Authentication fails from Q-day FORWARD,
    * nobody can forge yesterday's signature after the fact. So a signing key's
    * confidentiality lifetime is not its exposure window, and treating it as one
    * is how these inventories end up overstated.
@@ -797,7 +797,7 @@ function mount(root, opts) {
       if (curve === 'P-256') return r.role === 'conf' ? 'ECDH P-256' : 'ECDSA P-256';
       if (curve === 'P-384') return 'ECDSA P-384';
       if (curve === 'P-521') return 'ECDSA P-521';
-      return 'Other — Shor-breakable';
+      return 'Other, Shor-breakable';
     }
     if (f === 'EdDSA') return 'Ed25519';
     if (f === 'XDH') return 'X25519';
@@ -806,7 +806,7 @@ function mount(root, opts) {
     if (f === 'ML-DSA') return /-(44|65|87)$/.test(r.keyName || '') ? r.keyName : 'ML-DSA-65';
     if (f === 'ML-KEM') return 'ML-KEM-768';
     if (f === 'SLH-DSA') return 'SLH-DSA-128s';
-    return 'Other — Shor-breakable';
+    return 'Other, Shor-breakable';
   }
 
   /* ========================================================================
@@ -839,8 +839,8 @@ function mount(root, opts) {
       return rec;
     }).catch(function () {
       /* We had an algorithm to try and the browser refused the bytes. That is
-       * information, not an absence of it — either the key is unusual or our
-       * reading of it is wrong — so it does not get to hide behind PARSED. */
+       * information, not an absence of it, either the key is unusual or our
+       * reading of it is wrong, so it does not get to hide behind PARSED. */
       rec.check = 'rejected'; return rec;
     });
   }
@@ -915,7 +915,7 @@ function mount(root, opts) {
         var haveIssuer = certs.some(function (o) { return o.subject === r.issuer && o !== r; });
         out.push({ k: 'split', t: shortName(r.subject) + ' carries one algorithm and is signed with another',
           d: 'Its key is <b>' + keyLabel(r) + '</b>. Its issuer signed it with <b>' + r.sigName +
-             '</b>. Replacing the key does not touch the signature — that is the issuer\'s migration, on the issuer\'s schedule. ' +
+             '</b>. Replacing the key does not touch the signature, that is the issuer\'s migration, on the issuer\'s schedule. ' +
              (haveIssuer ? 'The issuing certificate is in this paste, so the sequencer below will make it a prerequisite.'
                          : 'The issuing certificate is <b>not</b> in this paste. If <b>' + shortName(r.issuer) +
                            '</b> is a public CA, this item is procurement, not engineering.') });
@@ -941,7 +941,7 @@ function mount(root, opts) {
       var under = certs.filter(function (o) { return o.issuer === r.subject && o !== r; });
       out.push({ k: 'ca', t: shortName(r.subject) + ' is a certificate authority',
         d: under.length
-          ? 'It signs <b>' + under.length + '</b> of the certificates here. Everything it signs has to wait for it, which is exactly the precedence the sequencer below schedules against — and the reason an estate rarely migrates as fast as its individual efforts suggest.'
+          ? 'It signs <b>' + under.length + '</b> of the certificates here. Everything it signs has to wait for it, which is exactly the precedence the sequencer below schedules against, and the reason an estate rarely migrates as fast as its individual efforts suggest.'
           : 'Nothing in this paste was signed by it, so its dependants are elsewhere. A CA migration is almost never the small item it looks like on a list.' });
     });
 
@@ -966,18 +966,18 @@ function mount(root, opts) {
     // (7) the one the certificates cannot tell you
     if (certs.length) out.push({ k: 'gap', t: 'Your harvest-now exposure is not in any of these files',
       d: 'In TLS 1.3 the certificate key <em>signs</em>; it never encrypts. The key exchange that actually protects the traffic is an ephemeral ECDHE or X25519 share negotiated per connection, and it appears in no certificate and no certificate inventory. ' +
-         'A signature that breaks in 2032 cannot forge a 2026 handshake retroactively — but a key exchange broken in 2032 decrypts every 2026 recording of it. ' +
+         'A signature that breaks in 2032 cannot forge a 2026 handshake retroactively, but a key exchange broken in 2032 decrypts every 2026 recording of it. ' +
          '<b>Add your key exchange to the sequencer by hand.</b> It is usually the highest-exposure line in the estate and the one no scanner reads off a file.' });
 
     /* (8) an RSA certificate that never says what its key is for. The default
      * assumption below is signing, because that is what a certificate key does
-     * in TLS 1.3 — but if this key does key transport or protects data at rest,
+     * in TLS 1.3, but if this key does key transport or protects data at rest,
      * its exposure is retroactive and its lifetime is not zero. The tool will
      * not guess that for you in either direction. */
     certs.filter(function (r) { return r.role === 'both' && !r.cert.keyUsage.length && !r.pq; }).forEach(function (r) {
       out.push({ k: 'ask', t: shortName(r.subject) + ' does not say what its key is for',
         d: 'It carries no key-usage extension, so the certificate itself does not distinguish signing from key transport. ' +
-           'This tool assumed <b>signing</b> — the TLS 1.3 behaviour — and therefore gave it a confidentiality lifetime of zero in the sequencer. ' +
+           'This tool assumed <b>signing</b>, the TLS 1.3 behaviour, and therefore gave it a confidentiality lifetime of zero in the sequencer. ' +
            'If that key actually encrypts anything, set the lifetime by hand: its exposure is retroactive and it is probably your worst line.' });
     });
 
@@ -999,13 +999,13 @@ function mount(root, opts) {
   /* ========================================================================
    * 9. The CycloneDX 1.6 CBOM
    * Field names and enum values are taken from the published 1.6 JSON schema,
-   * not from memory. Each certificate becomes three linked components — the
+   * not from memory. Each certificate becomes three linked components, the
    * certificate, the algorithm of the key it carries, and the algorithm its
-   * issuer signed with — because that is the split the format was designed to
+   * issuer signed with, because that is the split the format was designed to
    * express and the split most inventories lose.
    * ==================================================================== */
 
-  /* NIST SP 800-57 Part 1 Rev 5, Table 2 — the comparable classical strengths.
+  /* NIST SP 800-57 Part 1 Rev 5, Table 2, the comparable classical strengths.
    * Only the tabulated sizes appear. RSA-4096 is deliberately absent: NIST does
    * not assign it a figure, and writing 128 there would be quoting a number
    * more precisely than the source supports. An omitted field says "not stated";
@@ -1022,14 +1022,14 @@ function mount(root, opts) {
                   implementationPlatform: 'unknown', cryptoFunctions: fns };
     if (fam === 'EC') props.curve = curve;
     else if (fam === 'EdDSA') props.curve = nm === 'Ed448' ? 'Ed448' : 'Ed25519';
-    /* parameterSetIdentifier is what the schema calls the variant selector —
+    /* parameterSetIdentifier is what the schema calls the variant selector,
      * "2048" in AES128's sense. A key length is that for RSA; a curve is not,
      * so an EC key carries `curve` instead and no invented parameter set. */
     if (fam === 'RSA' && bits) props.parameterSetIdentifier = String(bits);
     else if (/^(ML-DSA|ML-KEM)/.test(nm)) props.parameterSetIdentifier = nm.split('-').pop();
     else if (fam === 'SLH-DSA') props.parameterSetIdentifier = nm.replace(/^SLH-DSA-/, '');
     /* classicalSecurityLevel is strength against a CLASSICAL attacker, which is
-     * the question the field asks. It is not reduced to reflect Shor — that
+     * the question the field asks. It is not reduced to reflect Shor, that
      * would be answering a different question. The quantum position is carried
      * by nistQuantumSecurityLevel, where 0 is defined as meeting no category. */
     var cl = CLASSICAL[fam + ':' + bits];
@@ -1125,7 +1125,7 @@ function mount(root, opts) {
       var id = 'd' + i;
       idOf[r.subject || ('#' + i)] = id;
       assets.push({ _r: r, id: id, name: label(r), alg: estateAlg(r),
-        /* An authentication key has no confidentiality lifetime — nobody can
+        /* An authentication key has no confidentiality lifetime, nobody can
          * forge yesterday's signature after the fact. Putting a shelf life on
          * one overstates the estate, which is the failure this tool exists to
          * avoid, so it goes in as 0 and the page says why. */
@@ -1146,8 +1146,8 @@ function mount(root, opts) {
 
   function label(r) {
     if (r.kind === 'cert') return shortName(r.subject) + (r.isCA ? ' (CA)' : '');
-    if (r.kind === 'ssh') return 'SSH key — ' + (r.label || r.keyName);
-    return 'JWK — ' + (r.label || r.keyName);
+    if (r.kind === 'ssh') return 'SSH key, ' + (r.label || r.keyName);
+    return 'JWK, ' + (r.label || r.keyName);
   }
 
   /* ========================================================================
@@ -1381,7 +1381,7 @@ function mount(root, opts) {
           '<button type="button" class="preset" id="cb-eg">Load an example estate</button>' +
           '<button type="button" class="preset" id="cb-clr">Clear</button>' +
         '</p>' +
-        '<p class="cb-priv">Nothing you paste is transmitted. There is no server behind this page — the parsing, the checking and the export all happen in this tab.</p>' +
+        '<p class="cb-priv">Nothing you paste is transmitted. There is no server behind this page, the parsing, the checking and the export all happen in this tab.</p>' +
         '<div class="cb-out" id="cb-out"></div></div>';
     }
 
@@ -1396,9 +1396,9 @@ function mount(root, opts) {
 
     function fails(r) {
       if (r.pq) return '<span class="cb-ok">already post-quantum</span>';
-      if (r.role === 'conf') return 'Shor, <b class="cb-retro">retroactively</b> — recorded traffic is decrypted later';
-      if (r.role === 'both') return 'Shor. <b>Depends what the key does</b> — signing fails at Q-day, key transport fails <b class="cb-retro">retroactively</b>';
-      return 'Shor, <b>at Q-day</b> — forgery from then on, not backwards';
+      if (r.role === 'conf') return 'Shor, <b class="cb-retro">retroactively</b>, recorded traffic is decrypted later';
+      if (r.role === 'both') return 'Shor. <b>Depends what the key does</b>, signing fails at Q-day, key transport fails <b class="cb-retro">retroactively</b>';
+      return 'Shor, <b>at Q-day</b>, forgery from then on, not backwards';
     }
 
     function results() {
@@ -1424,9 +1424,9 @@ function mount(root, opts) {
         return '<tr><th scope="row">' + esc(label(r)) + '<span class="cb-src">' +
             (r.kind === 'cert' ? 'X.509' : r.kind === 'ssh' ? 'OpenSSH' : 'JWK') + '</span></th>' +
           '<td>' + esc(keyLabel(r)) + ' ' + tag(r) + '</td>' +
-          '<td>' + (r.kind === 'cert' ? esc(r.sigName) : '<span class="cb-na">—</span>') + '</td>' +
+          '<td>' + (r.kind === 'cert' ? esc(r.sigName) : '<span class="cb-na">, </span>') + '</td>' +
           '<td>' + fails(r) + '</td>' +
-          '<td class="cb-n">' + (r.kind === 'cert' ? r.notAfter.toISOString().slice(0, 10) : '<span class="cb-na">—</span>') + '</td></tr>';
+          '<td class="cb-n">' + (r.kind === 'cert' ? r.notAfter.toISOString().slice(0, 10) : '<span class="cb-na">, </span>') + '</td></tr>';
       }).join('');
 
       var fs = findings(recs);
@@ -1444,7 +1444,7 @@ function mount(root, opts) {
           '<button type="button" class="preset" id="cb-dl">⤓ Download the CBOM (CycloneDX 1.6)</button>' +
           '<button type="button" class="preset on" id="cb-send">Send to the sequencer ▸</button>' +
         '</p>' +
-        '<p class="cb-note">The sequencer below will inherit the dependency edges read out of the chain — a certificate whose issuer is also in this list waits for it. ' +
+        '<p class="cb-note">The sequencer below will inherit the dependency edges read out of the chain, a certificate whose issuer is also in this list waits for it. ' +
         'Signing keys arrive with a confidentiality lifetime of <b>0</b>, because a signature cannot be forged backwards; set it yourself only if that key also protects data at rest.</p>';
     }
 
@@ -1471,7 +1471,7 @@ function mount(root, opts) {
         setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
       } else if (b.id === 'cb-send') {
         var assets = toEstate(state.records);
-        if (!assets.length) { b.textContent = 'Nothing to migrate — it is all post-quantum'; return; }
+        if (!assets.length) { b.textContent = 'Nothing to migrate, it is all post-quantum'; return; }
         if (SymbiQ.estate && SymbiQ.estate.load) {
           SymbiQ.estate.load(assets);
           var t = document.getElementById('estate');
@@ -1486,7 +1486,7 @@ function mount(root, opts) {
 
 /* ── 3 · THE SEQUENCER (the estate model) ────────────────────────────────
  * Describe your cryptographic estate; get your own exposure, your own plan,
- * and — the output that is actually worth having — a proof when the plan
+ * and, the output that is actually worth having, a proof when the plan
  * cannot be finished in time.
  *
  * THE IDEA THAT DECIDES THE DESIGN. Mosca's inequality is X + Y > Z, where X is
@@ -1506,36 +1506,36 @@ function mount(root, opts) {
  *
  * WHAT THIS IS NOT. It does not scan anything. It has no access to your
  * systems. You type your estate in, so it is exactly as good as what you type
- * — and it never leaves your browser, because there is no server to send it to.
+ *, and it never leaves your browser, because there is no server to send it to.
  * ────────────────────────────────────────────────────────────────────── */
 (function () {
   window.SymbiQ = window.SymbiQ || {};
 
   /* Shor breaks RSA/DH/ECC outright. Grover halves symmetric strength, which
-   * AES-256 absorbs — so it is NOT a migration item, and pretending otherwise
+   * AES-256 absorbs, so it is NOT a migration item, and pretending otherwise
    * is the most common way these inventories get padded. */
   var ALGS = {
-    'RSA-1024':    { vuln: true,  why: 'Shor — and already below the classical floor' },
-    'RSA-2048':    { vuln: true,  why: 'Shor — broken outright' },
-    'RSA-3072':    { vuln: true,  why: 'Shor — broken outright' },
-    'RSA-4096':    { vuln: true,  why: 'Shor — broken outright' },
-    'ECDSA P-256': { vuln: true,  why: 'Shor — broken outright' },
-    'ECDSA P-384': { vuln: true,  why: 'Shor — broken outright' },
-    'ECDSA P-521': { vuln: true,  why: 'Shor — broken outright' },
-    'ECDH P-256':  { vuln: true,  why: 'Shor — broken outright' },
-    'Ed25519':     { vuln: true,  why: 'Shor — broken outright' },
-    'X25519':      { vuln: true,  why: 'Shor — broken outright' },
-    'DSA-2048':    { vuln: true,  why: 'Shor — broken outright' },
-    'DH-2048':     { vuln: true,  why: 'Shor — broken outright' },
-    'Other — Shor-breakable': { vuln: true, why: 'Shor — broken outright' },
-    'AES-256':     { vuln: false, why: 'Grover halves it to 128-bit — still safe' },
+    'RSA-1024':    { vuln: true,  why: 'Shor, and already below the classical floor' },
+    'RSA-2048':    { vuln: true,  why: 'Shor, broken outright' },
+    'RSA-3072':    { vuln: true,  why: 'Shor, broken outright' },
+    'RSA-4096':    { vuln: true,  why: 'Shor, broken outright' },
+    'ECDSA P-256': { vuln: true,  why: 'Shor, broken outright' },
+    'ECDSA P-384': { vuln: true,  why: 'Shor, broken outright' },
+    'ECDSA P-521': { vuln: true,  why: 'Shor, broken outright' },
+    'ECDH P-256':  { vuln: true,  why: 'Shor, broken outright' },
+    'Ed25519':     { vuln: true,  why: 'Shor, broken outright' },
+    'X25519':      { vuln: true,  why: 'Shor, broken outright' },
+    'DSA-2048':    { vuln: true,  why: 'Shor, broken outright' },
+    'DH-2048':     { vuln: true,  why: 'Shor, broken outright' },
+    'Other, Shor-breakable': { vuln: true, why: 'Shor, broken outright' },
+    'AES-256':     { vuln: false, why: 'Grover halves it to 128-bit, still safe' },
     'SHA-256':     { vuln: false, why: 'Grover/BHT gives no practical break' },
     'ML-KEM-768':  { vuln: false, why: 'already post-quantum' },
     'ML-DSA-44':   { vuln: false, why: 'already post-quantum' },
     'ML-DSA-65':   { vuln: false, why: 'already post-quantum' },
     'ML-DSA-87':   { vuln: false, why: 'already post-quantum' },
     'SLH-DSA-128s':{ vuln: false, why: 'already post-quantum' },
-    'Other — post-quantum': { vuln: false, why: 'already post-quantum' }
+    'Other, post-quantum': { vuln: false, why: 'already post-quantum' }
   };
 
   /* A realistic starting estate. Nobody engages with a blank page, and the
@@ -1582,7 +1582,7 @@ function mount(root, opts) {
       /* Collect completions and remove them AFTER the sweep. Removing from
        * `remaining` while indexing `ready` was a real bug: the compensating
        * i-- re-visited a finished asset, whose indexOf then returned -1, and
-       * splice(-1, 1) deletes the LAST element of the queue — quietly dropping
+       * splice(-1, 1) deletes the LAST element of the queue, quietly dropping
        * an unrelated asset from the plan entirely. */
       var completed = [];
       for (var i = 0; i < ready.length && budget > 0; i++) {
@@ -1731,9 +1731,9 @@ function mount(root, opts) {
    * test-year chips, so a duplicate year renders as two identical controls. */
   var DEADLINES = [
     { y: 2030, label: 'EO 14412 key establishment · CNSA 2.0 signing & networking', short: '2030' },
-    { y: 2031, label: 'EO 14412 — digital signatures', short: '2031' },
-    { y: 2033, label: 'CNSA 2.0 — web, cloud & OS exclusive', short: '2033' },
-    { y: 2035, label: 'NIST IR 8547 (still a draft) — disallowed', short: '2035' }
+    { y: 2031, label: 'EO 14412, digital signatures', short: '2031' },
+    { y: 2033, label: 'CNSA 2.0, web, cloud & OS exclusive', short: '2033' },
+    { y: 2035, label: 'NIST IR 8547 (still a draft), disallowed', short: '2035' }
   ];
   // The Odds (below) tests specific years against these same real deadlines --
   // one list, so a date fixed here can never drift out of sync with there.
@@ -1759,29 +1759,29 @@ function mount(root, opts) {
     function ids() { return assets.map(function (a) { return a.id; }); }
 
     /* The inventory above hands its findings down to here. Everything else on
-     * the page keeps working if that never happens — this is an entry point,
+     * the page keeps working if that never happens, this is an entry point,
      * not a dependency, so a broken parser can never take the sequencer with
      * it. Capacity, deadline and policy survive the load deliberately: you are
      * dropping a new estate into a plan you have already been tuning. */
     function banner() {
       if (source === 'inventory') {
         return '<p class="es-from"><b>This estate was read from your artefacts, not typed.</b> ' +
-          'Dependency edges come from the certificate chain — anything whose issuer is also in the paste waits for it. ' +
+          'Dependency edges come from the certificate chain, anything whose issuer is also in the paste waits for it. ' +
           'Signing keys arrived with a confidentiality lifetime of 0, because a signature cannot be forged backwards; ' +
-          'raise it by hand for any key that also protects data. Effort is a placeholder in every row — only you know that number.</p>';
+          'raise it by hand for any key that also protects data. Effort is a placeholder in every row, only you know that number.</p>';
       }
       if (source === 'scenario') {
         return '<p class="es-from"><b>Loaded the ' + esc(scenarioLabel) + ' scenario.</b> ' +
-          'Illustrative, not audited — a starting shape for a plausible estate, not a real one. Edit any row to make it yours.</p>';
+          'Illustrative, not audited, a starting shape for a plausible estate, not a real one. Edit any row to make it yours.</p>';
       }
       if (source === 'restored') {
         return '<p class="es-from"><b>Restored from your last visit on this device.</b> ' +
-          'Nothing was sent anywhere to do this — it was saved in this browser\'s own local storage.</p>' +
+          'Nothing was sent anywhere to do this, it was saved in this browser\'s own local storage.</p>' +
           '<p class="es-add"><button type="button" class="preset" id="es-restclr">Clear it and start fresh</button></p>';
       }
       if (source === 'shared') {
         return '<p class="es-from"><b>Loaded from a shared link.</b> ' +
-          'The whole plan is encoded in the URL itself — nothing was sent to a server to build this, because there is no server to send it to.</p>';
+          'The whole plan is encoded in the URL itself, nothing was sent to a server to build this, because there is no server to send it to.</p>';
       }
       return '';
     }
@@ -1802,7 +1802,7 @@ function mount(root, opts) {
             '<td><input class="es-in es-num" type="number" min="0" max="40" data-i="' + i +
               '" data-f="effort" value="' + a.effort + '" aria-label="Migration effort, quarters"></td>' +
             '<td><select class="es-in" data-i="' + i + '" data-f="deps" aria-label="Depends on">' +
-              '<option value="">—</option>' +
+              '<option value="">, </option>' +
               assets.filter(function (o) { return o.id !== a.id; }).map(function (o) {
                 return '<option value="' + esc(o.id) + '"' +
                   (a.deps.indexOf(o.id) >= 0 ? ' selected' : '') + '>' + esc(o.name) + '</option>'; }).join('') +
@@ -1844,20 +1844,20 @@ function mount(root, opts) {
           'each other in a circle, so none of them can start: <b>' + esc(f.assess.stuck.join(', ')) +
           '</b>. That is a finding about the estate, not about the deadline.</div>';
       } else if (f.capacityBound) {
-        verdict = '<div class="verdict bad"><b>Infeasible — and no ordering can fix it.</b> The vulnerable ' +
+        verdict = '<div class="verdict bad"><b>Infeasible, and no ordering can fix it.</b> The vulnerable ' +
           'assets need <b>' + r.totalEffort + '</b> quarter-units of work. By ' + dlYear + ' you have ' +
           '<b>' + (cap * dq) + '</b> (' + cap + ' × ' + dq + ' quarters). You are <b>' + f.capacityShortfall +
           '</b> short. Reordering moves who is exposed; it cannot create capacity. ' +
           'The floor is <b>' + f.minCapacityNeeded + '</b> per quarter.</div>';
       } else if (f.chainBound) {
-        verdict = '<div class="verdict bad"><b>Infeasible — and money will not fix this one.</b> You have ' +
+        verdict = '<div class="verdict bad"><b>Infeasible, and money will not fix this one.</b> You have ' +
           'enough total capacity, but the dependency chain is <b>' + r.quarters + ' quarters</b> long and ' +
           'the deadline is <b>' + dq + '</b>. Work that must happen in sequence cannot be parallelised by ' +
-          'hiring. Shorten the chain or start sooner — <b>' + f.overrunQuarters + ' quarter(s)</b> over.</div>';
+          'hiring. Shorten the chain or start sooner, <b>' + f.overrunQuarters + ' quarter(s)</b> over.</div>';
       } else {
         verdict = '<div class="verdict good"><b>Feasible.</b> The plan finishes in <b>' + r.quarters +
           '</b> quarters against a deadline of <b>' + dq + '</b>. Slack: <b>' + (dq - r.quarters) +
-          '</b> quarters. That is the schedule — the exposure below is a separate question.</div>';
+          '</b> quarters. That is the schedule, the exposure below is a separate question.</div>';
       }
 
       var vuln = r.rows.filter(function (x) { return x.vuln; })
@@ -1870,7 +1870,7 @@ function mount(root, opts) {
           (x.a.owned ? '' : ' <span class="es-vend">vendor</span>') + '</th>' +
           '<td>' + esc(x.a.alg) + '</td>' +
           '<td class="es-n">' + x.a.shelf + ' y</td>' +
-          '<td class="es-n">' + (x.quarter == null ? '—' : 'Q' + x.quarter) + '</td>' +
+          '<td class="es-n">' + (x.quarter == null ? ', ' : 'Q' + x.quarter) + '</td>' +
           '<td class="es-n"><b class="es-z ' + band + '">' + x.breakevenZ + ' y</b></td></tr>';
       }).join('');
 
@@ -1889,13 +1889,13 @@ function mount(root, opts) {
         '<p class="es-cmp"><b>Ordering is worth ' +
           (worstPol.worst - best.worst).toFixed(2) + ' years here.</b> Worst-case breakeven by policy: ' +
           cmp.map(function (c) { return esc(c.p) + ' <b>' + c.worst.toFixed(2) + '</b>'; }).join(' · ') +
-          '. Same capacity, same constraints — only the order changes.' +
+          '. Same capacity, same constraints, only the order changes.' +
           /* A zero spread is a real result, not a broken widget, and it has a
            * cause worth naming: sequencing buys nothing when every asset is
            * exposed for the same reason. Estates read from certificates land
            * here by default, because signing keys all carry a lifetime of 0. */
           ((worstPol.worst - best.worst) === 0
-            ? ' <b>Zero is a finding.</b> Ordering only moves exposure when your assets differ in how long they must stay secret — ' +
+            ? ' <b>Zero is a finding.</b> Ordering only moves exposure when your assets differ in how long they must stay secret, ' +
               'and when every line here is an authentication key, they do not. Set a real confidentiality lifetime on anything that ' +
               'protects data rather than proving identity, and the spread appears.'
             : '') + '</p>';
@@ -2107,7 +2107,7 @@ function mount(root, opts) {
   var SCENARIOS = {
     hospital: {
       label: 'A Hospital', icon: '🏥', dlYear: 2030, policy: 'risk-first',
-      blurb: 'The failure mode here is not the deadline — it is that a genome captured today is still someone’s genome in 2056. Harvest-now-decrypt-later is not a hypothetical for this estate; it is the estate.',
+      blurb: 'The failure mode here is not the deadline, it is that a genome captured today is still someone’s genome in 2056. Harvest-now-decrypt-later is not a hypothetical for this estate; it is the estate.',
       assets: [
         { id: 'portal', name: 'Patient portal TLS',            alg: 'ECDSA P-256', shelf: 3,  effort: 2, deps: [],          owned: true },
         { id: 'ca',     name: 'Internal certificate authority', alg: 'RSA-4096',    shelf: 10, effort: 3, deps: [],          owned: true },
@@ -2119,7 +2119,7 @@ function mount(root, opts) {
     },
     bank: {
       label: 'A Bank', icon: '🏦', dlYear: 2030, policy: 'risk-first',
-      blurb: 'The failure mode here is a regulator, not physics — most financial supervisors are converging on the same NIST timeline this page opened with. The lever that matters is capacity, not cleverness.',
+      blurb: 'The failure mode here is a regulator, not physics, most financial supervisors are converging on the same NIST timeline this page opened with. The lever that matters is capacity, not cleverness.',
       assets: [
         { id: 'online', name: 'Online-banking TLS',        alg: 'ECDSA P-256', shelf: 2,  effort: 2, deps: [],           owned: true },
         { id: 'ca',     name: 'Internal certificate authority', alg: 'RSA-4096', shelf: 10, effort: 4, deps: [],         owned: true },
@@ -2226,7 +2226,7 @@ function mount(root, opts) {
     /* --------------------------------------------------------- scenario --- */
     function scenarioRows(rows) {
       if (rolledBeyond) {
-        return '<div class="verdict warn">This roll drew <b>no CRQC within the surveyed 30-year window</b> — ' +
+        return '<div class="verdict warn">This roll drew <b>no CRQC within the surveyed 30-year window</b>, ' +
           'beyond what these five data points can say anything specific about. Every asset here is safe against ' +
           'this particular draw, for whatever that is worth.</div>';
       }
@@ -2281,8 +2281,8 @@ function mount(root, opts) {
         ' of them (' + pct(b.beyond / b.n) + ') drew no CRQC within the surveyed 30-year window at all.</p>' +
         '<div class="sc-grid">' + rowsHtml + '</div>' +
         '<p class="od-p"><b>Your whole plan is breached in ' + pct(b.anyCount / b.n) + ' of these futures</b> ' +
-        (exactWorst != null ? '(exact figure from the curve: ' + pct(exactWorst) + ' — dice and formula should agree within simulation noise).'
-                             : '(your longest breakeven, ' + worst + ' years, is beyond the 30-year survey — this is a floor, not the true figure).') +
+        (exactWorst != null ? '(exact figure from the curve: ' + pct(exactWorst) + ', dice and formula should agree within simulation noise).'
+                             : '(your longest breakeven, ' + worst + ' years, is beyond the 30-year survey, this is a floor, not the true figure).') +
         '</p><p class="es-add"><button type="button" class="preset" id="od-batch">Roll another 2,000</button></p>';
     }
 
@@ -2311,14 +2311,14 @@ function mount(root, opts) {
       if (polGain > 0.005 && bestPol.p !== live.policy) {
         lines.push('<p class="od-p"><b>The one free lever:</b> switching migration order to <b>' + esc(bestPol.p) +
           '</b> cuts breach odds from <b>' + pct(curOdds) + '</b> to <b>' + pct(bestPol.odds) +
-          '</b> — same team, same deadline, only the sequence changes.</p>');
+          '</b>, same team, same deadline, only the sequence changes.</p>');
       } else {
-        lines.push('<p class="od-p"><b>Ordering is already doing its job here</b> — your current policy is at or near the best of the four, ' +
+        lines.push('<p class="od-p"><b>Ordering is already doing its job here</b>, your current policy is at or near the best of the four, ' +
           pct(curOdds) + '.</p>');
       }
       if (capGain > 0.01) {
         lines.push('<p class="od-p"><b>The one paid lever:</b> one more unit of capacity per quarter (' + live.cap + ' → ' + (live.cap + 1) +
-          ') would cut it further, to <b>' + pct(capOdds) + '</b> — that one costs hiring or reprioritising, the ordering change above does not.</p>');
+          ') would cut it further, to <b>' + pct(capOdds) + '</b>, that one costs hiring or reprioritising, the ordering change above does not.</p>');
       }
       return lines.join('');
     }
@@ -2327,7 +2327,7 @@ function mount(root, opts) {
     function download(rows, worst) {
       var odds = blendCdf(Math.min(worst, HORIZON), trust);
       var L = [];
-      L.push('SYMBIQ — THE ODDS: A QUANTUM-RISK BRIEFING');
+      L.push('SYMBIQ, THE ODDS: A QUANTUM-RISK BRIEFING');
       L.push('Generated ' + new Date().toISOString().slice(0, 10) + ' · https://starkck.github.io/SYMBIQ/pqc.html#odds');
       L.push('');
       L.push('Calibrated to: Global Risk Institute, Quantum Threat Timeline Report 2024 (Mosca & Piani; 32 named experts).');
@@ -2338,7 +2338,7 @@ function mount(root, opts) {
       rows.forEach(function (x) {
         var p = x.breakevenZ <= HORIZON ? blendCdf(x.breakevenZ, trust) : null;
         L.push('  - ' + x.a.name + ' (' + x.a.alg + '): exposed unless a CRQC is ' + x.breakevenZ + '+ years off -> ' +
-          (p != null ? pct(p) + ' breach odds' : '>= ' + pct(blendCdf(HORIZON, trust)) + ' (beyond the 30-year survey — floor, not exact)'));
+          (p != null ? pct(p) + ' breach odds' : '>= ' + pct(blendCdf(HORIZON, trust)) + ' (beyond the 30-year survey, floor, not exact)'));
       });
       L.push('');
       L.push('OVERALL: this plan is breached in ' + (worst <= HORIZON ? pct(odds) : '>= ' + pct(odds)) + ' of simulated futures at this trust setting.');
@@ -2367,7 +2367,7 @@ function mount(root, opts) {
       var rows = r.rows.filter(function (x) { return x.vuln && !x.stuck; })
                         .sort(function (a, b) { return b.breakevenZ - a.breakevenZ; });
       if (!rows.length) {
-        host.innerHTML = '<p class="od-p">Nothing in the current plan is exposed — every vulnerable asset already has a finish quarter, ' +
+        host.innerHTML = '<p class="od-p">Nothing in the current plan is exposed, every vulnerable asset already has a finish quarter, ' +
           'or there is nothing vulnerable to migrate. Add or edit an asset in the Sequencer above, or load a scenario, to see odds here.</p>';
         return;
       }
@@ -2380,7 +2380,7 @@ function mount(root, opts) {
           '<span><i class="od-sw dot" style="background:var(--violet)"></i>tested year</span></p>' +
         '<div id="od-scenario">' + scenarioRows(rows) + '</div>' +
         '<h3 class="cb-h">Or run the dice two thousand times</h3>' +
-        '<p class="od-p">Same experts, same plan — instead of one drawn year, sample the whole distribution.</p>' +
+        '<p class="od-p">Same experts, same plan, instead of one drawn year, sample the whole distribution.</p>' +
         '<div id="od-batchout">' + batchOut(rows, worst) + '</div>' +
         '<h3 class="cb-h">What actually helps</h3>' +
         recommendation(worst) + policyCmp() +
@@ -2398,7 +2398,7 @@ function mount(root, opts) {
       }).join('') + '<button type="button" class="preset" id="od-roll">🎲 Roll a year<em>weighted by the trust slider</em></button>';
 
       root.innerHTML =
-        '<p class="es-lab">Start from a named scenario <em class="od-opt">(optional — the Sequencer’s own estate works fine too)</em></p>' +
+        '<p class="es-lab">Start from a named scenario <em class="od-opt">(optional, the Sequencer’s own estate works fine too)</em></p>' +
         '<div class="es-opts">' + scenBtns + '</div>' +
         '<div id="od-scnblurb"></div>' +
         '<div class="es-ctl"><label class="es-lab">Which experts do you believe? <b id="od-trustv">' + Math.round(trust * 100) + '</b>' +
@@ -2414,12 +2414,12 @@ function mount(root, opts) {
       var el = root.querySelector('#od-scale');
       if (!el) return;
       var pOpt10 = cdf(10, ANCHORS_OPT), pPess10 = cdf(10, ANCHORS_PESS);
-      el.innerHTML = '<span>Cautious — ' + pct(pPess10) + ' by ' + (nowY + 10) + '</span><span>Bullish — ' + pct(pOpt10) + ' by ' + (nowY + 10) + '</span>';
+      el.innerHTML = '<span>Cautious, ' + pct(pPess10) + ' by ' + (nowY + 10) + '</span><span>Bullish, ' + pct(pOpt10) + ' by ' + (nowY + 10) + '</span>';
     }
 
     function render() {
       if (!live) {
-        root.innerHTML = '<p class="sc-wait">Build a plan in the Sequencer above, or load a scenario here — this tool reads it live.</p>';
+        root.innerHTML = '<p class="sc-wait">Build a plan in the Sequencer above, or load a scenario here, this tool reads it live.</p>';
         shellBuilt = false;
         return;
       }
@@ -2484,7 +2484,7 @@ function mount(root, opts) {
 /* ── 5 · LIVE DOMAIN LOOKUP ────────────────────────────────────────────────
  * The one thing on this page that contacts anything outside the browser.
  * There is no way for page JS to read the certificate actually presented on
- * a live TLS connection — browsers deliberately do not expose that to
+ * a live TLS connection, browsers deliberately do not expose that to
  * scripts, CORS or not. The only client-side path to "what certs does this
  * domain have" is a public Certificate Transparency log, which is HISTORY
  * (every certificate ever logged for the name), not proof of what is live
@@ -2493,11 +2493,11 @@ function mount(root, opts) {
  * crt.sh is the obvious first choice and was tested live during planning:
  * it returned 502 (it runs on a single, often-overloaded Postgres instance)
  * and has no reliable CORS story for browser JS. SSLMate's Cert Spotter
- * (api.certspotter.com) was tested live instead — 200 OK,
+ * (api.certspotter.com) was tested live instead, 200 OK,
  * Access-Control-Allow-Origin: *, and `expand=cert` returns the actual
  * certificate as base64 DER. That is what this section wraps, and it hands
  * the result to the already-verified Inventory parser rather than reading
- * any field itself — this section's only job is "get PEM text," nothing
+ * any field itself, this section's only job is "get PEM text," nothing
  * downstream trusts it more than a hand-pasted paste. */
 (function () {
   var SymbiQ = window.SymbiQ = window.SymbiQ || {};
@@ -2509,7 +2509,7 @@ function mount(root, opts) {
     return '-----BEGIN CERTIFICATE-----\n' + lines.join('\n') + '\n-----END CERTIFICATE-----';
   }
 
-  /* Resolves to { pem, entries, error } — never rejects. A network failure, a
+  /* Resolves to { pem, entries, error }, never rejects. A network failure, a
    * CORS failure, a rate limit and "nothing logged" are all reported through
    * `error` rather than thrown, because the caller's whole job is to show
    * something honest, not to catch an exception. */
@@ -2517,7 +2517,7 @@ function mount(root, opts) {
     domain = String(domain || '').trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
     if (!domain || domain.indexOf('.') < 0 || /\s/.test(domain)) {
       return Promise.resolve({ pem: '', entries: [],
-        error: 'That does not look like a domain name — try "example.com", not a full URL.' });
+        error: 'That does not look like a domain name, try "example.com", not a full URL.' });
     }
     var url = API + '?domain=' + encodeURIComponent(domain) + '&include_subdomains=false&expand=cert';
     return fetch(url).then(function (r) {
@@ -2542,7 +2542,7 @@ function mount(root, opts) {
           'still read its chain yourself: openssl s_client -connect ' + domain + ':443 -showcerts' };
       }
       // Most-recent, not-revoked first. CT logs are append-only and not
-      // recency-ordered, so this is a sort, not a filter — a revoked cert is
+      // recency-ordered, so this is a sort, not a filter, a revoked cert is
       // still a real artefact worth reading, just not the one to lead with.
       list.sort(function (a, b) {
         if (!!a.revoked !== !!b.revoked) return a.revoked ? 1 : -1;
@@ -2556,7 +2556,7 @@ function mount(root, opts) {
       var msg = (e && e.message === 'rate-limited')
         ? 'The public lookup service is rate-limiting this browser right now. Wait a moment, or paste the certificate manually below.'
         : 'The live lookup did not work in this browser (network error, or the service refused the request). ' +
-          'Paste the certificate manually instead — get it with: openssl s_client -connect ' + domain + ':443 -showcerts';
+          'Paste the certificate manually instead, get it with: openssl s_client -connect ' + domain + ':443 -showcerts';
       return { pem: '', entries: [], error: msg };
     });
   }
@@ -2567,12 +2567,12 @@ function mount(root, opts) {
 
 /* ── 6 · QUICK CHECK ─────────────────────────────────────────────────────
  * The front door for someone who wants one answer, not four instruments.
- * Two ways in — paste what you have, or look up a domain — both funnel
+ * Two ways in, paste what you have, or look up a domain, both funnel
  * through the exact same Inventory parser and the exact same hand-off to
  * the Sequencer that the Inventory's own "send to sequencer" button uses.
  * Deliberately renders no verdict of its own: the moment it hands assets to
  * the Sequencer, the live Scorecard directly below it (subscribed to the
- * same estate.publish() this hand-off triggers) already shows the answer —
+ * same estate.publish() this hand-off triggers) already shows the answer,
  * one render path, not two that could quietly disagree. */
 (function () {
   var SymbiQ = window.SymbiQ = window.SymbiQ || {};
@@ -2598,7 +2598,7 @@ function mount(root, opts) {
         '</div>' +
         '<div id="qc-domain" hidden>' +
           '<label class="cb-lab" for="qc-dom">A domain name. <b>This is the one control on this page that contacts anything ' +
-          'outside your browser</b> — it queries a public Certificate Transparency log, not your server or ours, so it can only see ' +
+          'outside your browser</b>, it queries a public Certificate Transparency log, not your server or ours, so it can only see ' +
           'certificates that were already publicly logged, which is usually but not provably what is live right now.</label>' +
           '<p class="qc-domrow"><input type="text" id="qc-dom" class="es-in" placeholder="example.com" autocomplete="off" spellcheck="false">' +
           '<button type="button" class="preset on" id="qc-look">Look it up</button></p>' +
@@ -2620,8 +2620,8 @@ function mount(root, opts) {
       var vuln = r.records.filter(function (x) { return !x.pq; }).length;
       out.innerHTML = '<div class="verdict ' + (vuln ? 'warn' : 'good') + '">' +
         '<b>' + r.records.length + ' artefact' + (r.records.length > 1 ? 's' : '') + ' read' + sourceLabel + '.</b> ' +
-        (vuln ? vuln + ' of them rest on a problem Shor\'s algorithm solves — your result is below.'
-              : 'None of them do — already post-quantum.') +
+        (vuln ? vuln + ' of them rest on a problem Shor\'s algorithm solves, your result is below.'
+              : 'None of them do, already post-quantum.') +
         (assets.length ? ' <a href="#pq-score">See your result ↓</a>' : '') + '</div>';
       if (assets.length && SymbiQ.estate && SymbiQ.estate.load) {
         SymbiQ.estate.load(assets);
@@ -2672,12 +2672,12 @@ function mount(root, opts) {
 })();
 
 /* ── 7 · LIVE SCORECARD, COMPLIANCE & REPORTS ───────────────────────────────
- * Pure orchestration over already-verified functions — assess(),
+ * Pure orchestration over already-verified functions, assess(),
  * feasibility() and DEADLINES are all unchanged. This section's only job is
  * turning "the current published estate state" into three things worth
  * showing without re-typing anything: a scorecard strip, a per-deadline
  * compliance checklist, and a downloadable report. All three subscribe to
- * SymbiQ.estate.subscribe — a late mount replays the last known state
+ * SymbiQ.estate.subscribe, a late mount replays the last known state
  * immediately (estate.js's own documented behaviour), so mount order
  * relative to the Sequencer never matters, exactly like the Odds tool. */
 (function () {
@@ -2705,7 +2705,7 @@ function mount(root, opts) {
 
   function reportText(h, comp) {
     var L = [];
-    L.push('SYMBIQ — POST-QUANTUM MIGRATION ASSESSMENT');
+    L.push('SYMBIQ, POST-QUANTUM MIGRATION ASSESSMENT');
     L.push('Generated client-side in your browser: ' + new Date().toISOString());
     L.push('');
     L.push('PLAN: capacity ' + h.state.cap + ' quarter-unit(s)/quarter · policy "' + h.state.policy + '" · deadline ' + h.state.dlYear + '.');
@@ -2725,7 +2725,7 @@ function mount(root, opts) {
       L.push('  - ' + c.d.label + ' (' + c.d.y + '): ' + (c.on ? 'on track' : 'will not make it as currently sequenced') + '.');
     });
     L.push('');
-    L.push('This is arithmetic over what you typed or looked up, not a certified audit — see symbiq\'s pqc.html for the full method and honest limits.');
+    L.push('This is arithmetic over what you typed or looked up, not a certified audit, see symbiq\'s pqc.html for the full method and honest limits.');
     return L.join('\n');
   }
 
@@ -2761,8 +2761,8 @@ function mount(root, opts) {
   function reportHTML(h, comp) {
     var rows = h.r.rows.filter(function (x) { return x.vuln; })
       .sort(function (a, b) { return b.breakevenZ - a.breakevenZ; });
-    return '<h1>SymbiQ — Post-Quantum Migration Assessment</h1>' +
-      '<p class="pp-meta">Generated client-side in your browser — ' + new Date().toISOString() + '</p>' +
+    return '<h1>SymbiQ, Post-Quantum Migration Assessment</h1>' +
+      '<p class="pp-meta">Generated client-side in your browser, ' + new Date().toISOString() + '</p>' +
       '<h2>Plan summary</h2>' +
       '<table class="pp-summary"><tbody>' +
         '<tr><th>Capacity</th><td>' + h.state.cap + ' quarter-unit(s)/quarter</td></tr>' +
@@ -2785,7 +2785,7 @@ function mount(root, opts) {
         comp.map(function (c) {
           return '<tr><td>' + esc(c.d.label) + '</td><td>' + c.d.y + '</td><td>' + (c.on ? 'On track' : 'At risk') + '</td></tr>';
         }).join('') + '</tbody></table>' +
-      '<p class="pp-note">This is arithmetic over what you typed or looked up, not a certified audit — see symbiq\'s pqc.html for the full method and honest limits.</p>';
+      '<p class="pp-note">This is arithmetic over what you typed or looked up, not a certified audit, see symbiq\'s pqc.html for the full method and honest limits.</p>';
   }
 
   function printReport(h, comp) {
@@ -2819,7 +2819,7 @@ function mount(root, opts) {
     var last = null;
     function render(state) {
       if (!state || !state.assets || !state.assets.length) {
-        root.innerHTML = '<p class="sc-wait">Nothing tracked yet — paste something in Quick Check above, or edit the Sequencer below.</p>';
+        root.innerHTML = '<p class="sc-wait">Nothing tracked yet, paste something in Quick Check above, or edit the Sequencer below.</p>';
         last = null;
         return;
       }
@@ -2841,15 +2841,15 @@ function mount(root, opts) {
         '<div class="pq-score">' +
           '<div class="pq-stat"><span class="hud-label">Assets tracked</span><span class="hud-score">' + h.total + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Exposed now</span><span class="hud-score' + (h.vuln ? ' warn' : '') + '">' + h.vuln + '</span></div>' +
-          '<div class="pq-stat"><span class="hud-label">Worst breakeven</span><span class="hud-score">' + (h.worst ? h.worst.toFixed(1) + 'y' : '—') + '</span></div>' +
+          '<div class="pq-stat"><span class="hud-label">Worst breakeven</span><span class="hud-score">' + (h.worst ? h.worst.toFixed(1) + 'y' : ', ') + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Plan</span><span class="hud-score' + (h.status.c === 'bad' ? ' bad' : '') + '">' + h.status.t + '</span></div>' +
           '<div class="pq-stat"><span class="hud-label">Compliance</span><span class="hud-score' + compCls + '">' + onTrack + '/' + comp.length + '</span></div>' +
         '</div>' +
         (stuckRows.length ? '<p class="pq-toprisk bad"><b>' + stuckRows.length + ' asset' + (stuckRows.length === 1 ? '' : 's') +
-          ' cannot be scheduled at all</b> — a dependency deadlock (' + stuckRows.map(function (x) { return esc(x.a.name); }).join(', ') +
+          ' cannot be scheduled at all</b>, a dependency deadlock (' + stuckRows.map(function (x) { return esc(x.a.name); }).join(', ') +
           '), not a distant breakeven. <a href="#estate">Fix the sequence →</a></p>' : '') +
         (worstRow ? '<p class="pq-toprisk">Top exposed: <b>' + esc(worstRow.a.name) + '</b> (' + esc(worstRow.a.alg) +
-          ') — breakeven ' + worstRow.breakevenZ.toFixed(1) + 'y. <a href="#estate">Reorder the sequence →</a></p>' : '') +
+          '), breakeven ' + worstRow.breakevenZ.toFixed(1) + 'y. <a href="#estate">Reorder the sequence →</a></p>' : '') +
         (opts.compact ? '' :
           '<p class="es-add"><button type="button" class="preset" id="pq-dltxt">⤓ Download full report (text)</button>' +
           '<button type="button" class="preset" id="pq-dljson">⤓ Download as JSON</button>' +
@@ -2919,7 +2919,7 @@ function mount(root, opts) {
       var rows = r.rows.filter(function (x) { return x.vuln; })
         .sort(function (a, b) { return (a.startQuarter || 0) - (b.startQuarter || 0); });
       if (!rows.length) {
-        root.innerHTML = '<p class="sc-wait">Nothing on this estate rests on a problem Shor\'s algorithm solves — no timeline to draw.</p>';
+        root.innerHTML = '<p class="sc-wait">Nothing on this estate rests on a problem Shor\'s algorithm solves, no timeline to draw.</p>';
         return;
       }
       var dq = SymbiQ.estate.quartersUntil(state.dlYear);
@@ -2953,7 +2953,7 @@ function mount(root, opts) {
           var sxq = Math.max(0, maxQ - 3);
           svg += '<rect x="' + xq(sxq) + '" y="' + (y - 8) + '" width="' + (xq(maxQ) - xq(sxq)) +
             '" height="16" rx="4" class="tl-bar tl-stuck"/>' +
-            '<text x="' + (xq(sxq) + 6) + '" y="' + (y + 4) + '" class="tl-stucklabel">stuck — dependency deadlock</text>';
+            '<text x="' + (xq(sxq) + 6) + '" y="' + (y + 4) + '" class="tl-stucklabel">stuck, dependency deadlock</text>';
           return;
         }
         var sx = xq(x.startQuarter || 0), fx = xq(x.quarter);
@@ -2981,7 +2981,7 @@ function mount(root, opts) {
  * change that. It writes into this browser's own localStorage, namespaced
  * the same way save.js already does elsewhere on the site, so a refreshed
  * tab does not throw away what was typed. Reading it back is opt-in and
- * visible — pqc.html's own mount script decides whether to pass it to
+ * visible, pqc.html's own mount script decides whether to pass it to
  * estate.mount/cbom.mount as opts.restore/opts.restoreText, and the
  * Sequencer's own banner says plainly when an estate was restored rather
  * than typed, with a one-click way to clear it. */
@@ -3000,7 +3000,7 @@ function mount(root, opts) {
       var cur = read() || {};
       var merged = Object.assign({}, cur, next);
       localStorage.setItem(KEY, JSON.stringify(merged));
-    } catch (e) { /* private browsing / storage disabled — fail silent, nothing else breaks */ }
+    } catch (e) { /* private browsing / storage disabled, fail silent, nothing else breaks */ }
   }
   function clear() {
     try { localStorage.removeItem(KEY); } catch (e) {}
@@ -3022,7 +3022,7 @@ function mount(root, opts) {
  *
  * X and Y are the visitor's own numbers -- never claimed as ours. Z is a
  * single slider standing in for a whole distribution, so it is labelled
- * ⟦Heuristic⟧ and sourced on screen, and its default sits on 15 years --
+ * Heuristic and sourced on screen, and its default sits on 15 years --
  * the Global Risk Institute report's own middle surveyed horizon, the same
  * number the Odds tool's anchor table above already anchors to, so the two
  * tools never quietly disagree about which year counts as "the middle".
@@ -3044,7 +3044,7 @@ function mount(root, opts) {
     { id: 'state',    label: 'A state secret',     x: 50, note: 'the harvest-now case the inequality was written for' }
   ];
 
-  // The arithmetic itself: ⟦Proven⟧, and nothing more than an inequality.
+  // The arithmetic itself: Proven, and nothing more than an inequality.
   function verdict(x, y, z) {
     var gap = x + y - z;
     if (gap > 0) return { state: 'late', gap: gap };
@@ -3088,7 +3088,7 @@ function mount(root, opts) {
           '<span class="cb-tag">your input</span></label>' +
           '<input type="range" id="mo-y" min="0" max="20" step="1" value="' + y + '" aria-label="Y, years migration takes"></div>' +
         '<div class="es-ctl"><label class="es-lab">Z -- years until a cryptographically relevant quantum computer: <b>' + z + '</b> ' +
-          '<span class="cb-tag">⟦Heuristic⟧ estimate</span></label>' +
+          '<span class="cb-tag">Heuristic estimate</span></label>' +
           '<input type="range" id="mo-z" min="0" max="30" step="1" value="' + z + '" aria-label="Z, years until a cryptographically relevant quantum computer"></div>' +
         '<div class="es-out">' + banner(v) + '</div>' +
         '<p class="cb-note">This tells you <b>when</b> you are late. It never tells you <b>what</b> to deploy -- that ' +
@@ -3128,13 +3128,13 @@ function mount(root, opts) {
  * Everything above this point on the page is a measurement or a model. The
  * Size Cliff measures bytes, the Inventory reads artefacts, the Sequencer
  * models a schedule, the Odds models a distribution, the Harvest Clock is
- * arithmetic. Not one of them ever runs the cryptography end to end — so
+ * arithmetic. Not one of them ever runs the cryptography end to end, so
  * "post-quantum cryptography works" has been an assertion on this page,
  * carried entirely by citation. This section runs it instead.
  *
  * Three acts, all of them in the visitor's own browser:
  *   1. A real ML-KEM-768 exchange, both sides, the two shared secrets
- *      compared byte for byte — then deliberately broken.
+ *      compared byte for byte, then deliberately broken.
  *   2. A real ML-DSA-65 or SLH-DSA-128s signature over text the visitor
  *      supplies, followed by five attacks on it, each one expected to be
  *      rejected, and shown being rejected.
@@ -3149,7 +3149,7 @@ function mount(root, opts) {
  * So this tool never shows an accept without also showing the refusals that
  * make it mean something.
  *
- * ONE FINDING WORTH THE WHOLE SECTION — and it is not what most people expect.
+ * ONE FINDING WORTH THE WHOLE SECTION, and it is not what most people expect.
  * A tampered ML-KEM ciphertext does NOT raise an error. FIPS 203 specifies
  * implicit rejection: decapsulating a malformed ciphertext returns a
  * different shared secret, deterministically derived from a rejection value
@@ -3163,13 +3163,13 @@ function mount(root, opts) {
  * SECURITY, RESTATED BECAUSE THIS SECTION GENERATES REAL KEYS. The vendored
  * @noble/post-quantum tree is not independently audited and has no
  * side-channel protection. Every key here exists for one click and is dropped
- * on the next. Nothing typed into this section is transmitted — there is no
+ * on the next. Nothing typed into this section is transmitted, there is no
  * server to transmit it to.
  *
  * WHAT THIS PROVES AND WHAT IT DOES NOT. It demonstrates that this
  * implementation obeys the behaviour FIPS 203/204/205 specify, on this
- * machine, today. It says nothing about whether the schemes are secure — that
- * is a mathematical question no browser can settle — and nothing whatsoever
+ * machine, today. It says nothing about whether the schemes are secure, that
+ * is a mathematical question no browser can settle, and nothing whatsoever
  * about whether the visitor's own systems are migrated. Both limits are
  * printed in the UI, not buried here.
  * ─────────────────────────────────────────────────────────────────────── */
@@ -3251,18 +3251,18 @@ function mount(root, opts) {
   var SIGALGS = {
     mldsa65: {
       label: 'ML-DSA-65', alg: function () { return ml_dsa65; },
-      note: 'lattice — the likely default', slow: false,
+      note: 'lattice, the likely default', slow: false,
       spec: 'FIPS 204', pk: 1952, sig: 3309,
     },
     slhdsa: {
       label: 'SLH-DSA-128s', alg: function () { return slh_dsa_sha2_128s; },
-      note: 'hash-based — conservative, and slow', slow: true,
+      note: 'hash-based, conservative, and slow', slow: true,
       spec: 'FIPS 205', pk: 32, sig: 7856,
     },
   };
 
   /* =========================================================================
-   * ACT 1 — the exchange, run for real, then broken on purpose.
+   * ACT 1, the exchange, run for real, then broken on purpose.
    * ====================================================================== */
   function runKem() {
     var t0 = perf();
@@ -3313,7 +3313,7 @@ function mount(root, opts) {
     var agreeRow = r.agree
       ? '<p class="verdict good">Both sides derived the same 32 bytes. That is the whole point of a key ' +
         'encapsulation mechanism, and it just happened in this tab.</p>'
-      : '<p class="verdict bad">The two secrets do not match. That is a real failure — please report it via ' +
+      : '<p class="verdict bad">The two secrets do not match. That is a real failure, please report it via ' +
         'the corrections page, because it should be impossible.</p>';
 
     var t = r.tamper;
@@ -3325,12 +3325,12 @@ function mount(root, opts) {
        * instead of what happened is exactly the failure this page exists to
        * avoid. */
       tamperBlock = '<p class="verdict split">This implementation <b>threw</b> on the tampered ciphertext: ' +
-        esc(t.threw) + '. FIPS 203 describes silent implicit rejection instead — worth knowing about ' +
+        esc(t.threw) + '. FIPS 203 describes silent implicit rejection instead, worth knowing about ' +
         'whichever library you deploy, because the two behaviours need different error handling.</p>';
     } else {
       tamperBlock = '<p class="verdict split">No error. No exception. No warning. Decapsulation returned ' +
         (t.sameLength ? 'a perfectly well-formed 32-byte secret' : 'a secret of a different length') +
-        ' — just <b>not the same one</b>: ' + n(t.bitsChanged) + ' of its ' + n(t.totalBits) +
+        ', just <b>not the same one</b>: ' + n(t.bitsChanged) + ' of its ' + n(t.totalBits) +
         ' bits differ (' + Math.round((t.bitsChanged / t.totalBits) * 100) + '%, and about half is what a ' +
         'hash-derived rejection value should look like).</p>' +
         '<p class="cb-note">This is <b>implicit rejection</b>, and it is specified behaviour, not a bug: the ' +
@@ -3344,7 +3344,7 @@ function mount(root, opts) {
       '<dl class="rows">' +
       '<dt>Public key</dt><dd>' + n(r.pk) + ' bytes <span class="cb-tag ok">measured</span></dd>' +
       '<dt>Private key</dt><dd>' + n(r.sk) + ' bytes</dd>' +
-      '<dt>Ciphertext</dt><dd>' + n(r.ct) + ' bytes — what crosses the wire</dd>' +
+      '<dt>Ciphertext</dt><dd>' + n(r.ct) + ' bytes, what crosses the wire</dd>' +
       '<dt>Sender derived</dt><dd><code class="pf-hex">' + esc(hex(r.sent)) + '</code></dd>' +
       '<dt>Receiver derived</dt><dd><code class="pf-hex">' + esc(hex(r.received)) + '</code></dd>' +
       '</dl>' +
@@ -3356,7 +3356,7 @@ function mount(root, opts) {
   }
 
   /* =========================================================================
-   * ACT 2 — a signature over the visitor's own text, then five attacks.
+   * ACT 2, a signature over the visitor's own text, then five attacks.
    *
    * Every attack states, before it runs, what SHOULD happen. The table then
    * reports what DID happen and whether the two agree, so a row can fail
@@ -3407,10 +3407,10 @@ function mount(root, opts) {
         detail: 'Byte ' + n(sigByte) + ' of ' + n(sig.length) + ', message untouched.',
         expect: false, got: attempt(flipBit(sig, sigByte, 0), msg, k.publicKey) },
       { id: 'wrongkey', what: 'A different signer’s public key',
-        detail: 'Valid signature, valid message, wrong identity — the impersonation case.',
+        detail: 'Valid signature, valid message, wrong identity, the impersonation case.',
         expect: false, got: attempt(sig, msg, other.publicKey) },
       { id: 'truncated', what: 'Signature truncated by one byte',
-        detail: 'Malformed input rather than wrong input — the parser’s problem, not the maths’.',
+        detail: 'Malformed input rather than wrong input, the parser’s problem, not the maths’.',
         expect: false, got: attempt(sig.slice(0, sig.length - 1), msg, k.publicKey) },
     ];
 
@@ -3427,7 +3427,7 @@ function mount(root, opts) {
   function charNote(before, after) {
     var printable = function (b) { return b >= 32 && b <= 126; };
     if (!printable(before)) return '';
-    return ' — the character “' + String.fromCharCode(before) + '” became ' +
+    return ', the character “' + String.fromCharCode(before) + '” became ' +
       (printable(after) ? '“' + String.fromCharCode(after) + '”' : 'unprintable');
   }
 
@@ -3448,16 +3448,16 @@ function mount(root, opts) {
     var allGood = r.passed === r.total;
     var verdict = allGood
       ? '<p class="verdict good">' + r.passed + ' of ' + r.total + ' behaved exactly as ' + esc(r.conf.spec) +
-        ' requires. One accept, four refusals — and the four refusals are the evidence.</p>'
+        ' requires. One accept, four refusals, and the four refusals are the evidence.</p>'
       : '<p class="verdict bad">' + r.passed + ' of ' + r.total + ' behaved as specified. A row marked ✗ is a ' +
-        'real finding — please <a href="corrections.html#report">report it</a>.</p>';
+        'real finding, please <a href="corrections.html#report">report it</a>.</p>';
 
     return '' +
       '<dl class="rows">' +
       '<dt>Scheme</dt><dd>' + esc(r.conf.label) + ' <span class="cb-tag ok">' + esc(r.conf.spec) + '</span></dd>' +
       '<dt>Your message</dt><dd>' + n(r.msgLen) + ' bytes</dd>' +
       '<dt>Public key</dt><dd>' + n(r.pk) + ' bytes</dd>' +
-      '<dt>Signature</dt><dd>' + n(r.sig) + ' bytes — <code class="pf-hex">' + esc(r.sigHex) + '</code></dd>' +
+      '<dt>Signature</dt><dd>' + n(r.sig) + ' bytes, <code class="pf-hex">' + esc(r.sigHex) + '</code></dd>' +
       '</dl>' +
       verdict +
       '<div class="pf-scroll"><table class="cb pf-table"><thead><tr>' +
@@ -3468,7 +3468,7 @@ function mount(root, opts) {
   }
 
   /* =========================================================================
-   * ACT 3 — what it costs on the machine reading the page.
+   * ACT 3, what it costs on the machine reading the page.
    *
    * The honest comparison problem: the post-quantum work below is synchronous
    * JavaScript, and the classical baseline is asynchronous native code behind
@@ -3581,16 +3581,16 @@ function mount(root, opts) {
         '<td>' + esc(r.group) + (r.classical ? ' <span class="pf-detail">(native, async)</span>' : '') + '</td>' +
         '<td>' + esc(r.op) + '</td>' +
         '<td class="pf-num">' + fmtMs(r.ms) + (r.small ? ' <span class="pf-detail">single run</span>' : '') + '</td>' +
-        '<td class="pf-num">' + (perSec !== null ? n(perSec) + '/s' : '—') + '</td>' +
+        '<td class="pf-num">' + (perSec !== null ? n(perSec) + '/s' : ', ') + '</td>' +
       '</tr>';
     }).join('');
 
     var slow = rows.filter(function (r) { return r.group === 'SLH-DSA-128s' && r.op === 'sign'; })[0];
     var slowNote = slow
       ? '<p class="verdict split">SLH-DSA-128s signing took <b>' + fmtMs(slow.ms) + '</b> here. That is not a ' +
-        'defect and it is not the browser being slow — it is what a hash-based signature costs. The usual ' +
+        'defect and it is not the browser being slow, it is what a hash-based signature costs. The usual ' +
         'objection to SLH-DSA is its 7,856-byte signature; the number above is the one that actually decides ' +
-        'whether you can put it on a busy signing path. Verification, meanwhile, stayed fast — so this is a ' +
+        'whether you can put it on a busy signing path. Verification, meanwhile, stayed fast, so this is a ' +
         'scheme you can afford to check constantly and can barely afford to produce.</p>'
       : '';
 
@@ -3635,7 +3635,7 @@ function mount(root, opts) {
       '</div>' +
 
       '<div class="pf-act">' +
-        '<h3 class="pf-h">2 · The signature, accepted — and refused</h3>' +
+        '<h3 class="pf-h">2 · The signature, accepted, and refused</h3>' +
         '<p class="pf-lead">Put your own text in. It is signed in this tab, then attacked five ways. Four of ' +
         'those attacks must fail, and the failures are the only part that proves anything.</p>' +
         '<label class="pf-lab" for="pf-msg">Text to sign</label>' +
@@ -3652,7 +3652,7 @@ function mount(root, opts) {
 
       '<div class="pf-act">' +
         '<h3 class="pf-h">3 · What it costs on this machine</h3>' +
-        '<p class="pf-lead">Not a specification table — the actual cost, measured here, on whatever you are ' +
+        '<p class="pf-lead">Not a specification table, the actual cost, measured here, on whatever you are ' +
         'reading this on. Medians over many runs, warm-up discarded.</p>' +
         '<p><button type="button" class="preset pf-run" id="pf-time-go">Time it on this machine</button> ' +
         '<button type="button" class="preset" id="pf-time-slow">Include SLH-DSA-128s (takes seconds)</button></p>' +
@@ -3661,7 +3661,7 @@ function mount(root, opts) {
 
       '<p class="cb-note pf-foot"><b>What this does and does not settle.</b> It shows this implementation behaving ' +
       'the way FIPS 203, 204 and 205 say it must, on your hardware, right now. It is not evidence that the schemes ' +
-      'are secure — no browser can settle that — and it is not evidence that anything you own has been migrated. ' +
+      'are secure, no browser can settle that, and it is not evidence that anything you own has been migrated. ' +
       'For that, start with <a href="#inventory">the Inventory</a>. Keys generated here are thrown away on the ' +
       'next click and never leave the tab.</p>';
 
@@ -3699,7 +3699,7 @@ function mount(root, opts) {
         var text = ta ? ta.value : DEFAULT_TEXT;
         var conf = SIGALGS[algId];
         busy(sigOut, conf.slow
-          ? 'Signing with ' + conf.label + '. This one genuinely takes several seconds — that is the finding, not a fault…'
+          ? 'Signing with ' + conf.label + '. This one genuinely takes several seconds, that is the finding, not a fault…'
           : 'Signing with ' + conf.label + ', then attacking it five ways…');
         yieldToPaint().then(function () {
           var r;
@@ -3712,7 +3712,7 @@ function mount(root, opts) {
       if (btn.id === 'pf-time-go' || btn.id === 'pf-time-slow') {
         var slow = btn.id === 'pf-time-slow';
         busy(timeOut, slow
-          ? 'Timing everything including SLH-DSA-128s. The tab will freeze for a few seconds — that is the point…'
+          ? 'Timing everything including SLH-DSA-128s. The tab will freeze for a few seconds, that is the point…'
           : 'Timing ML-KEM-768 and ML-DSA-65 on this machine…');
         yieldToPaint().then(function () {
           var pq;

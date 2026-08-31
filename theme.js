@@ -1,4 +1,4 @@
-/* SymbiQ — theme.js
+/* SymbiQ, theme.js
  * ============================================================================
  * The explicit-appearance layer.  Pairs with theme.css; loads site-wide.
  *

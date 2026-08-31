@@ -1,4 +1,4 @@
-/* SymbiQ — The Ledger: the claim tracker, defined once and mounted on
+/* SymbiQ, The Ledger: the claim tracker, defined once and mounted on
  * ledger.html.
  *
  *   SymbiQ.ledger.mount(el, { base })
@@ -103,10 +103,10 @@
 
   function renderForecastInner(slug, crowd, signedIn) {
     var summary = crowd.n
-      ? '<p class="ldg-nr">' + crowd.n + ' forecast' + (crowd.n === 1 ? '' : 's') + ' so far — average ' +
+      ? '<p class="ldg-nr">' + crowd.n + ' forecast' + (crowd.n === 1 ? '' : 's') + ' so far, average ' +
         bucketPct(crowd.verified) + '% verified / ' + bucketPct(crowd.partially_verified) + '% partial / ' +
         bucketPct(crowd.not_verified) + '% not verified.</p>'
-      : '<p class="ldg-nr">No forecasts yet — be the first.</p>';
+      : '<p class="ldg-nr">No forecasts yet, be the first.</p>';
     var action = signedIn
       ? forecastFormHTML(slug)
       : '<p class="ldg-nr">Sign in (top of the page) to add your own forecast.</p>';
@@ -164,12 +164,12 @@
     var out = '';
     out += '<blockquote class="ldg-quote">“' + esc(c.verbatim) + '”' +
       '<cite>' + (c.speaker ? esc(c.speaker) + ', ' : '') + esc(claimantName) +
-      ' — <a href="' + esc(c.source_url) + '" rel="noopener noreferrer">' +
+      ', <a href="' + esc(c.source_url) + '" rel="noopener noreferrer">' +
       esc(c.source_kind || 'source') + '</a>, ' + esc(fmtDate(c.source_date)) +
       (c.source_archive_url ? ' (<a href="' + esc(c.source_archive_url) + '" rel="noopener noreferrer">archived</a>)' : '') +
       '</cite></blockquote>';
 
-    out += '<div class="ldg-section"><h4>Resolution criteria — frozen ' +
+    out += '<div class="ldg-section"><h4>Resolution criteria, frozen ' +
       esc(fmtDate(c.criteria_frozen_at)) + '</h4><p>' + esc(c.resolution_criteria) + '</p></div>';
 
     if (c.resolver_sources && c.resolver_sources.length) {
@@ -187,7 +187,7 @@
     out += '<div class="ldg-section"><h4>Check-ins</h4>' + renderTimeline(c.checkins) + '</div>';
 
     if (c.status === 'resolved') {
-      out += '<div class="ldg-section"><h4>Verdict — ' + verdictBadge(c.verdict) + '</h4>' +
+      out += '<div class="ldg-section"><h4>Verdict, ' + verdictBadge(c.verdict) + '</h4>' +
         (c.verdict_reasoning ? '<p>' + esc(c.verdict_reasoning) + '</p>' : '') + '</div>';
     }
     if (c.claimant_response) {
@@ -221,7 +221,7 @@
         '<td class="num">' + r.n_tracked + '</td>' +
         '<td class="num">' + r.n_resolved + '</td>' +
         '<td class="num">' + (r.rankable ? (r.weighted_rate * 100).toFixed(0) + '%' : '<span class="ldg-nr">n&lt;5</span>') + '</td>' +
-        '<td class="num">' + (r.slip_days_median == null ? '—' : (r.slip_days_median > 0 ? '+' : '') + r.slip_days_median + 'd') + '</td>' +
+        '<td class="num">' + (r.slip_days_median == null ? ', ' : (r.slip_days_median > 0 ? '+' : '') + r.slip_days_median + 'd') + '</td>' +
         '</tr>';
     }).join('');
     return '<div class="overflow"><table class="ldg-scorecard">' +
@@ -230,7 +230,7 @@
       body + '</table></div>' +
       '<p class="n">Weighted rate needs ≥5 resolved claims before it ranks (n=' +
       rows.filter(function (r) { return r.rankable; }).length + ' of ' + rows.length +
-      ' claimants qualify so far). Slip is median days between the promised date and the actual one — ' +
+      ' claimants qualify so far). Slip is median days between the promised date and the actual one, ' +
       'positive means late.</p>';
   }
 
@@ -327,7 +327,7 @@
           if (show) visible++;
         });
         countEl.textContent = visible + ' of ' + entries.length + ' claim' + (entries.length === 1 ? '' : 's') +
-          ' shown — newest source first.';
+          ' shown, newest source first.';
       }
       applyFilters();
 
@@ -431,7 +431,7 @@
     }
     var user = auth.getUser();
     if (!user) {
-      container.innerHTML = '<p class="ldg-nr">Sign in (top of the page) to propose a claim. Every submission is reviewed by the desk before anything publishes — nothing here goes live automatically.</p>';
+      container.innerHTML = '<p class="ldg-nr">Sign in (top of the page) to propose a claim. Every submission is reviewed by the desk before anything publishes, nothing here goes live automatically.</p>';
       container.dataset.wired = '';
       return;
     }
@@ -451,7 +451,7 @@
       btn.disabled = true; btn.textContent = 'Submitting…';
       Promise.resolve(auth.client.from('claim_submissions').insert(row)).then(function (r) {
         if (r && r.error) throw r.error;
-        container.innerHTML = '<p class="ldg-nr">Thank you — queued for review. Nothing publishes automatically; ' +
+        container.innerHTML = '<p class="ldg-nr">Thank you, queued for review. Nothing publishes automatically; ' +
           'if it clears the intake bar (attributed, dated, falsifiable, deadlined) the desk will write it up as ' +
           'a real entry, criteria frozen before tracking starts.</p>';
       }).catch(function (err) {

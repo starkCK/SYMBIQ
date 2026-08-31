@@ -1,4 +1,4 @@
-/* SymbiQ — rails.js: the peripheral layer (added 2026-08-28).
+/* SymbiQ, rails.js: the peripheral layer (added 2026-08-28).
  *
  * Companion to rails.css, which carries the full rationale. In short: the
  * reading column is capped at 1040px because prose wider than that stops
@@ -42,7 +42,7 @@
      leaves under 200px a side, which is not enough for a legible rail. */
   var MQ = W.matchMedia ? W.matchMedia('(min-width: 1440px)') : null;
 
-  /* Where each page hands the reader on. One link, curated, not derived —
+  /* Where each page hands the reader on. One link, curated, not derived,
      the ladder order is not the reading order for every page, and guessing
      would produce confident nonsense on the pages that sit off the spine.
      A page missing from this map simply gets no "where next" module. */
@@ -100,7 +100,7 @@
   /* The fork mark, drawn rather than typed. It was U+2482 BRANCH, which is
      the right character and the wrong idea: it is in no common Windows UI
      font, so Chrome fell back and rendered a small capital letter next to
-     "coupled circuits instead" — visible in a screenshot from the live site
+     "coupled circuits instead", visible in a screenshot from the live site
      on 2026-08-28. A glyph that depends on the reader having a font is not
      an icon. Nine bytes of path says exactly what the ladder means by a
      fork: one line running down, one branch leaving it, currentColor and
@@ -173,7 +173,7 @@
     });
     /* Two entries is a list, not an index. Below that the module says less
        than the page already does. Returning false hands the left column to
-       the ladder instead — see build(). journey.html, archive.html and
+       the ladder instead, see build(). journey.html, archive.html and
        signals.html all render their bodies from script and have no static
        section headings at all, so this is not a rare branch. */
     if (all.length < 3) return false;
@@ -194,7 +194,7 @@
          markup leaves out put back -- otherwise it reads "The Formal
          FrameworkFour topics". */
       a.title = (full !== lab && full.indexOf(lab) === 0)
-        ? lab + ' — ' + full.slice(lab.length).trim()
+        ? lab + ', ' + full.slice(lab.length).trim()
         : full;
       a.appendChild(el('span', 'sqrail-dot'));
       a.appendChild(el('span', 'sqrail-txt', lab));
@@ -234,7 +234,7 @@
 
   /* Drawn on every rails page, not only the twelve that carry data-rung.
      On a rung page it says where you are; on the homepage, on play.html or
-     on the ledger it is a standing map of the site's own spine — the
+     on the ledger it is a standing map of the site's own spine, the
      argument the homepage makes in prose, kept in view while you read the
      rest of it. The horizontal pill is only ever hidden on the pages that
      actually have one, so nothing is lost either way. */
@@ -340,7 +340,7 @@
 
   /* No eyebrow over this one, unlike the modules above it. "Where next" sat
      directly above the card's own bold title, which is a kicker over a
-     heading — the heading was already carrying the sentence, and the label
+     heading, the heading was already carrying the sentence, and the label
      only repeated the arrow. The other rail labels stay because each of them
      IS its module's heading with no second heading beneath: a bare list of
      section names could be site navigation, and L0 through L4 mean nothing
@@ -360,7 +360,7 @@
   /* The state module. It asks the qubit for its own summary after any
      keypress and reveals itself the first time that summary stops being
      the ground state. It does not know, and must never learn, which keys
-     do anything — that is the whole reason the keyboard layer is worth
+     do anything, that is the whole reason the keyboard layer is worth
      finding. */
   function buildState(col) {
     if (!(W.SymbiQ && W.SymbiQ.qubit && W.SymbiQ.qubit.state)) return;
@@ -381,7 +381,7 @@
         stateShown = true;
         stateBox.hidden = false;
         /* Deliberately unlabelled. It read "This page", one line under a
-           left rail already labelled "On this page" — two headings saying
+           left rail already labelled "On this page", two headings saying
            the same three words in one viewport, for two unrelated things.
            Dropping it also suits what this module is: the only other trace
            of the keyboard layer is a dim readout in the corner that explains
@@ -465,8 +465,8 @@
 
     /* The left column answers "where am I", the right one "what is mine and
        what is next". Where a page has sections, "where am I" is the section
-       index. Where it has none — the three pages that render their whole
-       body from script — the honest answer is the wider one, so the ladder
+       index. Where it has none, the three pages that render their whole
+       body from script, the honest answer is the wider one, so the ladder
        moves left rather than leaving that margin holding nothing but a
        hairline. Each module is wrapped on its own: a bad read in one must
        not take the other three down with it. */
@@ -512,8 +512,8 @@
      the debounced resize is the belt to its braces, because a change event
      that never arrives (seen under an emulated viewport while testing this
      file) would otherwise strand the rails in whichever state they were
-     last in. sync() is idempotent — build() returns early when built and
-     destroy() returns early when not — so a duplicate trigger costs one
+     last in. sync() is idempotent, build() returns early when built and
+     destroy() returns early when not, so a duplicate trigger costs one
      boolean test. */
   var syncTimer = null;
   function syncSoon() {

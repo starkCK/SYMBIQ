@@ -1,4 +1,4 @@
-/* SymbiQ — depth toggle, check-your-understanding, and onward pathways.
+/* SymbiQ, depth toggle, check-your-understanding, and onward pathways.
  *
  * Zero dependencies, no build step, GitHub Pages safe.
  *
@@ -7,7 +7,7 @@
  * 1. PROGRESSIVE ENHANCEMENT ONLY. The HTML ships with every tier visible. This
  *    script hides things only AFTER it has successfully built the control that
  *    shows them again. If it throws, dies, or is cached stale, the reader gets
- *    the full page — never a blank one. Same lesson as the `.reveal` rule in
+ *    the full page, never a blank one. Same lesson as the `.reveal` rule in
  *    nav.js: a stale script must never be able to hide content permanently.
  *
  * 2. NO localStorage. Depth lives in the URL hash, so a link carries the depth
@@ -60,7 +60,7 @@
     try { history.replaceState(null, '', '#' + out.join('&')); }
     catch (e) { location.hash = out.join('&'); }
   }
-  /* A bare anchor like #red or #duel — not one of our key=value pairs. */
+  /* A bare anchor like #red or #duel, not one of our key=value pairs. */
   function bareAnchor() {
     var h = location.hash.replace(/^#/, '');
     if (!h || h.indexOf('=') > -1) return null;
@@ -83,7 +83,7 @@
 
     var cur = null;          // tier we are currently inside
     var keeping = false;     // inside a data-tier-keep run (widgets, games)
-    var stopped = false;     // past data-tier-stop — everything after is shared
+    var stopped = false;     // past data-tier-stop, everything after is shared
     var groups = { g: [], y: [], r: [] };
     var firstChip = null;
 
@@ -184,7 +184,7 @@
       if (target) {
         var owner = target.closest('[data-in-tier]');
         if (owner) start = owner.getAttribute('data-in-tier');
-        else start = 'all';   // it lives outside the tiers — show everything
+        else start = 'all';   // it lives outside the tiers, show everything
       }
     }
     if (!start) {
@@ -282,7 +282,7 @@
             else if (j === i) x.classList.add('is-wrong');
           });
           out.textContent = right
-            ? 'Right — and here is why that is the answer:'
+            ? 'Right, and here is why that is the answer:'
             : 'Not this one. The reasoning matters more than the guess:';
           out.className = 'cyu-out ' + (right ? 'ok' : 'no');
           why.hidden = false;
@@ -332,7 +332,7 @@
   /* ---------------------------------------------------------------------- */
   function boot() {
     try { if (document.body.hasAttribute('data-tiers')) buildToggle(); }
-    catch (e) { /* leave every tier visible — the failure mode must be "shows too much" */ }
+    catch (e) { /* leave every tier visible, the failure mode must be "shows too much" */ }
     try { buildChecks(); } catch (e) {}
     try { buildCorrFilters(); } catch (e) {}
     try {

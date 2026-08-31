@@ -1,4 +1,4 @@
-/* SymbiQ — The Frontier (plan 21, phase L3): curated open questions, each
+/* SymbiQ, The Frontier (plan 21, phase L3): curated open questions, each
  * sent verbatim to a panel of frontier models, with the desk's own reviewed
  * answer alongside.
  *
@@ -19,7 +19,7 @@
   window.SymbiQ = window.SymbiQ || {};
 
   var STATUS_LABEL = {
-    open: 'Open — no reviewed answer yet',
+    open: 'Open, no reviewed answer yet',
     under_review: 'Under desk review',
     answered: 'Answered',
     retired: 'Retired',
@@ -73,7 +73,7 @@
       return '<div class="frn-section"><h4>The model panel</h4>' +
         '<p class="frn-nr">No panel answers recorded yet. When they are, each model’s reply ' +
         'appears here verbatim, tagged with its exact version and the date it was asked. ' +
-        'The prompt every model receives is public — see “The model panel” section below.</p></div>';
+        'The prompt every model receives is public, see “The model panel” section below.</p></div>';
     }
     var rows = answers.map(function (m) {
       return '<div class="frn-ans">' +
@@ -86,9 +86,9 @@
         '<div class="frn-ans-body">' + esc(m.answer).replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>') + '</div>' +
       '</div>';
     }).join('');
-    return '<div class="frn-section"><h4>The model panel &mdash; ' + answers.length + ' answer' +
+    return '<div class="frn-section"><h4>The model panel,  ' + answers.length + ' answer' +
       (answers.length === 1 ? '' : 's') + ', published verbatim</h4>' +
-      '<p class="frn-nr">Each answer is an entrant, graded &mdash; never presented as authoritative. ' +
+      '<p class="frn-nr">Each answer is an entrant, graded,  never presented as authoritative. ' +
       'The identical prompt went to every model.</p>' + rows + '</div>';
   }
 
@@ -114,7 +114,7 @@
     if (!f) {
       return '<div class="frn-section"><h4>The Floor</h4>' +
         '<p class="frn-nr">Live discussion happens in Discord, one thread per question, ' +
-        'moderated by the existing mods &mdash; nothing user-written is published on-site ' +
+        'moderated by the existing mods,  nothing user-written is published on-site ' +
         '(locked rule 8). This link goes live when the Discord is wired.</p></div>';
     }
     return '<div class="frn-section"><h4>The Floor</h4>' +
@@ -168,7 +168,7 @@
         }).join('');
 
         host.innerHTML = '<p class="frn-count">' + entries.length + ' question' +
-          (entries.length === 1 ? '' : 's') + ' open &mdash; newest first. Nothing here has a reviewed ' +
+          (entries.length === 1 ? '' : 's') + ' open,  newest first. Nothing here has a reviewed ' +
           'answer yet; this is the scaffold.</p><div id="frn-list">' + listHtml + '</div>';
 
         var listEl = document.getElementById('frn-list');
@@ -206,7 +206,7 @@
       '<form class="sqform" id="frn-propose-form">' +
         '<div class="sqfield">' +
           '<label for="frn-p-q">The question</label>' +
-          '<textarea id="frn-p-q" required placeholder="One sentence, ending in a question mark. It has to be genuinely open — not something the site already answers."></textarea>' +
+          '<textarea id="frn-p-q" required placeholder="One sentence, ending in a question mark. It has to be genuinely open, not something the site already answers."></textarea>' +
         '</div>' +
         '<div class="sqfield">' +
           '<label for="frn-p-why">Why it is open (optional)</label>' +
@@ -232,7 +232,7 @@
     var user = auth.getUser();
     if (!user) {
       container.innerHTML = '<p class="frn-nr">Sign in (top of the page) to propose a question. ' +
-        'Every submission is reviewed by the desk before anything publishes — nothing here goes live automatically.</p>';
+        'Every submission is reviewed by the desk before anything publishes, nothing here goes live automatically.</p>';
       return;
     }
     container.innerHTML = proposeFormHTML();
@@ -250,7 +250,7 @@
       btn.disabled = true; btn.textContent = 'Submitting…';
       Promise.resolve(auth.client.from('frontier_submissions').insert(row)).then(function (r) {
         if (r && r.error) throw r.error;
-        container.innerHTML = '<p class="frn-nr">Thank you — queued for review. If it clears the bar ' +
+        container.innerHTML = '<p class="frn-nr">Thank you, queued for review. If it clears the bar ' +
           '(genuinely open, one sentence, falsifiable in principle) the desk will open it as a real question ' +
           'and send it to the model panel.</p>';
       }).catch(function (err) {

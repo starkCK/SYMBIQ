@@ -1,4 +1,4 @@
-/* SymbiQ — the structured nav (replaces the Lattice launcher, 2026-08-07).
+/* SymbiQ, the structured nav (replaces the Lattice launcher, 2026-08-07).
  *
  * Five visible categories (native <details class="navcat">), each its own
  * dropdown at desktop width and its own accordion section at mobile width --
@@ -57,7 +57,7 @@
 
 /* Scroll reveal: fade + rise as sections enter view.
    SAFETY RULE: this script is the ONLY thing that ever adds `.reveal`, so if the
-   file fails to load or throws, nothing is hidden — pages render fully visible.
+   file fails to load or throws, nothing is hidden, pages render fully visible.
    Belt and braces: a timer force-reveals everything after 2.5s no matter what. */
 (function () {
   try {
@@ -99,7 +99,7 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
     targets.forEach(function (el) { io.observe(el); });
 
-    // anything already on screen reveals immediately — no flash of hidden content
+    // anything already on screen reveals immediately, no flash of hidden content
     requestAnimationFrame(function () {
       targets.forEach(function (el) {
         if (el.getBoundingClientRect().top < window.innerHeight * 0.95) show(el);
@@ -117,7 +117,7 @@
    means a fragment link can point INSIDE something that is shut. Browsers
    disagree about whether they auto-expand for that, so do it ourselves: on
    load and on every hash change, open every <details> ancestor of the target
-   and then bring it into view. Purely additive — pages that fold nothing are
+   and then bring it into view. Purely additive, pages that fold nothing are
    unaffected, and feasible.html/formalism.html keep their own richer handlers
    (which also update their progress tally); this one runs first and only ever
    opens things, so the two never fight. */

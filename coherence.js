@@ -1,7 +1,7 @@
-/* SymbiQ — Coherence: the health bar, reimagined into the game's whole thesis.
+/* SymbiQ, Coherence: the health bar, reimagined into the game's whole thesis.
  *
- *   You SPEND coherence by looking   — measurement has a cost (back-action).
- *   You REGAIN it by understanding   — discovery, insight, learning.
+ *   You SPEND coherence by looking  , measurement has a cost (back-action).
+ *   You REGAIN it by understanding  , discovery, insight, learning.
  *
  * So the resource that keeps you alive is the same resource the Static feeds on,
  * and the only way to hold together is to understand. That is Ada's arc, and it

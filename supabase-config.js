@@ -1,4 +1,4 @@
-/* SymbiQ — Supabase project config. Public by design: this is the
+/* SymbiQ, Supabase project config. Public by design: this is the
  * "publishable" (anon) key, meant to sit in client-side source. It cannot
  * read or write anything Row-Level Security doesn't already allow an
  * anonymous or signed-in visitor to do -- same reasoning as forms.js's

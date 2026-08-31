@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The Ledger — SymbiQ</title>
+<title>The Ledger · SymbiQ</title>
 <meta name="description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict. Pre-registered criteria, archived sources, two keys to resolve, and our own error rate published next to theirs.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/ledger.html">
@@ -15,15 +15,15 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/ledger.html">
-<meta property="og:title" content="The Ledger — SymbiQ">
-<meta property="og:description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict — with our own error rate published next to theirs.">
+<meta property="og:title" content="The Ledger · SymbiQ">
+<meta property="og:description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict, with our own error rate published next to theirs.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Ledger — SymbiQ">
+<meta name="twitter:title" content="The Ledger · SymbiQ">
 <meta name="twitter:description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
@@ -35,7 +35,7 @@
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -47,14 +47,14 @@
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
 <link rel="stylesheet" href="ledger.css">
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
-<script src="ledger.js?v=2" defer></script>
+<script src="auth.js?v=3" defer></script>
+<script src="ledger.js?v=3" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -63,11 +63,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -141,7 +141,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -149,7 +149,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -172,12 +172,12 @@
 </nav>
 
 <h1>The Ledger</h1>
-<p class="tagline">Every public, dated, falsifiable claim SymbiQ tracks about quantum computing — from
-labs, executives, and regulators — logged the day it's made, checked against sources named <em>before</em>
+<p class="tagline">Every public, dated, falsifiable claim SymbiQ tracks about quantum computing (from
+labs, executives, and regulators), logged the day it's made, checked against sources named <em>before</em>
 we look, and resolved to <strong>Verified</strong>, <strong>Partially verified</strong>, <strong>Not
 verified</strong>, or <strong>Unfalsifiable</strong> only when the deadline arrives. No deleting misses.
-<strong>Nothing has resolved yet</strong> — the Ledger opened with <span id="ldg-seed-count">7</span>
-claims still tracking, which is the honest starting state, not a bug.</p>
+<strong>Nothing has resolved yet</strong>: the Ledger opened with <span id="ldg-seed-count">7</span>
+claims still tracking.</p>
 
 <div class="card" id="ldg-summary">
   <h3>Loading The Ledger…</h3>
@@ -189,31 +189,31 @@ claims still tracking, which is the honest starting state, not a bug.</p>
 
 <h2 id="scorecards">Claimant scorecards</h2>
 <p style="color:var(--muted);font-size:.92rem">Rebuilt every time a claim resolves. A claimant needs
-five resolved claims before we rank them — below that, the count is shown and the rate is withheld,
-rather than publishing a rate that one lucky or unlucky guess could swing by 20 points.</p>
+five resolved claims before we rank them; below that, the count shows but the rate is withheld, since
+one lucky or unlucky guess could swing it 20 points.</p>
 <div id="ldg-scorecards"><p class="archq-loading">Loading…</p></div>
 
 <h2 id="ours">Our own scorecard</h2>
 <p style="color:var(--muted);font-size:.92rem">Published with the same prominence as theirs. If we write
-criteria that turn out unscoreable, that's <em>our</em> error, not the claimant's — it counts here as
-void, not silently dropped.</p>
+criteria that turn out unscoreable, that's <em>our</em> error, not the claimant's, and it counts here as
+void.</p>
 <div id="ldg-ours"><p class="archq-loading">Loading…</p></div>
 
-<h2 id="how">How a claim moves through the Ledger — and the rules that make it credible</h2>
+<h2 id="how">How a claim moves through the Ledger</h2>
 <p>A claim only enters the Ledger if it is <strong>attributed</strong> to a named person or organisation,
-<strong>dated</strong>, <strong>falsifiable</strong> — there's a stated observation that would make it
-false — <strong>deadlined</strong>, and its resolution criteria are <strong>pre-registered</strong> before
+<strong>dated</strong>, <strong>falsifiable</strong> (there's a stated observation that would make it
+false), <strong>deadlined</strong>, and its resolution criteria are <strong>pre-registered</strong> before
 tracking starts. If a claim can't clear that bar as stated, we either rewrite it with an explicit
-SymbiQ-constructed interpretation (flagged as such — see
+SymbiQ-constructed interpretation (flagged as such; see
 <a href="#c-microsoft-topological-years-not-decades">Microsoft's entry</a> for a live example) or file it
-as unfalsifiable, which is itself a published verdict. A claim that resolves unfalsifiable — or a
-prediction the field simply has not settled — becomes an open question on
+as unfalsifiable, which is itself a published verdict. A claim that resolves unfalsifiable, or a
+prediction the field has not settled, becomes an open question on
 <a href="frontier.html">The Frontier</a>, where the desk's reviewed answer runs next to a panel of
 frontier AI models asked the same thing verbatim.</p>
 <ol class="asks" style="margin:16px 0 0;padding:0;list-style:none">
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Pre-registration and freeze.</strong>
   Resolution criteria and resolver sources are locked the moment a claim starts tracking. Changing them
-  after the fact voids the claim from scoring, in public — never a quiet edit.</li>
+  after the fact voids the claim from scoring, in public, never as a quiet edit.</li>
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Two keys.</strong> Whoever captures
   a claim does not resolve it. A second person writes the verdict.</li>
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Archive at intake.</strong> Every
@@ -225,14 +225,14 @@ frontier AI models asked the same thing verbatim.</p>
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Right of reply.</strong> Every
   claimant gets a chance to respond before a <em>Not verified</em> verdict ships.</li>
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Claims, not people.</strong> The
-  verdict vocabulary has no word for lying, hype, or fraud — only whether what was said matches what
+  verdict vocabulary has no word for lying, hype, or fraud, only whether what was said matches what
   happened.</li>
 </ol>
-<p style="margin-top:14px;font-size:.9rem;color:var(--muted)">The full design — schema, scoring maths, the
-whole claim lifecycle — is in <code>outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md</code>.</p>
+<p style="margin-top:14px;font-size:.9rem;color:var(--muted)">The full design (schema, scoring maths, the
+whole claim lifecycle) is in <code>outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md</code>.</p>
 
 <h2 id="propose">Seen a claim that belongs here?</h2>
-<p>Send it in. It clears the same bar as everything above — attributed, dated, falsifiable, deadlined —
+<p>Send it in. It clears the same bar as everything above (attributed, dated, falsifiable, deadlined)
 before the desk writes it up as a real entry with frozen criteria. Nothing publishes automatically.</p>
 <div id="ldg-submit"><p class="ldg-nr">Checking sign-in status…</p></div>
 
@@ -252,9 +252,8 @@ before the desk writes it up as a real entry with frozen criteria. Nothing publi
 })();
 </script>
 
-<footer>Nothing here is a judgment of anyone's character — only of whether a dated, public claim came
-true.<br>SymbiQ · Think we got a resolution wrong? That's worth the biggest bounty we pay —
-<a href="corrections.html#report">tell us</a>.</footer>
+<footer>Nothing here is a judgment of anyone's character, only of whether a dated, public claim came
+true.<br>SymbiQ · Think we got a resolution wrong? <a href="corrections.html#report">That pays the biggest bounty we have</a>.</footer>
 </div>
 </body>
 </html>

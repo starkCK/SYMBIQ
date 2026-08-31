@@ -1,4 +1,4 @@
-/* SymbiQ — the rung rail (added 2026-08-23, item 07 of "The Ladder").
+/* SymbiQ, the rung rail (added 2026-08-23, item 07 of "The Ladder").
  *
  * Same safety rule as nav.js and tiers.js: pure progressive enhancement. A
  * page that carries no data-rung on <body> gets nothing inserted. A page
@@ -27,7 +27,7 @@
       { id: 'L3', label: 'the algorithm',   href: 'phase-kickback.html' },
       { id: 'L4', label: 'the consequence', href: 'pqc.html' }
     ];
-    var FORK = { label: 'the fork — coupled circuits instead', href: 'analog.html' };
+    var FORK = { label: 'the fork, coupled circuits instead', href: 'analog.html' };
 
     // Not scoped to ".wrap > h1": formalism.html and feasible.html wrap
     // their h1 in their own <header class="fr-mast">, one level deeper than
@@ -49,7 +49,7 @@
     RUNGS.forEach(function (r, i) {
       var cur = (!isFork && r.id === rung);
       html += '<a href="' + r.href + '" class="rung-dot' + (cur ? ' is-cur' : '') + '" title="' +
-              r.id + ' — ' + r.label + '"' + (cur ? ' aria-current="page"' : '') + '>' +
+              r.id + ', ' + r.label + '"' + (cur ? ' aria-current="page"' : '') + '>' +
               '<span aria-hidden="true">' + r.id + '</span><span class="rung-sr">' + r.label + '</span></a>';
       if (i < RUNGS.length - 1) html += '<span class="rung-seg" aria-hidden="true"></span>';
     });

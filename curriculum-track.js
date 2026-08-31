@@ -99,7 +99,7 @@
       var p = document.createElement('p');
       p.id = 'mod-complete-note';
       p.className = 'mod-complete-note';
-      p.innerHTML = 'You’ve cleared every topic here. A new Codex entry unlocked — ' +
+      p.innerHTML = 'You’ve cleared every topic here. A new Codex entry unlocked, ' +
         '<a href="journey.html#codex">see it on The Solver’s Path ▸</a>';
       host.parentNode.insertBefore(p, host.nextSibling);
     }

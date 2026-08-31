@@ -1,8 +1,8 @@
-/* SymbiQ — hud.js: make progress visible.
+/* SymbiQ, hud.js: make progress visible.
  *
  * Two surfaces, one file:
- *   1. THE CHIP  — a small persistent readout in the nav, on every page.
- *   2. THE RETURN CARD — on the homepage only (<body data-hud-return>), the
+ *   1. THE CHIP, a small persistent readout in the nav, on every page.
+ *   2. THE RETURN CARD, on the homepage only (<body data-hud-return>), the
  *      hero gains one personal line for a visitor who has been here before.
  *
  * WHY
@@ -49,7 +49,7 @@
   /* The six missions in campaign order.
      SOURCE OF TRUTH is missions.js's own M table. This is a deliberate copy:
      missions.js is ~1,800 lines and loads on two pages, while the chip has to
-     name "Act IV — The Volcano" on all twenty-four. Copying six rows beats
+     name "Act IV, The Volcano" on all twenty-four. Copying six rows beats
      shipping the whole campaign engine site-wide to read six strings from it.
      tools/sweep.py asserts this table still agrees with missions.js, so the
      copy cannot drift quietly -- which is the only thing wrong with a copy. */
@@ -134,7 +134,7 @@
   /* ------------------------------------------------------------- the chip */
   function chipHTML(p, ci) {
     var where = p.next
-      ? p.next.act + ' awaits — ' + p.next.place
+      ? p.next.act + ' awaits, ' + p.next.place
       : 'The Path is complete';
     var title = 'Coherence ' + p.coh + '% · ' + p.done + ' of ' + p.total +
                 ' missions cleared · ' + p.codex + ' codex fragment' +
@@ -142,7 +142,7 @@
     // one extra clause when a Contract streak is live -- tooltip / SR only
     if (ci && ci.streak > 0 && !ci.lapsed) {
       title += ' 🔥 ' + ci.streak + '-day Contract streak' +
-               (ci.doneToday ? ' (today cleared).' : ' — today still open.');
+               (ci.doneToday ? ' (today cleared).' : ', today still open.');
     }
     /* Forty pixels, round, exactly like the account avatar beside it -- and not
        one pixel more. MEASURED: the nav's first row has room for 40-49px and
@@ -237,7 +237,7 @@
              (ci.streak > 1 ? ' <span class="hud-dot">·</span> 🔥 <b>' + ci.streak + '</b>-day streak' : '');
     } else if (ci.lapsed) {
       body = 'today’s Contract is live <span class="hud-dot">·</span> your <b>' + ci.streak +
-             '</b>-day streak lapsed — start a new one';
+             '</b>-day streak lapsed, start a new one';
     } else {
       body = 'today’s Contract is live' +
              (ci.streak > 0

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>What is a logical qubit?</title>
-<meta name="description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits — what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into usable qubits.">
+<meta name="description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits: what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into usable qubits.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/logical-qubit.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/logical-qubit.html">
 <meta property="og:title" content="What is a logical qubit?">
-<meta property="og:description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits — what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into…">
+<meta property="og:description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits: what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into…">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="What is a logical qubit?">
-<meta name="twitter:description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits — what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into…">
+<meta name="twitter:description" content="Why the quantum scoreboard switched from counting qubits to counting logical qubits: what one actually is, the brutal exchange rate, and a calculator that turns error rate and chip size into usable qubits.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -36,7 +36,7 @@
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="vivid.css?v=4">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -78,12 +78,12 @@
         {
           "@type": "Question",
           "name": "What is a logical qubit?",
-          "acceptedAnswer": {"@type": "Answer", "text": "A logical qubit is one error-corrected qubit built out of many physical qubits working together — for a distance-d surface code, roughly 2d² physical qubits encode a single logical one. The physical qubits are noisy and individually untrustworthy; the encoding lets the group behave like one far more reliable qubit, because errors are caught and corrected faster than they accumulate. A logical qubit is the unit an actual algorithm runs on."}
+          "acceptedAnswer": {"@type": "Answer", "text": "A logical qubit is one error-corrected qubit built out of many physical qubits working together: for a distance-d surface code, roughly 2d² physical qubits encode a single logical one. The physical qubits are noisy and individually untrustworthy; the encoding lets the group behave like one far more reliable qubit, because errors are caught and corrected faster than they accumulate. A logical qubit is the unit an actual algorithm runs on."}
         },
         {
           "@type": "Question",
           "name": "What is the difference between a physical qubit and a logical qubit?",
-          "acceptedAnswer": {"@type": "Answer", "text": "A physical qubit is a single hardware element — a superconducting circuit, a trapped ion — that is fast to build but fails roughly once every few hundred to few thousand operations. A logical qubit is many physical qubits bound together by error correction into one high-reliability qubit. The conversion is expensive: depending on hardware error rate and how reliable the logical qubit must be, one logical qubit can cost anywhere from a few hundred to several thousand physical qubits."}
+          "acceptedAnswer": {"@type": "Answer", "text": "A physical qubit is a single hardware element (a superconducting circuit, a trapped ion) that is fast to build but fails roughly once every few hundred to few thousand operations. A logical qubit is many physical qubits bound together by error correction into one high-reliability qubit. The conversion is expensive: depending on hardware error rate and how reliable the logical qubit must be, one logical qubit can cost anywhere from a few hundred to several thousand physical qubits."}
         },
         {
           "@type": "Question",
@@ -100,14 +100,14 @@
   ]
 }
 </script>
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="rung.js?v=1" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="rung.js?v=2" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
+<script src="auth.js?v=3" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -116,11 +116,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass>
 <div class="wrap">
@@ -194,7 +194,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -202,7 +202,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -228,26 +228,26 @@
 
 
 <h1>What is a logical qubit?</h1>
-<p class="tagline">The unit the whole field quietly switched to counting — and the reason "1,000 qubits!" is a number you should learn to distrust.</p>
+<p class="tagline">The unit the whole field quietly switched to counting, and the reason "1,000 qubits!" is a number you should learn to distrust.</p>
 
 <div class="card">
 <h3>The answer in four lines</h3>
-<p>A logical qubit is <strong>one trustworthy qubit built from many untrustworthy ones</strong> — bound together by <a href="qec.html">error correction</a> so the group catches its own mistakes. The exchange rate is brutal and set almost entirely by hardware quality: a noisy machine spends <strong>thousands</strong> of physical qubits per logical one; a clean machine, <strong>a few hundred</strong>. That gap is why the honest scoreboard counts logical qubits, not raw ones.</p>
+<p>A logical qubit is <strong>one trustworthy qubit built from many untrustworthy ones</strong>, bound together by <a href="qec.html">error correction</a> so the group catches its own mistakes. The exchange rate is brutal and set almost entirely by hardware quality: a noisy machine spends <strong>thousands</strong> of physical qubits per logical one; a clean machine, <strong>a few hundred</strong>. That gap is why the honest scoreboard counts logical qubits, not raw ones.</p>
 </div>
 
 <span class="tier g">🟢 No math</span>
 <h2 id="green">Why "1,000 qubits!" is the wrong headline</h2>
 <p>Two companies stand on stage. One shouts "a thousand qubits!" The other says, quietly, "fifty." Serious people lean toward the fifty. Here's why that isn't contrarian for its own sake.</p>
-<p>A raw physical qubit is a single fragile piece of hardware. It's fast to build, and it fails constantly — roughly once every few hundred to few thousand operations on good hardware. You cannot run a real algorithm on qubits that forget what they're doing that often. So you don't use them one at a time. You gang many of them together and have them <em>watch each other</em>, catching and fixing errors faster than the errors pile up. That bound-together, self-correcting group behaves like a single, far more reliable qubit — a <strong>logical qubit</strong>. It's the difference between one nervous witness and a jury that cross-checks its own testimony.</p>
-<p>The catch is the price. Turning noisy physical qubits into one dependable logical qubit can cost anywhere from a few hundred to several thousand of them — and the exact number is decided mostly by how good your hardware already is, not by how many qubits you own. A company with 1,000 sloppy qubits might field only a handful of logical ones. A company with 50 excellent qubits might field a couple — for a twentieth of the hardware. Scale up the clean machine and it runs away from the sloppy one; that's the whole point — and why <a href="race.html">our scoreboard</a> tracks what a machine can actually do, not what it can count.</p>
+<p>A raw physical qubit is a single fragile piece of hardware. It's fast to build, and it fails constantly, roughly once every few hundred to few thousand operations on good hardware. You cannot run a real algorithm on qubits that forget what they're doing that often. So you don't use them one at a time. You gang many of them together and have them <em>watch each other</em>, catching and fixing errors faster than the errors pile up. That bound-together, self-correcting group behaves like a single, far more reliable qubit: a <strong>logical qubit</strong>. It's the difference between one nervous witness and a jury that cross-checks its own testimony.</p>
+<p>The catch is the price. Turning noisy physical qubits into one dependable logical qubit can cost anywhere from a few hundred to several thousand of them, and the exact number is decided mostly by how good your hardware already is, not by how many qubits you own. A company with 1,000 sloppy qubits might field only a handful of logical ones. A company with 50 excellent qubits might field a couple, for a twentieth of the hardware. Scale up the clean machine and it runs away from the sloppy one; that's the whole point, and why <a href="race.html">our scoreboard</a> tracks what a machine can actually do, not what it can count.</p>
 <p>Around 2024–25 the whole field made this switch official. Once experiments proved error correction genuinely <em>works</em> (<a href="qec.html">the below-threshold result</a>), the meaningful question stopped being "how many qubits do you have?" and became "how many error-corrected qubits can you keep alive?" A machine's logical-qubit count is its honest size.</p>
 
 <span class="tier y">🟡 Some math</span>
 <h2 id="yellow">The exchange rate, and what sets it</h2>
-<p>A surface-code logical qubit lives on a patch of <strong>≈2d² physical qubits</strong>, where <em>d</em> is the <strong>code distance</strong> — bigger <em>d</em>, longer error chains needed to fool it, safer the logical qubit. So the whole game is: <em>what's the smallest d that makes my logical qubit reliable enough?</em> — because d² is what you pay.</p>
-<p>That's set by one ratio: your physical error rate over the code's threshold, <strong>p/p<sub>th</sub></strong>. Below threshold (ratio &lt; 1), each step up in code distance — d→d+2, the next usable odd distance — multiplies your reliability by the same factor; the further below, the bigger that factor, and the smaller the <em>d</em> you need. The logical error rate goes roughly as</p>
+<p>A surface-code logical qubit lives on a patch of <strong>≈2d² physical qubits</strong>, where <em>d</em> is the <strong>code distance</strong>: bigger <em>d</em>, longer error chains needed to fool it, safer the logical qubit. So the whole game is: <em>what's the smallest d that makes my logical qubit reliable enough?</em>, because d² is what you pay.</p>
+<p>That's set by one ratio: your physical error rate over the code's threshold, <strong>p/p<sub>th</sub></strong>. Below threshold (ratio &lt; 1), each step up in code distance (d→d+2, the next usable odd distance) multiplies your reliability by the same factor; the further below, the bigger that factor, and the smaller the <em>d</em> you need. The logical error rate goes roughly as</p>
 <div class="formula">p<sub>L</sub> ≈ (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
-<p>Read that exponent: a machine at p/p<sub>th</sub> = 1/2 barely improves per distance step and needs a <em>huge</em> patch; a machine at 1/20 slashes its error rate every step and needs a tiny one. This is the entire argument for quality-first roadmaps — and the calculator below lets you feel how violently error rate beats raw qubit count.</p>
+<p>Read that exponent: a machine at p/p<sub>th</sub> = 1/2 barely improves per distance step and needs a <em>huge</em> patch; a machine at 1/20 slashes its error rate every step and needs a tiny one. This is the entire argument for quality-first roadmaps, and the calculator below lets you feel how violently error rate beats raw qubit count.</p>
 
 <figure class="fig figpatch figcard">
   <div class="figscroll"><svg viewBox="0 0 600 264" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -296,7 +296,7 @@
     <text class="lbl-s yellow" x="284" y="125" text-anchor="middle">for the same one qubit</text>
   </svg></div>
   <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>Both squares are one logical qubit.</strong> Their areas are drawn in true proportion, using this page's ≈2d² convention: d = 13 costs 338 and d = 59 costs 6,962, a factor of 20.6. (The exact rotated-code count is 2d²−1 — the 49 drawn on the left — and the rounding changes that factor by 0.3%, which is why the convention is harmless here.) Nothing about the algorithm changed between them; only the hardware's error rate did. This is why a company quoting raw qubit counts is quoting the wrong number, and why "quality first" is an engineering position rather than a slogan. <a href="#lq-widget">Set your own error rate in the calculator ▸</a></figcaption>
+  <figcaption><strong>Both squares are one logical qubit.</strong> Their areas are drawn in true proportion, using this page's ≈2d² convention: d = 13 costs 338 and d = 59 costs 6,962, a factor of 20.6. (The exact rotated-code count is 2d²−1, the 49 drawn on the left, and the rounding changes that factor by 0.3%, which is why the convention is harmless here.) Nothing about the algorithm changed between them; only the hardware's error rate did. This is why a company quoting raw qubit counts is quoting the wrong number, and why "quality first" is an engineering position rather than a slogan. <a href="#lq-widget">Set your own error rate in the calculator ▸</a></figcaption>
 </figure>
 
 <h2 data-tier-keep>The calculator: physical qubits → logical qubits</h2>
@@ -304,7 +304,7 @@
 
 <div class="card" id="lq-widget">
   <h3>Logical-qubit calculator</h3>
-  <p style="margin-bottom:6px"><label>Hardware quality — physical error vs threshold p/p<sub>th</sub>: <strong id="r-val">1/10</strong></label><br>
+  <p style="margin-bottom:6px"><label>Hardware quality, physical error vs threshold p/p<sub>th</sub>: <strong id="r-val">1/10</strong></label><br>
   <input type="range" id="r-slider" min="0" max="6" value="3" style="width:100%"></p>
   <p style="margin-bottom:6px"><label>Chip size: <strong id="n-val">100,000</strong> physical qubits</label><br>
   <input type="range" id="n-slider" min="30" max="70" value="50" style="width:100%"></p>
@@ -318,38 +318,37 @@
     <button class="preset" data-r="4" data-n="40" data-t="9">Machine B (clean, small)</button>
   </p>
   <div id="lq-out" class="formula" aria-live="polite"></div>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, referee-verified conventions: p<sub>L</sub> ≈ (p/p<sub>th</sub>)^⌊(d+1)/2⌋; smallest odd code distance <em>d</em> meeting the target; surface-code patch ≈ 2d² physical qubits per logical; logical count floored. Ignores routing, magic-state factories, and per-patch overhead — which for real computation can rival or exceed the data-patch cost — so a working machine fields materially fewer. The exchange-rate <em>shape</em> is what's honest here, not the count.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model: p<sub>L</sub> ≈ (p/p<sub>th</sub>)^⌊(d+1)/2⌋; smallest odd code distance <em>d</em> meeting the target; surface-code patch ≈ 2d² physical qubits per logical; logical count floored. Ignores routing, magic-state factories, and per-patch overhead (which for real computation can rival or exceed the data-patch cost), so a working machine fields materially fewer. The exchange-rate <em>shape</em> is what's honest here, not the count.</p>
 </div>
 
 <span class="tier r">🔴 Real math</span>
 <h2 id="red">Worked: why 10× fewer qubits can win</h2>
 <p>Take two machines and run them to a p<sub>L</sub> ≤ 10⁻⁹ target under the surface-code model above.</p>
-<p><strong>Machine A</strong> — 10⁵ physical qubits at p/p<sub>th</sub> = 1/2. Need (1/2)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀2 ≈ 29.9 → 30 → <em>d</em> ≥ 59. Patch ≈ 2·59² = 6,962 physical/logical → 10⁵ / 6,962 ≈ <strong>14 logical qubits</strong>.</p>
-<p><strong>Machine B</strong> — 10⁴ physical qubits at p/p<sub>th</sub> = 1/20 (a <em>tenth</em> the hardware, but far cleaner). Need (1/20)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀20 ≈ 6.9 → 7 → <em>d</em> ≥ 13. Patch ≈ 2·13² = 338 physical/logical → 10⁴ / 338 ≈ <strong>29 logical qubits</strong>.</p>
-<p><strong>B wins, 29 to 14 — with 10× fewer physical qubits.</strong> The exponent ⌊(d+1)/2⌋ is where the leverage lives: cleaner hardware doesn't just shave the patch, it shrinks the distance you need in the first place, and you pay for distance squared. Error rate beats scale, and it isn't close. This is the whole case for spending your next engineering dollar on fidelity — much of it <a href="ai.html">bought by AI-driven calibration and decoding</a> — rather than on more noisy qubits.</p>
-<p>The same arithmetic is why cryptographic targets look so expensive: push the target to 10⁻¹² or below and every machine's required <em>d</em> jumps, the patches balloon, and the logical count collapses — which is exactly the multiplier behind the <a href="bitcoin.html">"half a million physical qubits to break a key"</a> headline.</p>
-<p><em>Verification status: fresh-session hostile-referee pass completed 2026-07-15 — the calculator was reimplemented from scratch and every number (incl. B wins 29 vs 14) reproduced exactly; all findings applied same day. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+<p><strong>Machine A</strong>: 10⁵ physical qubits at p/p<sub>th</sub> = 1/2. Need (1/2)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀2 ≈ 29.9 → 30 → <em>d</em> ≥ 59. Patch ≈ 2·59² = 6,962 physical/logical → 10⁵ / 6,962 ≈ <strong>14 logical qubits</strong>.</p>
+<p><strong>Machine B</strong>: 10⁴ physical qubits at p/p<sub>th</sub> = 1/20 (a <em>tenth</em> the hardware, but far cleaner). Need (1/20)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀20 ≈ 6.9 → 7 → <em>d</em> ≥ 13. Patch ≈ 2·13² = 338 physical/logical → 10⁴ / 338 ≈ <strong>29 logical qubits</strong>.</p>
+<p><strong>B wins, 29 to 14, with 10× fewer physical qubits.</strong> The exponent ⌊(d+1)/2⌋ is where the leverage lives: cleaner hardware doesn't just shave the patch, it shrinks the distance you need in the first place, and you pay for distance squared. Error rate beats scale, and it isn't close. This is the whole case for spending your next engineering dollar on fidelity (much of it <a href="ai.html">bought by AI-driven calibration and decoding</a>) rather than on more noisy qubits.</p>
+<p>The same arithmetic is why cryptographic targets look so expensive: push the target to 10⁻¹² or below and every machine's required <em>d</em> jumps, the patches balloon, and the logical count collapses, which is exactly the multiplier behind the <a href="bitcoin.html">"half a million physical qubits to break a key"</a> headline.</p>
 
 <div class="cyu" data-a="1">
   <p class="cyu-eyebrow">Check yourself</p>
   <p class="cyu-q">Machine A runs at p/p<sub>th</sub> = 1/2 and needs <em>d</em> = 59. Machine B runs at 1/20 and needs <em>d</em> = 13. B has ten times fewer physical qubits. Which fits more logical qubits?</p>
   <div class="cyu-opts">
-    <button data-opt>Machine A — it has ten times the hardware.</button>
+    <button data-opt>Machine A: it has ten times the hardware.</button>
     <button data-opt>Machine B, comfortably: 29 logical against A’s 14.</button>
     <button data-opt>They tie, which is why qubit count is quoted instead.</button>
-    <button data-opt>Neither — below <em>d</em> = 25 no logical qubit exists.</button>
+    <button data-opt>Neither: below <em>d</em> = 25 no logical qubit exists.</button>
   </div>
-  <p class="cyu-why">A patch costs ~2<em>d</em>² physical qubits, and <em>d</em> is driven by how far below threshold you are — so error rate beats raw size, badly. B fits <strong>29</strong> logical qubits to A’s <strong>14</strong> while holding a tenth of the hardware. This is the referee-verified Q21 answer, and the calculator above reproduces it exactly. It is also why "1,000 qubits!" is the wrong headline.</p>
+  <p class="cyu-why">A patch costs ~2<em>d</em>² physical qubits, and <em>d</em> is driven by how far below threshold you are, so error rate beats raw size, badly. B fits <strong>29</strong> logical qubits to A’s <strong>14</strong> while holding a tenth of the hardware, and the calculator above reproduces it exactly. It is also why "1,000 qubits!" is the wrong headline.</p>
 </div>
 <div class="pathway-nudge" hidden>
-  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+  <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
 </div>
 
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🟢 How the correcting works</h3><p>The error-correction machinery a logical qubit is built from — with a code you can break yourself.</p><a href="qec.html">Quantum error correction →</a></div>
+  <div class="card"><h3>🟢 How the correcting works</h3><p>The error-correction machinery a logical qubit is built from, with a code you can break yourself.</p><a href="qec.html">Quantum error correction →</a></div>
   <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, distance, and the threshold theorem in full formalism.</p><a href="basics.html#red">Read →</a></div>
-  <div class="card"><h3>🏁 The Race</h3><p>Who's fielding the most logical qubits — the scoreboard that counts the honest number.</p><a href="race.html">Scoreboard →</a></div>
+  <div class="card"><h3>🏁 The Race</h3><p>Who's fielding the most logical qubits: the scoreboard that counts the honest number.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 
 <footer>A thousand shaky qubits, one you can trust.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
@@ -385,7 +384,7 @@
     if (logical < 1) {
       out.innerHTML = 'At p/p<sub>th</sub> = <strong>' + RLABEL[+rS.value] + '</strong> you need <strong>d = ' + d + '</strong> → ' +
         '<strong>' + fmtN(patch) + '</strong> physical qubits for a <em>single</em> logical qubit at ' + tgtStr + '.<br>' +
-        'This chip (' + fmtN(N) + ') can\'t field even one. Better hardware or a bigger chip — and better hardware is the cheaper lever.';
+        'This chip (' + fmtN(N) + ') can\'t field even one. Better hardware or a bigger chip, and better hardware is the cheaper lever.';
       return;
     }
     out.innerHTML = 'Smallest code distance: <strong>d = ' + d + '</strong> → patch ≈ <strong>' + fmtN(patch) + '</strong> physical qubits each, at ' + tgtStr + '.<br>' +

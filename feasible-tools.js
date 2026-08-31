@@ -1,10 +1,10 @@
-/* SymbiQ — THE FEASIBLE TOOLS (feasible.html only)
+/* SymbiQ, THE FEASIBLE TOOLS (feasible.html only)
  * =============================================================================
  * Two engines that only ever load together, on one page, in the order the
  * page presents them: play the games (The Bottleneck, The Prune) then meet
  * the exact same problem class solved five ways side by side (The Verdict).
  * Merged from two separate files (`orgames.js`, `methods.js`) into one on
- * 2026-08-18 — same reasoning as the earlier pqc-tools.js merge (2026-08-07):
+ * 2026-08-18, same reasoning as the earlier pqc-tools.js merge (2026-08-07):
  * they never loaded independently, so two files was fragmentation, not
  * modularity. Nothing below was rewritten; each section keeps its own IIFE
  * exactly as it shipped, so this is a concatenation with the file-level
@@ -13,7 +13,7 @@
  * that.
  * ========================================================================== */
 
-/* ── 1 · THE FEASIBLE REGION GAMES — The Bottleneck & The Prune ────────────
+/* ── 1 · THE FEASIBLE REGION GAMES, The Bottleneck & The Prune ────────────
  * Same mount contract as games.js on purpose, so these can become missions
  * on The Solver's Path later without a rewrite (branch & bound is already
  * pencilled in as Cordon's second mission in 12_GAME_MASTER_PLAN.md):
@@ -114,7 +114,7 @@
   var G = {};
 
   /* ==================================================================== *
-   *  THE BOTTLENECK — shadow prices, and why they lie if you don't ask   *
+   *  THE BOTTLENECK, shadow prices, and why they lie if you don't ask   *
    *  how far they go.  Three levels, three distinct lessons.             *
    *                                                                      *
    *  L1  2 resources, 3 rounds.  start 21  PAR 31.5                      *
@@ -127,16 +127,16 @@
    * ==================================================================== */
   G.bottleneck = {
     title: 'The Bottleneck',
-    hook: 'Three factories, one upgrade a quarter, and one number that tells you which — if you ask it the right question.',
+    hook: 'Three factories, one upgrade a quarter, and one number that tells you which, if you ask it the right question.',
     mentor: 'Cordon',
     about: {
       goal: 'Finish each factory&#39;s run with the highest profit you can. Every quarter you may expand exactly <strong>one</strong> resource.',
-      how: 'Read each resource&#39;s <strong>shadow price</strong> — what one more unit is worth — and the <strong>range</strong> over which that price still holds. Then buy. The region grows and the best plan slides to a new corner. Undo and restart are always there.',
-      inspired: 'Linear-programming duality (von Neumann 1947; Gale, Kuhn &amp; Tucker 1951) and right-hand-side ranging — the output real planners actually buy an optimiser for.',
+      how: 'Read each resource&#39;s <strong>shadow price</strong>, what one more unit is worth, and the <strong>range</strong> over which that price still holds. Then buy. The region grows and the best plan slides to a new corner. Undo and restart are always there.',
+      inspired: 'Linear-programming duality (von Neumann 1947; Gale, Kuhn &amp; Tucker 1951) and right-hand-side ranging, the output real planners actually buy an optimiser for.',
       learn: 'Why the most valuable resource is not the scarcest or the dearest, why relieving a bottleneck destroys its own value, and why a shadow price without its range is a trap.',
-      link: 'feasible.html#t03', linkText: 'Topic 03: Duality ▸', tier: '⟦Proven⟧'
+      link: 'feasible.html#t03', linkText: 'Topic 03: Duality ▸', tier: 'Proven'
     },
-    honest: 'Honest model: each level is a real linear program, re-solved exactly at every step by enumerating the vertices of the feasible region — the reason an optimum can be found without searching the interior. A shadow price here is the <em>right-hand</em> derivative of the optimum with respect to that right-hand side — one-sided on purpose, because the optimal-value function is piecewise linear and has a corner exactly where the binding set changes, which is the whole lesson of level 2. The range is found by walking that right-hand side until the price changes, which is exactly what right-hand-side ranging means. Every par was established by exhaustive search over all possible purchase sequences before any of this was drawn. <strong>Level 1</strong> (8 sequences) is a tutorial and both greedy strategies solve it. <strong>Level 2</strong> (243 sequences, par 34.5 reached by 10 of them) is the range trap — and the trap is more specific than it looks. Simply following the largest shadow price actually <em>wins</em> here (34.5), because after one purchase machine-hours&#39; price collapses and a price-follower correctly moves on. What scores 31.5 is multiplying the price by the size of the upgrade: machine-hours are worth 0.75 each but only for 2.25 more units, so an upgrade of 6 looks like 4.5 and delivers 1.8. A price without its range is what misleads you, not the price. Skilled hours, meanwhile, are worthless in <em>every</em> one of the 243 sequences — the best plan touching them scores 33 against the 34.5 available without. <strong>Level 3</strong> (81 sequences, par 40.5 reached by only 6) is where greedy play runs out: 44 of the 81 sequences score exactly 36 and greedy lands there unless a tie between equal-scoring resources happens to fall its way, in which case it stumbles onto par. The right first move is worth nothing on the quarter you make it and only pays through what it unblocks later. That is the honest limit of a shadow price: it is a slope, not a plan.',
+    honest: 'Honest model: each level is a real linear program, re-solved exactly at every step by enumerating the vertices of the feasible region, the reason an optimum can be found without searching the interior. A shadow price here is the <em>right-hand</em> derivative of the optimum with respect to that right-hand side, one-sided on purpose, because the optimal-value function is piecewise linear and has a corner exactly where the binding set changes, which is the whole lesson of level 2. The range is found by walking that right-hand side until the price changes, which is exactly what right-hand-side ranging means. Every par was established by exhaustive search over all possible purchase sequences before any of this was drawn. <strong>Level 1</strong> (8 sequences) is a tutorial and both greedy strategies solve it. <strong>Level 2</strong> (243 sequences, par 34.5 reached by 10 of them) is the range trap, and the trap is more specific than it looks. Simply following the largest shadow price actually <em>wins</em> here (34.5), because after one purchase machine-hours&#39; price collapses and a price-follower correctly moves on. What scores 31.5 is multiplying the price by the size of the upgrade: machine-hours are worth 0.75 each but only for 2.25 more units, so an upgrade of 6 looks like 4.5 and delivers 1.8. A price without its range is what misleads you, not the price. Skilled hours, meanwhile, are worthless in <em>every</em> one of the 243 sequences, the best plan touching them scores 33 against the 34.5 available without. <strong>Level 3</strong> (81 sequences, par 40.5 reached by only 6) is where greedy play runs out: 44 of the 81 sequences score exactly 36 and greedy lands there unless a tie between equal-scoring resources happens to fall its way, in which case it stumbles onto par. The right first move is worth nothing on the quarter you make it and only pays through what it unblocks later. That is the honest limit of a shadow price: it is a slope, not a plan.',
 
     mount: function (root, opts) {
       opts = opts || {};
@@ -209,7 +209,7 @@
       }
 
       /* axes are fixed per level so the region visibly GROWS rather than the
-         chart rescaling under it — the growth is the thing being taught */
+         chart rescaling under it, the growth is the thing being taught */
       function axisMax() {
         var s = L.res.map(function (r, i) { return r.cap + r.step * L.rounds; });
         var mx = 0, my = 0;
@@ -279,7 +279,7 @@
             '<span class="orbuy-price">' + (p > 0 ? fmt(p) + ' per unit' : 'worth nothing right now') + '</span>' +
             '<span class="orbuy-range">' + (p > 0
               ? 'that price holds for ' + (rg === Infinity ? 'a long way' : fmt(rg) + ' more units')
-              : 'you already have spare — more cannot help') + '</span>' +
+              : 'you already have spare, more cannot help') + '</span>' +
             '<span class="orbuy-go">buy +' + r.step + (over ? ' <b class="warn">overshoots the range</b>' : '') + '</span>' +
             '</button>';
         }).join('');
@@ -303,7 +303,7 @@
           '<div class="orsplit">' +
             '<div class="orviz">' + drawRegion() +
               '<p class="orcap">The shaded shape is every production plan you could actually run. ' +
-              'A <b>binding</b> line touches the best corner — that resource is the bottleneck. ' +
+              'A <b>binding</b> line touches the best corner, that resource is the bottleneck. ' +
               'A <b>slack</b> line does not, and buying more of it moves nothing.</p>' +
             '</div>' +
             '<div class="orside">' +
@@ -344,11 +344,11 @@
         var msg;
         if (p === 0) {
           msg = { cls: '', html: '<strong>Nothing happened, and the price told you so.</strong> ' + esc(r.n) +
-            ' had slack — the best plan was not using all of what you already had, so more of it changes no corner. ' +
+            ' had slack, the best plan was not using all of what you already had, so more of it changes no corner. ' +
             'A shadow price of zero is not a small number. It is a statement that this is not your problem.' };
         } else if (rg < r.step - 1e-9) {
           msg = { cls: 'good', html: '<strong>+' + fmt(gain) + ', not the +' + fmt(p * r.step) + ' the price appeared to promise.</strong> ' +
-            'Each unit really was worth ' + fmt(p) + ' — but only for ' + fmt(rg) + ' more units. Past that this stopped being ' +
+            'Each unit really was worth ' + fmt(p) + ', but only for ' + fmt(rg) + ' more units. Past that this stopped being ' +
             'the bottleneck and the extra capacity had nothing to do. <em>A shadow price is a slope, not a promise.</em>' };
         } else {
           msg = { cls: 'good', html: '<strong>+' + fmt(gain) + '.</strong> The price held across the whole purchase, so ' +
@@ -362,12 +362,12 @@
       function verdict(sol) {
         var v = sol.value, hit = v >= L.par - 1e-9, last = lv === LEVELS.length - 1;
         var notes = [
-          'Both greedy strategies solve this one — that is why it is first. The habit to take forward: a resource with slack is worth <b>exactly</b> zero, not a little.',
-          '<b>Skilled hours were never worth buying.</b> The best plan that spends anything on them scores 33, below the 34.5 available if you never touch them. And <b>a price times an upgrade size scores 31.5</b>: machine-hours are worth 0.75 each, but only for 2.25 more units, and an upgrade buys 6 — so it looks like 4.5 and pays 1.8. Following the price itself is fine; multiplying it out is the trap.',
-          'This one runs greedy play out of road. Buying the best-looking resource every quarter lands on <b>36</b>, and so does buying the one with the largest true one-step gain — 44 of the 81 sequences score exactly that, and only 6 reach par. (A greedy player facing a tie between equal-scoring resources can stumble onto 40.5; that is luck, not method.) Par needs a purchase that is worth <b>nothing on the quarter you make it</b> and only pays through what it unblocks. A shadow price is a slope, not a plan.'
+          'Both greedy strategies solve this one, that is why it is first. The habit to take forward: a resource with slack is worth <b>exactly</b> zero, not a little.',
+          '<b>Skilled hours were never worth buying.</b> The best plan that spends anything on them scores 33, below the 34.5 available if you never touch them. And <b>a price times an upgrade size scores 31.5</b>: machine-hours are worth 0.75 each, but only for 2.25 more units, and an upgrade buys 6, so it looks like 4.5 and pays 1.8. Following the price itself is fine; multiplying it out is the trap.',
+          'This one runs greedy play out of road. Buying the best-looking resource every quarter lands on <b>36</b>, and so does buying the one with the largest true one-step gain, 44 of the 81 sequences score exactly that, and only 6 reach par. (A greedy player facing a tie between equal-scoring resources can stumble onto 40.5; that is luck, not method.) Par needs a purchase that is worth <b>nothing on the quarter you make it</b> and only pays through what it unblocks. A shadow price is a slope, not a plan.'
         ];
         return '<div class="orfinal ' + (hit ? 'win' : '') + '">' +
-          '<p class="oreyebrow">' + esc(L.name) + ' — closed</p>' +
+          '<p class="oreyebrow">' + esc(L.name) + ', closed</p>' +
           '<p class="orfinal-v">' + fmt(v) + ' <span>vs par ' + L.par + '</span></p>' +
           // The next-level CTA goes HERE, directly under the score, not at the
           // bottom of the explanation. It was being missed because it sat
@@ -394,7 +394,7 @@
   };
 
   /* ==================================================================== *
-   *  THE PRUNE — branch and bound over four sizes.                       *
+   *  THE PRUNE, branch and bound over four sizes.                       *
    *                                                                      *
    *  All verified offline. PAR is the count of nodes whose Dantzig bound  *
    *  EXCEEDS the optimum: such a node can never be safely pruned by any   *
@@ -409,7 +409,7 @@
    *  Two figures in this table were corrected once and silently restored   *
    *  by a rewrite, so they are called out: Grover on level 2 is 17.77 and  *
    *  therefore ~18, NOT ~17 (int() truncation); and best-bound on level 3  *
-   *  is 35-38, not a bare 38 — the spread is only how ties between equal   *
+   *  is 35-38, not a bare 38, the spread is only how ties between equal   *
    *  bounds fall. Do not "tidy" either back. Re-verified 2026-07-30 by an  *
    *  exact port of expand()/sweep(): best 14/27/38/36, dfs 42/151/507/     *
    *  1203, bfs 29/204/1388/19829, and killed == 2^n on every level under   *
@@ -425,13 +425,13 @@
     hook: 'Sixty-five thousand possibilities by the last level. You will look at about thirty-six, and prove the rest cannot win.',
     mentor: 'Cordon',
     about: {
-      goal: '<strong>Prove</strong> which haul is best — not guess it. You are finished when every combination is accounted for: taken, or ruled out by a bound.',
-      how: 'Pick an open branch to open. The number on each is its <strong>bound</strong> — the most it could possibly be worth. When a bound cannot beat the best haul you already hold, that whole branch dies untouched.',
-      inspired: 'Branch and bound (Land &amp; Doig, 1960) and the Dantzig bound for the knapsack — the machinery every commercial solver still runs on.',
+      goal: '<strong>Prove</strong> which haul is best, not guess it. You are finished when every combination is accounted for: taken, or ruled out by a bound.',
+      how: 'Pick an open branch to open. The number on each is its <strong>bound</strong>, the most it could possibly be worth. When a bound cannot beat the best haul you already hold, that whole branch dies untouched.',
+      inspired: 'Branch and bound (Land &amp; Doig, 1960) and the Dantzig bound for the knapsack, the machinery every commercial solver still runs on.',
       learn: 'Why finding a good answer <em>early</em> beats exploring the promising branch, why a cut high in the tree is worth exponentially more than one low down, and what happens to a quantum speedup when the problem has structure.',
-      link: 'feasible.html#t05', linkText: 'Topic 05: Branch and bound ▸', tier: '⟦Proven⟧'
+      link: 'feasible.html#t05', linkText: 'Topic 05: Branch and bound ▸', tier: 'Proven'
     },
-    honest: 'Honest model: genuine 0/1 knapsacks solved by genuine branch and bound. The bound on each node is the <strong>Dantzig bound</strong> — relax to fractional, fill greedily by value per kilogram, allow a fraction of the last item — which is provably an upper bound on anything below the node, and that is what makes discarding a branch safe rather than merely likely. Each optimum was found by exhaustive search, and each par is the count of nodes whose bound strictly exceeds that optimum: such a node can never be safely cut by <em>any</em> strategy, so par is a floor rather than a target. Measured on the four levels — best-bound play needs 14 / 27 / 35–38 / 36 expansions (the level-3 spread is nothing but how ties between equal bounds fall), a depth-first dive needs 42 / 151 / 507 / 1,203, and breadth-first needs 29 / 204 / 1,388 / <strong>19,829</strong>. <strong>The quantum comparison, and it is the reason the levels get bigger:</strong> Grover would need roughly 6 / 18 / 50 / 201 oracle queries on the same four search spaces. On level 1 that <em>beats</em> branch and bound. By level 4 it loses five-fold. The units are not comparable — an oracle query and a bound computation are different work — so the point is not the scoreboard. The point is the shape: Grover&#39;s ⟦Proven⟧ quadratic speedup is still exponential, and it is the same whether the problem is a knapsack or pure noise, because it never looks at the structure. The bound is <em>made</em> of that structure, so it barely grows at all — and it finishes holding a certificate rather than a likely answer.',
+    honest: 'Honest model: genuine 0/1 knapsacks solved by genuine branch and bound. The bound on each node is the <strong>Dantzig bound</strong>, relax to fractional, fill greedily by value per kilogram, allow a fraction of the last item, which is provably an upper bound on anything below the node, and that is what makes discarding a branch safe rather than merely likely. Each optimum was found by exhaustive search, and each par is the count of nodes whose bound strictly exceeds that optimum: such a node can never be safely cut by <em>any</em> strategy, so par is a floor rather than a target. Measured on the four levels, best-bound play needs 14 / 27 / 35–38 / 36 expansions (the level-3 spread is nothing but how ties between equal bounds fall), a depth-first dive needs 42 / 151 / 507 / 1,203, and breadth-first needs 29 / 204 / 1,388 / <strong>19,829</strong>. <strong>The quantum comparison, and it is the reason the levels get bigger:</strong> Grover would need roughly 6 / 18 / 50 / 201 oracle queries on the same four search spaces. On level 1 that <em>beats</em> branch and bound. By level 4 it loses five-fold. The units are not comparable, an oracle query and a bound computation are different work, so the point is not the scoreboard. The point is the shape: Grover&#39;s Proven quadratic speedup is still exponential, and it is the same whether the problem is a knapsack or pure noise, because it never looks at the structure. The bound is <em>made</em> of that structure, so it barely grows at all, and it finishes holding a certificate rather than a likely answer.',
 
     mount: function (root, opts) {
       opts = opts || {};
@@ -561,10 +561,10 @@
               (Math.round(it[0]/it[1]*100)/100) + ' per kg">' +
               '<b>' + it[0] + '</b><i>' + it[1] + 'kg</i></span>';
           }).join('') + '</div>' +
-          '<p class="orcap" style="margin-top:8px">Sorted by value per kilogram — the order the bound needs. ' +
+          '<p class="orcap" style="margin-top:8px">Sorted by value per kilogram, the order the bound needs. ' +
           'Highlighted crates are in the best haul found so far' +
           (incTaken.length ? ' (' + incTaken.length + ' crates, ' +
-            incTaken.reduce(function (a,i) { return a + IT[i][1]; }, 0) + ' kg, worth ' + inc + ')' : ' — none yet') + '.</p>' +
+            incTaken.reduce(function (a,i) { return a + IT[i][1]; }, 0) + ' kg, worth ' + inc + ')' : ', none yet') + '.</p>' +
           '</div>';
       }
 
@@ -581,13 +581,13 @@
           '</div>' +
           '<div class="orbar" title="' + killed + ' of ' + TOTAL + ' accounted for">' +
             '<i style="width:' + pct + '%"></i><span>' + killed.toLocaleString() + ' of ' +
-            TOTAL.toLocaleString() + ' combinations ruled out — ' + pct + '%</span></div>' +
+            TOTAL.toLocaleString() + ' combinations ruled out, ' + pct + '%</span></div>' +
           crates() +
           (over ? finalHTML() :
-            '<p class="oreyebrow" style="margin-top:16px">Open a branch — the number above it is the most it could possibly be worth</p>') +
+            '<p class="oreyebrow" style="margin-top:16px">Open a branch, the number above it is the most it could possibly be worth</p>') +
           '<div class="ortreewrap">' + drawTree() + '</div>' +
           '<p class="orcap">Every grey branch was eliminated by arithmetic, not by looking. ' +
-          'The number under it is how many complete combinations died with it — that is where the speed comes from.</p>';
+          'The number under it is how many complete combinations died with it, that is where the speed comes from.</p>';
 
         Array.prototype.forEach.call(root.querySelectorAll('[data-n]'), function (nd) {
           var n = nodes[+nd.getAttribute('data-n')];
@@ -609,25 +609,25 @@
         var proved = inc === L.opt, tight = used <= L.gate, last = lv === LEVELS.length - 1;
         var beatsGrover = used < L.grover;
         return '<div class="orfinal ' + (proved && tight ? 'win' : '') + '">' +
-          '<p class="oreyebrow">The frontier is empty — that is the proof</p>' +
+          '<p class="oreyebrow">The frontier is empty, that is the proof</p>' +
           '<p class="orfinal-v">' + used + ' <span>branches opened · par ' + L.par + '</span></p>' +
           nextCTA(proved && tight, last, lv, 'load', LEVELS) +
           '<p>All ' + TOTAL.toLocaleString() + ' combinations are accounted for: taken, or ruled out by a bound. ' +
           'The best haul is <strong>' + inc + '</strong>' + (proved ? ', and it is provably the best there is.' : '.') + '</p>' +
-          '<p class="orfinal-note">Par is <b>' + L.par + '</b>, and it is a floor rather than a target — exactly ' + L.par +
+          '<p class="orfinal-note">Par is <b>' + L.par + '</b>, and it is a floor rather than a target, exactly ' + L.par +
           ' nodes in this tree have a bound above ' + L.opt + ', and a branch that could still beat the optimum can never be ' +
-          'safely cut by any strategy — reaching it needs a perfect first guess. Clearing this level asks for <b>' + L.gate +
+          'safely cut by any strategy, reaching it needs a perfect first guess. Clearing this level asks for <b>' + L.gate +
           '</b> or fewer, which best-bound play achieves. Breadth-first needs <b>' + L.bfs.toLocaleString() + '</b>.</p>' +
           '<p class="orfinal-note quantum">Grover would need about <b>' + L.grover + '</b> oracle queries on these ' +
-          TOTAL.toLocaleString() + ' — ⟦Proven⟧ quadratic, and it returns a <em>likely</em> answer rather than a proof. ' +
+          TOTAL.toLocaleString() + ', Proven quadratic, and it returns a <em>likely</em> answer rather than a proof. ' +
           (beatsGrover
             ? 'You beat that. '
             : 'That is fewer than you used. <b>Grover genuinely wins at this size</b>, and saying otherwise would be dishonest. ') +
           (last
-            ? 'Look back at level 1: Grover needed 6 there and you needed about 14. It needs 201 here. That is the whole argument — ' +
+            ? 'Look back at level 1: Grover needed 6 there and you needed about 14. It needs 201 here. That is the whole argument, ' +
               'the quadratic speedup is still exponential, and it is identical whether the problem is a knapsack or pure noise, ' +
               'because it never looks at the structure. The bound is <em>made</em> of that structure, so it barely grows at all.'
-            : 'Keep going — the gap moves as the problem grows, and which way it moves is the point of this game.') +
+            : 'Keep going, the gap moves as the problem grows, and which way it moves is the point of this game.') +
           '</p>' +
           '<p><button class="preset" data-again>Prove it again, faster</button></p>' +
           '</div>';
@@ -682,7 +682,7 @@
   };
 })();
 
-/* ── 2 · THE VERDICT — five methods on one problem ────────────────────────
+/* ── 2 · THE VERDICT, five methods on one problem ────────────────────────
  * "Can quantum beat classical on optimisation?" is unanswerable in the
  * abstract and perfectly answerable on a named instance. This runs five real
  * methods over the same problem and reports, for each, the thing almost
@@ -692,7 +692,7 @@
  * number with one is a fact. Four of these five finish with a claim.
  *
  * DESIGNED TO BE REUSED. mount() takes an arbitrary {items, cap} instance, so
- * the PQC migration sequencer can mount this same engine on a real estate —
+ * the PQC migration sequencer can mount this same engine on a real estate,
  * an asset's value is its risk reduction, its weight is its migration cost.
  * One engine, two doors, exactly as games.js already does for the games.
  *
@@ -700,7 +700,7 @@
  * whose optima (205/280/355/479) were found by exhaustive search and
  * re-verified 2026-07-30 by an exact port of expand()/sweep(). Every figure
  * this widget prints for branch and bound is recomputed live and asserted
- * against those optima — if it ever disagrees, the widget says so rather
+ * against those optima, if it ever disagrees, the widget says so rather
  * than printing a number nobody checked.
  * ────────────────────────────────────────────────────────────────────── */
 (function () {
@@ -733,7 +733,7 @@
 
   /* --- method 2: the LP relaxation (Dantzig bound) ------------------------
    * Allow a FRACTION of the last item. Provably an upper bound on any integer
-   * packing — which is exactly what makes branch and bound's cuts safe rather
+   * packing, which is exactly what makes branch and bound's cuts safe rather
    * than merely plausible. Its own answer is fractional, so you cannot load it. */
   function dantzig(items, cap) {
     var ord = items.map(function (it) { return { v: it[0], w: it[1], r: it[0] / it[1] }; })
@@ -749,7 +749,7 @@
   /* --- method 3: exact branch and bound, best-bound first ------------------
    * Counts expansions, and counts how many of the 2^n assignments each cut
    * kills. When killed + reached == 2^n the search PARTITIONS the space, and
-   * that identity is the certificate — not a claim about the answer, a proof
+   * that identity is the certificate, not a claim about the answer, a proof
    * that nothing was skipped. */
   function branchAndBound(items, cap) {
     var ord = items.map(function (it) { return { v: it[0], w: it[1], r: it[0] / it[1] }; })
@@ -881,29 +881,29 @@
           proof: false,
           cert: gap
             ? 'None. It is instant, and it cannot tell you it fell <b>' + num(gap) +
-              '</b> short — you only know that because the exact method below proved it.'
+              '</b> short, you only know that because the exact method below proved it.'
             : 'None. It happens to be optimal here, and it has no way of knowing that.' },
-        { kind: 'cl', name: 'LP relaxation', note: 'the Dantzig bound — allow a fraction of one crate',
+        { kind: 'cl', name: 'LP relaxation', note: 'the Dantzig bound, allow a fraction of one crate',
           answer: r.lp.value.toFixed(2) + (r.lp.fractional ? ' <em>fractional</em>' : ''),
           effort: num(r.lp.effort) + ' items looked at',
           proof: true,
           cert: 'An <b>upper bound</b>: proves nothing can beat ' + r.lp.value.toFixed(2) +
                 '. But its own answer splits a crate, so you cannot load it.' },
-        { kind: 'ex', name: 'Branch & bound', note: 'exact — the machinery every commercial solver runs',
+        { kind: 'ex', name: 'Branch & bound', note: 'exact, the machinery every commercial solver runs',
           answer: '<b>' + num(r.bb.value) + '</b> <span class="vm-opt">optimal</span>',
           effort: num(r.bb.effort) + ' nodes opened',
           proof: true,
           cert: '<b>Optimal, proven.</b> Every one of the ' + num(r.bb.total) +
-                ' combinations is accounted for — taken, or killed by a bound. ' +
+                ' combinations is accounted for, taken, or killed by a bound. ' +
                 'killed + reached = ' + num(r.bb.killed) + ' = 2<sup>' + r.n + '</sup>.' },
         { kind: 'he', name: 'Simulated annealing', note: 'the metaheuristic quantum annealing imitates',
           answer: num(r.sa.value),
           effort: num(r.sa.effort) + ' moves, 120 restarts',
           proof: false,
-          cert: 'None — and this is the sharp one. It landed on the optimum in <b>' +
+          cert: 'None, and this is the sharp one. It landed on the optimum in <b>' +
                 Math.round(r.saHitRate * 100) + '%</b> of runs. In the other ' +
                 Math.round((1 - r.saHitRate) * 100) + '% it also stopped, and also reported an answer.' },
-        { kind: 'q', name: 'Grover', note: 'quantum, ⟦Proven⟧ quadratic — a resource estimate, not a result',
+        { kind: 'q', name: 'Grover', note: 'quantum, Proven quadratic, a resource estimate, not a result',
           answer: '<span class="vm-na">no answer to show</span>',
           effort: '~' + num(r.grover.queries) + ' oracle queries',
           proof: false,
@@ -914,9 +914,9 @@
       var beats = r.grover.queries < r.bb.effort;
       var verdict = beats
         ? '<div class="verdict split"><b>Watch.</b> On an instance this small Grover&rsquo;s query count is ' +
-          'below the number of nodes branch and bound opens. That is real — and it is also the ' +
+          'below the number of nodes branch and bound opens. That is real, and it is also the ' +
           'last size at which it is true.</div>'
-        : '<div class="verdict good"><b>Never</b> — for this problem, at this size. Branch and bound ' +
+        : '<div class="verdict good"><b>Never</b>, for this problem, at this size. Branch and bound ' +
           'finished in ' + num(r.bb.effort) + ' nodes <em>holding a proof</em>; Grover would need ~' +
           num(r.grover.queries) + ' queries on hardware that does not exist, and finish holding a guess.</div>';
 
@@ -929,13 +929,13 @@
         '<div class="vm-scroll"><table class="vm"><thead><tr><th>Method</th><th>Best it found</th>' +
         '<th>Effort</th><th>What it can prove</th></tr></thead><tbody>' +
         rows.map(tableRow).join('') + '</tbody></table></div>' +
-        '<p class="vm-note"><b>The units are not comparable</b> — an oracle query and a bound ' +
-        'computation are different work — so the scoreboard is not the point. The shape is. ' +
+        '<p class="vm-note"><b>The units are not comparable</b>, an oracle query and a bound ' +
+        'computation are different work, so the scoreboard is not the point. The shape is. ' +
         'Grover&rsquo;s speedup is quadratic but still exponential, and identical on a knapsack or ' +
         'on pure noise, because it never reads the structure. The bound is <em>made</em> of that ' +
         'structure, so it barely grows. <b>Node counts depend on how ties between equal bounds ' +
         'fall</b>: this solver opens ' + num(r.bb.effort) + ' on ' + esc(inst.name) +
-        ', while <a href="#prune">The Prune</a> — playable below, same instance — reports 14 / 27 / ' +
+        ', while <a href="#prune">The Prune</a>, playable below, same instance, reports 14 / 27 / ' +
         '35&ndash;38 / 36 for the four. Both are honest; neither is <em>the</em> number.</p>';
     }
 

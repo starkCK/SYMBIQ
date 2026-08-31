@@ -1,4 +1,4 @@
-/* SymbiQ — The Signal: the news feed, defined once and mounted on signals.html.
+/* SymbiQ, The Signal: the news feed, defined once and mounted on signals.html.
  *
  *   SymbiQ.signals.mount(el, { limit, base })
  *
@@ -21,7 +21,7 @@
 
   function tierBadge(tier) {
     var icon = TIER_ICON[tier] || '';
-    return '<span class="orbadge">' + icon + ' ⟦' + esc(tier) + '⟧</span>';
+    return '<span class="orbadge">' + icon + ' ' + esc(tier) + '</span>';
   }
 
   function renderOne(a) {
@@ -30,7 +30,7 @@
       (a.concept_card_html || '') +
       '<p class="sig-source">Source: ' +
       (src.link ? '<a href="' + esc(src.link) + '" rel="noopener noreferrer">' : '') +
-      esc(src.name || '') + (src.title ? ' — ' + esc(src.title) : '') +
+      esc(src.name || '') + (src.title ? ', ' + esc(src.title) : '') +
       (src.link ? '</a>' : '') + '</p>';
   }
 
@@ -45,7 +45,7 @@
       .then(function (idx) {
         var entries = (idx && idx.entries) || [];
         if (!entries.length) {
-          host.innerHTML = '<p class="archq-loading">No Signals published yet — and none are queued either: '
+          host.innerHTML = '<p class="archq-loading">No Signals published yet, and none are queued either: '
             + 'the job that drafts them has not run successfully since it was created. What is supposed to '
             + 'happen, and why it has not, is written out <a href="#how">below</a>.</p>';
           return;
@@ -56,7 +56,7 @@
 
         host.innerHTML =
           (o.heading ? '<p class="archq-count">' + entries.length + ' Signal'
-            + (entries.length === 1 ? '' : 's') + ' published so far. Newest first — every one names its '
+            + (entries.length === 1 ? '' : 's') + ' published so far. Newest first, every one names its '
             + 'source and says what it does NOT mean.</p>' : '') +
           shown.map(function (e) {
             return '<details class="archq" data-slug="' + esc(e.slug) + '">' +

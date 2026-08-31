@@ -1,4 +1,4 @@
-/* SymbiQ — THE SCENE KIT (Phase 0 of outputs/14_GAME_REDESIGN.md §8)
+/* SymbiQ, THE SCENE KIT (Phase 0 of outputs/14_GAME_REDESIGN.md §8)
  *
  * Everything a mission needs to stop being a widget in a box and start being a
  * place you are standing in. One file, no dependencies, no assets, no network.
@@ -66,11 +66,11 @@
   }
 
   /* ==================================================================== *
-   *  1. THE WORLD LAYER — one fullscreen quad, one shader per place      *
+   *  1. THE WORLD LAYER, one fullscreen quad, one shader per place      *
    *                                                                      *
    *  ~40 lines of GLSL each, no library, no assets, 60 fps on a phone.   *
    *  Per 14_ §6.1 these are PLACES IN THE LATTICE, not laboratory        *
-   *  hardware — which is what this pipeline is actually good at.         *
+   *  hardware, which is what this pipeline is actually good at.         *
    *  Procedural generation is strongest at the abstract sublime and      *
    *  weakest at the specific real, so the fantasy frame makes the art    *
    *  cheaper rather than dearer.                                         *
@@ -81,12 +81,12 @@
     'void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
 
   /* Shared preamble: palette, hash, value noise, fbm, domain warp.
-     mediump throughout — this runs behind content on phones. */
+     mediump throughout, this runs behind content on phones. */
   var COMMON = [
     'precision mediump float;',
     'uniform vec2  u_res;',
     'uniform float u_time;',
-    'uniform float u_coh;',    // 0..1 — the coherence meter, normalised
+    'uniform float u_coh;',    // 0..1, the coherence meter, normalised
     'uniform float u_a;',      // world parameter A (a game may bind a real number here)
     'uniform float u_b;',      // world parameter B
     'uniform float u_seed;',
@@ -111,7 +111,7 @@
     'vec2 warp(vec2 p, float k){',
     '  return p + k * vec2(fbm(p + vec2(0.0, u_time * 0.03)), fbm(p + vec2(5.2, 1.3)));',
     '}',
-    /* THE STATIC — everywhere, always, and it is the coherence meter made
+    /* THE STATIC, everywhere, always, and it is the coherence meter made
        visible. Structure forgetting its own edges: domain-warped fbm whose
        amplitude is bound to (1 - coherence). At full coherence it is absent. */
     'vec3 statica(vec3 col, vec2 uv){',
@@ -120,7 +120,7 @@
     '  float tear = smoothstep(0.62, 0.86, g) * amt;',
     /* A torn region loses its colour AND its light. The first build mixed
        toward a constant vec3(0.10,0.11,0.14), which on a scene this dark is
-       BRIGHTER than the ground — so heavy Static made the world glow like fog
+       BRIGHTER than the ground, so heavy Static made the world glow like fog
        instead of crumbling, and measured peak brightness went UP as coherence
        fell. Mixing toward a darkened greyscale of the pixel's own colour makes
        the loss monotone: the more the Static holds, the less there is. */
@@ -128,7 +128,7 @@
     '  col = mix(col, dead, tear * 0.90);',
     /* Grain SUBTRACTS only. An additive +/- fleck raised peak luminance by ~10%
        as coherence fell, so the brightest thing on screen got brighter the more
-       the world decayed — a small magnitude but exactly the wrong signal, and
+       the world decayed, a small magnitude but exactly the wrong signal, and
        the same defect as the tear above in a second place. The Static takes. */
     '  float grain = hash(uv * u_res.xy + fract(u_time) * 91.7);',
     '  col -= grain * 0.045 * amt;',
@@ -139,7 +139,7 @@
        background drains even where CSS filters would be too costly. */
     'vec3 drain(vec3 col){',
     /* Clamp into gamut BEFORE desaturating. Mixing toward luminance preserves
-       luminance exactly — but only for in-gamut colour. On an over-bright pixel
+       luminance exactly, but only for in-gamut colour. On an over-bright pixel
        (the corridor's exit glow is deliberately 1.55x) the high channels are
        already clipped at 1.0 and cannot fall to compensate, so the low channel
        rising made the brightest pixel ~8% BRIGHTER as coherence fell. Clamping
@@ -153,7 +153,7 @@
 
   var WORLDS = {
 
-    /* ACT I — THE QUANTUM REALM.  A vast dark hall; one impossible coin
+    /* ACT I, THE QUANTUM REALM.  A vast dark hall; one impossible coin
        turning in a shaft of light, its faces both true. The whole act is one
        object lit well. u_a: how far the coin has turned (else it turns freely). */
     realm: [
@@ -206,11 +206,11 @@
       '}'
     ].join('\n'),
 
-    /* ACT II — THE LOCKED CORRIDOR.  Doors without end, receding into fog;
+    /* ACT II, THE LOCKED CORRIDOR.  Doors without end, receding into fog;
        one of them is breathing light. A box tunnel solved analytically: for a
        ray down +z inside |x|<=1, |y|<=1 the first wall hit is min(1/|dx|,1/|dy|),
        so the geometry is exact and costs two divisions.
-       u_a IS THE EXIT'S REAL PROBABILITY — bind sin^2((2k+1)theta) to it and
+       u_a IS THE EXIT'S REAL PROBABILITY, bind sin^2((2k+1)theta) to it and
        over-rotating physically dims the door. u_b: door index, 0..1. */
     corridor: [
       'void main(){',
@@ -264,9 +264,9 @@
       '}'
     ].join('\n'),
 
-    /* ACT III — GRAPH CITY.  A city of light seen from above, tearing along a
+    /* ACT III, GRAPH CITY.  A city of light seen from above, tearing along a
        seam you are drawing. Voronoi cells, two-tone fill, the cut a hard line.
-       u_a: how far the cut has been drawn. u_b: how much is unsatisfiable — the
+       u_a: how far the cut has been drawn. u_b: how much is unsatisfiable, the
        odd loop that cannot be cut flares amber and stays flared. */
     city: [
       /* Two-nearest Voronoi. Keeping the SECOND distance as well is what gives
@@ -325,7 +325,7 @@
       '}'
     ].join('\n'),
 
-    /* ACT IV — THE VOLCANO.  A living ridge line under heat haze.
+    /* ACT IV, THE VOLCANO.  A living ridge line under heat haze.
        THE BACKGROUND IS LITERALLY THE DATA: when a heights strip is uploaded
        through handle.setData(), the silhouette you see IS the array the
        Metropolis sampler runs on. Free correctness and free beauty on one line.
@@ -357,9 +357,9 @@
       '}'
     ].join('\n'),
 
-    /* ACT V — THE SHORE OF TWINS.  Two particle tides on separate shores,
+    /* ACT V, THE SHORE OF TWINS.  Two particle tides on separate shores,
        moving as one. Break the pairing and the correlation is visibly still
-       there — which is the whole no-signalling point Kai & Lyra exist to make.
+       there, which is the whole no-signalling point Kai & Lyra exist to make.
        u_a: correlation strength. u_b: separation. */
     shore: [
       'void main(){',
@@ -405,24 +405,24 @@
       '}'
     ].join('\n'),
 
-    /* THE KNOT — the finale. A single wound in the lattice, folding inward.
+    /* THE KNOT, the finale. A single wound in the lattice, folding inward.
        The only scene that breaks the palette.
 
-       u_a — the share of rounds you have HELD the logical qubit. The fold
+       u_a, the share of rounds you have HELD the logical qubit. The fold
              weakens, the light-eating mouth closes, and the off-palette red
              comes back toward violet: the wound stops taking.
-       u_b — the share of rounds you HANDED OVER to the reading without
+       u_b, the share of rounds you HANDED OVER to the reading without
              looking. It greys the world, because certainty looks like grey
              (14_ §6.4) and automation bias is certainty wearing a machine.
 
        At u_a = u_b = 0 this is pixel-identical to the shader shipped in
-       Phase 0 — the finale only ever adds response, never a new default. */
+       Phase 0, the finale only ever adds response, never a new default. */
     knot: [
       'void main(){',
       '  vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;',
       '  float r = length(uv);',
       /* The shipped Phase 0 shader fed atan(uv.y,uv.x) straight into the noise,
-         and atan JUMPS BY 2*PI across the negative x-axis — so a hard horizontal
+         and atan JUMPS BY 2*PI across the negative x-axis, so a hard horizontal
          seam ran from the left edge to the centre of every frame. Only visible
          by rendering one and looking at it. The unit radial direction carries
          the same angular modulation and is continuous everywhere. */
@@ -640,7 +640,7 @@
     if (!C) return false;
     var apply = function () {
       var v = clamp01(C.get() / 100);
-      // 1.0 at full, 0.30 at nothing — the world drains but never goes flat grey,
+      // 1.0 at full, 0.30 at nothing, the world drains but never goes flat grey,
       // because a page you cannot read is not an aesthetic.
       document.documentElement.style.setProperty('--scene-sat', (0.30 + 0.70 * v).toFixed(3));
       for (var i = 0; i < running.length; i++) running[i].u.coh = v;
@@ -655,7 +655,7 @@
   }
 
   /* ==================================================================== *
-   *  3. TURBULENCE — analogue warp over PROVEN geometry.                 *
+   *  3. TURBULENCE, analogue warp over PROVEN geometry.                 *
    *                                                                      *
    *  feTurbulence + feDisplacementMap distorts the RENDERING of an SVG   *
    *  and moves not one coordinate of it. So a provably correct circuit   *
@@ -690,7 +690,7 @@
     target.setAttribute('filter', 'url(#' + id + ')');
 
     var api = {
-      // amount 0..1 — at 0 the filter is a no-op and the diagram is pristine
+      // amount 0..1, at 0 the filter is a no-op and the diagram is pristine
       set: function (v) {
         v = clamp01(v);
         turb.setAttribute('baseFrequency', (0.004 + 0.055 * v).toFixed(4));
@@ -708,11 +708,11 @@
   }
 
   /* ==================================================================== *
-   *  4. PORTRAITS — a face, drawn by code, that reacts to what you did   *
+   *  4. PORTRAITS, a face, drawn by code, that reacts to what you did   *
    *                                                                      *
    *  Not purchased, not model-generated: deterministic from a seed, so a *
    *  character is always the same face. House style is one continuous    *
-   *  contour, two flat fills and one accent — closer to a linocut than   *
+   *  contour, two flat fills and one accent, closer to a linocut than   *
    *  an illustration, deliberately stylised so it reads as designed.     *
    *                                                                      *
    *  The part that matters is THREE EXPRESSION PARAMETERS driven by game *
@@ -896,10 +896,10 @@
   }
 
   /* ==================================================================== *
-   *  5. AUDIO — WebAudio, no files, muted until asked.                   *
+   *  5. AUDIO, WebAudio, no files, muted until asked.                   *
    *  A drone whose detune tracks coherence: as you decohere the harmonics*
    *  thin and it converges on one flat tone. CERTAINTY SOUNDS LIKE A     *
-   *  DIAL TONE. One short dry click per action. Nothing else — restraint *
+   *  DIAL TONE. One short dry click per action. Nothing else, restraint *
    *  is the premium signal, and audio that autoplays is a bounce.        *
    * ==================================================================== */
 
@@ -997,7 +997,7 @@
   };
 
   /* ==================================================================== *
-   *  6. THE ACT CARD — type as image.                                    *
+   *  6. THE ACT CARD, type as image.                                    *
    *  The Interstellar register comes from typography and negative space, *
    *  not illustration. One enormous word, one thin rule, a long fade.    *
    *  It is free and it does more for perceived production value than any *
@@ -1036,10 +1036,10 @@
    *  7. THE FOUR-BEAT SEQUENCER                                          *
    *                                                                      *
    *  Every mission, no exceptions, so the shape is learnable:            *
-   *    ARRIVAL     — you are somewhere and something is wrong            *
-   *    ASK         — the character wants something; the arc lives here   *
-   *    WORK        — the verified mechanic, untouched                    *
-   *    CONSEQUENCE — something changes and stays changed                 *
+   *    ARRIVAL    , you are somewhere and something is wrong            *
+   *    ASK        , the character wants something; the arc lives here   *
+   *    WORK       , the verified mechanic, untouched                    *
+   *    CONSEQUENCE, something changes and stays changed                 *
    *                                                                      *
    *  This is the piece that most needs the hard rule restated: beat 3    *
    *  hands a bare element to whoever mounts the game and then keeps its  *
@@ -1052,8 +1052,8 @@
     if (!host) return null;
     /* Clear the host WITHOUT evicting the world. The obvious `host.innerHTML=''`
        deleted the .scene-bg layer that background() had inserted into this same
-       element, so the natural calling order — background(host), then
-       sequence(host) — silently threw the world away and leaked a detached
+       element, so the natural calling order, background(host), then
+       sequence(host), silently threw the world away and leaked a detached
        canvas that went on drawing forever. Found by probe, 2026-08-02. */
     Array.prototype.slice.call(host.children).forEach(function (n) {
       if (!n.classList || !n.classList.contains('scene-bg')) host.removeChild(n);
@@ -1085,7 +1085,7 @@
       stage: stage,
       beat: function () { return order[at]; },
       /* Advance. Each beat callback receives its own empty panel and a `next`
-         it may call whenever it likes — a game calls it from its own onWin,
+         it may call whenever it likes, a game calls it from its own onWin,
          which is the only channel through which engine state ever reaches
          this layer, and it carries no numbers. */
       next: function () {
@@ -1219,13 +1219,13 @@
         });
       },
       /* Two buttons and a preview, which is the entire share loop on this end.
-         The other end — the link unfurling — shipped 2026-08-01. */
+         The other end, the link unfurling, shipped 2026-08-01. */
       mount: function (host) {
         if (!host) return null;
         var box = document.createElement('div');
         box.className = 'sharecard';
         cv.className = 'sharecard-img';
-        cv.setAttribute('alt', (o.title || 'SymbiQ') + ' — share card');
+        cv.setAttribute('alt', (o.title || 'SymbiQ') + ', share card');
         box.appendChild(cv);
         var row = document.createElement('p');
         row.className = 'sharecard-row';
@@ -1236,12 +1236,12 @@
         host.appendChild(box);
         var note = row.querySelector('.sharecard-note');
         row.querySelector('[data-s=dl]').addEventListener('click', function () {
-          api.download(o.file || 'symbiq').then(function (ok) { note.textContent = ok ? 'Saved.' : 'Could not save here — long-press the image.'; });
+          api.download(o.file || 'symbiq').then(function (ok) { note.textContent = ok ? 'Saved.' : 'Could not save here, long-press the image.'; });
         });
         var cp = row.querySelector('[data-s=cp]');
         if (!navigator.clipboard || !window.ClipboardItem) cp.style.display = 'none';
         else cp.addEventListener('click', function () {
-          api.copy().then(function (ok) { note.textContent = ok ? 'Copied — paste it anywhere.' : 'Copy is blocked here; use Download.'; });
+          api.copy().then(function (ok) { note.textContent = ok ? 'Copied, paste it anywhere.' : 'Copy is blocked here; use Download.'; });
         });
         return box;
       }

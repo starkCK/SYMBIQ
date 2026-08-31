@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The Arcade — quantum games, free play</title>
-<meta name="description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, quantum tic-tac-toe with genuine superposition and collapse, and The Calibration where you configure a qubit-recalibration agent rather than driving the qubit yourself. No story, no gates — just the physics doing the judging.">
+<title>The Arcade · quantum games, free play</title>
+<meta name="description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with shortest-possible pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, quantum tic-tac-toe with genuine superposition and collapse, and The Calibration where you configure a qubit-recalibration agent rather than driving the qubit yourself. No story, no gates: the physics does the judging.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/play.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/play.html">
-<meta property="og:title" content="The Arcade — quantum games, free play">
+<meta property="og:title" content="The Arcade · quantum games, free play">
 <meta property="og:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <meta property="og:image:width" content="1200">
@@ -23,7 +23,7 @@
 <meta property="og:image:alt" content="SymbiQ games. The physics does the judging.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Arcade — quantum games, free play">
+<meta name="twitter:title" content="The Arcade · quantum games, free play">
 <meta name="twitter:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
@@ -35,7 +35,7 @@
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -109,25 +109,25 @@
 .lb-empty, .lb-foot { font-size: .8rem; color: var(--muted); margin: 6px 0 0; }
 </style>
 <script src="save.js"></script>
-<script src="coherence.js?v=1"></script>
-<script src="games.js?v=35"></script>
-<script src="scene.js?v=4"></script>
-<script src="missions.js?v=9"></script>
-<script src="nav.js?v=8" defer></script>
+<script src="coherence.js?v=2"></script>
+<script src="games.js?v=36"></script>
+<script src="scene.js?v=5"></script>
+<script src="missions.js?v=10"></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
-<script src="leaderboard.js?v=1" defer></script>
+<script src="auth.js?v=3" defer></script>
+<script src="leaderboard.js?v=2" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Article",
-      "headline": "The Arcade — quantum games, free play",
+      "headline": "The Arcade: quantum games, free play",
       "author": {"@type": "Organization", "name": "SymbiQ"},
       "datePublished": "2026-07-21",
       "dateModified": "2026-08-27",
@@ -151,11 +151,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -229,7 +229,7 @@
     <details class="navcat navcat-cur" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain active">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -237,7 +237,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -262,7 +262,7 @@
 
 
 <h1>The Arcade</h1>
-<p class="tagline">Five of these six machines are the ones you meet on <a href="journey.html">the Solver's Path</a> — here, no story, no mentor, no order. The sixth, The Calibration, has no mission of its own; it lives here and natively on <a href="circuits.html#calibration">circuits.html</a>. Just the games, and the physics doing the judging.</p>
+<p class="tagline">Five of these six machines are the ones you meet on <a href="journey.html">the Solver's Path</a>; here there is no story, no mentor, no order. The sixth, The Calibration, has no mission of its own; it lives here and natively on <a href="circuits.html#calibration">circuits.html</a>. Just the games, and the physics doing the judging.</p>
 
 <!-- BROWSE: the selection floor. Hidden in full whenever a game or mission
      is open, so playing something is a dedicated view, not a scroll stop
@@ -283,7 +283,7 @@
     <circle class="gnode" cx="130" cy="109" r="3.5"/>
   </svg>
   <h3>Push the door</h3>
-  <p>Behind it: six machines that will not let you fake a score. Where a machine has a par — Circuit Golf, Grover's Escape, Max-Cut — that par is a proven optimum found by exhaustive search, not a designer's guess. The Volcano scores you on a schedule replayed 500 times rather than on a par, because a single lucky run proves nothing. The Calibration scores you against the exact same drift a fixed strategy would have faced, replayed on demand, so luck in the qubit's own drift never gets credited to you. Every probability on every screen is computed rather than chosen. And one landscape is built to prove that your best strategy is worthless on the wrong problem.</p>
+  <p>Behind it: six machines that will not let you fake a score. Where a machine has a par (Circuit Golf, Grover's Escape, Max-Cut) that par is an optimum found by exhaustive search, not a designer's guess. The Volcano scores you on a schedule replayed 500 times rather than on a par, since a single lucky run proves nothing. The Calibration scores you against the exact same drift a fixed strategy would have faced, replayed on demand, so luck in the qubit's own drift never gets credited to you. Every probability on every screen is worked out, not set by hand. And one landscape is built to prove that your best strategy is worthless on the wrong problem.</p>
   <span class="push">Open the arcade ▸</span>
 </div>
 
@@ -307,7 +307,7 @@
       <span class="medals-sum" id="medals-sum"></span>
     </div>
     <div class="medals-grid" id="medals-grid"></div>
-    <p class="medals-foot">Bronze the first time you clear a mode, then silver and gold for depth. Local to this browser — your <a href="journey.html">Path save</a> carries them, and a save code moves them between devices.</p>
+    <p class="medals-foot">Bronze the first time you clear a mode, then silver and gold for depth. Local to this browser; your <a href="journey.html">Path save</a> carries them, and a save code moves them between devices.</p>
   </div>
 
   <!-- Today's leaderboard (B4). Ships hidden; leaderboard.js reveals it only
@@ -321,7 +321,7 @@
        floor below, deliberately: the contrast is the point. -->
   <div class="showcase" id="showcase">
     <div class="showcase-lead">
-      <span class="showcase-tag">New — rebuilt</span>
+      <span class="showcase-tag">Rebuilt</span>
       <h2>The whole campaign, rebuilt as scenes</h2>
       <p>The same verified engines as the machines below, inside the thing we are building instead of a widget in a box: a world that responds to the number the game is actually computing, and mentors whose flaws <em>are</em> the mechanic rather than a paragraph about them.</p>
       <p class="showcase-note">Six acts, five to eight minutes each. Sound is off until you ask for it. On <a href="journey.html">The Solver&rsquo;s Path</a> they run in order and remember what you did; here you can walk into any one of them.</p>
@@ -337,7 +337,7 @@
   <div class="grid">
     <div class="card">
       <h3><a href="analog.html#bench">The Bench</a></h3>
-      <p>Three real methods race on the same graph, 200 replays each, at a time budget you set — and the winner changes depending on which end of the slider you're on.</p>
+      <p>Three real methods race on the same graph, 200 replays each, at a time budget you set, and the winner changes depending on which end of the slider you're on.</p>
     </div>
     <div class="card">
       <h3><a href="qec.html#duel">The Decoder Duel</a></h3>
@@ -345,7 +345,7 @@
     </div>
     <div class="card">
       <h3><a href="quantum-mechanics.html#chsh">The CHSH game</a></h3>
-      <p>Beat a limit classical physics cannot beat — 85.4% against a provable ceiling of 75%.</p>
+      <p>Beat a limit classical physics cannot beat: 85.4% against a provable ceiling of 75%.</p>
     </div>
     <div class="card">
       <h3><a href="index.html#daily-q">The Question</a></h3>
@@ -357,13 +357,13 @@
     </div>
     <div class="card">
       <h3><a href="feasible.html#prune">The Prune</a></h3>
-      <p>Prove which haul is best by opening about thirty-five branches out of thousands — and finish holding a certificate rather than a guess.</p>
+      <p>Prove which haul is best by opening about thirty-five branches out of thousands, and finish holding a certificate rather than a guess.</p>
     </div>
   </div>
 
   <h2>Coming next</h2>
   <div class="card">
-    <p>A full <strong>board game</strong> for two to four players, on quantum computing and the parts of AI that actually touch it — where knowing more genuinely wins, and the board, pieces and animation are built to be worth looking at. <strong>Designed, not yet started</strong>, and deliberately behind the rebuild of the machines above; we would rather say that than call it "in development" for another six months. The six machines are the groundwork: each is a mechanic that will earn its place on that board, or be cut.</p>
+    <p>A full <strong>board game</strong> for two to four players, on quantum computing and the parts of AI that actually touch it, where knowing more genuinely wins and the board, pieces and animation are built to be worth looking at. <strong>Designed, not yet started</strong>, and behind the rebuild of the machines above by choice. The six machines are the groundwork: each is a mechanic that will earn its place on that board, or be cut.</p>
   </div>
 </div>
 
@@ -459,7 +459,7 @@
     missionHost.innerHTML = '';
     document.getElementById('stage-title').textContent = g.title;
     document.getElementById('stage-hook').textContent = g.hook;
-    document.getElementById('stage-mentor').textContent = g.mentor ? ('On the Path this is ' + g.mentor + "'s mission") : 'No mission on the Path — also lives natively on circuits.html';
+    document.getElementById('stage-mentor').textContent = g.mentor ? ('On the Path this is ' + g.mentor + "'s mission") : 'No mission on the Path; also lives natively on circuits.html';
     document.getElementById('stage-chrome').innerHTML = GS.chromeHTML ? GS.chromeHTML(id) : '';
     document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
     document.getElementById('stage-honest').innerHTML = g.honest || '';
@@ -497,7 +497,7 @@
       var ng = GS.get(nid);
       nextHost.innerHTML =
         '<a class="nextup" href="#play/' + nid + '" data-g="' + nid + '">' +
-          '<span class="eyebrow">Cleared — next machine</span>' +
+          '<span class="eyebrow">Cleared, next machine</span>' +
           '<span class="headline">' + ng.title + '</span>' +
           '<span class="sub">' + ng.hook + '</span>' +
           '<span class="go">Play it</span>' +
@@ -574,7 +574,7 @@
       elStreak.textContent = st.streak > 0 ? '🔥 ' + st.streak + '-day streak' : '';
       elStatus.innerHTML = t.done
         ? '<span class="ok">✓ Cleared today.</span> The next one lands tomorrow.'
-        : '<span class="todo">Not cleared yet today — do it in any cabinet, or here on the Path.</span>';
+        : '<span class="todo">Not cleared yet today. Do it in any cabinet, or here on the Path.</span>';
       card.hidden = false;
       var go = document.getElementById('contract-go');
       if (go) go.addEventListener('click', function () {
@@ -612,7 +612,7 @@
     document.getElementById('medals-grid').innerHTML = rows.map(function (r) {
       var meta;
       if (r.best === 0) {
-        meta = 'not started — ' + r.mode;
+        meta = 'not started, ' + r.mode;
       } else if (r.next) {
         meta = '<b>' + r.best + '</b> ' + r.unit + ' · ' + r.next.tier + ' at ' + r.next.at;
       } else {

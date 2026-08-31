@@ -35,7 +35,7 @@
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -100,14 +100,14 @@
   ]
 }
 </script>
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="rung.js?v=1" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="rung.js?v=2" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
+<script src="auth.js?v=3" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -116,11 +116,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L3" data-alive data-glass>
 <div class="wrap">
@@ -194,7 +194,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -202,7 +202,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -225,29 +225,29 @@
 </nav>
 
 <h1>Why do Grover's and Shor's algorithms actually work?</h1>
-<p class="tagline">One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name — phase kickback — and this site never said it out loud until now.</p>
+<p class="tagline">One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name, phase kickback, and this site never said it out loud until now.</p>
 
 <div class="card">
 <h3>The answer in four lines</h3>
-<p>Apply a controlled gate where the target qubit is already sitting in one of that gate's own <strong>eigenstates</strong>, and something backwards happens: the target doesn't change at all — it can't, an eigenstate just gets multiplied by a number — but that number's phase has to go <em>somewhere</em>, and it lands on the <strong>control</strong> qubit instead, as a twist between its |0⟩ and |1⟩. That misdirected phase is <strong>phase kickback</strong>, and it is the entire mechanism behind quantum algorithms that look, on the surface, unrelated: Grover's oracle marking an answer, and quantum phase estimation, which is quite literally named after this effect and is the engine inside Shor's algorithm.</p>
+<p>Apply a controlled gate where the target qubit is already sitting in one of that gate's own <strong>eigenstates</strong>, and something backwards happens: the target doesn't change at all (it can't, an eigenstate just gets multiplied by a number), but that number's phase has to go <em>somewhere</em>, and it lands on the <strong>control</strong> qubit instead, as a twist between its |0⟩ and |1⟩. That misdirected phase is <strong>phase kickback</strong>, and it is the entire mechanism behind quantum algorithms that look, on the surface, unrelated: Grover's oracle marking an answer, and quantum phase estimation, which is quite literally named after this effect and is the engine inside Shor's algorithm.</p>
 </div>
 
 <span class="tier g">🟢 No math</span>
 <h2 id="green">The trick: aim at something that can't move, and watch the recoil</h2>
-<p>Picture a locked door with a combination dial, and a rule: turning the dial to the right number does nothing visible to the door — it was already unlocked, so "unlocking" it again just leaves it exactly as unlocked as before. But the person turning the dial isn't left unaffected. Their hand picks up a small, specific twist depending on whether the combination they tried was right or wrong — a twist you can't see by looking at the door, only by looking at the hand.</p>
-<p>Now do this in superposition: instead of trying combinations one at a time, hold every combination in your hand <em>at once</em>, and touch the dial once. The door — silent throughout, never changing — has quietly imprinted a different twist onto each of your simultaneously-held combinations. Nothing about the door tells you which twist went where. But if you now let all those twisted possibilities interfere with each other — the twisted-right combination reinforcing itself, the twisted-wrong ones cancelling out — the answer falls out.</p>
+<p>Picture a locked door with a combination dial, and a rule: turning the dial to the right number does nothing visible to the door: it was already unlocked, so "unlocking" it again just leaves it exactly as unlocked as before. But the person turning the dial isn't left unaffected. Their hand picks up a small, specific twist depending on whether the combination they tried was right or wrong: a twist you can't see by looking at the door, only by looking at the hand.</p>
+<p>Now do this in superposition: instead of trying combinations one at a time, hold every combination in your hand <em>at once</em>, and touch the dial once. The door, silent throughout, never changing, has quietly imprinted a different twist onto each of your simultaneously-held combinations. Nothing about the door tells you which twist went where. But if you now let all those twisted possibilities interfere with each other, the twisted-right combination reinforcing itself and the twisted-wrong ones cancelling out, the answer falls out.</p>
 <p>That's the whole trick, stated without a single equation. The "door" is a target qubit prepared so that touching it can never change it. The "twist" is a phase. And "letting them interfere" is exactly what a Hadamard gate, or the more elaborate Fourier transform used in Shor's algorithm, is for. The mechanism, with the equation: <a href="#yellow">🟡 keep going ↓</a></p>
 
 <span class="tier y">🟡 Some math</span>
 <h2 id="yellow">The mechanism: eigenstates don't move, so the phase has nowhere else to go</h2>
-<p>An <strong>eigenstate</strong> of a gate U is a state that U leaves pointing the same direction — U only ever multiplies it by a number, U|u⟩ = λ|u⟩, called the eigenvalue. For any gate actually used in quantum computing, λ is a pure phase, λ = e<sup>iφ</sup>, since gates preserve length.</p>
-<p>The cleanest possible case: the gate Z flips the sign of |1⟩ and leaves |0⟩ alone — so |1⟩ is an eigenstate of Z with eigenvalue −1. Take the <strong>controlled</strong> version, CZ, wired so a control qubit decides whether Z is applied to a target held fixed at |1⟩, and put the control in an equal superposition |+⟩ = (|0⟩+|1⟩)/√2:</p>
+<p>An <strong>eigenstate</strong> of a gate U is a state that U leaves pointing the same direction: U only ever multiplies it by a number, U|u⟩ = λ|u⟩, called the eigenvalue. For any gate actually used in quantum computing, λ is a pure phase, λ = e<sup>iφ</sup>, since gates preserve length.</p>
+<p>The cleanest possible case: the gate Z flips the sign of |1⟩ and leaves |0⟩ alone, so |1⟩ is an eigenstate of Z with eigenvalue −1. Take the <strong>controlled</strong> version, CZ, wired so a control qubit decides whether Z is applied to a target held fixed at |1⟩, and put the control in an equal superposition |+⟩ = (|0⟩+|1⟩)/√2:</p>
 <div class="formula">CZ ( |+⟩ ⊗ |1⟩ ) = (|0⟩|1⟩ − |1⟩|1⟩) / √2 = |−⟩ ⊗ |1⟩</div>
-<p>Read that literally: the target started at |1⟩ and ends at |1⟩ — untouched, every single time, because |1⟩ is exactly what Z can't change. But the control started at |+⟩ and ended at |−⟩ = (|0⟩−|1⟩)/√2 — a genuine, measurable flip, purely from being wired to a gate that, by every other measure, "did nothing."</p>
+<p>Read that literally: the target started at |1⟩ and ends at |1⟩, untouched every single time, because |1⟩ is exactly what Z can't change. But the control started at |+⟩ and ended at |−⟩ = (|0⟩−|1⟩)/√2, a genuine, measurable flip, purely from being wired to a gate that, by every other measure, "did nothing."</p>
 <p>Try it below with a general phase, not just Z's −1.</p>
 
 <h2 data-tier-keep>Watch the phase kick back</h2>
-<p>The target (left) is fixed at |1⟩ throughout — an eigenstate of every phase gate below, so it is mathematically incapable of moving. Set how much phase each application carries, then apply it a few times and watch the control (right) accumulate it instead.</p>
+<p>The target (left) is fixed at |1⟩ throughout, an eigenstate of every phase gate below, so it is mathematically incapable of moving. Set how much phase each application carries, then apply it a few times and watch the control (right) accumulate it instead.</p>
 
 <div class="card" id="pk-widget">
   <h3>Two qubits, one that can't move</h3>
@@ -255,7 +255,7 @@
     <div class="pk-col">
       <span class="pk-col-lab">Target</span>
       <svg id="pk-target-svg" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Target qubit, fixed at the eigenstate |1>, never moves"></svg>
-      <span class="pk-col-sub">stays exactly at |1⟩ — it cannot move, by construction</span>
+      <span class="pk-col-sub">stays exactly at |1⟩, and cannot move, by construction</span>
     </div>
     <div class="pk-col">
       <span class="pk-col-lab">Control</span>
@@ -273,16 +273,15 @@
     <button class="bigplay ghost" id="pk-reset">Reset</button>
   </p>
   <p style="text-align:center;margin-bottom:4px">Total kicked back onto the control: <span id="pk-total">0</span> · applications: <span id="pk-count">0</span></p>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest scope: this shows the cleanest case — a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full — including the numerical verification — at <a href="formalism.html#f08">The Machinery, topic f08</a>. This widget deliberately does not re-derive that; it exists to make the mechanism visible before the proof.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Honest scope: this shows the cleanest case, a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full, numerical verification included, at <a href="formalism.html#f08">The Machinery, topic f08</a>. It exists to make the mechanism visible before the proof.</p>
 </div>
 
 <span class="tier r">🔴 Real math</span>
-<h2 id="red">Where this mechanism actually runs — and where the proofs already live</h2>
+<h2 id="red">Where this mechanism actually runs, and where the proofs already live</h2>
 <p>This page does not re-derive what <a href="formalism.html">The Machinery</a> has already proven and independently referee-verified. It exists to name the mechanism plainly and point at exactly where each proof lives.</p>
-<p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register — proven on <a href="formalism.html#f08">topic f08</a> and <a href="formalism.html#f09">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)), and numerically checked two different ways: <em>exhaustively</em> at f08's n=1 (all four possible one-bit functions), and by <em>sampling</em> at f09's n=4 (both constant functions, plus 20 of the 12,870 possible balanced ones) — worth knowing which is which before quoting either as a full proof by enumeration.</p>
+<p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register, proven on <a href="formalism.html#f08">topic f08</a> and <a href="formalism.html#f09">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)), and numerically checked two different ways: <em>exhaustively</em> at f08's n=1 (all four possible one-bit functions), and by <em>sampling</em> at f09's n=4 (both constant functions, plus 20 of the 12,870 possible balanced ones); worth knowing which is which before quoting either as a full proof by enumeration.</p>
 <p><strong>Grover's algorithm</strong> uses the identical trick in its <em>phase-oracle</em> form: instead of writing "is this the answer?" to a separate register, the oracle multiplies the marked state by −1 directly, exactly the kickback pattern above with the marked state playing the role of the fixed eigenstate. Grover, <a href="https://arxiv.org/abs/quant-ph/9605043">arXiv quant-ph/9605043</a> (Proc. 28th STOC, 212 (1996)), proved the O(√N) query bound this buys; play the mechanism yourself at <a href="play.html#grover">Grover's Escape</a>, where over-rotating past the answer is the honest failure mode this site's own games are built to demonstrate, not hide.</p>
-<p><strong>Quantum phase estimation</strong> generalises the widget above from a fixed ±1 to an arbitrary eigenvalue e<sup>2πiθ</sup> of any unitary U, using repeated controlled applications of increasing powers of U to read θ out bit by bit — proven, with its honest "sharply peaked, not exact" limit stated plainly, on <a href="formalism.html#f12">topic f12</a>. <strong>Shor's algorithm</strong> is one specific choice of U — modular multiplication — that turns phase estimation's output into the period behind factoring, worked through with a 2,000-trial numerical verification on <a href="formalism.html#f13">topic f13</a> — the mechanism <a href="bitcoin.html">the Bitcoin page's</a> qubit counts run on, though not the counts themselves: those come from separate resource-estimation papers cited there, since bitcoin.html is upfront that it asserts those numbers rather than deriving them.</p>
-<p><em>Verification status: new page, 2026-08-23, part of the platform-reorganisation build ("The Ladder"). This page's own new claims are narrow by design — the CZ-kickback identity above was checked by hand against the standard definition of CZ and Z's eigenstates, algebra any reader can redo in four lines. The Grover citation (arXiv quant-ph/9605043, Proc. 28th STOC (1996)) was fetched and confirmed directly against its arXiv abstract page before this page shipped; it is the first formal citation of Grover's original paper anywhere on this site, which previously described and played the algorithm without ever citing its source. Every other citation on this page (Deutsch 1985, Deutsch &amp; Jozsa 1992, Cleve/Ekert/Macchiavello/Mosca 1998) is reused verbatim from <a href="formalism.html#f08">formalism.html</a>, where it was already independently fetched, checked, and cleared a fresh-session hostile-referee pass on 2026-08-20 — not re-verified here, because it did not need to be. <b>Fresh-session hostile-referee pass completed 2026-08-23 — two Major findings and one Minor, all fixed same day.</b> (1) This page had claimed its Deutsch/Deutsch-Jozsa kickback identity was "numerically verified over every possible function at small n" on both f08 and f09 — true of f08 (all four possible one-bit functions, genuinely exhaustive) but not f09, which samples 20 of 12,870 possible balanced functions at n=4; the blanket claim is corrected to say which check is exhaustive and which is sampled. (2) This page had claimed formalism.html's topic f13 is "where the Bitcoin page's qubit counts are actually derived rather than asserted" — false by <a href="bitcoin.html">that page's own words</a>, which say plainly it asserts those counts rather than deriving them; f13 derives the period-finding mechanism the counts run on, not the counts themselves, and the sentence is corrected to say exactly that. (3) The drive widget's phase readout could show "2.000π" instead of the identical "0.000π" after a full cycle, for three of the eight φ settings, purely from floating-point rounding landing a hair under 2π before the modulo fired — fixed with an epsilon snap. Errors found pay <a href="corrections.html">the same bounty as everywhere else</a>.</em></p>
+<p><strong>Quantum phase estimation</strong> generalises the widget above from a fixed ±1 to an arbitrary eigenvalue e<sup>2πiθ</sup> of any unitary U, using repeated controlled applications of increasing powers of U to read θ out bit by bit, proven (with its "sharply peaked, not exact" limit stated plainly) on <a href="formalism.html#f12">topic f12</a>. <strong>Shor's algorithm</strong> is one specific choice of U, modular multiplication, that turns phase estimation's output into the period behind factoring, worked through with a 2,000-trial numerical verification on <a href="formalism.html#f13">topic f13</a>. It is the mechanism <a href="bitcoin.html">the Bitcoin page's</a> qubit counts run on, though not the counts themselves: those come from separate resource-estimation papers cited there, since bitcoin.html is upfront that it asserts those numbers rather than deriving them.</p>
 
 <h2>References</h2>
 <div class="card">
@@ -297,24 +296,24 @@
   <p class="cyu-q">A controlled-U gate is applied with the target prepared in an eigenstate of U. What actually happens?</p>
   <div class="cyu-opts">
     <button data-opt>The target changes to reflect U's eigenvalue.</button>
-    <button data-opt>Nothing happens anywhere — eigenstates are immune to gates.</button>
+    <button data-opt>Nothing happens anywhere: eigenstates are immune to gates.</button>
     <button data-opt>The target stays exactly as it was, because that is what "eigenstate" means, and the eigenvalue's phase attaches to the control qubit instead.</button>
     <button data-opt>The control and target swap states.</button>
   </div>
-  <p class="cyu-why">An eigenstate of U is, by definition, a state U only multiplies by a number — it cannot rotate an eigenstate into some other state, only rescale it. Since a controlled-U gate's two branches (control=0 does nothing, control=1 applies U) share the same target state either way, that shared eigenvalue factors out of the target entirely and becomes a genuine, measurable difference between the control's own two branches instead. This is not a metaphor — it is the same algebra the widget above runs, and the same algebra formalism.html#f08 proves in full for Deutsch's algorithm.</p>
+  <p class="cyu-why">An eigenstate of U is, by definition, a state U only multiplies by a number: it cannot rotate an eigenstate into some other state, only rescale it. Since a controlled-U gate's two branches (control=0 does nothing, control=1 applies U) share the same target state either way, that shared eigenvalue factors out of the target entirely and becomes a genuine, measurable difference between the control's own two branches instead. This is not a metaphor. It is the same algebra the widget above runs, and the same algebra formalism.html#f08 proves in full for Deutsch's algorithm.</p>
 </div>
 <div class="pathway-nudge" hidden>
-  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+  <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
 </div>
 
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🔴 The full proofs</h3><p>Every claim on this page, derived from scratch and numerically verified — Deutsch's, Deutsch-Jozsa, phase estimation, and Shor's period-finding.</p><a href="formalism.html">The Machinery →</a></div>
-  <div class="card"><h3>🎯 Play the oracle</h3><p>Grover's algorithm's phase kickback, as a game — tilt the odds, look once, and see why looking twice loses it.</p><a href="play.html#grover">Grover's Escape →</a></div>
+  <div class="card"><h3>🔴 The full proofs</h3><p>Every claim on this page, derived from scratch and numerically verified: Deutsch's, Deutsch-Jozsa, phase estimation, and Shor's period-finding.</p><a href="formalism.html">The Machinery →</a></div>
+  <div class="card"><h3>🎯 Play the oracle</h3><p>Grover's algorithm's phase kickback, as a game: tilt the odds, look once, and see why looking twice loses it.</p><a href="play.html#grover">Grover's Escape →</a></div>
   <div class="card"><h3>₿ Where this ends up</h3><p>The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.</p><a href="bitcoin.html">Can quantum break Bitcoin? →</a></div>
 </div>
 
-<footer>Phase kickback — the one mechanism, applied four times.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+<footer>Phase kickback: the one mechanism, applied four times.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
 </div>
 
 <script>

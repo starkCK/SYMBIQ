@@ -1,10 +1,10 @@
-/* SymbiQ — analytics, off by default and switched on with one word.
+/* SymbiQ, analytics, off by default and switched on with one word.
  *
  * WHY THIS FILE EXISTS: as of 2026-07-29 nothing on this site was measured.
  * The daily question published automatically to a page nobody was told about,
  * and every success criterion in the plan ("do six of ten players finish the
  * act?") was unanswerable. That is not a missing feature, it is a missing
- * instrument — and no product decision below is worth making without it.
+ * instrument, and no product decision below is worth making without it.
  *
  * ── TO SWITCH ON (one of these, then set PROVIDER) ────────────────────────
  *   'goatcounter'  free for non-commercial, no cookies, no consent banner.
@@ -16,7 +16,7 @@
  * All three are cookieless and store no personal data, which is why none of
  * them needs a consent banner. Do not replace this with Google Analytics
  * without also adding one, and without deciding you are happy handing your
- * readers' behaviour to an ad company — on a site whose whole argument is
+ * readers' behaviour to an ad company, on a site whose whole argument is
  * that it treats its readers straight.
  */
 (function () {

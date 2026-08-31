@@ -1,4 +1,4 @@
-/* SymbiQ — dynamics.js
+/* SymbiQ, dynamics.js
  * ============================================================================
  * Pairs with dynamics.css; gated on <body data-glass> (all 24 pages as of
  * 2026-08-30).  Two pointer/scroll feeds the CSS cannot get on its own:
@@ -25,7 +25,7 @@
   } catch (e) { /* unreadable preference -> treat as no-preference */ }
 
   /* ======================================================================
-     1. SCROLLED  — data-scrolled on <html>
+     1. SCROLLED, data-scrolled on <html>
      ----------------------------------------------------------------------
      rAF-coalesced: the scroll event only ever schedules one frame, and the
      attribute is written only when the boolean actually flips, so a fast
@@ -56,7 +56,7 @@
   } catch (e) { /* header just never gets the scrolled state */ }
 
   /* ======================================================================
-     2. GLINT  — --dyn-x / --dyn-y over the header
+     2. GLINT, --dyn-x / --dyn-y over the header
      ----------------------------------------------------------------------
      Reduced motion opts out entirely (the highlight is movement).  The
      pointermove handler is rAF-coalesced like the scroll one.  Values are
@@ -95,7 +95,7 @@
   } catch (e) { /* no glint; the frost still stands on its own */ }
 
   /* ======================================================================
-     3. HOVER-OPEN  — the category menus open on approach, not just click
+     3. HOVER-OPEN, the category menus open on approach, not just click
      ----------------------------------------------------------------------
      Desktop, fine-pointer only.  The five <details class="navcat"> menus
      open on pointer-enter and close a beat after leave; nav.js's own

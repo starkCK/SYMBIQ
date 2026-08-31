@@ -270,6 +270,63 @@ body[data-alive] details[data-sq-folding="out"] > :not(summary) {
 @keyframes sq-unfold-in  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sq-unfold-out { from { opacity: 1; } to { opacity: 0; } }
 
+/* ── 5. THE VERDICT ───────────────────────────────────────────────────────
+   Every playable and every tool on this site ends the same way: you did
+   something, and a .verdict banner tells you what the mathematics made of
+   it.  On the first answer the banner fades up (style.css). On the SECOND
+   and every one after -- a new gate, another slider drag, the next round --
+   the text is simply replaced between one frame and the next, with no sign
+   that the machine just re-decided.  That is the same missing answer §1
+   fixes for arrival, one layer in: the reply changed and nothing said so.
+
+   alive.js watches each .verdict (and #dq-out, the one that is not classed)
+   for a content change and stamps it for ~0.9s.  What resolves is light in
+   the banner's own already-chosen colour -- teal for a pass, red for a
+   miss, lavender for a split -- so the cue cannot contradict the verdict it
+   is drawing attention to.  Motionless, on the same reading of the house
+   rule as arrival: the banner is where it belongs, only its border and fill
+   brighten and settle.  Fires only on a real change, never on load (the
+   first fade already covers that), never on a loop. */
+body[data-alive] .verdict[data-sq-verdict],
+body[data-alive] #dq-out[data-sq-verdict] > *:first-child {
+  animation: sq-verdict 0.9s var(--al-ease) both;
+}
+@keyframes sq-verdict {
+  0%   { box-shadow: 0 0 0 0 transparent; }
+  22%  { box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 55%, transparent),
+                     0 6px 22px -8px color-mix(in srgb, currentColor 40%, transparent); }
+  55%  { box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 55%, transparent),
+                     0 6px 22px -8px color-mix(in srgb, currentColor 40%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  @keyframes sq-verdict {
+    0%   { box-shadow: 0 0 0 0 rgba(45,212,191,0); }
+    22%  { box-shadow: 0 0 0 2px rgba(45,212,191,.5); }
+    55%  { box-shadow: 0 0 0 2px rgba(45,212,191,.5); }
+    100% { box-shadow: 0 0 0 0 rgba(45,212,191,0); }
+  }
+}
+
+/* ── 6. THE PRESS ─────────────────────────────────────────────────────────
+   DESIGN.md: "Motion is almost entirely feedback -- a press, a toggle."
+   The toggle is covered (.preset.on). The press was not: tap a gate, a
+   difficulty, a preset row, and the control changes state with no moment of
+   contact.  A real instrument's key travels when you push it.  One frame
+   down, released on ease-out -- 1px, never a scale, so nothing around it
+   reflows and the no-springy rule is kept.  Pointer devices only; a tap
+   highlight on touch already carries this. */
+@media (hover: hover) {
+  body[data-alive] .preset:active,
+  body[data-alive] .gatebtn:active,
+  body[data-alive] .cab:active,
+  body[data-alive] .dq-opt:active,
+  body[data-alive] button.bigplay:active {
+    transform: translateY(1px);
+    transition: transform 0.04s var(--al-ease);
+  }
+}
+
 /* ── REDUCED MOTION ────────────────────────────────────────────────────────
    Reduced motion means less movement, not less information.
 
@@ -307,4 +364,18 @@ body[data-alive] details[data-sq-folding="out"] > :not(summary) {
   body[data-alive] h2[data-sq-arrived],
   body[data-alive] h3[data-sq-arrived] { color: var(--teal); }
   body[data-alive] h2[data-sq-arrived]::before { filter: brightness(1.5) saturate(1.25); }
+
+  /* The verdict cue re-expressed with no movement: a plainly painted 2px
+     ring in the banner's own colour, on the element for the same ~0.9s the
+     JS keeps the attribute.  The press travel simply does not happen. */
+  body[data-alive] .verdict[data-sq-verdict] {
+    animation: none;
+    box-shadow: 0 0 0 2px currentColor;
+  }
+  body[data-alive] #dq-out[data-sq-verdict] > *:first-child { animation: none; }
+  body[data-alive] .preset:active,
+  body[data-alive] .gatebtn:active,
+  body[data-alive] .cab:active,
+  body[data-alive] .dq-opt:active,
+  body[data-alive] button.bigplay:active { transform: none; }
 }

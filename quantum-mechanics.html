@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>Is quantum computing just quantum mechanics?</title>
-<meta name="description" content="Quantum computing is built entirely on quantum mechanics — same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
+<meta name="description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/quantum-mechanics.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/quantum-mechanics.html">
 <meta property="og:title" content="Is quantum computing just quantum mechanics?">
-<meta property="og:description" content="Quantum computing is built entirely on quantum mechanics — same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
+<meta property="og:description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Is quantum computing just quantum mechanics?">
-<meta name="twitter:description" content="Quantum computing is built entirely on quantum mechanics — same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
+<meta name="twitter:description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -35,7 +35,7 @@
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -46,14 +46,14 @@
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="rung.js?v=1" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="rung.js?v=2" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
+<script src="auth.js?v=3" defer></script>
 <style>
 #bloch-svg { display: block; margin: 0 auto; max-width: 340px; width: 100%; height: auto; }
 .sphere { fill: none; stroke: var(--border); }
@@ -83,7 +83,7 @@
       "author": {"@type": "Organization", "name": "SymbiQ"},
       "datePublished": "2026-07-21",
       "dateModified": "2026-08-06",
-      "description": "Quantum computing is not a separate theory from quantum mechanics. It uses the same laws, the same mathematics, and the same meaning of the word 'quantum' — but asks a different question, and has fed genuinely new ideas back into physics."
+      "description": "Quantum computing is not a separate theory from quantum mechanics. It uses the same laws, the same mathematics, and the same meaning of the word 'quantum', but asks a different question, and has fed genuinely new ideas back into physics."
     },
     {
       "@type": "BreadcrumbList",
@@ -98,7 +98,7 @@
         {
           "@type": "Question",
           "name": "Is quantum computing the same as quantum mechanics?",
-          "acceptedAnswer": {"@type": "Answer", "text": "No, but they are not separate either. Quantum mechanics is the physical theory describing how matter and energy behave at small scales. Quantum computing is an engineering and computer-science discipline built on top of that theory: it uses quantum mechanical behaviour deliberately, to process information. Quantum computing proposes no new laws of physics — every quantum computer obeys the same Schrodinger equation as everything else. The relationship is roughly that of electromagnetism to electrical engineering."}
+          "acceptedAnswer": {"@type": "Answer", "text": "No, but they are not separate either. Quantum mechanics is the physical theory describing how matter and energy behave at small scales. Quantum computing is an engineering and computer-science discipline built on top of that theory: it uses quantum mechanical behaviour deliberately, to process information. Quantum computing proposes no new laws of physics; every quantum computer obeys the same Schrodinger equation as everything else. The relationship is roughly that of electromagnetism to electrical engineering."}
         },
         {
           "@type": "Question",
@@ -128,11 +128,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L1" data-alive data-glass>
 <div class="wrap">
@@ -206,7 +206,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -214,7 +214,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -240,33 +240,33 @@
 
 
 <h1>Is quantum computing just<br>quantum mechanics?</h1>
-<p class="tagline">Not the same thing — but not a different theory either. The word means exactly what it means in physics, and that is the whole point.</p>
+<p class="tagline">Not the same thing, but not a different theory either. The word means exactly what it means in physics, and that is the whole point.</p>
 
 <div class="card">
 <h3>The answer in four lines</h3>
-<p>Quantum mechanics is a <strong>theory of nature</strong>. Quantum computing is a <strong>thing you build</strong> with it. Every quantum computer obeys the same equations as every atom — quantum computing proposes no new physics whatsoever, and the word "quantum" in it carries its full literal meaning. What changed was the <strong>question</strong>: physics asks what nature does; quantum computing asks what you can <em>compute</em> with what nature does. That question turned out to matter to physics too, and the ideas have flowed back.</p>
+<p>Quantum mechanics is a <strong>theory of nature</strong>. Quantum computing is a <strong>thing you build</strong> with it. Every quantum computer obeys the same equations as every atom: quantum computing proposes no new physics whatsoever, and the word "quantum" in it carries its full literal meaning. What changed was the <strong>question</strong>: physics asks what nature does; quantum computing asks what you can <em>compute</em> with what nature does. That question turned out to matter to physics too, and the ideas have flowed back.</p>
 </div>
 
 <a class="orjump" href="circuits.html">
-  <span>◆ <b>Want the physical object first, before the abstraction?</b> A qubit is a real circuit — a capacitor wired across one nonlinear component — and the Bloch sphere below is what that circuit's own two lowest energy levels look like.<span class="arr"> What is a qubit actually made of? ▸</span></span>
+  <span>◆ <b>Want the physical object first, before the abstraction?</b> A qubit is a real circuit (a capacitor wired across one nonlinear component) and the Bloch sphere below is what that circuit's own two lowest energy levels look like.<span class="arr"> What is a qubit actually made of? ▸</span></span>
 </a>
 
 <span class="tier g">🟢 No math</span>
 <h2 id="green">The rulebook and the machine</h2>
-<p>Quantum mechanics is the rulebook. Worked out in the 1920s, it describes how very small things actually behave — and they behave nothing like the objects we have intuitions about. A particle can be in a blend of two states at once. Looking at it changes it. Two particles can be linked so that neither has a definite state on its own. None of this is a metaphor or a gap in our knowledge. Its most stringently tested piece — quantum electrodynamics — predicts the electron's magnetic moment, and prediction and measurement agree to about <strong>one part in a trillion</strong>. That is among the most precisely checked predictions anyone has ever made about anything.</p>
-<p>For more than fifty years, that rulebook was used mainly to <em>explain</em> things: why the sun shines, why metals conduct, why chemistry works. The machine came later. In the early 1980s a few people asked a stranger question — not "what does nature do?" but <em>"what could I compute, if I built something that runs on these rules on purpose?"</em></p>
+<p>Quantum mechanics is the rulebook. Worked out in the 1920s, it describes how very small things actually behave, and they behave nothing like the objects we have intuitions about. A particle can be in a blend of two states at once. Looking at it changes it. Two particles can be linked so that neither has a definite state on its own. None of this is a metaphor or a gap in our knowledge. Its most stringently tested piece, quantum electrodynamics, predicts the electron's magnetic moment, and prediction and measurement agree to about <strong>one part in a trillion</strong>. That is among the most precisely checked predictions anyone has ever made about anything.</p>
+<p>For more than fifty years, that rulebook was used mainly to <em>explain</em> things: why the sun shines, why metals conduct, why chemistry works. The machine came later. In the early 1980s a few people asked a stranger question: not "what does nature do?" but <em>"what could I compute, if I built something that runs on these rules on purpose?"</em></p>
 <p>That is the entire difference. A quantum computer is not a new kind of physics. It is a very carefully built quantum-mechanical system whose behaviour you have chosen, so that the answer you want falls out at the end. Same rulebook. New use.</p>
 
 <div class="card">
 <h3>An analogy that holds up</h3>
-<p>Quantum mechanics is to quantum computing roughly what <strong>electromagnetism is to electrical engineering</strong>. Maxwell wrote down how electric and magnetic fields behave; he did not invent the laptop. Everything in your laptop obeys Maxwell's equations and adds nothing to them — yet getting from the equations to a processor took a century of separate, genuinely hard ideas about how to <em>use</em> them. Quantum computing sits in the same relationship to quantum mechanics. What the analogy does <em>not</em> transfer is a schedule: Maxwell to the microprocessor took about 106 years, and quantum mechanics is now about 100 years old, but the two clocks are not the same clock and nothing here predicts that a useful quantum computer is therefore due.</p>
+<p>Quantum mechanics is to quantum computing roughly what <strong>electromagnetism is to electrical engineering</strong>. Maxwell wrote down how electric and magnetic fields behave; he did not invent the laptop. Everything in your laptop obeys Maxwell's equations and adds nothing to them, yet getting from the equations to a processor took a century of separate, genuinely hard ideas about how to <em>use</em> them. Quantum computing sits in the same relationship to quantum mechanics. What the analogy does <em>not</em> transfer is a schedule: Maxwell to the microprocessor took about 106 years, and quantum mechanics is now about 100 years old, but the two clocks are not the same clock and nothing here predicts that a useful quantum computer is therefore due.</p>
 </div>
 
-<p>One thing worth saying plainly, because the word is so abused: in "quantum computing," <strong>quantum</strong> means quantum. It is the same word physicists use, pointing at the same phenomena in a real refrigerated chip. It is not true of "quantum healing" or a quantum-branded shampoo, where the word is pure decoration. "Quantum leap" is the interesting middle case: it <em>does</em> come from something real — an electron jumping between energy levels — but popular use inverted the meaning into "an enormous change," when the actual jump is <em>discrete and indivisible</em> — the system cannot make a smaller, gradual change — which is what "quantum" meant in the first place. Quantum computing is the case where the label stayed literal.</p>
+<p>One thing worth saying plainly, because the word is so abused: in "quantum computing," <strong>quantum</strong> means quantum. It is the same word physicists use, pointing at the same phenomena in a real refrigerated chip. It is not true of "quantum healing" or a quantum-branded shampoo, where the word is pure decoration. "Quantum leap" is the interesting middle case: it <em>does</em> come from something real (an electron jumping between energy levels) but popular use inverted the meaning into "an enormous change," when the actual jump is <em>discrete and indivisible</em> (the system cannot make a smaller, gradual change), which is what "quantum" meant in the first place. Quantum computing is the case where the label stayed literal.</p>
 
 <h2 data-tier-keep>One state, two questions</h2>
-<p>Here is the whole relationship in a single object. Below is a <strong>Bloch sphere</strong> — the standard picture of one qubit. Every <em>pure</em> state of a single qubit is a point on that surface, and every quantum gate is a <em>rotation</em> of it.</p>
-<p>Press the gates and watch the arrow move. Then read the two panels underneath: the same state, described the way a physicist would and the way a programmer would. Neither panel is a translation of the other — they are the same fact, asked about differently.</p>
+<p>Here is the whole relationship in a single object. Below is a <strong>Bloch sphere</strong>, the standard picture of one qubit. Every <em>pure</em> state of a single qubit is a point on that surface, and every quantum gate is a <em>rotation</em> of it.</p>
+<p>Press the gates and watch the arrow move. Then read the two panels underneath: the same state, described the way a physicist would and the way a programmer would. Neither panel is a translation of the other; they are the same fact, asked about differently.</p>
 
 <div class="card" id="bloch">
   <h3>Turn a qubit</h3>
@@ -297,30 +297,30 @@
       <p style="margin:0;font-size:.88rem" id="bl-note"></p>
     </div>
   </div>
-  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow is the Bloch vector; the faint violet trail is where the state has been. All six gates are the real 2×2 unitary matrices, applied to genuine complex amplitudes — the picture is a projection of the actual arithmetic, not an illustration of it. Honest limits: one qubit only, so <strong>entanglement cannot appear here</strong> — it needs at least two, and it is the ingredient a Bloch sphere fundamentally cannot draw. The sphere also shows only pure states; real qubits decohere and sink inside it.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow is the Bloch vector; the faint violet trail is where the state has been. All six gates are the real 2×2 unitary matrices, applied to genuine complex amplitudes, so the picture is a projection of the actual arithmetic. Limits: one qubit only, so <strong>entanglement cannot appear here</strong>; it needs at least two, and it is the ingredient a Bloch sphere cannot draw. The sphere also shows only pure states; real qubits decohere and sink inside it.</p>
 </div>
 
 <span class="tier y">🟡 Some math</span>
 <h2 id="yellow">The same postulates, renamed</h2>
-<p>The clearest way to see that quantum computing is not a separate theory is to lay the two vocabularies side by side. Every item in the right column <em>is</em> the item on its left — the same mathematical object, given a job title.</p>
+<p>The clearest way to see that quantum computing is not a separate theory is to lay the two vocabularies side by side. Every item in the right column <em>is</em> the item on its left: the same mathematical object, given a job title.</p>
 <div class="overflow"><table>
 <tr><th>Quantum mechanics says</th><th>Quantum computing calls it</th></tr>
 <tr><td>The <em>state</em> of a two-level system is a unit vector in a complex Hilbert space</td><td>The state of a <strong>qubit</strong> (or a register of them)</td></tr>
 <tr><td>Closed systems evolve by a unitary operator, from the Schrödinger equation</td><td>A <strong>gate</strong>, and a sequence of them is a <strong>circuit</strong></td></tr>
-<tr><td>Measurement yields outcome <em>k</em> with probability |⟨k|ψ⟩|² (the Born rule)</td><td><strong>Readout</strong> — the only way to get classical bits out</td></tr>
-<tr><td>Composite systems combine by tensor product, so <em>n</em> parts need 2<sup><em>n</em></sup> amplitudes</td><td>The <strong>space a quantum computer works in</strong> — necessary for hardness, but not sufficient on its own</td></tr>
-<tr><td>Non-product states exist (entanglement)</td><td>A <strong>necessary ingredient</strong> for going beyond a probabilistic classical machine — though, like the big state space, not sufficient on its own (stabilizer circuits are entangled yet classically simulable)</td></tr>
+<tr><td>Measurement yields outcome <em>k</em> with probability |⟨k|ψ⟩|² (the Born rule)</td><td><strong>Readout</strong>, the only way to get classical bits out</td></tr>
+<tr><td>Composite systems combine by tensor product, so <em>n</em> parts need 2<sup><em>n</em></sup> amplitudes</td><td>The <strong>space a quantum computer works in</strong>: necessary for hardness, but not sufficient on its own</td></tr>
+<tr><td>Non-product states exist (entanglement)</td><td>A <strong>necessary ingredient</strong> for going beyond a probabilistic classical machine, though (like the big state space) not sufficient on its own: stabilizer circuits are entangled yet classically simulable</td></tr>
 </table></div>
-<p>That fourth row deserves a correction that the popular version always skips. It is often said that 2<sup><em>n</em></sup> amplitudes are <em>why</em> quantum computers beat classical ones. That cannot be the whole story, because there is a large family of quantum circuits — <strong>stabilizer circuits</strong>, built from a specific gate set — that live in exactly the same exponential space and yet can be simulated efficiently on a laptop (the Gottesman–Knill theorem). Enormous state space is <em>necessary</em> for a quantum advantage; it is nowhere near <em>sufficient</em>. Whatever the advantage is, it is subtler than counting amplitudes.</p>
-<p>Nothing was added. The postulates were written down by 1932 and quantum computing uses them unchanged, which is why a physics graduate can read a quantum-algorithms paper without learning new physics — only new goals.</p>
-<p><strong>So what <em>did</em> quantum computing add?</strong> Three things, none of them physical laws. First, the <strong>circuit model</strong>: a discipline of building any evolution out of a small reusable gate set. Second, <strong>complexity</strong> — the machinery for asking how the cost of a computation grows with problem size, which is a computer-science question that physics simply had never posed about physical systems. Third, and most usefully, <strong>error correction</strong>: the realisation that a fragile quantum state can be protected by encoding it across many physical carriers. That last one has since become a physics tool in its own right.</p>
-<p>Where does interference come in? A quantum computer is not a machine that "tries every answer at once" — that phrasing is the most common way the subject is oversold. Superposition alone gets you nothing, because measurement hands back a single random outcome. The work is done by <strong>interference</strong>: a good algorithm arranges the amplitudes of wrong answers to cancel and the right ones to reinforce, so that the final measurement is likely to land where you want. Designing that cancellation is the actual craft, and it is why useful quantum algorithms are rare and hard to find rather than automatic.</p>
+<p>That fourth row deserves a correction that the popular version always skips. It is often said that 2<sup><em>n</em></sup> amplitudes are <em>why</em> quantum computers beat classical ones. That cannot be the whole story, because there is a large family of quantum circuits (<strong>stabilizer circuits</strong>, built from a specific gate set) that live in exactly the same exponential space and yet can be simulated efficiently on a laptop (the Gottesman–Knill theorem). Enormous state space is <em>necessary</em> for a quantum advantage; it is nowhere near <em>sufficient</em>. Whatever the advantage is, it is subtler than counting amplitudes.</p>
+<p>Nothing was added. The postulates were written down by 1932 and quantum computing uses them unchanged, which is why a physics graduate can read a quantum-algorithms paper without learning new physics, only new goals.</p>
+<p><strong>So what <em>did</em> quantum computing add?</strong> Three things, none of them physical laws. First, the <strong>circuit model</strong>: a discipline of building any evolution out of a small reusable gate set. Second, <strong>complexity</strong>: the machinery for asking how the cost of a computation grows with problem size, which is a computer-science question that physics simply had never posed about physical systems. Third, and most usefully, <strong>error correction</strong>: the realisation that a fragile quantum state can be protected by encoding it across many physical carriers. That last one has since become a physics tool in its own right.</p>
+<p>Where does interference come in? A quantum computer is not a machine that "tries every answer at once"; that phrasing is the most common way the subject is oversold. Superposition alone gets you nothing, because measurement hands back a single random outcome. The work is done by <strong>interference</strong>: a good algorithm arranges the amplitudes of wrong answers to cancel and the right ones to reinforce, so that the final measurement is likely to land where you want. Designing that cancellation is the actual craft, and it is why useful quantum algorithms are rare and hard to find rather than automatic.</p>
 
 <h2 data-tier-keep>The part the sphere cannot draw</h2>
 <p>The widget above is one qubit, and one qubit is the honest limit of that picture. Entanglement needs two, and it is where the difference between quantum mechanics and any classical story stops being a matter of interpretation and becomes something you can <strong>win a bet with</strong>.</p>
-<p>Here is that bet, in its cleanest form — the <strong>CHSH game</strong>, from Clauser, Horne, Shimony and Holt in 1969. Two players, Alice and Bob, are separated and cannot communicate. A referee sends each of them a random bit. Each must answer with a bit of their own. They win the round if their two answers differ <em>only</em> when both received a 1.</p>
-<p>They may agree on any strategy beforehand. Here is the theorem: if the world is <strong>local and classical</strong> — if Alice's answer depends only on her own bit and whatever they agreed in advance — then no strategy on earth wins more than <strong>75%</strong> of rounds. That is not a limit of cleverness; it is a proof. Sharing an entangled pair lifts the ceiling to <strong>85.4%</strong>. Play both and watch.</p>
-<p>This exact statistic is not just a game. Swap the referee's win condition for &quot;do these two measurement settings still correlate the way only entanglement can explain,&quot; and the same 75%-classical-ceiling-vs-genuinely-higher-observed-rate logic <em>is</em> the security proof behind the Ekert91 quantum key distribution protocol — <a href="pqc.html#qkd">covered in full on the post-quantum cryptography page</a>, including why national cybersecurity agencies still recommend against relying on it in place of the mathematics that page is actually about.</p>
+<p>Here is that bet, in its cleanest form: the <strong>CHSH game</strong>, from Clauser, Horne, Shimony and Holt in 1969. Two players, Alice and Bob, are separated and cannot communicate. A referee sends each of them a random bit. Each must answer with a bit of their own. They win the round if their two answers differ <em>only</em> when both received a 1.</p>
+<p>They may agree on any strategy beforehand. Here is the theorem: if the world is <strong>local and classical</strong> (Alice's answer depending only on her own bit and whatever they agreed in advance) then no strategy on earth wins more than <strong>75%</strong> of rounds. That is not a limit of cleverness; it is a proof. Sharing an entangled pair lifts the ceiling to <strong>85.4%</strong>. Play both and watch.</p>
+<p>This exact statistic is not just a game. Swap the referee's win condition for &quot;do these two measurement settings still correlate the way only entanglement can explain,&quot; and the same 75%-classical-ceiling-vs-genuinely-higher-observed-rate logic <em>is</em> the security proof behind the Ekert91 quantum key distribution protocol, <a href="pqc.html#qkd">covered in full on the post-quantum cryptography page</a>, including why national cybersecurity agencies still recommend against relying on it in place of the mathematics that page is actually about.</p>
 
 <div class="card" id="chsh">
   <h3>The CHSH game</h3>
@@ -335,17 +335,16 @@
 <p>Take the standard postulates. A pure state of a register is a unit vector |ψ⟩ ∈ ℋ ≅ (ℂ²)<sup>⊗<em>n</em></sup>, dim = 2<sup><em>n</em></sup>. Closed evolution over time <em>t</em> is |ψ(t)⟩ = U(t)|ψ(0)⟩ with U = exp(−<em>i</em>H<em>t</em>/ℏ) for Hamiltonian H = H<sup>†</sup>. A projective measurement in basis {|k⟩} returns <em>k</em> with probability |⟨k|ψ⟩|², leaving the state in |k⟩.</p>
 <p>A quantum <em>circuit</em> is nothing but a factorisation of one such U into a product of local unitaries:</p>
 <div class="formula">U = U<sub>L</sub> ⋯ U<sub>2</sub> U<sub>1</sub>, each U<sub>j</sub> acting on one or two qubits</div>
-<p>The Solovay–Kitaev theorem says any single-qubit unitary can be approximated to accuracy ε by O(log<sup>c</sup>(1/ε)) gates from a fixed universal set closed under inverses (c &lt; 4; see Dawson &amp; Nielsen, <a href="https://arxiv.org/abs/quant-ph/0505030">quant-ph/0505030</a>). So "programming" a quantum computer means choosing an H you can physically implement whose induced U factorises into gates you can actually run. It is engineering constrained by the Hamiltonian your hardware can produce — the physics is a given, not a variable.</p>
+<p>The Solovay–Kitaev theorem says any single-qubit unitary can be approximated to accuracy ε by O(log<sup>c</sup>(1/ε)) gates from a fixed universal set closed under inverses (c &lt; 4; see Dawson &amp; Nielsen, <a href="https://arxiv.org/abs/quant-ph/0505030">quant-ph/0505030</a>). So "programming" a quantum computer means choosing an H you can physically implement whose induced U factorises into gates you can actually run. It is engineering constrained by the Hamiltonian your hardware can produce: the physics is a given, not a variable.</p>
 <p><strong>The complexity layer is the genuinely new part.</strong> BQP is the class of decision problems solvable by a uniform family of polynomial-size quantum circuits with error ≤ 1/3. The known containments are</p>
 <div class="formula">P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE</div>
-<p>and here is the caveat the field's marketing usually omits: <strong>not one of those inclusions has been proven strict.</strong> (Not that they all should be — most complexity theorists expect P = BPP outright, on derandomisation grounds. The point is that the chain is a ladder of open questions, not a ladder of established gaps.) In particular, BQP ≠ BPP has never been demonstrated — and proving it would imply P ≠ PSPACE, settling a famous open problem along the way. Shor's algorithm factors in polynomial time (<a href="https://arxiv.org/abs/quant-ph/9508027">quant-ph/9508027</a>), but "exponential speedup" there is measured against the best <em>known</em> classical algorithm, not against a proven classical lower bound; no one has ruled out a fast classical factoring algorithm. What we do have is proven separation relative to an <strong>oracle</strong> — and the two standard results are not the same size, which is worth stating precisely rather than lumping them together. Bernstein &amp; Vazirani's recursive Fourier sampling gives a <em>superpolynomial</em> gap; Simon's problem gives a genuinely <em>exponential</em> one (Bernstein &amp; Vazirani, <em>SIAM J. Comput.</em> 26, 1411 (1997); Simon, <em>SIAM J. Comput.</em> 26, 1474 (1997)). To those add, in 2018, an <em>unconditional</em> separation between constant-depth quantum circuits and constant-depth classical circuits of bounded fan-in (Bravyi, Gosset &amp; König, <em>Science</em> 362, 308; <a href="https://arxiv.org/abs/1704.00690">arXiv 1704.00690</a>). Those are real theorems about restricted models, not the general claim.</p>
+<p>and here is the caveat the field's marketing usually omits: <strong>not one of those inclusions has been proven strict.</strong> (Not that they all should be: most complexity theorists expect P = BPP outright, on derandomisation grounds. The point is that the chain is a ladder of open questions, not a ladder of established gaps.) In particular, BQP ≠ BPP has never been demonstrated, and proving it would imply P ≠ PSPACE, settling a famous open problem along the way. Shor's algorithm factors in polynomial time (<a href="https://arxiv.org/abs/quant-ph/9508027">quant-ph/9508027</a>), but "exponential speedup" there is measured against the best <em>known</em> classical algorithm, not against a proven classical lower bound; no one has ruled out a fast classical factoring algorithm. What we do have is proven separation relative to an <strong>oracle</strong>, and the two standard results are not the same size, which is worth stating precisely rather than lumping them together. Bernstein &amp; Vazirani's recursive Fourier sampling gives a <em>superpolynomial</em> gap; Simon's problem gives a genuinely <em>exponential</em> one (Bernstein &amp; Vazirani, <em>SIAM J. Comput.</em> 26, 1411 (1997); Simon, <em>SIAM J. Comput.</em> 26, 1474 (1997)). To those add, in 2018, an <em>unconditional</em> separation between constant-depth quantum circuits and constant-depth classical circuits of bounded fan-in (Bravyi, Gosset &amp; König, <em>Science</em> 362, 308; <a href="https://arxiv.org/abs/1704.00690">arXiv 1704.00690</a>). Those are real theorems about restricted models, not the general claim.</p>
 <p><strong>The loop runs backwards too.</strong> The traffic has not been one-way from physics into computing. Treating entanglement as a quantifiable resource, and stabiliser codes as objects in their own right, changed how physicists work: the toric code is simultaneously an error-correcting code and an exactly solvable model of topological order (Kitaev, <a href="https://arxiv.org/abs/quant-ph/9707021">quant-ph/9707021</a>); entanglement entropy is now a standard diagnostic of quantum phases; and tensor-network methods born in quantum-information language are routine in condensed-matter numerics. In high-energy theory, the Ryu–Takayanagi result ties entanglement entropy to geometry (<a href="https://arxiv.org/abs/hep-th/0603001">hep-th/0603001</a>), and quantum error correction has become an explicit part of how the AdS/CFT correspondence is understood (Almheiri, Dong &amp; Harlow, <a href="https://arxiv.org/abs/1411.7041">arXiv 1411.7041</a>). So the honest picture is not a hierarchy but a cycle: physics supplied the laws, computing supplied a new set of questions about them, and the answers changed physics.</p>
-<p>This is also where <a href="ai.html">this site's subject</a> sits. AI decoding quantum errors is not a new physical principle either — it is a statistical-inference technique aimed at a problem that quantum mechanics created and cannot solve on its own.</p>
-<p><em>Verification status: all widget arithmetic verified programmatically 2026-07-21 (gate unitarity, Bloch-vector norm over long random gate sequences, Born-rule normalisation, standard gate identities). Hostile-referee pass on the prose and citations completed 2026-07-30 (six findings applied — the Bernstein–Vazirani oracle gap is superpolynomial not exponential; the constant-depth separation is against bounded-fan-in classical circuits; Solovay–Kitaev needs an inverse-closed gate set; the electromagnetism analogy no longer implies a schedule; the "quantum leap" reworded; the QED superlative bounded). <strong>Second, fully independent hostile-referee pass completed 2026-08-30</strong> — 0 Critical / 0 Major; all 11 primary citations and every widget number re-derived clean; five wording fixes applied: the CHSH 20-round caveat now cites the ~40% spurious-clear-of-75% rate (and the ~15% head-to-head) instead of a mislabelled 9%; "quantum leap" now says "discrete and indivisible" rather than "smallest change"; the vocabulary table no longer equates a qubit with its state, and flags entanglement as necessary-not-sufficient; and the Bloch intro says "pure state". Reports: <code>outputs/VERIFY_QM_RACE_ARCADE.md</code>, <code>outputs/VERIFY_QM_PAGE.md</code>. Errors we still missed pay <a href="corrections.html">the bounty</a>.</em></p>
+<p>This is also where <a href="ai.html">this site's subject</a> sits. AI decoding quantum errors is not a new physical principle either: it is a statistical-inference technique aimed at a problem that quantum mechanics created and cannot solve on its own.</p>
 
 <h2>References</h2>
 <div class="card">
-  <p>• Feynman, "Simulating Physics with Computers," <em>Int. J. Theor. Phys.</em> 21, 467 (1982) — the question that started it<br>
+  <p>• Feynman, "Simulating Physics with Computers," <em>Int. J. Theor. Phys.</em> 21, 467 (1982). The question that started it<br>
   • Deutsch, "Quantum theory, the Church–Turing principle and the universal quantum computer," <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985)<br>
   • Shor's algorithm: <a href="https://arxiv.org/abs/quant-ph/9508027">quant-ph/9508027</a> (<em>SIAM J. Comput.</em> 26, 1484 (1997))<br>
   • Solovay–Kitaev, constructive proof: Dawson &amp; Nielsen, <a href="https://arxiv.org/abs/quant-ph/0505030">quant-ph/0505030</a><br>
@@ -355,7 +354,7 @@
   • Error correction in AdS/CFT: Almheiri, Dong &amp; Harlow, <a href="https://arxiv.org/abs/1411.7041">arXiv 1411.7041</a><br>
   • Standard text: Nielsen &amp; Chuang, <em>Quantum Computation and Quantum Information</em> (CUP, 10th anniv. ed. 2010)<br>
   • Lecture notes, freely available and continually updated: Preskill, <em>Ph219/CS219: Quantum Computation</em>, Caltech (<a href="https://www.preskill.caltech.edu/ph219/">preskill.caltech.edu/ph219</a>)<br>
-  • A gentler, complexity-theory-flavoured companion: Aaronson, <em>Quantum Computing Since Democritus</em> (CUP, 2013) — the BQP/QMA material it covers is built formally, with proofs, on <a href="formalism.html#f18">The Machinery&#39;s own complexity-theory section</a></p>
+  • A gentler, complexity-theory-flavoured companion: Aaronson, <em>Quantum Computing Since Democritus</em> (CUP, 2013). The BQP/QMA material it covers is built formally, with proofs, on <a href="formalism.html#f18">The Machinery&#39;s own complexity-theory section</a></p>
 </div>
 
 <div class="cyu" data-a="1">
@@ -365,12 +364,12 @@
     <button data-opt>Because 2ⁿ is smaller than it looks for realistic n.</button>
     <button data-opt>Because stabilizer circuits occupy the same exponential space and simulate efficiently.</button>
     <button data-opt>Because classical computers also use exponential space.</button>
-    <button data-opt>It is the reason — that is the standard argument.</button>
+    <button data-opt>It is the reason; that is the standard argument.</button>
   </div>
-  <p class="cyu-why">The Gottesman–Knill theorem is the counterexample: stabilizer circuits live in the same 2ⁿ-dimensional space and are simulable in polynomial time on a classical machine. So exponential dimension is <strong>necessary but not sufficient</strong>. Whatever makes quantum computation hard to simulate, it is not the size of the vector alone — which is worth knowing, because "2ⁿ amplitudes" is the most common hand-wave in popular coverage. This page used to make that slip; it is <a href="corrections.html">logged</a>.</p>
+  <p class="cyu-why">The Gottesman–Knill theorem is the counterexample: stabilizer circuits live in the same 2ⁿ-dimensional space and are simulable in polynomial time on a classical machine. So exponential dimension is <strong>necessary but not sufficient</strong>. Whatever makes quantum computation hard to simulate, it is not the size of the vector alone, which is worth knowing, because "2ⁿ amplitudes" is the most common hand-wave in popular coverage. This page used to make that slip; it is <a href="corrections.html">logged</a>.</p>
 </div>
 <div class="pathway-nudge" hidden>
-  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+  <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
 </div>
 
 <h2 data-tier-stop>Go deeper</h2>
@@ -380,10 +379,10 @@
   <div class="card"><h3>🔴 The math floor</h3><p>Formalism, derivations, citations.</p><a href="basics.html#red">Read →</a></div>
 </div>
 
-<footer>The same laws as a cooling coffee — asked a harder question.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+<footer>The same laws as a cooling coffee, asked a harder question.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
 </div>
 
-<script src="games.js?v=35"></script>
+<script src="games.js?v=36"></script>
 <script>
 (function () {
   // One qubit: |psi> = a|0> + b|1>, complex a,b as [re,im].
@@ -405,12 +404,12 @@
     T: [[1, 0], [0, 0], [0, 0], [C, Sn]]
   };
   var DESC = {
-    X: '180° about x — the bit flip: it swaps |0⟩ and |1⟩.',
-    Y: '180° about y — a bit flip and a phase flip at once.',
-    Z: '180° about z — leaves |0⟩ and |1⟩ alone and flips the sign between them. Invisible to a measurement in this basis, decisive for interference.',
+    X: '180° about x, the bit flip: it swaps |0⟩ and |1⟩.',
+    Y: '180° about y: a bit flip and a phase flip at once.',
+    Z: '180° about z: leaves |0⟩ and |1⟩ alone and flips the sign between them. Invisible to a measurement in this basis, decisive for interference.',
     H: 'The Hadamard: it turns a definite state into an even superposition, and back again. Almost every algorithm opens with it.',
-    S: '90° about z — a quarter turn of phase.',
-    T: '45° about z — the gate that makes the set universal, and the expensive one to make fault-tolerant.'
+    S: '90° about z: a quarter turn of phase.',
+    T: '45° about z: the gate that makes the set universal, and the expensive one to make fault-tolerant.'
   };
 
   var st = [[1, 0], [0, 0]], hist = [], trail = [];
@@ -485,17 +484,17 @@
     document.getElementById('bl-bar1').style.width = (100 * p1).toFixed(1) + '%';
 
     document.getElementById('bl-circuit').innerHTML = hist.length
-      ? '|0⟩ —' + hist.map(function (g) { return '[' + g + ']'; }).join('—') + '—'
-      : '<span style="color:var(--muted)">|0⟩ — (no gates yet)</span>';
+      ? '|0⟩ ' + hist.map(function (g) { return '[' + g + ']'; }).join(' ') + ' '
+      : '<span style="color:var(--muted)">|0⟩ (no gates yet)</span>';
     var note = document.getElementById('bl-note');
     if (!last) {
-      note.innerHTML = '<span style="color:var(--muted)">Apply a gate. Each one is a rotation — the state never leaves the sphere, which is what "unitary" means.</span>';
+      note.innerHTML = '<span style="color:var(--muted)">Apply a gate. Each one is a rotation: the state never leaves the sphere, which is what "unitary" means.</span>';
     } else if (Math.abs(p0 - 0.5) < 1e-9) {
-      note.innerHTML = '<strong>' + last + '</strong> — ' + DESC[last] +
-        ' <span style="color:var(--teal)">A 50/50 state — and not the same thing as a coin already landed under a cup. ' +
+      note.innerHTML = '<strong>' + last + '</strong>: ' + DESC[last] +
+        ' <span style="color:var(--teal)">A 50/50 state, and not the same thing as a coin already landed under a cup. ' +
         'Proving that difference needs two qubits, which is what <a href="#chsh">the CHSH game</a> does below.</span>';
     } else {
-      note.innerHTML = '<strong>' + last + '</strong> — ' + DESC[last];
+      note.innerHTML = '<strong>' + last + '</strong>: ' + DESC[last];
     }
   }
 

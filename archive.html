@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The Question Archive — every question, with answers | SymbiQ</title>
+<title>The Question Archive · every question, with answers | SymbiQ</title>
 <meta name="description" content="Every question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/archive.html">
@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/archive.html">
-<meta property="og:title" content="The Question Archive — every question, with answers | SymbiQ">
+<meta property="og:title" content="The Question Archive · every question, with answers | SymbiQ">
 <meta property="og:description" content="Every question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/question.png">
 <meta property="og:image:width" content="1200">
@@ -23,7 +23,7 @@
 <meta property="og:image:alt" content="SymbiQ. One question, answered three ways.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Question Archive — every question, with answers | SymbiQ">
+<meta name="twitter:title" content="The Question Archive · every question, with answers | SymbiQ">
 <meta name="twitter:description" content="Every question SymbiQ has ever asked, with the answer and the full explanation at all three levels. Nothing is deleted.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/question.png">
 <!-- social:end -->
@@ -35,7 +35,7 @@
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -46,14 +46,14 @@
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
-<script src="archive.js?v=1" defer></script>
+<script src="auth.js?v=3" defer></script>
+<script src="archive.js?v=2" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -62,11 +62,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -140,7 +140,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -148,7 +148,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain active">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -171,7 +171,7 @@
 </nav>
 
 <h1>The Question Archive</h1>
-<p class="tagline">Every question we have ever asked, with its answer and the full explanation at all three levels. Nothing is deleted, nothing is quietly edited — if we got one wrong it stays here with the correction attached.</p>
+<p class="tagline">Every question we have ever asked, with its answer and the full explanation at all three levels. Nothing is deleted, nothing is quietly edited. If we got one wrong it stays here with the correction attached.</p>
 
 <div class="card" id="arch-summary">
   <h3>Loading the archive…</h3>
@@ -181,7 +181,7 @@
 <div id="arch-list"></div>
 
 <h2 id="how-the-question-works">How The Question works</h2>
-<p>One question at a time, at one of three levels — 🟢 beginner, 🟡 intermediate, 🔴 expert with real mathematics. Every answer carries an explanation at <em>all three</em> levels, so you can always drop down a tier if the explanation loses you, or climb one if it bores you. Expert questions are independently verified before they ship, and the sources are named.</p>
+<p>One question at a time, at one of three levels: 🟢 beginner, 🟡 intermediate, 🔴 expert with real mathematics. Every answer carries an explanation at <em>all three</em> levels, so you can always drop down a tier if the explanation loses you, or climb one if it bores you. Expert questions carry named sources.</p>
 <p>The current question is <a href="index.html#daily-q">on the homepage</a>, where it also tracks your streak.</p>
 
 <script>
@@ -197,7 +197,7 @@
 })();
 </script>
 
-<footer>Nothing is deleted. Nothing is quietly edited.<br>SymbiQ · Found an error in an old answer? That is worth the biggest bounty we pay — <a href="corrections.html#report">tell us</a>.</footer>
+<footer>Nothing is deleted. Nothing is quietly edited.<br>SymbiQ · Found an error in an old answer? <a href="corrections.html#report">That pays the biggest bounty we have</a>.</footer>
 </div>
 </body>
 </html>

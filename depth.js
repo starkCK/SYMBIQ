@@ -1,4 +1,4 @@
-/* SymbiQ — depth.js: the reader's remembered light/deep preference.
+/* SymbiQ, depth.js: the reader's remembered light/deep preference.
  *
  * A separate, small module from save.js on purpose: depth preference is not
  * Solver's Path progress, and importing/resetting one must never touch the

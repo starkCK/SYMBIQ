@@ -1,4 +1,4 @@
-/* SymbiQ — form delivery for a site with no back end.
+/* SymbiQ, form delivery for a site with no back end.
  *
  * GitHub Pages cannot send email, so every form here posts to a third-party
  * relay. Until one is configured it falls back to opening the visitor's own
@@ -12,14 +12,14 @@
  *   post() below would need editing.
  *
  * The destination address is NEVER written into the HTML or into this file in
- * one piece — an address in public source gets harvested by spam crawlers
+ * one piece, an address in public source gets harvested by spam crawlers
  * within days. The access key is a public token by design: it identifies the
  * inbox without revealing it, and can be rotated if it is ever abused.
  */
 (function () {
   'use strict';
 
-  // Live since 2026-07-30. Public by design — this token identifies the inbox
+  // Live since 2026-07-30. Public by design, this token identifies the inbox
   // without revealing it, and it must sit in client-side source to work at all.
   var ACCESS_KEY = 'e475f594-d5a7-4cc2-a89d-fd4b12deb5ef';
   var ENDPOINT   = 'https://api.web3forms.com/submit';
@@ -76,7 +76,7 @@
 
       // Honeypot: a field no human sees. Bots fill it; if it has content we
       // silently pretend to succeed rather than telling the bot it was caught.
-      if (data._gotcha) { msg(form, 'Thanks — that’s in.', 'ok'); form.reset(); return; }
+      if (data._gotcha) { msg(form, 'Thanks, that’s in.', 'ok'); form.reset(); return; }
       delete data._gotcha;
 
       var required = form.querySelectorAll('[required]');
@@ -97,10 +97,10 @@
       };
 
       if (!ACCESS_KEY) {
-        // Not configured yet — hand off to the visitor's mail client. Honest
+        // Not configured yet, hand off to the visitor's mail client. Honest
         // about what just happened rather than silently doing nothing.
         window.location.href = mailto(kind, data);
-        done(true, 'Opening your email app — press send there and it reaches us. ' +
+        done(true, 'Opening your email app, press send there and it reaches us. ' +
                    '(Direct sending is not switched on yet.)');
         return;
       }
@@ -109,7 +109,7 @@
         .then(function () {
           done(true, kind === 'newsletter'
             ? 'You’re on the list. Nothing else needed.'
-            : 'Got it — thank you. Every report is read by a human.');
+            : 'Got it, thank you. Every report is read by a human.');
         })
         .catch(function (err) {
           if (btn) { btn.disabled = false; btn.textContent = btn.dataset.was || 'Send'; }

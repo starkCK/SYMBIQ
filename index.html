@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>SymbiQ — Two broken geniuses, fixing each other.</title>
-<meta name="description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with nine games where the mathematics does the judging.">
+<title>SymbiQ: Two broken geniuses, fixing each other.</title>
+<meta name="description" content="SymbiQ explains the loop between AI and quantum computing at three levels (no math, some math, real math) with nine games where the mathematics does the judging.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,16 +15,16 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/">
-<meta property="og:title" content="SymbiQ — Two broken geniuses, fixing each other.">
-<meta property="og:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with nine games where the mathematics does the judging.">
+<meta property="og:title" content="SymbiQ: Two broken geniuses, fixing each other.">
+<meta property="og:description" content="SymbiQ explains the loop between AI and quantum computing at three levels (no math, some math, real math) with nine games where the mathematics does the judging.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ. Two broken geniuses, fixing each other.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="SymbiQ — Two broken geniuses, fixing each other.">
-<meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels — no math, some math, real math — with nine games where the mathematics does the judging.">
+<meta name="twitter:title" content="SymbiQ: Two broken geniuses, fixing each other.">
+<meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels (no math, some math, real math) with nine games where the mathematics does the judging.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -40,7 +40,7 @@
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="vivid.css?v=4">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -64,21 +64,21 @@
   .herocta-alt { text-align: center; padding: 10px 0; }   /* keeps the 44px touch minimum */
 }
 </style>
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
-<script src="archive.js?v=1" defer></script>
+<script src="auth.js?v=3" defer></script>
+<script src="archive.js?v=2" defer></script>
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover
        physics on cards and the live border on #tryit. NOT scroll reveals --
@@ -161,7 +161,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -169,7 +169,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain active">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -195,12 +195,12 @@
 
 
 <h1>Two broken geniuses,<br>fixing each other.</h1>
-<p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop — at three levels, as a game.</p>
+<p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop at three levels, as a game.</p>
 <p class="gh-row herocta">
   <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
   <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
 </p>
-<p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a> — two minutes, zero jargon, zero equations.</p>
+<p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a>. Two minutes, zero jargon, zero equations.</p>
 
 <!-- ── THE SPINE ─────────────────────────────────────────────────────────────
      One sentence, above the router, answering the question the three doors
@@ -211,7 +211,7 @@
      annealer minimises. Added 2026-08-23 per the platform-reorganisation
      pass ("The Ladder"). -->
 <p class="spine-tag">The short version</p>
-<p class="spine">Every machine on this site is a physical object built to settle a mathematical question — a <a href="circuits.html">circuit made stranger</a> until it holds a qubit, made to <a href="qec.html">survive</a>, then pointed at <a href="formalism.html">something worth asking</a>. Couple many of the same circuits instead, and you get the machine <a href="feasible.html">operations research</a> already runs on. Both roads end at <a href="pqc.html">what you actually have to fix</a>.</p>
+<p class="spine">Every machine on this site is a physical object built to settle a mathematical question: a <a href="circuits.html">circuit made stranger</a> until it holds a qubit, made to <a href="qec.html">survive</a>, then pointed at <a href="formalism.html">something worth asking</a>. Couple many of the same circuits instead, and you get the machine <a href="feasible.html">operations research</a> already runs on. Both roads end at <a href="pqc.html">what you actually have to fix</a>.</p>
 
 <!-- ── THE HUB ───────────────────────────────────────────────────────────────
      Three tracks, one row, ALWAYS visible. Two things were wrong with the
@@ -304,7 +304,7 @@
      gsphere/gequator/gaxis/gtarget/gvec classes already in style.css, so it
      needs no new CSS at all. -->
 <div class="card" id="tryit">
-  <p style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Try it — ten seconds, no signup</p>
+  <p style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Try it: ten seconds, no signup</p>
   <p style="margin:0 0 10px"><strong>Turn this into <span class="ket">|+⟩</span> with one gate.</strong> This is what &ldquo;the mathematics does the judging&rdquo; actually means.</p>
   <svg class="golfsvg" viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bloch sphere: your state against the target" id="tryit-svg"></svg>
   <p style="text-align:center;font-size:.85rem;color:var(--muted);margin:6px 0 0"><span style="color:var(--teal)">━ solid teal = you</span> · <span style="color:var(--violet)">┅ dashed violet = the target</span></p>
@@ -389,9 +389,9 @@
       if (same(bloch(cur), TARGET)) {
         solved = true;
         out.className = 'verdict good';
-        out.innerHTML = '<strong>That&#39;s it &mdash; one gate, proven optimal, nothing shorter exists.</strong> ' +
+        out.innerHTML = '<strong>That&#39;s it. One gate, and nothing shorter exists.</strong> ' +
           'Circuit Golf has nine holes like this one, and seven more games where every par and every ' +
-          'probability is computed rather than chosen. <a href="play.html#golf">Play the rest of Circuit Golf →</a>';
+          'probability is worked out, not set by a designer. <a href="play.html#golf">Play the rest of Circuit Golf →</a>';
       }
     });
   });
@@ -484,32 +484,32 @@
     <!-- top: what already works -->
     <path class="arc now" d="M 206 100 Q 320 26 434 100" marker-end="url(#loopArrowT)"/>
     <text class="lbl-b teal" x="320" y="44" text-anchor="middle">reads the errors</text>
-    <text class="lbl-s teal" x="320" y="58" text-anchor="middle">SHIPPING NOW — learned decoders beat the hand-written ones</text>
+    <text class="lbl-s teal" x="320" y="58" text-anchor="middle">SHIPPING NOW: learned decoders beat the hand-written ones</text>
     <circle class="flow pulse f1" r="4"/>
 
     <!-- bottom: what is still ahead. the dashes ARE the honesty -->
     <path class="arc ahead" d="M 434 160 Q 320 234 206 160" marker-end="url(#loopArrowV)"/>
     <text class="lbl-b violet" x="320" y="222" text-anchor="middle">will feed the data</text>
-    <text class="lbl-s violet" x="320" y="236" text-anchor="middle">MOSTLY AHEAD — one route is real, the rest are oversold</text>
+    <text class="lbl-s violet" x="320" y="236" text-anchor="middle">MOSTLY AHEAD: one route is real, the rest are oversold</text>
     <circle class="flow violet pulse2 f2" r="4"/>
   </svg></div>
   <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>The asymmetry is the point.</strong> The top arrow is solid because it already happened — AI decoders are running against real chips today. The bottom arrow is dashed because it mostly has not. The genuine near-term route is quantum hardware <em>growing</em> training data about nature that no classical source can produce — while the loudest claim, an exponential speedup for the linear algebra under machine learning, usually dies on the cost of getting ordinary data into the machine in the first place. We draw it dashed on purpose. <a href="ai.html">Both directions, ranked honestly ▸</a></figcaption>
+  <figcaption><strong>The asymmetry is the point.</strong> The top arrow is solid because it already happened: AI decoders run against real chips today. The bottom arrow is dashed because it mostly has not. The genuine near-term route is quantum hardware <em>growing</em> training data about nature that no classical source can produce. The loudest claim, an exponential speedup for the linear algebra under machine learning, usually dies on the cost of getting ordinary data into the machine. <a href="ai.html">Both directions, ranked honestly ▸</a></figcaption>
 </figure>
 
 <section class="orhero gamehero">
   <p class="eyebrow">The part you play</p>
   <h2 id="nine-games-where-you-cannot-fake-a-score">Nine games where you cannot fake a score</h2>
-  <p class="orhero-lede">Most explanations of quantum computing ask you to take their word for it. Here the mathematics does the judging: <strong>every par is an optimum found by exhaustive search, every probability on screen is computed rather than chosen</strong>, and one level is built to prove that your best strategy is worthless on the wrong problem.</p>
+  <p class="orhero-lede">Most explanations of quantum computing ask you to take their word for it. Here the mathematics does the judging: <strong>every par is an optimum found by exhaustive search, every probability on screen is worked out rather than set by a designer</strong>, and one level is built to prove that your best strategy is worthless on the wrong problem.</p>
 
   <div class="orhero-grid">
-    <div><b>Grover's Escape</b><span>Sixty-four doors, one exit. Tilt the odds — then look <em>once</em>. Look twice and you lose it, because over-rotation is real.</span></div>
+    <div><b>Grover's Escape</b><span>Sixty-four doors, one exit. Tilt the odds, then look <em>once</em>. Look twice and you lose it: over-rotation is real.</span></div>
     <div><b>The Decoder Duel</b><span>Ten rounds against the textbook decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</span></div>
-    <div><b>The Annealing Volcano</b><span>You are not the climber. You are the temperature — and you are scored on your schedule replayed 500 times, never on one lucky run.</span></div>
+    <div><b>The Annealing Volcano</b><span>You are not the climber. You are the temperature, and you're scored on your schedule replayed 500 times, not on one lucky run.</span></div>
     <div><b>The Prune</b><span>Prove which of 4,096 answers is best by opening about thirty-five. Finish holding a certificate, not a guess.</span></div>
   </div>
 
-  <p>Two ways in. <strong>The Solver's Path</strong> is the story — five fractures, six characters, a map and progress that saves. <strong>The Arcade</strong> is the same machines with no story and no order.</p>
+  <p>Two ways in. <strong>The Solver's Path</strong> is the story: five fractures, six characters, a map, and progress that saves. <strong>The Arcade</strong> is the same machines with no story and no order.</p>
 
   <p class="gh-row" style="margin-bottom:0">
     <a class="bigplay" href="journey.html">Play The Solver's Path <span class="kbd">the story</span></a>
@@ -519,39 +519,39 @@
 </section>
 
 <h2 id="read-it-instead">Read it instead</h2>
-<p>One worked example — how AI learned to read a quantum computer's errors — at three depths that differ in <em>kind</em>, not in length. Pick the one that fits, then read the explainer pages at that depth using the toggle at the top of each.</p>
+<p>One worked example, how AI learned to read a quantum computer's errors, at three depths that differ in <em>kind</em>, not in length. Pick the one that fits, then read the explainer pages at that depth using the toggle at the top of each.</p>
 <div class="grid">
-  <div class="card"><h3>🟢 Plain</h3><p><strong>Two minutes, one analogy, zero equations</strong> — and a straight answer to "so what?". A choir where nobody may be heard singing alone.</p><a href="basics.html">Start here →</a></div>
-  <div class="card"><h3>🟡 Working</h3><p><strong>The mechanism, plus one number worked by hand</strong> — why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.</p><a href="basics.html#yellow">How it actually works →</a></div>
-  <div class="card"><h3>🔴 Formal</h3><p><strong>The derivation carried through</strong>, primary sources, and five problems that are genuinely open. Independently refereed before it ships.</p><a href="basics.html#red">The mathematics →</a></div>
+  <div class="card"><h3>🟢 Plain</h3><p><strong>Two minutes, one analogy, zero equations</strong>, and a straight answer to "so what?". A choir where nobody may be heard singing alone.</p><a href="basics.html">Start here →</a></div>
+  <div class="card"><h3>🟡 Working</h3><p><strong>The mechanism, plus one number worked by hand</strong>: why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.</p><a href="basics.html#yellow">How it actually works →</a></div>
+  <div class="card"><h3>🔴 Formal</h3><p><strong>The derivation carried through</strong>, primary sources, and five problems that are genuinely open.</p><a href="basics.html#red">The mathematics →</a></div>
 </div>
 
 <section class="orhero">
-  <p class="eyebrow">The fork — same circuit, the other branch</p>
+  <p class="eyebrow">The fork: same circuit, the other branch</p>
   <h2 id="operations-research">Operations research: the field that already decides your day</h2>
-  <p class="orhero-lede">Every quantum-optimisation headline you have ever read is a claim about <strong>operations research</strong> — the mathematics of deciding well when you cannot have everything. It is not a footnote to quantum computing. It is a century-old discipline that is already running underneath your life, and you cannot judge a single quantum claim without it.</p>
+  <p class="orhero-lede">Every quantum-optimisation headline you have ever read is a claim about <strong>operations research</strong>, the mathematics of deciding well when you cannot have everything. It is not a footnote to quantum computing. It is a century-old discipline that is already running underneath your life, and you cannot judge a single quantum claim without it.</p>
 
   <div class="orhero-grid">
     <div><b>It routed your parcel</b><span>And staffed tonight's hospital shift, and priced your flight twice while you looked at it.</span></div>
-    <div><b>It runs inside the quantum computer</b><span>Surface-code decoding is minimum-weight matching — Edmonds, 1965. OR isn't adjacent to the machine. It's a part in it.</span></div>
+    <div><b>It runs inside the quantum computer</b><span>Surface-code decoding is minimum-weight matching (Edmonds, 1965). OR isn't adjacent to the machine. It's a part in it.</span></div>
     <div><b>It is what the hype is about</b><span>&quot;Quantum will revolutionise optimisation&quot; is a claim about this field. Learn it and the claim becomes checkable.</span></div>
     <div><b>It is more learnable than it looks</b><span>School algebra and one drawing gets you the core idea. The first step is much smaller than people expect.</span></div>
   </div>
 
-  <p>So it gets its own front door here rather than being buried inside the quantum pages — a place to learn the theory for its own sake, and the reference point every quantum claim on this site is measured against.</p>
+  <p>So it gets its own front door here rather than being buried inside the quantum pages. It's a place to learn the theory for its own sake, and the reference point every quantum claim on this site is measured against.</p>
   <p style="margin-bottom:0"><a class="bigplay" href="feasible.html">Enter The Feasible Region <span class="kbd">the OR track</span></a></p>
 </section>
 
 <section class="orhero pqhero">
   <p class="eyebrow">Not a thought experiment</p>
   <h2 id="post-quantum-cryptography">Post-quantum cryptography: is your own system actually exposed?</h2>
-  <p class="orhero-lede">Everything above explains the physics and the maths. This one runs the actual cryptography — <strong>real ML-KEM and ML-DSA keys, generated and broken in your own browser</strong> — and checks your own certificates, domains and migration plan against it, not a diagram of it.</p>
+  <p class="orhero-lede">Everything above explains the physics and the maths. This one runs the actual cryptography: <strong>real ML-KEM and ML-DSA keys, generated and broken in your own browser</strong>. It checks your own certificates, domains and migration plan against it, not a diagram of it.</p>
 
   <div class="orhero-grid">
     <div><b>Real cryptography, not a diagram</b><span>A genuine key exchange and signature, deliberately tampered five ways, so you see the failure modes and not just a green checkmark.</span></div>
-    <div><b>Your own systems, checked</b><span>Paste a certificate or a domain and get a real read on what it's running today — not a guess.</span></div>
-    <div><b>A real deadline, not a vibe</b><span>Four dated regulatory lines — EO 14412, CNSA 2.0, NIST IR 8547, the EU roadmap — checked against your plan, not summarised at you.</span></div>
-    <div><b>A plan you can hand to a CISO</b><span>An executive dashboard, a shareable plan link, a migration timeline, and a print-ready report — no account, nothing sent to a server.</span></div>
+    <div><b>Your own systems, checked</b><span>Paste a certificate or a domain and get a real read on what it's running today, not a guess.</span></div>
+    <div><b>A real deadline, not a vibe</b><span>Four dated regulatory lines (EO 14412, CNSA 2.0, NIST IR 8547, the EU roadmap) checked against your plan, not summarised at you.</span></div>
+    <div><b>A plan you can hand to a CISO</b><span>An executive dashboard, a shareable plan link, a migration timeline, and a print-ready report. No account, nothing sent to a server.</span></div>
   </div>
 
   <p style="margin-bottom:0"><a class="bigplay ghost" href="pqc.html">Check your own exposure <span class="kbd">7 tools, no signup</span></a></p>
@@ -592,38 +592,38 @@
       <line class="sMuted" x1="385" y1="184" x2="385" y2="189"/><text x="385" y="200">10⁷</text>
       <line class="sMuted" x1="494" y1="184" x2="494" y2="189"/><text x="494" y="200">10⁹</text>
     </g>
-    <text class="lbl-s" x="358" y="213" text-anchor="middle">physical qubits — logarithmic scale, so each step right is 100×</text>
+    <text class="lbl-s" x="358" y="213" text-anchor="middle">physical qubits (logarithmic scale, so each step right is 100×)</text>
   </svg></div>
   <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>The same attack got 3,800× cheaper in four years.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at 1.9 billion physical qubits. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million — partly because the first half of Shor's algorithm can be precomputed before your transaction even appears. The gap from today's hardware is now roughly <strong>three</strong> orders of magnitude, not six. Note the axis is logarithmic: that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
+  <figcaption><strong>The same attack got 3,800× cheaper in four years.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at 1.9 billion physical qubits. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor's algorithm can be precomputed before your transaction appears. The gap from today's hardware is now roughly <strong>three</strong> orders of magnitude, not six. The axis is logarithmic, so that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
 </figure>
 
 <details class="foldsec" id="what-for">
   <summary>
-    <span class="fs-txt"><b>So what would you actually use one for?</b><i>Seven applications, ranked by how much of each is evidence rather than expectation — molecules · breaking encryption · optimisation · machine learning · error correction · sensing</i></span>
+    <span class="fs-txt"><b>So what would you actually use one for?</b><i>Six applications, ranked by evidence rather than expectation: molecules, breaking encryption, optimisation, machine learning, error correction, sensing</i></span>
     <span class="fs-x" aria-hidden="true"></span>
   </summary>
   <div class="fs-body">
-<p>This is the question that gets answered worst. The honest position is that quantum computers are not general accelerators — they are good at a <em>narrow and specific</em> class of things, and the gap between that class and the marketing is where most of the confusion lives. Here is the real list, ranked by how much of it is evidence rather than expectation. Where a genuine operations-research problem sits underneath, there is a door to it.</p>
+<p>This is the question that gets answered worst. The honest position: quantum computers are not general accelerators. They are good at a <em>narrow and specific</em> class of things, and the gap between that class and the marketing is where most of the confusion lives. Here is the real list, ranked by how much of it is evidence rather than expectation. Where a genuine operations-research problem sits underneath, there is a door to it.</p>
 
 <div class="grid">
   <div class="card">
     <h3>Simulating molecules and materials <span class="orbadge">the strongest case</span></h3>
     <p>Nature is quantum, so a quantum computer is the natural instrument for it. The standard example is <strong>nitrogenase</strong>: a bacterial enzyme that pulls nitrogen out of the air at ambient temperature and pressure, while the industrial process doing the same job needs enormous heat and pressure. Nobody can compute the enzyme&#39;s active site accurately, because the electron correlations are exactly what classical methods approximate away.</p>
-    <p>The same argument covers battery electrolytes, catalysts and superconductors. <strong>This is the one application where the machine is suited to the problem rather than borrowed for it</strong> — no data-loading toll, because the data is the physics.</p>
-    <p style="margin-bottom:0"><em>Status: needs error-corrected machines that do not exist yet. Credible, not imminent.</em> <span class="orbadge">⟦Frontier⟧</span> <a class="cta" href="formalism.html#f16">The near-term engine already runs — VQE →</a></p>
+    <p>The same argument covers battery electrolytes, catalysts and superconductors. <strong>This is the one application where the machine is suited to the problem rather than borrowed for it.</strong> There is no data-loading toll, because the data is the physics.</p>
+    <p style="margin-bottom:0"><em>Status: needs error-corrected machines that don&#39;t exist yet. Credible, not imminent.</em> <a class="cta" href="formalism.html#f16">The near-term engine already runs: VQE →</a></p>
   </div>
 
   <div class="card">
-    <h3>Breaking — and replacing — today&#39;s encryption <span class="orbadge">⟦Proven⟧ algorithm</span></h3>
-    <p>Shor&#39;s algorithm factors large numbers efficiently, which breaks RSA and elliptic-curve cryptography. The algorithm is proven; the machine is roughly <strong>three orders of magnitude</strong> beyond anything built. But the deadline is real anyway, because encrypted traffic captured today can be decrypted later — so the migration to post-quantum cryptography is happening <em>now</em>, on live systems, and that is a genuine engineering programme rather than a prediction.</p>
+    <h3>Breaking and replacing today&#39;s encryption</h3>
+    <p>Shor&#39;s algorithm factors large numbers efficiently, which breaks RSA and elliptic-curve cryptography. The algorithm works; the machine is roughly <strong>three orders of magnitude</strong> beyond anything built. The deadline is real anyway: encrypted traffic captured today can be decrypted later, so the migration to post-quantum cryptography is happening <em>now</em>, on live systems. That is an engineering programme, not a prediction.</p>
     <p style="margin-bottom:0"><a class="cta" href="bitcoin.html">The numbers, with caveats →</a></p>
   </div>
 
   <div class="card">
-    <h3>Optimisation <span class="orbadge">⟦Heuristic⟧ — most claimed, least shown</span></h3>
-    <p>Routing fleets, scheduling factories, building portfolios. This is the application you will see promised most often and demonstrated least — <strong>there is no known quantum algorithm that beats a strong classical solver on a problem anyone actually needs solved.</strong></p>
-    <p>The reason is worth understanding rather than taking on trust. Grover&#39;s quadratic speedup is proven, but it applies to <em>unstructured</em> search, and real optimisation problems are dense with structure that classical methods exploit ruthlessly. A solver does not search the space; it proves most of it cannot contain the answer.</p>
+    <h3>Optimisation <span class="orbadge">most claimed, least shown</span></h3>
+    <p>Routing fleets, scheduling factories, building portfolios. This is the application you will see promised most often and demonstrated least: <strong>there is no known quantum algorithm that beats a strong classical solver on a problem anyone actually needs solved.</strong></p>
+    <p>The reason is worth understanding. Grover&#39;s quadratic speedup is real, but it applies to <em>unstructured</em> search, and real optimisation problems are dense with structure that classical methods exploit ruthlessly. A solver does not search the space; it proves most of it cannot contain the answer.</p>
     <p style="margin-bottom:0"><a class="orjump" href="feasible.html#t05" style="margin:6px 0 0"><span>◆ <b>This one has real operations research underneath it.</b> To judge the claim you need to know what the classical machinery already does.<span class="arr"> Topic 05: Branch and bound ▸</span></span></a></p>
   </div>
 
@@ -634,14 +634,14 @@
   </div>
 
   <div class="card">
-    <h3>Error correction, right now <span class="orbadge">⟦Proven⟧ · shipping</span></h3>
-    <p>Not an application of quantum computing so much as the thing standing between us and all of the above — and the one place where the loop this site is named after is already closed. AI decoders read the error patterns; a 1965 graph-matching algorithm does the repair in under a microsecond.</p>
+    <h3>Error correction, right now</h3>
+    <p>Less an application of quantum computing than the thing standing between us and all of the above. It's the one place where the loop this site is named after is already closed. AI decoders read the error patterns; a 1965 graph-matching algorithm does the repair in under a microsecond.</p>
     <p style="margin-bottom:0"><a class="orjump" href="feasible.html#t07" style="margin:6px 0 0"><span>◆ <b>Operations research, running inside the machine.</b><span class="arr"> Topic 07: Matching ▸</span></span></a></p>
   </div>
 
   <div class="card">
-    <h3>Quantum sensing <span class="orbadge">⟦Proven⟧ · deployed</span></h3>
-    <p>Worth naming because it is the quantum technology that already works and nobody argues about. Atomic clocks, magnetometers and gravimeters exploit the same physics without needing a computer at all — used today in navigation, medical imaging and surveying. It is not on this list to pad it out; it is here because <strong>&quot;quantum&quot; delivering real value today mostly means sensing, not computing</strong>, and conflating the two is a common way to be misled.</p>
+    <h3>Quantum sensing</h3>
+    <p>Worth naming because it is the quantum technology that already works and nobody argues about. Atomic clocks, magnetometers and gravimeters exploit the same physics without needing a computer at all, and are used today in navigation, medical imaging and surveying. It's here because <strong>&quot;quantum&quot; delivering real value today mostly means sensing, not computing</strong>, and conflating the two is an easy way to be misled.</p>
   </div>
 </div>
   </div>
@@ -649,13 +649,13 @@
 
 <details class="foldsec" id="how-it-works">
   <summary>
-    <span class="fs-txt"><b>How this place actually runs</b><i>What is running today · what was designed and has not started · why the desk edits rather than crowdsources · and why a correction runs louder than the mistake</i></span>
+    <span class="fs-txt"><b>How this place actually runs</b><i>What's live, what's next, and how the desk handles being wrong</i></span>
     <span class="fs-x" aria-hidden="true"></span>
   </summary>
   <div class="fs-body">
-<p><strong>What runs today:</strong> the pages, the games, and <a href="#daily-q">The Question</a> — every question numbered and dated, so you see the real cadence rather than a promised one. That cadence is currently slow, and the dates say so: seven questions between 19 July and 4 August 2026, none since. <a href="ledger.html">The Ledger</a> also runs today: every dated, public, falsifiable claim about quantum computing — from labs, executives and regulators — logged the day it is made and resolved only when its deadline arrives, with our own error rate published next to theirs. Nothing has resolved yet, which is the honest starting state.</p>
-<p><strong>What was designed and has not started:</strong> a nightly <strong>Collapse</strong> naming the day’s best answer, a weekend <strong>Boss Question</strong> the room fights together, and <strong>The Lattice</strong> — a shared code distance that grows with whatever the community earns. None of those have ever run. They need a room with people in it, and the Discord is still close to empty. We would rather say that here than advertise a ritual you would turn up for and not find. <a href="frontier.html">The Frontier</a> is the newest of these: curated open questions, each meant to run next to a panel of frontier AI models asked the same thing verbatim — the questions are written, the panel has not been run yet.</p>
-<p>What is true regardless of how busy the room gets: SymbiQ is <strong>edited, not crowdsourced</strong> — anything a reader sends is reviewed by the desk before it goes anywhere, and if it ships, it ships with your name on it. Catching an error in <em>our</em> content is the contribution we prize above all others, and when we get something wrong the correction runs with <em>more</em> room than the mistake (<a href="corrections.html">Corrections</a>). <a href="race.html">The Race</a> is meant to be the scoreboard for the six labs chasing fault tolerance, with our own predictions scored in public — it is <strong>still empty</strong>, because inventing a lab status to fill a table is exactly what that page exists to argue against.</p>
+<p><strong>Live now:</strong> the pages, the games, and <a href="#daily-q">The Question</a>, every one numbered and dated so the cadence you see is the real one. <a href="ledger.html">The Ledger</a> logs every dated, public, falsifiable claim about quantum computing the day it is made, and keeps our own record next to the labs'.</p>
+<p><strong>Next:</strong> a nightly <strong>Collapse</strong> naming the best answer, a weekend <strong>Boss Question</strong>, <strong>The Lattice</strong>, and <a href="frontier.html">The Frontier</a> model panel. Each needs people in the room, so they switch on as the <a href="#join-loop">Discord</a> fills.</p>
+<p>SymbiQ is <strong>edited, not crowdsourced</strong>: what you send is reviewed before it ships, and it ships with your name on it. Catch an error in our work and the correction runs with more room than the mistake (<a href="corrections.html">Corrections</a>). <a href="race.html">The Race</a> is the scoreboard for the labs chasing fault tolerance, our own predictions included.</p>
   </div>
 </details>
 
@@ -666,8 +666,8 @@
      action at its embed endpoint or import the collected addresses — but do NOT
      go back to a card that collects nothing. -->
 <div class="grid">
-  <div class="card"><h3>Discord</h3><p>New, and very quiet — a handful of people and no rituals running yet. Join now and you are talking straight to the desk. Free, always.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-discord">Join the server →</a></div>
-  <div class="card"><h3>The Symbiosis</h3><p><strong>No issue has been sent yet.</strong> Leave an address and you get the first one, whenever there is something worth sending — no other mail, ever.</p>
+  <div class="card"><h3>Discord</h3><p>Small and quiet for now, which means anything you post reaches the desk directly. Free, always.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-discord">Join the server →</a></div>
+  <div class="card"><h3>The Symbiosis</h3><p>Leave an address and you get the first issue when there is something worth sending. No other mail, ever.</p>
     <form class="sqform" data-sq="newsletter">
       <input type="email" name="email" data-label="your email" required placeholder="you@example.com" aria-label="Your email address">
       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
@@ -758,7 +758,7 @@
     // the reader's own real progress, and it never goes out of date.
     var streak = s.streak || 0;
     var label = D._fromArchive
-      ? '<span style="color:var(--muted)"> From the archive — the daily feed is paused</span>'
+      ? '<span style="color:var(--muted)"> From the archive, the daily feed is paused</span>'
       : '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>';
     document.getElementById('dq-meta').innerHTML =
       '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
@@ -786,7 +786,7 @@
       document.getElementById('dq-lattice').innerHTML =
         'The Lattice: <strong>' + D.lattice.f.toLocaleString('en-US') + ' F</strong> of ' +
         D.lattice.goal.toLocaleString('en-US') + ' to reach code distance d=' + D.lattice.nextD +
-        ' — it only grows in the <a href="#join-loop">Discord</a>.';
+        '. It only grows in the <a href="#join-loop">Discord</a>.';
     }
     if (done) reveal(D, done.pick, null);
   }
@@ -825,8 +825,8 @@
     var streak = s.streak || 1;
     var line = ok
       ? '<strong style="color:var(--teal)">Correct.</strong>'
-      : '<strong style="color:var(--red)">Not this one.</strong> Wrong answers still keep your streak alive — showing up is the mechanic.';
-    var gnote = grace ? ' <span style="color:var(--teal)">(error corrected ✓ — one missed day repaired, fault-tolerant streaks survive a single error)</span>' : '';
+      : '<strong style="color:var(--red)">Not this one.</strong> Wrong answers still keep your streak alive; showing up is the mechanic.';
+    var gnote = grace ? ' <span style="color:var(--teal)">(error corrected ✓: one missed day repaired, fault-tolerant streaks survive a single error)</span>' : '';
     var out = document.getElementById('dq-out');
     out.innerHTML =
       '<p style="margin-top:12px">' + line + ' Coherence streak: <strong>' + streak + '</strong> day' + (streak === 1 ? '' : 's') + '.' + gnote + '</p>' +
@@ -835,7 +835,7 @@
       '<details><summary>🔴 Why (real math)</summary><p>' + esc(q.explain.r) + '</p></details>' +
       '<div class="dq-heat" id="dq-heat" title="Your last 12 weeks"></div>' +
       '<p style="margin-top:10px"><button class="preset" id="dq-share">Share result</button> ' +
-      '<a href="#join-loop" style="margin-left:8px">Streaks here are local — make them count in the Discord →</a></p>';
+      '<a href="#join-loop" style="margin-left:8px">Streaks here are local; make them count in the Discord →</a></p>';
     heat(s);
     document.getElementById('dq-share').addEventListener('click', function () { share(D, ok, streak); });
   }

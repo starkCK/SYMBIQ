@@ -1,4 +1,4 @@
-/* SymbiQ — accounts (L1). Email magic-link only for now; no GitHub OAuth
+/* SymbiQ, accounts (L1). Email magic-link only for now; no GitHub OAuth
  * yet (that needs a separate GitHub OAuth App, a later, optional step).
  *
  * The account control (2026-08-28 redesign) is a small circular button in
@@ -110,7 +110,7 @@
           // The trigger becomes the account's own initial -- a real avatar,
           // not just a menu that happens to contain profile info.
           if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
-          setTrigger(true, name + ' — account menu');
+          setTrigger(true, name + ', account menu');
           document.getElementById('sq-auth-out').addEventListener('click', function () {
             client.auth.signOut();
           });

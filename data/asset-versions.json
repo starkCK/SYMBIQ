@@ -1,48 +1,48 @@
 {
   "assets": {
     "alive.css": {
-      "v": 1,
-      "sha256": "2bf5c1487ce14b24cdbe0fd8c4fcd310fbfcedffddfaf777bed86c67a87f06e6"
+      "v": 2,
+      "sha256": "92bae0a400f7fa6da8d33e19a5b4e89f46788fee3a3493a5b82e6dd1bb95bdbc"
     },
     "alive.js": {
-      "v": 1,
-      "sha256": "9f0861925b7c7d70514331bd78e5defb79599a02d0800de28036394f67aee2b2"
+      "v": 5,
+      "sha256": "ead352085558380eff4d6afcfd7ba2e96117ac4cd383d9969980d80a5643aad3"
     },
     "analytics.js": {
-      "v": 2,
-      "sha256": "4dec1f05937f383519cf28a38ffac0e29e0e9e1fcfdbda0bf4450176eba88e11"
+      "v": 3,
+      "sha256": "2e05e0fd813a7a91b876140b1ddf7995904cd6f46453684d569faa03a5e153e4"
     },
     "archive.js": {
-      "v": 1,
-      "sha256": "a853f22587651e01573f06cf32a4e0abe695f218b5644abc8f5712f3a0afb5c4"
+      "v": 2,
+      "sha256": "fb6b38d9b94caccca740a19d022ca12d09ec3e35e8b95e962f69d9ca8dd927e9"
     },
     "atmosphere.js": {
       "v": 2,
       "sha256": "39517618c895f560eabe712aed67dac69498ae92c6dcc4e56aa0156c81e3e417"
     },
     "auth.js": {
-      "v": 2,
-      "sha256": "69096aa125fe0c7592c7a3ebcf8567390cfc570423102b15fd13b4e4137db538"
+      "v": 3,
+      "sha256": "2db13fdf7d0345176ad4d1b6ff9459a6c4ad6163eafcc35feb1ef3498e3a756e"
     },
     "coherence.js": {
-      "v": 1,
-      "sha256": "ceedc2d744f52000dec2730a21c8765b447a13948f5a318985790a6477563e9f"
+      "v": 2,
+      "sha256": "6c563677edfea57fdc2634e38a9b26357b660dcd8af6fc0a530d069e3793f99b"
     },
     "curriculum-track.js": {
-      "v": 1,
-      "sha256": "efcf1a2cd7e4c023018fb1ebcadf1b20a8cfafef6c85da31bceb075178ee4ba2"
+      "v": 2,
+      "sha256": "fbd40c08dd571dc9c2f0edc5cbb9edf8b7a899ff74b435e5c38b9c7c2c7a030f"
     },
     "dynamics.css": {
       "v": 3,
       "sha256": "47bd22d5e3cf9d24edbaabf7339c0c50d7af98b6534f9d98924de14ee2b194a3"
     },
     "dynamics.js": {
-      "v": 3,
-      "sha256": "14790db35d7bbdf02ac308ec06af4975c1ebbe017df573461b2d087ae3a9717a"
+      "v": 4,
+      "sha256": "8f5420ca74c082dc4778aeba6a7b2e7cad84facb4e60e3ec46375118b6a4619f"
     },
     "feasible-tools.js": {
-      "v": 2,
-      "sha256": "20e84016d8c622674a23f171c85caa52294766ff300de7d5b8e05977d2b03589"
+      "v": 3,
+      "sha256": "42399ef47a312882c973a14b8777b1861269f89be185a4e61793d9f91fc61651"
     },
     "feasible.css": {
       "v": 7,
@@ -53,16 +53,16 @@
       "sha256": "ef9d4aeb7b4e7a82a4111513179d5492a3683a5919217f12581a50c3fc4a1918"
     },
     "forms.js": {
-      "v": 2,
-      "sha256": "29576e9dcfdbff3c104b9c7fa64034ab95ee95acfa1dd9a9af800501b2e25ea9"
+      "v": 3,
+      "sha256": "8352f8e475953c16c3dbb064a61138fc5211b315d9cc1cd46ff93214cda42e5c"
     },
     "frontier.js": {
-      "v": 1,
-      "sha256": "9118fab574cb2ed8eabdab8520ce116d6aa81a4b77f2640a0dd9db2b8efbd957"
+      "v": 2,
+      "sha256": "2ff797fc15653b85cef827b9df1c1b705142d34b180ae0213664ba828ba72782"
     },
     "games.js": {
-      "v": 35,
-      "sha256": "fe7255cdfe4051484336cfcfe4cff2a7c49fc9a8faac55f3ecbb439faa461e1e"
+      "v": 36,
+      "sha256": "403f0f6a58821ac8f4eb6d9e13e08d86bccdf036a1aaaa84f0fe5b11df22cf7b"
     },
     "glass.css": {
       "v": 3,
@@ -73,32 +73,32 @@
       "sha256": "a027e02273ea09ee24cf00094213da76b609b5a11517c93e7dd7ce91164ba882"
     },
     "hud.js": {
-      "v": 2,
-      "sha256": "47620dd3576cc062629f1ab34276c38a605e91c03cdc58721eeba5d0e87c3de3"
+      "v": 3,
+      "sha256": "6d20c06e5b46ae1d5841af1ed7b9fb6992ed255663ebd322727ffb0bd5ffbe6e"
     },
     "leaderboard.js": {
-      "v": 1,
-      "sha256": "f5134699bba3b919c0664068051b7006526691d3358aae91cf980517e9e34112"
+      "v": 2,
+      "sha256": "81ae1f4b44997988d9c1530826d468efece0195450f5350e5de80468396db975"
     },
     "ledger.js": {
-      "v": 2,
-      "sha256": "8379b1e78d45b2df7f31baadf37ba1830d5807d3148e1d72e570278770d84aa2"
+      "v": 3,
+      "sha256": "7174f73d5de058abbd5ef34c5b6a33126033be1bc5ad4f24194b6153fee78dbe"
     },
     "missions.js": {
-      "v": 9,
-      "sha256": "f93ab957a519ed9235a98da544e9f7c37146ae3997bcc85ffbdca94894fcaee0"
+      "v": 10,
+      "sha256": "e61281703d62861fb33d2ae980d34c6a0072b4dee109ed60c23d6798d10f383e"
     },
     "motion.css": {
       "v": 2,
       "sha256": "953c641143dd06c33c13d10375dff8b8190208634f7542cccbf3542a8a9c44f9"
     },
     "nav.js": {
-      "v": 8,
-      "sha256": "dcd8a6d21d8458a86c9b210cd71936f9c28b497a9b644146b9a470ba873181b3"
+      "v": 9,
+      "sha256": "094fc792c744e4f43122ee26790d6f41ad9f18f9fd4684788c152fde9bcd8f61"
     },
     "pqc-tools.js": {
-      "v": 8,
-      "sha256": "2f985acc1b6205fe35d29b18e9ad6ad2dfe4d033a6b88157501b8cf1554c15f5"
+      "v": 9,
+      "sha256": "dfad6f9896b66e0f7ede6032e316592d8491c7c18faca149276b4f0af136058b"
     },
     "qubit.js": {
       "v": 1,
@@ -109,20 +109,20 @@
       "sha256": "bc1f393f744957d84e001e25db9ca39f77854a720802f8c49d4819763aebb1dc"
     },
     "rails.js": {
-      "v": 3,
-      "sha256": "dcd5f60d5745acd248bdde1ed79c2e9e3acd1911169012ab16b1acc8611436aa"
+      "v": 4,
+      "sha256": "3382de19a11a3cc82197d3f3efaea29ef3cb0bad6bd99623b83cc4766711ac61"
     },
     "rung.js": {
-      "v": 1,
-      "sha256": "0d3031a1a05104cce105937e36717d75610b99bf8f6e9745f1b1fddddf8020e3"
+      "v": 2,
+      "sha256": "93b88ac1497acc92a5f1f71dbf6912253c0dbfddfc14e286e7ba7b020b62c3b7"
     },
     "scene.js": {
-      "v": 4,
-      "sha256": "cd6d87ab9488e0ac010a855434329d879b70f521dfc26cd0bc6f6f1a2c6f2213"
+      "v": 5,
+      "sha256": "c7585f57782b65155fbca5a999149676c81ce5e29ca2444089c3a43ba625d8c0"
     },
     "signals.js": {
-      "v": 2,
-      "sha256": "b4e279ef857cfb37b9b36b9db787d7c72c880b70e8f34ae36e7d3f8a4a90271c"
+      "v": 3,
+      "sha256": "baede52c612054bb5998752b455fdf76149274c12243b10aa55e77c1447326b6"
     },
     "style.css": {
       "v": 48,
@@ -133,12 +133,12 @@
       "sha256": "6f207574f979bde702efc7a9a960cb63db77c3959199b6581b7cdca5f2504803"
     },
     "theme.js": {
-      "v": 1,
-      "sha256": "178467b6bcfe591ee4385d7392e8766cd6fd025c73e13ab7dc1e556bca0173bd"
+      "v": 2,
+      "sha256": "55781b3854c5e88e1bdafb9fedd5e2856e7f7c2149614021d3d236f0654b0433"
     },
     "tiers.js": {
-      "v": 3,
-      "sha256": "81c48a98d88c6a7cdf3d9ec3391532f6bd7980427557e6669aa349b3b6fd32c7"
+      "v": 4,
+      "sha256": "29230ffe47d1c2a0fea36a9b5d6168ca18ca2f25dbf90573c9c68904c38695cb"
     },
     "vivid.css": {
       "v": 4,

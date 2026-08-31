@@ -36,7 +36,7 @@
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
 <link rel="stylesheet" href="vivid.css?v=4">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -95,36 +95,36 @@
         {
           "@type": "Question",
           "name": "Will quantum computers make AI more powerful?",
-          "acceptedAnswer": {"@type": "Answer", "text": "Eventually, narrowly, and not the way most headlines suggest. The near-term win is not running today's neural networks faster — it's quantum hardware generating training data about nature (molecules, materials, quantum experiments) that no classical source can produce. The famous 'exponential speedups' for machine learning on ordinary data mostly collapse once you account for the cost of loading that data into the machine. The relationship is real but specific: quantum is a data factory for AI, not a faster GPU."}
+          "acceptedAnswer": {"@type": "Answer", "text": "Eventually, narrowly, and not the way most headlines suggest. The near-term win is not running today's neural networks faster, it's quantum hardware generating training data about nature (molecules, materials, quantum experiments) that no classical source can produce. The famous 'exponential speedups' for machine learning on ordinary data mostly collapse once you account for the cost of loading that data into the machine. The relationship is real but specific: quantum is a data factory for AI, not a faster GPU."}
         },
         {
           "@type": "Question",
           "name": "What is the data-loading problem in quantum machine learning?",
-          "acceptedAnswer": {"@type": "Answer", "text": "To process N classical numbers, a quantum computer must first encode them into quantum amplitudes. Without large-scale QRAM (which nobody has built), that loading costs on the order of N operations — so even an algorithm that is exponentially faster once the data is inside still sits behind an O(N) toll bridge, and the total runtime is no better than classical. This is why quantum-for-AI claims are trustworthy mainly when the data is already quantum (from sensors or simulations) and suspect when it is ordinary classical data."}
+          "acceptedAnswer": {"@type": "Answer", "text": "To process N classical numbers, a quantum computer must first encode them into quantum amplitudes. Without large-scale QRAM (which nobody has built), that loading costs on the order of N operations, so even an algorithm that is exponentially faster once the data is inside still sits behind an O(N) toll bridge, and the total runtime is no better than classical. This is why quantum-for-AI claims are trustworthy mainly when the data is already quantum (from sensors or simulations) and suspect when it is ordinary classical data."}
         },
         {
           "@type": "Question",
           "name": "Did a quantum machine learning speedup get disproven?",
-          "acceptedAnswer": {"@type": "Answer", "text": "Yes. In 2018, then-undergraduate Ewin Tang found a classical algorithm for recommendation systems that matched the quantum algorithm's performance under comparable data-access assumptions, erasing its claimed exponential advantage. The technique — called dequantization — went on to kill several other proposed quantum ML speedups. The lesson: a quantum speedup only exists relative to the best possible classical algorithm, which sometimes hasn't been invented yet."}
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. In 2018, then-undergraduate Ewin Tang found a classical algorithm for recommendation systems that matched the quantum algorithm's performance under comparable data-access assumptions, erasing its claimed exponential advantage. The technique, called dequantization, went on to kill several other proposed quantum ML speedups. The lesson: a quantum speedup only exists relative to the best possible classical algorithm, which sometimes hasn't been invented yet."}
         },
         {
           "@type": "Question",
           "name": "What is a barren plateau in quantum machine learning?",
-          "acceptedAnswer": {"@type": "Answer", "text": "For large random parameterized quantum circuits, the training gradient's variance vanishes exponentially with the number of qubits — the optimization landscape becomes almost perfectly flat, so gradient descent gets no signal to follow. Scaling the circuit up makes it worse, the opposite of deep learning's scaling story. Mitigations include physics-informed circuit structures, local cost functions, and careful initialization."}
+          "acceptedAnswer": {"@type": "Answer", "text": "For large random parameterized quantum circuits, the training gradient's variance vanishes exponentially with the number of qubits, the optimization landscape becomes almost perfectly flat, so gradient descent gets no signal to follow. Scaling the circuit up makes it worse, the opposite of deep learning's scaling story. Mitigations include physics-informed circuit structures, local cost functions, and careful initialization."}
         }
       ]
     }
   ]
 }
 </script>
-<script src="nav.js?v=8" defer></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="rung.js?v=1" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="rung.js?v=2" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
+<script src="auth.js?v=3" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -133,11 +133,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass>
 <div class="wrap">
@@ -211,7 +211,7 @@
     <details class="navcat" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -219,7 +219,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -249,18 +249,18 @@
 
 <div class="card">
 <h3>The answer in four lines</h3>
-<p>One direction of the loop is already running: <strong>AI keeps quantum computers alive</strong> — catching their errors, tuning their hardware. The return leg — <strong>quantum making AI smarter</strong> — is genuine but narrow: the near-term win isn't a faster GPU, it's quantum hardware growing <em>training data about nature</em> that no classical source can produce. Most "exponential speedup for AI" headlines die at the door, because getting ordinary data <em>into</em> a quantum computer is itself slow.</p>
+<p>One direction of the loop is already running: <strong>AI keeps quantum computers alive</strong>, catching their errors, tuning their hardware. The return leg, <strong>quantum making AI smarter</strong>, is genuine but narrow: the near-term win isn't a faster GPU, it's quantum hardware growing <em>training data about nature</em> that no classical source can produce. Most "exponential speedup for AI" headlines die at the door, because getting ordinary data <em>into</em> a quantum computer is itself slow.</p>
 </div>
 
 <span class="tier g">🟢 No math</span>
 <h2 id="green">The loop, and which half is real today</h2>
-<p>Picture two brilliant specialists who can't function alone. AI is a genius that's confidently, fluently wrong just often enough to be dangerous. A quantum computer is a genius that knows nature's deepest secrets but forgets them the instant you stop babysitting it. Point them at each other and something useful happens — but the two directions are at very different stages.</p>
+<p>Picture two brilliant specialists who can't function alone. AI is a genius that's confidently, fluently wrong just often enough to be dangerous. A quantum computer is a genius that knows nature's deepest secrets but forgets them the instant you stop babysitting it. Point them at each other and something useful happens, but the two directions are at very different stages.</p>
 <p><strong>Direction one, shipping now:</strong> AI is the repair crew. ML calibration and hardware tune-up are already routine in real labs; learned decoders (like AlphaQubit-class networks) match or beat hand-written methods at reading the error alarms (<a href="qec.html">that's the error-correction story</a>) and are moving toward real-time deployment. This half of the loop is the mature one.</p>
-<p><strong>Direction two, real but early:</strong> what does quantum give back to AI? Here's the honest version. Quantum computers are <em>terrible</em> at almost everything your laptop is good at — spreadsheets, video, browsing. They are naturally good at exactly one strange thing: <em>being nature</em>. Molecules, materials, and probability patterns that would take a classical computer longer than the age of the universe to imitate simply <em>happen</em> on quantum hardware, because it runs on the same underlying rules. AI is a bottomless eater of precisely that kind of rare data. So the trade is real — but it's about <strong>growing data no one else can grow</strong>, not about running today's neural networks faster.</p>
+<p><strong>Direction two, real but early:</strong> what does quantum give back to AI? Here's the honest version. Quantum computers are <em>terrible</em> at almost everything your laptop is good at: spreadsheets, video, browsing. They are naturally good at exactly one strange thing: <em>being nature</em>. Molecules, materials, and probability patterns that would take a classical computer longer than the age of the universe to imitate simply <em>happen</em> on quantum hardware, because it runs on the same underlying rules. AI is a bottomless eater of precisely that kind of rare data. So the trade is real, but it's about <strong>growing data no one else can grow</strong>, not running today's neural networks faster.</p>
 <p>And the catch that kills most of the hype: getting ordinary, everyday data <em>into</em> a quantum computer is so slow that for normal datasets the speedup usually dies before it starts. The loop runs on nature's data, not your spreadsheet. Hover the diagram below to see what actually flows each way.</p>
 
 <h2 data-tier-keep>The loop, both directions</h2>
-<p>Click either arrow. Solid violet = AI helping quantum (mature). Dashed teal = quantum helping AI (nascent — the dashes are the point).</p>
+<p>Click either arrow. Solid violet = AI helping quantum (mature). Dashed teal = quantum helping AI (nascent; the dashes are the point).</p>
 
 <div class="card" id="loop-widget">
   <svg id="loop-svg" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" aria-label="Interactive diagram of the AI–quantum loop: AI helps quantum today; quantum helps AI in the near future">
@@ -301,27 +301,26 @@
 <h2 id="yellow">Four ways quantum could help AI, ranked by how much to trust them</h2>
 <div class="overflow"><table>
 <tr><th>Route</th><th>The claim</th><th>Honest verdict</th></tr>
-<tr><td><strong>Quantum data</strong></td><td>Train scientific AI on chemistry/materials/experiment data that is <em>born quantum</em></td><td><strong>The real one.</strong> No data-loading problem — the data starts on the device. Least hyped, most solid.</td></tr>
+<tr><td><strong>Quantum data</strong></td><td>Train scientific AI on chemistry/materials/experiment data that is <em>born quantum</em></td><td><strong>The real one.</strong> No data-loading problem: the data starts on the device. Least hyped, most solid.</td></tr>
 <tr><td>Sampling</td><td>Quantum devices natively sample from distributions that are provably hard classically</td><td>Legitimate for benchmarks today; generative-modeling payoff is speculative but not silly.</td></tr>
 <tr><td>Optimization</td><td>QAOA / annealing explore rugged loss landscapes</td><td>Evidence mixed; classical baselines keep catching up. Trust specific results, not the category.</td></tr>
 <tr><td>Linear algebra</td><td>HHL-style "exponential speedup" for solving the big systems under ML</td><td><strong>Most oversold.</strong> Dies to the data-loading toll, conditioning, and readout (see 🔴).</td></tr>
 </table></div>
 <a class="orjump" href="feasible.html#t05">
-  <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> The thing quantum would have to beat is <b>branch and bound</b> — which does not search the space at all, it proves most of it cannot contain the answer. That is exactly the structure Grover is blind to.<span class="arr"> Topic 05: Branch and bound ▸</span></span>
+  <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> The thing quantum would have to beat is <b>branch and bound</b>, which does not search the space at all; it proves most of it cannot contain the answer. That is exactly the structure Grover is blind to.<span class="arr"> Topic 05: Branch and bound ▸</span></span>
 </a>
 
-<p><strong>The data-loading toll.</strong> To touch <em>N</em> classical numbers a quantum computer must first load them into amplitudes. Without large-scale QRAM — which nobody has built — that costs ~<em>N</em> operations. So an algorithm that's exponentially faster <em>after</em> loading still sits behind an O(<em>N</em>) toll bridge, and the total time is no better than classical. The algorithm is fast; the door is slow.</p>
-<p><strong>Two more dragons.</strong> <em>Dequantization</em>: in 2018 an 18-year-old, Ewin Tang, found a classical algorithm matching a flagship quantum recommendation-system speedup under comparable assumptions — the exponential separation evaporated, and the trick generalized to several others. <em>Barren plateaus</em>: for big random quantum circuits the training gradient's variance vanishes exponentially with qubit count, so the landscape goes flat and gradient descent gets no signal — bigger trains <em>worse</em>, the exact opposite of deep learning. The rule of thumb that survives all of this: <strong>trust quantum-for-AI claims about quantum data; audit everything about classical data.</strong></p>
+<p><strong>The data-loading toll.</strong> To touch <em>N</em> classical numbers a quantum computer must first load them into amplitudes. Without large-scale QRAM (which nobody has built) that costs ~<em>N</em> operations. So an algorithm that's exponentially faster <em>after</em> loading still sits behind an O(<em>N</em>) toll bridge, and the total time is no better than classical. The algorithm is fast; the door is slow.</p>
+<p><strong>Two more dragons.</strong> <em>Dequantization</em>: in 2018 an 18-year-old, Ewin Tang, found a classical algorithm matching a flagship quantum recommendation-system speedup under comparable assumptions; the exponential separation evaporated, and the trick generalized to several others. <em>Barren plateaus</em>: for big random quantum circuits the training gradient's variance vanishes exponentially with qubit count, so the landscape goes flat and gradient descent gets no signal: bigger trains <em>worse</em>, the exact opposite of deep learning. The rule of thumb that survives all of this: <strong>trust quantum-for-AI claims about quantum data; audit everything about classical data.</strong></p>
 
 <span class="tier r">🔴 Real math</span>
 <h2 id="red">The reverse loop, with receipts</h2>
-<p>HHL solves <em>A</em><strong>x</strong>=<strong>b</strong> in Õ(log <em>N</em> · <em>s</em>²κ²/ε) time for an <em>s</em>-sparse, well-conditioned <em>A</em> with an efficiently preparable |<strong>b</strong>⟩ — and the "fine print" (Aaronson, <a href="https://www.nature.com/articles/nphys3272">Nat. Phys. 2015</a>) is where the exponential speedup usually leaks out: preparing an arbitrary classical <strong>b</strong> costs Ω(<em>N</em>) without QRAM; the condition number κ enters polynomially; and the output is the quantum state |<strong>x</strong>⟩, so reading out classical components costs another ~Ω(<em>N</em>) sampling overhead. Three separate O(<em>N</em>) tolls on a "log <em>N</em>" algorithm.</p>
-<p>HHL's own engine is quantum phase estimation — it reads out <em>A</em>'s eigenvalues, inverts them coherently, then uncomputes — the same subroutine <a href="formalism.html#f12">derived from scratch on The Machinery</a>, where it is also named as phase estimation's other real use besides factoring.</p>
-<p><strong>Dequantization.</strong> Tang (<a href="https://arxiv.org/abs/1807.04271">arXiv 1807.04271</a>) gave a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access — collapsing the claimed exponential separation; the technique generalized to kill several QML speedups in low-rank regimes. The lesson isn't "quantum lost"; it's that a speedup is defined <em>against the best classical algorithm</em>, which may not exist yet.</p>
-<p><strong>Barren plateaus.</strong> For random parameterized circuits forming approximate 2-designs, Var[∂<sub>θ</sub><em>C</em>] decays exponentially in qubit count <em>n</em> (McClean et al., <a href="https://arxiv.org/abs/1803.11173">arXiv 1803.11173</a>); global cost functions make it worse (Cerezo et al.). Trainability then requires structured or symmetry-constrained ansätze — you must smuggle physics back in to make the "learning" learn.</p>
-<p><strong>Where the reverse loop actually pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup — Grover-style quadratic gaps — die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="basics.html#red">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and — the constructive results — classical ML gains provable power from data, which shrinks the space of genuine quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Genuine advantage concentrates on tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong> — sampling and Hamiltonian simulation feeding classical AI — not QML on classical data.</p>
-<p><strong>The classical side of this page's own loop, for further reading.</strong> Everything above assumes familiarity with how classical ML actually works — gradient descent, cost landscapes, what "training" means. This page doesn't re-teach that; the standard references are Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006); Murphy, <em>Probabilistic Machine Learning: An Introduction</em> (MIT Press, 2022) and its companion <em>Advanced Topics</em> (MIT Press, 2023); Goodfellow, Bengio &amp; Courville, <em>Deep Learning</em> (MIT Press, 2016); and, for the free, course-form version, Stanford's CS229 (Machine Learning) and CS25 (Transformers United).</p>
-<p><em>Verification status: fresh-session hostile-referee pass completed 2026-07-15 (all six citations fetched and confirmed against primary sources) — every finding applied same day. Errors found anyway pay <a href="corrections.html">the bounty</a>.</em></p>
+<p>HHL solves <em>A</em><strong>x</strong>=<strong>b</strong> in Õ(log <em>N</em> · <em>s</em>²κ²/ε) time for an <em>s</em>-sparse, well-conditioned <em>A</em> with an efficiently preparable |<strong>b</strong>⟩. The "fine print" (Aaronson, <a href="https://www.nature.com/articles/nphys3272">Nat. Phys. 2015</a>) is where the exponential speedup usually leaks out: preparing an arbitrary classical <strong>b</strong> costs Ω(<em>N</em>) without QRAM; the condition number κ enters polynomially; and the output is the quantum state |<strong>x</strong>⟩, so reading out classical components costs another ~Ω(<em>N</em>) sampling overhead. Three separate O(<em>N</em>) tolls on a "log <em>N</em>" algorithm.</p>
+<p>HHL's own engine is quantum phase estimation: it reads out <em>A</em>'s eigenvalues, inverts them coherently, then uncomputes. It is the same subroutine <a href="formalism.html#f12">derived from scratch on The Machinery</a>, where it is also named as phase estimation's other real use besides factoring.</p>
+<p><strong>Dequantization.</strong> Tang (<a href="https://arxiv.org/abs/1807.04271">arXiv 1807.04271</a>) gave a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access, collapsing the claimed exponential separation; the technique generalized to kill several QML speedups in low-rank regimes. The lesson isn't "quantum lost"; it's that a speedup is defined <em>against the best classical algorithm</em>, which may not exist yet.</p>
+<p><strong>Barren plateaus.</strong> For random parameterized circuits forming approximate 2-designs, Var[∂<sub>θ</sub><em>C</em>] decays exponentially in qubit count <em>n</em> (McClean et al., <a href="https://arxiv.org/abs/1803.11173">arXiv 1803.11173</a>); global cost functions make it worse (Cerezo et al.). Trainability then requires structured or symmetry-constrained ansätze: you must smuggle physics back in to make the "learning" learn.</p>
+<p><strong>Where the reverse loop actually pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup (Grover-style quadratic gaps) die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="basics.html#red">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and, in the constructive results, classical ML gains provable power from data, which shrinks the space of genuine quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Genuine advantage concentrates on tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong>, sampling and Hamiltonian simulation feeding classical AI, not QML on classical data.</p>
+<p><strong>The classical side of this page's own loop, for further reading.</strong> Everything above assumes familiarity with how classical ML actually works: gradient descent, cost landscapes, what "training" means. This page doesn't re-teach that; the standard references are Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006); Murphy, <em>Probabilistic Machine Learning: An Introduction</em> (MIT Press, 2022) and its companion <em>Advanced Topics</em> (MIT Press, 2023); Goodfellow, Bengio &amp; Courville, <em>Deep Learning</em> (MIT Press, 2016); and, for the free, course-form version, Stanford's CS229 (Machine Learning) and CS25 (Transformers United).</p>
 
 <div class="cyu" data-a="2">
   <p class="cyu-eyebrow">Check yourself</p>
@@ -332,21 +331,21 @@
     <button data-opt>Learning from data that was generated by a quantum process in the first place.</button>
     <button data-opt>Running today’s neural networks on a quantum computer.</button>
   </div>
-  <p class="cyu-why">The strongest route is <strong>quantum-generated data</strong> — where the machine is a data factory for a classical learner, and there is a proven exponential advantage for learning from quantum experiments (<a href="https://arxiv.org/abs/2112.00778">arXiv:2112.00778</a>). The loudest claim, exponential speedup for ML linear algebra, mostly dies on the data-loading toll and on dequantization results (<a href="https://arxiv.org/abs/1807.04271">Tang, arXiv:1807.04271</a>). Optimisation is ⟦Heuristic⟧ and classical baselines keep catching up.</p>
+  <p class="cyu-why">The strongest route is <strong>quantum-generated data</strong>, where the machine is a data factory for a classical learner, and there is a proven exponential advantage for learning from quantum experiments (<a href="https://arxiv.org/abs/2112.00778">arXiv:2112.00778</a>). The loudest claim, exponential speedup for ML linear algebra, mostly dies on the data-loading toll and on dequantization results (<a href="https://arxiv.org/abs/1807.04271">Tang, arXiv:1807.04271</a>). Optimisation stays heuristic, and classical baselines keep catching up.</p>
 </div>
 <div class="pathway-nudge" hidden>
-  <strong>That is the format.</strong> Every explainer here works the same way — a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated so you can see the real cadence rather than a promised one, and <a href="https://discord.gg/fWKGSb7ZHE">the Discord</a> is where you can argue with it.
+  <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
 </div>
 
 <h2 data-tier-stop>So what's the honest one-liner?</h2>
-<p>Quantum won't make your chatbot faster. It may, within the decade, hand AI a firehose of data about molecules, materials, and quantum systems that no classical instrument can generate — and <em>that</em> is a real way to make AI more powerful at the science that matters. Meanwhile the other direction of the loop is already load-bearing. Both halves running at once, in one machine, is the whole thesis of this site.</p>
+<p>Quantum won't make your chatbot faster. It may, within the decade, hand AI a firehose of data about molecules, materials, and quantum systems that no classical instrument can generate, and <em>that</em> is a real way to make AI more powerful at the science that matters. Meanwhile the other direction of the loop is already load-bearing. Both halves running at once, in one machine, is the whole thesis of this site.</p>
 
 <h2>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🟢 The other direction</h3><p>How AI became quantum computing's repair crew — the half of the loop that ships today.</p><a href="qec.html">Quantum error correction →</a></div>
+  <div class="card"><h3>🟢 The other direction</h3><p>How AI became quantum computing's repair crew: the half of the loop that ships today.</p><a href="qec.html">Quantum error correction →</a></div>
   <div class="card"><h3>🔴 The math floor</h3><p>Decoders, thresholds, and the overheads that decide which speedups survive.</p><a href="basics.html#red">Read →</a></div>
   <div class="card"><h3>🏁 The Race</h3><p>Who's building the hardware both halves of the loop depend on.</p><a href="race.html">Scoreboard →</a></div>
-  <div class="card"><h3>🔭 The open question</h3><p>Which of these four routes actually pays off within ten years — put verbatim to a panel of frontier AI models, still unanswered.</p><a href="frontier.html#q-which-quantum-route-to-better-ai">The Frontier →</a></div>
+  <div class="card"><h3>🔭 The open question</h3><p>Which of these four routes actually pays off within ten years, put verbatim to a panel of frontier AI models, still unanswered.</p><a href="frontier.html#q-which-quantum-route-to-better-ai">The Frontier →</a></div>
 </div>
 
 <footer>The loop both ways: AI fixes quantum, quantum lifts AI.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
@@ -358,12 +357,12 @@
     top: {
       tag: '<span class="dirtag now">SHIPPING NOW</span>',
       lead: 'AI → Quantum: the repair crew.',
-      body: 'What flows: syndrome data and calibration signals. ML calibration and tune-up are already routine in labs; learned decoders (AlphaQubit-class — ~30% fewer wrong calls than hand-written methods) match or beat the old ones on benchmarks and are moving toward real-time. This is the mature half of the loop.'
+      body: 'What flows: syndrome data and calibration signals. ML calibration and tune-up are already routine in labs; learned decoders (AlphaQubit-class, ~30% fewer wrong calls than hand-written methods) match or beat the old ones on benchmarks and are moving toward real-time. This is the mature half of the loop.'
     },
     bot: {
       tag: '<span class="dirtag soon">MOSTLY AHEAD</span>',
       lead: 'Quantum → AI: the data factory.',
-      body: 'What flows (eventually): training data about nature — molecules, materials, quantum experiments — that is born on the device with no data-loading toll. That is the one route worth trusting. The flashier claim, "run today\'s neural nets exponentially faster," mostly dies at the door: loading ordinary data into a quantum computer costs ~N operations. Real, narrow, and slower than the headlines.'
+      body: 'What flows (eventually): training data about nature (molecules, materials, quantum experiments) that is born on the device with no data-loading toll. That is the one route worth trusting. The flashier claim, "run today\'s neural nets exponentially faster," mostly dies at the door: loading ordinary data into a quantum computer costs ~N operations. Real, narrow, and slower than the headlines.'
     }
   };
   var detail = document.getElementById('loop-detail');

@@ -1,4 +1,4 @@
-/* SymbiQ — The Solver's Path: local progress store.
+/* SymbiQ, The Solver's Path: local progress store.
    Namespaced localStorage, fault-tolerant.
 
    L1 (2026-08-27): a real account back end exists (Supabase), wired in as a
@@ -105,14 +105,14 @@
     /* ---- PORTABLE SAVE ------------------------------------------------
      * Until real accounts exist, a player's whole history lives in one
      * browser and dies with a cache clear. That is the honest limit of a
-     * static site — but it does NOT require a back end to make survivable.
+     * static site, but it does NOT require a back end to make survivable.
      * A save code is the entire progress state, base64'd, that a player can
      * copy to another device or keep as a backup.
      *
      * Deliberately not encrypted or signed: there is nothing to cheat at
      * here (no leaderboard, no paid tier yet), and an opaque blob a player
      * cannot inspect would contradict how this project treats its readers.
-     * When real accounts land, importCode() becomes the migration path —
+     * When real accounts land, importCode() becomes the migration path,
      * a returning player pastes their code once and keeps their history.
      * ------------------------------------------------------------------ */
     exportCode: function () {

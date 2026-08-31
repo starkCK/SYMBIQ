@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The Solver's Path — SymbiQ</title>
-<meta name="description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real quantum mechanics, wearing an adventure.">
+<title>The Solver's Path · SymbiQ</title>
+<meta name="description" content="One game, five fractures. Play a Solver mending the Lattice: superposition, a proven speedup, an NP-hard city, entanglement, each a mission with a mentor, a story, and progress that saves. Real quantum mechanics, wearing an adventure.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/journey.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,16 +15,16 @@
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/journey.html">
-<meta property="og:title" content="The Solver's Path — SymbiQ">
-<meta property="og:description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real…">
+<meta property="og:title" content="The Solver's Path · SymbiQ">
+<meta property="og:description" content="One game, five fractures. Play a Solver mending the Lattice: superposition, a proven speedup, an NP-hard city, entanglement, each a mission with a mentor, a story, and progress that saves. Real…">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ games. The physics does the judging.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Solver's Path — SymbiQ">
-<meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice — superposition, a proven speedup, an NP-hard city, entanglement — each a mission with a mentor, a story, and progress that saves. Real…">
+<meta name="twitter:title" content="The Solver's Path · SymbiQ">
+<meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice: superposition, a proven speedup, an NP-hard city, entanglement, each a mission with a mentor, a story, and progress that saves. Real…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -35,7 +35,7 @@
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
 <link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=1">
+<link rel="stylesheet" href="alive.css?v=2">
 <link rel="stylesheet" href="hud.css?v=3">
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 <link rel="stylesheet" href="theme.css?v=1">
@@ -47,17 +47,17 @@
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
 <script src="save.js"></script>
-<script src="coherence.js?v=1"></script>
-<script src="games.js?v=35"></script>
-<script src="scene.js?v=4"></script>
-<script src="missions.js?v=9"></script>
-<script src="nav.js?v=8" defer></script>
+<script src="coherence.js?v=2"></script>
+<script src="games.js?v=36"></script>
+<script src="scene.js?v=5"></script>
+<script src="missions.js?v=10"></script>
+<script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
-<script src="tiers.js?v=3" defer></script>
-<script src="analytics.js?v=2" defer></script>
-<script src="forms.js?v=2" defer></script>
+<script src="tiers.js?v=4" defer></script>
+<script src="analytics.js?v=3" defer></script>
+<script src="forms.js?v=3" defer></script>
 <script src="supabase-config.js" defer></script>
-<script src="auth.js?v=2" defer></script>
+<script src="auth.js?v=3" defer></script>
 <style>
 /* ---------------- The Solver's Path ---------------- */
 .journey { display: grid; grid-template-columns: minmax(0, 330px) 1fr; gap: 24px; align-items: start; margin-top: 6px; }
@@ -294,11 +294,11 @@
      up, where rails.css has put furniture in the margins. -->
 <script src="atmosphere.js?v=2" defer></script>
 <script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=3" defer></script>
-<script src="alive.js?v=1" defer></script>
-<script src="hud.js?v=2" defer></script>
-<script src="theme.js?v=1" defer></script>
-<script src="dynamics.js?v=3" defer></script>
+<script src="rails.js?v=4" defer></script>
+<script src="alive.js?v=5" defer></script>
+<script src="hud.js?v=3" defer></script>
+<script src="theme.js?v=2" defer></script>
+<script src="dynamics.js?v=4" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div id="static-veil" aria-hidden="true"></div>
@@ -373,7 +373,7 @@
     <details class="navcat navcat-cur" data-cat="play">
       <summary>Play</summary>
       <div class="navpanel">
-      <a href="journey.html" class="navmain active">▶ The Solver&#39;s Path<span class="sub">The main quest — story, map, missions</span></a>
+      <a href="journey.html" class="navmain active">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
       </div>
     </details>
@@ -381,7 +381,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop — nothing published yet</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
@@ -407,14 +407,14 @@
 
 
 <h1>The Solver's Path</h1>
-<p class="tagline">The world runs on a hidden layer of corrections — and it is coming apart. You can see it. Mend it the only way it mends: by understanding it.</p>
+<p class="tagline">The world runs on a hidden layer of corrections, and it is coming apart. You can see it. Mend it the only way it mends: by understanding it.</p>
 
 <!-- COLD OPEN -->
 <div class="card" id="intro" style="display:none">
   <div class="script">
     <p class="lead">The world has a hidden layer. A lattice of corrections, running underneath everything, holding it in one piece.</p>
     <p>It is coming apart.</p>
-    <p>Where it fails, the Static gets in — and things stop being sure of what they are. It takes the names first.</p>
+    <p>Where it fails, the Static gets in, and things stop being sure of what they are. It takes the names first.</p>
     <p>Most people never see it. You are not most people.</p>
     <p>You are a <strong>Solver</strong>. You mend the Lattice the only way it can be mended: by <em>understanding</em> it.</p>
     <p class="last">What do they call you?</p>
@@ -428,7 +428,7 @@
 <!-- DEPTH CHOICE -->
 <div class="card" id="depth-ask" style="display:none">
   <p class="lead">One more thing before the map.</p>
-  <p>Some Solvers want the whole mechanism — the real mathematics, the proofs, the sources. Others want the shape of the idea without the notation. Both walk the same Path; this only decides how deep each page opens by default. Change it any time, per page.</p>
+  <p>Some Solvers want the whole mechanism: the real mathematics, the proofs, the sources. Others want the shape of the idea without the notation. Both walk the same Path; this only decides how deep each page opens by default. Change it any time, per page.</p>
   <div class="namerow">
     <button class="bigplay" id="depth-light">Get the intuition ▸</button>
     <button class="bigplay" id="depth-deep">Go deep ▸</button>
@@ -449,14 +449,14 @@
        honest limit of a static site — but it need not mean progress is fragile. -->
   <div class="card" id="carrybox" hidden style="margin:10px 0">
     <h3>Carry your progress</h3>
-    <p style="font-size:.92rem">There are no accounts yet, so everything you have done lives in <em>this browser</em> and would be lost if you cleared its data. This code is your whole history — copy it somewhere safe, or paste it into another device to continue there.</p>
+    <p style="font-size:.92rem">There are no accounts yet, so everything you have done lives in <em>this browser</em> and would be lost if you cleared its data. This code is your whole history; copy it somewhere safe, or paste it into another device to continue there.</p>
     <div class="sqform" style="margin-top:6px">
       <textarea id="carry-code" spellcheck="false" aria-label="Your save code" style="min-height:84px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem"></textarea>
       <button type="button" id="carry-copy">Copy my code</button>
       <button type="button" id="carry-load" class="ghost">Load a code</button>
     </div>
     <p class="sqmsg" id="carry-msg"></p>
-    <p class="sqnote">Loading a code <strong>merges</strong> — it adds what the code contains and never erases what you already did here. When real accounts arrive, this same code is how you bring your history with you.</p>
+    <p class="sqnote">Loading a code <strong>merges</strong>: it adds what the code contains and never erases what you already did here. When real accounts arrive, this same code is how you bring your history with you.</p>
     <p style="font-size:.88rem;margin:14px 0 4px">Switching devices right now and don't want to copy-paste? Email the code to yourself instead.</p>
     <form class="sqform" data-sq="save-code-backup" style="margin-top:4px">
       <input type="email" name="email" data-label="your email" required placeholder="you@example.com" aria-label="Your email address">
@@ -471,7 +471,7 @@
   <div class="objective" id="objective" role="status"></div>
   <div class="journey">
     <div class="mapwrap">
-      <svg id="map" viewBox="0 0 300 520" xmlns="http://www.w3.org/2000/svg" aria-label="The Lattice — your map of fractures to mend"></svg>
+      <svg id="map" viewBox="0 0 300 520" xmlns="http://www.w3.org/2000/svg" aria-label="The Lattice: your map of fractures to mend"></svg>
       <div class="maplegend">
         <span><i class="mended"></i>mended</span>
         <span><i class="open"></i>open now</span>
@@ -487,7 +487,7 @@
         </div>
         <div id="tab-cast"><ul class="cast-list" id="cast-list"></ul></div>
         <div id="tab-codex" style="display:none">
-          <p style="color:var(--muted);font-size:.86rem;margin:0 0 4px">Every region holds one entry. While the Static holds the region, it holds the <em>words</em> — you can see the shape of what is missing but not read it. Mend the region and the entry comes back, named, tiered, and yours to keep.</p>
+          <p style="color:var(--muted);font-size:.86rem;margin:0 0 4px">Every region holds one entry. While the Static holds the region, it holds the <em>words</em>: you can see the shape of what is missing but not read it. Mend the region and the entry comes back, named, tiered, and yours to keep.</p>
           <ul class="codex-list" id="codex-list"></ul>
         </div>
       </div>
@@ -512,31 +512,31 @@
     { id:'golf', num:'I', world:'The Quantum Realm', title:"The Coin That Won't Decide", mentor:'Ada', face:'A', pos:[64,466],
       region:'realm', held:'certainty',
       place:'A hall with one object in it, lit by a single shaft, and the object will not show you a side.',
-      intro:'A door that logic cannot open — because it needs the coin to be <em>both</em> faces at once. Don’t force it. Turn it.',
+      intro:'A door that logic cannot open, because it needs the coin to be <em>both</em> faces at once. Don’t force it. Turn it.',
       signoff:'“You didn’t break it by looking. You <em>chose</em>. That is the whole art.”',
-      real:'<p>The coin is a <strong>qubit</strong>, and the door is the fact that a qubit is not a bit that happens to be hidden. Its state is a point on a sphere, and the six clubs you swing are the real one-qubit gates — X, Y, Z, H, S, T — every one of them a <em>rotation</em> of that sphere rather than a flip of a switch.</p><p>That is the whole reason quantum computing is not just probabilistic computing: rotations can cancel. Two paths to the same place can arrive with opposite sign and annihilate, which no coin toss can do. Every algorithm later in the Path is an arrangement of exactly this — turn the state so the wrong answers cancel and the right one survives.</p>',
-      tier:'⟦Proven⟧' },
+      real:'<p>The coin is a <strong>qubit</strong>, and the door is the fact that a qubit is not a bit that happens to be hidden. Its state is a point on a sphere, and the six clubs you swing are the real one-qubit gates (X, Y, Z, H, S, T), every one of them a <em>rotation</em> of that sphere rather than a flip of a switch.</p><p>That is the whole reason quantum computing is not just probabilistic computing: rotations can cancel. Two paths to the same place can arrive with opposite sign and annihilate, which no coin toss can do. Every algorithm later in the Path is an arrangement of exactly this: turn the state so the wrong answers cancel and the right one survives.</p>',
+      tier:'Proven' },
     { id:'grover', num:'II', world:'The Locked Corridor', title:'The Long Way and the Fast Way', mentor:'Rue', face:'R', pos:[206,388],
       region:'corridor', held:'heralds',
       place:'Doors without end, receding into fog. One of them is breathing light, and it is not the one you think.',
-      intro:'Too many doors, no time to knock. Tilt the odds toward the right one — then look <em>once</em>. Look twice and you’ll lose it.',
+      intro:'Too many doors, no time to knock. Tilt the odds toward the right one, then look <em>once</em>. Look twice and you’ll lose it.',
       signoff:'“See? Not faster knocking. <em>Fewer</em> knocks, aimed right. That’s the whole trick.”',
-      real:'<p>This is <strong>Grover’s algorithm</strong>, and the corridor is an unstructured search: N doors, no clue which is the exit. Knocking classically costs about N/2 tries. Rue’s way costs about <strong>√N</strong>.</p><p>The honest size of that: √N is <em>quadratic</em>, not exponential. It turns a million into a thousand, which is real and useful and nothing like the “quantum breaks everything” story. And it is <strong>optimal</strong> — proven, not merely unbeaten: no quantum algorithm can search an unstructured space faster (Bennett, Bernstein, Brassard &amp; Vazirani 1997). Rue’s scar is the other half: the odds are a <em>rotation</em>, so past the peak they come back down.</p>',
-      tier:'⟦Proven⟧' },
+      real:'<p>This is <strong>Grover’s algorithm</strong>, and the corridor is an unstructured search: N doors, no clue which is the exit. Knocking classically costs about N/2 tries. Rue’s way costs about <strong>√N</strong>.</p><p>The honest size of that: √N is <em>quadratic</em>, not exponential. It turns a million into a thousand, which is real and useful and nothing like the “quantum breaks everything” story. And it is <strong>optimal</strong>: proven, not merely unbeaten, since no quantum algorithm can search an unstructured space faster (Bennett, Bernstein, Brassard &amp; Vazirani 1997). Rue’s scar is the other half: the odds are a <em>rotation</em>, so past the peak they come back down.</p>',
+      tier:'Proven' },
     { id:'maxcut', num:'III', world:'Graph City', title:'The Divided City', mentor:'Cordon', face:'C', pos:[86,312],
       region:'city', held:'certainty',
       place:'A city of light seen from above, tearing along a seam that you are the one drawing.',
       intro:'The city is tearing in two. Cut it so the fewest neighbours end up on the wrong side. Some will, always. Learn which.',
       signoff:'“You found the corner. And you saw which clashes could not be undone. Proportion, Solver.”',
-      real:'<p>Cordon’s city is <strong>Max-Cut</strong> — one of Karp’s original NP-hard problems (1972). This is where operations research and quantum computing stop being two subjects.</p><p>Label the two colours ±1. The number of satisfied roads is Σ w<sub>ij</sub>(1 − s<sub>i</sub>s<sub>j</sub>)/2, so <em>maximising the cut is exactly minimising</em> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub> — the energy of an antiferromagnet. Routing, scheduling, portfolio selection and colouring all map to that same <strong>Ising</strong> form (Lucas 2014), which is the reason a quantum annealer or QAOA has anything to optimise at all.</p><p>The honest caveat, and Cordon would insist on it: the <em>mapping</em> is proven, the <em>advantage</em> is not. Classical solvers frequently match or beat today’s quantum ones on these problems.</p>',
-      tier:'⟦Proven⟧ formulation', or:'Operations research' },
+      real:'<p>Cordon’s city is <strong>Max-Cut</strong>, one of Karp’s original NP-hard problems (1972). This is where operations research and quantum computing stop being two subjects.</p><p>Label the two colours ±1. The number of satisfied roads is Σ w<sub>ij</sub>(1 − s<sub>i</sub>s<sub>j</sub>)/2, so <em>maximising the cut is exactly minimising</em> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub>, the energy of an antiferromagnet. Routing, scheduling, portfolio selection and colouring all map to that same <strong>Ising</strong> form (Lucas 2014), which is the reason a quantum annealer or QAOA has anything to optimise at all.</p><p>The honest caveat, and Cordon would insist on it: the <em>mapping</em> is proven, the <em>advantage</em> is not. Classical solvers frequently match or beat today’s quantum ones on these problems.</p>',
+      tier:'Proven formulation', or:'Operations research' },
     { id:'volcano', num:'IV', world:'The Volcano', title:'Cool Slow, or Freeze', mentor:'Vesh', face:'V', pos:[214,234],
       region:'volcano', held:'overfit',
-      place:'A living ridge line under heat haze — and the ridge is not decoration. It is the landscape the walker is actually walking.',
-      intro:'Exact answers die out here, friend. You’ll approximate — and the trick is cooling slow enough not to freeze in the first bad valley you fall into.',
-      signoff:'“Now you have it. Not the best answer — the best answer you could <em>afford</em>. Out here that is the same thing.”',
-      real:'<p>You are not the walker. You are the <strong>cooling schedule</strong>, and that is the entire algorithm. This is <strong>simulated annealing</strong> (Kirkpatrick, Gelatt &amp; Vecchi, <em>Science</em> 1983): propose a random step, take it if the landscape drops, and take it anyway with probability exp(−ΔE/T) if it rises. Hot means the walker will climb; cold means it will not.</p><p>It exists because of the wall you hit in Graph City. District 5 could not be escaped by any single flip — local search dies there. Accepting an occasional <em>worse</em> move is how you climb out, and the price is that you must then cool down, or you never settle anywhere at all.</p><p>Two honest limits, both built into the game. There <em>is</em> a schedule proven to find the global optimum — cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier (Geman &amp; Geman 1984) — and it is useless in practice. The deepest barrier here is 4, so that schedule needs about <strong>3,000</strong> steps merely to cool to T = 0.5 (twelve times this game’s whole budget of 240) and about <strong>500 million</strong> to reach T = 0.2. Logarithmic cooling converges because it barely cools at all. And the Salt Flat exists to humble the method: averaged over all possible landscapes, <strong>no search strategy beats any other</strong> (No Free Lunch, Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing does.</p>',
-      tier:'⟦Heuristic⟧', or:'Operations research' },
+      place:'A living ridge line under heat haze, and the ridge is not decoration. It is the landscape the walker is actually walking.',
+      intro:'Exact answers die out here, friend. You’ll approximate, and the trick is cooling slow enough not to freeze in the first bad valley you fall into.',
+      signoff:'“Now you have it. Not the best answer, but the best answer you could <em>afford</em>. Out here that is the same thing.”',
+      real:'<p>You are not the walker. You are the <strong>cooling schedule</strong>, and that is the entire algorithm. This is <strong>simulated annealing</strong> (Kirkpatrick, Gelatt &amp; Vecchi, <em>Science</em> 1983): propose a random step, take it if the landscape drops, and take it anyway with probability exp(−ΔE/T) if it rises. Hot means the walker will climb; cold means it will not.</p><p>It exists because of the wall you hit in Graph City. District 5 could not be escaped by any single flip; local search dies there. Accepting an occasional <em>worse</em> move is how you climb out, and the price is that you must then cool down, or you never settle anywhere at all.</p><p>Two honest limits, both built into the game. There <em>is</em> a schedule proven to find the global optimum (cool as T<sub>k</sub> = c/log(k+2), with c at least the deepest barrier, Geman &amp; Geman 1984) and it is useless in practice. The deepest barrier here is 4, so that schedule needs about <strong>3,000</strong> steps merely to cool to T = 0.5 (twelve times this game’s whole budget of 240) and about <strong>500 million</strong> to reach T = 0.2. Logarithmic cooling converges because it barely cools at all. And the Salt Flat exists to humble the method: averaged over all possible landscapes, <strong>no search strategy beats any other</strong> (No Free Lunch, Wolpert &amp; Macready 1997). Methods win by exploiting structure. Where there is none, nothing does.</p>',
+      tier:'Heuristic', or:'Operations research' },
     /* Act V was Quantum Tic-Tac-Toe until 2026-08-02. It is the one game on the
        site tiered "analogy" rather than proven — Goff's collapse rule is a
        design decision, not physics — and the golden path of a product whose
@@ -546,18 +546,18 @@
        thing Kai and Lyra's arc is about, and proves it in front of you. */
     { id:'chsh', num:'V', world:'The Shore of Twins', title:'The Word They Cannot Send', mentor:'Kai & Lyra', face:'KL', pos:[92,146],
       region:'shore', held:'heralds', legacy:'qttt',
-      place:'Two tides on two separate shores, moving as one — and a stretch of dark water between them that nothing has ever crossed.',
-      intro:'“We are one thing wearing two bodies. Whatever is asked of me, she answers it too —” “— from the other shore, with no signal between us.” “So we have been trying to <em>say</em> something with it. For a very long time.”',
+      place:'Two tides on two separate shores, moving as one, with a stretch of dark water between them that nothing has ever crossed.',
+      intro:'“We are one thing wearing two bodies. Whatever is asked of me, she answers it too…” “…from the other shore, with no signal between us.” “So we have been trying to <em>say</em> something with it. For a very long time.”',
       signoff:'“So we will always know, and never be told.” “Yes.” “…that is almost the same thing.”',
-      real:'<p>This is the <strong>CHSH game</strong> (Clauser, Horne, Shimony &amp; Holt 1969). Kai and Lyra each get a random bit and each answer with one bit, with no communication; the pair wins when a&nbsp;XOR&nbsp;b&nbsp;=&nbsp;x&nbsp;AND&nbsp;y. If their answers were decided in advance — any pre-agreed table, any shared notes — they could win at most <strong>75%</strong> of the time. That ceiling is not an estimate: it is brute-forced over all sixteen deterministic strategies, and no mixture of them can beat the best one.</p><p>Sharing an entangled pair and measuring at the right angles wins <strong>cos²(π/8) = 85.36%</strong>, and not one point more — <em>Tsirelson’s bound</em>, also provable. Beating 75% is therefore a proof that what they share is not pre-arranged answers. The experiments that closed the loopholes on exactly this won the <strong>2022 Nobel Prize in Physics</strong>.</p><p>And the other half, which is the half they care about: each twin’s own statistics come out exactly 1/2 whatever the far side chose. That is <strong>no-signalling</strong> — the correlation cannot carry a single bit, so entanglement never breaks relativity. Here it is not asserted, it is measured on screen. The honest caveat is sample size: over a short run either side can look like it is winning by luck, which is why real Bell tests need enormous trial counts.</p>',
-      tier:'⟦Proven⟧' },
+      real:'<p>This is the <strong>CHSH game</strong> (Clauser, Horne, Shimony &amp; Holt 1969). Kai and Lyra each get a random bit and each answer with one bit, with no communication; the pair wins when a&nbsp;XOR&nbsp;b&nbsp;=&nbsp;x&nbsp;AND&nbsp;y. If their answers were decided in advance (any pre-agreed table, any shared notes) they could win at most <strong>75%</strong> of the time. That ceiling is not an estimate: it is brute-forced over all sixteen deterministic strategies, and no mixture of them can beat the best one.</p><p>Sharing an entangled pair and measuring at the right angles wins <strong>cos²(π/8) = 85.36%</strong>, and not one point more: <em>Tsirelson’s bound</em>, also provable. Beating 75% is therefore a proof that what they share is not pre-arranged answers. The experiments that closed the loopholes on exactly this won the <strong>2022 Nobel Prize in Physics</strong>.</p><p>And the other half, which is the half they care about: each twin’s own statistics come out exactly 1/2 whatever the far side chose. That is <strong>no-signalling</strong>: the correlation cannot carry a single bit, so entanglement never breaks relativity. Here it is not asserted, it is measured on screen. The honest caveat is sample size: over a short run either side can look like it is winning by luck, which is why real Bell tests need enormous trial counts.</p>',
+      tier:'Proven' },
     { id:'knot', num:'✦', world:'The Knot', title:'The Price of Knowing', mentor:'Halden', face:'H', pos:[180,62], finale:true,
       region:'knot', held:'oracle', engine:'duel',
       place:'A single wound in the Lattice, folding inward. It is the only place here that does not obey the palette.',
       intro:'“I can read where the wound is faster than any Solver alive. I have never once been able to tell you what it is worth. That part was always yours.”',
       signoff:'“I have been right about where the wound is for as long as I have existed. That was the first time it was not the same as being right.”',
-      real:'<p>Halden is the honest half of SymbiQ’s own thesis. A <strong>decoder</strong> reads the error syndrome coming off a quantum chip — which checks fired — and infers what flipped. Reading is the part it does perfectly. Deciding is not a thing it does at all.</p><p>His rule is <strong>minimum-weight matching</strong>: of the thirty-two flip patterns that fit any given set of alarms on this lattice, return the smallest. That is genuinely optimal — under the noise model it was handed. This chip has a coupled pair in it that the model does not contain, and the alarms cannot give it away, because a lone flip and the pair can trip the identical check. Measured over every chip and round the machine can deal: matching holds <strong>9 of 9</strong> single flips, <strong>0 of 6</strong> coupled-pair firings and <strong>14 of 42</strong> pair-plus-stray rounds — an expected <strong>4.7 of 10</strong>. Learning the coupling takes you to <strong>7.9</strong>; playing every round properly reaches <strong>9.3</strong> and no further, because that residue is genuinely undecidable and nobody wins it reliably.</p><p>That gap is the entire AI story of this site: a decoder that reads the device it is actually running on beats one that was handed an idealised model of it, and nobody has to tell it what is wrong with the chip (AlphaQubit — Bausch et al., <em>Nature</em> 2024). The same machine, without the story around it, is <a href="qec.html#duel">the Decoder Duel</a>.</p><p>The ending is the one thing here the mathematics cannot settle for you, and it is marked as such on the page.</p>',
-      tier:'⟦Proven⟧ · ⟦Frontier⟧ ending' }
+      real:'<p>Halden is the honest half of SymbiQ’s own thesis. A <strong>decoder</strong> reads the error syndrome coming off a quantum chip (which checks fired) and infers what flipped. Reading is the part it does perfectly. Deciding is not a thing it does at all.</p><p>His rule is <strong>minimum-weight matching</strong>: of the thirty-two flip patterns that fit any given set of alarms on this lattice, return the smallest. That is genuinely optimal, under the noise model it was handed. This chip has a coupled pair in it that the model does not contain, and the alarms cannot give it away, because a lone flip and the pair can trip the identical check. Measured over every chip and round the machine can deal: matching holds <strong>9 of 9</strong> single flips, <strong>0 of 6</strong> coupled-pair firings and <strong>14 of 42</strong> pair-plus-stray rounds, an expected <strong>4.7 of 10</strong>. Learning the coupling takes you to <strong>7.9</strong>; playing every round properly reaches <strong>9.3</strong> and no further, because that residue is genuinely undecidable and nobody wins it reliably.</p><p>That gap is the entire AI story of this site: a decoder that reads the device it is actually running on beats one that was handed an idealised model of it, and nobody has to tell it what is wrong with the chip (AlphaQubit, Bausch et al., <em>Nature</em> 2024). The same machine, without the story around it, is <a href="qec.html#duel">the Decoder Duel</a>.</p><p>The ending is the one thing here the mathematics cannot settle for you, and it is marked as such on the page.</p>',
+      tier:'Proven · Frontier ending' }
   ];
 
   /* THE FOUR FACTIONS — 12_GAME_MASTER_PLAN.md §3.9, written 2026-07-24 and
@@ -571,52 +571,52 @@
      people actually say, and every `broken` line is what that region's
      mathematics actually proves — not a boast the game makes on its own behalf. */
   var FACTIONS = {
-    certainty: { name:'The Certainty', v:'holds', mode:'Certainty worship — killing possibility to feel safe.' },
+    certainty: { name:'The Certainty', v:'holds', mode:'Certainty worship: killing possibility to feel safe.' },
     heralds:   { name:'The Heralds of the Exponential', v:'hold', mode:'Hype: unfounded speedup and impossibility claims.' },
-    oracle:    { name:'The Hollow Oracle', v:'holds', mode:'Automation bias — handing the decision to the machine.' },
+    oracle:    { name:'The Hollow Oracle', v:'holds', mode:'Automation bias: handing the decision to the machine.' },
     overfit:   { name:'The Overfit', v:'holds', mode:'Overfitting: one rule, learned perfectly, applied everywhere.' }
   };
   var HOLD = {
-    golf:    { says:'“It is already one thing. You have only to look — and looking is free.”',
+    golf:    { says:'“It is already one thing. You have only to look, and looking is free.”',
                broken:'A gate is a <em>rotation</em>, and a measurement is a choice rather than a reading. Looking does not uncover the answer; it picks one, and it costs.' },
     grover:  { says:'“Amplify it enough and the exit becomes a certainty. Everything falls, and soon.”',
-               broken:'The odds are a rotation: sin²((2k+1)θ) climbs to a peak and then <em>falls</em>. And √N is quadratic — proven optimal, and nothing like exponential.' },
+               broken:'The odds are a rotation: sin²((2k+1)θ) climbs to a peak and then <em>falls</em>. And √N is quadratic: proven optimal, and nothing like exponential.' },
     maxcut:  { says:'“There is a split where nobody is left facing their own side. You have not looked hard enough.”',
                broken:'An odd loop cannot be two-coloured. Somebody always faces their own side, and that is a theorem rather than a shortfall of effort.' },
     volcano: { says:'“The rule has never failed me. Therefore the rule is a law.”',
-               broken:'On the Salt Flat the careful schedule loses to the crudest one there is — measured, 500 replays each. No method wins on every landscape.' },
+               broken:'On the Salt Flat the careful schedule loses to the crudest one there is, measured over 500 replays each. No method wins on every landscape.' },
     chsh:    { says:'“They move together at any distance, so a word can ride that link.”',
                broken:'Beat 75% and the correlation is provably not pre-arranged. Then read one side alone: exactly 1/2, whatever the far side chose. Not one bit crosses.' },
     knot:    { says:'“The decoder reads the wound faster than you ever will. Stop thinking and obey it.”',
-               broken:'It read every alarm correctly and lost the qubit anyway. Measured on this lattice: the cheapest explanation holds <strong>0 of 6</strong> coupled-pair firings, an expected 4.7 rounds of 10 — and a Solver who reads the chip&rsquo;s own history reaches 9.3. Reading is not deciding.' }
+               broken:'It read every alarm correctly and lost the qubit anyway. Measured on this lattice: the cheapest explanation holds <strong>0 of 6</strong> coupled-pair firings, an expected 4.7 rounds of 10, while a Solver who reads the chip&rsquo;s own history reaches 9.3. Reading is not deciding.' }
   };
 
   var CAST = [
-    { g:'A', nm:'Ada', dom:'Superposition & measurement', arc:'Guilt → acceptance: observation isn’t destruction, it’s a choice — and choosing when to look is the Solver’s whole art.' },
-    { g:'R', nm:'Rue', dom:'Search & the √N speedup', arc:'Impatience → timing: don’t try every door faster — amplify the right one, and stop at the single right moment.' },
+    { g:'A', nm:'Ada', dom:'Superposition & measurement', arc:'Guilt → acceptance: observation isn’t destruction, it’s a choice, and choosing when to look is the Solver’s whole art.' },
+    { g:'R', nm:'Rue', dom:'Search & the √N speedup', arc:'Impatience → timing: don’t try every door faster; amplify the right one, and stop at the single right moment.' },
     { g:'C', nm:'Cordon', dom:'Optimisation & duality', arc:'Perfectionism → proportion: some conflicts can’t all be satisfied; chasing a perfect answer past reason is its own failure.' },
-    { g:'V', nm:'Vesh', dom:'Metaheuristics', arc:'Cynicism → discernment: “good enough, fast” has dignity — and no single strategy wins everywhere.' },
-    { g:'KL', nm:'Kai & Lyra', dom:'Entanglement', arc:'A bond is not a leash: measuring one fixes the other instantly — and carries no message. Correlation, not communication.' },
-    { g:'H', nm:'Halden', dom:'The decoder (your AI ally)', arc:'Trust: the learning machine reads the damage faster than any Solver — but it never decides. You do.' }
+    { g:'V', nm:'Vesh', dom:'Metaheuristics', arc:'Cynicism → discernment: “good enough, fast” has dignity, and no single strategy wins everywhere.' },
+    { g:'KL', nm:'Kai & Lyra', dom:'Entanglement', arc:'A bond is not a leash: measuring one fixes the other instantly, and carries no message. Correlation, not communication.' },
+    { g:'H', nm:'Halden', dom:'The decoder (your AI ally)', arc:'Trust: the learning machine reads the damage faster than any Solver, but it never decides. You do.' }
   ];
 
   var CODEX = {
-    golf:  { name:'Superposition & gates', body:'A qubit is a point on a sphere; gates rotate it; global phase is invisible, as physics treats it.', tier:'⟦Proven⟧' },
-    grover:{ name:'Grover search', body:'Unstructured search costs √N, not N. Amplify, then measure at the peak — over-rotate and the odds fall again.', tier:'⟦Proven⟧' },
-    maxcut:{ name:'Max-Cut = Ising ground state', body:'Maximising a cut is minimising Σ wᵢⱼsᵢsⱼ. NP-hard, and the exact bridge from operations research to quantum optimisation.', tier:'⟦Proven⟧ formulation' },
-    volcano:{ name:'Simulated annealing', body:'Cool slowly to escape local optima; accept the occasional worse move. No method wins on every problem (No Free Lunch).', tier:'⟦Heuristic⟧' },
-    chsh:  { name:'Correlation is not communication', body:'Beating 75% proves the correlation is not pre-agreed answers (CHSH 1969); the quantum ceiling is cos²(π/8) = 85.36%, Tsirelson’s bound. Both are provable — and each side read alone is exactly 1/2 whatever the far side chose, so not one bit can cross.', tier:'⟦Proven⟧' },
+    golf:  { name:'Superposition & gates', body:'A qubit is a point on a sphere; gates rotate it; global phase is invisible, as physics treats it.', tier:'Proven' },
+    grover:{ name:'Grover search', body:'Unstructured search costs √N, not N. Amplify, then measure at the peak; over-rotate and the odds fall again.', tier:'Proven' },
+    maxcut:{ name:'Max-Cut = Ising ground state', body:'Maximising a cut is minimising Σ wᵢⱼsᵢsⱼ. NP-hard, and the exact bridge from operations research to quantum optimisation.', tier:'Proven formulation' },
+    volcano:{ name:'Simulated annealing', body:'Cool slowly to escape local optima; accept the occasional worse move. No method wins on every problem (No Free Lunch).', tier:'Heuristic' },
+    chsh:  { name:'Correlation is not communication', body:'Beating 75% proves the correlation is not pre-agreed answers (CHSH 1969); the quantum ceiling is cos²(π/8) = 85.36%, Tsirelson’s bound. Both are provable, and each side read alone is exactly 1/2 whatever the far side chose, so not one bit can cross.', tier:'Proven' },
     /* The finale's entry carries both tiers on purpose (12_ §3.10): the player
        is trusted with the difference between a measured result and a respectable
        idea, and being trusted with it is the ending's whole emotional note. */
-    knot:  { name:'The reading and the decision', body:'A check asks only whether neighbours <em>agree</em> — a parity, never a value — which is the only reason a code survives being measured a million times a second; measuring what is encoded really does collapse it. The decoder is right about <em>where</em>, always, and deciding is not a thing it does: on a chip with one coupled pair its cheapest answers hold 0 of 6 pair firings, 4.7 rounds of 10, while a Solver who reads that chip’s own history reaches 9.3 ⟦Proven, measured⟧. That the world is itself a computation, measured once and unravelling since, is Wheeler, Deutsch and Lloyd — a serious idea, not a result ⟦Frontier⟧, and Halden only ever says the Solvers <em>believe</em> it.', tier:'⟦Proven⟧ + ⟦Frontier⟧' }
+    knot:  { name:'The reading and the decision', body:'A check asks only whether neighbours <em>agree</em> (a parity, never a value) which is the only reason a code survives being measured a million times a second; measuring what is encoded really does collapse it. The decoder is right about <em>where</em>, always, and deciding is not a thing it does: on a chip with one coupled pair its cheapest answers hold 0 of 6 pair firings, 4.7 rounds of 10, while a Solver who reads that chip’s own history reaches 9.3. That the world is itself a computation, measured once and unravelling since, is Wheeler, Deutsch and Lloyd: a serious idea, not a settled result, and Halden only ever says the Solvers <em>believe</em> it.', tier:'Proven + Frontier' }
   };
 
   /* Kept, not confiscated. Act V was Quantum Tic-Tac-Toe until 2026-08-02; an
      entry somebody earned stays in their book even after the act it came from
      leaves the Path. Renders only for a save that actually cleared it. */
   var LEGACY_CODEX = {
-    qttt: { name:'Entanglement & no-signalling', body:'One system, two bodies: measuring one fixes the other at any distance — yet no message can ride that link. Learned in <em>Two Bodies, One Fate</em>, which now stands in <a href="play.html#qttt">the Arcade</a>.', tier:'analogy' }
+    qttt: { name:'Entanglement & no-signalling', body:'One system, two bodies: measuring one fixes the other at any distance, yet no message can ride that link. Learned in <em>Two Bodies, One Fate</em>, which now stands in <a href="play.html#qttt">the Arcade</a>.', tier:'analogy' }
   };
 
   /* Earned off the Path entirely, on the two curriculum pages
@@ -625,8 +625,8 @@
      Rendered the same way LEGACY_CODEX is: only for a save that actually
      earned it. */
   var CURRICULUM_CODEX = {
-    'machinery-complete': { name:'The Machinery, in full', body:'Every algorithm on this site rests on the same handful of facts: what a state is, how it evolves, what measurement actually does, and what you provably cannot do to it. You went through all twenty, proofs included, on <a href="formalism.html">The Machinery</a>.', tier:'⟦Proven⟧' },
-    'feasible-complete': { name:'The Feasible Region, in full', body:'Every quantum-optimisation headline is a claim about this field first. You went through every topic in it — from the shape of a feasible region to the bullwhip effect — on <a href="feasible.html">The Feasible Region</a>, the reference point every quantum claim on this site is measured against.', tier:'⟦Proven⟧' }
+    'machinery-complete': { name:'The Machinery, in full', body:'Every algorithm on this site rests on the same handful of facts: what a state is, how it evolves, what measurement actually does, and what you provably cannot do to it. You went through all twenty, proofs included, on <a href="formalism.html">The Machinery</a>.', tier:'Proven' },
+    'feasible-complete': { name:'The Feasible Region, in full', body:'Every quantum-optimisation headline is a claim about this field first. You went through every topic in it, from the shape of a feasible region to the bullwhip effect, on <a href="feasible.html">The Feasible Region</a>, the reference point every quantum claim on this site is measured against.', tier:'Proven' }
   };
 
   // STATE VISION (Ability I) — what the mentor whispers when you pay to see the
@@ -634,12 +634,12 @@
   // it teaches the principle that makes the mission solvable, which is what
   // "seeing the state" actually means. Once seen it is yours (no repeat cost).
   var VISION = {
-    golf: 'The dashed target is only a rotation away — never more than a few gates. <strong>H</strong> opens a superposition; <strong>S</strong> and <strong>T</strong> only spin its phase, invisible on the poles. Solve it as a short sequence of turns, not a search.',
-    grover: 'The exit’s odds are a <em>rotation</em>: they climb to a single peak near <strong>√N</strong> steps, then fall. Amplify to the peak the bars show you — then look <strong>once</strong>. One step past it and you are throwing the advantage away.',
-    maxcut: 'District five is a <strong>trap</strong>: every single flip makes the cut worse, yet the right <em>pair</em> of flips escapes it. When no one move helps, the answer is that you must move <strong>two</strong> at once — which is exactly why annealing exists.',
+    golf: 'The dashed target is only a rotation away, never more than a few gates. <strong>H</strong> opens a superposition; <strong>S</strong> and <strong>T</strong> only spin its phase, invisible on the poles. Solve it as a short sequence of turns, not a search.',
+    grover: 'The exit’s odds are a <em>rotation</em>: they climb to a single peak near <strong>√N</strong> steps, then fall. Amplify to the peak the bars show you, then look <strong>once</strong>. One step past it and you are throwing the advantage away.',
+    maxcut: 'District five is a <strong>trap</strong>: every single flip makes the cut worse, yet the right <em>pair</em> of flips escapes it. When no one move helps, the answer is that you must move <strong>two</strong> at once, which is exactly why annealing exists.',
     volcano: 'You are the temperature, not the walker. Stay <strong>hot</strong> while ridges still separate you from a deeper basin; cool <strong>only</strong> once the walker sits in the deepest valley it can currently reach. Freeze early and you keep the first ditch forever.',
-    knot: 'Any set of alarms on this lattice is fitted by <strong>exactly thirty-two</strong> patterns of flips, and the decoder always returns the smallest one — which is right until the chip contains something its model does not. Watch the history for a round where <strong>two qubits moved together</strong>: it is the <em>same</em> two every time, and those are precisely the rounds the cheapest answer loses. Beat the reading once and the Hollow Oracle has nothing left to say.',
-    chsh: 'The classical ceiling is <strong>exactly</strong> 75%, so a short run creeps above it by luck about half the time — only <strong>thousands</strong> of rounds separate the two strategies honestly. And the thing the twins are hunting is already on the table: read <em>one</em> side alone, split by what the far side chose, and it sits at 1/2 either way. The correlation is real; the channel is not there.'
+    knot: 'Any set of alarms on this lattice is fitted by <strong>exactly thirty-two</strong> patterns of flips, and the decoder always returns the smallest one, which is right until the chip contains something its model does not. Watch the history for a round where <strong>two qubits moved together</strong>: it is the <em>same</em> two every time, and those are precisely the rounds the cheapest answer loses. Beat the reading once and the Hollow Oracle has nothing left to say.',
+    chsh: 'The classical ceiling is <strong>exactly</strong> 75%, so a short run creeps above it by luck about half the time; only <strong>thousands</strong> of rounds separate the two strategies honestly. And the thing the twins are hunting is already on the table: read <em>one</em> side alone, split by what the far side chose, and it sits at 1/2 either way. The correlation is real; the channel is not there.'
   };
 
   var CO = window.SymbiQ && window.SymbiQ.coherence;
@@ -729,7 +729,7 @@
       '<div class="rb-name">' + esc(m.world) + '</div>' +
       '<div class="rb-place">' + m.place + '</div>' +
       (f && h ? '<div class="rb-hold' + (isDone ? ' mended' : '') + '">' +
-        '<span class="rb-f">' + (isDone ? 'Mended — ' + f.name + ' ' + f.v + ' nothing here.'
+        '<span class="rb-f">' + (isDone ? 'Mended. ' + f.name + ' ' + f.v + ' nothing here.'
                                         : 'Held by ' + f.name + '.') + '</span> ' +
         '<span class="rb-says">' + (isDone ? h.broken : h.says) + '</span></div>' : '') +
       '</div>';
@@ -768,7 +768,7 @@
       // it are not — already-mended can never read as sealed
       var prev = MISSIONS[i - 1];
       body += '<p style="color:var(--muted)">Sealed by the Static. Mend <strong>' +
-        (prev ? prev.world : 'the fracture before this') + '</strong> first — the path opens as you go.</p>';
+        (prev ? prev.world : 'the fracture before this') + '</strong> first; the path opens as you go.</p>';
     } else if (playable && (avail || isDone)) {
       body += '<button class="bigplay enter" id="mstart">' + (isDone ? 'Walk it again ▸' : 'Begin the mission ▸') + '</button>';
     }
@@ -776,7 +776,7 @@
        owes them a straight explanation rather than a silently missing tick. */
     if (m.legacy && !isDone && done(m.legacy)) {
       body += '<p class="tag-note" style="font-size:.84rem;color:var(--muted);margin-top:10px">' +
-        'You cleared the old Act V, <em>Two Bodies, One Fate</em> — it is still standing, in ' +
+        'You cleared the old Act V, <em>Two Bodies, One Fate</em>, and it is still standing, in ' +
         '<a href="play.html#qttt">the Arcade</a>. It was the one machine here tiered <em>analogy</em> rather than proven, ' +
         'so the act it held now goes to the version you can prove. Your Codex entry for it is kept below.</p>';
     }
@@ -810,17 +810,17 @@
     var v = VISION[m.id], avail = available(idxOf(m)), isDone = done(m.id);
     if (!v || m.soon || !(avail || isDone) || !CO) { row.innerHTML = ''; return; }
     if (S && S.get('vision.' + m.id, false)) {
-      row.innerHTML = '<div class="vision-reveal"><span class="gl">◈</span> <em>State Vision</em> — ' + v + '</div>';
+      row.innerHTML = '<div class="vision-reveal"><span class="gl">◈</span> <em>State Vision</em>: ' + v + '</div>';
       return;
     }
     var cost = 12, can = CO.get() >= cost;
     row.innerHTML = '<button class="vision-btn" id="vbtn"' + (can ? '' : ' disabled') + '>' +
       '<span class="gl">◈</span> State Vision <span class="vision-cost">see the hidden state · −' + cost + '</span></button>' +
-      (can ? '' : '<div class="vision-hint">Not enough coherence to look. Mend a fracture — understanding is what lets you see.</div>');
+      (can ? '' : '<div class="vision-hint">Not enough coherence to look. Mend a fracture; understanding is what lets you see.</div>');
     var b = document.getElementById('vbtn');
     if (b) b.addEventListener('click', function () {
       if (CO.get() < cost) return;
-      CO.spend(cost, 'You looked — State Vision');
+      CO.spend(cost, 'You looked: State Vision');
       if (S) S.set('vision.' + m.id, true);
       renderVision(m);
     });
@@ -834,13 +834,13 @@
     var avail = available(idxOf(m)), isDone = done(m.id);
     if (m.soon || !(avail || isDone) || !CO) { row.innerHTML = ''; return; }
     if (S && S.get('read.' + m.id, false)) {
-      row.innerHTML = '<span class="wr-done">Understood ✓ <span style="color:var(--muted);font-weight:400">— this insight is yours</span></span>';
+      row.innerHTML = '<span class="wr-done">Understood ✓ <span style="color:var(--muted);font-weight:400">this insight is yours</span></span>';
       return;
     }
     row.innerHTML = '<button class="claimbtn" id="claimbtn">I understand this ✓  (+6 coherence)</button>';
     var b = document.getElementById('claimbtn');
     if (b) b.addEventListener('click', function () {
-      CO.restore(6, 'Learning — you took the time to understand');
+      CO.restore(6, 'Learning: you took the time to understand');
       if (S) S.set('read.' + m.id, true);
       renderClaim(m);
     });
@@ -910,7 +910,7 @@
            in the scene path, one layer down. */
         if (id !== m.id && S && S.completeMission) first = S.completeMission(m.id) || first;
         if (!first) return;
-        if (CO) CO.restore(18, 'Insight — a fracture mended');
+        if (CO) CO.restore(18, 'Insight: a fracture mended');
         refreshHud(); renderCodex(); drawMap();
         var note = document.createElement('div');
         note.className = 'verdict good';
@@ -944,7 +944,7 @@
           step.id = 'mnext';
           inner = '<span class="eyebrow">Next fracture unlocked</span>' +
                   '<span class="headline">Act ' + nm.num + ' · ' + nm.world + '</span>' +
-                  '<span class="sub">' + nm.title + ' — ' + nm.mentor + ' is waiting.</span>' +
+                  '<span class="sub">' + nm.title + ', ' + nm.mentor + ' is waiting.</span>' +
                   '<span class="go">Continue</span>';
         } else {
           step.className = 'nextstep';
@@ -1181,12 +1181,12 @@
       var done = function () { say('Copied. Paste it into this same box on your other device.', true); };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(ta.value).then(done, function () {
-          say('Could not reach the clipboard — the code is selected above, copy it by hand.', false);
+          say('Could not reach the clipboard. The code is selected above; copy it by hand.', false);
         });
       } else {
         // older browsers: execCommand is deprecated but is the only fallback
         try { document.execCommand('copy'); done(); }
-        catch (e) { say('Copy it by hand — the code is selected above.', false); }
+        catch (e) { say('Copy it by hand. The code is selected above.', false); }
       }
     });
 

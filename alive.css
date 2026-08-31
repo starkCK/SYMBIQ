@@ -458,6 +458,123 @@ body[data-alive] .sq-marker-item[aria-current="true"] .sq-marker-idx { opacity: 
 
 @media (min-width: 1440px) { body[data-alive] .sq-marker { display: none; } }
 
+/* "back to top", the first row of the open list. rails.js gives the gutter
+   rail one of these; the marker gets the same, and on a phone it is the
+   fastest way up a 17,000px page. */
+body[data-alive] .sq-marker-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 9px;
+  margin-bottom: 2px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--r-sm, 6px) var(--r-sm, 6px) 0 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  letter-spacing: 0.02em;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--al-quick) var(--al-ease), color var(--al-quick) var(--al-ease);
+}
+body[data-alive] .sq-marker-top:hover,
+body[data-alive] .sq-marker-top:focus-visible {
+  background: var(--rowhover, rgba(148,163,184,.08)); color: var(--text); outline: none;
+}
+body[data-alive] .sq-marker-top:focus-visible { box-shadow: inset 0 0 0 1px var(--teal); }
+
+/* ── 8. THE KEYS ──────────────────────────────────────────────────────────
+   rails.css §"the keyboard layer" already says it out loud: the shortcuts
+   (qubit.js's X-T / M / R) are "something you find rather than" are told,
+   and the only hint is a dim readout in a corner nobody looks at.  `?`
+   fixes that -- it is the near-universal "show me the keys" key, and this
+   overlay is where every shortcut on the page finally has a printed home.
+
+   j / k step between section headings (n / p alias), m toggles the marker.
+   All of it is inert while a field has focus or a modifier is held, so it
+   never eats a real shortcut or a letter someone meant to type. */
+body[data-alive] .sq-help {
+  position: fixed;
+  inset: 0;
+  z-index: 9996;                /* under #qz-pill/#qz-fx, over everything else */
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--al-base) var(--al-ease);
+}
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  body[data-alive] .sq-help { background: rgba(0, 0, 0, 0.55); }
+}
+body[data-alive] .sq-help[data-open] { opacity: 1; pointer-events: auto; }
+
+body[data-alive] .sq-help-card {
+  width: min(92vw, 440px);
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg, 14px);
+  background: var(--panel);
+  box-shadow: 0 30px 70px -24px rgba(0, 0, 0, 0.6);
+  transform: translateY(8px);
+  transition: transform var(--al-base) var(--al-ease);
+}
+body[data-alive] .sq-help[data-open] .sq-help-card { transform: none; }
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  body[data-alive][data-glass] .sq-help-card {
+    background: var(--gl-tint-2, var(--panel));
+    border-color: var(--gl-edge, var(--border));
+    -webkit-backdrop-filter: blur(var(--gl-blur, 16px)) saturate(var(--gl-sat, 1.5));
+    backdrop-filter: blur(var(--gl-blur, 16px)) saturate(var(--gl-sat, 1.5));
+    box-shadow: inset 0 1px 0 var(--gl-rim-hi, rgba(255,255,255,.14)),
+                var(--gl-depth-hi, 0 30px 64px -26px rgba(0,0,0,.55));
+  }
+}
+body[data-alive] .sq-help-card h2 {
+  margin: 0 0 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+body[data-alive] .sq-help-card h2::before { content: none; }   /* no accent bar here */
+body[data-alive] .sq-help-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 7px 0;
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  font-size: 0.92rem;
+  color: var(--text);
+}
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  body[data-alive] .sq-help-row { border-top-color: var(--border); }
+}
+body[data-alive] .sq-help-row:first-of-type { border-top: 0; }
+body[data-alive] .sq-help-keys { flex: none; display: flex; gap: 5px; min-width: 92px; }
+body[data-alive] .sq-help kbd {
+  font: 700 0.78rem/1 var(--mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
+  padding: 3px 7px;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--text);
+  white-space: nowrap;
+}
+body[data-alive] .sq-help-what { color: var(--muted); }
+body[data-alive] .sq-help-hint {
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 /* ── REDUCED MOTION ────────────────────────────────────────────────────────
    Reduced motion means less movement, not less information.
 
@@ -515,4 +632,8 @@ body[data-alive] .sq-marker-item[aria-current="true"] .sq-marker-idx { opacity: 
   body[data-alive] .sq-marker { animation: none; }
   body[data-alive] .sq-marker-list { transition: none; transform: none; }
   body[data-alive] .sq-marker-tab:active { transform: none; }
+
+  /* the help overlay appears with no slide, still fades so it does not
+     hard-cut over the page */
+  body[data-alive] .sq-help-card { transition: none; transform: none; }
 }

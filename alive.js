@@ -10,6 +10,7 @@
  *   4. READBAR      the one page that never got tiers.js gets its progress bar
  *   5. VERDICT      a widget re-answers -> the banner resolves in its own colour
  *   7. MARKER       a corner section-jumper for < 1440px, where the rail is gone
+ *   8. KEYS         ? opens a shortcut list; j / k step sections; m opens 7
  *
  * SAFETY CONTRACT, same as nav.js's: this file is pure enhancement.  It adds
  * no class that hides content, it removes nothing from the DOM, every entry
@@ -489,6 +490,39 @@
     return String(t || '').replace(/\s+/g, ' ').trim();
   }
 
+  /* Focus is in a field (or a contenteditable): a document-level key
+     handler must not touch it. Shared by the marker's roving arrows and by
+     bindKeys below. Mirrors qubit.js's own guard so the two layers agree. */
+  function editable(el) {
+    if (!el) return false;
+    if (el.isContentEditable) return true;
+    var t = el.tagName;
+    return t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT';
+  }
+
+  function buzz() {
+    if (reduce) return;   /* a reduced-motion preference covers haptics too */
+    try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {}
+  }
+
+  /* One place that owns "go to this heading": open every <details> it sits
+     inside, then an owned scroll that lands it clear of the sticky header.
+     Used by the marker's rows, its "top" row, and the j / k keys. */
+  function jumpToHeading(h, andThen) {
+    if (!h) return;
+    var d = h.closest ? h.closest('details') : null;
+    while (d) { d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
+    var y = h.getBoundingClientRect().top + window.pageYOffset - 88;
+    window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+    if (h.id && history.replaceState) history.replaceState(null, '', '#' + h.id);
+    buzz();
+    if (andThen) window.setTimeout(andThen, reduce ? 0 : 420);
+  }
+
+  /* Set by buildMarker so bindKeys can drive the same section list and the
+     same open/close state instead of keeping a second copy. */
+  var MARKER = null;
+
   function buildMarker() {
     var mq = window.matchMedia ? window.matchMedia('(max-width: 1439px)') : null;
     if (mq && !mq.matches) return;   /* the rail owns >= 1440; CSS also guards */
@@ -526,6 +560,18 @@
     list.setAttribute('role', 'navigation');
     list.setAttribute('aria-label', 'Sections on this page');
 
+    var topRow = document.createElement('button');
+    topRow.type = 'button';
+    topRow.className = 'sq-marker-top';
+    topRow.innerHTML = '<span aria-hidden="true">↑</span><span>Back to top</span>';
+    topRow.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      buzz();
+      close();
+      window.setTimeout(spy, reduce ? 0 : 420);
+    });
+    list.appendChild(topRow);
+
     var items = heads.map(function (h, i) {
       var lab = labelFor(h);
       var b = document.createElement('button');
@@ -534,13 +580,8 @@
       b.innerHTML = '<span class="sq-marker-idx">' + (i + 1) + '</span><span>' +
                     lab.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span>';
       b.addEventListener('click', function () {
-        var d = h.closest('details');
-        while (d) { d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
-        var y = h.getBoundingClientRect().top + window.pageYOffset - 88;
-        window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
-        if (history.replaceState) history.replaceState(null, '', '#' + h.id);
         close();
-        window.setTimeout(spy, reduce ? 0 : 420);
+        jumpToHeading(h, spy);
       });
       list.appendChild(b);
       return b;
@@ -566,17 +607,54 @@
       document.removeEventListener('keydown', onKey, true);
     }
     function onDocClick(e) { if (!box.contains(e.target)) close(); }
+    /* While the list is open its own arrow keys move focus row to row, so
+       a keyboard user is not tabbing through 13 buttons to reach the one
+       they want. Enter / Space are the buttons' own; Escape closes. */
     function onKey(e) {
-      if (e.key === 'Escape') { close(); tab.focus(); }
+      if (e.key === 'Escape') { close(); tab.focus(); return; }
+      var focusables = [topRow].concat(items);
+      var at = focusables.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (at < 0) at = 0;
+        else at += (e.key === 'ArrowDown' ? 1 : -1);
+        if (at < 0) at = focusables.length - 1;
+        if (at >= focusables.length) at = 0;
+        focusables[at].focus();
+      } else if (e.key === 'Home') { e.preventDefault(); focusables[0].focus(); }
+      else if (e.key === 'End') { e.preventDefault(); focusables[focusables.length - 1].focus(); }
     }
-    tab.addEventListener('click', function () {
-      if (open) { close(); return; }
-      setOpen(true);
-      var cur = list.querySelector('[aria-current="true"]') || items[0];
-      if (cur) cur.focus();
-      document.addEventListener('click', onDocClick, true);
-      document.addEventListener('keydown', onKey, true);
-    });
+    function toggle(force) {
+      var want = (typeof force === 'boolean') ? force : !open;
+      if (want === open) return;
+      if (want) {
+        setOpen(true);
+        var cur = list.querySelector('[aria-current="true"]') || items[0];
+        if (cur) cur.focus();
+        document.addEventListener('click', onDocClick, true);
+        document.addEventListener('keydown', onKey, true);
+      } else {
+        close();
+      }
+    }
+    tab.addEventListener('click', function () { toggle(); });
+
+    /* Touch: a short swipe UP on the collapsed pill opens it; a swipe DOWN
+       on the open panel closes it. Bounded to this element, so it never
+       argues with the browser's own edge gestures. */
+    var ty0 = 0, tx0 = 0;
+    box.addEventListener('touchstart', function (e) {
+      var t = e.changedTouches && e.changedTouches[0];
+      if (!t) return; ty0 = t.clientY; tx0 = t.clientX;
+    }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      var t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      var dy = t.clientY - ty0, dx = t.clientX - tx0;
+      if (Math.abs(dy) < 34 || Math.abs(dx) > Math.abs(dy)) return;
+      if (dy < 0 && !open) toggle(true);
+      else if (dy > 0 && open) toggle(false);
+    }, { passive: true });
 
     var raf = 0, curIdx = -1;
     function spy() {
@@ -598,6 +676,122 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     spy();
+
+    MARKER = {
+      heads: heads,
+      toggle: toggle,
+      isOpen: function () { return open; },
+      current: function () { return curIdx; }
+    };
+  }
+
+  /* ======================================================================
+     8. THE KEYS
+     ----------------------------------------------------------------------
+     rails.css already admits it: the shortcut layer (qubit.js's X-T / M / R)
+     is "something you find rather than" are shown, with only a dim corner
+     readout as a clue. `?` is the near-universal "show me the keys" key,
+     and this overlay is where every shortcut on the page gets a printed
+     home. j / k step between section headings (n / p alias); m toggles the
+     marker. Everything here is inert while a field has focus or a modifier
+     is down, so it never eats a real shortcut or a letter someone typed.
+     ==================================================================== */
+  var HELP = null;
+
+  function buildHelp() {
+    if (HELP) return HELP;
+    var wrapEl = document.querySelector('.wrap') || document.body;
+    var hasSections = wrapEl.querySelectorAll('h2').length >= 2;
+    var hasGates = !!(window.SymbiQ && window.SymbiQ.qubit);
+
+    var rows = [];
+    rows.push(['<kbd>?</kbd>', 'Show / hide this list']);
+    if (hasSections) {
+      rows.push(['<kbd>j</kbd><kbd>k</kbd>', 'Next / previous section']);
+      if (MARKER) rows.push(['<kbd>m</kbd>', 'Open the section list']);
+    }
+    rows.push(['<kbd>Esc</kbd>', 'Close a menu or overlay']);
+    if (hasGates) {
+      rows.push(['<kbd>X</kbd>&hairsp;&hellip;&hairsp;<kbd>T</kbd>', 'Turn the page-state qubit (bottom-right)']);
+      rows.push(['<kbd>M</kbd> / <kbd>R</kbd>', 'Measure it / reset it']);
+    }
+
+    var ov = document.createElement('div');
+    ov.className = 'sq-help';
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.setAttribute('aria-label', 'Keyboard shortcuts');
+    ov.innerHTML =
+      '<div class="sq-help-card" tabindex="-1">' +
+        '<h2>Keyboard</h2>' +
+        rows.map(function (r) {
+          return '<div class="sq-help-row"><span class="sq-help-keys">' + r[0] +
+                 '</span><span class="sq-help-what">' + r[1] + '</span></div>';
+        }).join('') +
+        '<p class="sq-help-hint">Press <kbd>?</kbd> or <kbd>Esc</kbd> to close.</p>' +
+      '</div>';
+    document.body.appendChild(ov);
+
+    var card = ov.querySelector('.sq-help-card');
+    var lastFocus = null;
+    function shut() {
+      ov.removeAttribute('data-open');
+      document.removeEventListener('keydown', trap, true);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function openIt() {
+      lastFocus = document.activeElement;
+      ov.setAttribute('data-open', '');
+      card.focus();
+      document.addEventListener('keydown', trap, true);
+    }
+    function trap(e) {
+      if (e.key === 'Escape' || (e.key === '?' && !editable(e.target))) { e.preventDefault(); shut(); }
+    }
+    ov.addEventListener('click', function (e) { if (e.target === ov) shut(); });
+
+    HELP = { el: ov, toggle: function () { ov.hasAttribute('data-open') ? shut() : openIt(); } };
+    return HELP;
+  }
+
+  function bindKeys() {
+    /* Own list of headings, computed the same way the marker does, so j / k
+       work even where the marker is not built (>= 1440, or a 3-section
+       page). Rebuilt lazily on first use so a script-rendered page that
+       adds its sections late is still covered. */
+    function heads() {
+      if (MARKER && MARKER.heads.length) return MARKER.heads;
+      var w = document.querySelector('.wrap') || document.body;
+      return [].slice.call(w.querySelectorAll('h2')).filter(function (h) {
+        return !h.closest('nav, footer, .sqrail, .sq-marker, .sq-help') &&
+               h.getClientRects().length > 0;
+      });
+    }
+    function step(dir) {
+      var hs = heads();
+      if (!hs.length) return;
+      var y = window.pageYOffset + 132;
+      var idx = -1;
+      for (var i = 0; i < hs.length; i++) {
+        if (hs[i].getBoundingClientRect().top + window.pageYOffset <= y) idx = i; else break;
+      }
+      var next = idx + dir;
+      if (next < 0) next = 0;
+      if (next >= hs.length) next = hs.length - 1;
+      jumpToHeading(hs[next]);
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+      if (editable(e.target) || editable(document.activeElement)) return;
+
+      if (e.key === '?') { e.preventDefault(); buildHelp().toggle(); return; }
+      if (e.key === 'm' && MARKER) { e.preventDefault(); MARKER.toggle(); return; }
+      /* while the section list is open, its own arrow keys drive it */
+      if (MARKER && MARKER.isOpen()) return;
+      if (e.key === 'j' || e.key === 'n') { e.preventDefault(); step(1); return; }
+      if (e.key === 'k' || e.key === 'p') { e.preventDefault(); step(-1); return; }
+    });
   }
 
   /* ======================================================================
@@ -680,6 +874,7 @@
     try { buildReadbar(); } catch (e) {}
     try { bindVerdicts(); } catch (e) {}
     try { buildMarker(); } catch (e) {}
+    try { bindKeys(); } catch (e) {}
 
     try {
       if ('ResizeObserver' in window) {

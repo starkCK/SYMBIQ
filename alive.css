@@ -327,6 +327,137 @@ body[data-alive] #dq-out[data-sq-verdict] > *:first-child {
   }
 }
 
+/* ── 7. THE MARKER ────────────────────────────────────────────────────────
+   rails.js builds a section index in the left gutter, but only at >=1440px
+   -- below that the gutter is gone and there is nothing.  On a 17,000px
+   reference page (feasible has 12 sections and 24 topics; formalism, 20)
+   that leaves a phone or a laptop with no way to see where they are or jump
+   anywhere.  This is the small-screen half of that same wayfinder: a
+   frosted pill in the corner that says which section you are in and, on a
+   tap, opens the list.
+
+   It fires nothing on its own, loops nothing, and moves only when the
+   visitor opens or closes it -- same charter as the rest of this file.
+   Gated the exact opposite way to rails.css (max-width 1439) so the two
+   can never both be on screen.  Bottom-LEFT, because #qz-pill owns
+   bottom-right.  Frosted from the glass layer's own tokens when the page
+   opts into it, a settled opaque panel otherwise. */
+body[data-alive] .sq-marker {
+  position: fixed;
+  left: 14px;
+  bottom: 14px;
+  z-index: 95;                  /* over .readbar (90), under #qz-pill (9998) */
+  max-width: min(76vw, 320px);
+  font-size: 0.78rem;
+  color: var(--muted);
+  animation: sq-marker-in 0.5s var(--al-ease) both;
+}
+@keyframes sq-marker-in { from { opacity: 0; } to { opacity: 1; } }
+@media print { body[data-alive] .sq-marker { display: none; } }
+
+/* the collapsed control */
+body[data-alive] .sq-marker-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 7px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill, 999px);
+  background: var(--nav-bg, var(--panel));
+  color: var(--muted);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  opacity: 0.62;
+  transition: opacity var(--al-base) var(--al-ease),
+              border-color var(--al-quick) var(--al-ease),
+              color var(--al-quick) var(--al-ease),
+              transform 0.05s var(--al-ease);
+}
+body[data-alive] .sq-marker-tab:hover,
+body[data-alive] .sq-marker-tab:focus-visible { opacity: 1; border-color: var(--teal); color: var(--text); }
+body[data-alive] .sq-marker-tab:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+body[data-alive] .sq-marker-tab:active { transform: translateY(1px); }
+body[data-alive] .sq-marker[data-open] .sq-marker-tab { opacity: 1; border-color: var(--teal); color: var(--text); }
+
+body[data-alive] .sq-marker-glyph { color: var(--violet); flex: none; }
+body[data-alive] .sq-marker-count { flex: none; font-weight: 700; color: var(--text); }
+body[data-alive] .sq-marker-here {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0;
+}
+@media (max-width: 400px) { body[data-alive] .sq-marker-here { display: none; } }
+
+/* the opened list */
+body[data-alive] .sq-marker-list {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  width: max-content;
+  max-width: min(78vw, 320px);
+  max-height: min(56vh, 460px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md, 10px);
+  background: var(--panel);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity var(--al-base) var(--al-ease),
+              transform var(--al-base) var(--al-ease);
+}
+body[data-alive] .sq-marker[data-open] .sq-marker-list {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+body[data-alive] .sq-marker-item {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: var(--r-sm, 6px);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--al-quick) var(--al-ease),
+              color var(--al-quick) var(--al-ease);
+}
+body[data-alive] .sq-marker-item:hover,
+body[data-alive] .sq-marker-item:focus-visible { background: var(--rowhover, rgba(148,163,184,.08)); color: var(--text); outline: none; }
+body[data-alive] .sq-marker-item:focus-visible { box-shadow: inset 0 0 0 1px var(--teal); }
+body[data-alive] .sq-marker-item[aria-current="true"] { color: var(--teal); }
+body[data-alive] .sq-marker-idx {
+  flex: none; width: 1.4em; text-align: right;
+  font-variant-numeric: tabular-nums; font-size: 0.72rem; opacity: 0.7;
+}
+body[data-alive] .sq-marker-item[aria-current="true"] .sq-marker-idx { opacity: 1; font-weight: 700; }
+
+/* frost it from the glass layer's own material tokens, only where the page
+   opted into glass and the browser can actually blur */
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  body[data-alive][data-glass] .sq-marker-tab,
+  body[data-alive][data-glass] .sq-marker-list {
+    background: var(--gl-tint-2, var(--panel));
+    border-color: var(--gl-edge, var(--border));
+    -webkit-backdrop-filter: blur(var(--gl-blur, 14px)) saturate(var(--gl-sat, 1.4));
+    backdrop-filter: blur(var(--gl-blur, 14px)) saturate(var(--gl-sat, 1.4));
+    box-shadow: inset 0 1px 0 var(--gl-rim-hi, rgba(255,255,255,.14)),
+                var(--gl-depth, 0 18px 40px -18px rgba(0,0,0,.5));
+  }
+}
+
+@media (min-width: 1440px) { body[data-alive] .sq-marker { display: none; } }
+
 /* ── REDUCED MOTION ────────────────────────────────────────────────────────
    Reduced motion means less movement, not less information.
 
@@ -378,4 +509,10 @@ body[data-alive] #dq-out[data-sq-verdict] > *:first-child {
   body[data-alive] .cab:active,
   body[data-alive] .dq-opt:active,
   body[data-alive] button.bigplay:active { transform: none; }
+
+  /* the marker still opens, it just does not slide: the list appears in
+     place with no transform and no timed transition */
+  body[data-alive] .sq-marker { animation: none; }
+  body[data-alive] .sq-marker-list { transition: none; transform: none; }
+  body[data-alive] .sq-marker-tab:active { transform: none; }
 }

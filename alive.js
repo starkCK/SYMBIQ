@@ -9,6 +9,7 @@
  *   3. UNFOLD       <details> opens and closes with a height instead of a cut
  *   4. READBAR      the one page that never got tiers.js gets its progress bar
  *   5. VERDICT      a widget re-answers -> the banner resolves in its own colour
+ *   7. MARKER       a corner section-jumper for < 1440px, where the rail is gone
  *
  * SAFETY CONTRACT, same as nav.js's: this file is pure enhancement.  It adds
  * no class that hides content, it removes nothing from the DOM, every entry
@@ -461,6 +462,145 @@
   }
 
   /* ======================================================================
+     7. THE MARKER
+     ----------------------------------------------------------------------
+     rails.js's section index, but for < 1440px, where the gutter it lives
+     in does not exist. A frosted corner pill that names the section you
+     are in and opens the full list on a tap. Same heading-label handling
+     as rails.js (some h2s here are a title span plus a bare standfirst),
+     same owned scroll so the landing clears the sticky header, and it
+     opens any <details> the target sits inside on the way.
+
+     Bottom-left (bottom-right is #qz-pill's). Built only where there are
+     enough sections to be an index and the page is long enough to get
+     lost in; a resize across 1439 just lets alive.css's media query hide
+     or show it, no rebuild.
+     ==================================================================== */
+  function labelFor(h) {
+    var t = '';
+    try {
+      var first = h.firstElementChild;
+      if (first && h.childNodes.length > 1) {
+        var d = window.getComputedStyle(first).display;
+        if (d === 'block' || d === 'flex' || d === 'grid') t = first.textContent;
+      }
+    } catch (e) {}
+    if (!t) t = h.textContent;
+    return String(t || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildMarker() {
+    var mq = window.matchMedia ? window.matchMedia('(max-width: 1439px)') : null;
+    if (mq && !mq.matches) return;   /* the rail owns >= 1440; CSS also guards */
+
+    var wrap = document.querySelector('.wrap') || document.body;
+    var heads = [].slice.call(wrap.querySelectorAll('h2')).filter(function (h) {
+      if (h.closest('nav, footer, .sqrail, .sq-marker')) return false;
+      return h.getClientRects().length > 0;
+    });
+    if (heads.length < 4) return;
+    if (document.documentElement.scrollHeight < window.innerHeight * 3) return;
+
+    heads.forEach(function (h, i) { if (!h.id) h.id = 'sqm-' + i; });
+
+    var box = document.createElement('div');
+    box.className = 'sq-marker';
+
+    var listId = 'sq-marker-list';
+    var tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'sq-marker-tab';
+    tab.setAttribute('aria-expanded', 'false');
+    tab.setAttribute('aria-controls', listId);
+    tab.setAttribute('aria-label', 'Sections on this page');
+    tab.innerHTML =
+      '<span class="sq-marker-glyph" aria-hidden="true">◈</span>' +
+      '<span class="sq-marker-count">1/' + heads.length + '</span>' +
+      '<span class="sq-marker-here"></span>';
+
+    /* a <div>, not a <nav>: style.css's `nav:not(.rung-rail)` rule would
+       otherwise style this as the sticky site header. */
+    var list = document.createElement('div');
+    list.className = 'sq-marker-list';
+    list.id = listId;
+    list.setAttribute('role', 'navigation');
+    list.setAttribute('aria-label', 'Sections on this page');
+
+    var items = heads.map(function (h, i) {
+      var lab = labelFor(h);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'sq-marker-item';
+      b.innerHTML = '<span class="sq-marker-idx">' + (i + 1) + '</span><span>' +
+                    lab.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span>';
+      b.addEventListener('click', function () {
+        var d = h.closest('details');
+        while (d) { d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
+        var y = h.getBoundingClientRect().top + window.pageYOffset - 88;
+        window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', '#' + h.id);
+        close();
+        window.setTimeout(spy, reduce ? 0 : 420);
+      });
+      list.appendChild(b);
+      return b;
+    });
+
+    box.appendChild(list);
+    box.appendChild(tab);
+    document.body.appendChild(box);
+
+    var here = tab.querySelector('.sq-marker-here');
+    var count = tab.querySelector('.sq-marker-count');
+    var open = false;
+
+    function setOpen(v) {
+      open = v;
+      if (v) box.setAttribute('data-open', ''); else box.removeAttribute('data-open');
+      tab.setAttribute('aria-expanded', v ? 'true' : 'false');
+    }
+    function close() {
+      if (!open) return;
+      setOpen(false);
+      document.removeEventListener('click', onDocClick, true);
+      document.removeEventListener('keydown', onKey, true);
+    }
+    function onDocClick(e) { if (!box.contains(e.target)) close(); }
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); tab.focus(); }
+    }
+    tab.addEventListener('click', function () {
+      if (open) { close(); return; }
+      setOpen(true);
+      var cur = list.querySelector('[aria-current="true"]') || items[0];
+      if (cur) cur.focus();
+      document.addEventListener('click', onDocClick, true);
+      document.addEventListener('keydown', onKey, true);
+    });
+
+    var raf = 0, curIdx = -1;
+    function spy() {
+      raf = 0;
+      var idx = 0;
+      for (var i = 0; i < heads.length; i++) {
+        if (heads[i].getBoundingClientRect().top <= 130) idx = i; else break;
+      }
+      if (idx === curIdx) return;
+      curIdx = idx;
+      count.textContent = (idx + 1) + '/' + heads.length;
+      here.textContent = labelFor(heads[idx]);
+      items.forEach(function (b, i) {
+        if (i === idx) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+    }
+    function onScroll() { if (!raf) raf = window.requestAnimationFrame(spy); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    spy();
+  }
+
+  /* ======================================================================
      5. THE VERDICT
      ----------------------------------------------------------------------
      Every widget answers you through a .verdict banner. The first answer
@@ -539,6 +679,7 @@
     try { bindFolds(); } catch (e) {}
     try { buildReadbar(); } catch (e) {}
     try { bindVerdicts(); } catch (e) {}
+    try { buildMarker(); } catch (e) {}
 
     try {
       if ('ResizeObserver' in window) {

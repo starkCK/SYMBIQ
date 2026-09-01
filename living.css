@@ -1,0 +1,145 @@
+/* SymbiQ -- living.css
+ * ============================================================================
+ * THE LIVING LAYER.  Opt-in via <body data-living>.  Pairs with living.js.
+ *
+ * Its own file with its own cache-buster, for the reason motion.css / rails.css
+ * / vivid.css / alive.css / glass.css each have one: style.css is shared by 24
+ * pages and touching it forces a bump on every one of them (the 2026-07-24
+ * scar).  A layer must never be a 24-page deploy.
+ *
+ * WHAT THIS LAYER IS FOR.  The site already has atmosphere, response and
+ * glass.  What it did not have was a place where the science itself is the
+ * decoration -- where the thing on screen behaving like the thing the page is
+ * about.  Three pieces, all additive, all gated on body[data-living] plus a
+ * hook that already exists, so a page that does not opt in is byte-for-byte
+ * unchanged and a page whose living.css fails to load is exactly today's page:
+ *
+ *   1. THE COUPLING STRIP  (living.js mounts into [data-living-strip])
+ *      -- a real Kuramoto oscillator relaxation, styled here.
+ *   2. THE BREAKOUT        (.breakout on one big figure per page)
+ *      -- the figure widens past the reading measure with a faint wash, so
+ *         the page has one deliberate "look here" moment.  Contained widen,
+ *         NOT a 100vw full-bleed: this site has a long history of vw-vs-
+ *         scrollbar overflow bugs and smoke.mjs checks 375px for exactly that.
+ *   3. THE FLOW            (body[data-living] .figloop flow dots)
+ *      -- the homepage Loop's dots advance with scroll as well as time, so
+ *         the loop "runs" while you read it.  @supports-gated, CSS only.
+ *
+ * MOTION LAW (motion.css, DESIGN.md): nothing here bounces, nothing self-
+ * starting crosses the threshold of notice, and everything is inside
+ * prefers-reduced-motion: no-preference or has a still fallback.  No
+ * transform animation with fill:both -- that would outrank style.css's hover
+ * lifts.  Transitions on transform are fine; one-shot reveal-style animations
+ * are fine; a looping transform animation is not, and there are none here.
+ * ==========================================================================*/
+
+/* ---- 1. THE COUPLING STRIP ------------------------------------------------ */
+
+body[data-living] [data-living-strip] {
+  display: block;
+  height: 40px;
+  margin: 10px 0 2px;
+  /* a well, one step below the surface it sits under -- the tonal-ladder rule */
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg) 92%, var(--violet) 8%);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+body[data-living] .living-strip-cvs {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+body[data-living] .living-strip-cvs.on { opacity: 1; }
+
+/* A caption the author writes next to the strip, if any, stays quiet. */
+body[data-living] .living-strip-note {
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body[data-living] [data-living-strip] { background: var(--bg); }
+}
+
+/* ---- 2. THE BREAKOUT ---------------------------------------------------- */
+/* A contained widen: the element reaches ~40px past .wrap on each side and
+   lays a faint radial wash + hairlines behind itself.  Percentages resolve
+   against .wrap, so this is safe at every .wrap tier (780 / 880 / 1040) and
+   uses no vw unit.  Below 720px it collapses back to a normal figure. */
+
+body[data-living] .breakout {
+  position: relative;
+  isolation: isolate;              /* a private stacking context for ::before */
+  /* -20px is the ONLY always-safe widen: .wrap keeps a 20px side padding at
+     every tier and is viewport-width below 780px, so -20px lands the figure
+     exactly at the viewport edge (0 overflow, smoke.mjs proves this at 375px)
+     and never past it.  Going wider needs a gutter that is not guaranteed
+     between 720 and ~820px -- do not reintroduce a -40/-56 ramp here. */
+  margin-inline: -20px;
+  padding: 20px 20px 8px;
+  border-radius: 0;
+}
+body[data-living] .breakout > * { position: relative; z-index: 1; }
+body[data-living] .breakout::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 140% at 50% 0%,
+      color-mix(in srgb, var(--violet) 9%, transparent) 0%,
+      transparent 62%),
+    radial-gradient(120% 140% at 50% 100%,
+      color-mix(in srgb, var(--teal) 7%, transparent) 0%,
+      transparent 62%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+/* when the breakout is a .figcard, drop the card chrome so the wash reads --
+   the ::before now carries the framing */
+body[data-living] .breakout.figcard {
+  border-inline: 0;
+  border-block: 0;
+  background: none;
+}
+body[data-living] .breakout.figcard:hover {
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body[data-living] .breakout::before {
+    background: none;
+    border-color: var(--border);
+  }
+}
+
+/* the figure's own block margin doubles the gap now that the wash carries the
+   separation -- tighten it inside a breakout */
+body[data-living] .breakout.fig { margin-block: 32px; }
+
+/* ---- 3. THE FLOW ------------------------------------------------------- */
+/* The homepage Loop (style.css .figloop) animates its two flow dots on a
+   3.4s timer.  On a living page, tie them to scroll progress as well, so the
+   loop advances while the reader moves down the page.  The timer animation
+   stays as the resting behaviour; scroll just becomes a second driver where
+   the browser supports it.  Reduced motion already kills both in style.css. */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    body[data-living] .figloop .pulse,
+    body[data-living] .figloop .pulse2 {
+      animation-timeline: scroll(root block);
+      animation-range: 0% 100%;
+      animation-duration: auto;
+      animation-iteration-count: 1;
+    }
+  }
+}

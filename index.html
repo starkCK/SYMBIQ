@@ -51,6 +51,7 @@
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
+<link rel="stylesheet" href="living.css?v=2">
 <style>
 /* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
@@ -79,6 +80,7 @@
 <script src="hud.js?v=3" defer></script>
 <script src="theme.js?v=2" defer></script>
 <script src="dynamics.js?v=4" defer></script>
+<script src="living.js?v=1" defer></script>
 </head>
 <!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover
        physics on cards and the live border on #tryit. NOT scroll reveals --
@@ -89,7 +91,7 @@
        sticky bar.
      data-lattice  asks atmosphere.js for the generative background. Homepage
        only -- the lattice belongs behind the hero that argues for it. -->
-<body data-motion data-rails data-lattice data-vivid data-alive data-glass data-hud-return>
+<body data-motion data-rails data-lattice data-vivid data-alive data-glass data-hud-return data-living>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -212,6 +214,13 @@
      pass ("The Ladder"). -->
 <p class="spine-tag">The short version</p>
 <p class="spine">Every machine on this site is a physical object built to settle a mathematical question: a <a href="circuits.html">circuit made stranger</a> until it holds a qubit, made to <a href="qec.html">survive</a>, then pointed at <a href="formalism.html">something worth asking</a>. Couple many of the same circuits instead, and you get the machine <a href="feasible.html">operations research</a> already runs on. Both roads end at <a href="pqc.html">what you actually have to fix</a>.</p>
+
+<!-- The coupling strip (living.js): fourteen independent phase oscillators,
+     coupled to their neighbours by the Kuramoto rule, pulling into phase while
+     you watch -- the sentence above, running. Model + claims brute-forced in
+     tools/verify_living.py. Empty and 0-height if living.js does not load. -->
+<div data-living-strip></div>
+<p class="living-strip-note">Fourteen coupled oscillators finding one rhythm &mdash; the same relaxation every oscillator-Ising machine on the site runs, at rest.</p>
 
 <!-- ── THE HUB ───────────────────────────────────────────────────────────────
      Three tracks, one row, ALWAYS visible. Two things were wrong with the
@@ -458,7 +467,7 @@
   </details>
 </div>
 
-<figure class="fig figloop figcard">
+<figure class="fig figloop figcard breakout">
   <div class="figscroll"><svg viewBox="0 0 640 262" xmlns="http://www.w3.org/2000/svg" role="img"
        aria-label="Diagram of the loop: AI fixes quantum's errors today, drawn as a solid arrow; quantum will supercharge AI later, drawn as a dashed arrow.">
     <defs>

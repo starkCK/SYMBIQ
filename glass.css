@@ -101,6 +101,23 @@ body[data-glass] {
   --gl-cast:     color-mix(in oklab, var(--violet) 22%, transparent);
 }
 
+/* Warm retint, 2026-09-02: --gl-edge and --gl-cast above already pick
+   up vivid.css's new --violet/--indigo automatically via var(), but
+   --gl-tint/--gl-tint-2/--gl-nav are literal rgba() values with no
+   variable in them at all -- so without this, every frosted card,
+   menu and header on the six warm-retinted pages would stay the OLD
+   cool blue-black tint while the ground around them turned warm. This
+   compound selector (0,2,1) outranks the plain body[data-glass] rule
+   (0,1,1) above regardless of source order, so it only ever applies
+   where both attributes are present -- the six vivid pages, exactly.
+   --gl-rim/--gl-rim-hi are a neutral white highlight and read fine on
+   either ground, so they are left alone. */
+body[data-vivid][data-glass] {
+  --gl-tint:   rgba(43, 31, 27, 0.74);   /* was rgba(18,26,44,.74) -- warm panel-2 tone */
+  --gl-tint-2: rgba(34, 25, 23, 0.95);   /* was rgba(19,27,45,.95) -- warm panel tone */
+  --gl-nav:    rgba(22, 16, 15, 0.72);   /* was rgba(9,13,23,.72) -- the new --bg itself */
+}
+
 @media (prefers-color-scheme: light) {
   body[data-glass] {
     --gl-tint:   rgba(255, 255, 255, 0.78);

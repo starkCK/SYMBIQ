@@ -143,42 +143,51 @@
   --spectrum: linear-gradient(100deg, #7c3aed, #4a5ad0 46%, #0f766e);
 }
 
+/* Warm retint, 2026-09-02 -- mirrors vivid.css's own dark block value
+   for value (that file's §1 header carries the full reasoning). Kept
+   in sync here because an explicit Dark/Dim choice re-triggers this
+   block instead of the plain @media query vivid.css uses. */
 :root[data-theme="dark"] body[data-vivid],
 :root[data-theme="dim"] body[data-vivid] {
-  --bg: #090d17;
-  --panel: #121a2c;
-  --panel-2: #172035;
+  --bg: #16100f;
+  --panel: #221816;
+  --panel-2: #2b1f1b;
   --text: #e8ecf6;
   --muted: #9aa5bd;
-  --violet: #ab90fb;
-  --indigo: #7f8cf3;
-  --teal: #2ed9c4;
-  --link: #2dd4bf;
-  --border: #26314a;
+  --violet: #c586e6;
+  --indigo: #e0a15c;
+  --teal: #33d696;
+  --link: #33d696;
+  --border: #362721;
   --green: #4ade80;
   --yellow: #facc15;
   --red: #f87171;
-  --nav-bg: rgba(9, 13, 23, 0.82);
-  --dot: rgba(167, 139, 250, 0.08);
-  --glow1: rgba(139, 92, 246, 0.16);
-  --glow2: rgba(45, 212, 191, 0.11);
-  --glow3: rgba(127, 140, 243, 0.08);
-  --shadow: rgba(0, 0, 0, 0.34);
+  --nav-bg: rgba(22, 16, 15, 0.82);
+  --dot: rgba(197, 134, 230, 0.08);
+  --glow1: rgba(197, 134, 230, 0.16);
+  --glow2: rgba(51, 214, 150, 0.11);
+  --glow3: rgba(224, 161, 92, 0.08);
+  --shadow: rgba(20, 10, 8, 0.36);
   --h1-a: #e8ecf6;
-  --h1-b: #a78bfa;
-  --h1-c: #2dd4bf;
+  --h1-b: #c586e6;
+  --h1-c: #33d696;
   --rowhover: rgba(148, 163, 184, 0.06);
   --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
 }
 
+/* Warm retint, 2026-09-02: a softer version of the same warm void
+   above, same relative lift the pre-existing blue-toned values had.
+   --text/--muted are the one thing left exactly as they already were
+   -- the dim comfort-dimming feature is unrelated to this retint, and
+   both are already near-neutral. */
 :root[data-theme="dim"] body[data-vivid] {
-  --bg: #0c1220;
-  --panel: #151d30;
-  --panel-2: #1b2437;
+  --bg: #1c1513;
+  --panel: #261c19;
+  --panel-2: #2f2320;
   --text: #d9deea;
   --muted: #949fb6;
-  --border: #2b3752;
-  --shadow: rgba(0, 0, 0, 0.26);
+  --border: #3a2b25;
+  --shadow: rgba(20, 10, 8, 0.28);
 }
 
 /* ---------------------------------------------------------------- §3

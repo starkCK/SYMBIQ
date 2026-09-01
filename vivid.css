@@ -19,7 +19,8 @@
    yellow = security/check-this), every contrast fix and every
    tap-target rule survive intact. What changes is the register:
 
-     1. A deeper, cooler ground so the accents have room to sing.
+     1. A deeper ground so the accents have room to sing -- warm
+        umber-plum in dark mode as of 2026-09-02, see below.
      2. A real three-stop SPECTRUM (violet -> indigo -> teal) instead
         of the two-stop violet->teal. `--indigo` is the new bridge
         colour and it is decorative only -- it never carries body
@@ -46,52 +47,81 @@
    ================================================================ */
 
 /* ---------------------------------------------------------------- §1
-   THE PALETTE, NUDGED
+   THE PALETTE
 
-   Revised 2026-08-28 on the maintainer's call: pull the colour back
-   to within a hair of the original. This layer is no longer a
-   re-pitch of the palette -- it keeps the site's own violet / teal /
-   navy almost exactly, and the "vivid" now lives in the structure
-   (a larger hero, the spectral h1/bar, dimensional surfaces, the
-   motion layer, the scroll line), not in a bolder set of hues.
-   Every token below sits one small step off the style.css value.
+   Revised 2026-08-28 on the maintainer's call: pulled the colour back
+   to within a hair of style.css's own values, so "vivid" lived in the
+   structure (a larger hero, the spectral h1/bar, dimensional
+   surfaces) rather than in a bolder set of hues.
+
+   Revised AGAIN 2026-09-02, also the maintainer's call, in the
+   opposite direction: a warmer, more distinctive dark palette on
+   these six pages specifically -- the rest of the site untouched. See
+   the block below for the actual values and the reasoning; the
+   2026-08-28 restraint still governs everything ELSE this file does
+   (structure, motion, `.bigplay`) -- only the hues moved.
 
    body[data-vivid] is specificity (0,2,0): it outranks :root and the
    light-mode :root block regardless of the media query, so §1's
    light block must re-declare the FULL token set or a dark value
    leaks into light mode. */
+/* THE WARM RETINT (2026-09-02) -- Chinmoy's call, dark mode ONLY. The
+   light block right below (and every light value anywhere in this
+   file) is untouched on purpose: "don't make it light, dark only."
+   This unconditional block IS the dark palette (see the file's own
+   opening note on why -- an unconditional declaration here already
+   beats :root's light media query at equal specificity).
+
+   The brief: warmer, and something the rest of the dark-tech/quantum
+   web isn't already doing. The old palette was a cool blue-black with
+   a blue-violet and a cyan-mint -- which is the genre default. This
+   pulls the canvas to a warm plum-umber instead of blue-black, and
+   both accents shift hue AWAY from cool blue: violet rotates toward
+   magenta (amethyst, not lavender), teal rotates toward green
+   (emerald, not cyan). The bridge tone (--indigo, kept as that
+   variable name for the architecture it plugs into, though it is no
+   longer indigo-hued) now runs through warm amber instead of cool
+   blue, so the h1/hairline spectrum reads violet -> ember -> emerald,
+   a genuinely different gradient family from the purple-to-cyan the
+   web defaults to.
+
+   Every text-bearing value re-measured before shipping (WCAG
+   contrast, not assumed): ink/bg 15.9:1, muted/bg 7.6:1, amethyst/bg
+   7.1:1, emerald/bg 10:1 -- all comfortably past 4.5:1. Ink and muted
+   are left NEUTRAL on purpose, same restraint the surrounding
+   comments already used ("--text: unchanged") -- this is a retint of
+   the background and the two brand accents, not of body text. */
 body[data-vivid] {
-  --bg: #090d17;          /* style.css #0b0f1a -- a hair deeper, same hue */
-  --panel: #121a2c;       /* style.css #131a2b */
-  --panel-2: #172035;
-  --text: #e8ecf6;        /* unchanged from style.css */
-  --muted: #9aa5bd;       /* unchanged */
+  --bg: #16100f;           /* was #090d17 (cool blue-black) -- warm umber-plum void */
+  --panel: #221816;        /* was #121a2c */
+  --panel-2: #2b1f1b;      /* was #172035 */
+  --text: #e8ecf6;         /* unchanged from style.css -- see the note above */
+  --muted: #9aa5bd;        /* unchanged */
 
-  --violet: #ab90fb;      /* style.css #a78bfa -- barely brighter */
-  --indigo: #7f8cf3;      /* NEW: a muted violet-teal midpoint for the spectrum. Decorative only. */
-  --teal: #2ed9c4;        /* style.css #2dd4bf -- barely more vivid */
-  --link: #2dd4bf;        /* unchanged -- keep the exact contrast-checked value */
+  --violet: #c586e6;       /* was #ab90fb (blue-violet) -- amethyst, rotated toward magenta */
+  --indigo: #e0a15c;       /* was #7f8cf3 (cool indigo) -- a warm ember bridge. Decorative only. */
+  --teal: #33d696;         /* was #2ed9c4 (cyan-mint) -- emerald, rotated toward green */
+  --link: #33d696;         /* matches --teal exactly, same pattern style.css's own dark block uses */
 
-  --border: #26314a;      /* style.css #232d45 -- a touch lifted so edges read */
-  --green: #4ade80;       /* unchanged from style.css */
-  --yellow: #facc15;      /* unchanged */
-  --red: #f87171;         /* unchanged */
+  --border: #362721;       /* was #26314a -- warm umber hairline */
+  --green: #4ade80;        /* unchanged from style.css */
+  --yellow: #facc15;       /* unchanged */
+  --red: #f87171;          /* unchanged */
 
-  --nav-bg: rgba(9, 13, 23, 0.82);
-  --dot: rgba(167, 139, 250, 0.08);          /* style.css .07 */
-  --glow1: rgba(139, 92, 246, 0.16);         /* style.css .14 */
-  --glow2: rgba(45, 212, 191, 0.11);         /* style.css .10 */
-  --glow3: rgba(127, 140, 243, 0.08);        /* NEW: faint third light */
-  --shadow: rgba(0, 0, 0, 0.34);             /* style.css rgba(0,0,0,.3) */
+  --nav-bg: rgba(22, 16, 15, 0.82);
+  --dot: rgba(197, 134, 230, 0.08);          /* amethyst */
+  --glow1: rgba(197, 134, 230, 0.16);        /* amethyst */
+  --glow2: rgba(51, 214, 150, 0.11);         /* emerald */
+  --glow3: rgba(224, 161, 92, 0.08);         /* the ember bridge */
+  --shadow: rgba(20, 10, 8, 0.36);           /* was rgba(0,0,0,.34) -- a warm-tinted shadow, not pure black */
 
   --h1-a: #e8ecf6;        /* the h1 ramp is back to style.css exactly */
-  --h1-b: #a78bfa;
-  --h1-c: #2dd4bf;
+  --h1-b: #c586e6;
+  --h1-c: #33d696;
   --rowhover: rgba(148, 163, 184, 0.06);     /* unchanged */
 
   /* The spectrum: still a three-stop ramp for the h1 and the accent
-     bars, but now from the site's own violet through a soft indigo to
-     the site's own teal -- a gentler gradient than before. */
+     bars -- now amethyst through the warm ember bridge to emerald. */
   --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
 }
 

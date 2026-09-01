@@ -62,6 +62,22 @@
 .thr-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 6px; }
 .thr-controls input[type=range] { flex: 1; min-width: 180px; accent-color: var(--teal); }
 .lam { font-family: "Cambria Math", Georgia, serif; font-size: 1.15rem; font-weight: 700; min-width: 92px; }
+/* Hardware Scaling Explorer (#scaling) */
+#hw-svg { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; }
+.hw-axis { stroke: var(--border); stroke-width: 1; }
+.hw-grid { stroke: var(--border); stroke-opacity: .5; stroke-dasharray: 2 3; }
+.hw-tick { fill: var(--muted); font-size: 10px; font-family: inherit; }
+.hw-line { fill: none; stroke-width: 2; stroke-opacity: .55; }
+.hw-line.phys { stroke: var(--teal); }
+.hw-line.log { stroke: var(--violet); }
+.hw-dot.phys { fill: var(--teal); }
+.hw-dot.log { fill: var(--violet); }
+.hw-dlab { fill: var(--muted); font-size: 9px; font-family: inherit; }
+.hw-series.off { display: none; }
+.hw-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 4px; align-items: center; }
+.hw-controls .preset[aria-pressed="false"] { opacity: .5; }
+.hw-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: baseline; }
+#scaling-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
 </style>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
@@ -223,6 +239,36 @@
 </table>
 </div>
 
+<h2 id="scaling">What actually got built</h2>
+<p>The scoreboard above is empty by choice. This is not: a hand-curated set of milestones, each dated and sourced, on a log axis. Two things show up. Physical qubit counts climbed about twenty-fold from 2019 to 2023 — and then the frontier <strong>stopped competing on raw count</strong>. Google's Willow (2024) is smaller than its own 2019 chip. The numbers that matter now are logical qubits, and there the counts are tiny: the one that is actually below threshold, the first that gets <em>better</em> as you grow it, is a single qubit.</p>
+
+<div class="card" id="scaling-widget">
+  <div class="hw-controls">
+    <button class="preset" id="hw-t-phys" type="button" aria-pressed="true"><span class="hw-swatch" style="background:var(--teal)"></span>physical</button>
+    <button class="preset" id="hw-t-log" type="button" aria-pressed="true"><span class="hw-swatch" style="background:var(--violet)"></span>logical</button>
+  </div>
+  <svg id="hw-svg" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Largest announced qubit counts by date, physical and logical, on a log axis"></svg>
+  <p style="font-size:0.85rem;color:var(--muted);margin:10px 0 0">&ldquo;Qubit count&rdquo; is not one number: this splits physical from logical, and even then a physical count spans fabricated sites, controlled qubits, and qubits good enough to compute with. Only the 2024 Google entry is a below-threshold result; the other logical points are qubits encoded and operated, not proven to improve with scale. Curated by the desk from the sources in the table below; last updated 2026-09-01. The same data lives in <a href="data/hardware.json">hardware.json</a> so it can be regenerated automatically once there is a pipeline for it.</p>
+</div>
+
+<div class="overflow">
+<table id="scaling-table">
+  <tr><th>Date</th><th>Org</th><th>Device</th><th>Kind</th><th>Qubits</th><th>What it was</th></tr>
+  <tr><td>2019-10</td><td>Google</td><td>Sycamore</td><td>physical</td><td class="num">53</td><td>The "quantum supremacy" chip: a sampling task in 200 seconds that Google argued would take a classical supercomputer millennia (a gap classical work later narrowed).</td></tr>
+  <tr><td>2021-11</td><td>IBM</td><td>Eagle</td><td>physical</td><td class="num">127</td><td>First IBM processor past 100 qubits; introduced the multi-level wiring that the later big chips scaled up.</td></tr>
+  <tr><td>2022-11</td><td>IBM</td><td>Osprey</td><td>physical</td><td class="num">433</td><td>Roughly a 3.4x jump in a year, and the last of IBM's chips whose headline was its size.</td></tr>
+  <tr><td>2023-10</td><td>Atom Computing</td><td>second-generation array</td><td>physical</td><td class="num">1180</td><td>Neutral atoms held in optical tweezers; the first system with more than 1,000 qubit sites. Sites in a trap array, not 1,180 simultaneously computing qubits.</td></tr>
+  <tr><td>2023-12</td><td>IBM</td><td>Condor</td><td>physical</td><td class="num">1121</td><td>IBM's largest single chip, and deliberately its last of that kind: the roadmap released the same day pivots to smaller, lower-error modular processors.</td></tr>
+  <tr><td>2023-12</td><td>IBM</td><td>Heron</td><td>physical</td><td class="num">133</td><td>Shipped alongside Condor as the actual direction: about a 3-5x lower error rate than Eagle, and the template for everything IBM has built since.</td></tr>
+  <tr><td>2023-12</td><td>QuEra / Harvard / MIT</td><td>neutral-atom processor</td><td>logical</td><td class="num">48</td><td>48 logical qubits from up to 280 physical atoms, with logical circuits run across them. Encoded and operated, not scaled below threshold.</td></tr>
+  <tr><td>2024-04</td><td>Microsoft / Quantinuum</td><td>H2</td><td>logical</td><td class="num">4</td><td>Four logical qubits with a reported ~800x lower error rate than the underlying physical qubits, running thousands of operations.</td></tr>
+  <tr><td>2024-11</td><td>Atom Computing / Microsoft</td><td>neutral-atom system</td><td>logical</td><td class="num">24</td><td>24 entangled logical qubits reported on a neutral-atom machine; the largest logical-qubit count claimed to date, still not a below-threshold result.</td></tr>
+  <tr><td>2024-12</td><td>Google</td><td>Willow</td><td>physical</td><td class="num">105</td><td>Smaller than Sycamore. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.</td></tr>
+  <tr><td>2024-12</td><td>Google</td><td>Willow</td><td>logical</td><td class="num">1</td><td>One logical qubit, at distance 7, below threshold: the first whose error rate provably falls as you add physical qubits. The number is 1 on purpose.</td></tr>
+</table>
+</div>
+<p style="font-size:.85rem;color:var(--muted)">Sources, in table order: Arute et al., <em>Nature</em> 574, 505 (2019), arXiv:1910.11333 · IBM Research announcements (15 Nov 2021, 9 Nov 2022, 4 Dec 2023) · Atom Computing announcement (24 Oct 2023) · Google Quantum AI, <em>Nature</em> 638, 920 (2025), arXiv:2408.13687 · Bluvstein et al., <em>Nature</em> 626, 58 (2024), arXiv:2312.03982 · Microsoft / Quantinuum announcement (3 Apr 2024) · Atom Computing / Microsoft announcement (19 Nov 2024).</p>
+
 <h2 id="our-predictions">Our predictions</h2>
 <p>Every prediction we make is falsifiable, dated, and scored when it resolves. No deleting misses. As of
 2026-08-27 this table moved to <a href="ledger.html">The Ledger</a>, the same mechanism generalised to
@@ -325,6 +371,92 @@ prediction record lives on <a href="ledger.html#ours">The Ledger</a>: 0 right, 0
     b.addEventListener('click', function () { slider.value = b.getAttribute('data-lam'); draw(); });
   });
   draw();
+})();
+</script>
+
+<script type="application/json" id="hw-data">
+[{"date":"2019-10","org":"Google","device":"Sycamore","kind":"physical","n":53,"note":"The \"quantum supremacy\" chip: a sampling task in 200 seconds that Google argued would take a classical supercomputer millennia (a gap classical work later narrowed).","source":"Arute et al., Nature 574, 505 (2019); arXiv:1910.11333"},{"date":"2021-11","org":"IBM","device":"Eagle","kind":"physical","n":127,"note":"First IBM processor past 100 qubits; introduced the multi-level wiring that the later big chips scaled up.","source":"IBM Research announcement, 15 Nov 2021"},{"date":"2022-11","org":"IBM","device":"Osprey","kind":"physical","n":433,"note":"Roughly a 3.4x jump in a year, and the last of IBM's chips whose headline was its size.","source":"IBM Research announcement, 9 Nov 2022"},{"date":"2023-10","org":"Atom Computing","device":"second-generation array","kind":"physical","n":1180,"note":"Neutral atoms held in optical tweezers; the first system with more than 1,000 qubit sites. Sites in a trap array, not 1,180 simultaneously computing qubits.","source":"Atom Computing announcement, 24 Oct 2023"},{"date":"2023-12","org":"IBM","device":"Condor","kind":"physical","n":1121,"note":"IBM's largest single chip, and deliberately its last of that kind: the roadmap released the same day pivots to smaller, lower-error modular processors.","source":"IBM Research announcement, 4 Dec 2023"},{"date":"2023-12","org":"IBM","device":"Heron","kind":"physical","n":133,"note":"Shipped alongside Condor as the actual direction: about a 3-5x lower error rate than Eagle, and the template for everything IBM has built since.","source":"IBM Research announcement, 4 Dec 2023"},{"date":"2023-12","org":"QuEra / Harvard / MIT","device":"neutral-atom processor","kind":"logical","n":48,"note":"48 logical qubits from up to 280 physical atoms, with logical circuits run across them. Encoded and operated, not scaled below threshold.","source":"Bluvstein et al., Nature 626, 58 (2024); arXiv:2312.03982"},{"date":"2024-04","org":"Microsoft / Quantinuum","device":"H2","kind":"logical","n":4,"note":"Four logical qubits with a reported ~800x lower error rate than the underlying physical qubits, running thousands of operations.","source":"Microsoft / Quantinuum announcement, 3 Apr 2024"},{"date":"2024-11","org":"Atom Computing / Microsoft","device":"neutral-atom system","kind":"logical","n":24,"note":"24 entangled logical qubits reported on a neutral-atom machine; the largest logical-qubit count claimed to date, still not a below-threshold result.","source":"Atom Computing / Microsoft announcement, 19 Nov 2024"},{"date":"2024-12","org":"Google","device":"Willow","kind":"physical","n":105,"note":"Smaller than Sycamore. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.","source":"Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687"},{"date":"2024-12","org":"Google","device":"Willow","kind":"logical","n":1,"note":"One logical qubit, at distance 7, below threshold: the first whose error rate provably falls as you add physical qubits. The number is 1 on purpose.","source":"Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687"}]
+</script>
+
+<script>
+/* Hardware Scaling Explorer (#scaling). Reads the inline #hw-data block
+   (kept identical to site/data/hardware.json by tools/verify_hardware.py) and
+   draws it on a fixed log axis. Data + a full table are already in the static
+   HTML above; this only adds the picture and the physical/logical toggle. */
+(function () {
+  'use strict';
+  var svg = document.getElementById('hw-svg');
+  var raw = document.getElementById('hw-data');
+  if (!svg || !raw) return;
+  var ms;
+  try { ms = JSON.parse(raw.textContent); } catch (e) { return; }
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var PX0 = 52, PX1 = 544, PY0 = 20, PY1 = 244;
+  var T0 = 2019 + 5 / 12, TSPAN = 6;              // x axis: mid-2019 .. mid-2025
+  var LMAX = 3.3;                                  // y axis: 10^0 .. 10^3.3
+
+  function tx(dateStr) {
+    var p = dateStr.split('-');
+    var yr = +p[0] + (+p[1] - 0.5) / 12;
+    return PX0 + Math.max(0, Math.min(1, (yr - T0) / TSPAN)) * (PX1 - PX0);
+  }
+  function ty(n) {
+    var l = Math.log(n) / Math.LN10;
+    return PY1 - Math.max(0, Math.min(1, l / LMAX)) * (PY1 - PY0);
+  }
+  function el(tag, a, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in a) e.setAttribute(k, a[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  }
+
+  // axes + decade grid
+  el('line', { 'class': 'hw-axis', x1: PX0, y1: PY0, x2: PX0, y2: PY1 });
+  el('line', { 'class': 'hw-axis', x1: PX0, y1: PY1, x2: PX1, y2: PY1 });
+  [0, 1, 2, 3].forEach(function (d) {
+    var y = ty(Math.pow(10, d));
+    el('line', { 'class': 'hw-grid', x1: PX0, y1: y.toFixed(1), x2: PX1, y2: y.toFixed(1) });
+    el('text', { 'class': 'hw-tick', x: PX0 - 5, y: (y + 3).toFixed(1), 'text-anchor': 'end' })
+      .textContent = d === 0 ? '1' : '10' + ['', '¹', '²', '³'][d];
+  });
+  for (var yr = 2019; yr <= 2025; yr++) {
+    var x = tx(yr + '-07');
+    el('text', { 'class': 'hw-tick', x: x.toFixed(1), y: PY1 + 14, 'text-anchor': 'middle' }).textContent = yr;
+  }
+  el('text', { 'class': 'hw-tick', x: (PX0 + PX1) / 2, y: 296, 'text-anchor': 'middle' }).textContent = 'announced  →';
+  el('text', { 'class': 'hw-tick', x: PX0 - 30, y: (PY0 + PY1) / 2, 'text-anchor': 'middle',
+    transform: 'rotate(-90 ' + (PX0 - 30) + ' ' + ((PY0 + PY1) / 2) + ')' }).textContent = 'qubits (log)';
+
+  function series(kind, cls) {
+    var pts = ms.filter(function (m) { return m.kind === kind; })
+      .slice().sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    var g = el('g', { 'class': 'hw-series ' + kind });
+    var d = pts.map(function (m, i) { return (i ? 'L' : 'M') + tx(m.date).toFixed(1) + ' ' + ty(m.n).toFixed(1); }).join('');
+    el('path', { 'class': 'hw-line ' + cls, d: d }, g);
+    pts.forEach(function (m) {
+      var x = tx(m.date), y = ty(m.n);
+      el('circle', { 'class': 'hw-dot ' + cls, cx: x.toFixed(1), cy: y.toFixed(1), r: 4 }, g);
+      el('text', { 'class': 'hw-dlab', x: x.toFixed(1), y: (y - 7).toFixed(1), 'text-anchor': 'middle' }, g)
+        .textContent = m.n;
+    });
+    return g;
+  }
+  var gPhys = series('physical', 'phys');
+  var gLog = series('logical', 'log');
+
+  function bind(btnId, g) {
+    var b = document.getElementById(btnId);
+    if (!b) return;
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      g.classList.toggle('off', !on);
+    });
+  }
+  bind('hw-t-phys', gPhys);
+  bind('hw-t-log', gLog);
 })();
 </script>
 </body>

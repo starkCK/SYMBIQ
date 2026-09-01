@@ -46,6 +46,7 @@
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
+<link rel="stylesheet" href="living.css?v=2">
 <style>
 .am-pair { display: flex; gap: 22px; align-items: center; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
 .am-pair svg { width: 150px; height: 90px; }
@@ -135,8 +136,9 @@
 <script src="hud.js?v=3" defer></script>
 <script src="theme.js?v=2" defer></script>
 <script src="dynamics.js?v=4" defer></script>
+<script src="living.js?v=1" defer></script>
 </head>
-<body data-motion data-rails data-tiers data-rung="FORK" data-alive data-glass>
+<body data-motion data-rails data-tiers data-rung="FORK" data-alive data-glass data-living>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -252,6 +254,14 @@
 <p>Now imagine a much stranger version of the same trick, played with something simpler than marbles: a row of switches, each one either up or down. Wire pairs of them together, and let each wire carry an opinion: some wires want their two switches to <em>agree</em>, others want them to <em>disagree</em>. Count how many wires get their wish in any given arrangement of the switches. The best arrangement is whichever one keeps the most wires happy.</p>
 <p>That switches-and-wires puzzle has a name: <strong>Max-Cut</strong>, and this site's own <a href="feasible.html">operations research track</a> already teaches it as ordinary graph theory. The idea on this page is what happens when you stop treating that puzzle as something to search through, and start treating it as something to <em>build</em>: a real physical network where "settling toward the arrangement with the fewest unhappy wires" is just what the hardware does when you switch it on, the same way marbles roll downhill without being told to.</p>
 <p>Three genuinely different ways to build that network exist today. How they differ: <a href="#yellow">🟡 keep going ↓</a></p>
+
+<!-- The coupling strip (living.js): the page's own thesis, running. Fourteen
+     phase oscillators under the Kuramoto rule, coupled, settling toward one
+     phase -- the "let physics do the rest" sentence above, made literal.
+     Empty and 0-height if living.js does not load. Verified in
+     tools/verify_living.py. -->
+<div data-living-strip></div>
+<p class="living-strip-note">Fourteen coupled oscillators settling toward one phase &mdash; no search, just the hardware relaxing. The &ldquo;Let it settle&rdquo; widget below does the same on a real problem graph.</p>
 
 <span class="tier y">🟡 Some math</span>
 <h2 id="yellow">Three ways to build one</h2>

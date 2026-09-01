@@ -63,6 +63,24 @@
 /* The duel's own styling left this file on 2026-08-03: the engine moved into
    games.js, so its board rules live in style.css under .duelwrap and travel
    with it. What is left above belongs to the surface-17 explorer widget. */
+
+/* Threshold Explorer (#threshold-widget) */
+#thr-plot { display: block; margin: 0 auto; max-width: 380px; width: 100%; height: auto; }
+.thr-curve { fill: none; stroke: var(--teal); stroke-width: 2.5; }
+.thr-curve.over { stroke: var(--red); }
+.thr-axis { stroke: var(--border); stroke-width: 1; }
+.thr-grid { stroke: var(--border); stroke-opacity: .5; stroke-dasharray: 2 3; }
+.thr-target { stroke: var(--violet); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.thr-mark { fill: var(--yellow); }
+.thr-tick { fill: var(--muted); font-size: 10px; font-family: inherit; }
+.thr-rows { display: grid; gap: 12px; margin: 12px 0 4px; }
+.thr-row { display: grid; grid-template-columns: 7em 1fr 6.5em; align-items: center; gap: 10px; }
+.thr-row label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+.thr-row output { font-size: .85rem; font-variant-numeric: tabular-nums; text-align: right; }
+.thr-row input[type=range] { width: 100%; min-height: 44px; accent-color: var(--teal); }
+.thr-read { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--bg); margin-top: 8px; }
+.thr-read .big { font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.thr-read b { color: var(--text); font-variant-numeric: tabular-nums; }
 </style>
 <script src="save.js"></script>
 <script src="games.js?v=36"></script>
@@ -270,6 +288,36 @@
 <p>The grid's size is its <strong>code distance d</strong>: a d=3 code corrects any single flip and detects any pair, but a chain of 3 errors crossing the grid is invisible, changing the logical qubit while every check stays quiet. Bigger d, longer chains needed, safer qubit.</p>
 <p>And the number that rules the whole field: the <strong>threshold</strong>. If the physical error rate is below roughly 1% per operation (model-dependent), enlarging the grid makes the logical qubit <em>exponentially</em> better. Above it, enlarging the grid makes it worse: more qubits, more noise, no rescue. Every headline about qubit quality is really a headline about which side of this line a machine is on. That's also why decoders matter so much: a smarter decoder effectively moves you further below threshold with zero new hardware.</p>
 
+<h2 data-tier-keep>See where the line is</h2>
+<p>Drag the physical error rate as a fraction of the threshold. Below 1, a bigger code drives the logical error rate down exponentially, and the slider shows how many physical qubits that costs. At 1 or above, the same code that was helping now hurts &mdash; the curve turns red and no distance reaches the target.</p>
+
+<div class="card" id="threshold-widget">
+  <h3>Below threshold, or not</h3>
+  <svg id="thr-plot" viewBox="0 0 380 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logical error rate versus code distance on a log axis"></svg>
+  <div class="thr-rows">
+    <div class="thr-row">
+      <label for="thr-ratio">p / p<sub>th</sub></label>
+      <input type="range" id="thr-ratio" min="0.05" max="1.4" step="0.01" value="0.1" aria-label="physical error rate as a fraction of the threshold">
+      <output id="thr-ratio-o">0.10</output>
+    </div>
+    <div class="thr-row">
+      <label for="thr-target">target p<sub>L</sub></label>
+      <input type="range" id="thr-target" min="-15" max="-3" step="1" value="-12" aria-label="target logical error rate, as a power of ten">
+      <output id="thr-target-o">10⁻¹²</output>
+    </div>
+  </div>
+  <p style="margin:4px 0 0">
+    <button class="preset" id="thr-p-willow" type="button">Willow ratio (Λ ≈ 2.14)</button>
+    <button class="preset" id="thr-p-thousand" type="button">p ≈ 10⁻³, p_th ≈ 10⁻²</button>
+    <button class="preset" id="thr-p-at" type="button">at threshold</button>
+  </p>
+  <div class="thr-read">
+    <div id="thr-verdict" class="big"></div>
+    <p style="margin:6px 0 0;font-size:.9rem" id="thr-detail"></p>
+  </div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">This is the scaling law the formal section below states in full, p<sub>L</sub> ≈ A (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, drawn with A = 1. The marker is the smallest odd distance whose p<sub>L</sub> reaches the target, solved in log space (r<sup>E</sup> underflows a raw comparison by a rounding hair). It reproduces both worked figures below &mdash; <em>r</em> = 1/10, 10⁻¹² → d = 23, ≈1,057 physical qubits; <em>r</em> = 1/3 → d = 51, 5,201 &mdash; checked in a verification script before shipping. Real overhead is higher: routing, magic-state factories and correlated noise all sit on top.</p>
+</div>
+
 <h2 data-tier-keep>Break the code yourself</h2>
 <p>This is the real thing: the distance-3 surface code ("surface-17": 9 data + 8 check qubits), the first layout serious superconducting labs build. Click data qubits to flip them. Amber patches are parity checks firing; the dashed teal rings are the decoder's proposed repair. See if you can get an error past it.</p>
 
@@ -312,7 +360,8 @@
 <p><strong>The threshold theorem</strong> is what makes "below threshold" more than a hopeful phrase: it is the proof that arbitrarily long fault-tolerant quantum computation is possible at all, provided the physical error rate sits below a fixed constant p<sub>th</sub> and the code is scaled up to compensate, exactly the claim the scaling law below quantifies. It was proven independently, by three different routes, in the late 1990s: by concatenating small codes inside themselves recursively (Aharonov &amp; Ben-Or, <a href="https://arxiv.org/abs/quant-ph/9906129">arXiv quant-ph/9906129</a> (<em>SIAM J. Comput.</em> 38, 1207 (2008), expanding their 1997 STOC result); Knill, Laflamme &amp; Zurek, <a href="https://arxiv.org/abs/quant-ph/9702058">arXiv quant-ph/9702058</a> (<em>Proc. R. Soc. Lond. A</em> 454, 365 (1998))), and by a topological route closer to the surface code used here (Kitaev, <em>Russian Mathematical Surveys</em> 52, 1191 (1997)). The proof holds under a specific noise model, though: errors independent across qubits and gates, local rather than striking many qubits at once, and already below threshold before scaling starts. Real hardware breaks the first two by default (crosstalk correlates neighboring failures, leakage escapes the two-level qubit the proof assumes), which is not a footnote to the theorem but the entire reason correlated matching and AlphaQubit exist below.</p>
 <p>Below threshold, logical error per round scales as</p>
 <div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
-<p>so each two-step increase in distance (d → d+2) multiplies suppression by Λ ≈ p<sub>th</sub>/p. Google's Willow processor was the first hardware demonstration on the right side of the exponent: across a d = 3, 5, 7 series, increasing the distance by two suppressed the logical error rate by Λ = 2.14 ± 0.02 (obtained by fitting the log of the logical error rate against distance across the whole series, not from any single step; the lone d = 5 → 7 ratio is ≈ 2.1), with the d=7 logical qubit's lifetime exceeding its best physical qubit's (arXiv 2408.13687, <em>Nature</em> 638, 920 (2025)). The overhead is the price: 2d²−1 physical qubits per logical, so at p ≈ 10⁻³ and a 10⁻¹² logical target, d ≈ 23 → roughly a thousand physical qubits per logical <em>before</em> routing and magic-state factories. The same overhead logic, run at the gentler error budget a real attack circuit needs (~9×10⁷ Toffoli gates → a ~10⁻⁹–10⁻¹⁰ target, not 10⁻¹²), is how "≈1,200 logical qubits to break a Bitcoin key" (2026 estimate) becomes <a href="bitcoin.html">half a million physical ones</a>: about 400 physical per logical, magic-state factories included.</p>
+<p>so each two-step increase in distance (d → d+2) multiplies suppression by Λ ≈ p<sub>th</sub>/p.</p>
+<p>Google's Willow processor was the first hardware demonstration on the right side of the exponent: across a d = 3, 5, 7 series, increasing the distance by two suppressed the logical error rate by Λ = 2.14 ± 0.02 (obtained by fitting the log of the logical error rate against distance across the whole series, not from any single step; the lone d = 5 → 7 ratio is ≈ 2.1), with the d=7 logical qubit's lifetime exceeding its best physical qubit's (arXiv 2408.13687, <em>Nature</em> 638, 920 (2025)). The overhead is the price: 2d²−1 physical qubits per logical, so at p ≈ 10⁻³ and a 10⁻¹² logical target, d ≈ 23 → roughly a thousand physical qubits per logical <em>before</em> routing and magic-state factories. The same overhead logic, run at the gentler error budget a real attack circuit needs (~9×10⁷ Toffoli gates → a ~10⁻⁹–10⁻¹⁰ target, not 10⁻¹²), is how "≈1,200 logical qubits to break a Bitcoin key" (2026 estimate) becomes <a href="bitcoin.html">half a million physical ones</a>: about 400 physical per logical, magic-state factories included.</p>
 <p><strong>Magic-state factories,</strong> named above but never explained: Clifford-group gates alone (H, S, CNOT) are not universal. The Gottesman–Knill theorem shows any circuit built only from Clifford gates, stabilizer-state inputs, and Pauli measurements is efficiently simulable on an ordinary classical computer (Gottesman&#39;s 1997 Caltech thesis, <a href="https://arxiv.org/abs/quant-ph/9705052">arXiv quant-ph/9705052</a>, already gives a polynomial-time simulation algorithm; sped up and extended to mixed states by Aaronson &amp; Gottesman, <a href="https://arxiv.org/abs/quant-ph/0406196">arXiv quant-ph/0406196</a>, <em>Phys. Rev. A</em> 70, 052328 (2004)). So a fault-tolerant computer that only ever ran Clifford gates would be classically simulable too, i.e. pointless. Universality needs one more ingredient, typically the T-gate, and most codes can't apply it directly and stay fault-tolerant, so instead it's injected via a prepared <strong>magic state</strong>. Injected magic states start noisy, and they don't inherit the surrounding code's protection for free, so they are purified by <strong>distillation</strong>: consume several noisy copies, output fewer higher-fidelity ones, repeat until the error is low enough for the algorithm ahead (Bravyi &amp; Kitaev, <a href="https://arxiv.org/abs/quant-ph/0403025">arXiv quant-ph/0403025</a>, <em>Phys. Rev. A</em> 71, 022316 (2005)). That consumption is not a rounding error on top of the surface-code overhead above: early resource estimates found distillation dominating the physical-qubit budget so consistently that a later paper's entire contribution was proving it didn't have to (Litinski, <a href="https://arxiv.org/abs/1905.06903">arXiv 1905.06903</a>, <em>Quantum</em> 3, 205 (2019), titled, pointedly, "Magic State Distillation: Not as Costly as You Think").</p>
 <p><strong>Distillation, done for real.</strong> Until 2025 that whole picture was circuit-level accounting on paper. In July 2025 a QuEra/Harvard/MIT team ran distillation on <em>logical</em> qubits, not raw physical ones, on a neutral-atom processor: encoding magic states in d=3 and d=5 color codes and distilling them, they raised output fidelity to 99.4% from a 95.1% input at d=3 (an 8× cut in infidelity) and to 98.6% from 92.5% at d=5 (a 6× cut) (<a href="https://arxiv.org/abs/2412.15165">arXiv 2412.15165</a>, <em>Nature</em> 645, 620 (2025)). The output beating every input is the result: distillation stacked on top of error correction, the architecture every serious resource estimate assumes, run end-to-end on hardware for the first time, on a different platform from Willow's superconducting transmons and a different layer of the stack from AlphaQubit's decoding.</p>
 <p><strong>Transversal gates.</strong> A transversal gate applies the same physical operation to every physical qubit of a logical block independently (one qubit at a time, never a two-qubit gate between two physical qubits inside the same block), so a single faulty gate can corrupt at most one physical qubit's worth of information and has nowhere to spread within the block; that's what makes the gate fault-tolerant by construction rather than by extra circuitry bolted on afterward. It has a hard ceiling, though: the <strong>Eastin–Knill theorem</strong> proves that any code able to detect an arbitrary error on a single physical qubit cannot have a gate set that is both transversal and universal (Eastin &amp; Knill, <a href="https://arxiv.org/abs/0811.4262">arXiv 0811.4262</a> (<em>Phys. Rev. Lett.</em> 102, 110502 (2009))). That forces universality to come from outside the transversal gate set entirely, which is exactly why the magic-state machinery two paragraphs up isn't a separate topic from this one: distillation is how that outside ingredient gets purified to usable fidelity, precisely because transversality alone has been proven unable to supply it. On the surface code specifically: logical CNOT between two patches is transversal, but only if the patches are arranged with each physical qubit adjacent to its partner, which a flat 2D layout can't generally give two side-by-side patches; logical Hadamard is transversal on a single patch too, but a bare transversal-H layer swaps the patch's X- and Z-type boundaries, so recovering the original orientation costs a geometric rotation of the patch on top of the gate; S is not transversal on the surface code at all and has to be reached some other way, such as gate teleportation through an ancilla state.</p>
@@ -502,6 +551,121 @@
   G.mount('duel', host, { mode: 'arcade' });
   var note = document.getElementById('duel-honest');
   if (note) note.innerHTML = G.get('duel').honest;
+})();
+</script>
+
+<script>
+/* Threshold Explorer (#threshold-widget). The page's own scaling law,
+   p_L(d) = A (p/p_th)^floor((d+1)/2) with A = 1, drawn on a log axis.
+   Model + the smallest-distance solver are brute-forced in
+   tools/verify_threshold.py (desk repo); the solver works in log space
+   because r^E underflows a raw <= comparison by a rounding hair. */
+(function () {
+  'use strict';
+  var svg = document.getElementById('thr-plot');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var VW = 380, VH = 250, PX0 = 46, PX1 = 362, PY0 = 18, PY1 = 208;
+  var DMIN = 3, DMAX = 55;          // odd distances shown
+  var LOGMIN = -16;                 // bottom of the y axis: p_L = 10^-16
+
+  var elRatio = document.getElementById('thr-ratio');
+  var elTarget = document.getElementById('thr-target');
+
+  function expn(d) { return (d + 1) >> 1; }
+  function pL(d, r) { return Math.pow(r, expn(d)); }
+  function phys(d) { return 2 * d * d - 1; }
+  function smallestD(r, target) {
+    if (r >= 1) return null;
+    var E = Math.max(1, Math.ceil(Math.log(target) / Math.log(r) - 1e-9));
+    return 2 * E - 1;               // smallest odd d with floor((d+1)/2) == E
+  }
+
+  var SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+  function sup(n) { return String(n).split('').map(function (c) { return SUP[c] || c; }).join(''); }
+
+  function x(d) { return PX0 + (d - DMIN) / (DMAX - DMIN) * (PX1 - PX0); }
+  function y(log10v) {
+    var t = (0 - log10v) / (0 - LOGMIN);          // 0 at top (p_L=1), 1 at bottom
+    return PY0 + Math.max(0, Math.min(1, t)) * (PY1 - PY0);
+  }
+  function el(tag, a, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in a) n.setAttribute(k, a[k]);
+    (parent || svg).appendChild(n);
+    return n;
+  }
+
+  // static frame: axes, decade grid, labels
+  el('line', { 'class': 'thr-axis', x1: PX0, y1: PY0, x2: PX0, y2: PY1 });
+  el('line', { 'class': 'thr-axis', x1: PX0, y1: PY1, x2: PX1, y2: PY1 });
+  for (var L = 0; L >= LOGMIN; L -= 4) {
+    var yy = y(L);
+    el('line', { 'class': 'thr-grid', x1: PX0, y1: yy.toFixed(1), x2: PX1, y2: yy.toFixed(1) });
+    el('text', { 'class': 'thr-tick', x: PX0 - 4, y: (yy + 3).toFixed(1), 'text-anchor': 'end' })
+      .textContent = L === 0 ? '1' : '10' + sup(L);
+  }
+  [3, 15, 27, 39, 51].forEach(function (d) {
+    el('text', { 'class': 'thr-tick', x: x(d).toFixed(1), y: PY1 + 14, 'text-anchor': 'middle' }).textContent = 'd=' + d;
+  });
+  el('text', { 'class': 'thr-tick', x: (PX0 + PX1) / 2, y: VH - 1, 'text-anchor': 'middle' }).textContent = 'code distance  →';
+
+  var targetLine = el('line', { 'class': 'thr-target', x1: PX0, x2: PX1, y1: 0, y2: 0 });
+  var curve = el('path', { 'class': 'thr-curve', d: '' });
+  var mark = el('circle', { 'class': 'thr-mark', r: 4.5, cx: -20, cy: -20 });
+
+  function render() {
+    var r = +elRatio.value;
+    var T = +elTarget.value;                 // power of ten
+    var target = Math.pow(10, T);
+
+    document.getElementById('thr-ratio-o').textContent =
+      r >= 0.995 && r <= 1.005 ? '1.00' : r.toFixed(2);
+    document.getElementById('thr-target-o').textContent = '10' + sup(T);
+
+    var over = r >= 1;
+    curve.setAttribute('class', 'thr-curve' + (over ? ' over' : ''));
+    var d, dstr = '';
+    for (d = DMIN; d <= DMAX; d += 2) {
+      var lv = expn(d) * Math.log10(r);       // log10(r^E) without underflow
+      dstr += (d === DMIN ? 'M' : 'L') + x(d).toFixed(1) + ' ' + y(lv).toFixed(1);
+    }
+    curve.setAttribute('d', dstr);
+
+    var ty = y(T);
+    targetLine.setAttribute('y1', ty.toFixed(1));
+    targetLine.setAttribute('y2', ty.toFixed(1));
+
+    var verdict = document.getElementById('thr-verdict');
+    var detail = document.getElementById('thr-detail');
+    if (over) {
+      mark.setAttribute('cx', -20);
+      verdict.textContent = 'Above threshold — no distance helps';
+      verdict.style.color = 'var(--red)';
+      detail.textContent = 'The exponent is raising a number ≥ 1 to a power, so a bigger code makes the logical qubit worse, not better. This is the wrong side of the line every "qubit quality" headline is really about.';
+      return;
+    }
+    var dStar = smallestD(r, target);
+    var Lam = 1 / r;
+    verdict.style.color = 'var(--teal)';
+    if (dStar > DMAX) {
+      mark.setAttribute('cx', -20);
+      verdict.textContent = 'd = ' + dStar + '  (off the chart)';
+      detail.textContent = 'Λ = p_th/p ≈ ' + Lam.toFixed(2) + '. At this ratio each d→d+2 only divides the error rate by ' + Lam.toFixed(2) + '×, so reaching 10' + sup(T) + ' needs ' + dStar + ' — ' + phys(dStar).toLocaleString() + ' physical qubits per logical, before routing and factories.';
+    } else {
+      mark.setAttribute('cx', x(dStar).toFixed(1));
+      mark.setAttribute('cy', ty.toFixed(1));
+      verdict.textContent = 'd = ' + dStar + '  ·  ' + phys(dStar).toLocaleString() + ' physical qubits per logical';
+      detail.textContent = 'Λ = p_th/p ≈ ' + Lam.toFixed(2) + ' — every step of d→d+2 divides the logical error rate by that. Smallest odd distance whose p_L reaches 10' + sup(T) + '. Add routing and magic-state factories on top.';
+    }
+  }
+
+  elRatio.addEventListener('input', render);
+  elTarget.addEventListener('input', render);
+  document.getElementById('thr-p-willow').addEventListener('click', function () { elRatio.value = (1 / 2.14).toFixed(2); render(); });
+  document.getElementById('thr-p-thousand').addEventListener('click', function () { elRatio.value = '0.10'; render(); });
+  document.getElementById('thr-p-at').addEventListener('click', function () { elRatio.value = '1'; render(); });
+  render();
 })();
 </script>
 </body>

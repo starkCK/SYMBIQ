@@ -73,6 +73,18 @@
 .readout h4 { font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
 .ket { font-family: "Cambria Math", Georgia, serif; font-size: 1.02rem; }
 .circuit { font-family: "Cambria Math", Georgia, serif; font-size: .95rem; word-break: break-all; min-height: 1.4em; }
+/* decoherence playground (#decohere): reuses the sphere classes above */
+#dec-svg { display: block; margin: 0 auto; max-width: 340px; width: 100%; height: auto; }
+#decohere .statedot { transition: r .3s ease, fill-opacity .3s ease; }
+.dec-rows { display: grid; gap: 12px; margin: 12px 0 4px; }
+.dec-row { display: grid; grid-template-columns: 4.5em 1fr 5.5em; align-items: center; gap: 10px; }
+.dec-row label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+.dec-row output { font-size: .85rem; font-variant-numeric: tabular-nums; text-align: right; }
+.dec-row input[type=range] { width: 100%; min-height: 44px; accent-color: var(--teal); }
+.dec-meters { display: grid; gap: 8px; }
+.dec-meter { font-size: .8rem; color: var(--muted); }
+.dec-meter b { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 700; }
+.dec-btns { text-align: center; margin: 6px 0 2px; }
 </style>
 <script type="application/ld+json">
 {
@@ -302,6 +314,56 @@
   <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow is the Bloch vector; the faint violet trail is where the state has been. All six gates are the real 2×2 unitary matrices, applied to genuine complex amplitudes, so the picture is a projection of the actual arithmetic. Limits: one qubit only, so <strong>entanglement cannot appear here</strong>; it needs at least two, and it is the ingredient a Bloch sphere cannot draw. The sphere also shows only pure states; real qubits decohere and sink inside it.</p>
 </div>
 
+<h2 data-tier-keep>Now let it decohere</h2>
+<p>The sphere above is the perfect case: every gate is a clean rotation and the arrow never leaves the surface. A real qubit is not left alone &mdash; it leaks energy to its surroundings and its phase smears out &mdash; so the arrow spirals <em>inward</em>. Two numbers set the clock: <strong>T<sub>1</sub></strong>, the time to fall back toward <span class="ket">|0⟩</span>, and <strong>T<sub>2</sub></strong>, the shorter time for the phase (the part that does the computing) to wash out. Set them, pick a starting state, and press play.</p>
+
+<div class="card" id="decohere">
+  <h3>The clock every quantum computer races</h3>
+  <svg id="dec-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-label="Bloch sphere showing a qubit state decaying inward under T1 and T2"></svg>
+  <div class="dec-rows">
+    <div class="dec-row">
+      <label for="dec-t1">T<sub>1</sub></label>
+      <input type="range" id="dec-t1" min="10" max="300" step="5" value="120" aria-label="T1 relaxation time in microseconds">
+      <output id="dec-t1-o">120 µs</output>
+    </div>
+    <div class="dec-row">
+      <label for="dec-t2">T<sub>2</sub></label>
+      <input type="range" id="dec-t2" min="5" max="300" step="5" value="90" aria-label="T2 dephasing time in microseconds">
+      <output id="dec-t2-o">90 µs</output>
+    </div>
+    <div class="dec-row">
+      <label for="dec-det">detuning</label>
+      <input type="range" id="dec-det" min="-3" max="3" step="0.1" value="1" aria-label="detuning in cycles per T2, sets how fast the state precesses">
+      <output id="dec-det-o">+1.0</output>
+    </div>
+  </div>
+  <p class="dec-btns">
+    <button class="preset" id="dec-play" type="button">▶ Play</button>
+    <button class="preset" id="dec-restart" type="button">Restart</button>
+    <button class="preset" id="dec-start-plus" type="button">start at |+⟩</button>
+    <button class="preset" id="dec-start-tilt" type="button">start tilted</button>
+  </p>
+  <div class="twocol">
+    <div class="readout">
+      <h4>How mixed is it?</h4>
+      <div style="font-size:.82rem;color:var(--muted);margin-bottom:3px">Bloch vector length &nbsp;<span id="dec-rlen"></span> <span style="opacity:.6">(1 = pure, 0 = noise)</span></div>
+      <div class="probbar"><div class="probfill" id="dec-rbar" style="background:var(--violet)"></div></div>
+      <div style="font-size:.82rem;color:var(--muted);margin:8px 0 3px">Phase coherence left &nbsp;<span id="dec-clen"></span></div>
+      <div class="probbar"><div class="probfill" id="dec-cbar" style="background:var(--teal)"></div></div>
+    </div>
+    <div class="readout">
+      <h4>What it costs you</h4>
+      <div class="dec-meters">
+        <div class="dec-meter">purity Tr(ρ²): <b id="dec-purity"></b></div>
+        <div class="dec-meter">elapsed: <b id="dec-elapsed"></b></div>
+        <div class="dec-meter">two-qubit gates (20 ns) before the phase halves: <b id="dec-gates"></b></div>
+      </div>
+      <p style="margin:8px 0 0;font-size:.85rem" id="dec-verdict"></p>
+    </div>
+  </div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow follows the exact solution of the single-qubit Bloch equations for constant rates: the transverse part decays as e<sup>−t/T₂</sup> while it precesses at the detuning, and z relaxes toward <span class="ket">|0⟩</span> as e<sup>−t/T₁</sup>. The slider forces <strong>T<sub>2</sub> ≤ 2T<sub>1</sub></strong> because past that the density matrix stops being a valid state. This is the Markovian picture &mdash; real devices also have slow drift and 1/f noise that a single T<sub>2</sub> does not capture. The closed form the widget draws is checked against a direct RK4 integration of the same ODEs, plus the physical bounds and both limiting cases, before shipping.</p>
+</div>
+
 <span class="tier y">🟡 Some math</span>
 <h2 id="yellow">The same postulates, renamed</h2>
 <p>The clearest way to see that quantum computing is not a separate theory is to lay the two vocabularies side by side. Every item in the right column <em>is</em> the item on its left: the same mathematical object, given a job title.</p>
@@ -519,6 +581,180 @@
   G.mount('chsh', host, { mode: 'arcade' });
   var note = document.getElementById('chsh-honest');
   if (note) note.innerHTML = G.get('chsh').honest;
+})();
+</script>
+
+<script>
+/* Decoherence Playground (#decohere). The Bloch vector under the exact
+   solution of the single-qubit Bloch equations with constant rates -- the
+   same model brute-forced in tools/verify_decoherence.py (desk repo). No
+   solver in the page: x,y decay as e^(-t/T2) while precessing at the
+   detuning, z relaxes toward |0> (+z) as e^(-t/T1). */
+(function () {
+  'use strict';
+  var svg = document.getElementById('dec-svg');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg', R = 96, CX = 150, CY = 140, ZEQ = 1;
+  var AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
+
+  var reduce = false;
+  try {
+    reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+             document.documentElement.getAttribute('data-motion-pref') === 'reduce';
+  } catch (e) {}
+
+  function proj(v) {
+    var x = v[0], y = v[1], z = v[2];
+    return [CX + R * (-x * Math.sin(AZ) + y * Math.cos(AZ)),
+            CY + R * (x * Math.cos(AZ) * Math.sin(EL) + y * Math.sin(AZ) * Math.sin(EL) - z * Math.cos(EL))];
+  }
+  function el(tag, a, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in a) n.setAttribute(k, a[k]);
+    (parent || svg).appendChild(n);
+    return n;
+  }
+
+  el('circle', { 'class': 'sphere', cx: CX, cy: CY, r: R });
+  var eq = '';
+  for (var i = 0; i <= 72; i++) {
+    var a = i / 72 * 2 * Math.PI, p = proj([Math.cos(a), Math.sin(a), 0]);
+    eq += (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1);
+  }
+  el('path', { 'class': 'equator', d: eq });
+  [[[0, 0, 1], '|0⟩'], [[0, 0, -1], '|1⟩'], [[1, 0, 0], '|+⟩'], [[0, 1, 0], '|i⟩']].forEach(function (ax) {
+    var pp = proj(ax[0]);
+    el('line', { 'class': 'axis3', x1: CX, y1: CY, x2: pp[0], y2: pp[1], opacity: .55 });
+    el('text', { 'class': 'axlab', x: pp[0], y: pp[1] + (ax[0][2] > 0 ? -8 : 14) }).textContent = ax[1];
+  });
+  var trailPath = el('path', { 'class': 'trail', d: '' });
+  var vec = el('line', { 'class': 'statevec', x1: CX, y1: CY, x2: CX, y2: CY - R });
+  var dot = el('circle', { 'class': 'statedot', cx: CX, cy: CY - R, r: 5.5 });
+
+  var STARTS = {
+    plus: [1, 0, 0],
+    tilt: (function () { var v = [0.94, 0, 0.34]; var n = Math.hypot(v[0], v[1], v[2]); return [v[0] / n, v[1] / n, v[2] / n]; })()
+  };
+  var r0 = STARTS.plus.slice();
+  var T1 = 120, T2 = 90, detCycles = 1;
+  var t = 0, trail = [], raf = 0, playing = false, lastTs = 0;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var elT1 = $('dec-t1'), elT2 = $('dec-t2'), elDet = $('dec-det');
+
+  function clampT2() {
+    /* T2 <= 2 T1: past that rho is not a valid state (verify_decoherence.py [3]) */
+    if (T2 > 2 * T1) { T2 = 2 * T1; elT2.value = String(T2); }
+  }
+
+  function blochAt(tt) {
+    var e2 = Math.exp(-tt / T2);
+    var delta = detCycles * 2 * Math.PI / T2;      /* detuning: "cycles per T2" */
+    var c = Math.cos(delta * tt), s = Math.sin(delta * tt);
+    var x = e2 * (r0[0] * c - r0[1] * s);
+    var y = e2 * (r0[0] * s + r0[1] * c);
+    var z = ZEQ + (r0[2] - ZEQ) * Math.exp(-tt / T1);
+    return [x, y, z];
+  }
+
+  function gatesLeft() {
+    return Math.floor(T2 * Math.log(2) / 0.02);   /* 0.02 us = one 20 ns gate */
+  }
+
+  function fmtGates(n) {
+    return n >= 1000 ? Math.round(n / 100) / 10 + 'k' : String(n);
+  }
+
+  function verdictFor(clen, rlen) {
+    if (t < 1e-6) return 'Full coherence. Press play and watch the arrow spiral in.';
+    if (clen < 0.08) return 'The phase has washed out. Whatever was still being computed is gone — only a classical bit’s worth of the state survives.';
+    if (clen < 0.4) return 'Over half the phase information is lost. This is where a real algorithm has to have already finished.';
+    if (rlen < 0.75) return 'The state is sinking into the ball: it is now partly noise, and no gate can polish that back out.';
+    return 'Still mostly coherent — the usable window.';
+  }
+
+  function render() {
+    var v = blochAt(t);
+    var pp = proj(v);
+    vec.setAttribute('x2', pp[0].toFixed(1));
+    vec.setAttribute('y2', pp[1].toFixed(1));
+    dot.setAttribute('cx', pp[0].toFixed(1));
+    dot.setAttribute('cy', pp[1].toFixed(1));
+
+    var rlen = Math.hypot(v[0], v[1], v[2]);
+    var clen = Math.hypot(v[0], v[1]);
+    dot.setAttribute('r', (3.2 + 2.3 * rlen).toFixed(2));
+    dot.setAttribute('fill-opacity', (0.35 + 0.65 * rlen).toFixed(3));
+
+    if (!reduce) {
+      trail.push(pp);
+      if (trail.length > 90) trail.shift();
+      trailPath.setAttribute('d', trail.map(function (q, i) {
+        return (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+      }).join(''));
+    }
+
+    $('dec-rlen').textContent = rlen.toFixed(3);
+    $('dec-clen').textContent = clen.toFixed(3);
+    $('dec-rbar').style.width = (100 * rlen).toFixed(1) + '%';
+    $('dec-cbar').style.width = (100 * clen).toFixed(1) + '%';
+    $('dec-purity').textContent = ((1 + rlen * rlen) / 2).toFixed(3);
+    $('dec-elapsed').textContent = t < 1 ? t.toFixed(2) + ' µs' : Math.round(t) + ' µs';
+    $('dec-gates').textContent = fmtGates(gatesLeft());
+    $('dec-verdict').textContent = verdictFor(clen, rlen);
+  }
+
+  function stop() { playing = false; raf && cancelAnimationFrame(raf); raf = 0; $('dec-play').textContent = '▶ Play'; }
+  function frame(ts) {
+    if (!playing) return;
+    var dtMs = lastTs ? Math.min(ts - lastTs, 48) : 16;
+    lastTs = ts;
+    /* real-time feel: a full 3*T2 run takes ~7.5 s regardless of the sliders */
+    t += (dtMs / 1000) * (3 * T2 / 7.5);
+    var done = t > 6 * Math.max(T1, T2);
+    if (done) t = 6 * Math.max(T1, T2);
+    render();
+    if (done) { stop(); return; }
+    raf = requestAnimationFrame(frame);
+  }
+  function play() {
+    if (playing) { stop(); return; }
+    if (t >= 6 * Math.max(T1, T2) - 1e-6) { t = 0; trail = []; }
+    playing = true; lastTs = 0; $('dec-play').textContent = '❙❙ Pause';
+    raf = requestAnimationFrame(frame);
+  }
+  function restart(keepPlaying) {
+    t = 0; trail = []; lastTs = 0;
+    render();
+    if (!keepPlaying) stop();
+  }
+
+  elT1.addEventListener('input', function () {
+    T1 = +elT1.value; clampT2(); T2 = +elT2.value;
+    $('dec-t1-o').textContent = T1 + ' µs';
+    $('dec-t2-o').textContent = T2 + ' µs';
+    render();
+  });
+  elT2.addEventListener('input', function () {
+    T2 = +elT2.value; clampT2(); T2 = +elT2.value;
+    $('dec-t2-o').textContent = T2 + ' µs';
+    render();
+  });
+  elDet.addEventListener('input', function () {
+    detCycles = +elDet.value;
+    $('dec-det-o').textContent = (detCycles >= 0 ? '+' : '') + detCycles.toFixed(1);
+    render();
+  });
+  $('dec-play').addEventListener('click', play);
+  $('dec-restart').addEventListener('click', function () { restart(false); });
+  $('dec-start-plus').addEventListener('click', function () { r0 = STARTS.plus.slice(); restart(false); });
+  $('dec-start-tilt').addEventListener('click', function () { r0 = STARTS.tilt.slice(); restart(false); });
+
+  clampT2();
+  $('dec-t1-o').textContent = T1 + ' µs';
+  $('dec-t2-o').textContent = T2 + ' µs';
+  $('dec-det-o').textContent = '+' + detCycles.toFixed(1);
+  render();
 })();
 </script>
 </body>

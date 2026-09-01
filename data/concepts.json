@@ -567,12 +567,12 @@
     {
       "id": "coherence-time",
       "term": "coherence time",
-      "aliases": ["coherence", "decoherence", "T1", "T2"],
-      "page": "compare.html",
-      "anchor": "yellow",
+      "aliases": ["coherence", "decoherence", "T1", "T2", "dephasing", "relaxation time"],
+      "page": "quantum-mechanics.html",
+      "anchor": "decohere",
       "tier": "y",
       "kind": "concept",
-      "blurb": "How long a qubit holds its state before the environment scrambles it."
+      "blurb": "How long a qubit holds its state before the environment scrambles it -- T1 is the fall back to |0>, T2 the shorter time for phase to wash out."
     },
     {
       "id": "gate-fidelity",

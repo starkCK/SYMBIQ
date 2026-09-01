@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=48">
+<link rel="stylesheet" href="style.css?v=49">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -48,6 +48,8 @@
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
 <link rel="stylesheet" href="living.css?v=2">
+<link rel="stylesheet" href="lexicon.css?v=1">
+<link rel="stylesheet" href="receipts.css?v=1">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -117,6 +119,8 @@
 <script src="theme.js?v=2" defer></script>
 <script src="dynamics.js?v=4" defer></script>
 <script src="living.js?v=1" defer></script>
+<script src="lexicon.js?v=1" defer></script>
+<script src="receipts.js?v=1" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L4" data-vivid data-alive data-glass data-living>
 <div class="wrap">
@@ -275,8 +279,8 @@
 <h2 id="red">The resource estimates, with receipts</h2>
 <p>Shor's algorithm for the elliptic-curve discrete logarithm on a 256-bit prime-field curve: <strong>2,330 logical qubits</strong> and ≈<strong>1.26×10¹¹ Toffoli gates</strong> (Roetteler, Naehrig, Svore &amp; Lauter, <a href="https://arxiv.org/abs/1706.06752">arXiv:1706.06752</a>, computed for NIST P-256; Bitcoin's secp256k1 is the same size and comparable cost). Later circuit work cuts the Toffoli count substantially (Litinski, <a href="https://arxiv.org/abs/2306.08585">arXiv:2306.08585</a>, ~5×10⁷ Toffolis via active-volume architecture and state-reuse tricks; windowed-arithmetic lines of work cut counts further), which moves the estimates down, not away.</p>
 <p>This page asserts those counts; it does not derive how Shor's algorithm reaches them. The mechanism (the quantum Fourier transform, phase estimation, and the period-finding step that turns "factor N" into "find a period") is worked through from scratch on <a href="formalism.html#f13">The Machinery</a>. Want the one-sentence version of <em>why any of it works</em> before the full derivation? <a href="phase-kickback.html">Start with phase kickback</a>, the single mechanism this whole circuit runs on, repeated.</p>
-<p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ 1.9B</strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation; and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
-<p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis, under half a million physical qubits, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong>≈9 minutes</strong> once your transaction appears, inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
+<p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ <span class="rcpt" data-rcpt="btc-1.9b" tabindex="0" role="button" aria-expanded="false">1.9B</span></strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation; and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
+<p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis, <span class="rcpt" data-rcpt="btc-500k" tabindex="0" role="button" aria-expanded="false">under half a million physical qubits</span>, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong><span class="rcpt" data-rcpt="btc-9min" tabindex="0" role="button" aria-expanded="false">≈9 minutes</span></strong> once your transaction appears, inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
 <p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime; magic-state throughput is the real budget (the same economics as <a href="qec.html#red">magic-state distillation</a>); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic, since there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once, hardware error rates and algorithmic Toffoli counts, so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
 
 <div class="cyu" data-a="1">

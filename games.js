@@ -633,6 +633,7 @@
             'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="holes">Holes</button>' +
+            '<button class="preset" type="button" data-gm="ladder">The Ladder</button>' +
             '<button class="preset" type="button" data-gm="lg">The Long Game</button>' +
             '<button class="preset" type="button" data-gm="daily">Daily Ladder</button>' +
             '<span data-r="lgbest" style="color:var(--muted)"></span>' +
@@ -690,6 +691,56 @@
         { name: 'H T H S T', path: ['H','T','H','S','T'], par: 5, hint: 'Tilt, phase, tilt, quarter-phase, eighth-phase. Five things, in order, no four-gate shortcut.' }
       ];
       var HOLES = ruthless ? HOLES_RUTHLESS : HOLES_STD;
+
+      /* ---- THE LADDER (FRAME.ladder, Scorekeeper plan Part 5/22_ C1-C2) -----
+         Circuit Golf is the worked example: nine EXISTING holes, re-sequenced
+         and gated, each teaching exactly one new idea before it is played --
+         never "the same, harder." No new physics and no new pars: every
+         target and every par below is copied verbatim from HOLES_STD /
+         HOLES_RUTHLESS above, so nothing here needs its own verify script --
+         it inherits verify_golf_backnine.py's exhaustive-BFS proof as-is.
+         L1-3 stay Clifford; L4 is the first target no Clifford word reaches;
+         L5-6 hide the name (read the sphere, not the label); L7-8 cross into
+         the Back Nine, off every pole; L9 is the boss (par 5, 1,555 shorter
+         words all miss -- HOLES_RUTHLESS's own hint says so already). */
+      var LADDER_LEVELS = [
+        { n: 1, set: 'std',  idx: 0, teach: 'A gate is a <strong>rotation</strong>, not a flip.' },
+        { n: 2, set: 'std',  idx: 1, teach: 'Superposition is a rotation too &mdash; a quarter turn, not "a bit of both."' },
+        { n: 3, set: 'std',  idx: 2, teach: 'Two states can sit on opposite sides of the sphere and still look alike until you check which way they point.' },
+        { n: 4, set: 'std',  idx: 4, teach: 'Your first <strong>T</strong>. No word built only from X, Y, Z, H, S reaches this target &mdash; proven by exhaustive search, not asserted.' },
+        { n: 5, set: 'std',  idx: 5, hideName: true, teach: 'The name is gone. <strong>Read the dashed marker on the sphere</strong>, not a label.' },
+        { n: 6, set: 'std',  idx: 8, hideName: true, teach: 'Two T gates can cancel back to a single S. The sphere does not care how you arrived, only where you are standing.' },
+        { n: 7, set: 'ruth', idx: 0, teach: 'Every hole from here sits <strong>off every pole</strong> on the sphere. A Clifford-only route is never enough again.' },
+        { n: 8, set: 'ruth', idx: 3, teach: 'Four gates, two axes, still a proven minimum &mdash; the search that proves it checked every shorter word there is.' },
+        { n: 9, set: 'ruth', idx: 6, teach: '<strong>The boss.</strong> Nothing under five gates reaches this state, and the search did not guess that: it checked.' }
+      ];
+      var ld = { on: false, n: 1, done: false };
+      function ldDef() { return LADDER_LEVELS[ld.n - 1]; }
+      function ldStart() {
+        var def = ldDef(), base = (def.set === 'ruth' ? HOLES_RUTHLESS : HOLES_STD)[def.idx];
+        HOLES = [{ name: base.name, path: base.path, par: base.par, hint: base.hint, hideName: !!def.hideName }];
+        hi = 0; cur = Z0; moves = []; done = [null]; strokes = 0; ld.done = false;
+      }
+      function ldFinishHole() {
+        var H = HOLES[0], used = moves.length;
+        ld.done = true;   // freeze the level -- play() must not re-fire this on a stray extra gate press
+        var medal = used === H.par ? 'gold' : used <= H.par + 1 ? 'silver' : 'bronze';
+        var glyph = medal === 'gold' ? '🥇' : medal === 'silver' ? '🥈' : '🥉';
+        FRAME.ladder.markCleared('golf', ld.n, medal);
+        var boss = ld.n >= LADDER_LEVELS.length;
+        syncGGmode();
+        if (boss) {
+          render({ k: 'good', t: '<strong>' + H.name + ' reached.</strong> ' + glyph +
+            ' The Ladder is cleared: nine levels, nine proven pars, no guessing anywhere in it.' +
+            '<div class="g-mentor">Ada: every step of that was a search result. Play it again for gold on the ones you didn\'t.</div>' });
+        } else {
+          render({ k: 'good', t: '<strong>' + H.name + ' reached.</strong> ' + glyph +
+            ' Level ' + ld.n + ' cleared in ' + used + ' gate' + (used === 1 ? '' : 's') + ' against par ' + H.par + '.' +
+            ' <button class="preset" type="button" data-a="ldnext">Continue to Level ' + (ld.n + 1) + ' ▸</button>' });
+          var nb = $(root, '[data-r=say]').querySelector('[data-a=ldnext]');
+          if (nb) nb.addEventListener('click', function () { ld.n++; ldStart(); syncGGmode(); render(); });
+        }
+      }
 
       /* ---- THE LONG GAME: an endless, par-ascending score-chase -------------
          Standard/Guided arcade only. From |0> the one-qubit gate set reaches
@@ -799,6 +850,14 @@
               (lgDB > 0 ? ' · today’s best ' + lgDB : '') + (lg.best > 0 ? ' · all-time ' + lg.best : '') + '</span>' : '') +
             '<br><span style="color:var(--muted)">gates left this game: </span>' +
             '<strong style="color:' + (lg.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + lg.budget + '</strong></div>';
+        } else if (ld.on) {
+          $(root, '[data-r=holes]').innerHTML =
+            '<div class="ld-strip" role="list" aria-label="The Ladder, nine levels">' + FRAME.ladder.strip('golf', LADDER_LEVELS, ld.n) + '</div>' +
+            '<div class="ld-teach"><strong>Level ' + ld.n + '.</strong> ' + ldDef().teach + '</div>';
+          Array.prototype.forEach.call(root.querySelectorAll('[data-r=holes] [data-ld]'), function (b) {
+            if (b.disabled) return;
+            b.addEventListener('click', function () { ld.n = +b.getAttribute('data-ld'); ldStart(); render(); });
+          });
         } else {
           $(root, '[data-r=holes]').innerHTML = HOLES.map(function (h, i) {
             return '<span class="hole' + (i === hi ? ' now' : '') + (done[i] != null ? (done[i] <= h.par ? ' done' : ' over') : '') +
@@ -818,10 +877,17 @@
                          : 'The target is off the board, no par shown. ') +
             '<span style="color:var(--muted);font-weight:400">' + H.hint + ' Every gate spends your game budget.</span>';
         }
+        else if (ld.on) {
+          p.className = 'verdict';
+          p.innerHTML = (H.hideName
+              ? 'Reach the target shown on the sphere &mdash; no name this time, in <strong>' + H.par + '</strong> gate' + (H.par === 1 ? '' : 's') + '. '
+              : 'Reach <strong>' + H.name + '</strong> in <strong>' + H.par + '</strong> gate' + (H.par === 1 ? '' : 's') + '. ') +
+            '<span style="color:var(--muted);font-weight:400">' + H.hint + '</span>';
+        }
         else { p.className = 'verdict'; p.innerHTML = VO.ask(hi+1, H.name, H.par) + ' <span style="color:var(--muted);font-weight:400">' + H.hint + '</span>'; }
         var totPar = HOLES.reduce(function (a, h) { return a + h.par; }, 0);
         var played = done.filter(function (d) { return d != null; }).length;
-        if (!lg.on && played === HOLES.length) {
+        if (!lg.on && !ld.on && played === HOLES.length) {
           var firstGolf = win('golf', opts);
           if (!mission && !roundCeremony) {
             roundCeremony = true;
@@ -846,6 +912,11 @@
             '<dt>Game budget</dt><dd>' + lg.budget + ' gate' + (lg.budget === 1 ? '' : 's') + ' left</dd>' +
             '<dt>Holes cleared</dt><dd><strong>' + lg.cleared + '</strong>' +
               (lg.best > 0 ? ' &nbsp;<span style="color:var(--muted)">longest game ' + lg.best + '</span>' : '') + '</dd>';
+        } else if (ld.on) {
+          $(root, '[data-r=rows]').innerHTML =
+            '<dt>This level</dt><dd>' + moves.length + ' / par ' + H.par +
+              (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
+            '<dt>Ladder</dt><dd>Level <strong>' + ld.n + '</strong> of ' + LADDER_LEVELS.length + '</dd>';
         } else {
           $(root, '[data-r=rows]').innerHTML =
             '<dt>' + VO.rowA + '</dt><dd>' + moves.length + ' / par ' + H.par + (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
@@ -888,11 +959,12 @@
       }
       function play(g) {
         var H = HOLES[hi];
-        if (done[hi] != null || (lg.on && lg.over)) return;
+        if (done[hi] != null || (lg.on && lg.over) || (ld.on && ld.done)) return;
         cur = ap(g, cur); moves.push(g);
         if (lg.on) lg.budget--;
         if (same(bloch(cur), bloch(seq(H.path)))) {
           if (lg.on) { lgFinishHole(); return; }
+          if (ld.on) { ldFinishHole(); return; }
           done[hi] = moves.length; strokes += moves.length;
           var par = moves.length === H.par;
           var overLine = (!par && !mission) ? FRAME.loss('golf', 'overpar') : '';
@@ -913,20 +985,21 @@
         b.addEventListener('click', function () { play(b.getAttribute('data-g')); });
       });
       $(root, '[data-a=undo]').addEventListener('click', function () {
-        if (lg.on || !moves.length || done[hi] != null) return;
+        if (lg.on || !moves.length || done[hi] != null || (ld.on && ld.done)) return;
         moves.pop(); cur = seq(moves); render();
       });
       $(root, '[data-a=retry]').addEventListener('click', function () {
         if (lg.on) return;
         if (done[hi] != null) { strokes -= done[hi]; done[hi] = null; roundCeremony = false; }
+        if (ld.on) ld.done = false;   // retrying a cleared ladder level un-freezes it for another attempt
         cur = Z0; moves = []; render();
       });
 
-      /* ---- The Long Game mode toggle (arcade Standard/Guided only) -------- */
+      /* ---- The Long Game / Ladder mode toggle (arcade Standard/Guided only) */
       function syncGGmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = !lg.on ? 'holes' : lg.daily ? 'daily' : 'lg';
+        var cur = ld.on ? 'ladder' : !lg.on ? 'holes' : lg.daily ? 'daily' : 'lg';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -943,17 +1016,26 @@
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=holes]').addEventListener('click', function () {
-          lg.on = false; lg.daily = false; lg.over = false;
+          lg.on = false; lg.daily = false; lg.over = false; ld.on = false;
           HOLES = ruthless ? HOLES_RUTHLESS : HOLES_STD;
           done = []; for (var i = 0; i < HOLES.length; i++) done.push(null);
           hi = 0; cur = Z0; moves = []; strokes = 0; roundCeremony = false;
           syncGGmode(); render();
         });
+        bar.querySelector('[data-gm=ladder]').addEventListener('click', function () {
+          lg.on = false; lg.daily = false; ld.on = true;
+          // resume at the first not-yet-cleared level, so returning to the
+          // Ladder never re-serves a level you already have a medal on
+          var st = FRAME.ladder.state('golf'), resume = 1;
+          for (var i = 1; i <= LADDER_LEVELS.length; i++) if (st.cleared[i]) resume = Math.min(i + 1, LADDER_LEVELS.length);
+          ld.n = resume;
+          ldStart(); syncGGmode(); render();
+        });
         bar.querySelector('[data-gm=lg]').addEventListener('click', function () {
-          lg.on = true; lg.daily = false; lgReset(); syncGGmode(); render();
+          lg.on = true; lg.daily = false; ld.on = false; lgReset(); syncGGmode(); render();
         });
         bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
-          lg.on = true; lg.daily = true; lgReset(); syncGGmode(); render();
+          lg.on = true; lg.daily = true; ld.on = false; lgReset(); syncGGmode(); render();
         });
         syncGGmode();
       })();
@@ -3458,8 +3540,58 @@
       }
     };
 
+    /* ---- THE LADDER, the missing progression framework (22_ Part C1) ------
+       "Modes are not a ladder" was the diagnosis: every cabinet invents its
+       own mode bar, and nothing teaches one new idea per level, gates, or has
+       a boss. This is the shared chrome so the NEXT cabinet that adopts it
+       (Circuit Golf is the first, see games.js's G.golf) gets a level-select
+       strip, per-level medals and a "the one new thing" line for free,
+       instead of a ninth bespoke implementation. Pure localStorage, its own
+       namespace, same shape as `daily` and `contract` above -- no dependency
+       on save.js, so a Ladder can exist even on a page that never loaded it. */
+    var LKEY = 'symbiq_ladder_v1';
+    function ldLoad() { try { return JSON.parse(localStorage.getItem(LKEY)) || {}; } catch (e) { return {}; } }
+    function ldSave(s) { try { localStorage.setItem(LKEY, JSON.stringify(s)); } catch (e) {} }
+    var MEDAL_RANK = { none: 0, bronze: 1, silver: 2, gold: 3 };
+    var MEDAL_GLYPH = { gold: '🥇', silver: '🥈', bronze: '🥉' };
+    var ladder = {
+      // { cleared: {1:true,...}, medal: {1:'gold',...} } for one cabinet id
+      state: function (id) {
+        var s = ldLoad();
+        return s[id] || { cleared: {}, medal: {} };
+      },
+      isUnlocked: function (id, n) {
+        if (n <= 1) return true;
+        return !!ladder.state(id).cleared[n - 1];
+      },
+      // medal only ever improves on a replay, never downgrades a worse one
+      markCleared: function (id, n, medal) {
+        var s = ldLoad();
+        var st = s[id] || (s[id] = { cleared: {}, medal: {} });
+        st.cleared[n] = true;
+        if ((MEDAL_RANK[medal] || 0) > (MEDAL_RANK[st.medal[n]] || 0)) st.medal[n] = medal;
+        ldSave(s);
+        return st;
+      },
+      // a level-select chip strip, HTML string. levels = [{n, ...}], in order.
+      // Cleared chips show their medal glyph, the current level is marked,
+      // an unreached level is a plain number, a locked one is a lock glyph
+      // and carries `disabled` -- the caller wires clicks on the rest.
+      strip: function (id, levels, currentN) {
+        var st = ladder.state(id);
+        return levels.map(function (lv) {
+          var unlocked = ladder.isUnlocked(id, lv.n), cleared = !!st.cleared[lv.n], medal = st.medal[lv.n];
+          var cls = 'ld-chip' + (lv.n === currentN ? ' now' : '') + (cleared ? ' done' : '') + (!unlocked ? ' locked' : '');
+          var glyph = cleared ? (MEDAL_GLYPH[medal] || '✓') : (unlocked ? lv.n : '🔒');
+          return '<button type="button" class="' + cls + '" data-ld="' + lv.n + '"' + (unlocked ? '' : ' disabled') +
+            ' title="Level ' + lv.n + (cleared ? ', cleared (' + (medal || 'cleared') + ')' : unlocked ? '' : ', locked') + '">' +
+            glyph + '</button>';
+        }).join('');
+      }
+    };
+
     return { rng: rng, daySeed: daySeed, loss: loss, ceremony: ceremony, daily: daily,
-             CODEX: CODEX, contract: contract };
+             CODEX: CODEX, contract: contract, ladder: ladder };
   })();
 
   /* ==================================================================== *
@@ -3660,11 +3792,273 @@
              chromeHTML: chromeHTML, orientInner: orientInner, wire: wire };
   })();
 
+  /* ==================================================================== *
+   *  THE WORKSHOP, player-built Circuit Golf holes (22_ Part C4)         *
+   *                                                                      *
+   *  The one idea in the whole plan that is also a growth loop: a player *
+   *  builds a target by applying gates from |0>, and the site runs the   *
+   *  SAME exhaustive breadth-first search that produced every par on     *
+   *  this site to find its true minimum -- in the browser, on the spot.  *
+   *  The author cannot set the par. The search does. A player who builds *
+   *  a hole and claims par 2 is overruled by the identical mechanism     *
+   *  that set every other par on the site.                               *
+   *                                                                      *
+   *  Deliberately its own small module rather than a 4th mode grafted    *
+   *  onto G.golf's already-branchy mount(): it duplicates the ~10 lines  *
+   *  of gate math (GT / cm / cadd / ap / bloch) rather than reach back   *
+   *  into that closure, so it can be mounted anywhere on its own and     *
+   *  never risks the verified engine it is a companion to.               *
+   *                                                                      *
+   *  THE SEARCH. Plain floating-point complex arithmetic (not the exact  *
+   *  Z[zeta8] ring the Python verifiers use for the SHIPPED holes) is    *
+   *  precise enough at depth <=10: states are deduped by their Bloch     *
+   *  vector rounded to 1e-5, the same tolerance same() already uses      *
+   *  everywhere in this file. tools/verify_workshop_bfs.py reimplements  *
+   *  this exact algorithm in Python and confirms it reproduces every     *
+   *  already-proven par in HOLES_STD and HOLES_RUTHLESS above -- the     *
+   *  cross-check that the search itself can be trusted before a player   *
+   *  is ever told the site trusts it.                                    *
+   *                                                                      *
+   *  SHARING. The URL encodes the CREATOR's own defining gate sequence   *
+   *  (#workshop=HTHT), never a claimed par. Whoever opens the link runs  *
+   *  the identical search on the identical target and gets whatever      *
+   *  number the search finds -- which may be shorter than the creator's  *
+   *  own route, since nothing requires them to have found the minimum    *
+   *  either.                                                             *
+   * ==================================================================== */
+  var WS = (function () {
+    var GATES = ['X', 'Y', 'Z', 'H', 'S', 'T'];
+    var S2 = 1 / Math.sqrt(2), C4 = Math.cos(Math.PI / 4), S4 = Math.sin(Math.PI / 4);
+    var GT = {
+      X: [[0,0],[1,0],[1,0],[0,0]], Y: [[0,0],[0,-1],[0,1],[0,0]], Z: [[1,0],[0,0],[0,0],[-1,0]],
+      H: [[S2,0],[S2,0],[S2,0],[-S2,0]], S: [[1,0],[0,0],[0,0],[0,1]], T: [[1,0],[0,0],[0,0],[C4,S4]]
+    };
+    function cm(p, q) { return [p[0]*q[0] - p[1]*q[1], p[0]*q[1] + p[1]*q[0]]; }
+    function cadd(p, q) { return [p[0]+q[0], p[1]+q[1]]; }
+    function ap(g, s) { var m = GT[g]; return [cadd(cm(m[0],s[0]),cm(m[1],s[1])), cadd(cm(m[2],s[0]),cm(m[3],s[1]))]; }
+    var Z0 = [[1,0],[0,0]];
+    function seq(path) { var s = Z0; path.forEach(function (g) { s = ap(g, s); }); return s; }
+    function bloch(s) {
+      var a = s[0], b = s[1], acb = cm([a[0], -a[1]], b);
+      return [2*acb[0], 2*acb[1], (a[0]*a[0]+a[1]*a[1]) - (b[0]*b[0]+b[1]*b[1])];
+    }
+    function bkey(s) { return bloch(s).map(function (v) { return Math.round(v * 1e5); }).join(','); }
+
+    /* Exhaustive breadth-first search, frontier by frontier, deduped by
+       Bloch key -- so the state count explored is the true reachable-orbit
+       size at each depth, never the raw 6^d word count. Returns the FIRST
+       (therefore shortest -- BFS explores depth in order) word that reaches
+       `target`, or null if depth exceeds maxDepth (should not happen: the
+       search always runs to at least the definer's own path length, and
+       anything the definer reached is by definition reachable in that many
+       gates or fewer). */
+    function bfsPar(target, maxDepth) {
+      var tKey = bkey(target);
+      if (tKey === bkey(Z0)) return { par: 0, path: [] };
+      var frontier = [{ state: Z0, path: [] }];
+      var seen = {}; seen[bkey(Z0)] = true;
+      for (var d = 1; d <= maxDepth; d++) {
+        var next = [];
+        for (var i = 0; i < frontier.length; i++) {
+          for (var g = 0; g < GATES.length; g++) {
+            var ns = ap(GATES[g], frontier[i].state), nk = bkey(ns);
+            if (nk === tKey) return { par: d, path: frontier[i].path.concat(GATES[g]) };
+            if (!seen[nk]) { seen[nk] = true; next.push({ state: ns, path: frontier[i].path.concat(GATES[g]) }); }
+          }
+        }
+        frontier = next;
+      }
+      return null;
+    }
+
+    function encodePath(path) { return path.join(''); }
+    function decodePath(s) {
+      if (!s || !/^[XYZHST]{1,12}$/.test(s)) return null;
+      return s.split('');
+    }
+
+    return { GATES: GATES, GT: GT, ap: ap, seq: seq, bloch: bloch, bkey: bkey, Z0: Z0,
+             bfsPar: bfsPar, encodePath: encodePath, decodePath: decodePath };
+  })();
+
+  /* Deliberately NOT added to G (and so never reachable through GS.get /
+     GS.mount / showStage's generic arcade router): Workshop is not an
+     arcade cabinet or a Path mission, and every one of those code paths
+     assumes one of those two shapes (a mentor + Path copy, or the one
+     hardcoded "also lives on circuits.html" fallback written for
+     Calibration specifically). It is exported directly below instead,
+     and play.html mounts it as its own always-visible section. */
+  var WORKSHOP = {
+    id: 'workshop', title: 'The Workshop',
+    hook: 'Build a target. The search sets its par, not you.',
+    mount: function (root, opts) {
+      opts = opts || {};
+      var R = 82, CX = 130, CY = 118;
+      var AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
+      function proj(v) {
+        return [CX + R * (-v[0]*Math.sin(AZ) + v[1]*Math.cos(AZ)),
+                CY + R * (v[0]*Math.cos(AZ)*Math.sin(EL) + v[1]*Math.sin(AZ)*Math.sin(EL) - v[2]*Math.cos(EL))];
+      }
+      root.innerHTML =
+        '<p class="verdict" style="text-align:center" data-r="say"></p>' +
+        '<svg class="golfsvg" viewBox="0 0 260 250" xmlns="' + NS + '" aria-label="Bloch sphere workshop"></svg>' +
+        '<p style="margin:10px 0 4px;text-align:center">' +
+          WS.GATES.map(function (k) { return '<button class="preset gatebtn" data-g="' + k + '">' + k + '</button>'; }).join('') +
+          '<button class="preset" data-a="reset">Reset</button></p>' +
+        '<dl class="rows" data-r="rows"></dl>' +
+        '<p style="text-align:center;margin:12px 0 0" data-r="actions"></p>';
+
+      var svg = $(root, '.golfsvg');
+      function add(t, a, txt) { var n = el(t, a); if (txt != null) n.textContent = txt; svg.appendChild(n); return n; }
+      add('circle', { 'class': 'gsphere', cx: CX, cy: CY, r: R });
+      var eq = '';
+      for (var i = 0; i <= 64; i++) { var t = i/64*2*Math.PI, p = proj([Math.cos(t), Math.sin(t), 0]); eq += (i?'L':'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+      add('path', { 'class': 'gequator', d: eq });
+      [[[0,0,1],'|0⟩'],[[0,0,-1],'|1⟩'],[[1,0,0],'|+⟩'],[[0,1,0],'|i⟩']].forEach(function (ax) {
+        var p = proj(ax[0]), o = proj([0,0,0]);
+        add('line', { 'class': 'gaxis', x1: o[0], y1: o[1], x2: p[0], y2: p[1] });
+        add('text', { 'class': 'gaxlab', x: p[0], y: p[1] + (ax[0][2] > 0 ? -7 : 13) }, ax[1]);
+      });
+      var vLine = add('line', { 'class': 'gvec', x1: CX, y1: CY, x2: CX, y2: CY - R });
+      var vDot  = add('circle', { 'class': 'gdot', cx: CX, cy: CY - R, r: 5 });
+      var tLine = null, tDot = null;   // drawn only once a target is locked in (PLAY phase)
+
+      // phase: 'build' (defining a target) | 'search' | 'play' (proven par, scoring)
+      var phase = 'build', path = [], cur = WS.Z0;
+      var target = null, targetPath = null, par = null, moves = [];
+
+      function draw() {
+        var me = WS.bloch(cur), pm = proj(me);
+        vLine.setAttribute('x2', pm[0]); vLine.setAttribute('y2', pm[1]);
+        vDot.setAttribute('cx', pm[0]); vDot.setAttribute('cy', pm[1]);
+        if (tLine) {
+          var tp = proj(WS.bloch(target)), q = proj(target ? WS.bloch(target) : [0,0,1]);
+          tLine.setAttribute('x2', tp[0]); tLine.setAttribute('y2', tp[1]);
+          tDot.setAttribute('cx', tp[0]); tDot.setAttribute('cy', tp[1]);
+        }
+      }
+
+      function shareUrl(p) {
+        var base = W_location().split('#')[0];
+        return base + '#workshop=' + WS.encodePath(p);
+      }
+      function W_location() { try { return window.location.href; } catch (e) { return ''; } }
+
+      function say(html, cls) { var s = $(root, '[data-r=say]'); s.className = 'verdict' + (cls ? ' ' + cls : ''); s.innerHTML = html; }
+      function actions(html) { $(root, '[data-r=actions]').innerHTML = html || ''; }
+      function rows(html) { $(root, '[data-r=rows]').innerHTML = html || ''; }
+
+      function renderBuild() {
+        draw();
+        say('<strong>Build a target.</strong> Apply gates from <span class="ket">|0⟩</span>, then lock it in. ' +
+            (path.length ? 'Currently ' + path.length + ' gate' + (path.length === 1 ? '' : 's') + ' in.' : 'Nothing applied yet.'));
+        rows('<dt>Your path</dt><dd>' + (path.length ? '<span class="chip">' + path.join('</span><span class="chip">') + '</span>' : '&mdash;') + '</dd>');
+        actions(path.length
+          ? '<button class="preset" type="button" data-a="lock">Lock in this target ▸</button>'
+          : '<span style="color:var(--muted);font-size:.85rem">Apply at least one gate to define a target.</span>');
+        var lb = $(root, '[data-a=lock]');
+        if (lb) lb.addEventListener('click', lockIn);
+      }
+
+      function lockIn() {
+        target = cur; targetPath = path.slice();
+        phase = 'search';
+        say('<strong>Searching…</strong> exhaustive breadth-first search over every gate word, shortest first.');
+        actions('');
+        // synchronous is fine at this depth (see the module header); a
+        // setTimeout(0) still lets the "Searching…" frame paint first
+        setTimeout(function () {
+          var maxDepth = Math.min(10, Math.max(6, targetPath.length));
+          var found = WS.bfsPar(target, maxDepth);
+          par = found ? found.par : targetPath.length;   // found is never actually null at this maxDepth -- see the header note
+          phase = 'play';
+          tLine = svg.querySelector('.gtarget') || add('line', { 'class': 'gtarget', x1: CX, y1: CY, x2: CX, y2: CY });
+          tDot = svg.querySelector('.gtargetdot') || add('circle', { 'class': 'gtargetdot', cx: CX, cy: CY, r: 4.5 });
+          cur = WS.Z0; moves = [];
+          renderPlay(true);
+        }, 30);
+      }
+
+      function renderPlay(justFound) {
+        draw();
+        var hit = WS.bkey(cur) === WS.bkey(target) && moves.length > 0;
+        if (justFound) {
+          say('<strong>Proven par: ' + par + ' gate' + (par === 1 ? '' : 's') + '.</strong> ' +
+            'Your own route used ' + targetPath.length + '; the search checked every shorter word and this is the shortest that reaches it. ' +
+            '<span style="color:var(--muted)">You did not set that number. The search did.</span>', 'good');
+        } else if (hit) {
+          var atPar = moves.length === par;
+          say('<strong>Reached.</strong> ' + moves.length + ' gate' + (moves.length === 1 ? '' : 's') +
+            (atPar ? ', at the proven par.' : ', ' + (moves.length - par) + ' over the proven par of ' + par + '.'), atPar ? 'good' : 'split');
+        } else {
+          say('Reach the dashed target in <strong>' + par + '</strong> proven gate' + (par === 1 ? '' : 's') + '.');
+        }
+        rows('<dt>Gates so far</dt><dd>' + moves.length + ' / par ' + par +
+          (moves.length ? ' &nbsp;<span class="chip">' + moves.join('</span><span class="chip">') + '</span>' : '') + '</dd>' +
+          '<dt>Proven by</dt><dd>exhaustive search, this browser, just now</dd>');
+        var url = shareUrl(targetPath);
+        actions(
+          '<button class="preset" type="button" data-a="wsretry">Retry</button> ' +
+          '<button class="preset" type="button" data-a="wsnew">Build another</button>' +
+          '<br><label style="display:block;margin-top:10px;font-size:.82rem;color:var(--muted)">Share this hole' +
+          '<br><input type="text" readonly value="' + url.replace(/"/g, '&quot;') + '" data-r="shareinput" ' +
+          'style="width:100%;margin-top:4px" onclick="this.select()"></label>'
+        );
+        var rb = $(root, '[data-a=wsretry]'); if (rb) rb.addEventListener('click', function () { cur = WS.Z0; moves = []; renderPlay(false); });
+        var nb = $(root, '[data-a=wsnew]'); if (nb) nb.addEventListener('click', resetToBuild);
+      }
+
+      function resetToBuild() {
+        phase = 'build'; path = []; cur = WS.Z0; target = null; targetPath = null; par = null; moves = [];
+        if (tLine) { tLine.remove(); tDot.remove(); tLine = null; tDot = null; }
+        renderBuild();
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('.gatebtn'), function (b) {
+        b.addEventListener('click', function () {
+          var g = b.getAttribute('data-g');
+          if (phase === 'build') { cur = WS.ap(g, cur); path.push(g); renderBuild(); }
+          else if (phase === 'play') {
+            if (WS.bkey(cur) === WS.bkey(target) && moves.length) return;   // frozen once reached, same rule as every other cabinet
+            cur = WS.ap(g, cur); moves.push(g); renderPlay(false);
+          }
+        });
+      });
+      $(root, '[data-a=reset]').addEventListener('click', function () {
+        if (phase === 'build') { path = []; cur = WS.Z0; renderBuild(); }
+      });
+
+      // A shared link loads straight into PLAY, skipping BUILD -- the
+      // receiver never sees or trusts the creator's own path length, only
+      // the target it defines; the par shown is THIS browser's own search.
+      var hashMatch = /(?:^|#)workshop=([A-Za-z]+)/.exec(W_location());
+      var fromShare = hashMatch && WS.decodePath(hashMatch[1]);
+      if (fromShare) {
+        targetPath = fromShare; target = WS.seq(fromShare); phase = 'search';
+        say('<strong>Loading a shared hole…</strong> verifying its par independently, not trusting the link.');
+        setTimeout(function () {
+          var maxDepth = Math.min(10, Math.max(6, targetPath.length));
+          var found = WS.bfsPar(target, maxDepth);
+          par = found ? found.par : targetPath.length;
+          phase = 'play';
+          tLine = svg.querySelector('.gtarget') || add('line', { 'class': 'gtarget', x1: CX, y1: CY, x2: CX, y2: CY });
+          tDot = svg.querySelector('.gtargetdot') || add('circle', { 'class': 'gtargetdot', cx: CX, cy: CY, r: 4.5 });
+          cur = WS.Z0; moves = [];
+          renderPlay(true);
+        }, 30);
+      } else {
+        renderBuild();
+      }
+    }
+  };
+
   /* -------------------------------------------------------------------- */
   window.SymbiQ.games = {
     all: G,
     frame: FRAME,
     medals: MEDALS,
+    wsSearch: WS,   // The Workshop's pure search engine, exposed for tools/verify_workshop.mjs
+    workshop: WORKSHOP,   // NOT in .all/.get -- see WORKSHOP's own header. play.html mounts it directly.
     levels: LEVELS.IDS,
     level: LEVELS.get,
     setLevel: LEVELS.set,

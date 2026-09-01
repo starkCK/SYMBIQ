@@ -1,0 +1,151 @@
+/* ================================================================
+   THE LEXICON (2026-09-01)  —  site-wide, all 24 pages.
+
+   Part of "the signature": one shared visual primitive, a hairline
+   dotted underline meaning "there is substance under this," with two
+   consumers. This file styles both: `.lx-term` (a concept, drawn from
+   the 126-entry site/data/concepts.json index by lexicon.js) and
+   `.rcpt` (a verified number, drawn from site/data/receipts.json by
+   receipts.js). The underline must never mean a third thing.
+
+   Colour Law: the underline is muted at rest -- neither .lx-term nor
+   .rcpt is itself a claim about which half of the argument you're in,
+   so it carries no chromatic accent until you act on it. Feedback on
+   hover/focus/open shifts toward mint, per the "verified/pass" rule
+   in DESIGN.md's Colour section.
+
+   Tonal-Ladder rule: the popover is a surface sitting ON a panel (or
+   on canvas), so it steps to --surface-2/--surface-3 rather than
+   reaching for a shadow at rest; --elev-2 only appears as a genuine
+   state response (the card itself entering).
+
+   Reversible: remove one <link> and one <script> per page and both
+   consumers vanish -- the terms/numbers they mark up are still plain
+   text, because lexicon.js only ever wraps prose, never rewrites it.
+   ================================================================ */
+
+.lx-term, .rcpt {
+  cursor: help;
+  border-bottom: 1px dotted var(--muted);
+  text-underline-offset: 2px;
+  -webkit-text-decoration-color: var(--muted);
+  text-decoration-color: var(--muted);
+}
+.rcpt { font-variant-numeric: tabular-nums; }
+
+.lx-term:hover, .lx-term:focus-visible,
+.rcpt:hover, .rcpt:focus-visible {
+  border-bottom-color: var(--teal);
+}
+.lx-term[aria-expanded="true"], .rcpt[aria-expanded="true"] {
+  border-bottom-style: solid;
+  border-bottom-color: var(--teal);
+}
+.lx-term:focus-visible, .rcpt:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* "Show the receipts" toggle target state (receipts.js adds this class to
+   <body>; see receipts.css/receipts.js for the toggle control itself). Every
+   .rcpt on the page lights at once -- the single frame that is the actual
+   signature. Mint fill, because a lit receipt IS a "verified/pass" state. */
+body.rcpt-on .rcpt {
+  border-bottom-style: solid;
+  border-bottom-color: var(--teal);
+  background: rgba(45, 212, 191, 0.10);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+/* ---- The shared popover card -------------------------------------------
+   One element, reused by every trigger on the page (lexicon.js owns it;
+   receipts.js calls into SymbiQ.sig, the same engine, rather than building
+   a second one). Positioned in JS; CSS only ever states its resting look
+   and its two visibility states. */
+.sig-card {
+  position: absolute;
+  z-index: 95;
+  /* A static fallback; place() in lexicon.js sets an exact inline max-width
+     per open (min(320, viewport - 24)) because CSS min()+calc() nesting was
+     found, live, to resolve to 0px on at least one real rendering engine --
+     a silent collapse that no static audit would have caught, only opening
+     the card and measuring it did. Belt-and-braces: this value still holds
+     if the JS path is ever skipped. */
+  max-width: 320px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--elev-2);
+  padding: var(--sp-4);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  visibility: hidden;
+}
+.sig-card.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sig-card { transition: opacity 160ms var(--ease-out-quint, ease), transform 160ms var(--ease-out-quint, ease); }
+}
+
+.sig-card-title { font-weight: 700; margin: 0 0 6px; color: var(--text); }
+.sig-card-body { margin: 0 0 10px; color: var(--text); }
+.sig-card-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.sig-card-foot .tier { margin-bottom: 0; }
+.sig-card-kind {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.sig-card-link { font-size: 0.84rem; white-space: nowrap; }
+
+/* receipt-only rows: derivation line in the numeric/monospace register the
+   rest of the site already uses for formulas, plus the falsifier line. */
+.sig-card-formula {
+  font-family: "Cambria Math", Georgia, serif;
+  background: var(--surface-3);
+  border-radius: 6px;
+  padding: 6px 9px;
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  overflow-x: auto;
+}
+.sig-card-meta { color: var(--muted); font-size: 0.78rem; margin: 0 0 4px; }
+.sig-card-wrong { color: var(--muted); font-size: 0.78rem; margin: 0 0 10px; font-style: italic; }
+
+/* Coarse pointer (touch): a bottom sheet instead of a floating card, same
+   content, so nothing requires precise hover to reach. */
+@media (pointer: coarse) {
+  .sig-card {
+    position: fixed;
+    left: 0; right: 0; bottom: 0; top: auto;
+    max-width: none;
+    width: auto;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    transform: translateY(100%);
+    box-shadow: 0 -20px 44px -20px var(--shadow);
+    max-height: min(60vh, 420px);
+    overflow-y: auto;
+    padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom, 0px));
+  }
+  .sig-card.open { transform: translateY(0); }
+  .sig-backdrop {
+    position: fixed; inset: 0; z-index: 94; background: rgba(0, 0, 0, 0.35);
+    opacity: 0; pointer-events: none; visibility: hidden;
+  }
+  .sig-backdrop.open { opacity: 1; pointer-events: auto; visibility: visible; }
+  @media (prefers-reduced-motion: no-preference) {
+    .sig-backdrop { transition: opacity 160ms ease; }
+  }
+}

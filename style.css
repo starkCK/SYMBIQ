@@ -943,6 +943,18 @@ nav .link.pathlink:hover { color: var(--violet); }
 .hole.done { background: rgba(45,212,191,.14); border-color: rgba(45,212,191,.5); color: var(--teal); }
 .hole.over { background: rgba(250,204,21,.12); border-color: rgba(250,204,21,.45); color: var(--yellow); }
 
+/* --- FRAME.ladder, the shared level-progression chrome (22_ Part C1) --- */
+.ld-strip { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 4px 0 10px; }
+.ld-chip { min-width: 34px; min-height: 34px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--border);
+           background: var(--bg); display: grid; place-items: center; font-size: .85rem; font-weight: 700;
+           color: var(--muted); cursor: pointer; transition: all .2s ease; }
+.ld-chip:hover:not(:disabled) { border-color: var(--teal); transform: translateY(-2px); }
+.ld-chip.now { border-color: var(--teal); color: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
+.ld-chip.done { background: rgba(45,212,191,.14); border-color: rgba(45,212,191,.5); color: var(--teal); font-size: 1rem; }
+.ld-chip.locked, .ld-chip:disabled { opacity: .5; cursor: not-allowed; }
+.ld-teach { text-align: center; font-size: .88rem; color: var(--muted); margin: 0 0 12px; line-height: 1.5; }
+.ld-teach strong { color: var(--text); }
+
 /* --- the annealing volcano --- */
 .vwrap { display: flex; align-items: stretch; gap: 12px; }
 .vterrain { display: block; flex: 1 1 auto; min-width: 0; height: auto; }

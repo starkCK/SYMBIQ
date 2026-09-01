@@ -1,0 +1,41 @@
+/* ================================================================
+   THE RECEIPTS TOGGLE (2026-09-01)  —  loaded site-wide, renders
+   only on a page with >=1 entry in site/data/receipts.json.
+
+   The underline and popover chrome for `.rcpt` itself live in
+   lexicon.css (the shared primitive, see its own header). This file
+   is only the page-level control: "Show the receipts," the single
+   frame that is the actual signature described in PART A2 of
+   outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md.
+   ================================================================ */
+
+.rcpt-toggle-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin: 14px 0 22px;
+}
+.rcpt-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 8px 16px;
+  border-radius: var(--r-pill, 999px);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font: inherit; font-size: 0.86rem; font-weight: 700;
+  cursor: pointer;
+}
+.rcpt-toggle-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--muted);
+  flex: none;
+}
+.rcpt-toggle:hover { border-color: var(--teal); }
+.rcpt-toggle[aria-pressed="true"] {
+  border-color: var(--teal);
+  background: rgba(45, 212, 191, 0.10);
+  color: var(--teal);
+}
+.rcpt-toggle[aria-pressed="true"] .rcpt-toggle-dot { background: var(--teal); }
+@media (prefers-reduced-motion: no-preference) {
+  .rcpt-toggle { transition: border-color var(--dur-fast, 140ms) ease, background var(--dur-fast, 140ms) ease, color var(--dur-fast, 140ms) ease; }
+}
+.rcpt-toggle-note { font-size: 0.82rem; color: var(--muted); }

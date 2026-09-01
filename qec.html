@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=48">
+<link rel="stylesheet" href="style.css?v=49">
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -48,6 +48,10 @@
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
 <link rel="stylesheet" href="living.css?v=2">
+<link rel="stylesheet" href="lexicon.css?v=1">
+<link rel="stylesheet" href="receipts.css?v=1">
+<!-- The Through-Line: a first trial, this page only. See its own header. -->
+<link rel="stylesheet" href="throughline.css?v=1">
 <style>
 #qec-svg { display: block; margin: 0 auto; max-width: 360px; width: 100%; height: auto; }
 .pq { fill: var(--panel); stroke: var(--teal); stroke-opacity: .35; stroke-width: 1.5; transition: fill .15s; }
@@ -83,7 +87,7 @@
 .thr-read b { color: var(--text); font-variant-numeric: tabular-nums; }
 </style>
 <script src="save.js"></script>
-<script src="games.js?v=36"></script>
+<script src="games.js?v=38"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -153,8 +157,11 @@
 <script src="theme.js?v=2" defer></script>
 <script src="dynamics.js?v=4" defer></script>
 <script src="living.js?v=1" defer></script>
+<script src="lexicon.js?v=1" defer></script>
+<script src="receipts.js?v=1" defer></script>
+<script src="throughline.js?v=1" defer></script>
 </head>
-<body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass data-living>
+<body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass data-living data-throughline>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -268,7 +275,7 @@
 </div>
 
 <span class="tier g">🟢 No math</span>
-<h2 id="green">The problem: a computer that breaks when you look at it</h2>
+<h2 id="green" data-fig-state="1">The problem: a computer that breaks when you look at it</h2>
 <p>A qubit is a singer who slowly drifts off key. Everything nudges it: a warm wire, a stray bit of radiation, the qubit next door. On good hardware, roughly one operation in a thousand goes wrong. That sounds tolerable until you hear that useful algorithms need <em>billions</em> of error-free steps (trillions of physical operations underneath) to land correctly, back to back.</p>
 <p>A classical computer solves this with copies: store the bit three times, take the majority vote. Quantum mechanics slams both doors on that. You <strong>can't copy</strong> an unknown qubit: the no-cloning theorem isn't an engineering limit, it's the law. And you <strong>can't peek</strong> at one to see if it's still right, because measuring a qubit destroys the very superposition you were trying to protect.</p>
 <p>So here's the trick, and it's one of the best ideas physics produced in the last forty years: don't listen to any singer alone; listen to the <em>harmony between neighbors</em>. Ask pairs, "are you two still in tune with each other?" That question is safe: it reveals nothing about the song, only whether someone drifted, and roughly where. A conductor, the <strong>decoder</strong>, collects those harmony reports and works out who went off key, without ever hearing a solo.</p>
@@ -276,7 +283,7 @@
 <p>Real terms for the same picture: <a href="#yellow">🟡 keep going ↓</a></p>
 
 <span class="tier y">🟡 Some math</span>
-<h2 id="yellow">The machine: surface codes, syndromes, decoders</h2>
+<h2 id="yellow" data-fig-state="2">The machine: surface codes, syndromes, decoders</h2>
 <p>Encode one logical qubit into a grid, a <strong>surface code</strong>, where data qubits are interleaved with measurement qubits. The measurement qubits repeatedly run parity checks (<strong>stabilizers</strong>) on their data-qubit neighbors. A check that fires tells you an odd number of its neighbors flipped; the full pattern of fired checks is the <strong>syndrome</strong>. It's a diagnosis from symptoms: you never see the disease, only which alarms it tripped.</p>
 <div class="overflow"><table>
 <tr><th>Piece</th><th>Job</th><th>Failure mode</th></tr>
@@ -288,11 +295,11 @@
 <p>The grid's size is its <strong>code distance d</strong>: a d=3 code corrects any single flip and detects any pair, but a chain of 3 errors crossing the grid is invisible, changing the logical qubit while every check stays quiet. Bigger d, longer chains needed, safer qubit.</p>
 <p>And the number that rules the whole field: the <strong>threshold</strong>. If the physical error rate is below roughly 1% per operation (model-dependent), enlarging the grid makes the logical qubit <em>exponentially</em> better. Above it, enlarging the grid makes it worse: more qubits, more noise, no rescue. Every headline about qubit quality is really a headline about which side of this line a machine is on. That's also why decoders matter so much: a smarter decoder effectively moves you further below threshold with zero new hardware.</p>
 
-<h2 data-tier-keep>See where the line is</h2>
+<h2 data-tier-keep data-fig-state="3">See where the line is</h2>
 <p>Drag the physical error rate as a fraction of the threshold. Below 1, a bigger code drives the logical error rate down exponentially, and the slider shows how many physical qubits that costs. At 1 or above, the same code that was helping now hurts &mdash; the curve turns red and no distance reaches the target.</p>
 
 <div class="card" id="threshold-widget">
-  <h3>Below threshold, or not</h3>
+  <h3 data-fig-state="4">Below threshold, or not</h3>
   <svg id="thr-plot" viewBox="0 0 380 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logical error rate versus code distance on a log axis"></svg>
   <div class="thr-rows">
     <div class="thr-row">
@@ -315,7 +322,7 @@
     <div id="thr-verdict" class="big"></div>
     <p style="margin:6px 0 0;font-size:.9rem" id="thr-detail"></p>
   </div>
-  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">This is the scaling law the formal section below states in full, p<sub>L</sub> ≈ A (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, drawn with A = 1. The marker is the smallest odd distance whose p<sub>L</sub> reaches the target, solved in log space (r<sup>E</sup> underflows a raw comparison by a rounding hair). It reproduces both worked figures below &mdash; <em>r</em> = 1/10, 10⁻¹² → d = 23, ≈1,057 physical qubits; <em>r</em> = 1/3 → d = 51, 5,201 &mdash; checked in a verification script before shipping. Real overhead is higher: routing, magic-state factories and correlated noise all sit on top.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">This is the scaling law the formal section below states in full, p<sub>L</sub> ≈ A (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, drawn with A = 1. The marker is the smallest odd distance whose p<sub>L</sub> reaches the target, solved in log space (r<sup>E</sup> underflows a raw comparison by a rounding hair). It reproduces both worked figures below &mdash; <em>r</em> = 1/10, 10⁻¹² → d = 23, ≈<span class="rcpt" data-rcpt="qec-1057" tabindex="0" role="button" aria-expanded="false">1,057 physical qubits</span>; <em>r</em> = 1/3 → d = 51, <span class="rcpt" data-rcpt="qec-5201" tabindex="0" role="button" aria-expanded="false">5,201</span> &mdash; checked in a verification script before shipping. Real overhead is higher: routing, magic-state factories and correlated noise all sit on top.</p>
 </div>
 
 <h2 data-tier-keep>Break the code yourself</h2>
@@ -355,13 +362,13 @@
 </div>
 
 <span class="tier r">🔴 Real math</span>
-<h2 id="red">The formalism, with receipts</h2>
+<h2 id="red" data-fig-state="5">The formalism, with receipts</h2>
 <p>Rotated surface code with distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits; the stabilizer group is generated by weight-4 X- and Z-plaquette operators in the bulk and weight-2 operators on the boundaries. Logical operators are X- and Z-strings spanning the lattice between their respective boundaries; the code is [[<em>d</em>², 1, <em>d</em>]]. Decoding is inference over the syndrome volume: given syndrome history σ, return the most probable <em>logical equivalence class</em> of errors. The exact physical error is unrecoverable and irrelevant; any correction in the right class (differing from the truth by a stabilizer) succeeds. The demo above shows this: flip one qubit of a weight-2 check and the decoder may "repair" its partner instead, and that's a win.</p>
 <p><strong>The threshold theorem</strong> is what makes "below threshold" more than a hopeful phrase: it is the proof that arbitrarily long fault-tolerant quantum computation is possible at all, provided the physical error rate sits below a fixed constant p<sub>th</sub> and the code is scaled up to compensate, exactly the claim the scaling law below quantifies. It was proven independently, by three different routes, in the late 1990s: by concatenating small codes inside themselves recursively (Aharonov &amp; Ben-Or, <a href="https://arxiv.org/abs/quant-ph/9906129">arXiv quant-ph/9906129</a> (<em>SIAM J. Comput.</em> 38, 1207 (2008), expanding their 1997 STOC result); Knill, Laflamme &amp; Zurek, <a href="https://arxiv.org/abs/quant-ph/9702058">arXiv quant-ph/9702058</a> (<em>Proc. R. Soc. Lond. A</em> 454, 365 (1998))), and by a topological route closer to the surface code used here (Kitaev, <em>Russian Mathematical Surveys</em> 52, 1191 (1997)). The proof holds under a specific noise model, though: errors independent across qubits and gates, local rather than striking many qubits at once, and already below threshold before scaling starts. Real hardware breaks the first two by default (crosstalk correlates neighboring failures, leakage escapes the two-level qubit the proof assumes), which is not a footnote to the theorem but the entire reason correlated matching and AlphaQubit exist below.</p>
 <p>Below threshold, logical error per round scales as</p>
 <div class="formula">p<sub>L</sub> ≈ A (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
 <p>so each two-step increase in distance (d → d+2) multiplies suppression by Λ ≈ p<sub>th</sub>/p.</p>
-<p>Google's Willow processor was the first hardware demonstration on the right side of the exponent: across a d = 3, 5, 7 series, increasing the distance by two suppressed the logical error rate by Λ = 2.14 ± 0.02 (obtained by fitting the log of the logical error rate against distance across the whole series, not from any single step; the lone d = 5 → 7 ratio is ≈ 2.1), with the d=7 logical qubit's lifetime exceeding its best physical qubit's (arXiv 2408.13687, <em>Nature</em> 638, 920 (2025)). The overhead is the price: 2d²−1 physical qubits per logical, so at p ≈ 10⁻³ and a 10⁻¹² logical target, d ≈ 23 → roughly a thousand physical qubits per logical <em>before</em> routing and magic-state factories. The same overhead logic, run at the gentler error budget a real attack circuit needs (~9×10⁷ Toffoli gates → a ~10⁻⁹–10⁻¹⁰ target, not 10⁻¹²), is how "≈1,200 logical qubits to break a Bitcoin key" (2026 estimate) becomes <a href="bitcoin.html">half a million physical ones</a>: about 400 physical per logical, magic-state factories included.</p>
+<p>Google's Willow processor was the first hardware demonstration on the right side of the exponent: across a d = 3, 5, 7 series, increasing the distance by two suppressed the logical error rate by <span class="rcpt" data-rcpt="qec-lambda" tabindex="0" role="button" aria-expanded="false">Λ = 2.14 ± 0.02</span> (obtained by fitting the log of the logical error rate against distance across the whole series, not from any single step; the lone d = 5 → 7 ratio is ≈ 2.1), with the d=7 logical qubit's lifetime exceeding its best physical qubit's (arXiv 2408.13687, <em>Nature</em> 638, 920 (2025)). The overhead is the price: 2d²−1 physical qubits per logical, so at p ≈ 10⁻³ and a 10⁻¹² logical target, d ≈ 23 → roughly a thousand physical qubits per logical <em>before</em> routing and magic-state factories. The same overhead logic, run at the gentler error budget a real attack circuit needs (~9×10⁷ Toffoli gates → a ~10⁻⁹–10⁻¹⁰ target, not 10⁻¹²), is how "≈1,200 logical qubits to break a Bitcoin key" (2026 estimate) becomes <a href="bitcoin.html">half a million physical ones</a>: about 400 physical per logical, magic-state factories included.</p>
 <p><strong>Magic-state factories,</strong> named above but never explained: Clifford-group gates alone (H, S, CNOT) are not universal. The Gottesman–Knill theorem shows any circuit built only from Clifford gates, stabilizer-state inputs, and Pauli measurements is efficiently simulable on an ordinary classical computer (Gottesman&#39;s 1997 Caltech thesis, <a href="https://arxiv.org/abs/quant-ph/9705052">arXiv quant-ph/9705052</a>, already gives a polynomial-time simulation algorithm; sped up and extended to mixed states by Aaronson &amp; Gottesman, <a href="https://arxiv.org/abs/quant-ph/0406196">arXiv quant-ph/0406196</a>, <em>Phys. Rev. A</em> 70, 052328 (2004)). So a fault-tolerant computer that only ever ran Clifford gates would be classically simulable too, i.e. pointless. Universality needs one more ingredient, typically the T-gate, and most codes can't apply it directly and stay fault-tolerant, so instead it's injected via a prepared <strong>magic state</strong>. Injected magic states start noisy, and they don't inherit the surrounding code's protection for free, so they are purified by <strong>distillation</strong>: consume several noisy copies, output fewer higher-fidelity ones, repeat until the error is low enough for the algorithm ahead (Bravyi &amp; Kitaev, <a href="https://arxiv.org/abs/quant-ph/0403025">arXiv quant-ph/0403025</a>, <em>Phys. Rev. A</em> 71, 022316 (2005)). That consumption is not a rounding error on top of the surface-code overhead above: early resource estimates found distillation dominating the physical-qubit budget so consistently that a later paper's entire contribution was proving it didn't have to (Litinski, <a href="https://arxiv.org/abs/1905.06903">arXiv 1905.06903</a>, <em>Quantum</em> 3, 205 (2019), titled, pointedly, "Magic State Distillation: Not as Costly as You Think").</p>
 <p><strong>Distillation, done for real.</strong> Until 2025 that whole picture was circuit-level accounting on paper. In July 2025 a QuEra/Harvard/MIT team ran distillation on <em>logical</em> qubits, not raw physical ones, on a neutral-atom processor: encoding magic states in d=3 and d=5 color codes and distilling them, they raised output fidelity to 99.4% from a 95.1% input at d=3 (an 8× cut in infidelity) and to 98.6% from 92.5% at d=5 (a 6× cut) (<a href="https://arxiv.org/abs/2412.15165">arXiv 2412.15165</a>, <em>Nature</em> 645, 620 (2025)). The output beating every input is the result: distillation stacked on top of error correction, the architecture every serious resource estimate assumes, run end-to-end on hardware for the first time, on a different platform from Willow's superconducting transmons and a different layer of the stack from AlphaQubit's decoding.</p>
 <p><strong>Transversal gates.</strong> A transversal gate applies the same physical operation to every physical qubit of a logical block independently (one qubit at a time, never a two-qubit gate between two physical qubits inside the same block), so a single faulty gate can corrupt at most one physical qubit's worth of information and has nowhere to spread within the block; that's what makes the gate fault-tolerant by construction rather than by extra circuitry bolted on afterward. It has a hard ceiling, though: the <strong>Eastin–Knill theorem</strong> proves that any code able to detect an arbitrary error on a single physical qubit cannot have a gate set that is both transversal and universal (Eastin &amp; Knill, <a href="https://arxiv.org/abs/0811.4262">arXiv 0811.4262</a> (<em>Phys. Rev. Lett.</em> 102, 110502 (2009))). That forces universality to come from outside the transversal gate set entirely, which is exactly why the magic-state machinery two paragraphs up isn't a separate topic from this one: distillation is how that outside ingredient gets purified to usable fidelity, precisely because transversality alone has been proven unable to supply it. On the surface code specifically: logical CNOT between two patches is transversal, but only if the patches are arranged with each physical qubit adjacent to its partner, which a flat 2D layout can't generally give two side-by-side patches; logical Hadamard is transversal on a single patch too, but a bare transversal-H layer swaps the patch's X- and Z-type boundaries, so recovering the original orientation costs a geometric rotation of the patch on top of the gate; S is not transversal on the surface code at all and has to be reached some other way, such as gate teleportation through an ancilla state.</p>

@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "generated": "2026-09-01",
+  "note": "The second consumer of the Lexicon's shared underline (site/lexicon.css / site/lexicon.js): a small set of LOAD-BEARING figures per page, marked in the HTML as <span class=\"rcpt\" data-rcpt=\"<id>\">, each with a record here. site/receipts.js reads this file, builds the popover card for each marked figure, and adds the page's 'Show the receipts' toggle only if the current page has at least one entry. Deliberately NOT exhaustive -- see PART A2 of outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md: marking every number would make the marked ones mean nothing. Every record needs either `tool` (a script in tools/ that produced or checked the figure) or `source` (a citation for a figure this site measured against or quotes from a primary source) -- checked by tools/check_receipts.py, which also confirms every data-rcpt id in the HTML has a record here and vice versa, and that every `tool` path actually exists on disk.",
+  "fields": {
+    "id": "stable slug, matches the HTML span's data-rcpt",
+    "page": "the page this figure lives on",
+    "value": "the figure as it reads on the page, exactly",
+    "formula": "the derivation, if the page states one -- omit rather than invent",
+    "inputs": "the inputs that formula was run with",
+    "tool": "path under tools/ that computed or checked this, if this site did the computing",
+    "source": "a citation, if the figure is an external measurement this site quotes or checked itself against",
+    "verified_at": "the date this was last checked",
+    "falsifier": "one sentence: what would make this figure wrong, or what it leaves out",
+    "claim": "optional -- a slug in data/claims/, if this figure bears on a live prediction"
+  },
+  "receipts": [
+    {
+      "id": "qec-1057",
+      "page": "qec.html",
+      "value": "1,057 physical qubits",
+      "formula": "p_L ≈ A (p/p_th)^⌊(d+1)/2⌋, A = 1",
+      "inputs": "r = p/p_th = 1/10 · target p_L = 10⁻¹²",
+      "tool": "tools/verify_threshold.py",
+      "verified_at": "2026-08-31",
+      "falsifier": "excludes routing, magic-state factories and correlated noise, which all sit on top of this bare per-qubit count."
+    },
+    {
+      "id": "qec-5201",
+      "page": "qec.html",
+      "value": "5,201 physical qubits",
+      "formula": "p_L ≈ A (p/p_th)^⌊(d+1)/2⌋, A = 1",
+      "inputs": "r = p/p_th = 1/3 · target p_L = 10⁻¹²",
+      "tool": "tools/verify_threshold.py",
+      "verified_at": "2026-08-31",
+      "falsifier": "the same bare-count caveat as qec-1057: routing and magic-state overhead are not included."
+    },
+    {
+      "id": "qec-lambda",
+      "page": "qec.html",
+      "value": "Λ = 2.14 ± 0.02",
+      "formula": "fit of log(logical error rate) against distance across a d = 3, 5, 7 series",
+      "inputs": "Google Willow processor, per-two-distance-step suppression",
+      "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687",
+      "verified_at": "2026-07-21",
+      "falsifier": "the single d = 5 → 7 step alone reads closer to 2.1 — the 2.14 figure is the whole-series fit, not any one step."
+    },
+    {
+      "id": "btc-500k",
+      "page": "bitcoin.html",
+      "value": "under half a million physical qubits",
+      "formula": "state-of-the-art Shor circuit re-costing, surface-code assumptions",
+      "inputs": "<1,200 logical qubits · <90M Toffoli gates · physical error rate ≈ 10⁻³",
+      "source": "Gidney, Babbush, Drake, Boneh et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (Mar 2026)",
+      "verified_at": "2026-08-21",
+      "falsifier": "a 2022 estimate under the same assumptions put this at 1.9 billion — the algorithmic side (not hardware) closed most of that three-order-of-magnitude gap, and could move again."
+    },
+    {
+      "id": "btc-9min",
+      "page": "bitcoin.html",
+      "value": "≈9 minutes",
+      "formula": "precomputable half of Shor's algorithm depends only on public curve parameters",
+      "inputs": "runs from the moment a transaction reveals its public key, inside the confirmation window",
+      "source": "Gidney, Babbush, Drake, Boneh et al., arXiv:2603.28846 (Mar 2026)",
+      "verified_at": "2026-08-21",
+      "falsifier": "applies to exposed-key coins specifically — it is an upper bound on how fast the racing attack could run, not a claim about coins whose keys have never been revealed."
+    },
+    {
+      "id": "btc-1.9b",
+      "page": "bitcoin.html",
+      "value": "≈1.9B physical qubits",
+      "formula": "surface-code cost to break one key inside a 10-minute confirmation window",
+      "inputs": "physical error rate ≈ 10⁻³, 2022 circuit constructions",
+      "source": "Webber et al., AVS Quantum Science 4, 013801 (2022)",
+      "verified_at": "2026-07-19",
+      "falsifier": "superseded by arXiv:2603.28846's 2026 re-costing (btc-500k) — this figure is kept on the page as the before-picture of a four-year, three-order-of-magnitude collapse, not as today's estimate."
+    },
+    {
+      "id": "pqc-3309",
+      "page": "pqc.html",
+      "value": "3,309 bytes",
+      "formula": "the byte length of a real ML-DSA-65 signature, generated and measured live in the visitor's own browser",
+      "inputs": "WebCrypto-backed ML-DSA-65 sign operation, this page's own instrument",
+      "source": "FIPS 204 (ML-DSA); several secondary sources instead quote round-3 Dilithium3's 3,293, which this page's own measurement corrects",
+      "verified_at": "2026-08-06",
+      "falsifier": "measures the FIPS-204-final scheme specifically — an implementation still on the round-3 Dilithium spec would legitimately measure 3,293."
+    },
+    {
+      "id": "pqc-7856",
+      "page": "pqc.html",
+      "value": "7,856 bytes",
+      "formula": "the byte length of a real SLH-DSA-128s signature, generated and measured live",
+      "inputs": "WebCrypto-backed SLH-DSA-128s sign operation",
+      "source": "FIPS 205 (SLH-DSA)",
+      "verified_at": "2026-08-06",
+      "falsifier": "the 's' (small) SLH-DSA parameter set trades signature size for slower signing — the 'f' (fast) set has a different, smaller signature at a speed cost this page does not measure."
+    },
+    {
+      "id": "pqc-14600",
+      "page": "pqc.html",
+      "value": "14,600 bytes",
+      "formula": "10 segments × 1,460-byte TCP payload on a standard 1,500-byte Ethernet MTU",
+      "inputs": "TCP initial congestion window = 10 segments",
+      "source": "RFC 6928 (IETF, Apr 2013); default since Linux 2.6.39 (May 2011)",
+      "verified_at": "2026-08-06",
+      "falsifier": "a path with a smaller MTU, or a server whose congestion window differs from the RFC 6928 default, moves this number — it is the standard case, not a universal constant."
+    }
+  ]
+}

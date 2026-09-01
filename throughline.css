@@ -1,0 +1,75 @@
+/* ================================================================
+   THE THROUGH-LINE (2026-09-01)  —  opt-in via <body data-throughline>.
+   Shipped on qec.html ONLY, as a first trial -- see PART B1 of
+   outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md. "Ship it on one page,
+   judge it, then decide" is the plan's own instruction; this is
+   deliberately the smaller of the two designs sketched there (a fixed
+   corner companion, not a two-column sticky-gutter retrofit of .wrap),
+   because the larger version would restructure a referee-verified
+   page's layout to ship a first trial. Reversible by removing one
+   attribute, one <link>, one <script>.
+
+   WHAT IT IS. One small SVG figure -- a single surface-code patch --
+   that changes state as the reader scrolls past five sections: a lone
+   qubit failing, the patch forming around it, a syndrome firing and a
+   decoder repair, the patch calm below threshold, then the same patch
+   labelled with notation. The reader accumulates one object instead of
+   restarting at each section's own diagram.
+
+   ≥720px only (the site's own phone/desktop split, per DESIGN.md's
+   Layout section) -- a fixed corner panel competes with a phone's
+   limited screen for exactly the attention the content itself needs
+   there, so this trial skips mobile rather than shrink a companion
+   figure to illegibility. */
+@media (min-width: 720px) {
+  .tl-panel {
+    position: fixed;
+    right: 20px; bottom: 20px;
+    z-index: 55;   /* below the nav dropdown's 45 is wrong -- this sits below the header itself, which is z-index 40; 55 keeps it above page content without contesting the header */
+    width: 168px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    /* A permanent floating overlay, not a resting content card -- same
+       elevation exception DESIGN.md already grants the nav dropdown
+       (.navpanel carries a constant shadow), not the Flat-By-Default
+       rule for cards in the reading flow. */
+    box-shadow: var(--elev-2);
+    padding: var(--sp-3);
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+  .tl-panel.on { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  @media (prefers-reduced-motion: no-preference) {
+    .tl-panel { transition: opacity 220ms var(--ease-out-quint, ease), transform 220ms var(--ease-out-quint, ease); }
+  }
+  .tl-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 0 0 6px;
+  }
+  .tl-eyebrow {
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .tl-close {
+    all: unset; cursor: pointer; color: var(--muted); font-size: 0.9rem; line-height: 1;
+    padding: 4px; margin: -4px; min-width: 24px; min-height: 24px; display: grid; place-items: center;
+  }
+  .tl-close:hover, .tl-close:focus-visible { color: var(--text); }
+  .tl-svg { display: block; width: 100%; height: auto; }
+  .tl-cap { font-size: 0.76rem; color: var(--muted); line-height: 1.4; margin: 6px 0 0; }
+
+  /* the figure's own vocabulary -- deliberately the same palette qec.html's
+     surface-17 widget already uses (.pq / .pq.lit / .dq.flip / .fixring),
+     so the Through-Line reads as the same object rather than a new one */
+  .tl-cell { fill: var(--panel); stroke: var(--teal); stroke-opacity: .4; stroke-width: 1.3; }
+  .tl-cell.flip { fill: var(--red); stroke: var(--red); fill-opacity: .55; }
+  .tl-check { fill: none; stroke: var(--border); stroke-width: 1.3; }
+  .tl-check.lit { stroke: var(--yellow); fill: rgba(250,204,21,.22); }
+  .tl-fix { fill: none; stroke: var(--teal); stroke-width: 1.6; stroke-dasharray: 3 3; }
+  .tl-label { fill: var(--muted); font-size: 7px; font-family: inherit; }
+}
+@media (max-width: 719px) {
+  .tl-panel { display: none; }   /* not shipped on mobile in this first trial -- see the header note */
+}

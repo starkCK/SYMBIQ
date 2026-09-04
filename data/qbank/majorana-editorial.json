@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "majorana-editorial",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "y",
+  "receipt": "cmp-majorana-editorial",
+  "question": {
+    "text": "In February 2025 Microsoft announced Majorana 1, a chip it said hosted eight topological qubits, alongside a peer-reviewed Nature paper. What did Nature's own editorial team say the paper did not do?",
+    "options": [
+      "Represent evidence for the presence of Majorana zero modes in the reported devices",
+      "Pass peer review, which is why it was published as a preprint instead",
+      "Demonstrate that the chip could execute a two-qubit gate",
+      "Report the disorder levels in the devices, which the referees had asked for"
+    ],
+    "answerIndex": 0,
+    "hint": "The paper was published and it did demonstrate a real measurement. The caveat is about what that measurement is evidence FOR.",
+    "explain": {
+      "g": "The paper was real, peer-reviewed and showed a genuine measurement. What the journal's editors added was a note that the measurement is not evidence the exotic states the whole approach depends on are actually there. That is a third epistemic state, and it is the interesting one: not proven, not disproven, publicly unresolved. Physicists are on the record disagreeing in both directions.",
+      "y": "The paper demonstrated an interferometric single-shot parity measurement consistent with topological behaviour. Consistent with is not evidence for, and the editorial note said so. Named physicists split publicly: some argued the topological gap protocol gives inconsistent verdicts depending on parameter range, others called the released data noise, while the co-author of the original 2010 proposal stayed engaged and said the devices' disorder needs to improve further before the question is settled experimentally.",
+      "r": "Microsoft Azure Quantum et al., “Interferometric single-shot parity measurement in InAs–Al hybrid devices,” Nature 638, 651 (2025), with the accompanying editorial note. The field has been burned here before: a 2018 Majorana-conductance paper from a Microsoft-affiliated Delft lab was retracted in March 2021 after a mundane non-topological explanation was shown to produce the same data. None of this makes topological qubits a dead end. It makes the claim unresolved, in public, right now."
+    }
+  }
+}

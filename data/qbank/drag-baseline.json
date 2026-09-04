@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "drag-baseline",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "r",
+  "receipt": "cir-drag-10x",
+  "question": {
+    "text": "DRAG pulse shaping is usually quoted as giving roughly an order-of-magnitude error reduction on superconducting single-qubit gates. An order of magnitude better than what?",
+    "options": [
+      "Than the state of the art the 2009 paper was written against, at realistic transmon parameters — not than any modern gate",
+      "Than an unshaped square pulse of the same duration and amplitude",
+      "Than the best gates achievable today without pulse shaping",
+      "Than the fault-tolerance threshold, which is what makes the technique necessary"
+    ],
+    "answerIndex": 0,
+    "hint": "The claim is sixteen years old. Ask what it was being compared to at the time, not what it would be compared to now.",
+    "explain": {
+      "g": "The number is real, and it is a comparison against what was good in 2009. Quoting it as though DRAG makes today's gates ten times better is a different and much stronger claim than the paper made. This is the ordinary way a correct citation goes wrong: the figure survives, the thing it was measured against quietly gets dropped.",
+      "y": "A transmon is only weakly anharmonic, so a fast drive tuned to the 0-to-1 transition has non-negligible spectral weight at the nearby 1-to-2 transition and leaks population into the second level. DRAG shapes the pulse to cancel that leakage. Some form of it runs on essentially every superconducting qubit gate in production today, which is a much better argument for the technique than any single ratio.",
+      "r": "Motzoi, Gambetta, Rebentrost and Wilhelm, arXiv 0901.0534 (Phys. Rev. Lett. 103, 110501 (2009)), reporting the reduction relative to the state of the art at realistic transmon parameters. An earlier version of our own circuits page misattributed that baseline, which is why the comparison is now spelled out rather than left as a bare ten-fold. The underlying device physics is Koch et al., arXiv cond-mat/0703002 (Phys. Rev. A 76, 042319 (2007))."
+    }
+  }
+}

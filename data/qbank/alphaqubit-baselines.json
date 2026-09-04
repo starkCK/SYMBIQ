@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "alphaqubit-baselines",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "g",
+  "receipt": "bas-alphaqubit",
+  "question": {
+    "text": "Google DeepMind's AlphaQubit decoder is usually reported as making “about 30% fewer errors.” Fewer than what?",
+    "options": [
+      "Than correlated matching — the fast decoder you can actually run on a live machine. Against the slowest and most careful one it is about 6% better",
+      "Than the physical qubits themselves, which is the whole point of decoding",
+      "Than the previous year's version of AlphaQubit, on the same hardware",
+      "Than a human expert reading the same syndrome data by hand"
+    ],
+    "answerIndex": 0,
+    "hint": "Two numbers were reported against two different baselines. The bigger one is not measured against the better decoder.",
+    "explain": {
+      "g": "There are two comparisons, and swapping them is the most common mistake in coverage of this result. Against the quick rulebook a real machine can run live, AlphaQubit is about 30% better. Against the slowest, most careful method — which is far too slow to use on live hardware — it is about 6% better. The big number is the one measured against the weaker opponent, and saying so is not a criticism of the result.",
+      "y": "The 30% is against correlated matching, the real-time-capable baseline; the 6% is against a tensor-network decoder, which is near-optimal and far too slow to run in the loop. AlphaQubit is a recurrent transformer trained on hundreds of millions of simulated samples then fine-tuned on thousands of real ones, and it reads the analog soft readout rather than binarised measurements, which is a genuine information advantage rather than just a bigger model.",
+      "r": "Bausch et al., “Learning high-accuracy error decoding for quantum processors,” Nature 635, 834 (2024). Two limits worth carrying with the number: the real-device data is distance 3 and distance 5, while the distance-11 result is simulation only; and AlphaQubit is still too slow to decode in real time, so this is an accuracy result, not a shipped capability. Making a learned decoder fast enough to run in the loop is the current race."
+    }
+  }
+}

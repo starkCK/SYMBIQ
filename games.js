@@ -111,6 +111,54 @@
       var EPOCHS = ruthless ? 10 : g.EPOCHS;
       var winIdx = ruthless ? LV.length - 1 : 1;   // Standard: Twin Calderas. Ruthless: The Long Haul.
 
+      /* ---- THE LADDER (FRAME.ladder, 22_ C1) --------------------------------
+         Fourth cabinet on the shared framework, and the same rule again: NO new
+         landscapes and NO new pass marks. Every level below is copied verbatim
+         out of LV / LV_RUTHLESS, so it inherits those measured bars as-is (each
+         was established over 20,000 runs; see this cabinet's honest-model note).
+         The Serrated Ridge is the one landscape the Ladder skips: it is another
+         many-trap comb, and the Comb already teaches that at L4.
+         L1-3 build the one idea annealing exists for -- heat crosses, cold
+         keeps; L4 breaks the "first ditch" picture; L5 is the INVERSION, where
+         the greedy method is correct; L6-8 cross into the Deep Country on the
+         tighter 10-epoch budget; L9 is the boss, the longest landscape with the
+         narrowest margin between the pass mark and the best schedule known. */
+      var VLADDER = [
+        { n: 1, set: 'std',  idx: 0, teach: 'Cool from the first move and the walker can never accept an uphill step. It stops in the first ditch it meets.' },
+        { n: 2, set: 'std',  idx: 1, teach: 'Two traps now. <strong>Heat finds, cold keeps</strong> &mdash; hold the temperature while it crosses, then cool hard.' },
+        { n: 3, set: 'std',  idx: 4, teach: 'The floor is a long way down. Heat has to last, and cooling early costs you the whole descent.' },
+        { n: 4, set: 'std',  idx: 2, teach: 'Seven traps, so &ldquo;it freezes in the <em>first</em> ditch&rdquo; is the wrong picture &mdash; it freezes in whichever one it is nearest.' },
+        { n: 5, set: 'std',  idx: 3, teach: '<strong>The inversion.</strong> No structure to exploit, so crash-cooling is the <em>best</em> play here. No method beats another averaged over all landscapes.' },
+        { n: 6, set: 'ruth', idx: 0, teach: 'The Deep Country: <strong>ten</strong> epochs, not twelve, and the mark drops to 30%. Less schedule, less room for error.' },
+        { n: 7, set: 'ruth', idx: 3, teach: 'Two ridges to cross before the floor. Crash-cooling clears this <strong>0%</strong> of the time &mdash; measured, not asserted.' },
+        { n: 8, set: 'ruth', idx: 2, teach: 'A narrow, deep minimum. Getting there is one problem; still being there when the run ends is the other.' },
+        { n: 9, set: 'ruth', idx: 4, teach: '<strong>The boss.</strong> The longest landscape here, and the tightest gap between the pass mark and the best schedule anyone has found.' }
+      ];
+      var vld = { on: false, n: 1, done: false };
+      function vldDef() { return VLADDER[vld.n - 1]; }
+      function vldStart() {
+        var def = vldDef();
+        LV = [(def.set === 'ruth' ? g.LV_RUTHLESS : g.LV)[def.idx]];
+        EPOCHS = def.set === 'ruth' ? 10 : g.EPOCHS;   // the Deep Country's own budget
+        li = 0; cleared = []; vld.done = false;
+        fresh();
+      }
+      function vldFinish(rate) {
+        var L = LV[0];
+        vld.done = true;   // freeze the level; a re-run must not re-award it
+        var medal = rate >= L.best ? 'gold' : rate >= (L.bar + L.best) / 2 ? 'silver' : 'bronze';
+        var glyph = medal === 'gold' ? '🥇' : medal === 'silver' ? '🥈' : '🥉';
+        FRAME.ladder.markCleared('volcano', vld.n, medal);
+        if (vld.n >= VLADDER.length) {
+          return '<div class="g-mentor">' + glyph +
+            ' <strong>The Ladder is cleared.</strong> Nine landscapes, every pass mark measured over 20,000 runs before it was ever set.' +
+            ' Vesh: annealing is a heuristic all the way down &mdash; you did not beat it, you learned to steer it.</div>';
+        }
+        return '<div class="g-mentor">' + glyph + ' Level ' + vld.n + ' cleared at <strong>' +
+          Math.round(rate * 100) + '%</strong> against a ' + Math.round(L.bar * 100) + '% mark.' +
+          ' <button class="preset" type="button" data-a="vldnext">Continue to Level ' + (vld.n + 1) + ' &#9656;</button></div>';
+      }
+
       /* ---- THE DESCENT: an endless, generated score-chase ------------------
          Standard/Guided arcade only (Ruthless + missions untouched). Each
          landscape is generated from (seed, difficulty d); you get one 10-epoch
@@ -240,6 +288,7 @@
             'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="volc">Volcanoes</button>' +
+            '<button class="preset" type="button" data-gm="ladder">The Ladder</button>' +
             '<button class="preset" type="button" data-gm="desc">The Descent</button>' +
             '<button class="preset" type="button" data-gm="daily">Daily Descent</button>' +
             '<span data-r="descbest" style="color:var(--muted)"></span>' +
@@ -349,6 +398,18 @@
                 (descent.best > 0 ? ' · all-time ' + descent.best : '') + '</span>'
               : (descent.d > 0 ? ' &nbsp;<span style="color:var(--muted)">' + descent.d + ' behind you' +
                   (descent.best > 0 ? ' · deepest ' + descent.best : '') + '</span>' : '')) + '</div>';
+          return;
+        }
+        if (vld.on) {
+          $(root, '[data-r=chips]').innerHTML =
+            '<div class="ld-strip" role="list" aria-label="The Ladder, nine levels">' + FRAME.ladder.strip('volcano', VLADDER, vld.n) + '</div>' +
+            '<div class="ld-teach"><strong>Level ' + vld.n + '.</strong> ' + vldDef().teach +
+            ' <span style="color:var(--muted)">' + LV[0].n + ', ' + EPOCHS + ' epochs, ' +
+            Math.round(LV[0].bar * 100) + '% to clear.</span></div>';
+          Array.prototype.forEach.call(root.querySelectorAll('[data-r=chips] [data-ld]'), function (b) {
+            if (b.disabled) return;
+            b.addEventListener('click', function () { vld.n = +b.getAttribute('data-ld'); vldStart(); render(); });
+          });
           return;
         }
         $(root, '[data-r=chips]').innerHTML = LV.map(function (L, i) {
@@ -483,6 +544,7 @@
         st.rate = scheduleRate(L, st.sched);           // 500 honest replays of YOUR schedule
         var passed = st.rate >= L.bar;
         if (passed && !cleared[li]) cleared[li] = true;
+        var vldNote = (vld.on && passed && !vld.done) ? vldFinish(st.rate) : '';
 
         var runLine = frozeRight
           ? '<strong>You froze on the floor.</strong> '
@@ -525,7 +587,11 @@
           });
         }
 
-        render({ k: passed ? 'good' : (frozeRight ? 'split' : 'bad'), t: runLine + judge + hint + frame });
+        render({ k: passed ? 'good' : (frozeRight ? 'split' : 'bad'), t: runLine + judge + hint + frame + vldNote });
+        if (vldNote) {
+          var vnb = $(root, '[data-r=say]').querySelector('[data-a=vldnext]');
+          if (vnb) vnb.addEventListener('click', function () { vld.n++; vldStart(); syncVmode(); render(); });
+        }
         if (passed && L.flat) {
           $(root, '[data-r=say]').innerHTML += '<br><span style="color:var(--muted)">Notice what just happened: on this level even <em>cooling instantly</em> passes. ' +
             'The plain is flat, so every step is accepted at any temperature, your control did nothing until the walker stumbled into the hole. That is <strong>No Free Lunch</strong>, felt rather than stated.</span>';
@@ -552,7 +618,7 @@
       function syncVmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = !descent.on ? 'volc' : descent.daily ? 'daily' : 'desc';
+        var cur = vld.on ? 'ladder' : !descent.on ? 'volc' : descent.daily ? 'daily' : 'desc';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -568,14 +634,22 @@
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=volc]').addEventListener('click', function () {
-          descent.on = false; descent.daily = false; descent.over = false;
+          descent.on = false; descent.daily = false; descent.over = false; vld.on = false;
           LV = ruthless ? g.LV_RUTHLESS : g.LV;
           EPOCHS = ruthless ? 10 : g.EPOCHS;
           li = 0; cleared = []; fresh(); syncVmode(); render();
         });
+        bar.querySelector('[data-gm=ladder]').addEventListener('click', function () {
+          descent.on = false; descent.daily = false; descent.over = false; vld.on = true;
+          // resume at the first not-yet-cleared level
+          var st2 = FRAME.ladder.state('volcano'), resume = 1;
+          for (var i = 1; i <= VLADDER.length; i++) if (st2.cleared[i]) resume = Math.min(i + 1, VLADDER.length);
+          vld.n = resume;
+          vldStart(); syncVmode(); render();
+        });
         function startDescent(isDaily) {
           descent.on = true; descent.daily = isDaily; descent.d = 0;
-          descent.over = false; descent.newBest = false;
+          descent.over = false; descent.newBest = false; vld.on = false;
           startDescentLevel(); syncVmode(); render();
         }
         bar.querySelector('[data-gm=desc]').addEventListener('click', function () { startDescent(false); });
@@ -1085,6 +1159,7 @@
             'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="corridors">Corridors</button>' +
+            '<button class="preset" type="button" data-gm="ladder">The Ladder</button>' +
             '<button class="preset" type="button" data-gm="dd">Deep Dive</button>' +
             '<button class="preset" type="button" data-gm="daily">Daily Dive</button>' +
             '<span data-r="ddbest" style="color:var(--muted)"></span>' +
@@ -1111,6 +1186,56 @@
       var CORR_RUTHLESS = [{n:96,par:7},{n:140,par:9},{n:192,par:10},{n:256,par:12},{n:384,par:15},{n:512,par:17}];
       var CORR = ruthless ? CORR_RUTHLESS : CORR_STD;
       var ci = 0, k = 0, mark = 0, measured = false, busy = false, bestP = 0, solved = [];
+
+      /* ---- THE LADDER (FRAME.ladder, 22_ C1) --------------------------------
+         The second cabinet to adopt the shared framework, after Circuit Golf.
+         Same rule, kept deliberately: NO new instances and NO new pars. Every
+         corridor below is copied verbatim out of CORR_STD / CORR_RUTHLESS, so
+         this inherits the proofs of those pars (verify_grover_ruthless.py and
+         verify_grover_deepdive.py) as-is and needs no physics of its own.
+         L1-3 grow N while the peak is still countable by eye; L4 is where
+         over-amplifying first costs you; L5 is the last readable bar chart;
+         L6 hides the peak (Deep Dive's trick, applied one level at a time);
+         L7-9 cross into the Long Corridors, where only (pi/4)sqrt(N) gets you
+         there. L9 is the boss: 512 doors, 17 passes, classical average 256. */
+      var GLADDER = [
+        { n: 1, set: 'std',  idx: 0, teach: 'Four doors, one pass. An amplification is a <strong>rotation</strong> of the odds, not a peek behind a door.' },
+        { n: 2, set: 'std',  idx: 1, teach: 'Twice the doors, but not twice the work: the peak moved by <strong>one</strong>, because par grows like &radic;N.' },
+        { n: 3, set: 'std',  idx: 2, teach: 'Sixteen doors, three passes. A door-to-door searcher averages eight. That gap <em>is</em> the speedup.' },
+        { n: 4, set: 'std',  idx: 3, teach: 'Overshoot on purpose here. Past the peak the exit&rsquo;s odds <strong>fall again</strong> &mdash; the rotation does not stop when you are happy.' },
+        { n: 5, set: 'std',  idx: 4, teach: 'Sixty-four bars is the last chart you can read at a glance. Par 6, not 8: the curve peaks near (&pi;/4)&radic;N, not at &radic;N.' },
+        { n: 6, set: 'ruth', idx: 0, hidePeak: true, teach: '<strong>The peak is hidden from here on.</strong> Count it yourself: about (&pi;/4)&radic;96 &minus; &frac12;.' },
+        { n: 7, set: 'ruth', idx: 2, hidePeak: true, teach: 'A hundred and ninety-two doors, ten passes; classical averages ninety-six. Nothing on screen tells you when to look.' },
+        { n: 8, set: 'ruth', idx: 4, hidePeak: true, teach: 'Even a perfect peak is a <strong>weighted draw</strong>. At par the exit holds well over 99%, and the rest is still the dice.' },
+        { n: 9, set: 'ruth', idx: 5, hidePeak: true, teach: '<strong>The boss.</strong> 512 doors, 17 passes, against a classical average of 256 &mdash; and Grover is <em>proven</em> optimal for unstructured search, so nothing does better.' }
+      ];
+      var gld = { on: false, n: 1, done: false };
+      function gldDef() { return GLADDER[gld.n - 1]; }
+      function gldShowPar() { return !gldDef().hidePeak; }
+      function gldStart() {
+        var def = gldDef();
+        CORR = [(def.set === 'ruth' ? CORR_RUTHLESS : CORR_STD)[def.idx]];
+        ci = 0; solved = []; gld.done = false;
+        fresh();
+      }
+      function gldFinish() {
+        var par = CORR[0].par;
+        gld.done = true;   // freeze the level: a stray extra Measure must not re-fire this
+        var medal = k === par ? 'gold' : Math.abs(k - par) <= 1 ? 'silver' : 'bronze';
+        var glyph = medal === 'gold' ? '🥇' : medal === 'silver' ? '🥈' : '🥉';
+        FRAME.ladder.markCleared('grover', gld.n, medal);
+        var p = $(root, '[data-r=say]');
+        if (gld.n >= GLADDER.length) {
+          p.innerHTML += '<div class="g-mentor">' + glyph +
+            ' <strong>The Ladder is cleared.</strong> Nine corridors, every par the first maximum of sin\u00b2((2k+1)\u03b8) \u2014 computed, never guessed.' +
+            ' Rue: go back for gold on the ones you fumbled.</div>';
+        } else {
+          p.innerHTML += '<div class="g-mentor">' + glyph + ' Level ' + gld.n + ' cleared at <strong>' + k +
+            '</strong> against par ' + par + '. <button class="preset" type="button" data-a="gldnext">Continue to Level ' + (gld.n + 1) + ' &#9656;</button></div>';
+          var nb = p.querySelector('[data-a=gldnext]');
+          if (nb) nb.addEventListener('click', function () { gld.n++; gldStart(); syncGmode(); render(); });
+        }
+      }
 
       /* ---- DEEP DIVE ----------------------------------------------------------
          The "amplitude game" as a score-chase instead of a five-rung ladder you
@@ -1191,6 +1316,19 @@
             '</div>';
           return;
         }
+        if (gld.on) {
+          $(root, '[data-r=corr]').innerHTML =
+            '<div class="ld-strip" role="list" aria-label="The Ladder, nine levels">' + FRAME.ladder.strip('grover', GLADDER, gld.n) + '</div>' +
+            '<div class="ld-teach"><strong>Level ' + gld.n + '.</strong> ' + gldDef().teach + '</div>';
+          Array.prototype.forEach.call(root.querySelectorAll('[data-r=corr] [data-ld]'), function (b) {
+            if (b.disabled) return;
+            b.addEventListener('click', function () {
+              if (busy) return;
+              gld.n = +b.getAttribute('data-ld'); gldStart(); render();
+            });
+          });
+          return;
+        }
         $(root, '[data-r=corr]').innerHTML = CORR.map(function (c, i) {
           return '<span class="hole' + (i === ci ? ' now' : '') + (solved[i] != null ? ' done' : '') + '" data-c="' + i +
                  '" title="' + c.n + ' doors, par ' + c.par + '">' + c.n + '</span>';
@@ -1219,6 +1357,14 @@
             '<dt>Dive budget</dt><dd>' + dd.budget + ' amplification' + (dd.budget === 1 ? '' : 's') + ' left</dd>' +
             '<dt>Corridors cleared</dt><dd><strong>' + dd.depth + '</strong>' +
               (dd.best > 0 ? ' &nbsp;<span style="color:var(--muted)">best dive ' + dd.best + '</span>' : '') + '</dd>';
+        }
+        if (gld.on) {
+          return '<dt>Amplifications</dt><dd>' + k +
+              (gldShowPar() ? ' &nbsp;<span style="color:var(--muted)">(par ' + CORR[ci].par + ' = the peak)</span>'
+                            : ' &nbsp;<span style="color:var(--muted)">(peak &asymp; (&pi;/4)&radic;N, unshown)</span>') + '</dd>' +
+            '<dt>Exit odds now</dt><dd>' + (pExit(n,k)*100).toFixed(1) + '% &nbsp;<span style="color:var(--muted)">best this run ' + (bestP*100).toFixed(1) + '%</span></dd>' +
+            '<dt>Classical vs you</dt><dd>~' + (n/2) + ' doors tried on average &middot; you need &radic;N &asymp; ' + Math.round(Math.sqrt(n)) + '</dd>' +
+            '<dt>Ladder</dt><dd>level <strong>' + gld.n + '</strong> of ' + GLADDER.length + '</dd>';
         }
         return '<dt>Amplifications</dt><dd>' + k + ' &nbsp;<span style="color:var(--muted)">(par ' + CORR[ci].par + ' = the peak)</span></dd>' +
           '<dt>Exit odds now</dt><dd>' + (pExit(n,k)*100).toFixed(1) + '% &nbsp;<span style="color:var(--muted)">best this run ' + (bestP*100).toFixed(1) + '%</span></dd>' +
@@ -1333,6 +1479,7 @@
             if (line) p.innerHTML += '<div class="g-mentor">Rue: ' + line + '</div>';
           }
         }
+        if (gld.on && landed === mark && !gld.done) gldFinish();
         $(root, '[data-r=rows]').innerHTML = rowsHTML(); chips();
         emit('measured', { escaped: landed === mark, landed: landed, atPeak: k === par });
       }
@@ -1346,7 +1493,7 @@
       function syncGmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = !dd.on ? 'corridors' : dd.daily ? 'daily' : 'dd';
+        var cur = gld.on ? 'ladder' : !dd.on ? 'corridors' : dd.daily ? 'daily' : 'dd';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -1362,16 +1509,27 @@
         if (!bar) return;
         bar.querySelector('[data-gm=corridors]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = false; dd.daily = false; CORR = ruthless ? CORR_RUTHLESS : CORR_STD; ci = 0; solved = [];
+          dd.on = false; dd.daily = false; gld.on = false;
+          CORR = ruthless ? CORR_RUTHLESS : CORR_STD; ci = 0; solved = [];
           fresh(); syncGmode(); render();
+        });
+        bar.querySelector('[data-gm=ladder]').addEventListener('click', function () {
+          if (busy) return;
+          dd.on = false; dd.daily = false; gld.on = true;
+          // resume at the first not-yet-cleared level, so coming back to the
+          // Ladder never re-serves one you already hold a medal on
+          var st = FRAME.ladder.state('grover'), resume = 1;
+          for (var i = 1; i <= GLADDER.length; i++) if (st.cleared[i]) resume = Math.min(i + 1, GLADDER.length);
+          gld.n = resume;
+          gldStart(); syncGmode(); render();
         });
         bar.querySelector('[data-gm=dd]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = true; dd.daily = false; ddReset(); syncGmode(); render();
+          dd.on = true; dd.daily = false; gld.on = false; ddReset(); syncGmode(); render();
         });
         bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = true; dd.daily = true; ddReset(); syncGmode(); render();
+          dd.on = true; dd.daily = true; gld.on = false; ddReset(); syncGmode(); render();
         });
         syncGmode();
       })();
@@ -1405,6 +1563,7 @@
             'align-items:center;justify-content:center;margin:0 0 12px;font-size:.85rem">' +
             '<span style="color:var(--muted)">Mode</span>' +
             '<button class="preset" type="button" data-gm="dist">Districts</button>' +
+            '<button class="preset" type="button" data-gm="ladder">The Ladder</button>' +
             '<button class="preset" type="button" data-gm="sprawl">The Sprawl</button>' +
             '<button class="preset" type="button" data-gm="daily">Daily Sprawl</button>' +
             '<span data-r="spbest" style="color:var(--muted)"></span>' +
@@ -1457,6 +1616,78 @@
       ];
       var DIST = ruthless ? DIST_RUTHLESS : DIST_STD;
       var winIdx = ruthless ? DIST.length - 1 : 4;    // Standard: the trap (D5). Ruthless: the basin.
+
+      /* ---- THE LADDER (FRAME.ladder, 22_ C1) --------------------------------
+         Third cabinet on the shared framework, after Circuit Golf and Grover's
+         Escape, and under the same rule: NO new graphs and NO new pars. Every
+         district below is copied verbatim out of DIST_STD / DIST_RUTHLESS, so
+         it inherits tools/verify_maxcut_ruthless.py's exhaustive 2^n proof of
+         each par as-is. "The ring of five" is the one Standard district the
+         Ladder skips, deliberately: it re-teaches the triangle's odd-loop idea
+         at a larger size, and "the same, harder" is exactly what a ladder is
+         supposed to replace.
+         L1-2 are frustration and its absence; L3-4 add density and bracing;
+         L5 is the first trap; L6-8 cross into the Frustrated Ward, ending on a
+         bigger trap; L9 is the boss, the graph greedy clicking almost never
+         solves. */
+      var MLADDER = [
+        { n: 1, set: 'std',  idx: 0, teach: 'An <strong>odd loop</strong> can never satisfy every road. That unavoidable clash is <em>frustration</em>, and it is physics, not a mistake.' },
+        { n: 2, set: 'std',  idx: 1, teach: 'An <strong>even</strong> loop can. Alternate the two colours and nothing clashes &mdash; so frustration is a property of the graph, not of loops.' },
+        { n: 3, set: 'std',  idx: 3, teach: 'Everyone borders everyone. Density does not change the method, only the ceiling: four of six is all a 2&ndash;2 split can reach.' },
+        { n: 4, set: 'std',  idx: 5, teach: 'Two triangles braced together. Both stay frustrated, and bracing them does not add a road you can satisfy.' },
+        { n: 5, set: 'std',  idx: 4, teach: '<strong>The first trap.</strong> You open one road short, and <em>every single flip</em> holds you there or makes it worse. Local search cannot leave.' },
+        { n: 6, set: 'ruth', idx: 0, teach: 'Fifteen roads, and only a perfect 3&ndash;3 split reaches par. Six roads can never be satisfied, whatever you do.' },
+        { n: 7, set: 'ruth', idx: 1, teach: 'The Petersen graph. Twelve of fifteen is the maximum, and there are <strong>five different ways</strong> to reach it &mdash; degeneracy, none of it obvious.' },
+        { n: 8, set: 'ruth', idx: 3, teach: 'The trap again, doubled and larger. A perfect split exists; reaching it takes more than one move at a time.' },
+        { n: 9, set: 'ruth', idx: 2, teach: '<strong>The boss.</strong> A patch of triangular lattice, every face an odd loop. Seventeen of twenty-three, and greedy clicking almost never finds it.' }
+      ];
+      var mld = { on: false, n: 1, done: false };
+      function mldDef() { return MLADDER[mld.n - 1]; }
+      /* The fewest flips that can reach par from this district's own opening
+         colouring. One click flips one node, so the answer is just the smallest
+         Hamming distance from the start to any maximum-cut colouring -- found
+         by the same exhaustive sweep over 2^n that produced the par. n is at
+         most 12 here, so this is 4,096 colourings at worst. */
+      function mldMinFlips(d) {
+        var start = 0;
+        for (var i = 0; i < d.n; i++) if (d.start && d.start[i]) start |= (1 << i);
+        var best = 99;
+        for (var m = 0; m < (1 << d.n); m++) {
+          var cut = 0;
+          for (var e = 0; e < d.E.length; e++) {
+            var a = (m >> d.E[e][0]) & 1, b = (m >> d.E[e][1]) & 1;
+            if (a !== b) cut++;
+          }
+          if (cut === d.par) { var h = popcount(m ^ start); if (h < best) best = h; }
+        }
+        return best;
+      }
+      function mldStart() {
+        var def = mldDef();
+        DIST = [(def.set === 'ruth' ? DIST_RUTHLESS : DIST_STD)[def.idx]];
+        di = 0; solved = []; mld.done = false; mld.flips = 0;
+        mld.floor = mldMinFlips(DIST[0]);
+        initDist();
+      }
+      function mldFinish() {
+        mld.done = true;   // freeze the level: further flips must not re-fire this
+        var over = mld.flips - mld.floor;
+        var medal = over <= 0 ? 'gold' : over <= 2 ? 'silver' : 'bronze';
+        var glyph = medal === 'gold' ? '🥇' : medal === 'silver' ? '🥈' : '🥉';
+        FRAME.ladder.markCleared('maxcut', mld.n, medal);
+        var p = $(root, '[data-r=say]');
+        if (mld.n >= MLADDER.length) {
+          p.innerHTML += '<div class="g-mentor">' + glyph +
+            ' <strong>The Ladder is cleared.</strong> Nine districts, every par a true maximum brute-forced over every colouring &mdash; not one of them a guess.' +
+            ' Cordon: the medals go to the routes that wasted no flips.</div>';
+        } else {
+          p.innerHTML += '<div class="g-mentor">' + glyph + ' Level ' + mld.n + ' cleared in <strong>' + mld.flips +
+            '</strong> flip' + (mld.flips === 1 ? '' : 's') + ' (fewest possible: ' + mld.floor + ').' +
+            ' <button class="preset" type="button" data-a="mldnext">Continue to Level ' + (mld.n + 1) + ' &#9656;</button></div>';
+          var nb = p.querySelector('[data-a=mldnext]');
+          if (nb) nb.addEventListener('click', function () { mld.n++; mldStart(); syncMCmode(); render(); });
+        }
+      }
       var di = 0, color = [], solved = [];
 
       /* ---- THE SPRAWL: an endless, generated score-chase -------------------
@@ -1605,6 +1836,16 @@
             '<strong style="color:' + (sp.budget <= 3 ? 'var(--yellow)' : 'inherit') + '">' + sp.budget + '</strong></div>';
           return;
         }
+        if (mld.on) {
+          $(root, '[data-r=dist]').innerHTML =
+            '<div class="ld-strip" role="list" aria-label="The Ladder, nine levels">' + FRAME.ladder.strip('maxcut', MLADDER, mld.n) + '</div>' +
+            '<div class="ld-teach"><strong>Level ' + mld.n + '.</strong> ' + mldDef().teach + '</div>';
+          Array.prototype.forEach.call(root.querySelectorAll('[data-r=dist] [data-ld]'), function (b) {
+            if (b.disabled) return;
+            b.addEventListener('click', function () { mld.n = +b.getAttribute('data-ld'); mldStart(); render(); });
+          });
+          return;
+        }
         $(root, '[data-r=dist]').innerHTML = DIST.map(function (d, i) {
           return '<span class="hole' + (i === di ? ' now' : '') + (solved[i] ? ' done' : '') + '" data-d="' + i +
                  '" title="District ' + (i+1) + ', par ' + d.par + '">' + (i+1) + '</span>';
@@ -1624,6 +1865,7 @@
           var c = el('circle', { 'class': 'mc-node ' + (color[i] ? 'B' : 'A'), cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 15 });
           c.addEventListener('click', function () {
             color[i] = color[i] ? 0 : 1;
+            if (mld.on && !mld.done) mld.flips++;
             if (sp.on) { sprawlClick(); } else render();
           });
           svg.appendChild(c);
@@ -1631,6 +1873,7 @@
         var cut = cutVal(), W = d.E.length, energy = W - 2*cut, groundE = W - 2*d.par;
         var newlyOptimal = !sp.on && cut === d.par && !solved[di];
         if (newlyOptimal) solved[di] = true;
+        var ladderWin = mld.on && !mld.done && cut === d.par;
         var firstCut = (!sp.on && cut === d.par && di === winIdx) ? win('maxcut', opts) : false;
         var p = $(root, '[data-r=say]');
         if (msg) { p.className = 'verdict ' + msg.k; p.innerHTML = msg.t; }
@@ -1644,6 +1887,7 @@
         else if (cut === d.par) {
           p.className = 'verdict good';
           p.innerHTML = '<strong>Maximum cut, ' + cut + '/' + d.par + '.</strong> This colouring is the Ising ground state (energy ' + groundE + '). ' + d.note;
+          if (ladderWin) mldFinish();
           if (newlyOptimal && !mission) {
             var frustrated = d.par < W, shortfall = W - d.par;
             p.innerHTML += FRAME.ceremony('maxcut', {
@@ -1658,7 +1902,7 @@
             });
           }
         }
-        else { p.className = 'verdict'; p.innerHTML = 'District ' + (di+1) + ', <strong>' + d.name + '</strong>. Satisfy as many roads as you can (par <strong>' + d.par + '</strong>). <span style="color:var(--muted)">' + d.note + '</span>'; }
+        else { p.className = 'verdict'; p.innerHTML = (mld.on ? 'Level ' + mld.n : 'District ' + (di+1)) + ', <strong>' + d.name + '</strong>. Satisfy as many roads as you can (par <strong>' + d.par + '</strong>). <span style="color:var(--muted)">' + d.note + '</span>'; }
         $(root, '[data-r=rows]').innerHTML =
           '<dt>Cut</dt><dd>' + cut + ' / ' + d.par + (cut === d.par ? ', <strong style="color:var(--teal)">optimal</strong>' : '') + '</dd>' +
           '<dt>Ising energy</dt><dd>' + energy + ' <span style="color:var(--muted)">(ground state at ' + groundE + ')</span></dd>' +
@@ -1714,7 +1958,7 @@
       function syncMCmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = !sp.on ? 'dist' : sp.daily ? 'daily' : 'sprawl';
+        var cur = mld.on ? 'ladder' : !sp.on ? 'dist' : sp.daily ? 'daily' : 'sprawl';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -1729,15 +1973,23 @@
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=dist]').addEventListener('click', function () {
-          sp.on = false; sp.daily = false; sp.over = false;
+          sp.on = false; sp.daily = false; sp.over = false; mld.on = false;
           DIST = ruthless ? DIST_RUTHLESS : DIST_STD; di = 0; solved = [];
           initDist(); syncMCmode(); render();
         });
+        bar.querySelector('[data-gm=ladder]').addEventListener('click', function () {
+          sp.on = false; sp.daily = false; sp.over = false; mld.on = true;
+          // resume at the first not-yet-cleared level
+          var st = FRAME.ladder.state('maxcut'), resume = 1;
+          for (var i = 1; i <= MLADDER.length; i++) if (st.cleared[i]) resume = Math.min(i + 1, MLADDER.length);
+          mld.n = resume;
+          mldStart(); syncMCmode(); render();
+        });
         bar.querySelector('[data-gm=sprawl]').addEventListener('click', function () {
-          sp.on = true; sp.daily = false; spReset(); syncMCmode(); render();
+          sp.on = true; sp.daily = false; mld.on = false; spReset(); syncMCmode(); render();
         });
         bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
-          sp.on = true; sp.daily = true; spReset(); syncMCmode(); render();
+          sp.on = true; sp.daily = true; mld.on = false; spReset(); syncMCmode(); render();
         });
         syncMCmode();
       })();

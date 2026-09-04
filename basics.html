@@ -232,7 +232,7 @@
   <figcaption><strong>Nobody was ever heard alone.</strong> The conductor only ever asks "do these two match?", and two neighbouring clashes are enough to pin the culprit. That is not a storytelling trick. It is exactly the rule a real quantum computer follows, because listening to a single qubit destroys the very thing you were trying to protect. (A real machine runs this comparison across a whole grid rather than a single row, but the rule is the same one.) <a href="#yellow">The same thing with its real name ▸</a></figcaption>
 </figure>
 
-<p>For thirty years, people wrote that conductor's rulebook by hand. In 2024, Google DeepMind replaced it with an AI, AlphaQubit, that <em>learned</em> one real choir's particular bad habits from its own recordings. It makes about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one. It is still too slow to conduct in real time. Making it fast is the current race.</p>
+<p>For thirty years, people wrote that conductor's rulebook by hand. In 2024, Google DeepMind replaced it with an AI, AlphaQubit, that <em>learned</em> one real choir's particular bad habits from its own recordings. It makes <span class="rcpt" data-rcpt="bas-alphaqubit">about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one</span>. It is still too slow to conduct in real time. Making it fast is the current race.</p>
 
 <div class="sowhat">
   <h3>So what?</h3>
@@ -257,7 +257,7 @@
 
 <h2 id="the-mechanism">The mechanism</h2>
 
-<p>Physical qubits fail constantly, roughly <strong>1 error per 1,000 operations</strong> on good hardware. The fix is not a better qubit; it is redundancy with a twist. You encode one <em>logical</em> qubit across many physical ones in a <strong>surface code</strong>, then never measure the data at all.</p>
+<p>Physical qubits fail constantly, roughly <strong><span class="rcpt" data-rcpt="bas-1-in-1000">1 error per 1,000 operations</span></strong> on good hardware. The fix is not a better qubit; it is redundancy with a twist. You encode one <em>logical</em> qubit across many physical ones in a <strong>surface code</strong>, then never measure the data at all.</p>
 
 <p>Instead, extra <strong>measurement qubits</strong> sitting between the data qubits run parity checks, the <strong>syndrome measurements</strong>. Each one asks only whether its neighbours <em>agree</em>, never what they are. That distinction is the entire trick: a parity check extracts the fact that something flipped without extracting the value that would collapse the superposition. A <strong>decoder</strong> then infers the most likely error pattern from the history of those checks, the way a doctor diagnoses from symptoms rather than by opening the patient.</p>
 
@@ -273,9 +273,9 @@
 
 <p>A useful algorithm runs on the order of a <strong>billion</strong> logical operations. For fewer than one expected failure across the whole run, you need a logical error rate below about <strong>10<sup>−9</sup></strong>. You are starting from a physical error rate of <strong>10<sup>−3</sup></strong>. So the code has to buy you <strong>six orders of magnitude</strong>.</p>
 
-<p>It buys them in steps. Each increase of the code distance <em>d</em> by two multiplies the suppression by a factor Λ. Google measured Λ = <strong>2.14</strong> on Willow, going from <em>d</em> = 5 to <em>d</em> = 7. So a factor of 1,000 costs about nine of those steps: 2.14<sup>9</sup> ≈ <strong>941</strong>.</p>
+<p>It buys them in steps. Each increase of the code distance <em>d</em> by two multiplies the suppression by a factor Λ. Google measured Λ = <strong>2.14</strong> on Willow, fitted across its whole <em>d</em> = 3, 5, 7 series. So a factor of 1,000 costs about nine of those steps: <span class="rcpt" data-rcpt="bas-nine-steps">2.14<sup>9</sup> ≈ <strong>941</strong></span>.</p>
 
-<p>Nine steps takes you from <em>d</em> = 5 to <em>d</em> = 23. A rotated surface-code patch at distance <em>d</em> costs 2<em>d</em>² − 1 physical qubits, so that one logical qubit now occupies <strong>1,057 physical qubits</strong>, and you have bought roughly 1,000×, not the full million. <strong>That is the exchange rate.</strong> It is also why Λ is the single most important number in the field: it is the interest rate on every qubit you will ever build.</p>
+<p>Nine steps takes you from <em>d</em> = 5 to <em>d</em> = 23. A rotated surface-code patch at distance <em>d</em> costs 2<em>d</em>² − 1 physical qubits, so that one logical qubit now occupies <strong><span class="rcpt" data-rcpt="bas-1057">1,057 physical qubits</span></strong>, and you have bought roughly 1,000×, not the full million. <strong>That is the exchange rate.</strong> It is also why Λ is the single most important number in the field: it is the interest rate on every qubit you will ever build.</p>
 
 <figure class="fig figcycle figcard">
   <div class="figscroll"><svg viewBox="0 0 620 214" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -355,7 +355,7 @@
 
 <ul>
   <li><strong>Raising an odd <em>d</em> by one buys nothing.</strong> ⌊(<em>d</em>+1)/2⌋ is unchanged from <em>d</em> = 23 to <em>d</em> = 24. This is why the literature always steps <em>d</em> → <em>d</em>+2, and why "distance" and "step" must never be used interchangeably in the same paragraph.</li>
-  <li><strong>Λ is defined per two-distance step.</strong> Λ ≡ p<sub>L</sub>(<em>d</em>) / p<sub>L</sub>(<em>d</em>+2). Google's measured Λ = 2.14 ± 0.02 on Willow is quoted for the <em>d</em> = 5 → <em>d</em> = 7 step (<em>Nature</em> <strong>638</strong>, 920 (2025)). It is not a per-unit-distance figure, and it is not an average over 3 → 5 → 7.</li>
+  <li><strong>Λ is defined per two-distance step.</strong> Λ ≡ p<sub>L</sub>(<em>d</em>) / p<sub>L</sub>(<em>d</em>+2). Google's measured Λ = 2.14 ± 0.02 on Willow comes from a linear regression of ln(ε<sub>d</sub>) against <em>d</em> across its whole <em>d</em> = 3, 5, 7 series (<em>Nature</em> <strong>638</strong>, 920 (2025)) — <strong>not</strong> from any single step: the lone <em>d</em> = 5 → 7 ratio is ≈ 2.12. It is not a per-unit-distance figure.</li>
 </ul>
 
 <p>Working the exchange rate the other way: buying 10³ suppression at Λ = 2.14 needs log(10³)/log(2.14) ≈ 9.08 steps, so nine steps gives 2.14<sup>9</sup> ≈ 941×, taking <em>d</em> = 5 → 23 and one logical qubit to 2(23²)−1 = <strong>1,057 physical qubits</strong>. The million-fold suppression a billion-operation algorithm actually needs costs roughly double that distance again.</p>
@@ -446,7 +446,7 @@
 <h2 id="primary-sources">Primary sources</h2>
 <div class="card refs">
   <p>• <strong>AlphaQubit</strong>: Bausch et al., "Learning high-accuracy error decoding for quantum processors," <em>Nature</em> <strong>635</strong>, 834 (2024). <a href="https://arxiv.org/abs/2310.05900">arXiv:2310.05900</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/alphaqubit-quantum-error-correction/">Google announcement</a><br>
-  • <strong>Below-threshold surface code (Willow)</strong>: Google Quantum AI, "Quantum error correction below the surface code threshold," <em>Nature</em> <strong>638</strong>, 920 (2025). <a href="https://arxiv.org/abs/2408.13687">arXiv:2408.13687</a>. Source of Λ = 2.14 ± 0.02, measured <em>d</em> = 5 → 7<br>
+  • <strong>Below-threshold surface code (Willow)</strong>: Google Quantum AI, "Quantum error correction below the surface code threshold," <em>Nature</em> <strong>638</strong>, 920 (2025). <a href="https://arxiv.org/abs/2408.13687">arXiv:2408.13687</a>. Source of Λ = 2.14 ± 0.02, regressed across <em>d</em> = 3, 5, 7<br>
   • <strong>Rotated surface-code layout</strong>: Tomita &amp; Svore, <a href="https://arxiv.org/abs/1404.3747">arXiv:1404.3747</a>. The <em>d</em> = 3 lattice drawn above<br>
   • <strong>Surface codes, practical</strong>: Fowler et al., <a href="https://arxiv.org/abs/1208.0928">arXiv:1208.0928</a>. The standard reference for thresholds and the d→d+2 convention<br>
   • <strong>Topological memory</strong>: Dennis, Kitaev, Landahl &amp; Preskill, <a href="https://arxiv.org/abs/quant-ph/0110143">quant-ph/0110143</a> (2001). Where matching-based decoding of the surface code begins<br>

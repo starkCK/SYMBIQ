@@ -48,7 +48,7 @@
 <link rel="stylesheet" href="dynamics.css?v=3">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
-<link rel="stylesheet" href="contradiction.css?v=1">
+<link rel="stylesheet" href="contradiction.css?v=2">
 <script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=4" defer></script>
@@ -97,7 +97,7 @@
 <script src="dynamics.js?v=4" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
-<script src="contradiction.js?v=1" defer></script>
+<script src="contradiction.js?v=2" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -232,16 +232,16 @@
 </div>
 
 <h2 id="scoreboard">Scoreboard</h2>
-<p style="color:var(--muted);font-size:.92rem">Each row fills in when there is a real, dated update to put in it, not before. <strong>Still empty.</strong></p>
+<p style="color:var(--muted);font-size:.92rem">The middle columns fill in when there is a real, dated <em>move</em> to put in them, not before — and they are <strong>still empty</strong>. The last column asks a different question: not what a lab has <em>done</em>, but what it has already <strong>promised on the record</strong>, with a date we will score it against whether or not it wants us to. Four of these six have one. Read straight across and the gap between the two is the story.</p>
 <div class="overflow">
 <table>
-  <tr><th>Lab</th><th>One-line status</th><th>Last move</th></tr>
-  <tr><td>Google</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td></tr>
-  <tr><td>IBM</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td></tr>
-  <tr><td>IonQ</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td></tr>
-  <tr><td>Quantinuum</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td></tr>
-  <tr><td>Microsoft</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td></tr>
-  <tr><td>PsiQuantum</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td></tr>
+  <tr><th>Lab</th><th>One-line status</th><th>Last move</th><th>Promised, on the record</th></tr>
+  <tr><td>Google</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td class="todo">no fault-tolerance claim tracked</td></tr>
+  <tr><td>IBM</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="ibm-starling-2029"><a href="ledger.html#c-ibm-starling-2029">on The Ledger →</a></td></tr>
+  <tr><td>IonQ</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="ionq-five-nines-2025"><a href="ledger.html#c-ionq-five-nines-2025">on The Ledger →</a></td></tr>
+  <tr><td>Quantinuum</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="quantinuum-apollo-2030"><a href="ledger.html#c-quantinuum-apollo-2030">on The Ledger →</a></td></tr>
+  <tr><td>Microsoft</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="microsoft-topological-years-not-decades"><a href="ledger.html#c-microsoft-topological-years-not-decades">on The Ledger →</a></td></tr>
+  <tr><td>PsiQuantum</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td class="todo">no dated claim tracked</td></tr>
 </table>
 </div>
 

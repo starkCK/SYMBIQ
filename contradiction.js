@@ -76,32 +76,69 @@
     } catch (e) { return false; }
   }
 
-  function build(rec, claimantName) {
-    var checkins = (rec.checkins || []).slice();
-    var trouble = checkins.filter(function (c) {
-      return c.signal === 'at_risk' || c.signal === 'off_track';
-    });
-    var good = checkins.filter(function (c) { return c.signal === 'on_track'; });
+  /* The state every rendering agrees on. Returned as {cls, kicker} so the
+     full card and the compact scoreboard cell can never disagree about
+     whether a claim is in trouble. */
+  function state(rec) {
+    var ci = rec.checkins || [];
+    /* `at_risk` and `off_track` are NOT the same finding and must never share
+       a label. at_risk = someone published evidence AGAINST the claim (a
+       rebuttal). off_track = nobody argued with it; the date came and went
+       with nothing reported. Calling the second one "contested" credits a
+       rebuttal that does not exist -- the exact class of mislabel this
+       project keeps logging. */
+    var rebutted = ci.filter(function (c) { return c.signal === 'at_risk'; });
+    var missed = ci.filter(function (c) { return c.signal === 'off_track'; });
+    var good = ci.filter(function (c) { return c.signal === 'on_track'; });
+    var trouble = rebutted.concat(missed);
 
-    var cls = '', kicker;
     if (rec.verdict) {
-      kicker = 'Resolved · ' + (VERDICT_LABEL[rec.verdict] || rec.verdict);
-      cls = (rec.verdict === 'verified') ? ' is-ontrack' : ' is-contested';
-    } else if (trouble.length >= 2) {
-      kicker = trouble.length + ' dated rebuttals are on the record';
-      cls = ' is-contested';
-    } else if (trouble.length === 1) {
-      kicker = 'Contested — one dated rebuttal is on the record';
-      cls = ' is-contested';
-    } else if (pastDue(rec)) {
-      kicker = 'This deadline has passed, unresolved';
-      cls = ' is-overdue';
-    } else if (good.length) {
-      kicker = 'Tracked · an interim milestone has landed';
-      cls = ' is-ontrack';
-    } else {
-      kicker = 'Tracked, and not resolved yet';
+      return { cls: rec.verdict === 'verified' ? 'is-ontrack' : 'is-contested',
+               kicker: 'Resolved · ' + (VERDICT_LABEL[rec.verdict] || rec.verdict),
+               short: VERDICT_LABEL[rec.verdict] || rec.verdict, trouble: trouble, good: good };
     }
+    if (rebutted.length >= 2) {
+      return { cls: 'is-contested', kicker: rebutted.length + ' dated rebuttals are on the record',
+               short: rebutted.length + ' rebuttals on the record', trouble: trouble, good: good };
+    }
+    if (rebutted.length === 1) {
+      return { cls: 'is-contested', kicker: 'Contested — one dated rebuttal is on the record',
+               short: 'one rebuttal on the record', trouble: trouble, good: good };
+    }
+    if (missed.length) {
+      return { cls: 'is-overdue',
+               kicker: 'Its own deadline passed with nothing reported',
+               short: 'missed, nothing reported', trouble: trouble, good: good };
+    }
+    if (pastDue(rec)) {
+      return { cls: 'is-overdue', kicker: 'This deadline has passed, unresolved',
+               short: 'deadline passed, unresolved', trouble: trouble, good: good };
+    }
+    if (good.length) {
+      return { cls: 'is-ontrack', kicker: 'Tracked · an interim milestone has landed',
+               short: 'an interim milestone has landed', trouble: trouble, good: good };
+    }
+    return { cls: '', kicker: 'Tracked, and not resolved yet', short: 'tracked, not resolved',
+             trouble: trouble, good: good };
+  }
+
+  /* The compact form, for race.html's scoreboard. Deliberately carries NO
+     hand-written summary of the claim -- only its own dated state and a link
+     -- because a summary in a table cell is exactly the copy that drifts. */
+  function buildCell(rec) {
+    var st = state(rec);
+    return '<span class="contra-cell ' + esc(st.cls) + '">' +
+      '<span class="contra-dot" aria-hidden="true"></span>' +
+      '<a href="ledger.html#c-' + esc(rec.slug) + '">resolves ' +
+      esc(fmtDate(rec.resolves_by)) + '</a>' +
+      '<span class="contra-cell-note">' + esc(st.short) + '</span></span>';
+  }
+
+  function build(rec, claimantName) {
+    var st = state(rec);
+    var trouble = st.trouble, good = st.good;
+    var cls = st.cls ? ' ' + st.cls : '';
+    var kicker = st.kicker;
 
     /* The shown check-ins: whatever actually carries a signal. A no_signal
        "captured at seed" note says nothing and is left to the full record. */
@@ -140,15 +177,20 @@
   }
 
   function boot() {
-    var nodes = Array.prototype.slice.call(D.querySelectorAll('.contra[data-claim]'));
-    if (!nodes.length) return;
+    var cards = Array.prototype.slice.call(D.querySelectorAll('.contra[data-claim]'));
+    var cells = Array.prototype.slice.call(D.querySelectorAll('[data-claim-cell]'));
+    if (!cards.length && !cells.length) return;
 
+    /* One bucket per slug, so a page carrying both a card and a scoreboard
+       cell for the same claim still fetches that record exactly once. */
     var byslug = {};
-    nodes.forEach(function (n) {
-      var s = n.getAttribute('data-claim');
+    function want(el, attr, kind) {
+      var s = el.getAttribute(attr);
       if (!s) return;
-      (byslug[s] = byslug[s] || []).push(n);
-    });
+      (byslug[s] = byslug[s] || []).push({ el: el, kind: kind });
+    }
+    cards.forEach(function (n) { want(n, 'data-claim', 'card'); });
+    cells.forEach(function (n) { want(n, 'data-claim-cell', 'cell'); });
 
     var names = {};
     fetch('data/claims/claimants.json')
@@ -163,8 +205,16 @@
             .then(function (r) { return r.ok ? r.json() : null; })
             .then(function (rec) {
               if (!rec || !rec.slug) return;          // keep the fallback link
-              var html = build(rec, names[rec.claimant]);
-              byslug[slug].forEach(function (n) { n.innerHTML = html; });
+              var card = null, cell = null;
+              byslug[slug].forEach(function (t) {
+                if (t.kind === 'cell') {
+                  if (cell === null) cell = buildCell(rec);
+                  t.el.innerHTML = cell;
+                } else {
+                  if (card === null) card = build(rec, names[rec.claimant]);
+                  t.el.innerHTML = card;
+                }
+              });
             })
             .catch(function () {});
         });

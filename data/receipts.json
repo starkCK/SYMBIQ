@@ -213,6 +213,72 @@
       "source": "J. von Neumann, Mathematische Grundlagen der Quantenmechanik (Springer, 1932) — the first fully axiomatic Hilbert-space formulation, incl. the Born-rule and density-matrix machinery",
       "verified_at": "2026-09-04",
       "falsifier": "dates the axiomatisation, not the physics: Born's rule is 1926 and Dirac's transformation theory 1927, while decoherence theory and the modern measurement literature are decades later. The claim is only that quantum computing adds no new postulate."
+    },
+    {
+      "id": "bas-1-in-1000",
+      "page": "basics.html",
+      "value": "1 error per 1,000 operations",
+      "inputs": "the standard physical error rate p ≈ 10⁻³ this site uses throughout (qec.html's threshold widget, logical-qubit.html's calculator, bitcoin.html's estimator)",
+      "source": "the resource-estimation convention, not a device datasheet: Webber et al., AVS Quantum Science 4, 013801 (2022) and Gidney et al., arXiv:2603.28846 both cost surface-code machines at p ≈ 10⁻³, and the best reported two-qubit gate errors sit around that order",
+      "verified_at": "2026-09-04",
+      "falsifier": "this is a modelling assumption rounded to one significant figure, not a measurement of any one machine. Single-qubit gates are one to two orders better, measurement is worse, error varies by platform and drifts with calibration, and quoting it as a device spec would be wrong. It is the number every estimate on this site is built on, which is exactly why it is marked."
+    },
+    {
+      "id": "bas-alphaqubit",
+      "page": "basics.html",
+      "value": "about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one",
+      "inputs": "AlphaQubit vs correlated matching (the real-time-capable baseline) and vs a tensor-network decoder (near-optimal, far too slow to run live)",
+      "source": "Bausch et al., “Learning high-accuracy error decoding for quantum processors,” Nature 635, 834 (2024), Google DeepMind + Google Quantum AI",
+      "verified_at": "2026-09-04",
+      "falsifier": "the two baselines are not interchangeable, and swapping which one the 30% is measured against is the single most common error in secondary coverage of this result. The real-device data is d = 3 and d = 5; the d = 11 result is simulation only. AlphaQubit is also still too slow to decode in real time, so this is accuracy, not a shipped capability."
+    },
+    {
+      "id": "bas-nine-steps",
+      "page": "basics.html",
+      "value": "2.14⁹ ≈ 941",
+      "formula": "Λⁿ suppression after n steps of d → d+2 · n = ⌊log 1000 / log Λ⌋",
+      "inputs": "Λ = 2.14 (Willow, regressed across d = 3, 5, 7) · log 1000 / log 2.14 = 9.08 → 9 whole steps",
+      "tool": "tools/verify_basics_overhead.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "Λ is one device's measured suppression at one calibration, and this extrapolates it nine steps past where it was measured (d = 7 → 23). Nothing guarantees Λ holds constant that far out; new error mechanisms appear at scale."
+    },
+    {
+      "id": "bas-1057",
+      "page": "basics.html",
+      "value": "1,057 physical qubits",
+      "formula": "2d² − 1 for a rotated surface-code patch",
+      "inputs": "nine Λ-steps from d = 5 → d = 23 · 2·23²−1 = 1,057",
+      "tool": "tools/verify_basics_overhead.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "this buys ≈ 1,000× of the 1,000,000× the 10⁻⁹ target actually needs — the page says so in the same sentence. The full million takes 19 steps to d = 43 and 3,697 qubits, and even that excludes routing and magic-state factories. qec.html reaches the same 1,057 by a different route (p/p_th = 1/10 to 10⁻¹²); the agreement is a coincidence of both landing on d = 23, not a confirmation."
+    },
+    {
+      "id": "cmp-riken-995",
+      "page": "compare.html",
+      "value": "99.5% two-qubit and 99.8% single-qubit gate fidelity, with the two-qubit gate itself running in 100 nanoseconds",
+      "inputs": "silicon spin qubits, January 2022 — one of three groups (RIKEN/QuTech, TU Delft, UNSW) that cleared the fault-tolerance threshold simultaneously",
+      "source": "Noiri, Takeda, Nakajima, Kobayashi, Sammak, Scappucci et al., Nature 601, 338–342 (2022)",
+      "verified_at": "2026-09-04",
+      "falsifier": "a gate fidelity above threshold in a two-qubit device says nothing about whether it survives at scale — the page says so in the next paragraph. Three simultaneous results also means the threshold-crossing is the field's, not one group's."
+    },
+    {
+      "id": "cmp-diraq-99",
+      "page": "compare.html",
+      "value": "single- and two-qubit control fidelities above 99% across all four devices tested, with state-preparation-and-measurement fidelity up to 99.9%",
+      "inputs": "silicon spin-qubit unit cells fabricated in a 300 mm semiconductor foundry (imec), not a university cleanroom — which is the thesis being tested",
+      "source": "Steinacker, Dumoulin Stuyck, Lim, Tanttu, Feng et al. (Diraq/UNSW), “Industry-compatible silicon spin-qubit unit cells exceeding 99% fidelity,” Nature 646, 81–87 (2025)",
+      "verified_at": "2026-09-04",
+      "falsifier": "“unit cells” means a handful of qubits, not hundreds wired together — none of this is at the qubit counts the four leading modalities have reached, and whether control wiring and crosstalk stay manageable as the count climbs is untested."
+    },
+    {
+      "id": "cmp-majorana-editorial",
+      "page": "compare.html",
+      "value": "“represent evidence for the presence of Majorana zero modes in the reported devices”",
+      "inputs": "what Nature's editorial team said the Majorana 1 paper did NOT do, published alongside it",
+      "source": "editorial note accompanying Microsoft Azure Quantum et al., “Interferometric single-shot parity measurement in InAs–Al hybrid devices,” Nature 638, 651 (2025)",
+      "verified_at": "2026-09-04",
+      "claim": "microsoft-topological-years-not-decades",
+      "falsifier": "this is an editorial caveat on one paper, not a verdict on topological qubits. Microsoft disputes the reading, named physicists are split on the record in both directions, and the underlying question is unresolved rather than settled against them — which is the point the paragraph makes."
     }
   ]
 }

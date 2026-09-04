@@ -92,3 +92,33 @@
 @media (max-width: 620px) {
   .contra-card { padding: 14px; }
 }
+
+/* ----------------------------------------------------------------
+   THE COMPACT FORM (2026-09-04) — race.html's scoreboard.
+
+   The scoreboard's own promise is that a row fills in when there is
+   a real, dated MOVE to put in it. A tracked claim is not a move, it
+   is a promise, so it gets its own column rather than filling that
+   one. Same state vocabulary as the card (contradiction.js `state()`
+   returns both), so a claim cannot read "contested" in one place and
+   fine in another.
+
+   Carries no hand-written summary of the claim on purpose — only its
+   resolution date and its own state — because a summary in a table
+   cell is precisely the copy that drifts.
+   ---------------------------------------------------------------- */
+.contra-cell { display: block; line-height: 1.45; }
+.contra-cell a { white-space: nowrap; }
+.contra-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); margin-right: 7px; vertical-align: middle;
+}
+.contra-cell.is-contested .contra-dot,
+.contra-cell.is-overdue .contra-dot { background: var(--red); }
+.contra-cell.is-ontrack .contra-dot { background: var(--teal); }
+.contra-cell-note {
+  display: block; color: var(--muted);
+  font-size: 0.78rem; margin-top: 2px;
+}
+.contra-cell.is-contested .contra-cell-note,
+.contra-cell.is-overdue .contra-cell-note { color: var(--red); }

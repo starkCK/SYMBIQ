@@ -1,13 +1,10 @@
 /* ================================================================
    THE THROUGH-LINE (2026-09-01)  —  opt-in via <body data-throughline>.
-   Shipped on qec.html ONLY, as a first trial -- see PART B1 of
+   Shipped on qec.html ONLY -- see PART B1 of
    outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md. "Ship it on one page,
-   judge it, then decide" is the plan's own instruction; this is
-   deliberately the smaller of the two designs sketched there (a fixed
-   corner companion, not a two-column sticky-gutter retrofit of .wrap),
-   because the larger version would restructure a referee-verified
-   page's layout to ship a first trial. Reversible by removing one
-   attribute, one <link>, one <script>.
+   judge it, then decide" is the plan's own instruction; extending it
+   to the other pillar pages is still a separate call.
+   Reversible by removing one attribute, one <link>, one <script>.
 
    WHAT IT IS. One small SVG figure -- a single surface-code patch --
    that changes state as the reader scrolls past five sections: a lone
@@ -16,11 +13,52 @@
    labelled with notation. The reader accumulates one object instead of
    restarting at each section's own diagram.
 
-   ≥720px only (the site's own phone/desktop split, per DESIGN.md's
-   Layout section) -- a fixed corner panel competes with a phone's
-   limited screen for exactly the attention the content itself needs
-   there, so this trial skips mobile rather than shrink a companion
-   figure to illegibility. */
+   TWO SHAPES, ONE FIGURE (mobile added 2026-09-04). The panel is
+   inserted into the flow just after the page's h1, and the layout
+   diverges from there:
+
+     >=720px   a fixed corner card, bottom-right, stacked: eyebrow,
+               figure, caption. position:fixed ignores the DOM slot,
+               so it floats free and costs the column nothing.
+     <720px    a STICKY BAND, laid out sideways: figure, caption,
+               dismiss. It starts under the title and pins to the top
+               of the viewport as you read. Below 720px this site's
+               header is not sticky (style.css's --nav-h note), so
+               top:0 is the honest pin and nothing is ever covered.
+
+   The first trial shipped desktop-only, on the reasoning that a fixed
+   corner panel competes with a phone's limited screen for exactly the
+   attention the content needs there. That reasoning was about a
+   SHRUNKEN CORNER CARD, and it still holds -- which is why the phone
+   gets a different object rather than a smaller one: a band claims one
+   short strip, in the flow, and never floats over the prose.
+   Bottom-anchoring was rejected on the same page: alive.css's
+   .sq-marker already owns bottom-left and #qz-pill owns bottom-right.
+   ================================================================ */
+
+/* ---- the figure's own vocabulary, shared by both shapes ------------
+   Deliberately the same palette qec.html's surface-17 widget already
+   uses (.pq / .pq.lit / .dq.flip / .fixring), so the Through-Line reads
+   as the same object rather than a second diagram with its own claims. */
+.tl-cell { fill: var(--panel); stroke: var(--teal); stroke-opacity: .4; stroke-width: 1.3; }
+.tl-cell.flip { fill: var(--red); stroke: var(--red); fill-opacity: .55; }
+.tl-check { fill: none; stroke: var(--border); stroke-width: 1.3; }
+.tl-check.lit { stroke: var(--yellow); fill: rgba(250,204,21,.22); }
+.tl-fix { fill: none; stroke: var(--teal); stroke-width: 1.6; stroke-dasharray: 3 3; }
+.tl-label { fill: var(--muted); font-size: 7px; font-family: inherit; }
+
+.tl-eyebrow {
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.tl-close {
+  all: unset; cursor: pointer; color: var(--muted); font-size: 0.9rem; line-height: 1;
+  padding: 4px; margin: -4px; min-width: 24px; min-height: 24px; display: grid; place-items: center;
+}
+.tl-close:hover, .tl-close:focus-visible { color: var(--text); }
+.tl-svg { display: block; width: 100%; height: auto; }
+
+/* ---- >=720px: the fixed corner card ------------------------------- */
 @media (min-width: 720px) {
   .tl-panel {
     position: fixed;
@@ -48,28 +86,44 @@
     display: flex; align-items: center; justify-content: space-between;
     margin: 0 0 6px;
   }
-  .tl-eyebrow {
-    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted);
-  }
-  .tl-close {
-    all: unset; cursor: pointer; color: var(--muted); font-size: 0.9rem; line-height: 1;
-    padding: 4px; margin: -4px; min-width: 24px; min-height: 24px; display: grid; place-items: center;
-  }
-  .tl-close:hover, .tl-close:focus-visible { color: var(--text); }
-  .tl-svg { display: block; width: 100%; height: auto; }
   .tl-cap { font-size: 0.76rem; color: var(--muted); line-height: 1.4; margin: 6px 0 0; }
+}
 
-  /* the figure's own vocabulary -- deliberately the same palette qec.html's
-     surface-17 widget already uses (.pq / .pq.lit / .dq.flip / .fixring),
-     so the Through-Line reads as the same object rather than a new one */
-  .tl-cell { fill: var(--panel); stroke: var(--teal); stroke-opacity: .4; stroke-width: 1.3; }
-  .tl-cell.flip { fill: var(--red); stroke: var(--red); fill-opacity: .55; }
-  .tl-check { fill: none; stroke: var(--border); stroke-width: 1.3; }
-  .tl-check.lit { stroke: var(--yellow); fill: rgba(250,204,21,.22); }
-  .tl-fix { fill: none; stroke: var(--teal); stroke-width: 1.6; stroke-dasharray: 3 3; }
-  .tl-label { fill: var(--muted); font-size: 7px; font-family: inherit; }
-}
+/* ---- <720px: the sticky band -------------------------------------- */
 @media (max-width: 719px) {
-  .tl-panel { display: none; }   /* not shipped on mobile in this first trial -- see the header note */
+  .tl-panel {
+    position: sticky;
+    top: 0;
+    z-index: 35;              /* over prose, under .readbar (90) and the header (40) */
+    display: grid;
+    /* figure · caption · dismiss. The figure is capped small on purpose:
+       at this size it is a status glyph you glance at, not a diagram you
+       study -- the page's own full-size figures do that job. */
+    grid-template-columns: 40px 1fr 28px;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 18px;
+    padding: 8px 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md, 12px);
+    /* A band that pins over the prose needs to read as a layer once it is
+       stuck, so it carries the same overlay exception as the corner card. */
+    box-shadow: var(--elev-2);
+  }
+  /* let the head's two children join the band's own grid */
+  .tl-head { display: contents; }
+  .tl-eyebrow { display: none; }        /* the caption already says what this is */
+  .tl-svg { grid-column: 1; grid-row: 1; }
+  .tl-cap { grid-column: 2; grid-row: 1; margin: 0; font-size: 0.78rem; line-height: 1.35; color: var(--muted); }
+  .tl-close { grid-column: 3; grid-row: 1; justify-self: end; min-width: 28px; min-height: 28px; margin: 0; }
+
+  /* The band is in the flow, so it must not animate its own height or
+     position -- it simply is there. Only the caption's change is eased. */
+  .tl-panel { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .tl-cap { transition: opacity 160ms var(--ease-out-quint, ease); }
+  }
 }
+
+@media print { .tl-panel { display: none; } }

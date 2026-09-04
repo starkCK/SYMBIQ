@@ -1,14 +1,63 @@
 {
-  "schema": 1,
-  "note": "Fallback pool for the homepage Question when data/today.json is more than two days old. Each id is a file in data/archive/. Rotates one per calendar day from `anchor`. When the daily pipeline resumes, today.json goes fresh and this file is not consulted. Add new ids here as questions are archived so the rotation keeps growing.",
+  "schema": 2,
+  "note": "Rotation pool for the homepage Question when data/today.json is more than two days old. Each entry is {id, src}. src 'archive' means a question we REALLY asked, in data/archive/ and listed on archive.html; src 'bank' means one written for this rotation that has never run, in data/qbank/ and deliberately NOT in the archive, because archive.html promises 'every question we have ever asked'. The homepage labels the two differently. Rotates one per calendar day from `anchor`; plain-string entries are still read as archive dates. When the daily pipeline resumes, today.json goes fresh and this file is not consulted.",
   "anchor": "2026-08-05",
   "pool": [
-    "2026-07-19",
-    "2026-07-25",
-    "2026-07-27",
-    "2026-07-30",
-    "2026-08-01",
-    "2026-08-02",
-    "2026-08-04"
+    {
+      "id": "2026-07-19",
+      "src": "archive"
+    },
+    {
+      "id": "willow-vs-sycamore",
+      "src": "bank"
+    },
+    {
+      "id": "2026-07-25",
+      "src": "archive"
+    },
+    {
+      "id": "exchange-rate",
+      "src": "bank"
+    },
+    {
+      "id": "2026-07-27",
+      "src": "archive"
+    },
+    {
+      "id": "lambda-provenance",
+      "src": "bank"
+    },
+    {
+      "id": "2026-07-30",
+      "src": "archive"
+    },
+    {
+      "id": "thousand-to-one",
+      "src": "bank"
+    },
+    {
+      "id": "2026-08-01",
+      "src": "archive"
+    },
+    {
+      "id": "t2-bound",
+      "src": "bank"
+    },
+    {
+      "id": "2026-08-02",
+      "src": "archive"
+    },
+    {
+      "id": "stochastic-value",
+      "src": "bank"
+    },
+    {
+      "id": "2026-08-04",
+      "src": "archive"
+    },
+    {
+      "id": "oscillator-readoff",
+      "src": "bank"
+    }
   ]
 }

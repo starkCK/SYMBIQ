@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "willow-vs-sycamore",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "g",
+  "receipt": "race-tenth",
+  "question": {
+    "text": "Google's Sycamore (2019) had 53 physical qubits. Its Willow chip (2024) has 105. The largest chips built in 2023 had over 1,100. What is the honest reading of those three numbers?",
+    "options": [
+      "The frontier stopped competing on raw count: Willow is under a tenth the size of 2023's biggest chips, and its result was about error correction working, not about being large",
+      "Google fell behind: two other companies built chips twenty times larger, so Willow represents a lost lead in the qubit race",
+      "Willow is smaller than Sycamore, which shows Google deliberately shrank its hardware to reduce noise",
+      "Qubit counts roughly doubled every five years, so Willow is exactly on the industry's expected growth curve"
+    ],
+    "answerIndex": 0,
+    "hint": "Two of these compare Willow to the wrong thing, and one gets the direction of a comparison backwards. Check the actual numbers before picking.",
+    "explain": {
+      "g": "Willow is about twice the size of Sycamore, not smaller — 105 against 53. What makes it a landmark is that it was the first processor to show a surface code getting better as the code grew, which is a claim about quality rather than size. Against 2023's biggest chips (1,180 and 1,121 qubits) it holds under a tenth as many. The number a lab quotes and the number that matters have come apart.",
+      "y": "Raw physical count stopped being the scoreboard around 2024–25, once below-threshold error correction was demonstrated. The question became how many error-corrected qubits a machine can keep alive, and there Willow's answer was one. A 1,180-site trap array and a 105-qubit processor are not measuring the same thing, which is why our milestone table splits physical from logical and still warns that “physical” spans fabricated sites, controlled qubits, and qubits good enough to compute with.",
+      "r": "Willow: 105 physical qubits, Google Quantum AI, Nature 638, 920 (2025), arXiv:2408.13687. Sycamore: 53 working of 54 fabricated, Arute et al., Nature 574, 505 (2019), arXiv:1910.11333. 2023's largest: Atom Computing's 1,180-site array and IBM's 1,121-qubit Condor, giving 105/1180 = 0.089 and 105/1121 = 0.094. Our own Race page carried the claim that Willow was “smaller than Sycamore” for three days in September 2026; it is logged on our corrections page, and tools/verify_hardware.py now derives the comparison from the milestone data rather than trusting the sentence."
+    }
+  }
+}

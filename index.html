@@ -738,12 +738,20 @@
         var since = daysBetween(bank.anchor, todayISO());
         if (since < 0) since = 0;
         var pick = pool[((since % pool.length) + pool.length) % pool.length];
-        return fetch('data/archive/' + pick + '.json', { cache: 'no-store' })
+        /* A pool entry is either a date we really asked (src "archive") or a
+           question written for the bank that has never run (src "bank").
+           They must not be conflated: archive.html promises "every question we
+           have ever asked", so a bank question is NOT in the archive and does
+           not claim to be. Plain strings are still accepted as archive dates. */
+        var id = (typeof pick === 'string') ? pick : pick.id;
+        var src = (typeof pick === 'string') ? 'archive' : (pick.src || 'archive');
+        var path = (src === 'bank' ? 'data/qbank/' : 'data/archive/') + id + '.json';
+        return fetch(path, { cache: 'no-store' })
           .then(function (r) { if (!r.ok) throw 0; return r.json(); })
           .then(function (A) {
             A.date = todayISO();
             A.qnum = ((stale && stale.qnum) || 7) + since;
-            A._fromArchive = true;
+            if (src === 'bank') A._fromBank = true; else A._fromArchive = true;
             return A;
           });
       })
@@ -772,7 +780,9 @@
     var streak = s.streak || 0;
     var label = D._fromArchive
       ? '<span style="color:var(--muted)"> From the archive, the daily feed is paused</span>'
-      : '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>';
+      : D._fromBank
+        ? '<span style="color:var(--muted)"> From the question bank, the daily feed is paused</span>'
+        : '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>';
     document.getElementById('dq-meta').innerHTML =
       '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
       label +

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "t2-bound",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "y",
+  "receipt": "qm-t2-bound",
+  "question": {
+    "text": "Decoherence widgets and calibration tools refuse to let you set T₂ above 2T₁, even though a longer phase-coherence time sounds strictly better. Why is that limit there?",
+    "options": [
+      "Past it the Bloch vector can grow longer than 1, and the density matrix stops describing a valid quantum state",
+      "Above 2T₁ the qubit would violate the uncertainty principle between energy and time",
+      "It is a convention from superconducting hardware, where T₂ has never been observed above 2T₁ in practice",
+      "Beyond that ratio the numerical integration becomes unstable and the simulation diverges"
+    ],
+    "answerIndex": 0,
+    "hint": "Write the state as ρ = (I + r·σ)/2 and ask what constraint on the vector r keeps ρ a legitimate density matrix.",
+    "explain": {
+      "g": "The state of one qubit can be drawn as an arrow inside a ball of radius one. Energy loss pulls the arrow down; phase noise shrinks it sideways. Let the sideways part decay too slowly relative to the downward part and the arrow ends up poking outside the ball — which is not a state anything could be in. The limit is not a modelling convenience, it is the boundary of what physics allows.",
+      "y": "Writing ρ = (I + r·σ)/2, a valid density matrix needs |r| ≤ 1, so that both eigenvalues stay non-negative. The transverse components decay as e^(−t/T₂) and the longitudinal one relaxes as e^(−t/T₁). Push T₂ well past 2T₁ and the standard closed form drives |r| above 1 at intermediate times — which is how the bound gets confirmed rather than assumed.",
+      "r": "For time-independent Markovian rates, the Lindblad generator with amplitude damping Γ₁ = 1/T₁ and pure dephasing Γ_φ gives 1/T₂ = 1/(2T₁) + Γ_φ. Since Γ_φ ≥ 0, T₂ ≤ 2T₁, with equality when dephasing is purely lifetime-limited. tools/verify_decoherence.py checks the closed form against direct RK4 integration and demonstrates the violation numerically. The bound is Markovian: with a structured bath a T₂ measured over one window can be meaningless in another, and real devices carry slow drift and 1/f noise no single T₂ captures."
+    }
+  }
+}

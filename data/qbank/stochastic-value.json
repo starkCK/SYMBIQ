@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "stochastic-value",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "y",
+  "receipt": "fsb-vss",
+  "question": {
+    "text": "A newsvendor buys at 2 and sells at 5; demand is 20 or 60, each equally likely. Ordering the mean demand of 40 earns an expected 70. Solving the full stochastic model orders 60 and earns 80. A perfect forecast would earn 120. What is the 80 − 70 = 10?",
+    "options": [
+      "The value of the stochastic solution: what modelling the uncertainty earns over plugging in the average",
+      "The expected value of perfect information: what a flawless forecast would be worth",
+      "The risk premium: what a cautious planner gives up to avoid the worst case",
+      "The profit margin on the extra twenty units the stochastic model orders"
+    ],
+    "answerIndex": 0,
+    "hint": "Two of these quantities are in the numbers given. One of them is 120 − 80 and the other is 80 − 70; work out which is which before answering.",
+    "explain": {
+      "g": "Planning for the average is not the same as planning for uncertainty, and here it costs ten. That ten is what the extra modelling effort earns — the reason to build the harder model rather than shrug and use the mean. The forty you could earn from a perfect forecast is a different number, and nobody sells perfect forecasts.",
+      "y": "VSS = 80 − 70 = 10 is the value of the stochastic solution, the gain of the recourse model over the plug-in-the-mean plan. EVPI = 120 − 80 = 40 is the expected value of perfect information, the gain of clairvoyance over the stochastic model. Both are non-negative by construction, so a positive VSS proves nothing on its own — what matters is whether it justifies the modelling effort. The robust max-min plan is a third answer again: order 20 and guarantee 60 whatever happens.",
+      "r": "The critical ratio is (price − cost)/price = 3/5 = 0.6, and the critical-fractile rule puts Q* at the 0.6 quantile of demand, which is 60 here; this matches the argmax of expected profit directly. Founded in Dantzig, “Linear Programming under Uncertainty,” Management Science 1, 197–206 (1955), and Beale the same year; reference text Birge & Louveaux, Introduction to Stochastic Programming (Springer, 2nd ed., 2011). Every figure is recomputed in tools/verify_or5_or6.py."
+    }
+  }
+}

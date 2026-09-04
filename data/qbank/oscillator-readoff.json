@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "oscillator-readoff",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "r",
+  "receipt": "ana-stable-100k",
+  "question": {
+    "text": "An oscillator Ising machine built from the coupling term alone — no injection locking — settles into a configuration whose phases sit about 1.1 radians from any clean 0-or-π assignment, and stays there out to 100,000 steps. Yet rounding those phases to spins still recovers the optimal cut roughly 70% of the time. Where does the other 30% go?",
+    "options": [
+      "The relative phases encode the right arrangement; the read-off is absolute, so it catches that configuration at a random global rotation",
+      "The relaxation has not converged yet, and running it longer would resolve the remaining 30%",
+      "The rounding sometimes lands on a different, slightly worse local minimum of the Ising energy",
+      "The Euler integration accumulates error, so about 30% of runs drift off the true trajectory"
+    ],
+    "answerIndex": 0,
+    "hint": "The update rule depends only on phase differences. Ask what that leaves undetermined, and what an absolute read-off does about it.",
+    "explain": {
+      "g": "The machine works out the right answer and then loses it at the last step. Its physics only ever cares how far apart the oscillators are, never where the whole set sits, so the group can end up rotated as a block. Reading each oscillator against a fixed reference then splits that block in the wrong place some of the time. Real hardware adds a term that pins the phases, which is exactly the piece this version leaves out.",
+      "y": "With dθᵢ/dt = −K Σⱼ Jᵢⱼ sin(θᵢ − θⱼ) the dynamics are invariant under a global rotation, so the settled state is a fixed point only up to that rotation, and an absolute read-off of cosθ ≥ 0 depends on where the block happens to land. Exhaustive enumeration of the graph's 32 assignments shows every discrete local minimum *is* a global optimum, which rules out the worse-local-minimum answer. The state is also genuinely stationary: 100,000 further steps move it by under 4×10⁻¹⁷ radians, which rules out not-yet-converged.",
+      "r": "The missing piece is the second-harmonic injection-locking (SHIL) term in Wang & Roychowdhury's oscillator-Ising formulation, which breaks the continuous rotational symmetry down to the two-fold one that makes 0 and π the attractors. Without it the Lyapunov function has a continuous family of minima and no binary structure to converge to; the crude read-off imposes one from outside. The enumeration, the stationarity and the measured success rate are all recomputed in tools/verify_oim_settle.py."
+    }
+  }
+}

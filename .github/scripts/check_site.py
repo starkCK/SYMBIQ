@@ -326,10 +326,13 @@ else:
             pass
 
 # 7b. data/qbank.json --------------------------------------------------------
-# When today.json goes stale (>2 days) the homepage widget rotates through the
-# questions that already ran, one per day, listed here as ids into data/archive/.
-# A broken pool degrades to showing the stale question, but a dangling id would
-# 404 -- so validate it like the feed above.
+# When today.json goes stale (>2 days) the homepage widget rotates a pool, one
+# entry per day. An entry is {id, src}: src "archive" is a question we really
+# asked (data/archive/, listed on archive.html); src "bank" is one written for
+# the rotation that has never run (data/qbank/, deliberately NOT in the
+# archive, because archive.html promises "every question we have ever asked").
+# Bare strings are still read as archive ids. A broken pool degrades to the
+# stale question, but a dangling id would 404 -- so validate it like the feed.
 QBANK = os.path.join(ROOT, "data", "qbank.json")
 if os.path.exists(QBANK):
     try:
@@ -343,14 +346,32 @@ if os.path.exists(QBANK):
             fail("qbank.json", f"anchor must be YYYY-MM-DD, got {anchor!r}")
         pool = qb.get("pool")
         if not isinstance(pool, list) or not pool:
-            fail("qbank.json", "pool must be a non-empty list of archive ids")
+            fail("qbank.json", "pool must be a non-empty list of rotation entries")
+            pool = []
         else:
-            missing = [p for p in pool
-                       if not os.path.exists(os.path.join(ROOT, "data", "archive", f"{p}.json"))]
+            missing, bad = [], []
+            for p in pool:
+                if isinstance(p, str):
+                    qid, src = p, "archive"
+                elif isinstance(p, dict):
+                    qid, src = p.get("id"), p.get("src", "archive")
+                else:
+                    bad.append(repr(p))
+                    continue
+                if src not in ("archive", "bank") or not qid:
+                    bad.append(repr(p))
+                    continue
+                sub = "archive" if src == "archive" else "qbank"
+                if not os.path.exists(os.path.join(ROOT, "data", sub, f"{qid}.json")):
+                    missing.append(f"{qid} (data/{sub}/)")
+            if bad:
+                fail("qbank.json", f"malformed pool entries: {', '.join(bad)}")
             if missing:
-                fail("qbank.json", f"pool ids with no data/archive/<id>.json: {', '.join(missing)}")
+                fail("qbank.json", f"pool entries with no file: {', '.join(missing)}")
         if not [f for f in FAILS if f.startswith("qbank.json")]:
-            ok(f"qbank.json: {len(pool)} archived question(s) in the stale-feed rotation")
+            n_arch = sum(1 for p in pool if isinstance(p, str) or p.get("src", "archive") == "archive")
+            ok(f"qbank.json: {len(pool)} question(s) in the stale-feed rotation "
+               f"({n_arch} asked, {len(pool) - n_arch} written for the bank)")
 
 # 8. CACHE-BUSTERS MATCH THE BYTES THEY STAND FOR --------------------------
 # Section 2 proves every page agrees on a version. It cannot prove the version

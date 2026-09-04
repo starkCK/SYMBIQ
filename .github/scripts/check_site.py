@@ -260,6 +260,56 @@ if bad_reveal:
 else:
     ok("reveal: not hand-written in any page")
 
+# 6b. EVERY PAGE CARRIES THE SAME NAV --------------------------------------
+# The nav is generated for all 24 pages by tools/build_nav.py, which lives in
+# the private desk repo -- so this repo's CI cannot re-run the generator to
+# check for drift. It can do something almost as good and entirely local:
+# every page's <nav> must be BYTE-IDENTICAL apart from the active-page markers.
+# Stripping " navcat-cur" / " active" collapses all 24 to one block, whitespace
+# included, so a hand-edit, a half-applied regeneration OR an indentation drift
+# all show up here.
+#
+# Written 2026-09-04, after feasible.html and formalism.html sat one space out
+# of indent for weeks: harmless in the render (measured), invisible in review,
+# and caught only by a desk tool nobody had run. A drift that is merely cosmetic
+# today is a merge conflict tomorrow, and the next real nav change would have
+# landed on two pages that no longer matched the template.
+NAV_RE = re.compile(r"<nav\b[^>]*>.*?</nav>", re.S)
+
+
+def _nav_norm(block):
+    """Strip ONLY the two active-page markers -- whitespace is compared exactly.
+
+    An earlier draft of this check collapsed whitespace too, and so did not
+    catch the very drift it was written for: two pages one space out of indent.
+    All 24 nav blocks are byte-identical once the markers are removed, so the
+    exact comparison costs nothing and catches both kinds of divergence.
+    """
+    return block.replace(" navcat-cur", "").replace(" active", "")
+
+
+nav_groups = {}
+nav_missing = []
+for f in sorted(pages):
+    body = open(os.path.join(ROOT, f), encoding="utf-8").read()
+    m = NAV_RE.search(body)
+    if not m:
+        nav_missing.append(f)
+        continue
+    nav_groups.setdefault(_nav_norm(m.group(0)), []).append(f)
+
+if nav_missing:
+    fail("nav", "page(s) with no <nav> block: " + ", ".join(nav_missing))
+elif len(nav_groups) > 1:
+    biggest = max(nav_groups.values(), key=len)
+    odd = [f for g in nav_groups.values() if g is not biggest for f in g]
+    fail("nav", "%d page(s) carry a <nav> that differs from the other %d "
+                "(ignoring only the active-page marker): %s -- re-run "
+                "tools/build_nav.py in the desk repo"
+         % (len(odd), len(biggest), ", ".join(odd)))
+else:
+    ok("nav: all %d pages carry a byte-identical nav (bar the active-page marker)" % len(pages))
+
 # 7. data/today.json ------------------------------------------------------
 # The homepage Question reads this file. It is rewritten every day by the
 # content pipeline, which makes it the most frequently-changed file on the site

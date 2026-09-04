@@ -180,15 +180,27 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>2 corrections logged</h3>
+  <h3>3 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>2</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>3</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 3 · published 2026-08-23 · corrected 2026-09-04 · live for 12 days · caught by the desk</p>
+    <h3 style="margin-top:6px">A sentence on the Ising page contradicted the widget sitting directly above it.</h3>
+
+    <p><strong>What we said.</strong> On <a href="analog.html">the Ising-machine page</a>, under the “Let it settle” widget: “that enumeration also shows there is only <em>one</em> discrete local minimum on this graph, the global optimum itself.”</p>
+
+    <p><strong>What&#39;s true.</strong> There are <strong>four</strong> minimising spin assignments — two arrangements and their mirror images. The widget&#39;s own readout says so: it prints the count, and on this graph it prints “4 ways.” The <em>argument</em> the sentence was making survives intact, and is the part that matters: every discrete local minimum on this graph <em>is</em> a global optimum, so a settle that falls short has genuinely not found some other valid arrangement and stopped there. Only the count was wrong.</p>
+
+    <p><strong>Why we missed it.</strong> The sentence was written during a referee pass that was checking something else and got the surrounding physics right. Nothing compared it against the widget three inches above it, which computes the number at page load and displays it. <code>tools/verify_oim_settle.py</code> now enumerates all 32 assignments, checks every discrete local minimum is a global optimum, confirms the widget&#39;s settled states really are stationary out to 100,000 steps, and measures what its read-off actually achieves — about 70% of runs reach the optimum, and the shortfall is the unpinned global phase rather than a worse arrangement.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-04 while writing that verification script, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 2 · published 2026-08-18 · corrected 2026-09-04 · live for 17 days · caught by the desk</p>
     <h3 style="margin-top:6px">We fixed this exact error on two pages and left it standing on a third for another five days.</h3>

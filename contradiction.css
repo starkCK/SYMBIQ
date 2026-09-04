@@ -1,0 +1,94 @@
+/* ================================================================
+   THE CONTRADICTION CARD (2026-09-04) — PART A3 of
+   outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md, the one part of that
+   plan designed in full and never built.
+
+   WHY IT EXISTS. The claims ledger (data/claims/*.json, 11 records
+   with speakers, verbatim quotes, deadlines, grace days and dated
+   check-in signals) is a page you have to decide to visit. This puts
+   it where it bites: inline, in the paragraph making the contested
+   claim, so the reader BUMPS INTO the disagreement instead of being
+   invited to go and look it up.
+
+   NOT A NEW DATA SOURCE. Every field on this card is already checked
+   by tools/check_claims.py. Nothing here computes, scores or decides
+   anything — it is a second VIEW of the ledger, rendered at read
+   time from the same JSON the ledger page reads, and that is the
+   whole point: race.html carried the same wrong sentence in three
+   hand-copied places for three days (see corrections.html), so a
+   claim summarised into prose on three pages would rot the same way.
+   One record, three renderings, zero copies.
+
+   Colour Law (DESIGN.md): the card is muted scaffolding until the
+   ledger says otherwise. Red left rule + red dots ONLY for a real
+   at_risk / off_track signal — a claim in trouble. Mint for
+   on_track. Muted for no_signal, because "we are watching this and
+   nothing has happened" is not a claim about anything.
+
+   Flat-by-default: 1px hairline and a tonal step, no rest shadow.
+   Reversible: remove one <link>, one <script>, and the placeholder
+   divs degrade to the static "tracked on The Ledger" link they ship
+   with in the HTML.
+   ================================================================ */
+
+/* The placeholder ships with a real link inside it, so a JS-off reader
+   still gets somewhere. Once mounted, .contra-card carries the box. */
+.contra { margin: 20px 0; }
+.contra:empty { display: none; }
+
+.contra-card {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--muted);
+  border-radius: var(--r-md, 12px);
+  background: var(--surface-2, var(--panel));
+  padding: 16px 18px;
+}
+/* `is-contested` = a named party has published a rebuttal.
+   `is-overdue`  = nobody disputed it; the deadline simply passed unresolved.
+   Both are the ledger saying something is wrong, so both take the red rule --
+   but the DOM says which, because they are not the same finding. */
+.contra-card.is-contested, .contra-card.is-overdue { border-left-color: var(--red); }
+.contra-card.is-ontrack { border-left-color: var(--teal); }
+
+.contra-kicker {
+  display: block;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  margin: 0 0 8px;
+}
+.contra-card.is-contested .contra-kicker,
+.contra-card.is-overdue .contra-kicker { color: var(--red); }
+.contra-card.is-ontrack .contra-kicker { color: var(--teal); }
+
+.contra-claim { margin: 0 0 4px; font-size: 0.98rem; line-height: 1.55; }
+.contra-claim q { font-style: italic; }
+.contra-who { display: block; color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+
+.contra-list { list-style: none; margin: 0 0 12px; padding: 0; }
+.contra-list li {
+  position: relative;
+  padding-left: 18px;
+  margin: 0 0 10px;
+  font-size: 0.88rem; line-height: 1.55;
+  color: var(--text);
+}
+.contra-list li::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted);
+}
+.contra-list li.at_risk::before, .contra-list li.off_track::before { background: var(--red); }
+.contra-list li.on_track::before { background: var(--teal); }
+.contra-when { display: block; color: var(--muted); font-size: 0.76rem;
+  letter-spacing: 0.04em; margin-bottom: 2px; }
+
+.contra-foot {
+  margin: 0; padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 0.82rem; line-height: 1.5;
+}
+.contra-foot a { min-height: 0; }
+
+@media (max-width: 620px) {
+  .contra-card { padding: 14px; }
+}

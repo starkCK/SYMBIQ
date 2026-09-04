@@ -250,7 +250,7 @@
 
 <span class="tier y">🟡 Some math</span>
 <h2 id="yellow">The exchange rate, and what sets it</h2>
-<p>A surface-code logical qubit lives on a patch of <strong>≈2d² physical qubits</strong>, where <em>d</em> is the <strong>code distance</strong>: bigger <em>d</em>, longer error chains needed to fool it, safer the logical qubit. So the whole game is: <em>what's the smallest d that makes my logical qubit reliable enough?</em>, because d² is what you pay.</p>
+<p>A surface-code logical qubit lives on a patch of <strong><span class="rcpt" data-rcpt="lq-exchange">≈2d² physical qubits</span></strong>, where <em>d</em> is the <strong>code distance</strong>: bigger <em>d</em>, longer error chains needed to fool it, safer the logical qubit. So the whole game is: <em>what's the smallest d that makes my logical qubit reliable enough?</em>, because d² is what you pay.</p>
 <p>That's set by one ratio: your physical error rate over the code's threshold, <strong>p/p<sub>th</sub></strong>. Below threshold (ratio &lt; 1), each step up in code distance (d→d+2, the next usable odd distance) multiplies your reliability by the same factor; the further below, the bigger that factor, and the smaller the <em>d</em> you need. The logical error rate goes roughly as</p>
 <div class="formula">p<sub>L</sub> ≈ (p / p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></div>
 <p>Read that exponent: a machine at p/p<sub>th</sub> = 1/2 barely improves per distance step and needs a <em>huge</em> patch; a machine at 1/20 slashes its error rate every step and needs a tiny one. This is the entire argument for quality-first roadmaps, and the calculator below lets you feel how violently error rate beats raw qubit count.</p>
@@ -302,7 +302,7 @@
     <text class="lbl-s yellow" x="284" y="125" text-anchor="middle">for the same one qubit</text>
   </svg></div>
   <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>Both squares are one logical qubit.</strong> Their areas are drawn in true proportion, using this page's ≈2d² convention: d = 13 costs 338 and d = 59 costs 6,962, a factor of 20.6. (The exact rotated-code count is 2d²−1, the 49 drawn on the left, and the rounding changes that factor by 0.3%, which is why the convention is harmless here.) Nothing about the algorithm changed between them; only the hardware's error rate did. This is why a company quoting raw qubit counts is quoting the wrong number, and why "quality first" is an engineering position rather than a slogan. <a href="#lq-widget">Set your own error rate in the calculator ▸</a></figcaption>
+  <figcaption><strong>Both squares are one logical qubit.</strong> Their areas are drawn in true proportion, using this page's ≈2d² convention: d = 13 costs 338 and d = 59 costs 6,962, <span class="rcpt" data-rcpt="lq-factor">a factor of 20.6</span>. (The exact rotated-code count is 2d²−1, the 49 drawn on the left, and the rounding changes that factor by 0.3%, which is why the convention is harmless here.) Nothing about the algorithm changed between them; only the hardware's error rate did. This is why a company quoting raw qubit counts is quoting the wrong number, and why "quality first" is an engineering position rather than a slogan. <a href="#lq-widget">Set your own error rate in the calculator ▸</a></figcaption>
 </figure>
 
 <h2 data-tier-keep>The calculator: physical qubits → logical qubits</h2>
@@ -330,8 +330,8 @@
 <span class="tier r">🔴 Real math</span>
 <h2 id="red">Worked: why 10× fewer qubits can win</h2>
 <p>Take two machines and run them to a p<sub>L</sub> ≤ 10⁻⁹ target under the surface-code model above.</p>
-<p><strong>Machine A</strong>: 10⁵ physical qubits at p/p<sub>th</sub> = 1/2. Need (1/2)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀2 ≈ 29.9 → 30 → <em>d</em> ≥ 59. Patch ≈ 2·59² = 6,962 physical/logical → 10⁵ / 6,962 ≈ <strong>14 logical qubits</strong>.</p>
-<p><strong>Machine B</strong>: 10⁴ physical qubits at p/p<sub>th</sub> = 1/20 (a <em>tenth</em> the hardware, but far cleaner). Need (1/20)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀20 ≈ 6.9 → 7 → <em>d</em> ≥ 13. Patch ≈ 2·13² = 338 physical/logical → 10⁴ / 338 ≈ <strong>29 logical qubits</strong>.</p>
+<p><strong>Machine A</strong>: 10⁵ physical qubits at p/p<sub>th</sub> = 1/2. Need (1/2)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀2 ≈ 29.9 → 30 → <em>d</em> ≥ 59. Patch ≈ 2·59² = 6,962 physical/logical → 10⁵ / 6,962 ≈ <strong><span class="rcpt" data-rcpt="lq-machine-a">14 logical qubits</span></strong>.</p>
+<p><strong>Machine B</strong>: 10⁴ physical qubits at p/p<sub>th</sub> = 1/20 (a <em>tenth</em> the hardware, but far cleaner). Need (1/20)<sup>⌊(d+1)/2⌋</sup> ≤ 10⁻⁹ → ⌊(d+1)/2⌋ ≥ 9/log₁₀20 ≈ 6.9 → 7 → <em>d</em> ≥ 13. Patch ≈ 2·13² = 338 physical/logical → 10⁴ / 338 ≈ <strong><span class="rcpt" data-rcpt="lq-machine-b">29 logical qubits</span></strong>.</p>
 <p><strong>B wins, 29 to 14, with 10× fewer physical qubits.</strong> The exponent ⌊(d+1)/2⌋ is where the leverage lives: cleaner hardware doesn't just shave the patch, it shrinks the distance you need in the first place, and you pay for distance squared. Error rate beats scale, and it isn't close. This is the whole case for spending your next engineering dollar on fidelity (much of it <a href="ai.html">bought by AI-driven calibration and decoding</a>) rather than on more noisy qubits.</p>
 <p>The same arithmetic is why cryptographic targets look so expensive: push the target to 10⁻¹² or below and every machine's required <em>d</em> jumps, the patches balloon, and the logical count collapses, which is exactly the multiplier behind the <a href="bitcoin.html">"half a million physical qubits to break a key"</a> headline.</p>
 

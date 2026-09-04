@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-09-01",
+  "generated": "2026-09-04",
   "note": "The second consumer of the Lexicon's shared underline (site/lexicon.css / site/lexicon.js): a small set of LOAD-BEARING figures per page, marked in the HTML as <span class=\"rcpt\" data-rcpt=\"<id>\">, each with a record here. site/receipts.js reads this file, builds the popover card for each marked figure, and adds the page's 'Show the receipts' toggle only if the current page has at least one entry. Deliberately NOT exhaustive -- see PART A2 of outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md: marking every number would make the marked ones mean nothing. Every record needs either `tool` (a script in tools/ that produced or checked the figure) or `source` (a citation for a figure this site measured against or quotes from a primary source) -- checked by tools/check_receipts.py, which also confirms every data-rcpt id in the HTML has a record here and vice versa, and that every `tool` path actually exists on disk.",
   "fields": {
     "id": "stable slug, matches the HTML span's data-rcpt",
@@ -104,6 +104,115 @@
       "source": "RFC 6928 (IETF, Apr 2013); default since Linux 2.6.39 (May 2011)",
       "verified_at": "2026-08-06",
       "falsifier": "a path with a smaller MTU, or a server whose congestion window differs from the RFC 6928 default, moves this number — it is the standard case, not a universal constant."
+    },
+    {
+      "id": "lq-exchange",
+      "page": "logical-qubit.html",
+      "value": "≈2d² physical qubits",
+      "formula": "surface-code patch ≈ 2d², d the code distance",
+      "inputs": "this page's stated convention · the exact rotated-code count is 2d²−1",
+      "tool": "tools/verify_logical_qubit.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "this is the data + ancilla patch alone — routing, magic-state factories and per-patch overhead sit on top of it, and for real computation can rival or exceed the patch itself."
+    },
+    {
+      "id": "lq-machine-a",
+      "page": "logical-qubit.html",
+      "value": "14 logical qubits",
+      "formula": "d = 2⌈t / −log₁₀r⌉ − 1 · patch = 2d² · logical = ⌊N / patch⌋",
+      "inputs": "r = p/p_th = 1/2 · N = 10⁵ · target p_L = 10⁻⁹ → d = 59, patch 6,962",
+      "tool": "tools/verify_logical_qubit.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "assumes A = 1 in p_L ≈ A(p/p_th)^⌊(d+1)/2⌋; a real device's prefactor moves the required distance, and the bare-patch caveat above applies on top."
+    },
+    {
+      "id": "lq-machine-b",
+      "page": "logical-qubit.html",
+      "value": "29 logical qubits",
+      "formula": "d = 2⌈t / −log₁₀r⌉ − 1 · patch = 2d² · logical = ⌊N / patch⌋",
+      "inputs": "r = p/p_th = 1/20 · N = 10⁴ · target p_L = 10⁻⁹ → d = 13, patch 338",
+      "tool": "tools/verify_logical_qubit.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "B wins on this model, not on any measured device — no machine has yet fielded anything close to 29 below-threshold logical qubits, and The Race's own table is the count that matters."
+    },
+    {
+      "id": "lq-factor",
+      "page": "logical-qubit.html",
+      "value": "a factor of 20.6",
+      "formula": "6,962 / 338",
+      "inputs": "d = 59 vs d = 13 at the ≈2d² convention · the exact 2d²−1 counts give 20.65, a 0.3% difference",
+      "tool": "tools/verify_logical_qubit.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "compares two patches at one shared 10⁻⁹ target; move the target and both distances move, so the factor is not a constant property of the two machines."
+    },
+    {
+      "id": "race-growth",
+      "page": "race.html",
+      "value": "about twenty-fold from 2019 to 2023",
+      "formula": "largest physical-qubit milestone of 2023 ÷ largest of 2019",
+      "inputs": "1,180 (Atom Computing, 2023-10) ÷ 53 (Google Sycamore, 2019-10) = 22.3×",
+      "tool": "tools/verify_hardware.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "a hand-curated milestone set, not a census — it tracks the largest chip anyone announced, so one unlisted machine moves it. “Physical qubits” also spans fabricated sites, controlled qubits and qubits good enough to compute with; the 1,180 are trap sites."
+    },
+    {
+      "id": "race-tenth",
+      "page": "race.html",
+      "value": "under a tenth the qubits of 2023's largest chip",
+      "formula": "Willow's physical count ÷ each 2023 chip above 1,000 qubits",
+      "inputs": "105 ÷ 1,180 = 0.089 · 105 ÷ 1,121 = 0.094 — both under 0.1",
+      "tool": "tools/verify_hardware.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "this sentence previously read “smaller than its own 2019 chip,” which was false — Willow (105) is about twice Sycamore (53). See correction 1. The surviving claim is only about 2023's largest chips."
+    },
+    {
+      "id": "race-101",
+      "page": "race.html",
+      "value": "101 in total",
+      "formula": "2d²−1 physical qubits for a rotated surface code, plus leakage-removal qubits",
+      "inputs": "d = 7 → 2·7²−1 = 97, + 4 leakage-removal = 101, inside Willow's 105",
+      "tool": "tools/verify_hardware.py",
+      "verified_at": "2026-09-04",
+      "falsifier": "counts one d = 7 patch on one device; it is not a general overhead figure, and the 4 leakage-removal qubits are specific to Willow's implementation."
+    },
+    {
+      "id": "race-lambda",
+      "page": "race.html",
+      "value": "Λ = 2.14 ± 0.02",
+      "formula": "fit of log(logical error rate) against distance across a d = 3, 5, 7 series",
+      "inputs": "Google Willow processor, per-two-distance-step suppression",
+      "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687",
+      "verified_at": "2026-07-21",
+      "falsifier": "the lone d = 5 → 7 step reads closer to 2.1 — 2.14 is the whole-series fit, not any single step, and Λ drifts with calibration."
+    },
+    {
+      "id": "qm-t2-bound",
+      "page": "quantum-mechanics.html",
+      "value": "T₂ ≤ 2T₁",
+      "formula": "|r(t)| = √(x²+y²+z²) must stay ≤ 1 for ρ = (I + r·σ)/2 to be a valid density matrix",
+      "inputs": "transverse decay e^(−t/T₂) against longitudinal e^(−t/T₁); with T₂ pushed past 2T₁ the widget's own closed form drives |r| above 1",
+      "tool": "tools/verify_decoherence.py",
+      "verified_at": "2026-09-01",
+      "falsifier": "a Markovian, time-independent-rate bound. Real devices carry slow drift and 1/f noise that no single T₂ captures, and a non-Markovian bath can make an effective T₂ measured over one window meaningless in another."
+    },
+    {
+      "id": "qm-gate-budget",
+      "page": "quantum-mechanics.html",
+      "value": "two-qubit gates (20 ns) before the phase halves",
+      "formula": "⌊ T₂ · ln 2 / t_gate ⌋",
+      "inputs": "t_gate = 20 ns · e.g. T₂ = 100 µs → 3,465 gates",
+      "tool": "tools/verify_decoherence.py",
+      "verified_at": "2026-09-01",
+      "falsifier": "counts gate slots inside one coherence half-life, not useful gates — it assumes every gate is perfect and back-to-back, ignores gate error itself, idling, readout and compilation overhead, so a real circuit gets far fewer."
+    },
+    {
+      "id": "qm-1932",
+      "page": "quantum-mechanics.html",
+      "value": "written down by 1932",
+      "inputs": "the state/unitary/Born/tensor-product postulates this page tabulates",
+      "source": "J. von Neumann, Mathematische Grundlagen der Quantenmechanik (Springer, 1932) — the first fully axiomatic Hilbert-space formulation, incl. the Born-rule and density-matrix machinery",
+      "verified_at": "2026-09-04",
+      "falsifier": "dates the axiomatisation, not the physics: Born's rule is 1926 and Dirac's transformation theory 1927, while decoherence theory and the modern measurement literature are decades later. The claim is only that quantum computing adds no new postulate."
     }
   ]
 }

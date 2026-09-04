@@ -180,19 +180,27 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>0 corrections logged</h3>
-  <p>This log counts what a <em>reader</em> catches after publication, not what the desk fixes before it. Nothing has been reported yet.</p>
+  <h3>1 correction logged</h3>
+  <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>0</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>1</b><span>correction since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
-<div class="card corr-empty">
-  <p><strong>Nothing logged yet.</strong> The first entry runs louder than the mistake it fixes, with the finder's name on it.</p>
-</div>
+<ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 1 · published 2026-09-01 · corrected 2026-09-04 · live for 3 days · caught by the desk</p>
+    <h3 style="margin-top:6px">The Race said Google's Willow was smaller than Sycamore. It is about twice the size.</h3>
 
-<ol class="corr-log" hidden>
+    <p><strong>What we said.</strong> On <a href="race.html#scaling">The Race</a>: “Google's Willow (2024) is smaller than its own 2019 chip.” The milestone table said the same thing in its own words — “Smaller than Sycamore.”</p>
+
+    <p><strong>What's true.</strong> Willow has <strong>105</strong> physical qubits (Google Quantum AI, <em>Nature</em> 638, 920 (2025); <a href="https://arxiv.org/abs/2408.13687">arXiv:2408.13687</a>). Sycamore had <strong>53</strong> (Arute et al., <em>Nature</em> 574, 505 (2019); <a href="https://arxiv.org/abs/1910.11333">arXiv:1910.11333</a>). Willow is about <strong>twice</strong> Sycamore's size, not smaller — and both numbers were sitting in the table directly under the sentence. The comparison the paragraph was actually reaching for is against 2023's biggest chips: Willow holds under a tenth the qubits of Atom Computing's 1,180-site array or IBM's 1,121-qubit Condor. <strong>The point survived; the evidence for it did not.</strong> The frontier really did stop competing on raw count. We just proved it with a number that says the opposite.</p>
+
+    <p><strong>Why we missed it.</strong> The wrong figure was never computed — it was <em>asserted in prose</em>, and prose is the one thing none of this site's checkers read. <code>tools/verify_hardware.py</code> validated the table against <code>data/hardware.json</code>, and the chart's inline copy against both, and passed every time, because all three agreed with each other and none of them was the sentence. Worse, the same wrong claim had been copied into three places (the JSON note, the inline chart data, the visible table row), so on any spot-check it read as corroborated. The checker now <strong>derives</strong> the page's comparative sentences from the milestone data — the twenty-fold growth, the under-a-tenth comparison, Willow against Sycamore — and fails if any of them stops being true, or if the retracted wording ever reappears.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found during unrelated work on 2026-09-04, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
 </ol>
 
 <p class="corr-format">Every entry follows the same three lines: <strong>what we said</strong> → <strong>what’s true</strong> → <strong>why we missed it</strong>. Corrections found by readers are credited by name with the 🏅 <em>“taught it better than us”</em> tag, and run with more room than the claim they fix.</p>

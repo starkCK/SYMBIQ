@@ -36,7 +36,7 @@
       "note": "24 entangled logical qubits reported on a neutral-atom machine; the largest logical-qubit count claimed to date, still not a below-threshold result.",
       "source": "Atom Computing / Microsoft announcement, 19 Nov 2024" },
     { "date": "2024-12", "org": "Google", "device": "Willow", "kind": "physical", "n": 105,
-      "note": "Smaller than Sycamore. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.",
+      "note": "Under a tenth the size of 2023's largest chips, and about twice Sycamore's. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.",
       "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687" },
     { "date": "2024-12", "org": "Google", "device": "Willow", "kind": "logical", "n": 1,
       "note": "One logical qubit, at distance 7, below threshold: the first whose error rate provably falls as you add physical qubits. The number is 1 on purpose.",

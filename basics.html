@@ -427,7 +427,7 @@
 
 <p>MWPM solves the inference on a decoder graph with edge weights drawn from an assumed independent-Pauli plus phenomenological noise model: provably good under that model, degraded under correlated noise, leakage, cross-talk and non-Markovian drift. The failure is structural rather than computational: the model has no term for the thing that is happening.</p>
 
-<p><strong>AlphaQubit:</strong> recurrent transformer over per-round syndrome inputs, including analog "soft" readout rather than binarized measurements, which is a genuine information advantage, not merely a bigger model. Pretrained on hundreds of millions of simulated samples, fine-tuned on thousands of experimental samples from a Sycamore processor. Reported ~6% fewer logical errors than tensor-network decoders (near-optimal, far too slow for real time) and ~30% fewer than correlated matching. <strong>The real-device data is <em>d</em> = 3 and <em>d</em> = 5; the <em>d</em> = 11 result is simulation only</strong>, a distinction frequently lost in secondary coverage, and one we got wrong here once (see <a href="corrections.html">Corrections</a>).</p>
+<p><strong>AlphaQubit:</strong> recurrent transformer over per-round syndrome inputs, including analog "soft" readout rather than binarized measurements, which is a genuine information advantage, not merely a bigger model. Pretrained on hundreds of millions of simulated samples, fine-tuned on thousands of experimental samples from a Sycamore processor. Reported ~6% fewer logical errors than tensor-network decoders (near-optimal, far too slow for real time) and ~30% fewer than correlated matching. <strong>The real-device data is <em>d</em> = 3 and <em>d</em> = 5; the <em>d</em> = 11 result is simulation only</strong>, a distinction frequently lost in secondary coverage, and one we got wrong here once — caught in editing, before <a href="corrections.html">the corrections log</a> started counting.</p>
 
 <p>Below threshold, a decoder that effectively raises p<sub>th</sub> or sharpens the exponent compounds through every future distance increase. Decoder quality is hardware you do not have to build, which is the entire economic argument for this site's thesis.</p>
 
@@ -475,7 +475,7 @@
   <a href="qec.html#duel"><span class="pw-k">Or play it</span><span class="pw-t">The Decoder Duel</span><span class="pw-s">Ten rounds against the textbook decoder, on a chip it was never told about.</span></a>
   <a href="logical-qubit.html"><span class="pw-k">The exchange rate</span><span class="pw-t">What is a logical qubit?</span><span class="pw-s">A calculator that turns an error rate into a real qubit count.</span></a>
   <a href="race.html#threshold"><span class="pw-k">The race it decides</span><span class="pw-t">The threshold</span><span class="pw-s">Drag Λ and watch the cliff flip into a climb.</span></a>
-  <a href="corrections.html"><span class="pw-k">Where we were wrong</span><span class="pw-t">Corrections</span><span class="pw-s">Twenty-one logged errors, including two on this page.</span></a>
+  <a href="corrections.html"><span class="pw-k">Where we were wrong</span><span class="pw-t">Corrections</span><span class="pw-s">Every published mistake, printed louder than the original.</span></a>
 </div>
 
 <footer>No math, real terms, or full formalism: same topic, your pick.<br>SymbiQ · Sources cited inline · <a href="corrections.html">Found an error? It goes on Corrections, louder than the original.</a></footer>

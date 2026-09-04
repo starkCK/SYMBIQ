@@ -50,6 +50,7 @@
 <link rel="stylesheet" href="living.css?v=2">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="contradiction.css?v=1">
 <style>
 .modtabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 16px; }
 .modtab { flex: 1 1 auto; min-width: 120px; text-align: left; }
@@ -134,6 +135,7 @@
 <script src="living.js?v=1" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="contradiction.js?v=1" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L1" data-vivid data-alive data-glass data-living>
 <div class="wrap">
@@ -326,6 +328,10 @@
 
 <h3 id="annealing">Adiabatic &amp; physical quantum annealing</h3>
 <p>The Volcano mission on <a href="journey.html">the Solver's Path</a> already teaches simulated annealing, the classical algorithm that cools a search the way metal is tempered. Quantum annealing is the physical hardware version of a closely related idea: encode a problem as an Ising-model energy landscape, start every qubit in an easy-to-prepare ground state, then slowly deform the system toward the hard problem's Hamiltonian, so that (in the ideal case) the system tracks its own ground state the whole way and ends up sitting on the answer. Kadowaki &amp; Nishimori, <em>Phys. Rev. E</em> 58, 5355 (1998), proposed it; Farhi, Goldstone, Gutmann &amp; Sipser, <a href="https://arxiv.org/abs/quant-ph/0001106">arXiv quant-ph/0001106</a> (2000), generalized the idea into adiabatic quantum computation as a computing model in its own right. Whether that <em>general</em> model is as powerful as the gate model was a separate, harder question, proved four years later (Aharonov et al., 2004/2007) and <a href="formalism.html#f20">covered in full, including the exact construction, on The Machinery</a>. A physical annealer like the one below runs the same idea far faster and hotter than that provably-safe regime, which is a deliberate engineering trade-off, not a claim of the same guarantee. D-Wave built the first commercial version: Johnson, Amin, Gildert et al., <em>Nature</em> 473, 194&ndash;198 (2011), demonstrated an 8-qubit programmable annealer, and the company has since scaled to thousands of qubits. <strong>The honest limit, stated plainly: a physical annealer is not a universal quantum computer.</strong> It solves exactly one problem shape (find the ground state of an Ising model) and cannot run Shor's algorithm, Grover's, or anything on <a href="formalism.html">this site's own Machinery page</a>. Whether it beats the best classical solvers on real problems has been argued for over a decade, with the gap narrowing on both sides every time someone checks carefully, which is precisely why <a href="formalism.html#f16">QAOA</a>, the gate-model cousin of the same idea, exists as a separate, independently-judged bet.</p>
+
+<div class="contra" data-claim="dwave-magnetic-simulation-supremacy-2025">
+  <p><a href="ledger.html#c-dwave-magnetic-simulation-supremacy-2025">D-Wave's supremacy claim — tracked on The Ledger →</a></p>
+</div>
 
 <a class="orjump" href="analog.html">
   <span>◆ <b>The classical machines built to beat exactly this.</b> Coupled oscillators, coupled lasers and fluctuating bits all minimise the same Ising-model energy landscape a quantum annealer does, by an entirely classical route.<span class="arr"> Can a classical machine out-optimise a quantum one? ▸</span></span>

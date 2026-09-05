@@ -30,9 +30,9 @@
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
 <link rel="stylesheet" href="style.css?v=49">
 <!-- The motion layer ships as its own file, with its own cache-buster, for the
-     same reason the hero CTA rule below is page-local: style.css is shared by
-     24 pages and touching it forces a bump on every one of them (the
-     2026-07-24 scar). Motion should never be a 24-page deploy. -->
+     same reason home.css below does: style.css is shared by 24 pages and
+     touching it forces a bump on every one of them (the 2026-07-24 scar).
+     Motion should never be a 24-page deploy. -->
 <link rel="stylesheet" href="motion.css?v=2">
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -54,8 +54,12 @@
 <link rel="stylesheet" href="living.css?v=2">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<!-- The home layer: the threshold instrument, the corner companion, the two
+     overlays, the pointer parallax and the lattice canvas. ONE page, own
+     cache-buster, deletable without touching anything shared. -->
+<link rel="stylesheet" href="home.css?v=6">
 <style>
-/* Hero CTA. Page-local on purpose: style.css is shared by seventeen pages and
+/* Hero CTA. Page-local on purpose: style.css is shared by 24 pages and
    changing it forces a cache-buster bump on every one of them (the 2026-07-24
    scar). This rule belongs to one page, so it lives on that page.
    .gh-row is scoped to .gamehero in style.css, so the layout is restated here. */
@@ -75,7 +79,15 @@
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
 <script src="archive.js?v=2" defer></script>
-<script src="atmosphere.js?v=2" defer></script>
+<!-- atmosphere.js is DELIBERATELY ABSENT from this page, and only this page.
+     home.js draws the background instead: a pointer-reactive field where the
+     cursor is a weak attractor and the couplings warm from lavender to mint
+     as nodes arrive. It also carries over the two things atmosphere.js was
+     doing here besides the lattice -- the pointer-tracked card sheen
+     (--mo-x / --mo-y for motion.css section 4) and the SymbiQ.lattice
+     surface qubit.js drives with the page state's coherence -- so nothing
+     that depended on that file loses its channel. Every other page still
+     loads it exactly as before. -->
 <script src="qubit.js?v=1" defer></script>
 <script src="rails.js?v=4" defer></script>
 <script src="alive.js?v=9" defer></script>
@@ -85,17 +97,21 @@
 <script src="living.js?v=1" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<!-- Last on purpose: home.js section 5 cooperates with the key handlers
+     nav.js, alive.js and qubit.js have already bound, and needs them there. -->
+<script src="home.js?v=8" defer></script>
 </head>
 <!-- data-motion  unlocks the opt-in half of motion.css: pointer-tracked hover
-       physics on cards and the live border on #tryit. NOT scroll reveals --
-       nav.js already owns those site-wide, and motion.css §3 explains at
-       length why a second reveal system is not merely redundant but breaks
-       the first one. Now on all 24 pages, after verifying on every one that
-       turning it on re-anchors no absolutely-positioned element and moves no
-       sticky bar.
-     data-lattice  asks atmosphere.js for the generative background. Homepage
-       only -- the lattice belongs behind the hero that argues for it. -->
-<body data-motion data-rails data-lattice data-vivid data-alive data-glass data-hud-return data-living>
+       physics on cards and the live border on widgets. NOT scroll reveals --
+       nav.js already owns those site-wide, and motion.css section 3 explains
+       at length why a second reveal system is not merely redundant but breaks
+       the first one. home.js also reads it before building the field or the
+       card sheen, so one attribute still switches off all the ambient motion
+       on this page.
+     data-lattice is GONE: it was the flag that asked atmosphere.js for the
+       generative background, and this page no longer loads that file. Leaving
+       it would be a note about a script that is not here. -->
+<body data-motion data-rails data-vivid data-alive data-glass data-hud-return data-living>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -198,16 +214,95 @@
 </nav>
 
 
-
-
+<!-- ── THE HERO ──────────────────────────────────────────────────────────
+     Two columns from 1024px up (home.css section 1), one below it. h1 and
+     .tagline stay ADJACENT SIBLINGS: hud.js mounts its returning-visitor
+     card with `h1 + .tagline` and the Contract line after that, so
+     breaking that adjacency would silently drop both. -->
+<!-- The h1 is a DIRECT child of .wrap and spans the full width, above the
+     two-column split. Three reasons, in order of weight: the headline is the
+     main content and owns the top of the first screen on its own; the
+     instrument then starts BELOW it rather than competing with it; and
+     motion.css's `.wrap > h1` view-transition-name only matches a direct
+     child (nesting it inside the hero grid had quietly dropped that).
+     hud.js falls back from `h1 + .tagline` to `.tagline`, so its returning-
+     visitor card and Contract line still mount in the right place -- proved
+     by tools/verify_hud_contract.mjs. -->
 <h1>Two broken geniuses,<br>fixing each other.</h1>
-<p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop at three levels, as a game.</p>
-<p class="gh-row herocta">
-  <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
-  <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
-</p>
-<p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a>. Two minutes, zero jargon, zero equations.</p>
 
+<div class="hero2">
+  <div class="hero-copy" data-station="hero">
+  <p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop at three levels, as a game.</p>
+  <p class="gh-row herocta">
+    <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
+    <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
+  </p>
+  <p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a>. Two minutes, zero jargon, zero equations.</p>
+  </div>
+
+  <!-- ── THE INSTRUMENT ────────────────────────────────────────────────────
+       The page leads with something that computes, not with a claim. Two
+       sliders, three readouts, one verdict, and not one hand-written number
+       on its face: home.js section 1 derives every figure from the same
+       below-threshold scaling law qec.html's Threshold Explorer and
+       race.html's threshold widget already run, brute-forced by
+       tools/verify_threshold.py and, for this instrument specifically, by
+       tools/verify_home_threshold.py.
+
+       It is a readout, not a section: 15px of padding against a card's 20-22,
+       which is what keeps it at about half a card's weight beside the h1. -->
+  <aside class="inst" id="hero-inst" data-station="threshold"
+         aria-label="Threshold instrument: is this machine below threshold?">
+    <div class="inst-top">
+      <p class="inst-eyebrow">Is it below threshold?</p>
+      <p class="inst-live">live</p>
+    </div>
+
+    <div class="inst-ctl">
+      <label for="ti-p">Physical error rate <b id="ti-pv">0.5%</b></label>
+      <input type="range" id="ti-p" min="1" max="41" step="1" value="5">
+    </div>
+    <div class="inst-ctl">
+      <label for="ti-d">Code distance <b id="ti-dv">d = 11</b></label>
+      <input type="range" id="ti-d" min="3" max="27" step="2" value="11">
+    </div>
+
+    <div role="status" aria-live="polite">
+      <div class="inst-out">
+        <span class="inst-cell">
+          <span class="inst-lab">Error / round</span>
+          <span class="inst-val q" id="ti-pl">—</span>
+          <span class="inst-sub">p<sub>L</sub></span>
+        </span>
+        <span class="inst-cell">
+          <span class="inst-lab">Physical qubits</span>
+          <span class="inst-val q" id="ti-qb">—</span>
+          <span class="inst-sub">2d² − 1</span>
+        </span>
+        <span class="inst-cell">
+          <span class="inst-lab">Lifetime</span>
+          <span class="inst-val t"><span id="ti-lf">—</span> <span id="ti-lfu"></span></span>
+          <span class="inst-sub">before one error</span>
+        </span>
+      </div>
+      <p class="verdict" id="ti-verdict"></p>
+    </div>
+
+    <p class="inst-note">Honest model: p<sub>L</sub> = 0.1 · (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup> with
+      p<sub>th</sub> = 1% (<a href="https://arxiv.org/abs/1208.0928">Fowler et al. 2012</a>), a rotated
+      surface-code patch at 2d²−1 physical qubits, one syndrome round per microsecond.
+      <em>Wrong if</em> your hardware's threshold is not 1% or its round is not 1&nbsp;µs — either
+      moves the lifetime by orders of magnitude. <a href="qec.html#threshold-widget">The full explorer ▸</a></p>
+  </aside>
+
+  <!-- The spine rides in the hero grid's SECOND ROW of the left column, beside
+       the instrument rather than below it. Without it the row was as tall as
+       the instrument and the left column ran ~500px of empty space under the
+       call to action -- measured at 1360px. Filling it with the sentence that
+       was going to come next anyway costs nothing and keeps the first screen
+       reading as content rather than as a gap. Below 1024px .hero2 is a plain
+       block, so the DOM order (copy, instrument, spine) is what stacks. -->
+  <section data-station="spine" class="hero-spine">
 <!-- ── THE SPINE ─────────────────────────────────────────────────────────────
      One sentence, above the router, answering the question the three doors
      below cannot ask themselves: why does this site cover quantum, OR and
@@ -225,7 +320,11 @@
      tools/verify_living.py. Empty and 0-height if living.js does not load. -->
 <div data-living-strip></div>
 <p class="living-strip-note">Fourteen coupled oscillators finding one rhythm &mdash; the same relaxation every oscillator-Ising machine on the site runs, at rest.</p>
+  </section>
+</div>
 
+
+<section data-station="router">
 <!-- ── THE HUB ───────────────────────────────────────────────────────────────
      Three tracks, one row, ALWAYS visible. Two things were wrong with the
      version this replaces (2026-08-21, same day it shipped):
@@ -294,165 +393,13 @@
   } catch (e) { /* first-time state stands */ }
 })();
 </script>
+</section>
 
-<!-- "Since you left" -- for a RETURNING visitor only (shown when a prior
-     concepts.json snapshot exists locally and it differs from the current
-     one). Ships hidden; the script below unhides it only after it has
-     something true to say -- same .reveal rule tiers.js follows, applied to
-     a second system. -->
-<div class="card" id="sinceleft" hidden>
-  <p style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Since you left</p>
-  <p id="sinceleft-body" style="margin:0"></p>
-</div>
-
-<!-- The first-ten-seconds playable widget -- a stripped one-hole version of
-     Circuit Golf's own hole 2 (reach |+> with H, par 1). Deliberately NOT
-     mounted via SymbiQ.games.mount('golf', ...): that engine's win() marks
-     the real nine-hole mission complete the moment ALL nine holes are done,
-     and a homepage teaser must never let one gate press on one hole silently
-     complete a mission the visitor never actually played. So this reuses the
-     same verified one-qubit gate matrices and Bloch projection (see
-     games.js's G.golf / quantum-mechanics.html#bloch for the shared engine)
-     as a small, independent, side-effect-free copy -- and the same golfsvg/
-     gsphere/gequator/gaxis/gtarget/gvec classes already in style.css, so it
-     needs no new CSS at all. -->
-<div class="card" id="tryit">
-  <p style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Try it: ten seconds, no signup</p>
-  <p style="margin:0 0 10px"><strong>Turn this into <span class="ket">|+⟩</span> with one gate.</strong> This is what &ldquo;the mathematics does the judging&rdquo; actually means.</p>
-  <svg class="golfsvg" viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bloch sphere: your state against the target" id="tryit-svg"></svg>
-  <p style="text-align:center;font-size:.85rem;color:var(--muted);margin:6px 0 0"><span style="color:var(--teal)">━ solid teal = you</span> · <span style="color:var(--violet)">┅ dashed violet = the target</span></p>
-  <p style="margin:10px 0 4px;text-align:center">
-    <button class="preset gatebtn" data-g="X">X</button>
-    <button class="preset gatebtn" data-g="Y">Y</button>
-    <button class="preset gatebtn" data-g="Z">Z</button>
-    <button class="preset gatebtn" data-g="H">H</button>
-    <button class="preset gatebtn" data-g="S">S</button>
-    <button class="preset gatebtn" data-g="T">T</button>
-    <button class="preset" id="tryit-reset" type="button">Reset</button>
-  </p>
-  <div id="tryit-out" style="text-align:center"></div>
-</div>
-
-<p>Everyone's watching the AI race. The interesting race is the one behind it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum computers are being aimed at the data AI can't get anywhere else. Neither story makes sense alone. SymbiQ covers the loop.</p>
-
-<script>
-// The try-it engine. Same verified 2x2 complex gate matrices and Bloch
-// projection as games.js's Circuit Golf -- see that file's comment for the
-// full derivation; this is a deliberately independent, side-effect-free copy
-// (no SymbiQ.save writes at all), for the reason explained in the HTML
-// comment above.
-(function () {
-  var svg = document.getElementById('tryit-svg'), out = document.getElementById('tryit-out');
-  if (!svg) return;
-  var NS = 'http://www.w3.org/2000/svg';
-  function el(t, a) { var n = document.createElementNS(NS, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
-  function add(t, a, txt) { var n = el(t, a); if (txt != null) n.textContent = txt; svg.appendChild(n); return n; }
-
-  var S2 = 1 / Math.sqrt(2), C4 = Math.cos(Math.PI / 4), S4 = Math.sin(Math.PI / 4);
-  function cm(p, q) { return [p[0]*q[0] - p[1]*q[1], p[0]*q[1] + p[1]*q[0]]; }
-  function cadd(p, q) { return [p[0]+q[0], p[1]+q[1]]; }
-  var GT = {
-    X: [[0,0],[1,0],[1,0],[0,0]], Y: [[0,0],[0,-1],[0,1],[0,0]], Z: [[1,0],[0,0],[0,0],[-1,0]],
-    H: [[S2,0],[S2,0],[S2,0],[-S2,0]], S: [[1,0],[0,0],[0,0],[0,1]], T: [[1,0],[0,0],[0,0],[C4,S4]]
-  };
-  function ap(g, s) { var m = GT[g]; return [cadd(cm(m[0],s[0]),cm(m[1],s[1])), cadd(cm(m[2],s[0]),cm(m[3],s[1]))]; }
-  function bloch(s) {
-    var a = s[0], b = s[1], acb = cm([a[0], -a[1]], b);
-    return [2*acb[0], 2*acb[1], (a[0]*a[0]+a[1]*a[1]) - (b[0]*b[0]+b[1]*b[1])];
-  }
-  var Z0 = [[1,0],[0,0]], TARGET = bloch(ap('H', Z0));
-
-  var R = 82, CX = 130, CY = 118, AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
-  function proj(v) {
-    return [CX + R * (-v[0]*Math.sin(AZ) + v[1]*Math.cos(AZ)),
-            CY + R * (v[0]*Math.cos(AZ)*Math.sin(EL) + v[1]*Math.sin(AZ)*Math.sin(EL) - v[2]*Math.cos(EL))];
-  }
-  add('circle', { 'class': 'gsphere', cx: CX, cy: CY, r: R });
-  var eq = '';
-  for (var i = 0; i <= 64; i++) { var t = i/64*2*Math.PI, p = proj([Math.cos(t), Math.sin(t), 0]); eq += (i?'L':'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
-  add('path', { 'class': 'gequator', d: eq });
-  [[[0,0,1],'|0⟩'],[[0,0,-1],'|1⟩'],[[1,0,0],'|+⟩'],[[0,1,0],'|i⟩']].forEach(function (ax) {
-    var p = proj(ax[0]), o = proj([0,0,0]);
-    add('line', { 'class': 'gaxis', x1: o[0], y1: o[1], x2: p[0], y2: p[1] });
-    add('text', { 'class': 'gaxlab', x: p[0], y: p[1] + (ax[0][2] > 0 ? -7 : 13) }, ax[1]);
-  });
-  var pt = proj(TARGET);
-  add('line', { 'class': 'gtarget', x1: CX, y1: CY, x2: pt[0], y2: pt[1] });
-  add('circle', { 'class': 'gtargetdot', cx: pt[0], cy: pt[1], r: 4.5 });
-  var vLine = add('line', { 'class': 'gvec', x1: CX, y1: CY, x2: CX, y2: CY - R });
-  var vDot  = add('circle', { 'class': 'gdot', cx: CX, cy: CY - R, r: 5 });
-
-  var cur = Z0, solved = false;
-  function same(a, b) { for (var i = 0; i < 3; i++) if (Math.abs(a[i]-b[i]) > 1e-9) return false; return true; }
-  function render() {
-    var me = bloch(cur), pm = proj(me);
-    vLine.setAttribute('x2', pm[0]); vLine.setAttribute('y2', pm[1]);
-    vDot.setAttribute('cx', pm[0]); vDot.setAttribute('cy', pm[1]);
-  }
-  function reset() {
-    cur = Z0; solved = false; render();
-    out.className = ''; out.innerHTML = '';
-  }
-  render();
-  Array.prototype.forEach.call(document.querySelectorAll('#tryit .gatebtn'), function (b) {
-    b.addEventListener('click', function () {
-      if (solved) return;
-      cur = ap(b.getAttribute('data-g'), cur);
-      render();
-      if (same(bloch(cur), TARGET)) {
-        solved = true;
-        out.className = 'verdict good';
-        out.innerHTML = '<strong>That&#39;s it. One gate, and nothing shorter exists.</strong> ' +
-          'Circuit Golf has nine holes like this one, and seven more games where every par and every ' +
-          'probability is worked out, not set by a designer. <a href="play.html#golf">Play the rest of Circuit Golf →</a>';
-      }
-    });
-  });
-  document.getElementById('tryit-reset').addEventListener('click', reset);
-})();
-</script>
-<script>
-// "Since you left": a diff against data/concepts.json (the one source of
-// truth for what SymbiQ teaches) and a locally-stored snapshot of concept ids
-// seen on a PRIOR visit. Deliberately its own tiny localStorage key rather
-// than folded into save.js's symbiq.solverpath.v1 bag -- same reasoning as
-// depth.js gives for its own key: this is reading history, not Solver's Path
-// progress, and resetting or importing one must never touch the other.
-(function () {
-  var box = document.getElementById('sinceleft'), body = document.getElementById('sinceleft-body');
-  if (!box || !body) return;
-  var KEY = 'symbiq.seen.v1';
-  function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
-  function persist(ids) { try { localStorage.setItem(KEY, JSON.stringify({ ids: ids, at: Date.now() })); } catch (e) {} }
-  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-
-  fetch('data/concepts.json', { cache: 'no-store' })
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (D) {
-      var cur = (D.concepts || []).filter(function (c) { return c.kind === 'concept'; });
-      var prev = load();
-      if (prev && prev.ids && prev.ids.length) {
-        var prevSet = {};
-        prev.ids.forEach(function (id) { prevSet[id] = true; });
-        var fresh = cur.filter(function (c) { return !prevSet[c.id]; });
-        if (fresh.length) {
-          var shown = fresh.slice(0, 3);
-          var links = shown.map(function (c) {
-            return '<a href="' + c.page + (c.anchor ? '#' + c.anchor : '') + '">' + esc(c.term) + '</a>';
-          }).join(', ');
-          var more = fresh.length > shown.length ? ' and ' + (fresh.length - shown.length) + ' more' : '';
-          body.innerHTML = '<strong>' + fresh.length + ' new topic' + (fresh.length === 1 ? '' : 's') +
-            '</strong> landed since your last visit: ' + links + more + '.';
-          box.hidden = false;
-        }
-      }
-      persist(cur.map(function (c) { return c.id; }));
-    })
-    .catch(function () {}); // a homepage nicety, never a hard dependency
-})();
-</script>
-
-
+<!-- ── THE QUESTION ──────────────────────────────────────────────────────
+     Wired to the real pipeline, unchanged: data/today.json first, and
+     data/qbank.json -> data/archive|qbank/<id>.json when that feed has gone
+     stale. Nothing about the answer is in this markup. -->
+<section data-station="question">
 <div class="card" id="daily-q">
   <h3>The Question</h3>
   <p id="dq-meta"></p>
@@ -470,6 +417,10 @@
     <div id="dq-archive"></div>
   </details>
 </div>
+</section>
+
+<section data-station="loop">
+<p>Everyone's watching the AI race. The interesting race is the one behind it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum computers are being aimed at the data AI can't get anywhere else. Neither story makes sense alone. SymbiQ covers the loop.</p>
 
 <figure class="fig figloop figcard breakout">
   <div class="figscroll"><svg viewBox="0 0 640 262" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -509,8 +460,9 @@
   <p class="swipe">← swipe the diagram to see all of it →</p>
   <figcaption><strong>The asymmetry is the point.</strong> The top arrow is solid because it already happened: AI decoders run against real chips today. The bottom arrow is dashed because it mostly has not. The genuine near-term route is quantum hardware <em>growing</em> training data about nature that no classical source can produce. The loudest claim, an exponential speedup for the linear algebra under machine learning, usually dies on the cost of getting ordinary data into the machine. <a href="ai.html">Both directions, ranked honestly ▸</a></figcaption>
 </figure>
+</section>
 
-<section class="orhero gamehero">
+<section class="orhero gamehero" data-station="games">
   <p class="eyebrow">The part you play</p>
   <h2 id="nine-games-where-you-cannot-fake-a-score">Nine games where you cannot fake a score</h2>
   <p class="orhero-lede">Most explanations of quantum computing ask you to take their word for it. Here the mathematics does the judging: <strong>every par is an optimum found by exhaustive search, every probability on screen is worked out rather than set by a designer</strong>, and one level is built to prove that your best strategy is worthless on the wrong problem.</p>
@@ -531,15 +483,17 @@
   <p class="gh-note">No account, no download, nothing to install. Your progress saves in this browser and you can carry it to another device with a code.</p>
 </section>
 
+<section data-station="depth">
 <h2 id="read-it-instead">Read it instead</h2>
 <p>One worked example, how AI learned to read a quantum computer's errors, at three depths that differ in <em>kind</em>, not in length. Pick the one that fits, then read the explainer pages at that depth using the toggle at the top of each.</p>
 <div class="grid">
-  <div class="card"><h3>🟢 Plain</h3><p><strong>Two minutes, one analogy, zero equations</strong>, and a straight answer to "so what?". A choir where nobody may be heard singing alone.</p><a href="basics.html">Start here →</a></div>
-  <div class="card"><h3>🟡 Working</h3><p><strong>The mechanism, plus one number worked by hand</strong>: why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.</p><a href="basics.html#yellow">How it actually works →</a></div>
-  <div class="card"><h3>🔴 Formal</h3><p><strong>The derivation carried through</strong>, primary sources, and five problems that are genuinely open.</p><a href="basics.html#red">The mathematics →</a></div>
+  <div class="card" id="tier-g"><h3>🟢 Plain</h3><p><strong>Two minutes, one analogy, zero equations</strong>, and a straight answer to "so what?". A choir where nobody may be heard singing alone.</p><a href="basics.html">Start here →</a></div>
+  <div class="card" id="tier-y"><h3>🟡 Working</h3><p><strong>The mechanism, plus one number worked by hand</strong>: why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.</p><a href="basics.html#yellow">How it actually works →</a></div>
+  <div class="card" id="tier-r"><h3>🔴 Formal</h3><p><strong>The derivation carried through</strong>, primary sources, and five problems that are genuinely open.</p><a href="basics.html#red">The mathematics →</a></div>
 </div>
+</section>
 
-<section class="orhero">
+<section class="orhero" data-station="or">
   <p class="eyebrow">The fork: same circuit, the other branch</p>
   <h2 id="operations-research">Operations research: the field that already decides your day</h2>
   <p class="orhero-lede">Every quantum-optimisation headline you have ever read is a claim about <strong>operations research</strong>, the mathematics of deciding well when you cannot have everything. It is not a footnote to quantum computing. It is a century-old discipline that is already running underneath your life, and you cannot judge a single quantum claim without it.</p>
@@ -555,7 +509,7 @@
   <p style="margin-bottom:0"><a class="bigplay" href="feasible.html">Enter The Feasible Region <span class="kbd">the OR track</span></a></p>
 </section>
 
-<section class="orhero pqhero">
+<section class="orhero pqhero" data-station="pqc">
   <p class="eyebrow">Not a thought experiment</p>
   <h2 id="post-quantum-cryptography">Post-quantum cryptography: is your own system actually exposed?</h2>
   <p class="orhero-lede">Everything above explains the physics and the maths. This one runs the actual cryptography: <strong>real ML-KEM and ML-DSA keys, generated and broken in your own browser</strong>. It checks your own certificates, domains and migration plan against it, not a diagram of it.</p>
@@ -570,6 +524,7 @@
   <p style="margin-bottom:0"><a class="bigplay ghost" href="pqc.html">Check your own exposure <span class="kbd">7 tools, no signup</span></a></p>
 </section>
 
+<section data-station="timing">
 <h2 id="why-the-timing-matters">Why the timing matters</h2>
 <p>This field does not move at the speed of press releases. Here is the single clearest example, and every number is from a primary paper: how many physical qubits it would take to steal one Bitcoin key <em>inside the ten-minute window</em> before your transaction confirms.</p>
 
@@ -610,68 +565,9 @@
   <p class="swipe">← swipe the diagram to see all of it →</p>
   <figcaption><strong>The same attack got 3,800× cheaper in four years.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at 1.9 billion physical qubits. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor's algorithm can be precomputed before your transaction appears. The gap from today's hardware is now roughly <strong>three</strong> orders of magnitude, not six. The axis is logarithmic, so that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
 </figure>
+</section>
 
-<details class="foldsec" id="what-for">
-  <summary>
-    <span class="fs-txt"><b>So what would you actually use one for?</b><i>Six applications, ranked by evidence rather than expectation: molecules, breaking encryption, optimisation, machine learning, error correction, sensing</i></span>
-    <span class="fs-x" aria-hidden="true"></span>
-  </summary>
-  <div class="fs-body">
-<p>This is the question that gets answered worst. The honest position: quantum computers are not general accelerators. They are good at a <em>narrow and specific</em> class of things, and the gap between that class and the marketing is where most of the confusion lives. Here is the real list, ranked by how much of it is evidence rather than expectation. Where a genuine operations-research problem sits underneath, there is a door to it.</p>
-
-<div class="grid">
-  <div class="card">
-    <h3>Simulating molecules and materials <span class="orbadge">the strongest case</span></h3>
-    <p>Nature is quantum, so a quantum computer is the natural instrument for it. The standard example is <strong>nitrogenase</strong>: a bacterial enzyme that pulls nitrogen out of the air at ambient temperature and pressure, while the industrial process doing the same job needs enormous heat and pressure. Nobody can compute the enzyme&#39;s active site accurately, because the electron correlations are exactly what classical methods approximate away.</p>
-    <p>The same argument covers battery electrolytes, catalysts and superconductors. <strong>This is the one application where the machine is suited to the problem rather than borrowed for it.</strong> There is no data-loading toll, because the data is the physics.</p>
-    <p style="margin-bottom:0"><em>Status: needs error-corrected machines that don&#39;t exist yet. Credible, not imminent.</em> <a class="cta" href="formalism.html#f16">The near-term engine already runs: VQE →</a></p>
-  </div>
-
-  <div class="card">
-    <h3>Breaking and replacing today&#39;s encryption</h3>
-    <p>Shor&#39;s algorithm factors large numbers efficiently, which breaks RSA and elliptic-curve cryptography. The algorithm works; the machine is roughly <strong>three orders of magnitude</strong> beyond anything built. The deadline is real anyway: encrypted traffic captured today can be decrypted later, so the migration to post-quantum cryptography is happening <em>now</em>, on live systems. That is an engineering programme, not a prediction.</p>
-    <p style="margin-bottom:0"><a class="cta" href="bitcoin.html">The numbers, with caveats →</a></p>
-  </div>
-
-  <div class="card">
-    <h3>Optimisation <span class="orbadge">most claimed, least shown</span></h3>
-    <p>Routing fleets, scheduling factories, building portfolios. This is the application you will see promised most often and demonstrated least: <strong>there is no known quantum algorithm that beats a strong classical solver on a problem anyone actually needs solved.</strong></p>
-    <p>The reason is worth understanding. Grover&#39;s quadratic speedup is real, but it applies to <em>unstructured</em> search, and real optimisation problems are dense with structure that classical methods exploit ruthlessly. A solver does not search the space; it proves most of it cannot contain the answer.</p>
-    <p style="margin-bottom:0"><a class="orjump" href="feasible.html#t05" style="margin:6px 0 0"><span>◆ <b>This one has real operations research underneath it.</b> To judge the claim you need to know what the classical machinery already does.<span class="arr"> Topic 05: Branch and bound ▸</span></span></a></p>
-  </div>
-
-  <div class="card">
-    <h3>Machine learning <span class="orbadge">mostly oversold</span></h3>
-    <p>The headline speedups mostly die on the <strong>data-loading toll</strong>: to touch <em>N</em> classical numbers the machine must first load them, which costs about <em>N</em> operations and eats the advantage before the algorithm starts. Several flagship claims were later matched by classical algorithms outright.</p>
-    <p style="margin-bottom:0">The surviving exception is the same as the first card: learning from data that was <em>born quantum</em>. <a class="cta" href="ai.html">Four routes, ranked honestly →</a></p>
-  </div>
-
-  <div class="card">
-    <h3>Error correction, right now</h3>
-    <p>Less an application of quantum computing than the thing standing between us and all of the above. It's the one place where the loop this site is named after is already closed. AI decoders read the error patterns; a 1965 graph-matching algorithm does the repair in under a microsecond.</p>
-    <p style="margin-bottom:0"><a class="orjump" href="feasible.html#t07" style="margin:6px 0 0"><span>◆ <b>Operations research, running inside the machine.</b><span class="arr"> Topic 07: Matching ▸</span></span></a></p>
-  </div>
-
-  <div class="card">
-    <h3>Quantum sensing</h3>
-    <p>Worth naming because it is the quantum technology that already works and nobody argues about. Atomic clocks, magnetometers and gravimeters exploit the same physics without needing a computer at all, and are used today in navigation, medical imaging and surveying. It's here because <strong>&quot;quantum&quot; delivering real value today mostly means sensing, not computing</strong>, and conflating the two is an easy way to be misled.</p>
-  </div>
-</div>
-  </div>
-</details>
-
-<details class="foldsec" id="how-it-works">
-  <summary>
-    <span class="fs-txt"><b>How this place actually runs</b><i>What's live, what's next, and how the desk handles being wrong</i></span>
-    <span class="fs-x" aria-hidden="true"></span>
-  </summary>
-  <div class="fs-body">
-<p><strong>Live now:</strong> the pages, the games, and <a href="#daily-q">The Question</a>, every one numbered and dated so the cadence you see is the real one. <a href="ledger.html">The Ledger</a> logs every dated, public, falsifiable claim about quantum computing the day it is made, and keeps our own record next to the labs'.</p>
-<p><strong>Next:</strong> a nightly <strong>Collapse</strong> naming the best answer, a weekend <strong>Boss Question</strong>, <strong>The Lattice</strong>, and <a href="frontier.html">The Frontier</a> model panel. Each needs people in the room, so they switch on as the <a href="#join-loop">Discord</a> fills.</p>
-<p>SymbiQ is <strong>edited, not crowdsourced</strong>: what you send is reviewed before it ships, and it ships with your name on it. Catch an error in our work and the correction runs with more room than the mistake (<a href="corrections.html">Corrections</a>). <a href="race.html">The Race</a> is the scoreboard for the labs chasing fault tolerance, our own predictions included.</p>
-  </div>
-</details>
-
+<section data-station="join">
 <h2 id="join-loop">Join the loop</h2>
 <!-- Discord + X are live (2026-07-25). The newsletter is now a real capture form
      (2026-07-29) rather than a link to Discord: addresses go through forms.js to
@@ -695,6 +591,7 @@
   <div class="card"><h3>Follow</h3><p>The short version of everything here, if you would rather follow than subscribe.</p><a href="https://x.com/symbiq" id="join-x">@symbiq on X →</a></div>
   -->
 </div>
+</section>
 
 <footer>SymbiQ · The Symbiosis newsletter · No hype, no financial advice, sources always.</footer>
 </div>

@@ -1,0 +1,528 @@
+/* SymbiQ, home.css
+ * ============================================================================
+ * THE HOME PAGE LAYER.  index.html only, own cache-buster, gated on nothing
+ * but the <link> that loads it.
+ *
+ * WHY IT IS A FILE AND NOT A <style> BLOCK
+ * style.css is shared by 24 pages, so touching it forces a cache-buster bump
+ * on every one of them (the 2026-07-24 scar, and DESIGN.md's standing rule).
+ * This page grew four components of its own -- a threshold instrument, a
+ * corner companion, a keymap overlay and a hidden arithmetic panel -- which
+ * is more than belongs inline in a document already 900 lines long.  Same
+ * charter as motion.css / vivid.css / alive.css: additive, page-local,
+ * separately versioned, and deletable without touching anything shared.
+ *
+ * WHAT IT DOES NOT DO
+ *   - It redefines no colour token.  Every colour below is a var() from
+ *     style.css (which vivid.css and theme.css mirror), so the page
+ *     re-themes with everything else and the Contrast Lock holds.
+ *   - It adds no second scroll-reveal.  nav.js owns `.reveal`.
+ *   - It introduces no second type family, no photographic byte, and no
+ *     springy easing: everything here decelerates on
+ *     cubic-bezier(0.22, 1, 0.36, 1) and settles.
+ *
+ * THE ONE LOOSENED LAW.  DESIGN.md's motion law ("nothing bounces, one
+ * ambient moment per section") governs prose furniture.  The floating
+ * widgets in sections 4-6 are instruments, not prose, and are allowed a
+ * little more life -- but every ambient layer here still resolves to ONE
+ * STATIC FRAME under prefers-reduced-motion: reduce, which is the part of
+ * the law that is not negotiable.
+ * ==========================================================================*/
+
+:root {
+  /* Local aliases with the same values motion.css already names, so this
+     file still works if motion.css is ever unlinked from this page. */
+  --hm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hm-fast: 150ms;
+  --hm-base: 280ms;
+  /* The pointer parallax, written by home.js. Declared here with a real
+     initial value so a card is never translated by an invalid calc() before
+     the first pointermove -- and so the effect is simply absent, never
+     broken, when the script does not run. */
+  --px: 0;
+  --py: 0;
+}
+
+/* ---------------------------------------------------------------- 0
+   THE COLUMN
+
+   style.css caps .wrap at 780 / 880 / 1040px, and DESIGN.md's reason is the
+   reading measure -- a prose line past ~1040px is hard to track back to the
+   next one. That reason applies to PROSE, not to the container: on a 1600px
+   screen the old cap left ~280px of dead margin each side while the router,
+   the three depth cards, the two figures and every .orhero grid were squeezed
+   into the middle.
+
+   So the container widens on this page only, between 1100px and 1439px --
+   the band where those margins are genuinely dead -- and the reading measure
+   is held where it was by capping the running prose instead. Multi-column
+   components, figures and hero panels get the room; sentences do not get
+   longer. style.css is untouched: this is a page-local override on one page.
+   ---------------------------------------------------------------- */
+/* THE CEILING IS 1439px, AND THAT IS NOT ARBITRARY.
+   At 1440px and up rails.css/rails.js put real furniture in the gutters --
+   the section index, the curriculum ladder, the progress readout. Those are
+   POSITIONED IN THE MARGIN, so widening the column into the margin does not
+   push them aside, it parks the page on top of them: measured 2026-09-05 at
+   1600px, "ON THIS PAGE" landed across the hero CTA and "THE LADDER" across
+   the instrument. Above 1440px the screen is already being used -- by the
+   rails -- so the column goes back to style.css's own 1040px and lets them
+   have it. tools/verify_home_ux.mjs measures the overlap at 1600px. */
+@media (min-width: 1100px) and (max-width: 1439px) { .wrap { max-width: 1180px; } }
+
+@media (min-width: 1100px) {
+  /* The reading measure, held. ~74 characters is the same line length the
+     880px tier produced, so prose reads exactly as it did. Anything that is
+     a grid, a figure, a panel or a control row is deliberately NOT in this
+     list -- those are what the extra width is for. */
+  .wrap > p,
+  .wrap > section > p,
+  .wrap > section > .spine,
+  .hero-copy .tagline,
+  .orhero > p,
+  .fig figcaption,
+  .living-strip-note { max-width: 74ch; }
+  /* A figure's own frame may use the room, but its caption is prose. */
+  .fig figcaption { margin-inline: auto; }
+}
+
+/* ---------------------------------------------------------------- 1
+   THE HERO, TWO COLUMNS
+
+   The h1 is NOT in this grid -- it is a direct child of .wrap, full width,
+   above the split (see index.html). The first screen therefore opens on the
+   headline alone, and the instrument begins beside the TAGLINE rather than
+   beside the headline: present, but plainly second.
+
+   Below 1024px .wrap is 780px (740px of content) and a 300px instrument
+   would leave the copy a 410px column, narrower than the type is drawn for.
+   So the split happens at the same 1024px step where .wrap widens, and below
+   it the instrument is simply the next thing you meet.
+   ---------------------------------------------------------------- */
+.hero2 { display: block; }
+.hero2 > .hero-copy { min-width: 0; }
+
+@media (min-width: 1024px) {
+  .hero2 {
+    display: grid;
+    /* 300px, not 340: the instrument is a readout beside the argument, and
+       the argument is what the first screen is for. */
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-rows: auto auto;
+    column-gap: 40px;
+    row-gap: 0;
+    align-items: start;
+  }
+  .hero2 > .hero-copy   { grid-column: 1; grid-row: 1; }
+  .hero2 > .hero-spine  { grid-column: 1; grid-row: 2; }
+  /* The instrument spans both rows, so the left column keeps flowing past it
+     instead of leaving the row's full height empty under the CTA. */
+  .hero2 > .inst        { grid-column: 2; grid-row: 1 / span 2; }
+  /* Drops the instrument clear of the tagline's first line, so its top edge
+     never reads as competing with the copy for the top of the column. */
+  .hero2 > .inst { margin-top: 10px; }
+  .hero2 > .hero-spine .spine-tag { margin-top: 6px; }
+}
+
+/* ---------------------------------------------------------------- 2
+   THE THRESHOLD INSTRUMENT
+
+   A readout, not a section. DESIGN.md's card is 20-22px of padding on
+   --panel; this is 15px on the same ground with a smaller type ramp, which
+   lands it at roughly half a card's visual weight -- deliberately, because
+   the hero's argument is the h1 and this is the evidence beside it.
+
+   Nothing on its face is a hand-written number. Every figure is computed in
+   home.js section 2 from the two sliders, by the same scaling law qec.html
+   and race.html already run and tools/verify_threshold.py brute-forces.
+   ---------------------------------------------------------------- */
+.inst {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: 15px;
+  max-width: 340px;
+}
+@media (min-width: 1024px) { .hero2 > .inst { max-width: 300px; } }
+.inst-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 8px; margin: 0 0 10px;
+}
+.inst-eyebrow {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); margin: 0;
+}
+.inst-live {
+  font-size: .64rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--teal); margin: 0;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.inst-live::before {
+  content: ""; width: 6px; height: 6px; border-radius: 999px;
+  background: var(--teal);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .inst-live::before { animation: inst-tick 2.4s var(--hm-ease) infinite; }
+}
+@keyframes inst-tick { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+
+/* -- the two controls -- */
+.inst-ctl { margin: 0 0 6px; }
+.inst-ctl label {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 8px;
+  font-size: .78rem; color: var(--muted);
+}
+.inst-ctl label b {
+  color: var(--text); font-weight: 700; font-size: .86rem;
+  font-variant-numeric: tabular-nums;
+}
+/* style.css already gives input[type=range] height 44px and accent-color;
+   this only takes the full width and restores the same 2px mint ring every
+   other control on the site gets. */
+.inst-ctl input[type=range] { width: 100%; margin: 0; display: block; }
+.inst-ctl input[type=range]:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* -- the three readouts -- */
+.inst-out {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px; margin: 8px 0 0;
+  border-top: 1px solid var(--border); padding-top: 11px;
+}
+.inst-cell { min-width: 0; }
+.inst-lab {
+  display: block; font-size: .62rem; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 3px;
+}
+.inst-val {
+  display: block; font-weight: 700; font-size: .98rem; line-height: 1.15;
+  font-variant-numeric: tabular-nums; color: var(--text);
+  overflow-wrap: anywhere;
+}
+/* The Colour Law: p_L and the qubit cost are the quantum/theory half
+   (lavender); the lifetime is the consequence you could hold a stopwatch to
+   (mint). Neither is decoration -- each names which half you are reading. */
+.inst-val.q { color: var(--violet); }
+.inst-val.t { color: var(--teal); }
+.inst-sub { display: block; font-size: .66rem; color: var(--muted); margin-top: 2px; }
+
+/* -- the verdict, reusing style.css's own banner vocabulary at a smaller
+      size so it reads as part of this instrument, not a section banner -- */
+.inst .verdict {
+  margin: 11px 0 0; padding: 8px 10px; font-size: .8rem; line-height: 1.35;
+}
+.inst-note {
+  font-size: .68rem; line-height: 1.5; color: var(--muted);
+  margin: 10px 0 0;
+}
+.inst-note code { font-size: .95em; padding: 0 3px; }
+
+/* ---------------------------------------------------------------- 3
+   THE POINTER PARALLAX
+
+   Cards and doors lean toward the cursor. Written as the `translate`
+   PROPERTY, never as `transform`: style.css's .card:hover already owns
+   `transform: translateY(-3px)`, and dynamics.css set the same precedent for
+   `scale` ("composes with the hover transform, never replaces it"). Using
+   transform here would silently delete the hover lift on every card.
+
+   Multipliers differ per card so a row gains depth instead of sliding as one
+   sheet. The transition decelerates and settles -- no spring, no overshoot.
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) and (pointer: fine) {
+  .grid > .card,
+  .introute-card,
+  .orhero-grid > div {
+    translate: calc(var(--px) * var(--par, 6px)) calc(var(--py) * var(--par, 6px));
+    transition: translate 340ms var(--hm-ease);
+  }
+  .grid > .card:nth-child(1), .introute-card:nth-child(1), .orhero-grid > div:nth-child(1) { --par: 5px; }
+  .grid > .card:nth-child(2), .introute-card:nth-child(2), .orhero-grid > div:nth-child(2) { --par: 9px; }
+  .grid > .card:nth-child(3), .introute-card:nth-child(3), .orhero-grid > div:nth-child(3) { --par: 12px; }
+  .grid > .card:nth-child(4), .orhero-grid > div:nth-child(4) { --par: 7px; }
+  .grid > .card:nth-child(5) { --par: 11px; }
+  .grid > .card:nth-child(6) { --par: 4px; }
+  /* A card being read is a card that should hold still. */
+  .grid > .card:hover, .introute-card:hover, .orhero-grid > div:hover { translate: none; }
+}
+
+/* ---------------------------------------------------------------- 4
+   THE CORNER COMPANION
+
+   Bottom-LEFT, which is where alive.css's .sq-marker already put this site's
+   corner furniture (#qz-pill owns bottom-right). On this page the companion
+   REPLACES .sq-marker rather than sitting beside it -- see home.js section 5
+   for the suppression, and why `m` is intercepted rather than left to toggle
+   a hidden panel.
+
+   z-index 96: one step over .sq-marker's 95, so the replacement still wins
+   if the suppression ever fails; still under #qz-pill's 9998.
+   ---------------------------------------------------------------- */
+.sqco {
+  position: fixed; left: 14px; bottom: 14px; z-index: 96;
+  font-size: .78rem; color: var(--muted);
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--hm-base) var(--hm-ease), visibility 0s linear var(--hm-base);
+}
+.sqco[data-on] {
+  opacity: 1; visibility: visible;
+  transition: opacity var(--hm-base) var(--hm-ease), visibility 0s;
+}
+@media print { .sqco { display: none; } }
+
+.sqco-tab {
+  display: grid; place-items: center;
+  width: 48px; height: 48px; min-width: 48px; min-height: 48px;
+  padding: 0; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--elev-1);
+  transition: border-color var(--hm-fast) var(--hm-ease),
+              box-shadow  var(--hm-fast) var(--hm-ease);
+}
+.sqco-tab:hover { border-color: var(--teal); box-shadow: var(--elev-2); }
+.sqco-tab:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.sqco[data-open] .sqco-tab { display: none; }
+
+/* the ring: one SVG, driven only by stroke-dasharray from home.js */
+.sqco-ring { display: block; width: 34px; height: 34px; }
+.sqco-ring .rg-track { stroke: var(--border); }
+.sqco-ring .rg-fill {
+  stroke: var(--teal); stroke-linecap: round;
+  transition: stroke-dasharray 420ms var(--hm-ease);
+}
+.sqco-ring .rg-num {
+  fill: var(--text); font-size: 11px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sqco-card {
+  display: none;
+  width: 258px; max-width: calc(100vw - 28px);
+  padding: 14px 15px;
+  border: 1px solid var(--border); border-radius: 14px;
+  background: var(--panel);
+  box-shadow: var(--elev-2);
+}
+.sqco[data-open] .sqco-card { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .sqco[data-open] .sqco-card { animation: sqco-in 240ms var(--hm-ease) both; }
+}
+@keyframes sqco-in { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: 0 0; } }
+
+.sqco-head { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
+.sqco-head .sqco-ring { width: 40px; height: 40px; flex: 0 0 auto; }
+.sqco-count { font-size: .84rem; font-weight: 700; color: var(--text); line-height: 1.25; }
+.sqco-count span { display: block; font-weight: 400; font-size: .72rem; color: var(--muted); }
+.sqco-x {
+  margin-left: auto; align-self: flex-start;
+  width: 44px; height: 44px; min-width: 44px; min-height: 44px;
+  display: grid; place-items: center;
+  padding: 0; border: 1px solid transparent; border-radius: 8px;
+  background: none; color: var(--muted); font-size: 1.05rem; cursor: pointer;
+  transition: color var(--hm-fast) var(--hm-ease), border-color var(--hm-fast) var(--hm-ease);
+}
+.sqco-x:hover { color: var(--text); border-color: var(--border); }
+.sqco-x:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.sqco-here {
+  margin: 0 0 10px; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg);
+  font-size: .76rem; line-height: 1.4; color: var(--text);
+}
+.sqco-here b {
+  display: block; font-size: .62rem; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+}
+.sqco-keys { margin: 0; font-size: .73rem; line-height: 1.7; color: var(--muted); }
+.sqco-keys div { display: flex; gap: 8px; align-items: baseline; }
+.sqco-keys div span:first-child { flex: 0 0 58px; color: var(--text); }
+.sqco-more {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font-size: .74rem; color: var(--teal); background: none; border: 0;
+  padding: 0; cursor: pointer;
+}
+.sqco-more:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+
+/* .sq-marker is alive.css's own bottom-left section index. On this page the
+   companion above does that job and more (twelve named stations, a progress
+   ring, the keymap), so the marker is suppressed rather than stacked on top
+   of. home.js section 5 also claims the `m` key, because alive.js would
+   otherwise toggle a panel nobody can see -- and an open-but-invisible
+   marker makes alive.js's own j / k guard (MARKER.isOpen()) swallow both
+   keys for the rest of the session. */
+body[data-alive] .sq-marker { display: none !important; }
+
+/* ---------------------------------------------------------------- 5
+   THE OVERLAYS -- the keymap, and the hidden arithmetic panel
+
+   One visual language for both, borrowed from alive.css's .sq-help so the
+   page does not invent a third floating-card vocabulary. z-index 9996 is
+   .sq-help's own: under #qz-fx / #qz-pill, over everything else.
+   ---------------------------------------------------------------- */
+.sqov {
+  position: fixed; inset: 0; z-index: 9996;
+  display: grid; place-items: center; padding: 24px;
+  background: rgba(4, 7, 15, .62);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--hm-base) var(--hm-ease);
+}
+@supports (background: color-mix(in srgb, red 50%, transparent)) {
+  .sqov { background: color-mix(in srgb, var(--bg) 62%, transparent); }
+}
+.sqov[data-open] { opacity: 1; pointer-events: auto; }
+.sqov-card {
+  width: min(92vw, 460px); max-height: 82vh; overflow-y: auto;
+  padding: 20px 22px;
+  border: 1px solid var(--border); border-radius: 14px;
+  background: var(--panel);
+  box-shadow: var(--elev-2);
+}
+/* The dialog CONTAINER is focused programmatically on open, so a browser
+   treats it as keyboard focus and would ring the whole 460px card in mint.
+   The 2px mint :focus-visible ring belongs to controls -- the Close button
+   and every link inside keep theirs. Ringing the panel itself is noise, not
+   an affordance: nothing about it is actionable. */
+.sqov-card:focus, .sqov-card:focus-visible { outline: none; }
+.sqov-card h2 { margin: 0 0 14px; padding-left: 0; font-size: 1.15rem; }
+.sqov-card h2::before { display: none; }
+.sqov-card p { font-size: .9rem; line-height: 1.6; }
+.sqov-row {
+  display: flex; gap: 14px; align-items: baseline;
+  padding: 7px 0; border-top: 1px solid var(--border);
+}
+.sqov-row:first-of-type { border-top: 0; }
+.sqov-keys { flex: 0 0 106px; }
+.sqov-what { font-size: .88rem; color: var(--muted); }
+.sqov kbd {
+  display: inline-block; min-width: 20px; padding: 1px 6px; margin-right: 3px;
+  border: 1px solid var(--border); border-radius: 5px;
+  background: var(--surface-2);
+  font: inherit; font-size: .78rem; font-weight: 700; text-align: center;
+  color: var(--text);
+}
+.sqov-hint { font-size: .78rem; color: var(--muted); margin: 14px 0 0; }
+.sqov-shut {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; min-width: 44px; margin-top: 10px;
+  padding: 0 14px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--panel); color: var(--text); font-size: .85rem; cursor: pointer;
+}
+.sqov-shut:hover { border-color: var(--teal); }
+.sqov-shut:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* the hidden panel's arithmetic: a real worked table, not a graphic */
+.sqov-work {
+  width: 100%; border-collapse: collapse; margin: 10px 0 14px;
+  font-variant-numeric: tabular-nums; font-size: .86rem;
+}
+.sqov-work th, .sqov-work td {
+  text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--border);
+}
+.sqov-work th {
+  font-size: .66rem; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); font-weight: 700;
+}
+.sqov-work td.n { color: var(--violet); font-weight: 700; }
+.sqov-work tr.hit td { color: var(--teal); }
+
+/* ---------------------------------------------------------------- 6
+   THE LATTICE CANVAS
+
+   Fixed, full-viewport, z-index 0, pointer-events none -- home.js section 7
+   draws into it. It replaces atmosphere.js's #mo-lattice on this page only,
+   and sits at z-index 0 rather than -1 so it paints OVER body::before's dot
+   grid and glows instead of under them. Both are transparent, so what you
+   get is the static lattice with a live field moving through it, which is
+   the same relationship motion.css documents for #mo-lattice.
+
+   .wrap takes a stacking context of its own so every word on the page is
+   above the field without a single per-element z-index.
+   ---------------------------------------------------------------- */
+#sq-field {
+  position: fixed; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s var(--hm-ease);
+}
+#sq-field.on { opacity: 1; }
+body > .wrap { position: relative; z-index: 1; }
+
+/* ---------------------------------------------------------------- 7
+   THE ARRIVAL FLARE
+
+   home.js section 5 flares a jump target with element.animate, so the
+   keyframes live in the script. This is only the paint surface it needs: a
+   rounded box for the wash to sit in. Light only, no movement -- the target
+   is already where it belongs, which is alive.css's arrival rule applied to
+   an in-page jump.
+   ---------------------------------------------------------------- */
+[data-station], #tier-g, #tier-y, #tier-r { border-radius: 12px; }
+
+/* ---------------------------------------------------------------- 8
+   THE LOOP FIGURE'S WIDEN
+
+   living.css caps .breakout at margin-inline -20px because that is the only
+   widen guaranteed at EVERY .wrap tier -- at 780px .wrap IS the viewport and
+   -20px lands exactly on its edge (smoke.mjs proves 0 overflow at 375px).
+   That cap is correct and stays.
+
+   From 1024px up there is measurable room to spare: .wrap caps at 880px, so
+   a 1024px viewport has 72px of gutter each side and -32px spends 12px of
+   it. The wider widen is granted only where it is provably free, and still
+   uses no vw unit.
+   ---------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  body[data-living] .breakout {
+    margin-inline: -32px;
+    padding-inline: 32px;
+  }
+}
+
+/* ---------------------------------------------------------------- 9
+   THE NAV'S SHORTCUT BUTTON
+
+   Injected by home.js, never hand-written into <nav>: check_site.py requires
+   all 24 nav blocks to be byte-identical, and this control belongs to one
+   page. 44px square, the site's icon-button minimum.
+
+   WHETHER IT APPEARS AT ALL IS MEASURED, NOT ASSUMED. Measured 2026-09-05:
+   the nav's first row at the 880px .wrap tier holds 832px of content in
+   840px -- eight pixels of slack, so NO control of any width fits there, and
+   adding one costs 62px of header (81px -> 143px). The 2026-08-28 budget of
+   "40px fits" no longer holds; the row has filled up since. Below 1024px the
+   nav is already two rows and the button is free; at 1440px and up the row
+   has ~168px spare and it is free again. So home.js inserts it, measures the
+   nav, and takes it back out if it cost a row -- which keeps this correct if
+   the nav ever changes again, instead of correct until it does.
+   ---------------------------------------------------------------- */
+.sq-keyhint {
+  width: 44px; height: 44px; min-width: 44px; min-height: 44px;
+  display: grid; place-items: center; padding: 0;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: transparent; color: var(--muted);
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  transition: color var(--hm-fast) var(--hm-ease), border-color var(--hm-fast) var(--hm-ease);
+}
+.sq-keyhint:hover { color: var(--teal); border-color: var(--teal); }
+.sq-keyhint:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* ---------------------------------------------------------------- 10
+   REDUCED MOTION
+
+   Every ambient layer above resolves to one static frame. The field bails
+   out entirely in home.js (no canvas, no loop); the parallax is already
+   inside a no-preference query; what is left is the two small entrances and
+   the instrument's live dot.
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .sqco, .sqco-card, .sqov, .sqco-ring .rg-fill,
+  .grid > .card, .introute-card, .orhero-grid > div {
+    transition-duration: 1ms !important;
+    animation: none !important;
+    translate: none !important;
+  }
+}

@@ -43,6 +43,186 @@
   --py: 0;
 }
 
+/* ---------------------------------------------------------------- 0a
+   THE PALETTE: BACK TO THE COOL GROUND, ON THIS PAGE ONLY
+
+   vivid.css was retinted warm on 2026-09-02 -- an umber-plum void with an
+   amethyst violet and an emerald teal. Chinmoy asked (2026-09-05) for the
+   home page to read like the pages that are NOT vivid: the canonical
+   style.css set, a near-black with a blue cast, lattice lavender and
+   electric mint. That is also what this redesign's own brief specified.
+
+   So the STRUCTURE of the vivid layer stays -- the 800-weight hero and its
+   spectral ramp, the card sheen and hue-tinted shadow, the aurora heroes,
+   the three-pixel readbar -- and only the colour values go back. That is the
+   whole point of a token layer: a page can take the richer structure without
+   taking the palette. `data-vivid` stays on <body>; nothing else changes.
+
+   FOUR STATES, NOT ONE. Getting this wrong is silent, so all four are
+   written out:
+     - System dark ......... the unconditional block below, which beats
+                             vivid.css's own (0,2,0) on load order alone
+     - System light ........ MUST be restated, or the unconditional block
+                             leaks dark tokens straight past the base
+                             `@media light :root` (0,1,0). This is the exact
+                             bug DESIGN.md's Two-Value Rule exists for.
+     - Explicit Dark / Dim . theme.css mirrors the warm set at
+                             `:root[data-theme] body[data-vivid]` (0,3,1),
+                             which outranks any (0,2,0). Matched here at the
+                             same specificity, later in the cascade.
+     - Explicit Light ...... theme.css already restates the canonical light
+                             values at (0,3,1); nothing to do.
+
+   Every value below is style.css's own, so the Contrast Lock holds by
+   construction rather than by a new measurement -- and
+   tools/verify_home_ux.mjs reads the computed tokens back in all four
+   states and checks the ink and both accents against the ground anyway.
+   ---------------------------------------------------------------- */
+body[data-vivid] {
+  --bg: #0b0f1a;
+  --panel: #131a2b;
+  --panel-2: #172035;
+  --text: #e8ecf6;
+  --muted: #9aa5bd;
+
+  --violet: #a78bfa;
+  --indigo: #7f8cf3;        /* the cool bridge stop; decorative only */
+  --teal: #2dd4bf;
+  --link: #2dd4bf;
+
+  --border: #232d45;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --red: #f87171;
+
+  --nav-bg: rgba(11, 15, 26, 0.82);
+  --dot: rgba(167, 139, 250, 0.07);
+  --glow1: rgba(139, 92, 246, 0.14);
+  --glow2: rgba(45, 212, 191, 0.10);
+  --glow3: rgba(127, 140, 243, 0.08);
+  --shadow: rgba(0, 0, 0, 0.3);
+  --rowhover: rgba(148, 163, 184, 0.06);
+
+  --h1-a: #e8ecf6;
+  --h1-b: #a78bfa;
+  --h1-c: #2dd4bf;
+  --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
+}
+
+@media (prefers-color-scheme: light) {
+  body[data-vivid] {
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --panel-2: #eef3fb;
+    --text: #0f172a;
+    --muted: #526180;
+
+    --violet: #7c3aed;
+    --indigo: #4a5ad0;
+    --teal: #0f766e;
+    --link: #0f766e;
+
+    --border: #dbe2ef;
+    --green: #15803d;
+    --yellow: #b45309;
+    --red: #b91c1c;
+
+    --nav-bg: rgba(248, 250, 252, 0.85);
+    --dot: rgba(124, 58, 237, 0.06);
+    --glow1: rgba(124, 58, 237, 0.09);
+    --glow2: rgba(13, 148, 136, 0.08);
+    --glow3: rgba(74, 90, 208, 0.06);
+    --shadow: rgba(15, 23, 42, 0.09);
+    --rowhover: rgba(15, 23, 42, 0.04);
+
+    --h1-a: #0f172a;
+    --h1-b: #7c3aed;
+    --h1-c: #0d9488;
+    --spectrum: linear-gradient(100deg, #7c3aed, #4a5ad0 46%, #0f766e);
+  }
+}
+
+/* The explicit Dark and Dim choices, at theme.css's own specificity. */
+:root[data-theme="dark"] body[data-vivid],
+:root[data-theme="dim"] body[data-vivid] {
+  --bg: #0b0f1a;
+  --panel: #131a2b;
+  --panel-2: #172035;
+  --text: #e8ecf6;
+  --muted: #9aa5bd;
+  --violet: #a78bfa;
+  --indigo: #7f8cf3;
+  --teal: #2dd4bf;
+  --link: #2dd4bf;
+  --border: #232d45;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --red: #f87171;
+  --nav-bg: rgba(11, 15, 26, 0.82);
+  --dot: rgba(167, 139, 250, 0.07);
+  --glow1: rgba(139, 92, 246, 0.14);
+  --glow2: rgba(45, 212, 191, 0.10);
+  --glow3: rgba(127, 140, 243, 0.08);
+  --shadow: rgba(0, 0, 0, 0.3);
+  --h1-a: #e8ecf6;
+  --h1-b: #a78bfa;
+  --h1-c: #2dd4bf;
+  --rowhover: rgba(148, 163, 184, 0.06);
+  --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
+}
+
+/* Dim keeps its softer lift -- same hues, canvas off true black, text back
+   from pure white, hairlines eased. These are theme.css's own cool Dim
+   values, which is what "the same relative lift" meant before the retint. */
+:root[data-theme="dim"] body[data-vivid] {
+  --bg: #0e1420;
+  --panel: #171f30;
+  --panel-2: #1c2537;
+  --text: #d9deea;
+  --muted: #949fb6;
+  --border: #2b3752;
+  --shadow: rgba(0, 0, 0, 0.22);
+}
+
+/* ---------------------------------------------------------------- 0b
+   THE GLASS TINTS, back to cool as well
+
+   glass.css frosts its surfaces with --gl-tint / --gl-tint-2 / --gl-nav,
+   and those three are LITERAL rgba() values with no variable in them -- so
+   restoring the cool tokens above does not reach them, and the router doors
+   and menus stayed warm brown over a blue-black ground. Its warm block sits
+   at `body[data-vivid][data-glass]` (0,2,1); matched here at the same
+   specificity, later in the cascade. The cool values are the ones that file
+   records in its own "was ..." comments.
+
+   Both explicit choices need their own rule, and for opposite reasons: an
+   explicit Light on a dark OS never enters the media query below, and an
+   explicit Dark on a light OS never leaves it.
+   ---------------------------------------------------------------- */
+body[data-vivid][data-glass] {
+  --gl-tint:   rgba(18, 26, 44, 0.74);
+  --gl-tint-2: rgba(19, 27, 45, 0.95);
+  --gl-nav:    rgba(9, 13, 23, 0.72);
+}
+@media (prefers-color-scheme: light) {
+  body[data-vivid][data-glass] {
+    --gl-tint:   rgba(255, 255, 255, 0.78);
+    --gl-tint-2: rgba(244, 247, 252, 0.96);
+    --gl-nav:    rgba(248, 250, 252, 0.80);
+  }
+}
+:root[data-theme="light"] body[data-vivid][data-glass] {
+  --gl-tint:   rgba(255, 255, 255, 0.78);
+  --gl-tint-2: rgba(244, 247, 252, 0.96);
+  --gl-nav:    rgba(248, 250, 252, 0.80);
+}
+:root[data-theme="dark"] body[data-vivid][data-glass],
+:root[data-theme="dim"] body[data-vivid][data-glass] {
+  --gl-tint:   rgba(18, 26, 44, 0.74);
+  --gl-tint-2: rgba(19, 27, 45, 0.95);
+  --gl-nav:    rgba(9, 13, 23, 0.72);
+}
+
 /* ---------------------------------------------------------------- 0
    THE COLUMN
 

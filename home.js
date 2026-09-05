@@ -862,9 +862,17 @@
      behind it -- rather than trusting a constant. Raise it and the checker
      tells you when the prose starts paying for it. */
   var GAIN = 1.45;
-  var PULL = 0.055;       /* peak acceleration toward the cursor, per frame */
-  var DAMP = 0.976;       /* velocity retained per frame */
-  var VMAX = 1.5;         /* px/frame speed clamp */
+  /* THE CURSOR RESPONSE, raised 2026-09-05. Chinmoy: the field followed the
+     pointer more sluggishly than atmosphere.js's lattice does on the other
+     23 pages. Steady-state speed under a constant pull is roughly
+     PULL / (1 - DAMP), so both numbers matter and only raising PULL would
+     have made it lunge and then crawl. Lifting the ceiling too keeps the
+     gather quick without turning it into a swarm -- verify_home_ux.mjs
+     measures the mean speed of the nodes actually inside the cursor radius
+     and fails at both ends of the band. */
+  var PULL = 0.105;       /* peak acceleration toward the cursor, per frame */
+  var DAMP = 0.984;       /* velocity retained per frame */
+  var VMAX = 2.6;         /* px/frame speed clamp */
   var VMIN = 0.05;        /* below this, re-inject jitter so it cannot clump */
   var WAVE = 0.42;        /* px per ms: excitation propagation speed */
   var HOP_LOSS = 0.72;    /* amplitude retained per hop */
@@ -918,8 +926,8 @@
       nodes.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.16,
-        vy: (Math.random() - 0.5) * 0.16,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
         r: 1.15 + Math.random() * 1.65,
         ph: Math.random() * Math.PI * 2,          /* twinkle phase */
         sp: 0.6 + Math.random() * 0.8,            /* twinkle rate */

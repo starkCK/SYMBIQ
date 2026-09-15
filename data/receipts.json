@@ -1,438 +1,466 @@
 {
-  "schema": 1,
-  "generated": "2026-09-04",
-  "note": "The second consumer of the Lexicon's shared underline (site/lexicon.css / site/lexicon.js): a small set of LOAD-BEARING figures per page, marked in the HTML as <span class=\"rcpt\" data-rcpt=\"<id>\">, each with a record here. site/receipts.js reads this file, builds the popover card for each marked figure, and adds the page's 'Show the receipts' toggle only if the current page has at least one entry. Deliberately NOT exhaustive -- see PART A2 of outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md: marking every number would make the marked ones mean nothing. Every record needs either `tool` (a script in tools/ that produced or checked the figure) or `source` (a citation for a figure this site measured against or quotes from a primary source) -- checked by tools/check_receipts.py, which also confirms every data-rcpt id in the HTML has a record here and vice versa, and that every `tool` path actually exists on disk.",
-  "fields": {
-    "id": "stable slug, matches the HTML span's data-rcpt",
-    "page": "the page this figure lives on",
-    "value": "the figure as it reads on the page, exactly",
-    "formula": "the derivation, if the page states one -- omit rather than invent",
-    "inputs": "the inputs that formula was run with",
-    "tool": "path under tools/ that computed or checked this, if this site did the computing",
-    "source": "a citation, if the figure is an external measurement this site quotes or checked itself against",
-    "verified_at": "the date this was last checked",
-    "falsifier": "one sentence: what would make this figure wrong, or what it leaves out",
-    "claim": "optional -- a slug in data/claims/, if this figure bears on a live prediction"
+ "schema": 1,
+ "generated": "2026-09-08",
+ "note": "The second consumer of the Lexicon's shared underline (site/lexicon.css / site/lexicon.js): a small set of LOAD-BEARING figures per page, marked in the HTML as <span class=\"rcpt\" data-rcpt=\"<id>\">, each with a record here. site/receipts.js reads this file, builds the popover card for each marked figure, and adds the page's 'Show the receipts' toggle only if the current page has at least one entry. Deliberately NOT exhaustive -- see PART A2 of outputs/22_SIGNATURE_UX_AND_GAME_LADDER.md: marking every number would make the marked ones mean nothing. Every record needs either `tool` (a script in tools/ that produced or checked the figure) or `source` (a citation for a figure this site measured against or quotes from a primary source) -- checked by tools/check_receipts.py, which also confirms every data-rcpt id in the HTML has a record here and vice versa, and that every `tool` path actually exists on disk.",
+ "fields": {
+  "id": "stable slug, matches the HTML span's data-rcpt",
+  "page": "the page this figure lives on",
+  "value": "the figure as it reads on the page, exactly",
+  "formula": "the derivation, if the page states one -- omit rather than invent",
+  "inputs": "the inputs that formula was run with",
+  "tool": "path under tools/ that computed or checked this, if this site did the computing",
+  "source": "a citation, if the figure is an external measurement this site quotes or checked itself against",
+  "verified_at": "the date this was last checked",
+  "falsifier": "one sentence: what would make this figure wrong, or what it leaves out",
+  "claim": "optional -- a slug in data/claims/, if this figure bears on a live prediction"
+ },
+ "receipts": [
+  {
+   "id": "qec-1057",
+   "page": "qec.html",
+   "value": "1,057 physical qubits",
+   "formula": "p_L ≈ A (p/p_th)^⌊(d+1)/2⌋, A = 1",
+   "inputs": "r = p/p_th = 1/10 · target p_L = 10⁻¹²",
+   "tool": "tools/verify_threshold.py",
+   "verified_at": "2026-08-31",
+   "falsifier": "excludes routing, magic-state factories and correlated noise, which all sit on top of this bare per-qubit count."
   },
-  "receipts": [
-    {
-      "id": "qec-1057",
-      "page": "qec.html",
-      "value": "1,057 physical qubits",
-      "formula": "p_L ≈ A (p/p_th)^⌊(d+1)/2⌋, A = 1",
-      "inputs": "r = p/p_th = 1/10 · target p_L = 10⁻¹²",
-      "tool": "tools/verify_threshold.py",
-      "verified_at": "2026-08-31",
-      "falsifier": "excludes routing, magic-state factories and correlated noise, which all sit on top of this bare per-qubit count."
-    },
-    {
-      "id": "qec-5201",
-      "page": "qec.html",
-      "value": "5,201 physical qubits",
-      "formula": "p_L ≈ A (p/p_th)^⌊(d+1)/2⌋, A = 1",
-      "inputs": "r = p/p_th = 1/3 · target p_L = 10⁻¹²",
-      "tool": "tools/verify_threshold.py",
-      "verified_at": "2026-08-31",
-      "falsifier": "the same bare-count caveat as qec-1057: routing and magic-state overhead are not included."
-    },
-    {
-      "id": "qec-lambda",
-      "page": "qec.html",
-      "value": "Λ = 2.14 ± 0.02",
-      "formula": "fit of log(logical error rate) against distance across a d = 3, 5, 7 series",
-      "inputs": "Google Willow processor, per-two-distance-step suppression",
-      "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687",
-      "verified_at": "2026-07-21",
-      "falsifier": "the single d = 5 → 7 step alone reads closer to 2.1 — the 2.14 figure is the whole-series fit, not any one step."
-    },
-    {
-      "id": "btc-500k",
-      "page": "bitcoin.html",
-      "value": "under half a million physical qubits",
-      "formula": "state-of-the-art Shor circuit re-costing, surface-code assumptions",
-      "inputs": "<1,200 logical qubits · <90M Toffoli gates · physical error rate ≈ 10⁻³",
-      "source": "Gidney, Babbush, Drake, Boneh et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (Mar 2026)",
-      "verified_at": "2026-08-21",
-      "falsifier": "a 2022 estimate under the same assumptions put this at 1.9 billion — the algorithmic side (not hardware) closed most of that three-order-of-magnitude gap, and could move again."
-    },
-    {
-      "id": "btc-9min",
-      "page": "bitcoin.html",
-      "value": "≈9 minutes",
-      "formula": "precomputable half of Shor's algorithm depends only on public curve parameters",
-      "inputs": "runs from the moment a transaction reveals its public key, inside the confirmation window",
-      "source": "Gidney, Babbush, Drake, Boneh et al., arXiv:2603.28846 (Mar 2026)",
-      "verified_at": "2026-08-21",
-      "falsifier": "applies to exposed-key coins specifically — it is an upper bound on how fast the racing attack could run, not a claim about coins whose keys have never been revealed."
-    },
-    {
-      "id": "btc-1.9b",
-      "page": "bitcoin.html",
-      "value": "≈1.9B physical qubits",
-      "formula": "surface-code cost to break one key inside a 10-minute confirmation window",
-      "inputs": "physical error rate ≈ 10⁻³, 2022 circuit constructions",
-      "source": "Webber et al., AVS Quantum Science 4, 013801 (2022)",
-      "verified_at": "2026-07-19",
-      "falsifier": "superseded by arXiv:2603.28846's 2026 re-costing (btc-500k) — this figure is kept on the page as the before-picture of a four-year, three-order-of-magnitude collapse, not as today's estimate."
-    },
-    {
-      "id": "pqc-3309",
-      "page": "pqc.html",
-      "value": "3,309 bytes",
-      "formula": "the byte length of a real ML-DSA-65 signature, generated and measured live in the visitor's own browser",
-      "inputs": "WebCrypto-backed ML-DSA-65 sign operation, this page's own instrument",
-      "source": "FIPS 204 (ML-DSA); several secondary sources instead quote round-3 Dilithium3's 3,293, which this page's own measurement corrects",
-      "verified_at": "2026-08-06",
-      "falsifier": "measures the FIPS-204-final scheme specifically — an implementation still on the round-3 Dilithium spec would legitimately measure 3,293."
-    },
-    {
-      "id": "pqc-7856",
-      "page": "pqc.html",
-      "value": "7,856 bytes",
-      "formula": "the byte length of a real SLH-DSA-128s signature, generated and measured live",
-      "inputs": "WebCrypto-backed SLH-DSA-128s sign operation",
-      "source": "FIPS 205 (SLH-DSA)",
-      "verified_at": "2026-08-06",
-      "falsifier": "the 's' (small) SLH-DSA parameter set trades signature size for slower signing — the 'f' (fast) set has a different, smaller signature at a speed cost this page does not measure."
-    },
-    {
-      "id": "pqc-14600",
-      "page": "pqc.html",
-      "value": "14,600 bytes",
-      "formula": "10 segments × 1,460-byte TCP payload on a standard 1,500-byte Ethernet MTU",
-      "inputs": "TCP initial congestion window = 10 segments",
-      "source": "RFC 6928 (IETF, Apr 2013); default since Linux 2.6.39 (May 2011)",
-      "verified_at": "2026-08-06",
-      "falsifier": "a path with a smaller MTU, or a server whose congestion window differs from the RFC 6928 default, moves this number — it is the standard case, not a universal constant."
-    },
-    {
-      "id": "lq-exchange",
-      "page": "logical-qubit.html",
-      "value": "≈2d² physical qubits",
-      "formula": "surface-code patch ≈ 2d², d the code distance",
-      "inputs": "this page's stated convention · the exact rotated-code count is 2d²−1",
-      "tool": "tools/verify_logical_qubit.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "this is the data + ancilla patch alone — routing, magic-state factories and per-patch overhead sit on top of it, and for real computation can rival or exceed the patch itself."
-    },
-    {
-      "id": "lq-machine-a",
-      "page": "logical-qubit.html",
-      "value": "14 logical qubits",
-      "formula": "d = 2⌈t / −log₁₀r⌉ − 1 · patch = 2d² · logical = ⌊N / patch⌋",
-      "inputs": "r = p/p_th = 1/2 · N = 10⁵ · target p_L = 10⁻⁹ → d = 59, patch 6,962",
-      "tool": "tools/verify_logical_qubit.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "assumes A = 1 in p_L ≈ A(p/p_th)^⌊(d+1)/2⌋; a real device's prefactor moves the required distance, and the bare-patch caveat above applies on top."
-    },
-    {
-      "id": "lq-machine-b",
-      "page": "logical-qubit.html",
-      "value": "29 logical qubits",
-      "formula": "d = 2⌈t / −log₁₀r⌉ − 1 · patch = 2d² · logical = ⌊N / patch⌋",
-      "inputs": "r = p/p_th = 1/20 · N = 10⁴ · target p_L = 10⁻⁹ → d = 13, patch 338",
-      "tool": "tools/verify_logical_qubit.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "B wins on this model, not on any measured device — no machine has yet fielded anything close to 29 below-threshold logical qubits, and The Race's own table is the count that matters."
-    },
-    {
-      "id": "lq-factor",
-      "page": "logical-qubit.html",
-      "value": "a factor of 20.6",
-      "formula": "6,962 / 338",
-      "inputs": "d = 59 vs d = 13 at the ≈2d² convention · the exact 2d²−1 counts give 20.65, a 0.3% difference",
-      "tool": "tools/verify_logical_qubit.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "compares two patches at one shared 10⁻⁹ target; move the target and both distances move, so the factor is not a constant property of the two machines."
-    },
-    {
-      "id": "race-growth",
-      "page": "race.html",
-      "value": "about twenty-fold from 2019 to 2023",
-      "formula": "largest physical-qubit milestone of 2023 ÷ largest of 2019",
-      "inputs": "1,180 (Atom Computing, 2023-10) ÷ 53 (Google Sycamore, 2019-10) = 22.3×",
-      "tool": "tools/verify_hardware.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "a hand-curated milestone set, not a census — it tracks the largest chip anyone announced, so one unlisted machine moves it. “Physical qubits” also spans fabricated sites, controlled qubits and qubits good enough to compute with; the 1,180 are trap sites."
-    },
-    {
-      "id": "race-tenth",
-      "page": "race.html",
-      "value": "under a tenth the qubits of 2023's largest chip",
-      "formula": "Willow's physical count ÷ each 2023 chip above 1,000 qubits",
-      "inputs": "105 ÷ 1,180 = 0.089 · 105 ÷ 1,121 = 0.094 — both under 0.1",
-      "tool": "tools/verify_hardware.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "this sentence previously read “smaller than its own 2019 chip,” which was false — Willow (105) is about twice Sycamore (53). See correction 1. The surviving claim is only about 2023's largest chips."
-    },
-    {
-      "id": "race-101",
-      "page": "race.html",
-      "value": "101 in total",
-      "formula": "2d²−1 physical qubits for a rotated surface code, plus leakage-removal qubits",
-      "inputs": "d = 7 → 2·7²−1 = 97, + 4 leakage-removal = 101, inside Willow's 105",
-      "tool": "tools/verify_hardware.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "counts one d = 7 patch on one device; it is not a general overhead figure, and the 4 leakage-removal qubits are specific to Willow's implementation."
-    },
-    {
-      "id": "race-lambda",
-      "page": "race.html",
-      "value": "Λ = 2.14 ± 0.02",
-      "formula": "fit of log(logical error rate) against distance across a d = 3, 5, 7 series",
-      "inputs": "Google Willow processor, per-two-distance-step suppression",
-      "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687",
-      "verified_at": "2026-07-21",
-      "falsifier": "the lone d = 5 → 7 step reads closer to 2.1 — 2.14 is the whole-series fit, not any single step, and Λ drifts with calibration."
-    },
-    {
-      "id": "qm-t2-bound",
-      "page": "quantum-mechanics.html",
-      "value": "T₂ ≤ 2T₁",
-      "formula": "|r(t)| = √(x²+y²+z²) must stay ≤ 1 for ρ = (I + r·σ)/2 to be a valid density matrix",
-      "inputs": "transverse decay e^(−t/T₂) against longitudinal e^(−t/T₁); with T₂ pushed past 2T₁ the widget's own closed form drives |r| above 1",
-      "tool": "tools/verify_decoherence.py",
-      "verified_at": "2026-09-01",
-      "falsifier": "a Markovian, time-independent-rate bound. Real devices carry slow drift and 1/f noise that no single T₂ captures, and a non-Markovian bath can make an effective T₂ measured over one window meaningless in another."
-    },
-    {
-      "id": "qm-gate-budget",
-      "page": "quantum-mechanics.html",
-      "value": "two-qubit gates (20 ns) before the phase halves",
-      "formula": "⌊ T₂ · ln 2 / t_gate ⌋",
-      "inputs": "t_gate = 20 ns · e.g. T₂ = 100 µs → 3,465 gates",
-      "tool": "tools/verify_decoherence.py",
-      "verified_at": "2026-09-01",
-      "falsifier": "counts gate slots inside one coherence half-life, not useful gates — it assumes every gate is perfect and back-to-back, ignores gate error itself, idling, readout and compilation overhead, so a real circuit gets far fewer."
-    },
-    {
-      "id": "qm-1932",
-      "page": "quantum-mechanics.html",
-      "value": "written down by 1932",
-      "inputs": "the state/unitary/Born/tensor-product postulates this page tabulates",
-      "source": "J. von Neumann, Mathematische Grundlagen der Quantenmechanik (Springer, 1932) — the first fully axiomatic Hilbert-space formulation, incl. the Born-rule and density-matrix machinery",
-      "verified_at": "2026-09-04",
-      "falsifier": "dates the axiomatisation, not the physics: Born's rule is 1926 and Dirac's transformation theory 1927, while decoherence theory and the modern measurement literature are decades later. The claim is only that quantum computing adds no new postulate."
-    },
-    {
-      "id": "bas-1-in-1000",
-      "page": "basics.html",
-      "value": "1 error per 1,000 operations",
-      "inputs": "the standard physical error rate p ≈ 10⁻³ this site uses throughout (qec.html's threshold widget, logical-qubit.html's calculator, bitcoin.html's estimator)",
-      "source": "the resource-estimation convention, not a device datasheet: Webber et al., AVS Quantum Science 4, 013801 (2022) and Gidney et al., arXiv:2603.28846 both cost surface-code machines at p ≈ 10⁻³, and the best reported two-qubit gate errors sit around that order",
-      "verified_at": "2026-09-04",
-      "falsifier": "this is a modelling assumption rounded to one significant figure, not a measurement of any one machine. Single-qubit gates are one to two orders better, measurement is worse, error varies by platform and drifts with calibration, and quoting it as a device spec would be wrong. It is the number every estimate on this site is built on, which is exactly why it is marked."
-    },
-    {
-      "id": "bas-alphaqubit",
-      "page": "basics.html",
-      "value": "about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one",
-      "inputs": "AlphaQubit vs correlated matching (the real-time-capable baseline) and vs a tensor-network decoder (near-optimal, far too slow to run live)",
-      "source": "Bausch et al., “Learning high-accuracy error decoding for quantum processors,” Nature 635, 834 (2024), Google DeepMind + Google Quantum AI",
-      "verified_at": "2026-09-04",
-      "falsifier": "the two baselines are not interchangeable, and swapping which one the 30% is measured against is the single most common error in secondary coverage of this result. The real-device data is d = 3 and d = 5; the d = 11 result is simulation only. AlphaQubit is also still too slow to decode in real time, so this is accuracy, not a shipped capability."
-    },
-    {
-      "id": "bas-nine-steps",
-      "page": "basics.html",
-      "value": "2.14⁹ ≈ 941",
-      "formula": "Λⁿ suppression after n steps of d → d+2 · n = ⌊log 1000 / log Λ⌋",
-      "inputs": "Λ = 2.14 (Willow, regressed across d = 3, 5, 7) · log 1000 / log 2.14 = 9.08 → 9 whole steps",
-      "tool": "tools/verify_basics_overhead.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "Λ is one device's measured suppression at one calibration, and this extrapolates it nine steps past where it was measured (d = 7 → 23). Nothing guarantees Λ holds constant that far out; new error mechanisms appear at scale."
-    },
-    {
-      "id": "bas-1057",
-      "page": "basics.html",
-      "value": "1,057 physical qubits",
-      "formula": "2d² − 1 for a rotated surface-code patch",
-      "inputs": "nine Λ-steps from d = 5 → d = 23 · 2·23²−1 = 1,057",
-      "tool": "tools/verify_basics_overhead.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "this buys ≈ 1,000× of the 1,000,000× the 10⁻⁹ target actually needs — the page says so in the same sentence. The full million takes 19 steps to d = 43 and 3,697 qubits, and even that excludes routing and magic-state factories. qec.html reaches the same 1,057 by a different route (p/p_th = 1/10 to 10⁻¹²); the agreement is a coincidence of both landing on d = 23, not a confirmation."
-    },
-    {
-      "id": "cmp-riken-995",
-      "page": "compare.html",
-      "value": "99.5% two-qubit and 99.8% single-qubit gate fidelity, with the two-qubit gate itself running in 100 nanoseconds",
-      "inputs": "silicon spin qubits, January 2022 — one of three groups (RIKEN/QuTech, TU Delft, UNSW) that cleared the fault-tolerance threshold simultaneously",
-      "source": "Noiri, Takeda, Nakajima, Kobayashi, Sammak, Scappucci et al., Nature 601, 338–342 (2022)",
-      "verified_at": "2026-09-04",
-      "falsifier": "a gate fidelity above threshold in a two-qubit device says nothing about whether it survives at scale — the page says so in the next paragraph. Three simultaneous results also means the threshold-crossing is the field's, not one group's."
-    },
-    {
-      "id": "cmp-diraq-99",
-      "page": "compare.html",
-      "value": "single- and two-qubit control fidelities above 99% across all four devices tested, with state-preparation-and-measurement fidelity up to 99.9%",
-      "inputs": "silicon spin-qubit unit cells fabricated in a 300 mm semiconductor foundry (imec), not a university cleanroom — which is the thesis being tested",
-      "source": "Steinacker, Dumoulin Stuyck, Lim, Tanttu, Feng et al. (Diraq/UNSW), “Industry-compatible silicon spin-qubit unit cells exceeding 99% fidelity,” Nature 646, 81–87 (2025)",
-      "verified_at": "2026-09-04",
-      "falsifier": "“unit cells” means a handful of qubits, not hundreds wired together — none of this is at the qubit counts the four leading modalities have reached, and whether control wiring and crosstalk stay manageable as the count climbs is untested."
-    },
-    {
-      "id": "cmp-majorana-editorial",
-      "page": "compare.html",
-      "value": "“represent evidence for the presence of Majorana zero modes in the reported devices”",
-      "inputs": "what Nature's editorial team said the Majorana 1 paper did NOT do, published alongside it",
-      "source": "editorial note accompanying Microsoft Azure Quantum et al., “Interferometric single-shot parity measurement in InAs–Al hybrid devices,” Nature 638, 651 (2025)",
-      "verified_at": "2026-09-04",
-      "claim": "microsoft-topological-years-not-decades",
-      "falsifier": "this is an editorial caveat on one paper, not a verdict on topological qubits. Microsoft disputes the reading, named physicists are split on the record in both directions, and the underlying question is unresolved rather than settled against them — which is the point the paragraph makes."
-    },
-    {
-      "id": "fsb-transport-240",
-      "page": "feasible.html",
-      "value": "a total cost of 240",
-      "formula": "min Σ c_ij x_ij subject to every supply used and every demand met",
-      "inputs": "2 sources × 3 destinations, 6 routes · ships 15 S1→D1, 15 S1→D3, 20 S2→D2",
-      "tool": "tools/verify_transportation_csp.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "the optimum of this one toy instance, found by exhaustive integer search AND by the LP relaxation (which agrees because the constraint matrix is totally unimodular — 461 square submatrices checked). Change a single cost and the plan changes; nothing here generalises to a real network."
-    },
-    {
-      "id": "fsb-northwest-25",
-      "page": "feasible.html",
-      "value": "costs 25% more than necessary",
-      "formula": "(300 − 240) / 240",
-      "inputs": "northwest-corner plan 300 · true optimum 240",
-      "tool": "tools/verify_transportation_csp.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "25% is this instance's gap, not a property of the northwest-corner rule — the rule is a way to get a feasible starting point fast, and its overspend on another instance could be anything."
-    },
-    {
-      "id": "fsb-setcover-h6",
-      "page": "feasible.html",
-      "value": "For k = 6 that is 2.45, and 3 sits comfortably under 2.45 × 2",
-      "formula": "greedy ≤ H(k) · OPT, H(k) = 1 + 1/2 + … + 1/k",
-      "inputs": "H(6) = 2.45 · greedy takes 3 sets · optimum is 2 · bound = 4.9",
-      "tool": "tools/verify_or5_or6.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "a worst-case guarantee, not a typical one — greedy is usually far closer than H(k), and the bound is only tight on adversarial instances. It also depends on k being the largest set size, not the number of sets."
-    },
-    {
-      "id": "fsb-evpi",
-      "page": "feasible.html",
-      "value": "120 − 80 = 40",
-      "formula": "EVPI = E[profit | perfect forecast] − E[profit at the stochastic optimum]",
-      "inputs": "newsvendor, cost 2 / price 5, demand 20 or 60 at probability ½ · Q* = 60 earns 80 · perfect information earns 120",
-      "tool": "tools/verify_or5_or6.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "EVPI prices a forecast that is exactly right every time, which nobody sells. It is an upper bound on what any real forecast can be worth, not a budget."
-    },
-    {
-      "id": "fsb-vss",
-      "page": "feasible.html",
-      "value": "80 − 70 = 10",
-      "formula": "VSS = E[profit at the stochastic optimum] − E[profit at the plug-in-the-mean plan]",
-      "inputs": "Q* = 60 earns 80 · ordering the mean demand (40) earns 70",
-      "tool": "tools/verify_or5_or6.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "VSS is non-negative by construction, so a positive value proves nothing on its own — what matters is whether it is large enough to justify the modelling effort, and on this instance it is one sixth of the perfect-information value."
-    },
-    {
-      "id": "fml-teleport-12000",
-      "page": "formalism.html",
-      "value": "12,000 random |ψ⟩ (unique complex α,β on the Bloch sphere), all four measurement outcomes each, corrected state matches the original to within 10⁻¹⁵ up to global phase",
-      "formula": "exact state-vector simulation of the teleportation circuit + the four Pauli correction maps",
-      "inputs": "12,000 trials · measured max phase-fixed difference 8.4×10⁻¹⁶",
-      "tool": "tools/verify_teleport_superdense_schmidt.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "noiseless, exact linear algebra — it proves the protocol's algebra, not that any device can run it. The 10⁻¹⁵ is floating-point round-off, not an error budget."
-    },
-    {
-      "id": "fml-schmidt-500",
-      "page": "formalism.html",
-      "value": "500 random bipartite states reconstruct exactly from their SVD (error < 10⁻¹⁴)",
-      "formula": "Schmidt decomposition via SVD; reduced-density-matrix eigenvalues compared against λᵢ²",
-      "inputs": "500 random states across dimensions 2×2 … 3×4 · measured max error 4.8×10⁻¹⁵",
-      "tool": "tools/verify_teleport_superdense_schmidt.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "random states are generically full-Schmidt-rank, so this exercises the typical case, not the degenerate ones (product states, maximally entangled) where numerical rank decisions are delicate. Those two are checked separately by name."
-    },
-    {
-      "id": "pk-2000-trial",
-      "page": "phase-kickback.html",
-      "value": "2,000-trial numerical verification",
-      "formula": "quantum phase estimation → continued-fraction recovery of the period r",
-      "inputs": "1,189 trials with s coprime to r (recovers r exactly, 100%) · 811 with s not coprime (recovers r/gcd(s,r), a genuine divisor, 100%)",
-      "tool": "tools/verify_qft_phase_periodfinding.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "the non-coprime cases do NOT recover r — they recover a divisor of it, which is why Shor's algorithm retries. A 100% figure here is about the continued-fraction step behaving as specified, not about factoring succeeding on one shot."
-    },
-    {
-      "id": "ana-stable-100k",
-      "page": "analog.html",
-      "value": "stable out to 100,000 steps",
-      "formula": "dθᵢ/dt = −K Σⱼ Jᵢⱼ sin(θᵢ − θⱼ), Euler, dt = 0.04 — the coupling half of Wang & Roychowdhury's rule, injection locking omitted",
-      "inputs": "300 random starts · each run 100,000 further steps · max residual phase change 3.5×10⁻¹⁷",
-      "tool": "tools/verify_oim_settle.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "these states are stationary, not “stuck at a bad arrangement” — the closest any comes to a clean 0/π read is about 1.1 rad, and the widget's absolute read-off still reaches the optimum about 70% of the time. The shortfall is the unpinned global phase, not a worse spin configuration."
-    },
-    {
-      "id": "ana-local-minima",
-      "page": "analog.html",
-      "value": "every discrete local minimum on this graph is a global optimum — four assignments, two arrangements and their mirror images",
-      "formula": "exhaustive enumeration of all 2⁵ = 32 spin assignments, then a single-spin-flip local-minimum test on each",
-      "inputs": "5-cycle with J = −1 plus chords (0,2) and (1,3) with J = +1 · best energy −5 · 6 of 7 edges satisfied",
-      "tool": "tools/verify_oim_settle.py",
-      "verified_at": "2026-09-04",
-      "falsifier": "true of this 5-node graph only, and “local minimum” here means discrete single-spin-flip — the continuous phase dynamics have their own fixed points, which is the whole point of the sentence around it. The page said “only one” until 2026-09-04 (correction 3)."
-    },
-    {
-      "id": "ana-cim-2016",
-      "page": "analog.html",
-      "value": "a 2,000-node machine and, separately, a fully-connected 100-spin machine",
-      "inputs": "the two coherent-Ising-machine demonstrations published the same week of 2016 — the two ends of the connectivity-versus-count trade-off",
-      "source": "Inagaki et al., Science 354, 603 (2016) (2,000 time-multiplexed pulses, measurement-and-feedback coupling); McMahon et al., Science 354, 614 (2016) (100 spins, every pair optically coupled)",
-      "verified_at": "2026-09-04",
-      "falsifier": "node count and connectivity are not comparable currencies — 2,000 weakly-coupled nodes and 100 all-to-all ones solve different problem shapes, and neither number is a claim about beating a classical solver."
-    },
-    {
-      "id": "cir-ec-250",
-      "page": "circuits.html",
-      "value": "E_C is held at an illustrative, representative 250 MHz throughout; real designs typically sit within a factor of two of that",
-      "inputs": "the charging energy the widget fixes while the E_J/E_C slider moves",
-      "source": "Koch, Yu, Gambetta, Houck, Schuster, Majer, Blais, Devoret, Girvin & Schoelkopf, arXiv cond-mat/0703002 (Phys. Rev. A 76, 042319 (2007)) — the transmon paper whose E_J/E_C ≫ 1 regime the slider stays inside",
-      "verified_at": "2026-09-04",
-      "falsifier": "a fixed illustrative value, not a device spec — real E_C is a design choice, and the widget's spectrum would shift with it. The point the widget makes is the shape of the anharmonicity-versus-charge-noise trade-off, which does not depend on the exact value."
-    },
-    {
-      "id": "cir-drag-10x",
-      "page": "circuits.html",
-      "value": "roughly an order-of-magnitude error reduction relative to the state of the art at realistic transmon parameters",
-      "inputs": "DRAG pulse shaping against the prior state of the art, at realistic transmon parameters",
-      "source": "Motzoi, Gambetta, Rebentrost & Wilhelm, arXiv 0901.0534 (Phys. Rev. Lett. 103, 110501 (2009))",
-      "verified_at": "2026-08-23",
-      "falsifier": "the comparison baseline is the paper's own state of the art in 2009, not any modern gate — an earlier version of this page misattributed that baseline, which is why the comparison is spelled out here rather than left as a bare 10×."
-    },
-    {
-      "id": "ai-dequantization",
-      "page": "ai.html",
-      "value": "a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access",
-      "inputs": "the result that collapsed the flagship quantum recommendation-system speedup (Kerenidis & Prakash) to no exponential separation",
-      "source": "Ewin Tang, “A quantum-inspired classical algorithm for recommendation systems,” arXiv:1807.04271 (2018)",
-      "verified_at": "2026-09-04",
-      "falsifier": "the ℓ²-norm sample-and-query access model is an ASSUMPTION about how the classical algorithm reaches its data, chosen to mirror what QRAM would give the quantum one. Change that assumption and the comparison changes; “dequantized” means “under comparable data-access assumptions,” not “on a laptop with a CSV.”"
-    },
-    {
-      "id": "ai-barren-plateau",
-      "page": "ai.html",
-      "value": "Var[∂θC] decays exponentially in qubit count n",
-      "inputs": "random parameterised circuits deep enough to form approximate 2-designs",
-      "source": "McClean, Boixo, Smelyanskiy, Babbush & Neven, “Barren plateaus in quantum neural network training landscapes,” arXiv:1803.11173 (Nature Communications 9, 4812 (2018))",
-      "verified_at": "2026-09-04",
-      "falsifier": "conditional on the ansatz forming an approximate 2-design — shallow, structured or problem-informed ansatze can avoid the plateau, and a great deal of VQE work exists precisely to do that. This is a statement about random circuits, not a proof that variational methods cannot work."
-    },
-    {
-      "id": "ai-quantum-data",
-      "page": "ai.html",
-      "value": "a proven exponential advantage for learning from quantum experiments",
-      "inputs": "a quantum machine learning coherently from quantum experiments, versus any classical learner given the same experimental access",
-      "source": "Huang, Broughton, Cotler, Chen, Li, Mohseni, Neven, Babbush, Kueng, Preskill & McClean, “Quantum advantage in learning from experiments,” arXiv:2112.00778 (Science 376, 1182 (2022))",
-      "verified_at": "2026-09-04",
-      "falsifier": "the advantage is for learning about QUANTUM data with coherent quantum memory — it says nothing about quantum ML on classical datasets, which is the claim most “quantum AI” coverage is actually making, and which the same group's arXiv:2011.01938 argues against."
-    }
-  ]
+  {
+   "id": "qec-5201",
+   "page": "qec.html",
+   "value": "5,201 physical qubits",
+   "formula": "p_L ≈ A (p/p_th)^⌊(d+1)/2⌋, A = 1",
+   "inputs": "r = p/p_th = 1/3 · target p_L = 10⁻¹²",
+   "tool": "tools/verify_threshold.py",
+   "verified_at": "2026-08-31",
+   "falsifier": "the same bare-count caveat as qec-1057: routing and magic-state overhead are not included."
+  },
+  {
+   "id": "qec-lambda",
+   "page": "qec.html",
+   "value": "Λ = 2.14 ± 0.02",
+   "formula": "fit of log(logical error rate) against distance across a d = 3, 5, 7 series",
+   "inputs": "Google Willow processor, per-two-distance-step suppression",
+   "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687",
+   "verified_at": "2026-07-21",
+   "falsifier": "the single d = 5 → 7 step alone reads closer to 2.1 — the 2.14 figure is the whole-series fit, not any one step."
+  },
+  {
+   "id": "btc-500k",
+   "page": "bitcoin.html",
+   "value": "under half a million physical qubits",
+   "formula": "state-of-the-art Shor circuit re-costing, surface-code assumptions",
+   "inputs": "<1,200 logical qubits · <90M Toffoli gates · physical error rate ≈ 10⁻³",
+   "source": "Gidney, Babbush, Drake, Boneh et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (Mar 2026)",
+   "verified_at": "2026-08-21",
+   "falsifier": "a 2022 estimate under the same assumptions put this at 1.9 billion — the algorithmic side (not hardware) closed most of that three-order-of-magnitude gap, and could move again."
+  },
+  {
+   "id": "btc-9min",
+   "page": "bitcoin.html",
+   "value": "≈9 minutes",
+   "formula": "precomputable half of Shor's algorithm depends only on public curve parameters",
+   "inputs": "runs from the moment a transaction reveals its public key, inside the confirmation window",
+   "source": "Gidney, Babbush, Drake, Boneh et al., arXiv:2603.28846 (Mar 2026)",
+   "verified_at": "2026-08-21",
+   "falsifier": "applies to exposed-key coins specifically — it is an upper bound on how fast the racing attack could run, not a claim about coins whose keys have never been revealed."
+  },
+  {
+   "id": "btc-1.9b",
+   "page": "bitcoin.html",
+   "value": "≈1.9B physical qubits",
+   "formula": "surface-code cost to break one key inside a 10-minute confirmation window",
+   "inputs": "physical error rate ≈ 10⁻³, 2022 circuit constructions",
+   "source": "Webber et al., AVS Quantum Science 4, 013801 (2022)",
+   "verified_at": "2026-07-19",
+   "falsifier": "superseded by arXiv:2603.28846's 2026 re-costing (btc-500k) — this figure is kept on the page as the before-picture of a four-year, three-order-of-magnitude collapse, not as today's estimate."
+  },
+  {
+   "id": "pqc-3309",
+   "page": "pqc.html",
+   "value": "3,309 bytes",
+   "formula": "the byte length of a real ML-DSA-65 signature, generated and measured live in the visitor's own browser",
+   "inputs": "WebCrypto-backed ML-DSA-65 sign operation, this page's own instrument",
+   "source": "FIPS 204 (ML-DSA); several secondary sources instead quote round-3 Dilithium3's 3,293, which this page's own measurement corrects",
+   "verified_at": "2026-08-06",
+   "falsifier": "measures the FIPS-204-final scheme specifically — an implementation still on the round-3 Dilithium spec would legitimately measure 3,293."
+  },
+  {
+   "id": "pqc-7856",
+   "page": "pqc.html",
+   "value": "7,856 bytes",
+   "formula": "the byte length of a real SLH-DSA-128s signature, generated and measured live",
+   "inputs": "WebCrypto-backed SLH-DSA-128s sign operation",
+   "source": "FIPS 205 (SLH-DSA)",
+   "verified_at": "2026-08-06",
+   "falsifier": "the 's' (small) SLH-DSA parameter set trades signature size for slower signing — the 'f' (fast) set has a different, smaller signature at a speed cost this page does not measure."
+  },
+  {
+   "id": "pqc-14600",
+   "page": "pqc.html",
+   "value": "14,600 bytes",
+   "formula": "10 segments × 1,460-byte TCP payload on a standard 1,500-byte Ethernet MTU",
+   "inputs": "TCP initial congestion window = 10 segments",
+   "source": "RFC 6928 (IETF, Apr 2013); default since Linux 2.6.39 (May 2011)",
+   "verified_at": "2026-08-06",
+   "falsifier": "a path with a smaller MTU, or a server whose congestion window differs from the RFC 6928 default, moves this number — it is the standard case, not a universal constant."
+  },
+  {
+   "id": "lq-exchange",
+   "page": "logical-qubit.html",
+   "value": "≈2d² physical qubits",
+   "formula": "surface-code patch ≈ 2d², d the code distance",
+   "inputs": "this page's stated convention · the exact rotated-code count is 2d²−1",
+   "tool": "tools/verify_logical_qubit.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "this is the data + ancilla patch alone — routing, magic-state factories and per-patch overhead sit on top of it, and for real computation can rival or exceed the patch itself."
+  },
+  {
+   "id": "lq-machine-a",
+   "page": "logical-qubit.html",
+   "value": "14 logical qubits",
+   "formula": "d = 2⌈t / −log₁₀r⌉ − 1 · patch = 2d² · logical = ⌊N / patch⌋",
+   "inputs": "r = p/p_th = 1/2 · N = 10⁵ · target p_L = 10⁻⁹ → d = 59, patch 6,962",
+   "tool": "tools/verify_logical_qubit.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "assumes A = 1 in p_L ≈ A(p/p_th)^⌊(d+1)/2⌋; a real device's prefactor moves the required distance, and the bare-patch caveat above applies on top."
+  },
+  {
+   "id": "lq-machine-b",
+   "page": "logical-qubit.html",
+   "value": "29 logical qubits",
+   "formula": "d = 2⌈t / −log₁₀r⌉ − 1 · patch = 2d² · logical = ⌊N / patch⌋",
+   "inputs": "r = p/p_th = 1/20 · N = 10⁴ · target p_L = 10⁻⁹ → d = 13, patch 338",
+   "tool": "tools/verify_logical_qubit.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "B wins on this model, not on any measured device — no machine has yet fielded anything close to 29 below-threshold logical qubits, and The Race's own table is the count that matters."
+  },
+  {
+   "id": "lq-factor",
+   "page": "logical-qubit.html",
+   "value": "a factor of 20.6",
+   "formula": "6,962 / 338",
+   "inputs": "d = 59 vs d = 13 at the ≈2d² convention · the exact 2d²−1 counts give 20.65, a 0.3% difference",
+   "tool": "tools/verify_logical_qubit.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "compares two patches at one shared 10⁻⁹ target; move the target and both distances move, so the factor is not a constant property of the two machines."
+  },
+  {
+   "id": "race-growth",
+   "page": "race.html",
+   "value": "about twenty-fold from 2019 to 2023",
+   "formula": "largest physical-qubit milestone of 2023 ÷ largest of 2019",
+   "inputs": "1,180 (Atom Computing, 2023-10) ÷ 53 (Google Sycamore, 2019-10) = 22.3×",
+   "tool": "tools/verify_hardware.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "a hand-curated milestone set, not a census — it tracks the largest chip anyone announced, so one unlisted machine moves it. “Physical qubits” also spans fabricated sites, controlled qubits and qubits good enough to compute with; the 1,180 are trap sites."
+  },
+  {
+   "id": "race-tenth",
+   "page": "race.html",
+   "value": "under a tenth the qubits of 2023's largest chip",
+   "formula": "Willow's physical count ÷ each 2023 chip above 1,000 qubits",
+   "inputs": "105 ÷ 1,180 = 0.089 · 105 ÷ 1,121 = 0.094 — both under 0.1",
+   "tool": "tools/verify_hardware.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "this sentence previously read “smaller than its own 2019 chip,” which was false — Willow (105) is about twice Sycamore (53). See correction 1. The surviving claim is only about 2023's largest chips."
+  },
+  {
+   "id": "race-101",
+   "page": "race.html",
+   "value": "101 in total",
+   "formula": "2d²−1 physical qubits for a rotated surface code, plus leakage-removal qubits",
+   "inputs": "d = 7 → 2·7²−1 = 97, + 4 leakage-removal = 101, inside Willow's 105",
+   "tool": "tools/verify_hardware.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "counts one d = 7 patch on one device; it is not a general overhead figure, and the 4 leakage-removal qubits are specific to Willow's implementation."
+  },
+  {
+   "id": "race-lambda",
+   "page": "race.html",
+   "value": "Λ = 2.14 ± 0.02",
+   "formula": "fit of log(logical error rate) against distance across a d = 3, 5, 7 series",
+   "inputs": "Google Willow processor, per-two-distance-step suppression",
+   "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687",
+   "verified_at": "2026-07-21",
+   "falsifier": "the lone d = 5 → 7 step reads closer to 2.1 — 2.14 is the whole-series fit, not any single step, and Λ drifts with calibration."
+  },
+  {
+   "id": "qm-t2-bound",
+   "page": "quantum-mechanics.html",
+   "value": "T₂ ≤ 2T₁",
+   "formula": "|r(t)| = √(x²+y²+z²) must stay ≤ 1 for ρ = (I + r·σ)/2 to be a valid density matrix",
+   "inputs": "transverse decay e^(−t/T₂) against longitudinal e^(−t/T₁); with T₂ pushed past 2T₁ the widget's own closed form drives |r| above 1",
+   "tool": "tools/verify_decoherence.py",
+   "verified_at": "2026-09-01",
+   "falsifier": "a Markovian, time-independent-rate bound. Real devices carry slow drift and 1/f noise that no single T₂ captures, and a non-Markovian bath can make an effective T₂ measured over one window meaningless in another."
+  },
+  {
+   "id": "qm-gate-budget",
+   "page": "quantum-mechanics.html",
+   "value": "two-qubit gates (20 ns) before the phase halves",
+   "formula": "⌊ T₂ · ln 2 / t_gate ⌋",
+   "inputs": "t_gate = 20 ns · e.g. T₂ = 100 µs → 3,465 gates",
+   "tool": "tools/verify_decoherence.py",
+   "verified_at": "2026-09-01",
+   "falsifier": "counts gate slots inside one coherence half-life, not useful gates — it assumes every gate is perfect and back-to-back, ignores gate error itself, idling, readout and compilation overhead, so a real circuit gets far fewer."
+  },
+  {
+   "id": "qm-1932",
+   "page": "quantum-mechanics.html",
+   "value": "written down by 1932",
+   "inputs": "the state/unitary/Born/tensor-product postulates this page tabulates",
+   "source": "J. von Neumann, Mathematische Grundlagen der Quantenmechanik (Springer, 1932) — the first fully axiomatic Hilbert-space formulation, incl. the Born-rule and density-matrix machinery",
+   "verified_at": "2026-09-04",
+   "falsifier": "dates the axiomatisation, not the physics: Born's rule is 1926 and Dirac's transformation theory 1927, while decoherence theory and the modern measurement literature are decades later. The claim is only that quantum computing adds no new postulate."
+  },
+  {
+   "id": "bas-1-in-1000",
+   "page": "basics.html",
+   "value": "1 error per 1,000 operations",
+   "inputs": "the standard physical error rate p ≈ 10⁻³ this site uses throughout (qec.html's threshold widget, logical-qubit.html's calculator, bitcoin.html's estimator)",
+   "source": "the resource-estimation convention, not a device datasheet: Webber et al., AVS Quantum Science 4, 013801 (2022) and Gidney et al., arXiv:2603.28846 both cost surface-code machines at p ≈ 10⁻³, and the best reported two-qubit gate errors sit around that order",
+   "verified_at": "2026-09-04",
+   "falsifier": "this is a modelling assumption rounded to one significant figure, not a measurement of any one machine. Single-qubit gates are one to two orders better, measurement is worse, error varies by platform and drifts with calibration, and quoting it as a device spec would be wrong. It is the number every estimate on this site is built on, which is exactly why it is marked."
+  },
+  {
+   "id": "bas-alphaqubit",
+   "page": "basics.html",
+   "value": "about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one",
+   "inputs": "AlphaQubit vs correlated matching (the real-time-capable baseline) and vs a tensor-network decoder (near-optimal, far too slow to run live)",
+   "source": "Bausch et al., “Learning high-accuracy error decoding for quantum processors,” Nature 635, 834 (2024), Google DeepMind + Google Quantum AI",
+   "verified_at": "2026-09-04",
+   "falsifier": "the two baselines are not interchangeable, and swapping which one the 30% is measured against is the single most common error in secondary coverage of this result. The real-device data is d = 3 and d = 5; the d = 11 result is simulation only. AlphaQubit is also still too slow to decode in real time, so this is accuracy, not a shipped capability."
+  },
+  {
+   "id": "bas-nine-steps",
+   "page": "basics.html",
+   "value": "2.14⁹ ≈ 941",
+   "formula": "Λⁿ suppression after n steps of d → d+2 · n = ⌊log 1000 / log Λ⌋",
+   "inputs": "Λ = 2.14 (Willow, regressed across d = 3, 5, 7) · log 1000 / log 2.14 = 9.08 → 9 whole steps",
+   "tool": "tools/verify_basics_overhead.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "Λ is one device's measured suppression at one calibration, and this extrapolates it nine steps past where it was measured (d = 7 → 23). Nothing guarantees Λ holds constant that far out; new error mechanisms appear at scale."
+  },
+  {
+   "id": "bas-1057",
+   "page": "basics.html",
+   "value": "1,057 physical qubits",
+   "formula": "2d² − 1 for a rotated surface-code patch",
+   "inputs": "nine Λ-steps from d = 5 → d = 23 · 2·23²−1 = 1,057",
+   "tool": "tools/verify_basics_overhead.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "this buys ≈ 1,000× of the 1,000,000× the 10⁻⁹ target actually needs — the page says so in the same sentence. The full million takes 19 steps to d = 43 and 3,697 qubits, and even that excludes routing and magic-state factories. qec.html reaches the same 1,057 by a different route (p/p_th = 1/10 to 10⁻¹²); the agreement is a coincidence of both landing on d = 23, not a confirmation."
+  },
+  {
+   "id": "cmp-riken-995",
+   "page": "compare.html",
+   "value": "99.5% two-qubit and 99.8% single-qubit gate fidelity, with the two-qubit gate itself running in 100 nanoseconds",
+   "inputs": "silicon spin qubits, January 2022 — one of three groups (RIKEN/QuTech, TU Delft, UNSW) that cleared the fault-tolerance threshold simultaneously",
+   "source": "Noiri, Takeda, Nakajima, Kobayashi, Sammak, Scappucci et al., Nature 601, 338–342 (2022)",
+   "verified_at": "2026-09-04",
+   "falsifier": "a gate fidelity above threshold in a two-qubit device says nothing about whether it survives at scale — the page says so in the next paragraph. Three simultaneous results also means the threshold-crossing is the field's, not one group's."
+  },
+  {
+   "id": "cmp-diraq-99",
+   "page": "compare.html",
+   "value": "single- and two-qubit control fidelities above 99% across all four devices tested, with state-preparation-and-measurement fidelity up to 99.9%",
+   "inputs": "silicon spin-qubit unit cells fabricated in a 300 mm semiconductor foundry (imec), not a university cleanroom — which is the thesis being tested",
+   "source": "Steinacker, Dumoulin Stuyck, Lim, Tanttu, Feng et al. (Diraq/UNSW), “Industry-compatible silicon spin-qubit unit cells exceeding 99% fidelity,” Nature 646, 81–87 (2025)",
+   "verified_at": "2026-09-04",
+   "falsifier": "“unit cells” means a handful of qubits, not hundreds wired together — none of this is at the qubit counts the four leading modalities have reached, and whether control wiring and crosstalk stay manageable as the count climbs is untested."
+  },
+  {
+   "id": "cmp-majorana-editorial",
+   "page": "compare.html",
+   "value": "“represent evidence for the presence of Majorana zero modes in the reported devices”",
+   "inputs": "what Nature's editorial team said the Majorana 1 paper did NOT do, published alongside it",
+   "source": "editorial note accompanying Microsoft Azure Quantum et al., “Interferometric single-shot parity measurement in InAs–Al hybrid devices,” Nature 638, 651 (2025)",
+   "verified_at": "2026-09-04",
+   "claim": "microsoft-topological-years-not-decades",
+   "falsifier": "this is an editorial caveat on one paper, not a verdict on topological qubits. Microsoft disputes the reading, named physicists are split on the record in both directions, and the underlying question is unresolved rather than settled against them — which is the point the paragraph makes."
+  },
+  {
+   "id": "fsb-transport-240",
+   "page": "feasible.html",
+   "value": "a total cost of 240",
+   "formula": "min Σ c_ij x_ij subject to every supply used and every demand met",
+   "inputs": "2 sources × 3 destinations, 6 routes · ships 15 S1→D1, 15 S1→D3, 20 S2→D2",
+   "tool": "tools/verify_transportation_csp.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "the optimum of this one toy instance, found by exhaustive integer search AND by the LP relaxation (which agrees because the constraint matrix is totally unimodular — 461 square submatrices checked). Change a single cost and the plan changes; nothing here generalises to a real network."
+  },
+  {
+   "id": "fsb-northwest-25",
+   "page": "feasible.html",
+   "value": "costs 25% more than necessary",
+   "formula": "(300 − 240) / 240",
+   "inputs": "northwest-corner plan 300 · true optimum 240",
+   "tool": "tools/verify_transportation_csp.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "25% is this instance's gap, not a property of the northwest-corner rule — the rule is a way to get a feasible starting point fast, and its overspend on another instance could be anything."
+  },
+  {
+   "id": "fsb-setcover-h6",
+   "page": "feasible.html",
+   "value": "For k = 6 that is 2.45, and 3 sits comfortably under 2.45 × 2",
+   "formula": "greedy ≤ H(k) · OPT, H(k) = 1 + 1/2 + … + 1/k",
+   "inputs": "H(6) = 2.45 · greedy takes 3 sets · optimum is 2 · bound = 4.9",
+   "tool": "tools/verify_or5_or6.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "a worst-case guarantee, not a typical one — greedy is usually far closer than H(k), and the bound is only tight on adversarial instances. It also depends on k being the largest set size, not the number of sets."
+  },
+  {
+   "id": "fsb-evpi",
+   "page": "feasible.html",
+   "value": "120 − 80 = 40",
+   "formula": "EVPI = E[profit | perfect forecast] − E[profit at the stochastic optimum]",
+   "inputs": "newsvendor, cost 2 / price 5, demand 20 or 60 at probability ½ · Q* = 60 earns 80 · perfect information earns 120",
+   "tool": "tools/verify_or5_or6.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "EVPI prices a forecast that is exactly right every time, which nobody sells. It is an upper bound on what any real forecast can be worth, not a budget."
+  },
+  {
+   "id": "fsb-vss",
+   "page": "feasible.html",
+   "value": "80 − 70 = 10",
+   "formula": "VSS = E[profit at the stochastic optimum] − E[profit at the plug-in-the-mean plan]",
+   "inputs": "Q* = 60 earns 80 · ordering the mean demand (40) earns 70",
+   "tool": "tools/verify_or5_or6.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "VSS is non-negative by construction, so a positive value proves nothing on its own — what matters is whether it is large enough to justify the modelling effort, and on this instance it is one sixth of the perfect-information value."
+  },
+  {
+   "id": "fml-teleport-12000",
+   "page": "formalism.html",
+   "value": "12,000 random |ψ⟩ (unique complex α,β on the Bloch sphere), all four measurement outcomes each, corrected state matches the original to within 10⁻¹⁵ up to global phase",
+   "formula": "exact state-vector simulation of the teleportation circuit + the four Pauli correction maps",
+   "inputs": "12,000 trials · measured max phase-fixed difference 8.4×10⁻¹⁶",
+   "tool": "tools/verify_teleport_superdense_schmidt.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "noiseless, exact linear algebra — it proves the protocol's algebra, not that any device can run it. The 10⁻¹⁵ is floating-point round-off, not an error budget."
+  },
+  {
+   "id": "fml-schmidt-500",
+   "page": "formalism.html",
+   "value": "500 random bipartite states reconstruct exactly from their SVD (error < 10⁻¹⁴)",
+   "formula": "Schmidt decomposition via SVD; reduced-density-matrix eigenvalues compared against λᵢ²",
+   "inputs": "500 random states across dimensions 2×2 … 3×4 · measured max error 4.8×10⁻¹⁵",
+   "tool": "tools/verify_teleport_superdense_schmidt.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "random states are generically full-Schmidt-rank, so this exercises the typical case, not the degenerate ones (product states, maximally entangled) where numerical rank decisions are delicate. Those two are checked separately by name."
+  },
+  {
+   "id": "pk-2000-trial",
+   "page": "phase-kickback.html",
+   "value": "2,000-trial numerical verification",
+   "formula": "quantum phase estimation → continued-fraction recovery of the period r",
+   "inputs": "1,189 trials with s coprime to r (recovers r exactly, 100%) · 811 with s not coprime (recovers r/gcd(s,r), a genuine divisor, 100%)",
+   "tool": "tools/verify_qft_phase_periodfinding.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "the non-coprime cases do NOT recover r — they recover a divisor of it, which is why Shor's algorithm retries. A 100% figure here is about the continued-fraction step behaving as specified, not about factoring succeeding on one shot."
+  },
+  {
+   "id": "ana-stable-100k",
+   "page": "analog.html",
+   "value": "stable out to 100,000 steps",
+   "formula": "dθᵢ/dt = −K Σⱼ Jᵢⱼ sin(θᵢ − θⱼ), Euler, dt = 0.04 — the coupling half of Wang & Roychowdhury's rule, injection locking omitted",
+   "inputs": "300 random starts · each run 100,000 further steps · max residual phase change 3.5×10⁻¹⁷",
+   "tool": "tools/verify_oim_settle.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "these states are stationary, not “stuck at a bad arrangement” — the closest any comes to a clean 0/π read is about 1.1 rad, and the widget's absolute read-off still reaches the optimum about 70% of the time. The shortfall is the unpinned global phase, not a worse spin configuration."
+  },
+  {
+   "id": "ana-local-minima",
+   "page": "analog.html",
+   "value": "every discrete local minimum on this graph is a global optimum — four assignments, two arrangements and their mirror images",
+   "formula": "exhaustive enumeration of all 2⁵ = 32 spin assignments, then a single-spin-flip local-minimum test on each",
+   "inputs": "5-cycle with J = −1 plus chords (0,2) and (1,3) with J = +1 · best energy −5 · 6 of 7 edges satisfied",
+   "tool": "tools/verify_oim_settle.py",
+   "verified_at": "2026-09-04",
+   "falsifier": "true of this 5-node graph only, and “local minimum” here means discrete single-spin-flip — the continuous phase dynamics have their own fixed points, which is the whole point of the sentence around it. The page said “only one” until 2026-09-04 (correction 3)."
+  },
+  {
+   "id": "ana-cim-2016",
+   "page": "analog.html",
+   "value": "a 2,000-node machine and, separately, a fully-connected 100-spin machine",
+   "inputs": "the two coherent-Ising-machine demonstrations published the same week of 2016 — the two ends of the connectivity-versus-count trade-off",
+   "source": "Inagaki et al., Science 354, 603 (2016) (2,000 time-multiplexed pulses, measurement-and-feedback coupling); McMahon et al., Science 354, 614 (2016) (100 spins, every pair optically coupled)",
+   "verified_at": "2026-09-04",
+   "falsifier": "node count and connectivity are not comparable currencies — 2,000 weakly-coupled nodes and 100 all-to-all ones solve different problem shapes, and neither number is a claim about beating a classical solver."
+  },
+  {
+   "id": "cir-ec-250",
+   "page": "circuits.html",
+   "value": "E_C is held at an illustrative, representative 250 MHz throughout; real designs typically sit within a factor of two of that",
+   "inputs": "the charging energy the widget fixes while the E_J/E_C slider moves",
+   "source": "Koch, Yu, Gambetta, Houck, Schuster, Majer, Blais, Devoret, Girvin & Schoelkopf, arXiv cond-mat/0703002 (Phys. Rev. A 76, 042319 (2007)) — the transmon paper whose E_J/E_C ≫ 1 regime the slider stays inside",
+   "verified_at": "2026-09-04",
+   "falsifier": "a fixed illustrative value, not a device spec — real E_C is a design choice, and the widget's spectrum would shift with it. The point the widget makes is the shape of the anharmonicity-versus-charge-noise trade-off, which does not depend on the exact value."
+  },
+  {
+   "id": "cir-drag-10x",
+   "page": "circuits.html",
+   "value": "roughly an order-of-magnitude error reduction relative to the state of the art at realistic transmon parameters",
+   "inputs": "DRAG pulse shaping against the prior state of the art, at realistic transmon parameters",
+   "source": "Motzoi, Gambetta, Rebentrost & Wilhelm, arXiv 0901.0534 (Phys. Rev. Lett. 103, 110501 (2009))",
+   "verified_at": "2026-08-23",
+   "falsifier": "the comparison baseline is the paper's own state of the art in 2009, not any modern gate — an earlier version of this page misattributed that baseline, which is why the comparison is spelled out here rather than left as a bare 10×."
+  },
+  {
+   "id": "ai-dequantization",
+   "page": "ai.html",
+   "value": "a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access",
+   "inputs": "the result that collapsed the flagship quantum recommendation-system speedup (Kerenidis & Prakash) to no exponential separation",
+   "source": "Ewin Tang, “A quantum-inspired classical algorithm for recommendation systems,” arXiv:1807.04271 (2018)",
+   "verified_at": "2026-09-04",
+   "falsifier": "the ℓ²-norm sample-and-query access model is an ASSUMPTION about how the classical algorithm reaches its data, chosen to mirror what QRAM would give the quantum one. Change that assumption and the comparison changes; “dequantized” means “under comparable data-access assumptions,” not “on a laptop with a CSV.”"
+  },
+  {
+   "id": "ai-barren-plateau",
+   "page": "ai.html",
+   "value": "Var[∂θC] decays exponentially in qubit count n",
+   "inputs": "random parameterised circuits deep enough to form approximate 2-designs",
+   "source": "McClean, Boixo, Smelyanskiy, Babbush & Neven, “Barren plateaus in quantum neural network training landscapes,” arXiv:1803.11173 (Nature Communications 9, 4812 (2018))",
+   "verified_at": "2026-09-04",
+   "falsifier": "conditional on the ansatz forming an approximate 2-design — shallow, structured or problem-informed ansatze can avoid the plateau, and a great deal of VQE work exists precisely to do that. This is a statement about random circuits, not a proof that variational methods cannot work."
+  },
+  {
+   "id": "ai-quantum-data",
+   "page": "ai.html",
+   "value": "a proven exponential advantage for learning from quantum experiments",
+   "inputs": "a quantum machine learning coherently from quantum experiments, versus any classical learner given the same experimental access",
+   "source": "Huang, Broughton, Cotler, Chen, Li, Mohseni, Neven, Babbush, Kueng, Preskill & McClean, “Quantum advantage in learning from experiments,” arXiv:2112.00778 (Science 376, 1182 (2022))",
+   "verified_at": "2026-09-04",
+   "falsifier": "the advantage is for learning about QUANTUM data with coherent quantum memory — it says nothing about quantum ML on classical datasets, which is the claim most “quantum AI” coverage is actually making, and which the same group's arXiv:2011.01938 argues against."
+  },
+  {
+   "id": "home-collapse",
+   "page": "index.html",
+   "value": "3,800× cheaper in four years",
+   "formula": "2022 physical-qubit estimate ÷ 2026 physical-qubit estimate, for the same racing attack on one Bitcoin key",
+   "inputs": "1.9×10⁹ (Webber et al., AVS Quantum Sci. 4, 013801, 2022) ÷ 5×10⁵ (arXiv:2603.28846, Mar 2026) = 3,800× exactly",
+   "source": "Webber et al., AVS Quantum Sci. 4, 013801 (2022); Babbush, Gidney, Drake, Boneh et al., arXiv:2603.28846",
+   "verified_at": "2026-09-08",
+   "falsifier": "Two resource estimates under different assumptions, not one measurement repeated. The 2026 figure is “fewer than half a million”, so 3,800× is a floor rather than a point value, and neither number has been demonstrated on hardware — both are costings of a machine nobody has built."
+  },
+  {
+   "id": "home-webber-2022",
+   "page": "index.html",
+   "value": "1.9 billion physical qubits",
+   "source": "Webber, Elfving, Weidt and Hensinger, “The impact of hardware specifications on reaching quantum advantage in the fault tolerant regime”, AVS Quantum Sci. 4, 013801 (2022)",
+   "verified_at": "2026-09-08",
+   "falsifier": "This is the figure for breaking a key inside Bitcoin’s roughly ten-minute confirmation window, which is far harder than breaking one key eventually. Quoted against a different threat model it is simply the wrong number."
+  },
+  {
+   "id": "home-gap-orders",
+   "page": "index.html",
+   "value": "roughly three orders of magnitude, not six",
+   "formula": "log₁₀(attack estimate ÷ largest physical qubit count on record)",
+   "inputs": "2026: 5×10⁵ ÷ 1,180 = 424× = 2.6 orders. 2022: 1.9×10⁹ ÷ 1,180 = 1.6×10⁶ = 6.2 orders. Largest on record is Atom Computing’s 1,180-site array (2023-10), from data/hardware.json.",
+   "tool": "tools/verify_hardware.py",
+   "verified_at": "2026-09-08",
+   "falsifier": "“Three” rounds 2.6 up, in the direction that makes quantum look closer, not further — the honest reading is “between two and three”. It also compares a 2026 estimate against a 2023 chip, because the frontier stopped competing on raw qubit count after 2023; a larger array announced tomorrow shrinks the gap without any algorithmic progress at all."
+  }
+ ]
 }

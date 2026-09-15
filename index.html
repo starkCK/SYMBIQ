@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>SymbiQ: Two broken geniuses, fixing each other.</title>
-<meta name="description" content="SymbiQ explains the loop between AI and quantum computing at three levels (no math, some math, real math) with nine games where the mathematics does the judging.">
+<meta name="description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/">
 <meta property="og:title" content="SymbiQ: Two broken geniuses, fixing each other.">
-<meta property="og:description" content="SymbiQ explains the loop between AI and quantum computing at three levels (no math, some math, real math) with nine games where the mathematics does the judging.">
+<meta property="og:description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="SymbiQ: Two broken geniuses, fixing each other.">
-<meta name="twitter:description" content="SymbiQ explains the loop between AI and quantum computing at three levels (no math, some math, real math) with nine games where the mathematics does the judging.">
+<meta name="twitter:description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -54,6 +54,7 @@
 <link rel="stylesheet" href="living.css?v=2">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="search.css?v=3">
 <!-- The home layer: the threshold instrument, the corner companion, the two
      overlays, the pointer parallax and the lattice canvas. ONE page, own
      cache-buster, deletable without touching anything shared. -->
@@ -75,7 +76,7 @@
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=4" defer></script>
 <script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=3" defer></script>
+<script src="forms.js?v=4" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
 <script src="archive.js?v=2" defer></script>
@@ -97,6 +98,7 @@
 <script src="living.js?v=1" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="search.js?v=5" defer></script>
 <!-- Last on purpose: home.js section 5 cooperates with the key handlers
      nav.js, alive.js and qubit.js have already bound, and needs them there. -->
 <script src="home.js?v=10" defer></script>
@@ -191,6 +193,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain active">Home<span class="sub">The Question + the loop</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
@@ -203,6 +206,8 @@
       </div>
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -232,7 +237,7 @@
 
 <div class="hero2">
   <div class="hero-copy" data-station="hero">
-  <p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop at three levels, as a game.</p>
+  <p class="tagline">AI is fixing quantum computing's errors, and quantum will supercharge AI &mdash; and almost everything you have read about either is a claim nobody checked. <strong>Claims get checked here.</strong> Every number from a primary paper, every game judged by the mathematics, every prediction logged the day it is made and scored when its deadline arrives.</p>
   <p class="gh-row herocta">
     <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
     <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
@@ -313,6 +318,23 @@
      pass ("The Ladder"). -->
 <p class="spine-tag">The short version</p>
 <p class="spine">Every machine on this site is a physical object built to settle a mathematical question: a <a href="circuits.html">circuit made stranger</a> until it holds a qubit, made to <a href="qec.html">survive</a>, then pointed at <a href="formalism.html">something worth asking</a>. Couple many of the same circuits instead, and you get the machine <a href="feasible.html">operations research</a> already runs on. Both roads end at <a href="pqc.html">what you actually have to fix</a>.</p>
+
+<!-- ── THE SECOND SPINE ──────────────────────────────────────────────────────
+     The paragraph above says why these three SUBJECTS belong on one site. This
+     one says what the reader gets from all three, which is the part that makes
+     three front doors one audience rather than three. Added 2026-09-08: the
+     tracks were already written this way individually ("the mathematics does
+     the judging", "you cannot judge a quantum claim without OR", "your own
+     systems, checked") and nothing at the top said it out loud. -->
+<p class="spine">And every door leads to the same job. <a href="play.html">The games</a> are how you
+check a claim about quantum <em>advantage</em> &mdash; the pars are proven optima, so you cannot fake a
+score. <a href="feasible.html">The Feasible Region</a> is how you check a claim about
+<em>optimisation</em>, because every &ldquo;quantum will revolutionise scheduling&rdquo; headline is really
+a claim about operations research. <a href="pqc.html">Post-quantum cryptography</a> is how you check your
+<em>own</em> exposure, on your real certificates rather than a diagram of them. And
+<a href="ledger.html">the Ledger</a> is the running record of everyone else's claims, resolved against
+criteria frozen before the deadline &mdash; with <a href="corrections.html">our own misses</a> published
+next to theirs.</p>
 
 <!-- The coupling strip (living.js): fourteen independent phase oscillators,
      coupled to their neighbours by the Kuramoto rule, pulling into phase while
@@ -464,7 +486,7 @@
 
 <section class="orhero gamehero" data-station="games">
   <p class="eyebrow">The part you play</p>
-  <h2 id="nine-games-where-you-cannot-fake-a-score">Nine games where you cannot fake a score</h2>
+  <h2 id="twelve-games-where-you-cannot-fake-a-score">Twelve games where you cannot fake a score</h2>
   <p class="orhero-lede">Most explanations of quantum computing ask you to take their word for it. Here the mathematics does the judging: <strong>every par is an optimum found by exhaustive search, every probability on screen is worked out rather than set by a designer</strong>, and one level is built to prove that your best strategy is worthless on the wrong problem.</p>
 
   <div class="orhero-grid">
@@ -563,7 +585,7 @@
     <text class="lbl-s" x="358" y="213" text-anchor="middle">physical qubits (logarithmic scale, so each step right is 100×)</text>
   </svg></div>
   <p class="swipe">← swipe the diagram to see all of it →</p>
-  <figcaption><strong>The same attack got 3,800× cheaper in four years.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at 1.9 billion physical qubits. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor's algorithm can be precomputed before your transaction appears. The gap from today's hardware is now roughly <strong>three</strong> orders of magnitude, not six. The axis is logarithmic, so that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
+  <figcaption><strong>The same attack got <span class="rcpt" data-rcpt="home-collapse">3,800× cheaper in four years</span>.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at <span class="rcpt" data-rcpt="home-webber-2022">1.9 billion physical qubits</span>. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor's algorithm can be precomputed before your transaction appears. The gap from today's hardware is now roughly <span class="rcpt" data-rcpt="home-gap-orders"><strong>three</strong> orders of magnitude, not six</span>. The axis is logarithmic, so that tiny yellow bar is not close. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
 </figure>
 </section>
 
@@ -827,5 +849,6 @@
   });
 })();
 </script>
+<div id="search" class="sr-wrap" hidden></div>
 </body>
 </html>

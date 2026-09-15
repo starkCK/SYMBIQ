@@ -1,0 +1,123 @@
+/* SymbiQ, the search overlay. Own file, own cache-buster, same rule as
+   motion.css / lexicon.css: additive, and reverts by deleting this <link>,
+   search.js, and the one nav entry that points at #search.
+
+   Everything is painted from the site's own tokens (--bg / --panel / --text /
+   --muted / --border / --teal / --violet), so light, dim and dark all come
+   out right without a single theme-specific rule here. */
+
+.sr-wrap {
+  position: fixed; inset: 0; z-index: 9000;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: clamp(16px, 8vh, 96px) 16px 16px;
+}
+.sr-wrap[hidden] { display: none !important; }
+
+/* lock the page behind the overlay without the layout shift a plain
+   overflow:hidden causes on a scrollbar-visible desktop */
+html.sr-open { overflow: hidden; }
+
+.sr-scrim {
+  position: absolute; inset: 0;
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(2px);
+}
+
+.sr-panel {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: min(72vh, 720px);
+  display: flex; flex-direction: column;
+  background: var(--panel); color: var(--text);
+  border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  overflow: hidden;
+}
+
+.sr-top { display: flex; align-items: center; gap: 8px; padding: 12px 12px 8px; }
+
+#sr-input {
+  flex: 1 1 auto; min-width: 0;
+  font: inherit; font-size: 1.02rem;
+  padding: 10px 12px;
+  color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 9px;
+}
+#sr-input:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+#sr-input::-webkit-search-cancel-button { filter: grayscale(1) opacity(.6); }
+
+.sr-x {
+  flex: 0 0 auto; font: inherit; font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); background: transparent;
+  border: 1px solid var(--border); border-radius: 7px;
+  padding: 8px 10px; cursor: pointer;
+}
+.sr-x:hover, .sr-x:focus-visible { color: var(--teal); border-color: var(--teal); }
+
+.sr-status { margin: 0; padding: 0 16px 8px; font-size: .8rem; color: var(--muted); }
+
+.sr-list {
+  margin: 0; padding: 0 8px 8px; list-style: none;
+  overflow-y: auto; flex: 1 1 auto;
+}
+.sr-hit {
+  display: block; padding: 9px 10px; border-radius: 9px;
+  text-decoration: none; color: inherit;
+}
+.sr-hit:hover { background: var(--rowhover, rgba(127, 127, 127, .10)); }
+.sr-hit[aria-current="true"] {
+  background: var(--rowhover, rgba(127, 127, 127, .10));
+  box-shadow: inset 2px 0 0 var(--teal);
+}
+.sr-hit:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+
+.sr-head {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  font-weight: 600;
+}
+.sr-snip {
+  display: block; margin-top: 2px;
+  font-size: .84rem; color: var(--muted); line-height: 1.45;
+}
+.sr-hit mark {
+  background: rgba(45, 212, 191, .22); color: inherit;
+  border-radius: 3px; padding: 0 1px;
+}
+
+.sr-kind {
+  font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); border: 1px solid var(--border); border-radius: 999px;
+  padding: 1px 7px; white-space: nowrap;
+}
+.sr-kind.sr-concept { color: var(--violet); border-color: rgba(167, 139, 250, .45); }
+/* the page a section hit lives on: plain, not a pill -- these are full
+   sentences, and a sentence in an uppercase pill is unreadable */
+.sr-page {
+  font-size: .76rem; font-weight: 400; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46%;
+}
+.sr-page::before { content: "— "; }
+.sr-tier {
+  font-size: .64rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  border: 1px solid var(--border); border-radius: 999px; padding: 1px 6px;
+}
+.sr-tier.t-g { color: var(--green); border-color: rgba(74, 222, 128, .4); }
+.sr-tier.t-y { color: var(--yellow); border-color: rgba(250, 204, 21, .4); }
+.sr-tier.t-r { color: var(--red); border-color: rgba(248, 113, 113, .4); }
+
+.sr-foot {
+  margin: 0; padding: 8px 16px 12px;
+  border-top: 1px solid var(--border);
+  font-size: .76rem; color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .sr-wrap { padding: 8px; }
+  .sr-panel { max-height: 88vh; }
+  .sr-foot { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-scrim { backdrop-filter: none; }
+}

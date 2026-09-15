@@ -100,3 +100,35 @@
 }
 .ldg-forecast-form textarea { flex-basis: 100%; min-height: 70px; }
 .ldg-fstatus { flex-basis: 100%; margin: 4px 0 0; }
+
+/* ── a proposed verdict: drafted, sourced, not yet countersigned ─────────
+   The two-key rule (21_MARKETPLACE_AND_REALITY_TRACKER.md §5.4 rule 2) means
+   a claim sits visibly half-turned between "deadline passed" and "resolved".
+   That state is styled to read as provisional -- an accented panel, muted
+   verdict chrome -- rather than borrowing the finality of a resolved one. */
+.ldg-proposed {
+  padding: 12px 14px; border: 1px solid var(--border); border-left: 3px solid var(--yellow);
+  border-radius: 8px; background: rgba(250,204,21,.04);
+}
+.ldg-pending {
+  font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--yellow); margin-left: 4px;
+}
+/* paras() emits one <p> per authored paragraph; .ldg-section p zeroes margins */
+.ldg-section p + p { margin-top: .7em; }
+.ldg-section h5 {
+  margin: 12px 0 4px; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted);
+}
+.ldg-vsrc { margin: 0; padding-left: 18px; font-size: .82rem; }
+.ldg-vsrc li { margin: 2px 0; }
+.ldg-vsrc a { word-break: break-all; }
+
+/* the permanent link on each claim -- quiet until you want it */
+.ldg-permalink { margin: 0 0 8px; font-size: .78rem; color: var(--muted); }
+.ldg-permalink a {
+  font-weight: 700; text-decoration: none; padding: 0 4px;
+  border: 1px solid var(--border); border-radius: 5px;
+}
+.ldg-permalink a:hover, .ldg-permalink a:focus-visible { color: var(--teal); border-color: var(--teal); }
+.ldg-permalink span { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }

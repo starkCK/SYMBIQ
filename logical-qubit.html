@@ -50,6 +50,7 @@
 <link rel="stylesheet" href="living.css?v=2">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="search.css?v=3">
 <style>
 .preset { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; margin: 0 6px 6px 0; cursor: pointer; font-size: .85rem; transition: border-color .15s, color .15s, transform .15s; }
 .preset:hover { border-color: var(--teal); transform: translateY(-1px); }
@@ -108,7 +109,7 @@
 <script src="tiers.js?v=4" defer></script>
 <script src="rung.js?v=2" defer></script>
 <script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=3" defer></script>
+<script src="forms.js?v=4" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
@@ -127,6 +128,7 @@
 <script src="living.js?v=1" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="search.js?v=5" defer></script>
 </head>
 <body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass data-living>
 <div class="wrap">
@@ -208,6 +210,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
@@ -220,6 +223,8 @@
       </div>
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -422,5 +427,6 @@
   render();
 })();
 </script>
+<div id="search" class="sr-wrap" hidden></div>
 </body>
 </html>

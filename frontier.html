@@ -49,11 +49,12 @@
 <link rel="stylesheet" href="frontier.css">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="search.css?v=3">
 <script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=4" defer></script>
 <script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=3" defer></script>
+<script src="forms.js?v=4" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
 <script src="frontier.js?v=2" defer></script>
@@ -72,6 +73,7 @@
 <script src="dynamics.js?v=4" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="search.js?v=5" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -153,6 +155,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
@@ -165,6 +168,8 @@
       </div>
       <a href="frontier.html" class="navmain active">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -257,5 +262,6 @@ as a real question, and sends it to the panel, only if it clears that bar.</p>
 ships; the model-panel answers are published exactly as the models gave them.<br>SymbiQ · Think a
 reviewed answer is wrong? <a href="corrections.html#report">That pays the biggest bounty we have</a>.</footer>
 </div>
+<div id="search" class="sr-wrap" hidden></div>
 </body>
 </html>

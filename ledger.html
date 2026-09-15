@@ -8,6 +8,7 @@
 <meta name="description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict. Pre-registered criteria, archived sources, two keys to resolve, and our own error rate published next to theirs.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/ledger.html">
+<link rel="alternate" type="application/rss+xml" title="SymbiQ · The Ledger" href="ledger.xml">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
@@ -46,17 +47,18 @@
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
 <link rel="stylesheet" href="dynamics.css?v=3">
-<link rel="stylesheet" href="ledger.css">
+<link rel="stylesheet" href="ledger.css?v=1">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="search.css?v=3">
 <script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=4" defer></script>
 <script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=3" defer></script>
+<script src="forms.js?v=4" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
-<script src="ledger.js?v=3" defer></script>
+<script src="ledger.js?v=5" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -72,6 +74,7 @@
 <script src="dynamics.js?v=4" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="search.js?v=5" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -153,6 +156,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
@@ -165,6 +169,8 @@
       </div>
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -180,8 +186,15 @@
 labs, executives, and regulators), logged the day it's made, checked against sources named <em>before</em>
 we look, and resolved to <strong>Verified</strong>, <strong>Partially verified</strong>, <strong>Not
 verified</strong>, or <strong>Unfalsifiable</strong> only when the deadline arrives. No deleting misses.
-<strong>Nothing has resolved yet</strong>: the Ledger opened with <span id="ldg-seed-count">7</span>
-claims still tracking.</p>
+<span id="ldg-state">Counting the current state…</span></p>
+
+<!-- The count above used to be a hand-typed number, and it went stale the
+     moment claims were added: it read "7" while ten claims sat below it.
+     A page whose whole promise is that numbers are not hand-typed cannot
+     hand-type its own, so it is now computed from index.json by ledger.js
+     and this element is only the fallback text. -->
+<noscript><p class="ldg-nr">The live counts need JavaScript; the underlying
+data is at <code>data/claims/index.json</code> either way.</p></noscript>
 
 <div class="card" id="ldg-summary">
   <h3>Loading The Ledger…</h3>
@@ -235,9 +248,19 @@ frontier AI models asked the same thing verbatim.</p>
 <p style="margin-top:14px;font-size:.9rem;color:var(--muted)">The full design (schema, scoring maths, the
 whole claim lifecycle) is in <code>outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md</code>.</p>
 
+<h2 id="subscribe">Follow it without coming back</h2>
+<p>A dated record nobody hears about is just a file. Every event here — a claim captured with its
+criteria frozen, a dated check-in, a verdict drafted, a verdict countersigned — goes out on a feed:
+<a href="ledger.xml"><code>ledger.xml</code></a>. Paste that into any reader. The underlying data is
+<a href="data/claims/index.json"><code>data/claims/index.json</code></a>, and every claim has its own
+permanent link (the <b>#</b> on each entry above), so anything here can be cited without citing us.</p>
+
 <h2 id="propose">Seen a claim that belongs here?</h2>
-<p>Send it in. It clears the same bar as everything above (attributed, dated, falsifiable, deadlined)
-before the desk writes it up as a real entry with frozen criteria. Nothing publishes automatically.</p>
+<p><strong>No account needed.</strong> Send it in and it clears the same bar as everything above
+(attributed, dated, falsifiable, deadlined) before the desk writes it up as a real entry with frozen
+criteria. Nothing publishes automatically. The one thing that helps most is not the link &mdash; it is
+telling us <em>what would settle it</em>: a claim nobody can write a resolution rule for cannot be
+tracked here at all, and saying so is half the work.</p>
 <div id="ldg-submit"><p class="ldg-nr">Checking sign-in status…</p></div>
 
 <script>
@@ -259,5 +282,6 @@ before the desk writes it up as a real entry with frozen criteria. Nothing publi
 <footer>Nothing here is a judgment of anyone's character, only of whether a dated, public claim came
 true.<br>SymbiQ · Think we got a resolution wrong? <a href="corrections.html#report">That pays the biggest bounty we have</a>.</footer>
 </div>
+<div id="search" class="sr-wrap" hidden></div>
 </body>
 </html>

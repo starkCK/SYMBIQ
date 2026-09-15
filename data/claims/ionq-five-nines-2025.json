@@ -6,13 +6,18 @@
   "criteria_frozen_at": "2026-08-27",
   "hedge_score": 1,
   "stated_confidence": null,
-  "status": "resolvable",
+  "status": "proposed",
   "verdict": null,
-  "verdict_reasoning": null,
-  "verdict_sources": [],
+  "verdict_reasoning": "Evidence gathered from the pre-registered resolver sources only. The tracked target, as stated in IonQ's July 2024 roadmap announcement, was 99.999% (“five nines”) LOGICAL two-qubit gate fidelity using small-distance quantum error-correcting codes, by the end of 2025.\n\nInside the window (31 Dec 2025 plus the 30-day grace, i.e. by 30 Jan 2026) IonQ did publish a two-qubit gate result: on 20–21 October 2025 it reported a gate error of 8.4(7)×10⁻⁵ — about 99.9916% fidelity — using Electronic Qubit Control without ground-state cooling, demonstrated on prototype systems in IonQ's R&D labs (arXiv:2510.17286; IonQ newsroom; The Quantum Insider, 21 Oct 2025). That is a PHYSICAL (native) gate fidelity. No error-correcting code is involved, and it is measured on prototype hardware rather than a deployed system. It is a real advance, it was reported as a world record on the physical axis, and it comfortably clears the same roadmap's separate >99.9% native target — but it is not the claim tracked here. No result at or above 99.999% logical two-qubit gate fidelity with small-distance QEC codes appears in any named resolver source inside the window.\n\nOn the PARTIALLY_VERIFIED branch, recorded so the reading is auditable rather than assumed: the criteria offer that branch for “a result close to but short of five nines (e.g. four nines) … reported as the headline achievement instead.” The desk reads it as scoped to LOGICAL fidelity, because the sentence immediately before it forbids conflating the native figure with the logical one. A four-nines PHYSICAL result is a different measurement, not a near miss on the same one, so the branch does not fire.\n\nThis is a statement about a dated claim and its deadline, not about the people who made it.",
+  "verdict_sources": [
+    "https://arxiv.org/abs/2510.17286",
+    "https://thequantuminsider.com/2025/10/21/ionq-achieves-99-99-two-qubit-gate-performance/",
+    "https://www.ionq.com/blog/accelerating-towards-fault-tolerance-unlocking-99-99-two-qubit-gate",
+    "https://investors.ionq.com/news/news-details/2025/IonQ-Achieves-Landmark-Result-Setting-New-World-Record-in-Quantum-Computing-Performance/default.aspx"
+  ],
   "resolved_at": null,
   "captured_by": "desk",
-  "resolved_by": null,
+  "resolved_by": "agent:claude-opus-5",
   "reviewed_by": null,
   "claimant_response": null,
   "claimant_response_url": null,
@@ -25,10 +30,17 @@
       "note": "Deadline plus grace period has passed with no independent report found (during this session's research pass) of IonQ publishing a 99.999% logical two-qubit gate fidelity result. That absence of evidence is not itself a verdict -- it needs a deliberate resolution pass checking IonQ's own 2025 technical announcements and any arXiv papers before this can be marked NOT_VERIFIED rather than just resolvable.",
       "source_url": null,
       "author": "desk"
+    },
+    {
+      "at": "2026-09-08",
+      "signal": "off_track",
+      "note": "Resolution pass run. IonQ's in-window publication (20–21 Oct 2025) is a PHYSICAL two-qubit gate fidelity of ~99.9916% on prototype hardware, not the 99.999% LOGICAL figure with small-distance QEC codes that this claim tracks. Moved to proposed with a drafted NOT_VERIFIED verdict and full reasoning; awaiting the second key before it is published as resolved.",
+      "source_url": "https://arxiv.org/abs/2510.17286",
+      "author": "agent:claude-opus-5"
     }
   ],
   "created_at": "2026-08-27",
-  "updated_at": "2026-08-27",
+  "updated_at": "2026-09-08",
   "sourcing_note": "Deadline (31 Dec 2025 + 30-day grace = 30 Jan 2026) has passed as of capture (2026-08-27). Flagged resolvable by the seeding pass itself rather than left in tracking, but NOT resolved -- no verdict has been written. Per the Ledger's own two-key rule, the person who captures a claim does not resolve it; this one is queued for the desk's first Reckoning.",
   "slug": "ionq-five-nines-2025",
   "claimant": "ionq",
@@ -49,5 +61,6 @@
   "resolves_by": "2025-12-31",
   "concept_ids": [
     "gate-fidelity"
-  ]
+  ],
+  "proposed_verdict": "not_verified"
 }

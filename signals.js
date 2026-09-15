@@ -59,7 +59,12 @@
             + (entries.length === 1 ? '' : 's') + ' published so far. Newest first, every one names its '
             + 'source and says what it does NOT mean.</p>' : '') +
           shown.map(function (e) {
-            return '<details class="archq" data-slug="' + esc(e.slug) + '">' +
+            /* The id is the slug, so signals.html#<slug> resolves. The publish
+               tool has always minted exactly that URL for Discord and X
+               (tools/news/publish_site.py), and until now it landed on the
+               page with nothing to scroll to and nothing open -- a share link
+               that quietly did half its job. */
+            return '<details class="archq" id="' + esc(e.slug) + '" data-slug="' + esc(e.slug) + '">' +
                      '<summary>' +
                        '<span class="archq-txt">' + esc(e.headline) + '<br>'
                        + '<span class="sig-dek">' + esc(e.dek) + '</span></span>' +

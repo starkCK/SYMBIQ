@@ -4,27 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>Terms of use · SymbiQ</title>
-<meta name="description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<title>What changed · SymbiQ</title>
+<meta name="description" content="Everything SymbiQ has done lately, in one timeline: claims tracked and resolved, corrections published, stories shipped, and every commit to the site itself. Generated from the record, not written by hand.">
 <!-- social:start -->
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/terms.html">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/changelog.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/terms.html">
-<meta property="og:title" content="Terms of use · SymbiQ">
-<meta property="og:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/changelog.html">
+<meta property="og:title" content="What changed · SymbiQ">
+<meta property="og:description" content="Everything SymbiQ has done lately, in one timeline: claims tracked and resolved, corrections published, stories shipped, and every commit to the site itself. Generated from the record, not written by hand.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="Terms of use · SymbiQ">
-<meta name="twitter:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<meta name="twitter:title" content="What changed · SymbiQ">
+<meta name="twitter:description" content="Everything SymbiQ has done lately, in one timeline: claims tracked and resolved, corrections published, stories shipped, and every commit to the site itself. Generated from the record, not written by hand.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -166,7 +166,7 @@
       </div>
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
-      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="changelog.html" class="navmain active">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
@@ -177,44 +177,136 @@
     <div class="navpanel" id="sq-auth"></div>
   </details>
 </nav>
+<style>
+/* Page-local on purpose: style.css is shared by 26 pages and touching it forces
+   a cache bump on every one of them (the 2026-07-24 scar). Nothing here is
+   needed anywhere else. */
+.cl-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 18px; }
+.cl-filters button {
+  font: inherit; font-size: .78rem; cursor: pointer;
+  color: var(--muted); background: transparent;
+  border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px;
+}
+.cl-filters button.on { color: var(--teal); border-color: var(--teal); }
+.cl-filters button:hover { color: var(--text); }
 
+.cl-day { margin: 22px 0 8px; font-size: .8rem; font-weight: 700;
+          letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.cl-list { margin: 0; padding: 0; list-style: none; }
+.cl-item {
+  display: grid; grid-template-columns: 140px 1fr; gap: 14px;
+  padding: 10px 0; border-top: 1px solid var(--border);
+}
+.cl-tag {
+  font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; padding-top: 2px;
+}
+.cl-item[data-kind="claim"]      .cl-tag { color: var(--teal); }
+.cl-item[data-kind="correction"] .cl-tag { color: var(--red); }
+.cl-item[data-kind="signal"]     .cl-tag { color: var(--violet); }
+.cl-item[data-kind="build"]      .cl-tag { color: var(--muted); }
+.cl-title { margin: 0; font-weight: 600; }
+.cl-title a { text-decoration: none; }
+.cl-title a:hover { text-decoration: underline; }
+.cl-note { margin: 3px 0 0; font-size: .86rem; color: var(--muted); line-height: 1.5; }
+.cl-more { margin: 18px 0 0; }
+@media (max-width: 640px) {
+  .cl-item { grid-template-columns: 1fr; gap: 2px; }
+}
+</style>
 
+<h1>What changed</h1>
+<p class="lede">Four streams, one timeline, generated from the record rather than written by hand: every claim the Ledger takes on or rules on, every correction published, every story on The Signal, and every commit to the site itself.</p>
 
+<p>The commits are the least interesting entries here and the most convincing ones. A corrections log tells you a desk admits its mistakes; a commit stream tells you the desk is still at the bench. Both matter, and neither is worth much without the other.</p>
 
-<h1>Terms of use</h1>
-<p class="lede">Use the site, learn from it, share it. Don't republish it as your own, and don't rely on it for decisions that need a professional.</p>
+<div class="cl-filters" id="cl-filters" role="group" aria-label="Filter by kind"></div>
+<div id="cl-mount"><p class="archq-loading">Loading the record…</p></div>
 
-<h2 id="what-symbiq-is">What SymbiQ is</h2>
-<p>SymbiQ is an educational platform about the relationship between artificial intelligence and quantum computing. Everything here is published for general information and education.</p>
+<p class="cl-more">The underlying data is <a href="data/changelog.json"><code>data/changelog.json</code></a>, rebuilt by <code>tools/build_changelog.py</code>. The Ledger's own events also go out on <a href="ledger.xml">an RSS feed</a>.</p>
 
-<h2 id="no-professional-advice">No professional advice</h2>
-<p><strong>Nothing on this site is financial, investment, legal, or security advice.</strong> The pages about Bitcoin and post-quantum cryptography discuss published research and public standards; they describe how attacks and migrations work in general, not what you or your organisation should do. The cryptography tools on this site run entirely in your browser and are teaching instruments, not audits. Do not treat any output from them as a compliance assessment, a penetration test, or a substitute for a qualified security professional.</p>
+<script>
+(function () {
+  var KIND = {
+    correction: 'Corrections', claim: 'The Ledger', signal: 'The Signal', build: 'Site builds'
+  };
+  var mount = document.getElementById('cl-mount');
+  var bar = document.getElementById('cl-filters');
+  var events = [], active = '';
 
-<h2 id="accuracy-and-what-we-do-about-being-wrong">Accuracy, and what we do about being wrong</h2>
-<p>We verify claims before publishing and cite primary sources, and every quantitative claim carries an evidence tier. We will still get things wrong. When we do, the correction runs on the <a href="corrections.html">corrections page</a>, credited to whoever caught it. But the site is provided <em>as is</em>: we make no warranty that it is complete, current, or error-free, and we are not liable for any loss arising from relying on it. If a decision matters, check the primary source; we link them for exactly that reason.</p>
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
 
-<h2 id="our-content">Our content</h2>
-<p>The text, diagrams, games, code and design of SymbiQ are &copy; SymbiQ and are protected by copyright. You may read, link to, quote briefly with attribution, and share the pages. You may not republish substantial portions, mirror the site, or present the material as your own work (including as training data or bulk-scraped content) without written permission. Third-party research we cite belongs to its authors and is used here under fair dealing for education and commentary.</p>
+  function fmt(iso) {
+    try {
+      return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB',
+        { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    } catch (e) { return iso; }
+  }
 
-<h2 id="your-contributions">Your contributions</h2>
-<p>If you send us a correction, a question, or a forum or Discord post, you keep ownership of it, and you give us permission to publish it on SymbiQ with credit. We edit for length and clarity. Nothing you submit is published automatically; a person reviews it first.</p>
+  function render() {
+    var shown = active ? events.filter(function (e) { return e.kind === active; }) : events;
+    if (!shown.length) {
+      mount.innerHTML = '<p class="archq-loading">Nothing of that kind yet.</p>';
+      return;
+    }
+    var out = [], day = null;
+    shown.forEach(function (e) {
+      if (e.at !== day) {
+        if (day !== null) out.push('</ul>');
+        day = e.at;
+        out.push('<h2 class="cl-day">' + esc(fmt(e.at)) + '</h2><ul class="cl-list">');
+      }
+      var title = e.href
+        ? '<a href="' + esc(e.href) + '">' + esc(e.title) + '</a>'
+        : esc(e.title);
+      out.push('<li class="cl-item" data-kind="' + esc(e.kind) + '">' +
+        '<span class="cl-tag">' + esc(e.tag) + '</span>' +
+        '<div><p class="cl-title">' + title + '</p>' +
+        (e.note ? '<p class="cl-note">' + esc(e.note) + '</p>' : '') +
+        '</div></li>');
+    });
+    out.push('</ul>');
+    mount.innerHTML = out.join('');
+  }
 
-<h2 id="acceptable-use">Acceptable use</h2>
-<p>Don't use SymbiQ to break the law, harass anyone, or attack the site or its infrastructure. Don't scrape it at a volume that degrades it for others. Don't misrepresent our content or imply we endorse you.</p>
+  function buildBar(counts) {
+    var kinds = Object.keys(KIND).filter(function (k) { return counts[k]; });
+    bar.innerHTML = '<button class="on" data-k="">Everything (' + events.length + ')</button>' +
+      kinds.map(function (k) {
+        return '<button data-k="' + k + '">' + KIND[k] + ' (' + counts[k] + ')</button>';
+      }).join('');
+    bar.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button');
+      if (!b) return;
+      active = b.dataset.k;
+      [].forEach.call(bar.querySelectorAll('button'), function (x) {
+        x.classList.toggle('on', x === b);
+      });
+      render();
+    });
+  }
 
-<h2 id="links-out">Links out</h2>
-<p>We link to arXiv papers, company research blogs and standards bodies. We don't control those sites and aren't responsible for their content; a link is a citation, not an endorsement.</p>
+  fetch('data/changelog.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (j) {
+      events = j.events || [];
+      var counts = {};
+      events.forEach(function (e) { counts[e.kind] = (counts[e.kind] || 0) + 1; });
+      buildBar(counts);
+      render();
+    })
+    .catch(function (err) {
+      mount.innerHTML = '<p class="archq-loading">The record could not be loaded (' +
+        esc(err.message) + '). It lives at <code>data/changelog.json</code>.</p>';
+    });
+})();
+</script>
 
-<h2 id="availability">Availability</h2>
-<p>SymbiQ is free and offered without any guarantee of uptime. We may change, suspend, or discontinue any part of it at any time.</p>
-
-<h2 id="governing-law">Governing law</h2>
-<p>SymbiQ deliberately does not name a governing law or a chosen court here. It sells nothing, charges nothing and contracts with nobody, so a clause of that kind would be doing no work &mdash; and one written badly does more harm than none at all. Where the law applies to something on this site, it applies on its own terms. If that ever changes, so will this paragraph, and the change will be noted rather than made quietly.</p>
-
-<h2 id="contact">Contact</h2>
-<p><strong><a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a></strong>.</p>
-<p class="verif">Last updated: 8 September 2026.</p>
-<footer>SymbiQ &middot; Educational content, not advice. <a href="privacy.html">Privacy</a></footer>
+<footer>SymbiQ &middot; Generated from the record, not written by hand. <a href="about.html">About the desk</a></footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

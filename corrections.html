@@ -48,11 +48,12 @@
 <link rel="stylesheet" href="dynamics.css?v=3">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="search.css?v=3">
 <script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=4" defer></script>
 <script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=3" defer></script>
+<script src="forms.js?v=4" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
@@ -70,6 +71,7 @@
 <script src="dynamics.js?v=4" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="search.js?v=5" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -151,6 +153,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
@@ -163,6 +166,8 @@
       </div>
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain active">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -180,15 +185,39 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>3 corrections logged</h3>
+  <h3>5 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>3</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>5</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 5 · published 2026-08-27 · corrected 2026-09-08 · live for 12 days · caught by the desk</p>
+    <h3 style="margin-top:6px">The Ledger hand-typed its own claim count, and the number went stale in under a fortnight.</h3>
+
+    <p><strong>What we said.</strong> On <a href="ledger.html">The Ledger</a>, in the tagline at the top: “Nothing has resolved yet: the Ledger opened with <strong>7</strong> claims still tracking.”</p>
+
+    <p><strong>What&#39;s true.</strong> <strong>Ten</strong> claims were on the page. Seven was right on the day the Ledger opened and was never touched again — and the element holding it, <code>&lt;span id="ldg-seed-count"&gt;</code>, looked dynamic while being nothing of the kind: no JavaScript anywhere on this site ever wrote to that id. Two of the ten had also passed their resolution deadline by then, so “still tracking” was wrong about those two in a second, worse way. The sentence is now computed from <code>data/claims/index.json</code> when the page loads, and states the live position — how many claims are tracked, how many have resolved, and how many have a verdict drafted and waiting on a second reviewer.</p>
+
+    <p><strong>Why we missed it.</strong> This page&#39;s whole promise is that its numbers are computed rather than asserted, and its own headline number was asserted, sitting directly above ten claims that each carried a machine-checked schema. <code>tools/check_claims.py</code> validated every claim file and cross-checked them against the index and passed every time, because the wrong number was in prose — and prose is the one thing none of this site&#39;s checkers read. That is the identical failure to Correction 1, one page over, which is the part worth admitting. The fix is not a better number: the hand-typed one is gone, replaced by a computed one, so there is no longer anything there that <em>can</em> go stale.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-08 while reviewing an outside critique of the site, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 4 · published 2026-08-21 · corrected 2026-09-08 · live for 18 days · caught by the desk</p>
+    <h3 style="margin-top:6px">The home page counted nine games. There were twelve, and the Arcade page said so.</h3>
+
+    <p><strong>What we said.</strong> On <a href="index.html">the home page</a>, as a section heading and in the description that search engines and social cards quote: “<strong>Nine</strong> games where you cannot fake a score.”</p>
+
+    <p><strong>What&#39;s true.</strong> <strong>Twelve.</strong> Six cabinets in <a href="play.html">The Arcade</a> — Circuit Golf, Grover&#39;s Escape, Max-Cut, the Annealing Volcano, quantum tic-tac-toe and The Calibration — plus six more playable things out on the pages they belong to: <a href="analog.html#bench">The Bench</a>, <a href="qec.html#duel">The Decoder Duel</a>, <a href="quantum-mechanics.html#chsh">the CHSH game</a>, <a href="index.html#daily-q">The Question</a>, <a href="feasible.html#bottleneck">The Bottleneck</a> and <a href="feasible.html#prune">The Prune</a>. The Arcade had been counting correctly the whole time (“six games”, “six more playable things”), so for eighteen days two of our own pages contradicted each other in public. Nine was true when it was written; three games shipped after it and nothing went back.</p>
+
+    <p><strong>Why we missed it.</strong> The same shape as the correction above it and as Correction 1: a count written once, by hand, in prose, on a page nothing recomputes — and this one was also in the meta description, so the wrong number was what the site said about itself everywhere it was linked. <code>tools/check_game_count.py</code> now derives the real figure from the cabinet list in <code>games.js</code> and the entries in <code>play.html</code>, and fails if any of the three prose counts — the Arcade&#39;s six, the six out in the wild, or the home page&#39;s total — stops matching the games that actually exist.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-08 while reviewing an outside critique of the site, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 3 · published 2026-08-23 · corrected 2026-09-04 · live for 12 days · caught by the desk</p>
     <h3 style="margin-top:6px">A sentence on the Ising page contradicted the widget sitting directly above it.</h3>
@@ -237,7 +266,7 @@ quietly dropped. This section mirrors <a href="ledger.html#ours">the Ledger's ow
 duplicating it by hand.</p>
 <div class="card corr-summary">
   <h3>0 void claims</h3>
-  <p>A claim has to reach its resolution date before it can be scored, and none has yet.</p>
+  <p>Two claims have now passed their resolution date and carry a drafted verdict awaiting a second reviewer. Neither is <code>void</code>: a claim is void only when <em>our</em> criteria turn out unscoreable, and in both cases the criteria decided it cleanly.</p>
   <div class="corr-stats">
     <div><b>0</b><span>void (our error)</span></div>
     <div><b>0</b><span>verdicts changed by right of reply</span></div>
@@ -329,5 +358,6 @@ duplicating it by hand.</p>
 
 <footer>We print our mistakes louder than the original.<br>SymbiQ · Found an error we haven't? Post it in Discord. Being corrected by you is the best content we can get.</footer>
 </div>
+<div id="search" class="sr-wrap" hidden></div>
 </body>
 </html>

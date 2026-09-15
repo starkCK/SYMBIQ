@@ -242,13 +242,21 @@ placeholders = []
 for f, (p, raw) in pages.items():
     if "FILL BEFORE LAUNCH" in raw:
         placeholders.append(f"{f} still contains FILL BEFORE LAUNCH")
+    # Any bracketed [FILL: ...] marker, not just the launch one. Six of these
+    # sat live on privacy.html and terms.html for weeks -- a contact email, a
+    # date, a copyright holder and a jurisdiction -- because this check only
+    # ever looked for the exact string "FILL BEFORE LAUNCH". A legal page that
+    # tells the reader to fill in its own blanks is the worst possible place
+    # to leave one.
+    for m in re.findall(r"\[FILL[^\]]*\]", raw):
+        placeholders.append(f"{f} still contains {m}")
     for href, tag in p.links:
         if href == "#" and tag == "a":
             placeholders.append(f"{f} has a dead href=\"#\"")
 if placeholders:
     fail("placeholders", "; ".join(sorted(set(placeholders))[:8]))
 else:
-    ok("placeholders: no dead href=\"#\" and no FILL BEFORE LAUNCH markers")
+    ok("placeholders: no dead href=\"#\" and no [FILL ...] markers")
 
 # 6. .reveal IS JS-ONLY ----------------------------------------------------
 # Hand-written class="reveal" is banned: nav.js is the sole thing allowed to add

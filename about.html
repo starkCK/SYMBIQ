@@ -4,27 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>Terms of use · SymbiQ</title>
-<meta name="description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<title>About the desk · SymbiQ</title>
+<meta name="description" content="Who writes SymbiQ, and the method every number on it goes through before it ships: primary sources only, checks that run on every build, criteria frozen before a claim is judged, and a corrections log that never deletes a miss.">
 <!-- social:start -->
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/terms.html">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/about.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/terms.html">
-<meta property="og:title" content="Terms of use · SymbiQ">
-<meta property="og:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/about.html">
+<meta property="og:title" content="About the desk · SymbiQ">
+<meta property="og:description" content="Who writes SymbiQ, and the method every number on it goes through before it ships: primary sources only, checks that run on every build, criteria frozen before a claim is judged, and a corrections log that never deletes a miss.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="Terms of use · SymbiQ">
-<meta name="twitter:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
+<meta name="twitter:title" content="About the desk · SymbiQ">
+<meta name="twitter:description" content="Who writes SymbiQ, and the method every number on it goes through before it ships: primary sources only, checks that run on every build, criteria frozen before a claim is judged, and a corrections log that never deletes a miss.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -167,7 +167,7 @@
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
-      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="about.html" class="navmain active">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -177,44 +177,47 @@
     <div class="navpanel" id="sq-auth"></div>
   </details>
 </nav>
+<h1>About the desk</h1>
+<p class="lede">SymbiQ is written and maintained by <strong>Chinmoy</strong>. It is one person and a lot of checking, not an institution, and it has no funding from and no relationship with any company whose claims appear on it.</p>
 
+<p>That matters because of what this site spends most of its time doing: telling you that a number you read somewhere is wrong, or right, or right about something other than what the headline said. A site that does that anonymously is asking you for trust it has not earned. So this page is the answer to &ldquo;why should I believe any of this?&rdquo;, and the answer is deliberately not &ldquo;because of who wrote it.&rdquo; It is <em>because you can check it</em>.</p>
 
+<h2 id="how-a-number-gets-here">How a number gets onto this site</h2>
+<p>Every figure that carries weight here comes from a primary source &mdash; the paper, the standard, the press release, the regulation &mdash; not from somebody else&rsquo;s summary of it. Where a number is worked out rather than quoted, the working is done in code that lives in the open, and it runs again on every build. Where a figure came out of a calculation you could reasonably want to see, <a href="qec.html">the pages themselves show it</a>: the receipt opens inline, next to the claim.</p>
 
+<p>Several things run automatically and refuse to let the site ship if they disagree with it:</p>
+<ul>
+<li><strong>The arithmetic is re-derived, not trusted.</strong> Widgets, thresholds, game pars and resource estimates are checked by scripts that recompute them from scratch &mdash; often by exhaustive search over every possible input rather than by spot-checking a few. A game par on this site is a proven optimum or it does not ship.</li>
+<li><strong>Citations are checked for rot.</strong> Every arXiv identifier the site cites is asked, against arXiv itself, whether the paper still exists, whether it has been withdrawn, whether it has moved several versions ahead of the figure quoted, and whether the surrounding text actually names its authors or title. This exists because the worst error this site has made was a stale figure from a superseded paper.</li>
+<li><strong>Prose is checked against data.</strong> The hardest bugs here have never been arithmetic. They have been a sentence asserting a number that the machine-checked data three inches away contradicted. Guards now read the sentences too.</li>
+</ul>
 
-<h1>Terms of use</h1>
-<p class="lede">Use the site, learn from it, share it. Don't republish it as your own, and don't rely on it for decisions that need a professional.</p>
+<h2 id="claims">Claims are judged by rules written before the answer is known</h2>
+<p><a href="ledger.html">The Ledger</a> tracks public, dated, falsifiable claims about quantum computing from labs, executives and regulators. The rules it runs on are the point:</p>
+<ul>
+<li>The resolution criteria and the exact sources that will be consulted are <strong>frozen when the claim is logged</strong>, long before the deadline. Changing them afterwards voids the claim from scoring and publishes a note saying so.</li>
+<li><strong>Two people are needed to resolve one.</strong> Whoever captured a claim does not get to decide whether it came true.</li>
+<li>The verdict vocabulary contains no word for <em>lying</em>, <em>hype</em> or <em>fraud</em>. The Ledger says what was said, what happened, and whether they match &mdash; and then stops.</li>
+<li>When the criteria turn out to be unscoreable, that is <strong>our</strong> failure, recorded on <strong>our</strong> scorecard, published with the same prominence as anything else.</li>
+</ul>
 
-<h2 id="what-symbiq-is">What SymbiQ is</h2>
-<p>SymbiQ is an educational platform about the relationship between artificial intelligence and quantum computing. Everything here is published for general information and education.</p>
+<h2 id="wrong">What happens when this site is wrong</h2>
+<p>It goes on <a href="corrections.html">the corrections log</a>, in public, with more room than the original claim got: what we said, what is true, and why we missed it. The log counts anything wrong that reached the published site &mdash; whoever caught it, including when it was us, and including when nobody would ever have noticed. Nothing is quietly edited away.</p>
+<p>If you find an error, that is genuinely the most valuable thing you can send. A reader-found correction is published under your name.</p>
 
-<h2 id="no-professional-advice">No professional advice</h2>
-<p><strong>Nothing on this site is financial, investment, legal, or security advice.</strong> The pages about Bitcoin and post-quantum cryptography discuss published research and public standards; they describe how attacks and migrations work in general, not what you or your organisation should do. The cryptography tools on this site run entirely in your browser and are teaching instruments, not audits. Do not treat any output from them as a compliance assessment, a penetration test, or a substitute for a qualified security professional.</p>
+<h2 id="not">What this site is not</h2>
+<ul>
+<li><strong>Not financial advice, ever.</strong> Several pages discuss cryptography, Bitcoin and publicly traded companies. Nothing here is a recommendation to buy or sell anything, and no position is held in any company named on this site.</li>
+<li><strong>Not sponsored, and not affiliated.</strong> No vendor pays for coverage, reviews copy before it ships, or has any influence over a Ledger verdict. There are no ads.</li>
+<li><strong>Not a consensus view.</strong> Where the field genuinely disagrees, the pages say so and name the disagreement rather than picking a side and hiding the other one.</li>
+<li><strong>Not finished.</strong> Parts of this site are explicitly incomplete, and where that is true it says so on the page instead of pretending otherwise.</li>
+</ul>
 
-<h2 id="accuracy-and-what-we-do-about-being-wrong">Accuracy, and what we do about being wrong</h2>
-<p>We verify claims before publishing and cite primary sources, and every quantitative claim carries an evidence tier. We will still get things wrong. When we do, the correction runs on the <a href="corrections.html">corrections page</a>, credited to whoever caught it. But the site is provided <em>as is</em>: we make no warranty that it is complete, current, or error-free, and we are not liable for any loss arising from relying on it. If a decision matters, check the primary source; we link them for exactly that reason.</p>
-
-<h2 id="our-content">Our content</h2>
-<p>The text, diagrams, games, code and design of SymbiQ are &copy; SymbiQ and are protected by copyright. You may read, link to, quote briefly with attribution, and share the pages. You may not republish substantial portions, mirror the site, or present the material as your own work (including as training data or bulk-scraped content) without written permission. Third-party research we cite belongs to its authors and is used here under fair dealing for education and commentary.</p>
-
-<h2 id="your-contributions">Your contributions</h2>
-<p>If you send us a correction, a question, or a forum or Discord post, you keep ownership of it, and you give us permission to publish it on SymbiQ with credit. We edit for length and clarity. Nothing you submit is published automatically; a person reviews it first.</p>
-
-<h2 id="acceptable-use">Acceptable use</h2>
-<p>Don't use SymbiQ to break the law, harass anyone, or attack the site or its infrastructure. Don't scrape it at a volume that degrades it for others. Don't misrepresent our content or imply we endorse you.</p>
-
-<h2 id="links-out">Links out</h2>
-<p>We link to arXiv papers, company research blogs and standards bodies. We don't control those sites and aren't responsible for their content; a link is a citation, not an endorsement.</p>
-
-<h2 id="availability">Availability</h2>
-<p>SymbiQ is free and offered without any guarantee of uptime. We may change, suspend, or discontinue any part of it at any time.</p>
-
-<h2 id="governing-law">Governing law</h2>
-<p>SymbiQ deliberately does not name a governing law or a chosen court here. It sells nothing, charges nothing and contracts with nobody, so a clause of that kind would be doing no work &mdash; and one written badly does more harm than none at all. Where the law applies to something on this site, it applies on its own terms. If that ever changes, so will this paragraph, and the change will be noted rather than made quietly.</p>
-
-<h2 id="contact">Contact</h2>
-<p><strong><a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a></strong>.</p>
+<h2 id="contact">Telling us we got something wrong</h2>
+<p>The best route is <a href="corrections.html#report">the correction report</a> &mdash; it goes straight to the desk and it is the one thing here that always gets answered.</p>
+<p>For anything else: <a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a>.</p>
 <p class="verif">Last updated: 8 September 2026.</p>
-<footer>SymbiQ &middot; Educational content, not advice. <a href="privacy.html">Privacy</a></footer>
+<footer>SymbiQ &middot; One person, and everything checked twice. <a href="corrections.html">Corrections</a> &middot; <a href="privacy.html">Privacy</a></footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

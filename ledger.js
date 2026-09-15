@@ -47,6 +47,26 @@
     return '<span class="verdict-badge ' + esc(v) + '">' + esc(VERDICT_LABEL[v] || v) + '</span>';
   }
 
+  /* Reasoning is authored as plain text with blank-line paragraph breaks, the
+     same way a sourcing_note is. Escape first, then split -- never the other
+     way round, or the escaping is what gets split. */
+  function paras(text) {
+    return String(text || '').split(/\n\s*\n/).map(function (p) {
+      return p.trim() ? '<p>' + esc(p.trim()) + '</p>' : '';
+    }).join('');
+  }
+
+  /* The sources a verdict was actually written from. Rendered for a proposed
+     verdict as well as a resolved one: the whole point of pre-registering
+     resolver_sources is that a reader can check the working before the desk
+     signs it off, not only after. */
+  function verdictSources(list) {
+    if (!list || !list.length) return '';
+    return '<h5>Evidence</h5><ul class="ldg-vsrc">' + list.map(function (u) {
+      return '<li><a href="' + esc(u) + '" rel="noopener noreferrer">' + esc(u) + '</a></li>';
+    }).join('') + '</ul>';
+  }
+
   function renderTimeline(checkins) {
     if (!checkins || !checkins.length) {
       return '<p class="ldg-nr">No check-ins logged yet.</p>';
@@ -162,6 +182,14 @@
 
   function renderOne(c, claimantName) {
     var out = '';
+
+    /* The permanent link, made visible. The #c-<slug> anchor and its routing
+       already existed, but a permalink nobody can see is not one a reader can
+       cite -- and being citable without citing us is the whole point. */
+    out += '<p class="ldg-permalink"><a href="#c-' + esc(c.slug) + '" ' +
+      'aria-label="Permanent link to this claim" title="Permanent link to this claim">#</a> ' +
+      '<span>' + esc(c.slug) + '</span></p>';
+
     out += '<blockquote class="ldg-quote">“' + esc(c.verbatim) + '”' +
       '<cite>' + (c.speaker ? esc(c.speaker) + ', ' : '') + esc(claimantName) +
       ', <a href="' + esc(c.source_url) + '" rel="noopener noreferrer">' +
@@ -188,7 +216,21 @@
 
     if (c.status === 'resolved') {
       out += '<div class="ldg-section"><h4>Verdict, ' + verdictBadge(c.verdict) + '</h4>' +
-        (c.verdict_reasoning ? '<p>' + esc(c.verdict_reasoning) + '</p>' : '') + '</div>';
+        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources) + '</div>';
+    }
+
+    /* A proposed verdict is shown in full, and shown as NOT YET FINAL. Two
+       keys is the rule that makes this page worth reading (section 5.4 rule
+       2), so the half-turned state has to be legible rather than hidden:
+       the reader sees the drafted verdict, who drafted it, the evidence it
+       was drawn from, and that nobody has countersigned it yet. */
+    if (c.status === 'proposed') {
+      out += '<div class="ldg-section ldg-proposed"><h4>Proposed verdict, ' +
+        verdictBadge(c.proposed_verdict) + ' <span class="ldg-pending">not yet final</span></h4>' +
+        '<p class="ldg-nr">Drafted by ' + esc(c.resolved_by || 'the desk') +
+        '. Under the Ledger’s two-key rule this is not published as resolved until a second ' +
+        'reviewer, who is not the person who captured the claim, signs it off.</p>' +
+        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources) + '</div>';
     }
     if (c.claimant_response) {
       out += '<div class="ldg-section"><h4>Right of reply</h4><p>' + esc(c.claimant_response) +
@@ -275,6 +317,27 @@
       if (!entries.length) {
         host.innerHTML = '<p class="archq-loading">Nothing tracked yet.</p>';
         return;
+      }
+
+      /* The state sentence in the tagline. Computed, never typed: the hand-
+         typed version read "7" while ten claims sat on the page. */
+      var stateEl = document.getElementById('ldg-state');
+      if (stateEl) {
+        var n = { total: entries.length, resolved: 0, proposed: 0, tracking: 0 };
+        entries.forEach(function (e) {
+          if (e.status === 'resolved') n.resolved++;
+          else if (e.status === 'proposed') n.proposed++;
+          else if (e.status === 'tracking' || e.status === 'resolvable') n.tracking++;
+        });
+        var bits = [];
+        bits.push('<b>' + n.total + '</b> claim' + (n.total === 1 ? '' : 's') + ' tracked');
+        bits.push(n.resolved
+          ? '<b>' + n.resolved + '</b> resolved'
+          : '<b>none</b> resolved yet');
+        if (n.proposed) {
+          bits.push('<b>' + n.proposed + '</b> with a verdict drafted and awaiting a second reviewer');
+        }
+        stateEl.innerHTML = 'Right now: ' + bits.join(', ') + '.';
       }
 
       // newest source first
@@ -398,6 +461,48 @@
   });
 
   // ---- L2: propose a claim --------------------------------------------------
+
+  /* The no-account path. Goes to the desk by the same relay the corrections
+     form uses, so it needs no database row and no sign-in. Deliberately asks
+     for the same four things the signed-in form does, in the same order, so
+     the two are one workflow rather than two. */
+  function anonFormHTML() {
+    return (
+      '<form class="sqform" data-sq="claim">' +
+        '<div class="sqfield">' +
+          '<label for="lg-a-url">Source URL</label>' +
+          '<input type="url" id="lg-a-url" name="url" data-label="the source" required ' +
+            'placeholder="https://… the press release, paper, filing or transcript">' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="lg-a-quote">The claim, as close to verbatim as you can get it</label>' +
+          '<textarea id="lg-a-quote" name="quote" data-label="the claim" required ' +
+            'placeholder="Quote the actual sentence, and name who said it."></textarea>' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="lg-a-why">What would settle it, and by when? (optional)</label>' +
+          '<textarea id="lg-a-why" name="why" ' +
+            'placeholder="The single most useful thing you can add. A claim nobody can write a resolution rule for cannot be tracked here at all."></textarea>' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="lg-a-deadline">Suggested deadline (optional)</label>' +
+          '<input type="date" id="lg-a-deadline" name="deadline">' +
+        '</div>' +
+        '<div class="sqfield">' +
+          '<label for="lg-a-email">Your email (optional; only so we can ask a follow-up)</label>' +
+          '<input type="email" id="lg-a-email" name="email" placeholder="you@example.com">' +
+        '</div>' +
+        '<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
+          'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
+        '<button type="submit">Send it to the desk &rarr;</button>' +
+      '</form>' +
+      '<p class="ldg-nr">No account needed, and nothing publishes automatically: the desk writes the ' +
+      'headline, the resolution criteria and the sources it will consult, and freezes them before ' +
+      'tracking starts. <strong>Signing in</strong> (the avatar at the top of the page) is optional &mdash; ' +
+      'it lets you follow your own submission and record a forecast on any open claim.</p>'
+    );
+  }
+
   function submitFormHTML() {
     return (
       '<form class="sqform" id="ldg-submit-form">' +
@@ -431,8 +536,17 @@
     }
     var user = auth.getUser();
     if (!user) {
-      container.innerHTML = '<p class="ldg-nr">Sign in (top of the page) to propose a claim. Every submission is reviewed by the desk before anything publishes, nothing here goes live automatically.</p>';
-      container.dataset.wired = '';
+      /* Signed out used to be a dead end: one sentence telling the reader to
+         sign in "at the top of the page". The Ledger's whole scaling problem
+         is claim volume, and asking for an account before someone can hand
+         you a URL is the most expensive possible toll to charge. So the
+         no-account path is a real form that goes straight to the desk, and
+         signing in is offered as an upgrade rather than a gate. */
+      container.innerHTML = anonFormHTML();
+      container.dataset.wired = 'anon';
+      if (window.SymbiQ.forms && window.SymbiQ.forms.wire) {
+        window.SymbiQ.forms.wire(container.querySelector('form'));
+      }
       return;
     }
     container.innerHTML = submitFormHTML();

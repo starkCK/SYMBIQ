@@ -68,6 +68,11 @@
   }
 
   function handle(form) {
+    // Guard against double-binding: a form injected after load can be wired by
+    // SymbiQ.forms.wire() and then swept up again by a later init(). Two
+    // listeners would submit the same message twice.
+    if (form.dataset.sqWired) return;
+    form.dataset.sqWired = '1';
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var kind = form.getAttribute('data-sq') || 'message';
@@ -130,4 +135,11 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+
+  /* Forms that are injected after load (the Ledger builds its no-account claim
+     form only once it knows nobody is signed in) never see init(), so they
+     need a way in. handle() guards itself with a data-sq-wired flag, so a
+     form reached by both paths is still bound exactly once. */
+  window.SymbiQ = window.SymbiQ || {};
+  window.SymbiQ.forms = { wire: function (form) { if (form) handle(form); } };
 })();

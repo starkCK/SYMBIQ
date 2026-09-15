@@ -49,14 +49,15 @@
 <link rel="stylesheet" href="signals.css">
 <link rel="stylesheet" href="lexicon.css?v=1">
 <link rel="stylesheet" href="receipts.css?v=1">
+<link rel="stylesheet" href="search.css?v=3">
 <script src="nav.js?v=9" defer></script>
 <script src="depth.js" defer></script>
 <script src="tiers.js?v=4" defer></script>
 <script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=3" defer></script>
+<script src="forms.js?v=4" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="auth.js?v=3" defer></script>
-<script src="signals.js?v=3" defer></script>
+<script src="signals.js?v=4" defer></script>
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
@@ -72,6 +73,7 @@
 <script src="dynamics.js?v=4" defer></script>
 <script src="lexicon.js?v=1" defer></script>
 <script src="receipts.js?v=1" defer></script>
+<script src="search.js?v=5" defer></script>
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -153,6 +155,7 @@
       <summary>The Desk</summary>
       <div class="navpanel">
       <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       <a href="signals.html" class="navmain active">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <div class="navrow">
@@ -165,6 +168,8 @@
       </div>
       <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
       </div>
     </details>
   </div>
@@ -176,7 +181,7 @@
 </nav>
 
 <h1>The Signal</h1>
-<p class="tagline">One AI/quantum story at a time: evidence tier named, linked to whatever it rests on that SymbiQ already teaches, and carrying a &ldquo;what this does NOT mean&rdquo; section as standard. A human approves every story before it ships. <strong>The feed is still warming up.</strong></p>
+<p class="tagline">One AI/quantum story at a time: evidence tier named, linked to whatever it rests on that SymbiQ already teaches, and carrying a &ldquo;what this does NOT mean&rdquo; section as standard. A human approves every story before it ships.</p>
 
 <div class="card" id="sig-summary">
   <h3>Loading The Signal…</h3>
@@ -186,7 +191,15 @@
 <div id="sig-list"></div>
 
 <h2 id="how">How The Signal works</h2>
-<p>A daily pass over a short list of primary sources drafts at most one story, never a roundup or filler for a quiet day. The draft cannot state any number that is not in the source, has to name what a reader would wrongly conclude from the headline, and is checked against everything SymbiQ already teaches, so a claim about a new decoder result links straight to the page that explains decoders. Nothing publishes on its own: it becomes an approval request, and only a reply of <code>post</code> ships it. The first story replaces this section.</p>
+<p>A daily pass over a short list of primary sources drafts at most one story, never a roundup or filler for a quiet day. The draft cannot state any number that is not in the source, has to name what a reader would wrongly conclude from the headline, and is checked against everything SymbiQ already teaches, so a claim about a new decoder result links straight to the page that explains decoders. Nothing publishes on its own: it becomes an approval request, and only a reply of <code>post</code> ships it.</p>
+
+<p><strong>How this feed actually opened, since the same honesty applies here.</strong> The automated pass has never run
+&mdash; it needs credentials the repository does not have &mdash; and for weeks this page shipped with nothing on it but
+the words &ldquo;still warming up&rdquo;. That was worse than an empty space, on a site that argues about the difference
+between a plan and a result. So the five stories above were <strong>written by hand on 8 September 2026</strong>, in the
+same format the pipeline produces, from primary sources published between 31 July and 8 September. They are a backfill,
+not a day's output, and they are dated the day they were written rather than the day their sources broke. When the daily
+pass runs, it adds at most one story a day on top of these.</p>
 
 <script>
 (function () {
@@ -202,5 +215,6 @@
 
 <footer>Nothing here auto-publishes. Every Signal is approved by a human before it ships.<br>SymbiQ · Found an error in one? <a href="corrections.html#report">That pays the biggest bounty we have</a>.</footer>
 </div>
+<div id="search" class="sr-wrap" hidden></div>
 </body>
 </html>

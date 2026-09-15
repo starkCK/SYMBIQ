@@ -113,7 +113,7 @@
 </style>
 <script src="save.js"></script>
 <script src="coherence.js?v=2"></script>
-<script src="games.js?v=40"></script>
+<script src="games.js?v=43"></script>
 <script src="scene.js?v=5"></script>
 <script src="missions.js?v=10"></script>
 <script src="nav.js?v=9" defer></script>
@@ -271,7 +271,7 @@
 
 
 <h1>The Arcade</h1>
-<p class="tagline">Five of these six machines are the ones you meet on <a href="journey.html">the Solver's Path</a>; here there is no story, no mentor, no order. The sixth, The Calibration, has no mission of its own; it lives here and natively on <a href="circuits.html#calibration">circuits.html</a>. Just the games, and the physics doing the judging.</p>
+<p class="tagline">Five of these six machines also appear on <a href="journey.html">the Solver's Path</a>. Here the story is switched off: no mentor and no set order. The sixth, The Calibration, has no mission of its own and lives here and on <a href="circuits.html#calibration">circuits.html</a>. Two of the six now fight back, with a vs Computer mode on Grover's Escape and on Max-Cut.</p>
 
 <!-- BROWSE: the selection floor. Hidden in full whenever a game or mission
      is open, so playing something is a dedicated view, not a scroll stop
@@ -292,7 +292,7 @@
     <circle class="gnode" cx="130" cy="109" r="3.5"/>
   </svg>
   <h3>Push the door</h3>
-  <p>Behind it: six machines that will not let you fake a score. Where a machine has a par (Circuit Golf, Grover's Escape, Max-Cut) that par is an optimum found by exhaustive search, not a designer's guess. The Volcano scores you on a schedule replayed 500 times rather than on a par, since a single lucky run proves nothing. The Calibration scores you against the exact same drift a fixed strategy would have faced, replayed on demand, so luck in the qubit's own drift never gets credited to you. Every probability on every screen is worked out, not set by hand. And one landscape is built to prove that your best strategy is worthless on the wrong problem.</p>
+  <p>Behind it are six machines, and none of them can be bluffed. Where a machine has a par (Circuit Golf, Grover's Escape, Max-Cut), exhaustive search found it. The Volcano replays your cooling schedule 500 times, because one lucky run proves nothing. The Calibration sets your score against a fixed strategy facing the identical drift, so a kind qubit can't flatter you. Every probability on screen is computed. Two of the machines now have an opponent: race a classical searcher door for door, or trade moves with a computer that solved the board before you sat down. And one landscape exists purely to watch your best strategy fail on the wrong problem.</p>
   <span class="push">Open the arcade ▸</span>
 </div>
 
@@ -332,7 +332,7 @@
     <div class="showcase-lead">
       <span class="showcase-tag">Rebuilt</span>
       <h2>The whole campaign, rebuilt as scenes</h2>
-      <p>The same verified engines as the machines below, inside the thing we are building instead of a widget in a box: a world that responds to the number the game is actually computing, and mentors whose flaws <em>are</em> the mechanic rather than a paragraph about them.</p>
+      <p>The same verified engines as the machines below, set inside a world instead of a widget box. The scenery answers to the number the game is computing, and each mentor's flaw is written into the rules you play by.</p>
       <p class="showcase-note">Six acts, five to eight minutes each. Sound is off until you ask for it. On <a href="journey.html">The Solver&rsquo;s Path</a> they run in order and remember what you did; here you can walk into any one of them.</p>
     </div>
     <div class="showcase-picks" id="showcase-picks"></div>
@@ -342,17 +342,17 @@
   <div class="cabs" id="cabs"></div>
 
   <h2 id="workshop">The Workshop</h2>
-  <p>Build a target on the sphere with the same six gates Circuit Golf uses, and the site runs the same kind of exhaustive search that proved every par on this site &mdash; in this browser, right now &mdash; to find yours. <strong>You cannot set the par. The search does.</strong> Share what you build; whoever opens the link gets the search's answer, not your claim.</p>
+  <p>Build a target on the sphere with Circuit Golf's six gates, and this browser runs the same exhaustive search that proved every other par on the site. <strong>The search sets the par, and nobody can overrule it, you included.</strong> Share what you build: whoever opens the link reruns the search and gets its answer.</p>
   <div class="card" id="workshop-card">
     <div id="workshop-mount"></div>
   </div>
 
   <h2>Out in the wild</h2>
-  <p>Six more playable things live on the pages they belong to, because each one only makes sense standing next to its explanation.</p>
+  <p>Six more playable things live on the pages they illustrate, since each one needs its explanation standing beside it.</p>
   <div class="grid">
     <div class="card">
       <h3><a href="analog.html#bench">The Bench</a></h3>
-      <p>Three real methods race on the same graph, 200 replays each, at a time budget you set, and the winner changes depending on which end of the slider you're on.</p>
+      <p>Three real methods race on one graph, 200 replays each, under a time budget you set. Slide the budget and watch the lead change hands.</p>
     </div>
     <div class="card">
       <h3><a href="qec.html#duel">The Decoder Duel</a></h3>
@@ -360,7 +360,7 @@
     </div>
     <div class="card">
       <h3><a href="quantum-mechanics.html#chsh">The CHSH game</a></h3>
-      <p>Beat a limit classical physics cannot beat: 85.4% against a provable ceiling of 75%.</p>
+      <p>Win more often than any classical strategy can: 85.4% against a provable ceiling of 75%.</p>
     </div>
     <div class="card">
       <h3><a href="index.html#daily-q">The Question</a></h3>
@@ -372,13 +372,13 @@
     </div>
     <div class="card">
       <h3><a href="feasible.html#prune">The Prune</a></h3>
-      <p>Prove which haul is best by opening about thirty-five branches out of thousands, and finish holding a certificate rather than a guess.</p>
+      <p>Prove which haul is best by opening about thirty-five branches out of thousands. You leave with a certificate in hand.</p>
     </div>
   </div>
 
   <h2>Coming next</h2>
   <div class="card">
-    <p>A full <strong>board game</strong> for two to four players, on quantum computing and the parts of AI that actually touch it, where knowing more genuinely wins and the board, pieces and animation are built to be worth looking at. <strong>Designed, not yet started</strong>, and behind the rebuild of the machines above by choice. The six machines are the groundwork: each is a mechanic that will earn its place on that board, or be cut.</p>
+    <p>A <strong>board game</strong> for two to four players about quantum computing and the corners of AI that touch it, where knowing more wins and the pieces are worth looking at. <strong>Designed, not yet started</strong>, and deliberately queued behind the machines above. Border War and the Knocker are its first two playtests: every mechanic on this page either earns a square on that board or gets cut.</p>
   </div>
 </div>
 

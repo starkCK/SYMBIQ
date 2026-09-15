@@ -53,7 +53,7 @@
     id: 'volcano', title: 'The Annealing Volcano', mentor: 'Vesh',
     hook: 'You are not the climber. You are the temperature, and the only question that matters is how fast you let it fall.',
     about: {
-      goal: 'End the run <strong>frozen on the deepest point</strong> of the landscape. Not merely visit it, finish there.',
+      goal: 'End the run <strong>frozen on the deepest point</strong> of the landscape. Passing through it doesn’t count; you have to finish there.',
       how: 'Twelve times, choose <strong>Cool</strong>, <strong>Hold</strong> or <strong>Stoke</strong>. Each choice runs twenty random steps at that temperature. Hot lets the walker climb out of valleys; cold locks it wherever it stands. <strong>The Descent</strong> mode makes it endless: a fresh landscape every time, one 10-choice schedule, and a pass mark you must beat over 500 replays. Clear it and the next one is deeper. Score is how far down you get.',
       inspired: 'Simulated annealing (Kirkpatrick, Gelatt &amp; Vecchi, <em>Science</em> 1983), metallurgy borrowed as an algorithm, and the classical baseline that quantum annealers are measured against.',
       learn: 'The exploration/exploitation trade-off you can feel in your hands, and why a method that never accepts a worse move can never escape a valley.',
@@ -671,8 +671,8 @@
     hook: 'Golf, but the ball is a qubit and every club is a rotation.',
     about: {
       goal: 'Turn a qubit from <span class="ket">|0⟩</span> into a given target state in as few gates as you can.',
-      how: 'Tap gates to rotate the qubit until your <span style="color:var(--teal)">solid arrow</span> lands on the <span style="color:var(--violet)">dashed target</span>. <strong>Par is a proven minimum</strong>, no shorter route exists anywhere. <strong>The Long Game</strong> mode makes it endless: the par climbs 1→5, the target name is hidden after the second hole, and one gate budget runs the whole game, miss and it empties. Score is how many holes deep you get.',
-      inspired: 'The Bloch sphere and the real one-qubit gate set, X, Y, Z, H, S, T, that every quantum program is built from.',
+      how: 'Tap gates to rotate the qubit until your <span style="color:var(--teal)">solid arrow</span> lands on the <span style="color:var(--violet)">dashed target</span>. <strong>Par is a proven minimum</strong>: no shorter route exists anywhere. <strong>The Long Game</strong> never ends. Par climbs from 1 to 5, the target’s name disappears after the second hole, and one gate budget covers the whole game, so every wasted gate drains it. Score is how many holes deep you get.',
+      inspired: 'The Bloch sphere and the standard one-qubit gates (X, Y, Z, H, S and T) that quantum programs are built from.',
       learn: 'Superposition and phase, and why quantum gates are <em>rotations</em> rather than 0-to-1 flips.',
       link: 'quantum-mechanics.html#bloch', linkText: 'See the sphere ▸', tier: 'Proven'
     },
@@ -1122,17 +1122,661 @@
    *  GROVER'S ESCAPE, Rue's mission                                     *
    *  Exit probability is exactly sin^2((2k+1)theta), sin theta = 1/sqrt(N)*
    * ==================================================================== */
+  /* ==================================================================== *
+   *  VS COMPUTER: two turn-based modes, both refereed by exact solvers   *
+   *                                                                      *
+   *  Neither mode changes a verified engine. Each mounts into its own    *
+   *  host inside the cabinet (Grover's Escape / Max-Cut) and the         *
+   *  cabinet's mode bar swaps it in; the standard game is hidden, not    *
+   *  touched. Both solvers are exposed on SymbiQ.games so the desk's     *
+   *  verifiers can compare them against independent Python.              *
+   * ==================================================================== */
+  function ensureVsStyle() {
+    if (document.getElementById('sq-vs-style')) return;
+    var st = document.createElement('style');
+    st.id = 'sq-vs-style';
+    st.textContent =
+      '.kn-lab{margin:12px 0 2px;font-size:.8rem;color:var(--muted);text-align:center}' +
+      '.kn-lab span{color:var(--text);font-variant-numeric:tabular-nums}' +
+      '.kn-doors{display:grid;gap:2px;justify-content:center;margin:6px auto 2px}' +
+      '.kn-door{background:var(--border);border-radius:2px;aspect-ratio:1/1;transition:background .25s ease,opacity .25s ease}' +
+      '.kn-door.open{opacity:.25}' +
+      '.kn-door.fresh{background:var(--yellow);opacity:1}' +
+      '.kn-door.exit{background:var(--teal);opacity:1;box-shadow:0 0 0 2px rgba(45,212,191,.5)}' +
+      // .preset sets its own display, which beats the UA [hidden] rule; restate it
+      '[data-k][hidden]{display:none!important}' +
+      '.kn-coach{font-size:.86rem;color:var(--muted);text-align:center;min-height:1.3em;margin:4px 0 8px}' +
+      '.vs-sub{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;justify-content:center;margin:0 0 10px;font-size:.85rem}' +
+      '.vs-sub .preset[aria-pressed=true]{border-color:var(--teal);color:var(--teal)}' +
+      '.bw-edge{stroke:var(--muted);stroke-width:2;stroke-dasharray:3 5;opacity:.55;fill:none;transition:stroke .3s ease,opacity .3s ease}' +
+      '.bw-edge.cut{stroke:var(--yellow);stroke-width:3.5;stroke-dasharray:none;opacity:1}' +
+      '.bw-edge.bound{stroke:var(--red);stroke-width:3;stroke-dasharray:9 4;opacity:.9}' +
+      '.bw-node{stroke:var(--bg);stroke-width:3;transition:fill .25s ease}' +
+      '.bw-node.blank{fill:var(--panel);stroke:var(--muted);stroke-dasharray:3 3}' +
+      '.bw-node.A{fill:var(--teal)}.bw-node.B{fill:var(--violet)}' +
+      '.bw-node.last{stroke:var(--yellow);stroke-width:3.5;stroke-dasharray:none}' +
+      '.bw-hit{fill:transparent;cursor:pointer}' +
+      '.bw-hit.off{cursor:default}' +
+      '.bw-num{font-size:11px;font-weight:700;text-anchor:middle;pointer-events:none;fill:var(--muted)}' +
+      '.bw-num.on{fill:var(--bg)}' +
+      '@media (prefers-reduced-motion:reduce){.kn-door,.bw-node,.bw-edge{transition:none}}';
+    document.head.appendChild(st);
+  }
+
+  /* ---- THE KNOCKER: Grover's Escape, vs Computer ----------------------
+     You search with a quantum register; a classical rival opens doors. The
+     turn is the unit of fairness: ONE ORACLE QUERY EACH. Amplify is one
+     Grover iteration (one query). Measure lands on a door and checks it
+     (one query). The rival's crew of m opens m fresh doors, which is m
+     queries run in parallel. The exit is uniform, so the order the rival
+     knocks in does not matter; its chance on a turn is m / (doors left).
+     A failed measurement rules out the door you saw and your register is
+     prepared again over the doors that remain.
+     solve(n, m) is an exact dynamic programme over every state (doors the
+     rival has opened, your amplifications, doors you have ruled out). The
+     crew sizes below were picked so that BEST play wins each vault between
+     half and about two-thirds of the time; the crew that keeps pace grows like 0.6*sqrt(N),
+     which is Grover's quadratic speedup written as a head count.
+     Reproduced exactly by tools/verify_grover_race.py. */
+  var RACE = (function () {
+    var VAULTS = [
+      { n: 4,   m: 1 },    // best play wins 50.0%
+      { n: 8,   m: 1 },    // 68.6%
+      { n: 16,  m: 2 },    // 58.9%
+      { n: 32,  m: 3 },    // 58.4%
+      { n: 64,  m: 5 },    // 53.2%
+      { n: 128, m: 7 },    // 54.9%
+      { n: 256, m: 10 },   // 55.3%
+      { n: 512, m: 14 }    // 56.3%
+    ];
+    var LIVES = 3, KEY = 'grover.race.best';
+    function pexit(neff, k) {
+      if (neff <= 1) return 1;
+      var s = Math.sin((2 * k + 1) * Math.asin(1 / Math.sqrt(neff)));
+      return s * s;
+    }
+    // Past about two peaks, amplifying only walks the odds round the circle
+    // again. Capping k keeps the state space finite without changing a value.
+    function kcap(neff) {
+      return 2 * Math.max(1, Math.round(Math.PI / (4 * Math.asin(1 / Math.sqrt(Math.max(neff, 2)))))) + 2;
+    }
+    function solve(n, m) {
+      var mq = new Map(), mc = new Map();
+      function key(o, k, e) { return (o * 1024 + k) * 1024 + e; }
+      function C(o, k, e) {                 // rival to move
+        var rem = n - o;
+        if (rem <= m) return 0;
+        var kk = key(o, k, e), v = mc.get(kk);
+        if (v === undefined) { v = (1 - m / rem) * Q(o + m, k, e).best; mc.set(kk, v); }
+        return v;
+      }
+      function Q(o, k, e) {                 // you to move: P(you win) under best play
+        var kk = key(o, k, e), r = mq.get(kk);
+        if (r) return r;
+        var neff = n - e, p = pexit(neff, k);
+        var meas = neff <= 1 ? 1 : p + (1 - p) * C(o, 0, e + 1);
+        var amp = k < kcap(neff) ? C(o, k + 1, e) : -1;
+        r = { meas: meas, amp: amp, best: Math.max(meas, amp) };
+        mq.set(kk, r);
+        return r;
+      }
+      return { Q: Q, C: C, start: function () { return C(0, 0, 0); } };
+    }
+
+    var API = { VAULTS: VAULTS, LIVES: LIVES, solve: solve, pexit: pexit, kcap: kcap, delay: 750 };
+    API.best = function () {
+      var S = window.SymbiQ && SymbiQ.save;
+      return S && S.get ? (+S.get(KEY, 0) || 0) : 0;
+    };
+    API.mount = function (host, opts) {
+      ensureVsStyle();
+      opts = opts || {};
+      var guided = opts.level === 'guided';
+      var SAVE = window.SymbiQ && SymbiQ.save;
+      var night = null, race = null, sol = null, timer = null;
+      function q(k) { return host.querySelector('[data-k=' + k + ']'); }
+      function pct(x) { return (x * 100).toFixed(1) + '%'; }
+      function plural(n, w) { return n + ' ' + (n === 1 ? w : w === 'life' ? 'lives' : w + 's'); }
+
+      host.innerHTML =
+        '<div class="hud" data-k="hud"></div>' +
+        '<div class="verdict" style="text-align:center" data-k="say" aria-live="polite"></div>' +
+        '<p class="kn-lab">Your register <span data-k="odds"></span></p>' +
+        '<div class="gr-bars" data-k="bars" aria-label="Your quantum register: bar height is the chance a measurement lands on that door"></div>' +
+        '<p class="kn-lab">The rival’s corridor <span data-k="rodds"></span></p>' +
+        '<div class="kn-doors" data-k="doors" aria-label="Doors the classical rival has opened"></div>' +
+        '<p style="margin:12px 0 4px;text-align:center">' +
+          '<button class="preset" type="button" data-k="amp">Amplify ↑</button>' +
+          '<button class="preset" type="button" data-k="meas">Measure</button>' +
+          '<button class="preset" type="button" data-k="next" hidden>Next vault ▸</button>' +
+          '<button class="preset" type="button" data-k="new" hidden>New night</button></p>' +
+        '<div class="kn-coach" data-k="coach"></div>' +
+        '<dl class="rows" data-k="rows"></dl>';
+
+      function newNight() {
+        if (timer) { clearTimeout(timer); timer = null; }
+        night = { v: 0, lives: LIVES, cracked: 0, over: false };
+        startVault();
+      }
+      function startVault() {
+        var V = VAULTS[night.v];
+        sol = solve(V.n, V.m);
+        race = { vi: night.v, n: V.n, m: V.m, exit: Math.floor(Math.random() * V.n),
+                 open: {}, o: 0, fresh: [], gone: {}, e: 0, k: 0, turn: 'rival',
+                 done: false, won: false, landed: -1, missP: 0, winP: 0,
+                 decisions: [], start: sol.start() };
+        rivalTurn();
+      }
+      function rivalTurn() {
+        race.turn = 'rival';
+        render();
+        timer = setTimeout(function () {
+          timer = null;
+          if (!race || race.done) return;
+          var pool = [], i;
+          for (i = 0; i < race.n; i++) if (!race.open[i]) pool.push(i);
+          race.fresh = [];
+          for (i = 0; i < race.m && pool.length; i++) {
+            var r = Math.floor(Math.random() * pool.length);
+            race.fresh.push(pool[r]); race.open[pool[r]] = true; pool.splice(r, 1);
+          }
+          race.o += race.fresh.length;
+          if (race.fresh.indexOf(race.exit) >= 0) { endRace(false); return; }
+          race.turn = 'you';
+          render();
+        }, API.delay);
+      }
+      function youAct(choice) {
+        if (!race || race.done || race.turn !== 'you') return;
+        var neff = race.n - race.e, qv = sol.Q(race.o, race.k, race.e);
+        if (choice === 'amp' && qv.amp < 0) return;
+        race.decisions.push({ o: race.o, k: race.k, e: race.e, choice: choice, meas: qv.meas, amp: qv.amp });
+        race.fresh = [];
+        race.landed = -1;
+        if (choice === 'amp') { race.k++; rivalTurn(); return; }
+        var p = pexit(neff, race.k), landed;
+        if (neff <= 1 || Math.random() < p) landed = race.exit;
+        else {
+          // a miss is spread evenly over every other door still in your register
+          var others = [];
+          for (var i = 0; i < race.n; i++) if (!race.gone[i] && i !== race.exit) others.push(i);
+          landed = others[Math.floor(Math.random() * others.length)];
+        }
+        race.landed = landed;
+        if (landed === race.exit) { race.winP = p; endRace(true); return; }
+        race.gone[landed] = true; race.e++; race.k = 0; race.missP = p;
+        rivalTurn();
+      }
+      function endRace(won) {
+        race.done = true; race.won = won;
+        if (won) {
+          night.cracked++; night.v++;
+          if (SAVE && SAVE.set && night.cracked > API.best()) SAVE.set(KEY, night.cracked);
+          if (night.v >= VAULTS.length) night.over = true;
+        } else {
+          night.lives--;
+          if (night.lives <= 0) night.over = true;
+        }
+        render();
+      }
+      function reviewHTML() {
+        var ds = race.decisions, matched = 0, worst = null;
+        var h = 'Best play wins this vault <strong>' + pct(race.start) + '</strong> of the time, counted from the rival’s first knock. ';
+        if (!ds.length) return h + 'The rival found the exit before you had a turn, which no strategy can prevent.';
+        ds.forEach(function (d) {
+          var chosen = d.choice === 'amp' ? d.amp : d.meas, loss = Math.max(d.amp, d.meas) - chosen;
+          if (loss < 0.0005) matched++;
+          if (!worst || loss > worst.loss) worst = { d: d, loss: loss };
+        });
+        h += 'You made ' + plural(ds.length, 'decision') + ' and ' + matched + ' matched best play.';
+        if (worst && worst.loss >= 0.005) {
+          var d = worst.d, a = d.choice === 'amp';
+          h += ' The costliest came with ' + plural(d.k, 'amplification') + ' banked and ' +
+            plural(d.o, 'door') + ' opened by the rival: you chose <strong>' + (a ? 'Amplify' : 'Measure') +
+            '</strong>, worth ' + pct(a ? d.amp : d.meas) + ' from there, where ' + (a ? 'Measure' : 'Amplify') +
+            ' was worth ' + pct(a ? d.meas : d.amp) + '.';
+        } else {
+          h += (ds.length === 1 ? ' It gave nothing away' : ' None of them gave anything away') + ', so the result came down to the draw.';
+        }
+        return h;
+      }
+      function render() {
+        if (!race) return;
+        var neff = race.n - race.e, p = pexit(neff, race.k), i;
+        var hearts = '';
+        for (i = 0; i < LIVES; i++) hearts += i < night.lives ? '♥' : '♡';
+        q('hud').innerHTML =
+          '<div class="hud-side"><span class="hud-label">You · quantum</span>' +
+            '<span class="hud-score' + (night.cracked ? ' lead' : '') + '">' + night.cracked + '</span>' +
+            '<span class="hud-label">vaults cracked</span></div>' +
+          '<div class="hud-mid">Vault <strong>' + (race.vi + 1) + '</strong> of ' + VAULTS.length +
+            '<br><span style="color:var(--red);letter-spacing:2px" aria-label="' + plural(night.lives, 'life') + ' left">' + hearts + '</span></div>' +
+          '<div class="hud-side right"><span class="hud-label">Rival · crew of ' + race.m + '</span>' +
+            '<span class="hud-score">' + race.o + '</span>' +
+            '<span class="hud-label">of ' + race.n + ' doors opened</span></div>';
+
+        var pu = neff > 1 ? (1 - p) / (neff - 1) : 0, bh = '';
+        for (i = 0; i < race.n; i++) {
+          if (race.gone[i]) continue;
+          var isExit = i === race.exit;
+          bh += '<div class="gr-bar' + (isExit ? ' exit' : '') + (race.done && race.won && isExit ? ' hit' : '') +
+                '" style="height:' + Math.max(2, (isExit ? p : pu) * 138).toFixed(1) + 'px"></div>';
+        }
+        var bars = q('bars');
+        bars.style.gap = (neff > 32 ? 1 : neff > 16 ? 2 : 3) + 'px';
+        bars.innerHTML = bh;
+
+        var size = race.n <= 16 ? 22 : race.n <= 64 ? 12 : race.n <= 128 ? 9 : 6;
+        var cols = race.n <= 16 ? Math.min(race.n, 8) : race.n <= 64 ? 16 : 32, dh = '';
+        for (i = 0; i < race.n; i++) {
+          dh += '<i class="kn-door' + (race.open[i] ? ' open' : '') + (race.fresh.indexOf(i) >= 0 ? ' fresh' : '') +
+                (race.done && i === race.exit ? ' exit' : '') + '"></i>';
+        }
+        var doors = q('doors');
+        doors.style.gridTemplateColumns = 'repeat(' + cols + ', ' + size + 'px)';
+        doors.innerHTML = dh;
+
+        q('odds').textContent = '· measure now and you land on the exit ' + pct(p) +
+          (race.e ? ' · ' + plural(race.e, 'door') + ' ruled out' : '');
+        q('rodds').textContent = race.done ? '· ' + race.o + ' of ' + race.n + ' opened'
+          : '· its chance on the next turn ' + pct(Math.min(1, race.m / Math.max(1, race.n - race.o)));
+
+        var say = q('say'), tail = '';
+        if (race.done && night.over) {
+          tail = night.lives > 0
+            ? ' <strong>Every vault tonight is yours: all ' + VAULTS.length + '.</strong>'
+            : ' <strong>Out of lives.</strong> You cracked ' + plural(night.cracked, 'vault') + ' tonight; your best night is ' + API.best() + '.';
+        } else if (race.done && !race.won) {
+          tail = ' ' + plural(night.lives, 'life') + ' left, and the same vault is waiting.';
+        }
+        if (race.done && race.won) {
+          say.className = 'verdict good';
+          say.innerHTML = '<strong>Cracked.</strong> You measured with ' + pct(race.winP) + ' on the exit and landed on it, ' +
+            race.o + ' of ' + race.n + ' doors into the rival’s search.' + tail;
+        } else if (race.done) {
+          say.className = 'verdict bad';
+          say.innerHTML = '<strong>The rival got there first.</strong> Its crew opened the exit, door ' + (race.exit + 1) +
+            ', after ' + race.o + ' of ' + race.n + ' knocks.' + tail;
+        } else if (race.turn === 'rival') {
+          say.className = 'verdict';
+          say.innerHTML = race.landed >= 0
+            ? '<strong>Missed.</strong> You measured with ' + pct(race.missP) + ' on the exit and landed on door ' + (race.landed + 1) +
+              ' instead. It is ruled out, and your register starts again over the ' + neff + ' doors left. The rival knocks…'
+            : '<strong>The rival knocks…</strong> ' + (race.m === 1 ? 'one door' : race.m + ' doors at once') + ' this turn.';
+        } else {
+          say.className = 'verdict';
+          say.innerHTML = '<strong>Your turn.</strong> ' +
+            (race.fresh.length ? 'The rival opened ' + plural(race.fresh.length, 'door') + ' and found nothing. ' : '') +
+            'Amplify to tilt your odds, or measure and check the door you land on.';
+        }
+        if (race.done) say.innerHTML += '<div class="g-mentor">' + reviewHTML() + '</div>';
+
+        var myTurn = !race.done && race.turn === 'you';
+        q('amp').disabled = !myTurn || race.k >= kcap(neff);
+        q('meas').disabled = !myTurn;
+        q('next').hidden = !(race.done && !night.over);
+        q('next').textContent = race.won ? 'Next vault ▸' : 'Try this vault again ▸';
+        q('new').hidden = !(race.done && night.over);
+
+        var coach = q('coach');
+        if (guided && myTurn) {
+          var qv = sol.Q(race.o, race.k, race.e);
+          coach.innerHTML = 'Coach: best play from here wins <strong>' + pct(qv.best) + '</strong>. Amplify is worth ' +
+            (qv.amp < 0 ? 'nothing more' : pct(qv.amp)) + ', Measure ' + pct(qv.meas) + '.';
+        } else coach.textContent = '';
+
+        q('rows').innerHTML =
+          '<dt>This vault</dt><dd>' + race.n + ' doors · the rival’s crew opens ' + race.m + ' per turn · one query each</dd>' +
+          '<dt>Your register</dt><dd>' + plural(race.k, 'amplification') + ' · ' + neff + ' doors still in play</dd>' +
+          '<dt>Best night</dt><dd>' + API.best() + ' of ' + VAULTS.length + ' vaults</dd>';
+      }
+
+      q('amp').addEventListener('click', function () { youAct('amp'); });
+      q('meas').addEventListener('click', function () { youAct('meas'); });
+      q('next').addEventListener('click', function () { if (race && race.done && !night.over) startVault(); });
+      q('new').addEventListener('click', newNight);
+      newNight();
+      return { state: function () { return { night: night, race: race }; } };
+    };
+    return API;
+  })();
+
+  /* ---- BORDER WAR: Max-Cut, vs Computer --------------------------------
+     A two-player game on the Max-Cut board. Districts start unpainted. On
+     a turn you paint ONE blank district teal or violet. The moment both
+     ends of a road are painted, the road scores: CUT (different colours)
+     for the Cutter, BOUND (same colour) for the Binder. Most roads wins.
+     In the Ising picture a cut road is a satisfied antiferromagnetic bond
+     and a bound road a satisfied ferromagnetic one; a triangle can never
+     cut all three, which is frustration, and the Binder banks it.
+     This is a new game, not a physical simulation, and every board is
+     SOLVED: V(state) is exhaustive minimax over all 3^n part-painted maps
+     (n <= 10, so at most 59,049 states), run here in the browser. Hard
+     plays that solution. Each board's `value` is the Cutter's margin under
+     perfect play from the opening, and every one is positive, so every
+     board is winnable by you. Values, first-move facts and the claims in
+     each `teach` line are re-derived by tools/verify_border_war.py. */
+  var BORDER = (function () {
+    var R = function (x) { return Math.round(x * 10) / 10; };
+    function ringPos(n, cx, cy, r, a0) {
+      var out = [];
+      for (var i = 0; i < n; i++) {
+        var a = (a0 + 360 * i / n) * Math.PI / 180;
+        out.push([R(cx + r * Math.cos(a)), R(cy + r * Math.sin(a))]);
+      }
+      return out;
+    }
+    var hex = ringPos(6, 150, 125, 95, -90);
+    var BOARDS = [
+      { name: 'The Prism', first: 'cpu', value: 1, n: 6,
+        E: [[0,1],[1,2],[2,0],[3,4],[4,5],[5,3],[0,3],[1,4],[2,5]],
+        pos: ringPos(3, 150, 128, 100, -90).concat(ringPos(3, 150, 128, 42, -90)),
+        teach: 'Two triangles braced together. However a triangle is painted, at least one of its roads ends up bound, so the Binder banks two roads before anyone moves. The computer opens, and perfect play still wins you the board by one.' },
+      { name: 'The Fan', first: 'you', value: 1, n: 5,
+        E: [[0,1],[1,2],[2,3],[4,0],[4,1],[4,2],[4,3]],
+        pos: [[40,195],[110,220],[190,220],[260,195],[150,50]],
+        teach: 'Painting a district scores every road to a neighbour that is already painted. Paint beside blanks and you score nothing yet, and those roads go to whoever paints the other end. You open.' },
+      { name: 'The Cube', first: 'cpu', value: 2, n: 8,
+        E: [[0,1],[0,2],[0,4],[1,3],[1,5],[2,3],[2,6],[3,7],[4,5],[4,6],[5,7],[6,7]],
+        pos: [[55,35],[245,35],[55,215],[245,215],[110,85],[190,85],[110,165],[190,165]],
+        teach: 'Every road on a cube can be cut at once, so a perfect split exists. The Binder cannot unmake that split, only race you to the paint. The computer opens; best play wins by two.' },
+      { name: 'The Lattice', first: 'you', value: 2, n: 9,
+        E: [[0,1],[1,2],[3,4],[4,5],[6,7],[7,8],[0,3],[1,4],[2,5],[3,6],[4,7],[5,8],[1,3],[2,4],[4,6],[5,7]],
+        pos: [[40,45],[120,45],[200,45],[80,125],[160,125],[240,125],[120,205],[200,205],[280,205]],
+        teach: 'Eight small triangles share their sides. The best possible split cuts 12 of the 16 roads, so even flawless painting leaves the Binder four. You open, and best play wins by two.' },
+      { name: 'The Petersen Graph', first: 'cpu', value: 1, n: 10,
+        E: [[0,1],[1,2],[2,3],[3,4],[4,0],[5,7],[7,9],[9,6],[6,8],[8,5],[0,5],[1,6],[2,7],[3,8],[4,9]],
+        pos: ringPos(5, 150, 128, 100, -90).concat(ringPos(5, 150, 128, 48, -90)),
+        teach: 'Ten districts, fifteen roads, and every district has exactly three neighbours, so there is no hub worth grabbing and the fight is all timing. The computer opens. Perfect play wins by one.' },
+      { name: 'The Ladder', first: 'cpu', value: 2, n: 8,
+        E: [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[0,4],[1,5],[2,6],[3,7]],
+        pos: [[45,80],[115,80],[185,80],[255,80],[45,170],[115,170],[185,170],[255,170]],
+        teach: 'A ladder with four rungs, and every road on it can be cut at once. The computer opens, and each half-painted rung is a road waiting for whoever paints its other end. Best play wins by two.' },
+      { name: 'The Möbius Ladder', first: 'cpu', value: 2, n: 8,
+        E: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,0],[0,4],[1,5],[2,6],[3,7]],
+        pos: ringPos(8, 150, 125, 100, -90), bend: [0,0,0,0,0,0,0,0,46,46,46,46],
+        teach: 'A ring of eight with opposite districts wired across the middle, so a move on one side can score on the far side. The computer opens; best play wins by two.' },
+      { name: 'The Wheel', first: 'you', value: 2, n: 7,
+        E: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[6,0],[6,1],[6,2],[6,3],[6,4],[6,5]],
+        pos: hex.concat([[150,125]]),
+        teach: 'A hub wired to all six rim districts. You open, and exactly one opening keeps your two-road win: the hub. Any other first move lets the computer hold you to a draw.' },
+      { name: 'The Hex Star', first: 'you', value: 1, n: 7,
+        E: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[6,0],[6,2],[6,4]],
+        pos: hex.concat([[150,125]]),
+        teach: '<strong>The boss.</strong> A hexagon with three spokes into its centre. You open, and exactly one of the seven opening moves wins. Every other opening loses by a road against perfect play.' }
+    ];
+    var KEY = 'maxcut.border';
+
+    function solver(b) {
+      var n = b.n, adj = [], pw = [1], i;
+      for (i = 0; i < n; i++) adj.push([]);
+      b.E.forEach(function (e) { adj[e[0]].push(e[1]); adj[e[1]].push(e[0]); });
+      for (i = 1; i <= n; i++) pw.push(pw[i - 1] * 3);
+      var memo = new Int8Array(pw[n]);            // stores value + 64; 0 = not yet solved
+      var cutterFirst = b.first === 'you';
+      function digit(s, j) { return Math.floor(s / pw[j]) % 3; }
+      function filled(s) { var c = 0; for (var j = 0; j < n; j++) if (digit(s, j)) c++; return c; }
+      function cutterToMove(s) { return (filled(s) % 2 === 0) === cutterFirst; }
+      // (cut roads - bound roads) scored by painting blank district j colour c
+      function gain(s, j, c) {
+        var g = 0;
+        for (var t = 0; t < adj[j].length; t++) { var d = digit(s, adj[j][t]); if (d) g += d !== c ? 1 : -1; }
+        return g;
+      }
+      // the Cutter's margin over the rest of the game, both sides perfect
+      function V(s) {
+        if (memo[s]) return memo[s] - 64;
+        var cut = cutterToMove(s), best = null;
+        for (var j = 0; j < n; j++) {
+          if (digit(s, j)) continue;
+          for (var c = 1; c <= 2; c++) {
+            var v = gain(s, j, c) + V(s + c * pw[j]);
+            if (best === null || (cut ? v > best : v < best)) best = v;
+          }
+        }
+        if (best === null) best = 0;
+        memo[s] = best + 64;
+        return best;
+      }
+      function moves(s) {
+        var out = [];
+        for (var j = 0; j < n; j++) {
+          if (digit(s, j)) continue;
+          for (var c = 1; c <= 2; c++) { var g = gain(s, j, c); out.push({ i: j, c: c, g: g, v: g + V(s + c * pw[j]) }); }
+        }
+        return out;
+      }
+      return { V: V, moves: moves, gain: gain, pw: pw, adj: adj, cutterToMove: cutterToMove };
+    }
+
+    var API = { BOARDS: BOARDS, solver: solver, delay: 650 };
+    function record() {
+      var S = window.SymbiQ && SymbiQ.save, r = S && S.get ? String(S.get(KEY, '') || '') : '';
+      while (r.length < BOARDS.length) r += '-';
+      return r;
+    }
+    API.beatenHard = function () { return record().split('').filter(function (x) { return x === 'h'; }).length; };
+
+    API.mount = function (host, opts) {
+      ensureVsStyle();
+      opts = opts || {};
+      var guided = opts.level === 'guided';
+      var SAVE = window.SymbiQ && SymbiQ.save;
+      var bi = 0, opp = 'hard', brush = 1, S = null, st = null, timer = null;
+      function q(k) { return host.querySelector('[data-k=' + k + ']'); }
+      var COL = { 1: 'teal', 2: 'violet' };
+
+      host.innerHTML =
+        '<div class="vs-sub" data-k="opp"><span style="color:var(--muted)">Opponent</span>' +
+          '<button class="preset" type="button" data-o="easy">Computer · easy</button>' +
+          '<button class="preset" type="button" data-o="hard">Computer · hard</button>' +
+          '<button class="preset" type="button" data-o="friend">A friend, same screen</button></div>' +
+        '<div class="holes" data-k="boards"></div>' +
+        '<div class="hud" data-k="hud"></div>' +
+        '<div class="verdict" style="text-align:center" data-k="say" aria-live="polite"></div>' +
+        '<svg class="mcsvg" viewBox="0 0 300 250" xmlns="' + NS + '" data-k="svg" aria-label="Border War board. Click an unpainted district to paint it with the current brush."></svg>' +
+        '<div class="vs-sub"><span style="color:var(--muted)">Brush</span>' +
+          '<button class="preset" type="button" data-b="1"><span style="color:var(--teal)">●</span> Teal</button>' +
+          '<button class="preset" type="button" data-b="2"><span style="color:var(--violet)">●</span> Violet</button>' +
+          '<button class="preset" type="button" data-k="restart">Restart board</button></div>' +
+        '<p class="legend" style="text-align:center"><span style="color:var(--yellow)">━ cut road</span> scores for the Cutter · ' +
+          '<span style="color:var(--red)">╍ bound road</span> scores for the Binder · faint roads are still open.</p>' +
+        '<div class="kn-coach" data-k="coach"></div>' +
+        '<dl class="rows" data-k="rows"></dl>';
+
+      function start() {
+        if (timer) { clearTimeout(timer); timer = null; }
+        var b = BOARDS[bi];
+        S = solver(b);
+        st = { s: 0, count: 0, cut: 0, bound: 0, color: [], last: -1, moves: [], done: false, slip: null, gift: null, busy: false };
+        for (var i = 0; i < b.n; i++) st.color.push(0);
+        render();
+        maybeComputer();
+      }
+      function names() {
+        return opp === 'friend' ? { c: 'Player 1', b: 'Player 2' } : { c: 'You', b: 'The computer' };
+      }
+      function humanMayMove() { return !st.done && !st.busy && (opp === 'friend' || S.cutterToMove(st.s)); }
+      function sign(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
+
+      function paint(i, c) {
+        var b = BOARDS[bi], cutter = S.cutterToMove(st.s), cut = 0, bound = 0;
+        // whole-game margins: roads already scored plus best play from here
+        var scored = st.cut - st.bound, before = scored + S.V(st.s), options = S.moves(st.s);
+        S.adj[i].forEach(function (j) { if (st.color[j]) { if (st.color[j] !== c) cut++; else bound++; } });
+        var after = scored + (cut - bound) + S.V(st.s + c * S.pw[i]);
+        if (opp !== 'friend') {
+          if (cutter && !st.slip && sign(after) < sign(before)) {
+            var bestMv = options.reduce(function (a, m) { return !a || m.v > a.v ? m : a; }, null);
+            st.slip = { move: st.moves.length + 1, i: i, c: c, before: before, after: after, best: bestMv };
+          }
+          if (!cutter && !st.gift && sign(after) > sign(before)) st.gift = { move: st.moves.length + 1 };
+        }
+        st.moves.push({ i: i, c: c, cutter: cutter });
+        st.color[i] = c; st.s += c * S.pw[i]; st.count++; st.cut += cut; st.bound += bound; st.last = i;
+        if (st.count === b.n) finish();
+        render();
+        maybeComputer();
+      }
+      function maybeComputer() {
+        if (st.done || opp === 'friend' || S.cutterToMove(st.s)) return;
+        st.busy = true;
+        render();
+        timer = setTimeout(function () {
+          timer = null;
+          var ms = S.moves(st.s), pool;
+          if (opp === 'hard') {
+            var lo = Math.min.apply(null, ms.map(function (m) { return m.v; }));
+            pool = ms.filter(function (m) { return m.v === lo; });
+          } else if (Math.random() < 0.6) {
+            var g = Math.min.apply(null, ms.map(function (m) { return m.g; }));
+            pool = ms.filter(function (m) { return m.g === g; });
+          } else pool = ms;
+          var pick = pool[Math.floor(Math.random() * pool.length)];
+          st.busy = false;
+          paint(pick.i, pick.c);
+        }, API.delay);
+      }
+      function finish() {
+        st.done = true;
+        if (opp === 'friend' || st.cut <= st.bound || !(SAVE && SAVE.set)) return;
+        var r = record().split('');
+        if (opp === 'hard') r[bi] = 'h'; else if (r[bi] !== 'h') r[bi] = 'e';
+        SAVE.set(KEY, r.join(''));
+      }
+      function margin(v) {
+        return v > 0 ? 'the Cutter wins by ' + v : v < 0 ? 'the Binder wins by ' + (-v) : 'a draw';
+      }
+      function render() {
+        var b = BOARDS[bi], nm = names(), i;
+        var rec = record();
+        q('boards').innerHTML = BOARDS.map(function (x, k) {
+          var mark = rec[k] === 'h' ? ' done' : '';
+          return '<span class="hole' + (k === bi ? ' now' : '') + mark + '" data-bi="' + k + '" title="' + x.name +
+            (rec[k] === 'h' ? ', beaten on hard' : rec[k] === 'e' ? ', beaten on easy' : '') + '">' + (k + 1) + '</span>';
+        }).join('');
+        Array.prototype.forEach.call(host.querySelectorAll('[data-bi]'), function (h) {
+          h.addEventListener('click', function () { bi = +h.getAttribute('data-bi'); start(); });
+        });
+        Array.prototype.forEach.call(host.querySelectorAll('[data-o]'), function (x) {
+          x.setAttribute('aria-pressed', x.getAttribute('data-o') === opp ? 'true' : 'false');
+        });
+        Array.prototype.forEach.call(host.querySelectorAll('[data-b]'), function (x) {
+          x.setAttribute('aria-pressed', +x.getAttribute('data-b') === brush ? 'true' : 'false');
+        });
+
+        var cutterNow = S.cutterToMove(st.s);
+        q('hud').innerHTML =
+          '<div class="hud-side"><span class="hud-label">' + nm.c + ' · Cutter</span>' +
+            '<span class="hud-score' + (st.cut > st.bound ? ' lead' : '') + '">' + st.cut + '</span><span class="hud-label">roads cut</span></div>' +
+          '<div class="hud-mid">Board <strong>' + (bi + 1) + '</strong> of ' + BOARDS.length + '<br>' + b.name + '</div>' +
+          '<div class="hud-side right"><span class="hud-label">' + nm.b + ' · Binder</span>' +
+            '<span class="hud-score' + (st.bound > st.cut ? ' lead' : '') + '">' + st.bound + '</span><span class="hud-label">roads bound</span></div>';
+
+        var svg = q('svg');
+        svg.innerHTML = '';
+        b.E.forEach(function (e, k) {
+          var A = b.pos[e[0]], B = b.pos[e[1]], ca = st.color[e[0]], cb = st.color[e[1]];
+          var cls = 'bw-edge' + (ca && cb ? (ca !== cb ? ' cut' : ' bound') : '');
+          var bend = b.bend && b.bend[k];
+          if (bend) {
+            var mx = (A[0] + B[0]) / 2, my = (A[1] + B[1]) / 2, dx = B[0] - A[0], dy = B[1] - A[1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+            svg.appendChild(el('path', { 'class': cls, d: 'M' + A[0] + ' ' + A[1] + ' Q' + R(mx - dy / L * bend * 2) + ' ' + R(my + dx / L * bend * 2) + ' ' + B[0] + ' ' + B[1] }));
+          } else {
+            svg.appendChild(el('line', { 'class': cls, x1: A[0], y1: A[1], x2: B[0], y2: B[1] }));
+          }
+        });
+        var canMove = humanMayMove();
+        b.pos.forEach(function (P, k) {
+          var c = st.color[k];
+          svg.appendChild(el('circle', { 'class': 'bw-node ' + (c ? (c === 1 ? 'A' : 'B') : 'blank') + (k === st.last ? ' last' : ''), cx: P[0], cy: P[1], r: 16 }));
+          var t = el('text', { 'class': 'bw-num' + (c ? ' on' : ''), x: P[0], y: P[1] + 4 });
+          t.textContent = String(k + 1);
+          svg.appendChild(t);
+          var hit = el('circle', { 'class': 'bw-hit' + (!c && canMove ? '' : ' off'), cx: P[0], cy: P[1], r: 22,
+            'data-node': k, role: 'button', tabindex: !c && canMove ? '0' : '-1',
+            'aria-label': 'District ' + (k + 1) + (c ? ', painted ' + COL[c] : ', unpainted') });
+          function go() { if (humanMayMove() && !st.color[k]) paint(k, brush); }
+          hit.addEventListener('click', go);
+          hit.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+          svg.appendChild(hit);
+        });
+
+        var say = q('say'), v0 = S.V(0), openRoads = b.E.length - st.cut - st.bound;
+        // the board's lesson stays up until the human's first brushstroke
+        var intro = (opp === 'friend' ? st.count === 0 : !st.moves.some(function (m) { return m.cutter; }))
+          ? '<span style="font-weight:400">' + b.teach + '</span><br>' : '';
+        if (st.done) {
+          var d = st.cut - st.bound;
+          say.className = 'verdict ' + (opp === 'friend' ? 'split' : d > 0 ? 'good' : d < 0 ? 'bad' : 'split');
+          if (opp === 'friend') {
+            say.innerHTML = '<strong>' + (d > 0 ? 'Player 1, the Cutter, wins ' : d < 0 ? 'Player 2, the Binder, wins ' : 'A draw, ') +
+              Math.max(st.cut, st.bound) + '–' + Math.min(st.cut, st.bound) + '.</strong> Under perfect play from the opening, ' + margin(v0) + '.';
+          } else if (d > 0) {
+            say.innerHTML = '<strong>You win ' + st.cut + '–' + st.bound + '.</strong> ' +
+              (opp === 'hard' ? 'The hard computer never makes a mistake, so every move you made kept the win.' : 'Perfect play on this board wins by ' + v0 + '.') +
+              (st.gift ? ' <span style="color:var(--muted)">The computer let the board slip at move ' + st.gift.move + ', which is what Easy does.</span>' : '');
+          } else {
+            say.innerHTML = '<strong>' + (d < 0 ? 'The computer wins ' + st.bound + '–' + st.cut : 'A draw, ' + st.cut + '–' + st.bound) + '.</strong> ' +
+              'Perfect play on this board wins for you by ' + v0 + '.';
+            if (st.slip) {
+              var s = st.slip, bm = s.best;
+              say.innerHTML += '<div class="g-mentor">The board was ' + (s.before > 0 ? 'yours' : 'still level') + ' until move ' + s.move +
+                ': painting district ' + (s.i + 1) + ' ' + COL[s.c] + ' turned it into ' + margin(s.after) + ' with best play from there. ' +
+                'District ' + (bm.i + 1) + ' ' + COL[bm.c] + ' would have kept ' + margin(s.before) + '.</div>';
+            }
+          }
+        } else if (st.busy) {
+          say.className = 'verdict';
+          say.innerHTML = intro + '<strong>The computer is painting…</strong>';
+        } else {
+          say.className = 'verdict';
+          var who = opp === 'friend' ? (cutterNow ? 'Player 1 (Cutter)' : 'Player 2 (Binder)') : 'You';
+          say.innerHTML = intro + '<strong>' + who + ' to paint.</strong> Pick a brush, then click any grey district.' +
+            (st.moves.length && opp !== 'friend' ? ' <span style="font-weight:400;color:var(--muted)">The computer painted district ' +
+              (st.last + 1) + ' ' + COL[st.color[st.last]] + '.</span>' : '');
+        }
+
+        var coach = q('coach');
+        if (guided && !st.done && humanMayMove()) {
+          var ms = S.moves(st.s), best = null;
+          ms.forEach(function (m) { if (!best || (cutterNow ? m.v > best.v : m.v < best.v)) best = m; });
+          coach.innerHTML = 'Coach: with best play from here, ' + margin(S.V(st.s) + st.cut - st.bound) +
+            '. One best move is district ' + (best.i + 1) + ' in ' + COL[best.c] + '.';
+        } else coach.textContent = '';
+
+        q('rows').innerHTML =
+          '<dt>Roads</dt><dd>' + st.cut + ' cut · ' + st.bound + ' bound · ' + openRoads + ' still open</dd>' +
+          '<dt>Districts left</dt><dd>' + (b.n - st.count) + ' of ' + b.n + ' · ' + (b.first === 'you' ? (opp === 'friend' ? 'Player 1' : 'you') + ' opened' : (opp === 'friend' ? 'Player 2' : 'the computer') + ' opened') + '</dd>' +
+          '<dt>Perfect play</dt><dd>' + (st.done || guided ? margin(v0) + ' from the opening' : 'solved, revealed when the board ends') + '</dd>' +
+          (opp !== 'friend' ? '<dt>Beaten on hard</dt><dd>' + API.beatenHard() + ' of ' + BOARDS.length + ' boards</dd>' : '');
+      }
+
+      Array.prototype.forEach.call(host.querySelectorAll('[data-o]'), function (x) {
+        x.addEventListener('click', function () { opp = x.getAttribute('data-o'); start(); });
+      });
+      Array.prototype.forEach.call(host.querySelectorAll('[data-b]'), function (x) {
+        x.addEventListener('click', function () { brush = +x.getAttribute('data-b'); render(); });
+      });
+      q('restart').addEventListener('click', start);
+      start();
+      return { state: function () { return { bi: bi, opp: opp, st: st }; },
+               board: function (k) { bi = k; start(); }, opponent: function (o) { opp = o; start(); } };
+    };
+    return API;
+  })();
+
   G.grover = {
     id: 'grover', title: "Grover's Escape", mentor: 'Rue',
     hook: 'A vault of identical doors, one exit, and a way to find it in far fewer tries than knocking.',
     about: {
       goal: 'Measure the exit using about <strong>√N</strong> tries, where knocking door-to-door needs roughly half of all N.',
-      how: 'Hit <strong>Amplify</strong> to pump the exit’s odds up its bar, then <strong>Measure</strong> at the peak. Amplify too many times and you overshoot, the odds fall back down. <strong>Deep Dive</strong> mode makes it endless: the door count grows every corridor, the peak marker is hidden after the second, and one amplification budget runs the whole dive, poke around blindly and it runs dry. Score is how deep you get.',
-      inspired: "Grover's search algorithm (1996), after Shor's, the most famous quantum speedup there is.",
-      learn: 'Why quantum search is <em>quadratically</em> faster, √N, not exponential, and that a measurement is a dice-roll you can load but never force.',
+      how: 'Hit <strong>Amplify</strong> to pump the exit’s odds up its bar, then <strong>Measure</strong> at the peak. Amplify too often and you overshoot: the odds fall back down. <strong>Deep Dive</strong> never ends. The door count grows every corridor, the peak marker disappears after the second, and one amplification budget covers the whole dive, so blind poking runs it dry. <strong>vs Computer</strong> puts a classical rival in the corridor with you. It opens doors while you amplify, one query each per turn, across eight vaults whose rival crew grows with the vault.',
+      inspired: "Grover's search algorithm (1996), the most famous quantum speedup after Shor's.",
+      learn: 'Why quantum search is <em>quadratically</em> faster (√N, not exponentially), and why a measurement is a die you can load but never force.',
       link: 'ai.html', linkText: 'Where speedups help ▸', tier: 'Proven'
     },
-    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N, so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong>, √N versus N, and Grover is <strong>proven</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble, that is the physics, not the game. The rotation itself is phase kickback plus interference, the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a>, scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict, only a measurement taken at the peak lights the corridor. <strong>Deep Dive</strong> (a Standard-mode option) never stops: N grows as <em>nextN = round(1.7·N)</em> from 4, the par is recomputed live as <em>round(π/(4·asin(1/√N)) − ½)</em> and hidden after the second corridor, and a single amplification budget, starting at par+12, growing by par+3 per corridor cleared, spending one per Amplify, makes blind probing unaffordable. Every N, its par, the ≥90% peak probability and the budget maths are checked in <code>tools/verify_grover_deepdive.py</code>. A <strong>Daily Dive</strong> option fixes the exit door of every corridor from the date (the N sequence and pars are already deterministic), so everyone searches the identical dive today, with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>).',
+    honest: 'Honest model: this is real Grover search. Every door starts with amplitude 1/√N; one amplification is the exact oracle-then-diffusion step, which rotates the state by a fixed angle in the plane spanned by “exit” versus “everything else”. After <em>k</em> steps the exit’s probability is exactly <strong>sin²((2k+1)θ)</strong> with sin θ = 1/√N, so it climbs to a peak near <em>k</em> ≈ (π/4)√N and then <strong>falls</strong>, which is exactly why over-amplifying loses. The speedup is <strong>quadratic, not exponential</strong>, √N versus N, and Grover is <strong>proven</strong> optimal for unstructured search (Grover 1996; Bennett, Bernstein, Brassard &amp; Vazirani 1997). Measurement here is a genuine weighted draw over the bars, so even a perfect peak is a gamble, that is the physics, not the game. The rotation itself is phase kickback plus interference, the same engine <a href="formalism.html#f08">derived from scratch, one bit at a time, on The Machinery</a>, scaled up from a single query to about √N of them. The <strong>🔴 Ruthless</strong> card ("the Long Corridors") runs N from 96 up to 512, par 7 to 17: each par is the first maximum of that curve, proven the same way, and the clear is strict, only a measurement taken at the peak lights the corridor. <strong>Deep Dive</strong> (a Standard-mode option) never stops: N grows as <em>nextN = round(1.7·N)</em> from 4, the par is recomputed live as <em>round(π/(4·asin(1/√N)) − ½)</em> and hidden after the second corridor, and a single amplification budget, starting at par+12, growing by par+3 per corridor cleared, spending one per Amplify, makes blind probing unaffordable. Every N, its par, the ≥90% peak probability and the budget maths are checked in <code>tools/verify_grover_deepdive.py</code>. A <strong>Daily Dive</strong> option fixes the exit door of every corridor from the date (the N sequence and pars are already deterministic), so everyone searches the identical dive today, with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>). <strong>vs Computer</strong> (the Knocker) scores query against query: an Amplify is one Grover iteration, a Measure is one query to check the door you land on, and the rival’s crew of <em>m</em> opens <em>m</em> doors a turn, the same as <em>m</em> queries run in parallel. A failed measurement rules out the door you saw, and your register is prepared again over the doors left. Crew sizes were chosen so that best play wins each vault between 50.0% and 68.6% of the time, computed by an exact dynamic programme over every state of the race (<code>tools/verify_grover_race.py</code>). From 64 doors up, the crew that keeps pace is about 0.6√N: the quadratic speedup, expressed as a head count.',
     mount: function (root, opts) {
       // Display-only voice layer (see Circuit Golf). Rue's fixation is timing:
       // the arcade says "par", the corridor says "the moment to look".
@@ -1162,8 +1806,10 @@
             '<button class="preset" type="button" data-gm="ladder">The Ladder</button>' +
             '<button class="preset" type="button" data-gm="dd">Deep Dive</button>' +
             '<button class="preset" type="button" data-gm="daily">Daily Dive</button>' +
+            '<button class="preset" type="button" data-gm="vs">vs Computer</button>' +
             '<span data-r="ddbest" style="color:var(--muted)"></span>' +
           '</div>') +
+        '<div data-r="std">' +
         '<div class="holes" data-r="corr"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
         '<div class="gr-bars" data-r="bars" aria-label="Probability of each door being the exit"></div>' +
@@ -1172,7 +1818,8 @@
           '<button class="preset" data-a="amp">Amplify ↑</button>' +
           '<button class="preset" data-a="measure">Measure</button>' +
           '<button class="preset" data-a="reset">Reset corridor</button></p>' +
-        '<dl class="rows" data-r="rows"></dl>';
+        '<dl class="rows" data-r="rows"></dl>' +
+        '</div><div data-r="vs" hidden></div>';
 
       var barsEl = $(root, '[data-r=bars]');
       var CORR_STD = [{n:4,par:1},{n:8,par:2},{n:16,par:3},{n:32,par:4},{n:64,par:6}];
@@ -1489,11 +2136,23 @@
         fresh(); render();
       });
 
+      /* ---- vs Computer: the Knocker lives in its own host; the standard
+         corridor is hidden while it is open and untouched either way. ---- */
+      var vsOn = false, vsMounted = false;
+      function vsShow(on) {
+        vsOn = on;
+        var std = $(root, '[data-r=std]'), host = $(root, '[data-r=vs]');
+        if (std) std.hidden = on;
+        if (!host) return;
+        host.hidden = !on;
+        if (on && !vsMounted) { RACE.mount(host, opts); vsMounted = true; }
+      }
+
       /* ---- Deep Dive mode toggle (arcade Standard / Guided only) ---------- */
       function syncGmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = gld.on ? 'ladder' : !dd.on ? 'corridors' : dd.daily ? 'daily' : 'dd';
+        var cur = vsOn ? 'vs' : gld.on ? 'ladder' : !dd.on ? 'corridors' : dd.daily ? 'daily' : 'dd';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -1503,19 +2162,23 @@
         var rb = $(root, '[data-a=reset]');
         if (rb) rb.style.display = (dd.on && dd.over) ? 'none' : '';
         ddBestLabel();
+        if (vsOn) {
+          var vb = $(root, '[data-r=ddbest]');
+          if (vb) vb.textContent = RACE.best() > 0 ? '· best night: ' + RACE.best() + ' of ' + RACE.VAULTS.length + ' vaults' : '';
+        }
       }
       (function wireGmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=corridors]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = false; dd.daily = false; gld.on = false;
+          vsShow(false); dd.on = false; dd.daily = false; gld.on = false;
           CORR = ruthless ? CORR_RUTHLESS : CORR_STD; ci = 0; solved = [];
           fresh(); syncGmode(); render();
         });
         bar.querySelector('[data-gm=ladder]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = false; dd.daily = false; gld.on = true;
+          vsShow(false); dd.on = false; dd.daily = false; gld.on = true;
           // resume at the first not-yet-cleared level, so coming back to the
           // Ladder never re-serves one you already hold a medal on
           var st = FRAME.ladder.state('grover'), resume = 1;
@@ -1525,11 +2188,15 @@
         });
         bar.querySelector('[data-gm=dd]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = true; dd.daily = false; gld.on = false; ddReset(); syncGmode(); render();
+          vsShow(false); dd.on = true; dd.daily = false; gld.on = false; ddReset(); syncGmode(); render();
         });
         bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
           if (busy) return;
-          dd.on = true; dd.daily = true; gld.on = false; ddReset(); syncGmode(); render();
+          vsShow(false); dd.on = true; dd.daily = true; gld.on = false; ddReset(); syncGmode(); render();
+        });
+        bar.querySelector('[data-gm=vs]').addEventListener('click', function () {
+          if (busy) return;
+          vsShow(true); syncGmode();
         });
         syncGmode();
       })();
@@ -1544,16 +2211,16 @@
    * ==================================================================== */
   G.maxcut = {
     id: 'maxcut', title: 'Max-Cut, the district split', mentor: 'Cordon',
-    hook: 'Split a city in two so the fewest neighbours end up on the same side, the moment operations research and quantum become the same problem.',
+    hook: 'Split a city in two so the fewest neighbours end up on the same side. This is where operations research and quantum computing turn into one problem.',
     about: {
-      goal: 'Colour every district one of two colours to satisfy the most roads, a road counts when its two ends differ. Par is the true maximum.',
-      how: 'Click a district to flip its colour; <span style="color:var(--yellow)">bright roads</span> are satisfied, dim ones wasted. District 5 hides a trap where no single flip helps, that is the whole lesson. <strong>The Sprawl</strong> mode makes it endless: a fresh, larger, more frustrated city every time, generated with its true maximum cut brute-forced at load, on one flip budget. Score is how many cities you clear.',
-      inspired: "Max-Cut, one of Karp's original NP-hard problems (1972), and its Ising form (Lucas 2014), the exact thing a quantum annealer or QAOA solves.",
-      learn: 'How a hard optimisation problem becomes “find the Ising ground state”, and why local search gets stuck, the reason annealing exists.',
+      goal: 'Colour every district one of two colours to satisfy as many roads as possible. A road counts when its two ends differ, and par is the true maximum.',
+      how: 'Click a district to flip its colour; <span style="color:var(--yellow)">bright roads</span> are satisfied and dim ones wasted. District 5 hides a trap where no single flip helps, and climbing out of it is the lesson. <strong>The Sprawl</strong> never ends: each city is fresh, larger and more frustrated, its true maximum cut brute-forced as it loads, all on one flip budget. <strong>vs Computer</strong> is Border War. You and the computer take turns painting blank districts; a road scores for you when its two ends differ and for the computer when they match. Every board is solved by exhaustive search, and perfect play wins each one for you.',
+      inspired: "Max-Cut, one of Karp's original NP-hard problems (1972), and its Ising form (Lucas 2014), which is the problem a quantum annealer or QAOA is built to attack.",
+      learn: 'How a hard optimisation problem turns into “find the Ising ground state”, and why local search gets stuck, which is the reason annealing exists.',
       link: 'ai.html', linkText: 'Quantum optimisation ▸', tier: 'Proven',
       or: 'Max-Cut is a classic <b>operations research</b> problem, NP-hard since Karp 1972, and the reason the whole QUBO/Ising bridge exists.'
     },
-    honest: 'Honest model: this is Max-Cut, and it is <strong>proven</strong> NP-hard (Karp 1972), no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub>, the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>proven</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>heuristic</strong> and unproven, classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs, including the Petersen graph and a patch of triangular lattice, with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts. <strong>The Sprawl</strong> (a Standard-mode option) generates each city from a seed and a difficulty that rises every time you clear one, on a circulant frustration core plus random chords; its maximum cut is brute-forced over all 2ⁿ colourings at generation (n ≤ 12), a proven par, and you open at least two flips below it with no single-flip shortcut. One flip budget runs the whole run: opening-distance + 6, then +next-distance + 2 per city, −1 per click. Generator and accept rule proven in <code>tools/verify_maxcut_longgame.py</code>. A <strong>Daily Sprawl</strong> option seeds the city sequence from the date, the generator is pure, so it is byte-identical in every browser, with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>).',
+    honest: 'Honest model: this is Max-Cut, and it is <strong>proven</strong> NP-hard (Karp 1972), no efficient exact algorithm is known for the general case, which is why the pars here were found by brute force over all 2ⁿ colourings. The bridge to quantum is exact: label the colours ±1, and the satisfied-road count is Σ w<sub>ij</sub>(1−s<sub>i</sub>s<sub>j</sub>)/2, so <strong>maximising the cut is minimising the Ising energy</strong> Σ w<sub>ij</sub>s<sub>i</sub>s<sub>j</sub>, the ground state of an antiferromagnet. Every classic combinatorial problem (routing, scheduling, colouring) maps to this same Ising form (<strong>proven</strong> formulation, Lucas 2014), which is the whole reason quantum optimisation exists. The honest caveat: a quantum <em>advantage</em> on these problems is <strong>heuristic</strong> and unproven, classical solvers often match or beat today’s quantum ones. District 5 shows why the problem is hard even to approximate by hand: local search gets trapped. The <strong>🔴 Ruthless</strong> card ("the Frustrated Ward") runs four larger graphs, including the Petersen graph and a patch of triangular lattice, with pars brute-forced the same way; on the lattice, steepest-ascent single-flip search reaches the true maximum from only about 6% of starts. <strong>The Sprawl</strong> (a Standard-mode option) generates each city from a seed and a difficulty that rises every time you clear one, on a circulant frustration core plus random chords; its maximum cut is brute-forced over all 2ⁿ colourings at generation (n ≤ 12), a proven par, and you open at least two flips below it with no single-flip shortcut. One flip budget runs the whole run: opening-distance + 6, then +next-distance + 2 per city, −1 per click. Generator and accept rule proven in <code>tools/verify_maxcut_longgame.py</code>. A <strong>Daily Sprawl</strong> option seeds the city sequence from the date, the generator is pure, so it is byte-identical in every browser, with a per-day best beside the all-time one (<code>tools/verify_daily.py</code>). <strong>vs Computer</strong> (Border War) is a new two-player game on this board, not a simulation of a physical process. Its physics lives in the scoring: a cut road is a satisfied antiferromagnetic bond, a bound road a satisfied ferromagnetic one, and a triangle can never cut all three of its roads, which is frustration handing the Binder a point. Each of the nine boards is solved by exhaustive minimax over every part-painted map (3<sup>n</sup> states, at most 59,049), live in the browser. The hard computer plays that solution, and every board’s value is positive for you. The values, the opening-move facts and each board’s description are re-derived in <code>tools/verify_border_war.py</code>.',
     mount: function (root, opts) {
       var mission = opts && opts.mode === 'mission';
       var ruthless = !mission && opts && opts.level === 'ruthless';
@@ -1566,15 +2233,18 @@
             '<button class="preset" type="button" data-gm="ladder">The Ladder</button>' +
             '<button class="preset" type="button" data-gm="sprawl">The Sprawl</button>' +
             '<button class="preset" type="button" data-gm="daily">Daily Sprawl</button>' +
+            '<button class="preset" type="button" data-gm="vs">vs Computer</button>' +
             '<span data-r="spbest" style="color:var(--muted)"></span>' +
           '</div>') +
+        '<div data-r="std">' +
         '<div class="holes" data-r="dist"></div>' +
         '<div class="verdict" style="text-align:center" data-r="say"></div>' +
         '<svg class="mcsvg" viewBox="0 0 300 250" xmlns="' + NS + '" aria-label="A city graph, click a district to recolour it"></svg>' +
         '<p class="legend" style="text-align:center">Click a district to flip its colour · <span style="color:var(--yellow)">━ bright road = satisfied</span> · <span style="color:var(--muted)">┅ dim = wasted</span>.</p>' +
         '<p style="margin:10px 0 4px;text-align:center">' +
           '<button class="preset" data-a="invert">Invert all</button><button class="preset" data-a="reset">Reset district</button></p>' +
-        '<dl class="rows" data-r="rows"></dl>';
+        '<dl class="rows" data-r="rows"></dl>' +
+        '</div><div data-r="vs" hidden></div>';
 
       var svg = $(root, '.mcsvg');
       var DIST_STD = [
@@ -1931,6 +2601,18 @@
       });
       $(root, '[data-a=reset]').addEventListener('click', function () { if (sp.on) return; initDist(); render(); });
 
+      /* ---- vs Computer: Border War lives in its own host; the districts
+         are hidden while it is open and untouched either way. ---- */
+      var vsOn = false, vsMounted = false;
+      function vsShow(on) {
+        vsOn = on;
+        var std = $(root, '[data-r=std]'), host = $(root, '[data-r=vs]');
+        if (std) std.hidden = on;
+        if (!host) return;
+        host.hidden = !on;
+        if (on && !vsMounted) { BORDER.mount(host, opts); vsMounted = true; }
+      }
+
       /* ---- The Sprawl: run flow + mode toggle (arcade Standard/Guided) ---- */
       function sprawlClick() {
         if (sp.over) { render(); return; }
@@ -1958,7 +2640,7 @@
       function syncMCmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
-        var cur = mld.on ? 'ladder' : !sp.on ? 'dist' : sp.daily ? 'daily' : 'sprawl';
+        var cur = vsOn ? 'vs' : mld.on ? 'ladder' : !sp.on ? 'dist' : sp.daily ? 'daily' : 'sprawl';
         Array.prototype.forEach.call(bar.querySelectorAll('[data-gm]'), function (b) {
           var on = b.getAttribute('data-gm') === cur;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -1968,17 +2650,21 @@
         var rb = $(root, '[data-a=reset]');
         if (rb) rb.style.display = sp.on ? 'none' : '';
         spBestLabel();
+        if (vsOn) {
+          var vb = $(root, '[data-r=spbest]');
+          if (vb) vb.textContent = BORDER.beatenHard() > 0 ? '· beaten on hard: ' + BORDER.beatenHard() + ' of ' + BORDER.BOARDS.length : '';
+        }
       }
       (function wireMCmode() {
         var bar = $(root, '[data-r=modebar]');
         if (!bar) return;
         bar.querySelector('[data-gm=dist]').addEventListener('click', function () {
-          sp.on = false; sp.daily = false; sp.over = false; mld.on = false;
+          vsShow(false); sp.on = false; sp.daily = false; sp.over = false; mld.on = false;
           DIST = ruthless ? DIST_RUTHLESS : DIST_STD; di = 0; solved = [];
           initDist(); syncMCmode(); render();
         });
         bar.querySelector('[data-gm=ladder]').addEventListener('click', function () {
-          sp.on = false; sp.daily = false; sp.over = false; mld.on = true;
+          vsShow(false); sp.on = false; sp.daily = false; sp.over = false; mld.on = true;
           // resume at the first not-yet-cleared level
           var st = FRAME.ladder.state('maxcut'), resume = 1;
           for (var i = 1; i <= MLADDER.length; i++) if (st.cleared[i]) resume = Math.min(i + 1, MLADDER.length);
@@ -1986,10 +2672,13 @@
           mldStart(); syncMCmode(); render();
         });
         bar.querySelector('[data-gm=sprawl]').addEventListener('click', function () {
-          sp.on = true; sp.daily = false; mld.on = false; spReset(); syncMCmode(); render();
+          vsShow(false); sp.on = true; sp.daily = false; mld.on = false; spReset(); syncMCmode(); render();
         });
         bar.querySelector('[data-gm=daily]').addEventListener('click', function () {
-          sp.on = true; sp.daily = true; mld.on = false; spReset(); syncMCmode(); render();
+          vsShow(false); sp.on = true; sp.daily = true; mld.on = false; spReset(); syncMCmode(); render();
+        });
+        bar.querySelector('[data-gm=vs]').addEventListener('click', function () {
+          vsShow(true); syncMCmode();
         });
         syncMCmode();
       })();
@@ -2008,7 +2697,7 @@
     hook: 'Tic-tac-toe, but every move lands in two squares at once, until reality is forced to pick one.',
     about: {
       goal: 'Get three <strong>real</strong> marks in a line, after the collapses shake out. Two players, one board.',
-      how: 'Each turn, place your mark in <strong>two</strong> squares at once. When your moves close a <strong>loop</strong>, that tangle is <strong>measured</strong> and collapses, a loop always forces this, because a chain of pushes that closes on itself has to agree with itself, and only two arrangements can, and your opponent chooses which way it falls.',
+      how: 'Each turn, place your mark in <strong>two</strong> squares at once. When your moves close a <strong>loop</strong>, that tangle is <strong>measured</strong> and collapses. A loop always forces this: a chain of pushes that closes on itself has to agree with itself, only two arrangements can, and your opponent chooses which way it falls.',
       inspired: 'Allan Goff’s <em>Quantum Tic-Tac-Toe</em> (<em>Am. J. Phys.</em> <strong>74</strong>, 962, 2006), a real teaching game used in classrooms.',
       learn: 'Superposition, entanglement and measurement-collapse, as a faithful <em>analogy</em>, not a literal qubit simulation.',
       link: 'quantum-mechanics.html#chsh', linkText: 'Real entanglement ▸', tier: 'analogy'
@@ -2648,7 +3337,7 @@
     hook: 'Two players who cannot talk, one question each, and a win rate that no classical strategy on earth can reach.',
     about: {
       goal: 'Alice and Bob each get a random bit and answer with a bit. You win when <strong>a XOR b = x AND y</strong>. Beat <strong>75%</strong>, the provable classical ceiling.',
-      how: 'Pick a strategy and play rounds. <strong>Best classical</strong> tops out at 75%, provably. <strong>Entangled pair</strong> reaches 85.4% and no further, that limit is Tsirelson’s bound.',
+      how: 'Pick a strategy and play rounds. <strong>Best classical</strong> tops out at 75%, provably. <strong>Entangled pair</strong> reaches 85.4% and no further; that limit is Tsirelson’s bound.',
       inspired: 'The CHSH inequality (Clauser, Horne, Shimony &amp; Holt 1969), the experiment that won the 2022 Nobel Prize in Physics.',
       learn: 'That entanglement is <em>provably</em> not just hidden pre-arranged answers, and that it still cannot send a single bit.',
       link: 'quantum-mechanics.html#chsh', linkText: 'The full explainer ▸', tier: 'Proven'
@@ -2853,9 +3542,9 @@
     hook: 'Ten rounds against the decoder the field has run since 2001, on a chip nobody told it about.',
     about: {
       goal: 'Read the alarms, repair what you think flipped, and hold the logical qubit more often than <strong>minimum-weight matching</strong> does over ten rounds.',
-      how: 'Click the qubits you would repair, then <strong>Commit</strong>. The truth is revealed after every round and kept in the history table, that history is your training data.',
+      how: 'Click the qubits you would repair, then <strong>Commit</strong>. The truth is revealed after every round and kept in the history table. That history is your training data.',
       inspired: 'Minimum-weight matching (Edmonds 1965; Dennis, Kitaev, Landahl &amp; Preskill 2001) against a learned decoder, the AlphaQubit result (Bausch et al., <em>Nature</em> 2024).',
-      learn: 'Why a decoder that was handed an idealised noise model loses to one that reads the device it is actually running on.',
+      learn: 'Why a decoder that was handed an idealised noise model loses to one that reads the device it runs on.',
       link: 'qec.html#duel', linkText: 'The full explainer ▸', tier: 'Proven',
       or: 'Matching is an operations-research algorithm'
     },
@@ -3201,8 +3890,8 @@
     id: 'calibration', title: 'The Calibration',
     hook: 'You never touch the qubit. You configure the agent that has to find it, blind, while it drifts underneath you.',
     about: {
-      goal: 'Ten rounds. Each round, choose the agent\'s behaviour, then see the TRUE fidelity it actually achieved. Beat your own best-fixed-strategy replay on the identical drift you just faced.',
-      how: '<strong>Trust</strong>: spend the whole shot budget refining the last calibration, no exploring. <strong>Recalibrate</strong>: a coarse scan across the full range, rediscovering roughly where the peak is. <strong>Nudge</strong>: a narrow, precise scan near the last answer, catches small drift cheaply, misses big jumps completely. <strong>The Long Watch</strong> mode makes it endless: successive ten-round shifts, each with a target average you must clear, the churn rising and the shot budget shrinking as you go. Score is how many shifts you hold.',
+      goal: 'Ten rounds. Each round, choose the agent\'s behaviour, then see the TRUE fidelity it achieved. Beat your own best-fixed-strategy replay on the identical drift you just faced.',
+      how: '<strong>Trust</strong>: spend the whole shot budget refining the last calibration, no exploring. <strong>Recalibrate</strong>: a coarse scan across the full range, rediscovering roughly where the peak is. <strong>Nudge</strong>: a narrow, precise scan near the last answer that catches small drift cheaply and misses big jumps completely. <strong>The Long Watch</strong> mode makes it endless: successive ten-round shifts, each with a target average you must clear, the churn rising and the shot budget shrinking as you go. Score is how many shifts you hold.',
       inspired: 'Real closed-loop qubit calibration under reinforcement learning: Baum et al. (Q-CTRL), <em>PRX Quantum</em> 2, 040324 (2021), RL designing gates directly against real superconducting hardware, no model supplied; and Sivak, Morvan et al., arXiv:2511.08493 (<em>Nature</em>, 2026), RL steering Google\'s Willow processor\'s own error correction in real time.',
       learn: 'Why real qubits need periodic recalibration at all, and the explore/exploit trade-off that decides how often.',
       link: 'circuits.html#calibration', linkText: 'The physics this reuses ▸', tier: 'Proven',
@@ -4309,6 +4998,8 @@
     all: G,
     frame: FRAME,
     medals: MEDALS,
+    race: RACE,       // the Knocker: exact race DP, exposed for tools/verify_vs_modes.mjs
+    border: BORDER,   // Border War: exhaustive minimax, exposed for the same
     wsSearch: WS,   // The Workshop's pure search engine, exposed for tools/verify_workshop.mjs
     workshop: WORKSHOP,   // NOT in .all/.get -- see WORKSHOP's own header. play.html mounts it directly.
     levels: LEVELS.IDS,

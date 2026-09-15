@@ -178,45 +178,45 @@
   </details>
 </nav>
 <h1>About the desk</h1>
-<p class="lede">SymbiQ is written and maintained by <strong>Chinmoy</strong>. It is one person and a lot of checking, not an institution, and it has no funding from and no relationship with any company whose claims appear on it.</p>
+<p class="lede">SymbiQ is written and kept by <strong>Chinmoy</strong>: one person, a stubborn test suite, and no money or ties to any company whose claims turn up on these pages.</p>
 
-<p>That matters because of what this site spends most of its time doing: telling you that a number you read somewhere is wrong, or right, or right about something other than what the headline said. A site that does that anonymously is asking you for trust it has not earned. So this page is the answer to &ldquo;why should I believe any of this?&rdquo;, and the answer is deliberately not &ldquo;because of who wrote it.&rdquo; It is <em>because you can check it</em>.</p>
+<p>The independence matters because most of what happens here is arguing with numbers. A figure you read last week turns out to be wrong, or right, or right about a different quantity than the headline implied. Anyone doing that from behind a curtain is asking for trust on credit. So instead of a biography, this page lays out the machinery, and <em>every part of it can be checked from the outside</em>.</p>
 
 <h2 id="how-a-number-gets-here">How a number gets onto this site</h2>
-<p>Every figure that carries weight here comes from a primary source &mdash; the paper, the standard, the press release, the regulation &mdash; not from somebody else&rsquo;s summary of it. Where a number is worked out rather than quoted, the working is done in code that lives in the open, and it runs again on every build. Where a figure came out of a calculation you could reasonably want to see, <a href="qec.html">the pages themselves show it</a>: the receipt opens inline, next to the claim.</p>
+<p>Figures that carry weight come from the primary source: the paper, the standard, the regulation, the press release itself. A confident summary by somebody else doesn&rsquo;t count. When a number is calculated rather than quoted, the calculation lives in open code that runs again before every release. Where you might reasonably want to see the working, <a href="qec.html">the page shows it</a> in a small receipt that opens beside the claim.</p>
 
-<p>Several things run automatically and refuse to let the site ship if they disagree with it:</p>
+<p>Three guards stand at the door, and any one of them can stop a release:</p>
 <ul>
-<li><strong>The arithmetic is re-derived, not trusted.</strong> Widgets, thresholds, game pars and resource estimates are checked by scripts that recompute them from scratch &mdash; often by exhaustive search over every possible input rather than by spot-checking a few. A game par on this site is a proven optimum or it does not ship.</li>
-<li><strong>Citations are checked for rot.</strong> Every arXiv identifier the site cites is asked, against arXiv itself, whether the paper still exists, whether it has been withdrawn, whether it has moved several versions ahead of the figure quoted, and whether the surrounding text actually names its authors or title. This exists because the worst error this site has made was a stale figure from a superseded paper.</li>
-<li><strong>Prose is checked against data.</strong> The hardest bugs here have never been arithmetic. They have been a sentence asserting a number that the machine-checked data three inches away contradicted. Guards now read the sentences too.</li>
+<li><strong>Arithmetic gets redone.</strong> Widget outputs, thresholds, game pars and resource estimates are recomputed by scripts, usually by trying every possible input instead of a hopeful handful. A game par that isn&rsquo;t a proven optimum doesn&rsquo;t ship.</li>
+<li><strong>Citations get checked for rot.</strong> Papers age like milk more often than wine. Every arXiv identifier on the site is looked up against arXiv itself: does the paper still exist, was it withdrawn, has it moved several versions past the figure we quote, and does our sentence name the right authors or title? The worst mistake this site has made was a stale number from a superseded paper, which is why this guard exists.</li>
+<li><strong>Sentences get checked against data.</strong> The nastiest bugs here were never sums. They were sentences that confidently contradicted a table sitting three inches below them, so the guards read prose now too.</li>
 </ul>
 
 <h2 id="claims">Claims are judged by rules written before the answer is known</h2>
-<p><a href="ledger.html">The Ledger</a> tracks public, dated, falsifiable claims about quantum computing from labs, executives and regulators. The rules it runs on are the point:</p>
+<p><a href="ledger.html">The Ledger</a> tracks public, dated, falsifiable claims about quantum computing made by labs, executives and regulators. Its rules are the interesting part:</p>
 <ul>
-<li>The resolution criteria and the exact sources that will be consulted are <strong>frozen when the claim is logged</strong>, long before the deadline. Changing them afterwards voids the claim from scoring and publishes a note saying so.</li>
-<li><strong>Two people are needed to resolve one.</strong> Whoever captured a claim does not get to decide whether it came true.</li>
-<li>The verdict vocabulary contains no word for <em>lying</em>, <em>hype</em> or <em>fraud</em>. The Ledger says what was said, what happened, and whether they match &mdash; and then stops.</li>
-<li>When the criteria turn out to be unscoreable, that is <strong>our</strong> failure, recorded on <strong>our</strong> scorecard, published with the same prominence as anything else.</li>
+<li>The resolution criteria, and the exact sources that will settle them, are <strong>frozen the day a claim is logged</strong>, long before its deadline. Moving the goalposts later removes the claim from scoring and leaves a public note explaining why.</li>
+<li><strong>Resolving a claim takes two people.</strong> Whoever logged it doesn&rsquo;t get to mark it.</li>
+<li>The verdict vocabulary has no word for <em>lying</em>, <em>hype</em> or <em>fraud</em>. The Ledger sets what was said beside what happened and leaves the adjectives to you.</li>
+<li>If a claim turns out to be unscoreable, that is <strong>our</strong> failure. It goes on <strong>our</strong> scorecard, as visibly as anyone else&rsquo;s miss.</li>
 </ul>
 
 <h2 id="wrong">What happens when this site is wrong</h2>
-<p>It goes on <a href="corrections.html">the corrections log</a>, in public, with more room than the original claim got: what we said, what is true, and why we missed it. The log counts anything wrong that reached the published site &mdash; whoever caught it, including when it was us, and including when nobody would ever have noticed. Nothing is quietly edited away.</p>
-<p>If you find an error, that is genuinely the most valuable thing you can send. A reader-found correction is published under your name.</p>
+<p>It goes on <a href="corrections.html">the corrections log</a>, in public, with more room than the original mistake got: what we said, what is true, and how we missed it. The log counts anything wrong that reached the published site, whoever spotted it, including errors we caught ourselves and ones nobody else would have noticed. Nothing gets painted over.</p>
+<p>An error you find is the most useful thing you can send us, and a reader-found correction runs under your name.</p>
 
 <h2 id="not">What this site is not</h2>
 <ul>
-<li><strong>Not financial advice, ever.</strong> Several pages discuss cryptography, Bitcoin and publicly traded companies. Nothing here is a recommendation to buy or sell anything, and no position is held in any company named on this site.</li>
-<li><strong>Not sponsored, and not affiliated.</strong> No vendor pays for coverage, reviews copy before it ships, or has any influence over a Ledger verdict. There are no ads.</li>
-<li><strong>Not a consensus view.</strong> Where the field genuinely disagrees, the pages say so and name the disagreement rather than picking a side and hiding the other one.</li>
-<li><strong>Not finished.</strong> Parts of this site are explicitly incomplete, and where that is true it says so on the page instead of pretending otherwise.</li>
+<li><strong>Not financial advice, ever.</strong> Several pages discuss cryptography, Bitcoin and listed companies. None of it is a recommendation to buy or sell, and no position is held in any company named on this site.</li>
+<li><strong>Not sponsored, and not affiliated.</strong> No vendor pays for coverage, sees copy before it runs, or gets a say in a Ledger verdict. There are no ads.</li>
+<li><strong>Not a consensus view.</strong> Where experts disagree, the page names the disagreement and gives both sides their best argument.</li>
+<li><strong>Not finished.</strong> Some sections are incomplete, and those sections say so on the page.</li>
 </ul>
 
 <h2 id="contact">Telling us we got something wrong</h2>
-<p>The best route is <a href="corrections.html#report">the correction report</a> &mdash; it goes straight to the desk and it is the one thing here that always gets answered.</p>
+<p>The fastest route is <a href="corrections.html#report">the correction report</a>. It lands on the desk directly, and it is the one message here that always gets a reply.</p>
 <p>For anything else: <a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a>.</p>
-<p class="verif">Last updated: 8 September 2026.</p>
+<p class="verif">Last updated: 15 September 2026.</p>
 <footer>SymbiQ &middot; One person, and everything checked twice. <a href="corrections.html">Corrections</a> &middot; <a href="privacy.html">Privacy</a></footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>

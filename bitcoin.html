@@ -243,13 +243,13 @@
 </div>
 
 <span class="tier g">🟢 No math</span>
-<h2 id="green">What a quantum computer could actually steal</h2>
+<h2 id="green">What a quantum computer could steal</h2>
 <p>Your bitcoin is protected by a padlock (your public key) whose combination (your private key) is easy to check and absurdly hard to reverse. Every classical computer on Earth working together couldn't reverse it before the sun burns out. Shor's algorithm, the famous quantum one, reverses exactly this kind of padlock efficiently. So in principle: yes, a big enough quantum computer forges your signature and spends your coins.</p>
 <p>The catch is "big enough." Running Shor's algorithm on a Bitcoin key isn't a bigger version of anything today's machines do; it's the difference between a paper airplane and a cargo jet. The machine must run <em>flawlessly for many minutes to hours</em>, which requires error correction (<a href="basics.html">the thing AI is helping fix</a>, the subject of this whole site), which multiplies the hardware thousands of times over.</p>
 <p>One more wrinkle: a padlock can only be picked if the attacker can <em>see</em> it. Most Bitcoin addresses keep the padlock hidden behind a hash until the moment you spend. Coins at fresh, unused addresses show attackers nothing useful, but roughly a quarter to a third of all bitcoin, including Satoshi-era coins, sits with its padlock in plain view, and Taproot adoption keeps adding more.</p>
 
 <span class="tier y">🟡 Some math</span>
-<h2 id="yellow">The three attack surfaces, ranked honestly</h2>
+<h2 id="yellow">The three attack surfaces, ranked by real risk</h2>
 <div class="overflow"><table>
 <tr><th>Target</th><th>Quantum tool</th><th>Verdict</th></tr>
 <tr><td>Signatures (ECDSA/Schnorr, 256-bit)</td><td>Shor: exponential advantage</td><td><strong>Real threat, eventually.</strong> The only one that matters.</td></tr>
@@ -259,7 +259,7 @@
 <p><strong>The 10-minute window.</strong> Spending from a hashed address reveals your public key while the transaction waits (~10 minutes) to confirm. An attacker would need to run Shor's algorithm <em>inside that window</em> to race you, which is why serious resource estimates ask not just "can it be done" but "can it be done in an hour." That requirement multiplies the machine size, though a 2026 result cut it sharply by precomputing half the algorithm before your transaction appears (see the calculator below, and the 2026 update in the 🔴 section).</p>
 <p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half (today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps), which sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="basics.html#red">Grover audit</a>: quadratic speedups die in the overhead.</p>
 
-<h2 data-tier-keep>The calculator: what would it actually take?</h2>
+<h2 data-tier-keep>The calculator: what would it take?</h2>
 <p>Drag the sliders. The model is the one <a href="basics.html#red">the 🔴 tier</a> works in: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation: the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
 
 <div class="card" id="shor-widget">
@@ -279,7 +279,7 @@
     <button class="preset" data-p="30" data-n="90" data-mode="2026">Sci-fi</button>
   </p>
   <div id="shor-out" class="formula" aria-live="polite"></div>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, order-of-magnitude only: distance-d surface code (2d² qubits/logical), ×3 routing/factory overhead, Toffoli gates executed serially at 1 μs × d per logical cycle. Circuit generations: <strong>2017 textbook</strong> = Roetteler et al. (2,330 logical qubits, 1.26×10¹¹ Toffolis); <strong>2026 state of the art</strong> = arXiv 2603.28846-class (~1,200 logical, ~7×10⁷ Toffolis). Honest caveats: serial execution runs ~30× slower than Webber's parallelized 2022 design at the same scale, and this plain accounting lands ~8× above the 2026 paper's compact layout (~500K qubits); read outputs as the conservative end. Real machines differ; the orders of magnitude don't.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, order-of-magnitude only: distance-d surface code (2d² qubits/logical), ×3 routing/factory overhead, Toffoli gates executed serially at 1 μs × d per logical cycle. Circuit generations: <strong>2017 textbook</strong> = Roetteler et al. (2,330 logical qubits, 1.26×10¹¹ Toffolis); <strong>2026 state of the art</strong> = arXiv 2603.28846-class (~1,200 logical, ~7×10⁷ Toffolis). Caveats: serial execution runs ~30× slower than Webber's parallelized 2022 design at the same scale, and this plain accounting lands ~8× above the 2026 paper's compact layout (~500K qubits); read outputs as the conservative end. Real machines differ; the orders of magnitude don't.</p>
 </div>
 
 <span class="tier r">🔴 Real math</span>
@@ -305,8 +305,8 @@
   <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
 </div>
 
-<h2 data-tier-stop>So when should anyone actually worry?</h2>
-<p>The honest answer is a range, not a date: expert surveys cluster around "a cryptographically relevant machine is plausible in the 2030s, not the 2020s", and Google planning its own post-quantum migration for <strong>2029</strong> tells you how seriously the people building these machines take the timeline. Bitcoin's real exposure isn't a surprise attack; it's that migrating a decentralized system takes a decade of arguing, and the clock on that has already started. What happens to exposed coins nobody migrates (burn, freeze, or free-for-all) may end up the most contentious debate in Bitcoin's history.</p>
+<h2 data-tier-stop>So when should anyone start to worry?</h2>
+<p>The answer is a range rather than a date: expert surveys cluster around "a cryptographically relevant machine is plausible in the 2030s, not the 2020s", and Google planning its own post-quantum migration for <strong>2029</strong> tells you how seriously the people building these machines take the timeline. Bitcoin's real exposure isn't a surprise attack; it's that migrating a decentralized system takes a decade of arguing, and the clock on that has already started. What happens to exposed coins nobody migrates (burn, freeze, or free-for-all) may end up the most contentious debate in Bitcoin's history.</p>
 
 <div class="contra" data-claim="google-pqc-migration-2029">
   <p><a href="ledger.html#c-google-pqc-migration-2029">Google's 2029 migration date — tracked on The Ledger →</a></p>

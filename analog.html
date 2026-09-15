@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>Can a classical machine out-optimise a quantum one?</title>
-<meta name="description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
+<meta name="description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it has to beat.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/analog.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/analog.html">
 <meta property="og:title" content="Can a classical machine out-optimise a quantum one?">
-<meta property="og:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
+<meta property="og:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it has to beat.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Can a classical machine out-optimise a quantum one?">
-<meta name="twitter:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it actually has to beat.">
+<meta name="twitter:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it has to beat.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
@@ -252,7 +252,7 @@
 </nav>
 
 <h1>Can a classical machine out-optimise a quantum one?</h1>
-<p class="tagline">Every "quantum will revolutionise optimisation" headline has a classical rival built on the same underlying physics: coupled circuits settling into the answer, not calculating it. Meet the machine it actually has to beat.</p>
+<p class="tagline">Every "quantum will revolutionise optimisation" headline has a classical rival built on the same underlying physics: coupled circuits settling into the answer, not calculating it. Meet the machine it has to beat.</p>
 
 <div class="card">
 <h3>The answer in four lines</h3>
@@ -268,7 +268,7 @@
 <p>Tip a tray full of marbles onto a warped sheet and walk away. You didn't compute where they'd end up; you shaped the sheet, and physics did the rest. Every marble rolls downhill until it can't roll any further, and the resting positions are, in a real sense, the "answer" to "where is lowest here?" Nobody ran an algorithm. The shape of the sheet <em>was</em> the algorithm.</p>
 <p>Now imagine a much stranger version of the same trick, played with something simpler than marbles: a row of switches, each one either up or down. Wire pairs of them together, and let each wire carry an opinion: some wires want their two switches to <em>agree</em>, others want them to <em>disagree</em>. Count how many wires get their wish in any given arrangement of the switches. The best arrangement is whichever one keeps the most wires happy.</p>
 <p>That switches-and-wires puzzle has a name: <strong>Max-Cut</strong>, and this site's own <a href="feasible.html">operations research track</a> already teaches it as ordinary graph theory. The idea on this page is what happens when you stop treating that puzzle as something to search through, and start treating it as something to <em>build</em>: a real physical network where "settling toward the arrangement with the fewest unhappy wires" is just what the hardware does when you switch it on, the same way marbles roll downhill without being told to.</p>
-<p>Three genuinely different ways to build that network exist today. How they differ: <a href="#yellow">🟡 keep going ↓</a></p>
+<p>Three quite different ways to build that network exist today. How they differ: <a href="#yellow">🟡 keep going ↓</a></p>
 
 <!-- The coupling strip (living.js): the page's own thesis, running. Fourteen
      phase oscillators under the Kuramoto rule, coupled, settling toward one
@@ -316,7 +316,7 @@
     <figcaption><strong>J &lt; 0, "disagree":</strong> the dots settle on opposite sides. Violet edges below work this way.</figcaption>
   </figure>
 </div>
-<p>Below is a small five-node network with seven such couplings wired in, a genuinely <strong>frustrated</strong> instance: the five outer edges all want their neighbours to disagree, but you cannot walk around a five-sided loop alternating disagree/disagree/disagree/disagree/disagree and have it come out consistent. Something has to give. Shuffle the starting phases and let the circuit settle, exactly the way the hardware above does it: by integrating the same coupling rule forward in time, nothing more.</p>
+<p>Below is a small five-node network with seven such couplings wired in, a properly <strong>frustrated</strong> instance: the five outer edges all want their neighbours to disagree, but you cannot walk around a five-sided loop alternating disagree/disagree/disagree/disagree/disagree and have it come out consistent. Something has to give. Shuffle the starting phases and let the circuit settle, exactly the way the hardware above does it: by integrating the same coupling rule forward in time, nothing more.</p>
 
 <div class="card" id="analog-widget">
   <h3>A small graph, settling</h3>
@@ -335,7 +335,7 @@
 </div>
 
 <h2 id="bench" data-tier-keep>The Bench: three methods, many replays</h2>
-<p>One settle, once, proves nothing, the same rule <a href="play.html#volcano">the Annealing Volcano</a> already holds you to, judging a schedule on 500 replays rather than one lucky run. Here are three genuinely different methods (a method with no cleverness at all, the classical annealer, and the oscillator relaxation above) raced on a single larger graph, 200 runs each, at whatever time budget you give them. Move the slider and watch the ranking actually change.</p>
+<p>One settle, once, proves nothing, the same rule <a href="play.html#volcano">the Annealing Volcano</a> already holds you to, judging a schedule on 500 replays rather than one lucky run. Here are three very different methods (a method with no cleverness at all, the classical annealer, and the oscillator relaxation above) raced on a single larger graph, 200 runs each, at whatever time budget you give them. Move the slider and watch the ranking reshuffle.</p>
 
 <div class="card" id="bench-widget">
   <h3>Eight nodes, three methods, your budget</h3>
@@ -362,8 +362,8 @@
 <p><strong>Coherent Ising machines.</strong> A degenerate optical parametric oscillator, pumped above threshold, bifurcates into one of two possible output phases 0 or π relative to the pump: the same two-state trick, implemented in light. Inagaki et al., <em>Science</em> 354, 603 (2016), coupled 2,000 time-multiplexed pulses in a single fibre loop via measurement-and-feedback; the same week, McMahon et al., <em>Science</em> 354, 614 (2016), built a smaller (100-spin) machine with every pair of spins directly, optically coupled: the two ends of the same trade-off oscillator machines face on a chip, breadth of connection versus number of nodes.</p>
 <p><strong>Probabilistic bits.</strong> A p-bit's state is a stochastic function of its instantaneous input current, updating so that its time-averaged value follows a sigmoid probability of being +1: the textbook building block of a Boltzmann machine, realised in physical hardware rather than simulated in software. Camsari, Faria, Sutton &amp; Datta, <a href="https://link.aps.org/doi/10.1103/PhysRevX.7.031014">Phys. Rev. X 7, 031014</a> (2017), established the primitive using stochastic magnetic tunnel junctions. Aadit et al., <a href="https://arxiv.org/abs/2606.25313">arXiv 2606.25313</a> (2026), scaled it to one million p-bits without exotic hardware: ordinary FPGAs networked together, each holding its own local coupling weights and exchanging only single-bit boundary states with its neighbours, a scaling strategy closer to distributed computing than to physics.</p>
 <p><strong>Thermodynamic computing.</strong> Coles et al., <a href="https://arxiv.org/abs/2302.06584">arXiv 2302.06584</a> (2023), frame a wider class of AI algorithms (generative diffusion models, Bayesian neural networks, Monte Carlo sampling, simulated annealing itself) as sharing a common reliance on stochastic fluctuation, and propose hardware that supplies that fluctuation physically rather than computing pseudorandomness digitally. A working prototype, Melanson et al., <a href="https://arxiv.org/abs/2312.04836">arXiv 2312.04836</a> (2023), built a "stochastic processing unit" from eight all-to-all coupled RLC circuits on a single board (the same component family this site's own circuit page teaches, coupled and left to fluctuate rather than driven and isolated) and demonstrated genuine Gaussian sampling and the first thermodynamic matrix inversion.</p>
-<p><strong>None of this settles the question the page opened with.</strong> Bernal Neira, Brown, Sathe, Wudarski, Pavone, Rieffel &amp; Venturelli, <a href="https://arxiv.org/abs/2402.10255">arXiv 2402.10255</a> (2024), develop benchmarking and parameter-tuning methodology for exactly this kind of race and run it concretely on a coherent-Ising-machine simulator against parallel tempering (a classical heuristic); quantum annealers motivate the paper's framing but are not the hardware its own worked example actually races. What it finds: no universal winner even in that one comparison, with optimal parameter choices and which method comes out ahead varying significantly instance by instance. That is the state of the field: not "classical beats quantum" or the reverse, but a genuine, unresolved contest that depends on the problem you hand it. <a href="#bench">The Bench above</a> reproduces this instance-dependence in miniature, on purely classical methods, with the ranking flip shown directly.</p>
-<p>A single relaxation pass, as run above, is not how real oscillator or coherent Ising hardware is operated: production coherent Ising machines ramp their pump power gradually from below threshold, which is itself a form of annealing. The Bench runs the harder, colder case on purpose, so the oscillator method under-performing there is expected.</p>
+<p><strong>None of this settles the question the page opened with.</strong> Bernal Neira, Brown, Sathe, Wudarski, Pavone, Rieffel &amp; Venturelli, <a href="https://arxiv.org/abs/2402.10255">arXiv 2402.10255</a> (2024), develop benchmarking and parameter-tuning methodology for exactly this kind of race and run it concretely on a coherent-Ising-machine simulator against parallel tempering (a classical heuristic); quantum annealers motivate the paper's framing but are not the hardware its own worked example races. What it finds: no universal winner even in that one comparison, with optimal parameter choices and which method comes out ahead varying significantly instance by instance. That is the state of the field: not "classical beats quantum" or the reverse, but an open contest whose winner depends on the problem you hand it. <a href="#bench">The Bench above</a> reproduces this instance-dependence in miniature, on purely classical methods, with the ranking flip shown directly.</p>
+<p>A single relaxation pass, as run above, is not how real oscillator or coherent Ising hardware is operated: production coherent Ising machines ramp their pump power gradually from below threshold, which is itself a form of annealing. The Bench picks the harder, colder case, so the oscillator method under-performing there is expected.</p>
 
 <h2>References</h2>
 <div class="card">
@@ -380,28 +380,28 @@
 
 <div class="cyu" data-a="1">
   <p class="cyu-eyebrow">Check yourself</p>
-  <p class="cyu-q">A quantum annealer and an oscillator Ising machine are given the exact same Max-Cut problem. What is actually different between them?</p>
+  <p class="cyu-q">A quantum annealer and an oscillator Ising machine are given the exact same Max-Cut problem. What is different between them?</p>
   <div class="cyu-opts">
     <button data-opt>Nothing physical; only the marketing differs.</button>
     <button data-opt>They minimise the same Ising energy function, but reach the low-energy state by different physics: quantum tunnelling through an engineered Hamiltonian versus classical oscillators settling under injection-locking.</button>
     <button data-opt>The oscillator machine solves a completely different mathematical problem.</button>
     <button data-opt>Only the quantum annealer can be wrong; the oscillator machine always finds the true optimum.</button>
   </div>
-  <p class="cyu-why">Both machines are built around the identical mathematical target, minimise Σ J<sub>ij</sub>s<sub>i</sub>s<sub>j</sub>, which is precisely why they compete directly rather than being different tools for different jobs. What differs is entirely the physical mechanism that does the minimising. And neither one is exempt from landing on a local rather than global minimum: a well-documented limitation on both sides.</p>
+  <p class="cyu-why">Both machines are built around the identical mathematical target, minimise Σ J<sub>ij</sub>s<sub>i</sub>s<sub>j</sub>, which is why they compete head to head rather than being different tools for different jobs. What differs is entirely the physical mechanism that does the minimising. And neither one is exempt from landing on a local rather than global minimum: a well-documented limitation on both sides.</p>
 </div>
 <div class="pathway-nudge" hidden>
   <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
 </div>
 
 <a class="orjump" href="compare.html#annealing">
-  <span>◆ <b>The quantum machine this page's hardware actually competes against.</b> D-Wave's commercial annealers minimise the identical Ising Hamiltonian using quantum tunnelling instead: same target, different physics, argued over for more than a decade.<span class="arr"> How the companies compare ▸</span></span>
+  <span>◆ <b>The quantum machine this page's hardware competes against.</b> D-Wave's commercial annealers minimise the identical Ising Hamiltonian using quantum tunnelling instead: same target, different physics, argued over for more than a decade.<span class="arr"> How the companies compare ▸</span></span>
 </a>
 
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>⚡ The circuit underneath</h3><p>What one of this page's oscillators actually is, and how a single nonlinear one becomes a qubit instead.</p><a href="circuits.html">What is a qubit made of? →</a></div>
+  <div class="card"><h3>⚡ The circuit underneath</h3><p>What one of this page's oscillators is, and how a single nonlinear one becomes a qubit instead.</p><a href="circuits.html">What is a qubit made of? →</a></div>
   <div class="card"><h3>◆ The full OR track</h3><p>Max-Cut, the QUBO/Ising bridge, and nineteen other topics operations research already runs on.</p><a href="feasible.html">The Feasible Region →</a></div>
-  <div class="card"><h3>🌋 Prove it yourself</h3><p>The same "does it actually find the optimum" question, played as a game against a real annealing schedule.</p><a href="play.html">The Annealing Volcano →</a></div>
+  <div class="card"><h3>🌋 Prove it yourself</h3><p>The same "does it find the optimum" question, played as a game against a real annealing schedule.</p><a href="play.html">The Annealing Volcano →</a></div>
 </div>
 
 <footer>Can a classical machine out-optimise a quantum one: the fork in SymbiQ's own spine.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>

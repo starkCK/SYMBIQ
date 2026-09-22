@@ -203,6 +203,23 @@ body::after {
    uncomfortably long text lines. */
 @media (min-width: 1024px) { .wrap { max-width: 880px; } }
 @media (min-width: 1440px) { .wrap { max-width: 1040px; } }
+
+/* THE MEASURE. The two steps above did what that comment wanted for grids,
+   tables, cards and games -- and carried the running prose along with them,
+   which is the one thing that does not want the extra room. Measured
+   2026-09-22 at 1440px: 99 characters per line (counted in '0' advances, so
+   the true character count is higher still) against the 65-75 that long-form
+   text is set at. A reader loses the start of the next line at that length.
+   The fix keeps the container wide and caps only the running prose, so a
+   table still spans 1040px while the paragraph above it does not. Headings
+   are deliberately NOT capped: they are short, and h2 carries a drawn accent
+   whose width is part of the section rule. */
+.wrap { --measure: 70ch; }
+@media (min-width: 1024px) {
+  .wrap > p, .wrap > ul, .wrap > ol, .wrap > blockquote, .wrap > dl {
+    max-width: var(--measure);
+  }
+}
 /* :not(.rung-rail) on every bare `nav` rule below, header through mobile
    overrides: rung.js (2026-08-23) creates its own <nav class="rung-rail">
    landmark for "The Ladder", and a bare element selector matches BOTH navs,
@@ -518,6 +535,15 @@ html { scrollbar-color: var(--border) transparent; }
 /* The caret is the one piece of UI the visitor is looking straight at while
    typing, and it is teal on every other instrument on this site. */
 input, textarea, select, [contenteditable] { caret-color: var(--teal); }
+
+/* Placeholder text was the one browser surface this site never themed, so it
+   shipped Chrome's default #757575 on every input on all 27 pages. Measured
+   2026-09-22: 4.09:1 on the dark input ground and 4.40:1 on the light one --
+   38 of 42 inputs site-wide sat under the 4.5:1 floor that the rest of this
+   palette is measured against. --muted is the token that already means
+   "secondary text, contrast-locked in both themes", which is exactly what a
+   placeholder is; it clears the floor on both grounds. */
+::placeholder { color: var(--muted); opacity: 1; }
 
 /* Markers carry structure, not content -- muted, like every other piece of
    scaffolding under The Colour Law. */
@@ -1283,7 +1309,15 @@ nav .link.pathlink:hover { color: var(--violet); }
    FORMS — newsletter signup and the correction/error-bounty report.
    ================================================================ */
 .sqform { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 6px; }
-.sqform input[type=email], .sqform input[type=text], .sqform textarea {
+/* ⚠ This enumerated [type=email] and [type=text] until 2026-09-22, so the
+   Ledger's "Source URL" field -- an <input type="url"> -- matched nothing and
+   rendered as a raw browser box: solid WHITE inside a dark form, 19px tall
+   against its siblings' 47px, and under half the 44px touch target every
+   other control here meets. An allowlist of types silently excludes the next
+   type somebody uses, so this excludes the handful that must NOT be styled as
+   text fields instead, and covers every text-like type by default. */
+.sqform input:not([type=submit]):not([type=button]):not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=hidden]),
+.sqform textarea {
   flex: 1 1 220px; min-width: 0;
   background: var(--bg); color: var(--text);
   border: 1px solid var(--border); border-radius: 8px;
@@ -2163,13 +2197,22 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 .cyu-eyebrow { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
   color: var(--teal); font-weight: 700; margin: 0 0 8px; }
 .cyu-opts { display: flex; flex-direction: column; gap: 8px; margin: 14px 0 0; }
+/* The options sit ON the card, so they take the next step of the surface
+   ladder rather than `transparent`. Until 2026-09-22 these were unfilled
+   outlines on a panel, which read as a bulleted list rather than as four
+   things you can press -- a small cost when eleven of twelve questions were
+   hidden behind a depth, a real one now that every reader meets them. */
 .cyu-opts button { text-align: left; font: inherit; font-size: .93rem; cursor: pointer;
-  color: var(--text); background: transparent; border: 1px solid var(--border);
+  color: var(--text); background: var(--surface-2); border: 1px solid var(--border);
   border-radius: 10px; padding: 11px 14px; min-height: 44px;
-  transition: border-color .18s, background .18s; }
-.cyu-opts button:hover:not(.locked) { border-color: var(--muted); background: rgba(255,255,255,.03); }
+  transition: border-color .18s, background .18s, opacity .18s; }
+.cyu-opts button:hover:not(.locked) { border-color: var(--muted); background: var(--surface-3); }
+.cyu-opts button:active:not(.locked) { background: var(--surface-2); }
 .cyu-opts button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 .cyu-opts button.locked { cursor: default; }
+/* Once answered, the options nobody picked and that were not the answer step
+   back, so the eye lands on the verdict instead of re-reading four choices. */
+.cyu-opts button.locked:not(.is-right):not(.is-wrong) { opacity: .45; }
 .cyu-opts button.is-right { border-color: rgba(74,222,128,.6); background: rgba(74,222,128,.10); color: var(--green); }
 .cyu-opts button.is-wrong { border-color: rgba(248,113,113,.5); background: rgba(248,113,113,.08); color: var(--red); }
 .cyu-out { margin: 14px 0 6px; font-weight: 600; font-size: .9rem; }

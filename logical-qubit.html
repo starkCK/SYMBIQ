@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/logical-qubit.css?v=2">
+<link rel="stylesheet" href="p/logical-qubit.css?v=5">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -350,7 +350,7 @@
 <p><strong>B wins, 29 to 14, with 10× fewer physical qubits.</strong> The exponent ⌊(d+1)/2⌋ is where the leverage lives: cleaner hardware doesn't just shave the patch, it shrinks the distance you need in the first place, and you pay for distance squared. Error rate beats scale, and it isn't close. This is the whole case for spending your next engineering dollar on fidelity (much of it <a href="ai.html">bought by AI-driven calibration and decoding</a>) rather than on more noisy qubits.</p>
 <p>The same arithmetic is why cryptographic targets look so expensive: push the target to 10⁻¹² or below and every machine's required <em>d</em> jumps, the patches balloon, and the logical count collapses, which is exactly the multiplier behind the <a href="bitcoin.html">"half a million physical qubits to break a key"</a> headline.</p>
 
-<div class="cyu" data-a="1">
+<div class="cyu" data-tier-keep data-a="1">
   <p class="cyu-eyebrow">Check yourself</p>
   <p class="cyu-q">Machine A runs at p/p<sub>th</sub> = 1/2 and needs <em>d</em> = 59. Machine B runs at 1/20 and needs <em>d</em> = 13. B has ten times fewer physical qubits. Which fits more logical qubits?</p>
   <div class="cyu-opts">

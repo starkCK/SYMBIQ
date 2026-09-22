@@ -835,6 +835,33 @@ if esc_hits == 0:
 # HTML for the loader is the exact mistake that made four other tools lie the
 # same morning this rule was written.
 STANDING_LAZY_TYPE = "text/symbiq-lazy"
+
+# 13a. EVERY QUESTION IS VISIBLE AT EVERY DEPTH (Chinmoy's call, 2026-09-22c).
+#
+# Until then, ELEVEN OF TWELVE .cyu blocks were display:none to a default
+# reader -- each inherited the tier of the section it sat in, and eleven sat
+# in a 🟡 or 🔴 one. Measured at data-depth="g": basics.html showed 1 of its 3,
+# every other page 0 of 1. The whole proofs half of The Standing was therefore
+# reachable on one page. data-tier-keep is what exempts an element from the
+# depth toggle, and it is the same attribute whose absence caused Correction 6.
+#
+# This is cheap to lose again: a question added by copying an existing block
+# from BEFORE this change, or a careless de-duplication of attributes, puts it
+# straight back behind a depth nobody selects. So it is checked.
+cyu_missing = []
+for fname, (_p, raw) in pages.items():
+    for m in re.finditer(r'<div class="cyu"([^>]*)>', raw):
+        if "data-tier-keep" not in m.group(1):
+            cyu_missing.append(fname)
+if cyu_missing:
+    fail("cyu-depth", f"{len(cyu_missing)} check-your-understanding block(s) lack "
+                      f"data-tier-keep and are hidden from a reader who has not "
+                      f"picked their section's depth: "
+                      + ", ".join(sorted(set(cyu_missing))))
+else:
+    n_cyu = sum(raw.count('class="cyu"') for _f, (_p, raw) in pages.items())
+    ok(f"cyu-depth: all {n_cyu} question(s) are visible at every depth")
+
 st_lazy, st_pages = [], []
 for fname, (p_, raw) in pages.items():
     n_cyu = raw.count('class="cyu"')

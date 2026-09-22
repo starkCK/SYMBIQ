@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/bitcoin.css?v=2">
+<link rel="stylesheet" href="p/bitcoin.css?v=5">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -300,7 +300,7 @@
 <p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis, <span class="rcpt" data-rcpt="btc-500k" tabindex="0" role="button" aria-expanded="false">under half a million physical qubits</span>, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong><span class="rcpt" data-rcpt="btc-9min" tabindex="0" role="button" aria-expanded="false">≈9 minutes</span></strong> once your transaction appears, inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
 <p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime; magic-state throughput is the real budget (the same economics as <a href="qec.html#red">magic-state distillation</a>); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic, since there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once, hardware error rates and algorithmic Toffoli counts, so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
 
-<div class="cyu" data-a="1">
+<div class="cyu" data-tier-keep data-a="1">
   <p class="cyu-eyebrow">Check yourself</p>
   <p class="cyu-q">The 2022 estimate for a racing attack was 1.9 billion physical qubits. The 2026 estimate is about 500,000. What mostly closed that gap?</p>
   <div class="cyu-opts">

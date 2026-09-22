@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/ai.css?v=2">
+<link rel="stylesheet" href="p/ai.css?v=5">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -343,7 +343,7 @@
 <p><strong>Where the reverse loop pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup (Grover-style quadratic gaps) die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="basics.html#red">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and, in the constructive results, classical ML gains provable power from data, which shrinks the room left for a quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Real advantage clusters around tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong>, sampling and Hamiltonian simulation feeding classical AI, not QML on classical data.</p>
 <p><strong>The classical side of this page's own loop, for further reading.</strong> Everything above assumes familiarity with how classical ML works: gradient descent, cost landscapes, what "training" means. This page doesn't re-teach that; the standard references are Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006); Murphy, <em>Probabilistic Machine Learning: An Introduction</em> (MIT Press, 2022) and its companion <em>Advanced Topics</em> (MIT Press, 2023); Goodfellow, Bengio &amp; Courville, <em>Deep Learning</em> (MIT Press, 2016); and, for the free, course-form version, Stanford's CS229 (Machine Learning) and CS25 (Transformers United).</p>
 
-<div class="cyu" data-a="2">
+<div class="cyu" data-tier-keep data-a="2">
   <p class="cyu-eyebrow">Check yourself</p>
   <p class="cyu-q">Which of the four routes from quantum computing to AI is the most defensible in the near term?</p>
   <div class="cyu-opts">

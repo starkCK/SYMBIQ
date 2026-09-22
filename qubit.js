@@ -65,7 +65,7 @@
   var LS_KEY = 'symbiq.qz.seen.v1';   /* forever: the one-time hint has been shown */
   var EPS = 1e-9;
 
-  var reduced = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduced = window.SymbiQ.core.reduced();
 
   /* ---------------------------------------------------------------- */
   /* Complex arithmetic. Same [re, im] convention as the try-it engine in

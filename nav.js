@@ -61,7 +61,7 @@
    Belt and braces: a timer force-reveals everything after 2.5s no matter what. */
 (function () {
   try {
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduce = window.SymbiQ.core.reduced();
     /* .introute, .spine and footer added 2026-08-27, closing the gap that made
        the footer the one block on every page that never animated in.
 

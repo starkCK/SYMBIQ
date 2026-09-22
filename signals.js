@@ -13,11 +13,7 @@
   window.SymbiQ = window.SymbiQ || {};
   var TIER_ICON = { Proven: '🟢', Heuristic: '🟡', Inspired: '🟣' };
 
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
 
   function tierBadge(tier) {
     var icon = TIER_ICON[tier] || '';

@@ -16,11 +16,7 @@
   window.SymbiQ = window.SymbiQ || {};
   var TIER = { g: '🟢 Beginner', y: '🟡 Intermediate', r: '🔴 Expert' };
 
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
 
   function renderOne(q) {
     var Q = q.question, opts = Q.options || [];

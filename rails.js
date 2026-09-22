@@ -203,7 +203,7 @@
            which a bare fragment jump does not. Reduced motion gets the
            same landing point with no travel. */
         ev.preventDefault();
-        var reduce = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var reduce = window.SymbiQ.core.reduced();
         var y = h.getBoundingClientRect().top + W.pageYOffset - 88;
         W.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
         if (history.replaceState) history.replaceState(null, '', '#' + h.id);
@@ -222,7 +222,7 @@
     topBtn = el('button', 'sqrail-top', '↑ Top');
     topBtn.type = 'button';
     topBtn.addEventListener('click', function () {
-      var reduce = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reduce = window.SymbiQ.core.reduced();
       W.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
     });
     col.appendChild(topBtn);

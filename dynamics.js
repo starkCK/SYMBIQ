@@ -20,8 +20,7 @@
 
   var reduce = false;
   try {
-    reduce = !!(window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    reduce = window.SymbiQ.core.reduced();
   } catch (e) { /* unreadable preference -> treat as no-preference */ }
 
   /* ======================================================================

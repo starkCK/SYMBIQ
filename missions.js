@@ -24,7 +24,7 @@
   window.SymbiQ = window.SymbiQ || {};
   var M = {};
 
-  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
   function node(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
 
   /* ---- the ceremony through-line -------------------------------------------

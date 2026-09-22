@@ -33,7 +33,7 @@
 
   var reduce = false;
   try {
-    reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    reduce = window.SymbiQ.core.reduced();
   } catch (e) { /* treat an unreadable preference as "no preference" */ }
 
   /* ======================================================================

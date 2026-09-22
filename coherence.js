@@ -24,7 +24,7 @@
   var KEY = 'coherence.v1';
   var BASE = 55;            // a fractured Solver begins here; understanding lifts it
   var meters = [];          // every mounted meter, kept in sync
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = window.SymbiQ.core.reduced();
 
   function clamp(n) { return Math.max(0, Math.min(100, Math.round(n))); }
   function read() {

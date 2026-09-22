@@ -25,11 +25,7 @@
   var input = null, list = null, status = null;
   var results = [], cursor = -1, lastFocus = null;
 
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
 
   /* Highlight every query token in a already-escaped string. Done after
      escaping so a page whose prose contains "<" cannot inject markup. */

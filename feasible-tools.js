@@ -37,10 +37,7 @@
   window.SymbiQ = window.SymbiQ || {};
   var NS = 'http://www.w3.org/2000/svg';
   function $(r, s) { return r.querySelector(s); }
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
   function fmt(x) { return (Math.round(x * 100) / 100).toString(); }
   function win(id, opts) {
     var first = false;

@@ -39,8 +39,7 @@
 
   var reduce = false;
   try {
-    reduce = !!(W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    if (D.documentElement.getAttribute('data-motion-pref') === 'reduce') reduce = true;
+    reduce = window.SymbiQ.core.reduced();
   } catch (e) { /* unreadable preference -> treat as no preference */ }
 
   /* ---- constants: identical to tools/verify_living.py -------------------- */

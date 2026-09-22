@@ -30,7 +30,7 @@
   'use strict';
   window.SymbiQ = window.SymbiQ || {};
 
-  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var reduce = window.SymbiQ.core.reduced();
   var NS = 'http://www.w3.org/2000/svg';
 
   /* The site's colour law, in the one place a shader can read it.

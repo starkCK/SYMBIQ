@@ -32,8 +32,7 @@
      living.js reads both; so does this. */
   var reduce = false;
   try {
-    reduce = !!(W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    if (D.documentElement.getAttribute('data-motion-pref') === 'reduce') reduce = true;
+    reduce = window.SymbiQ.core.reduced();
   } catch (e) {}
 
   function $(s, r) { return (r || D).querySelector(s); }

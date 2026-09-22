@@ -336,7 +336,7 @@
     try { buildChecks(); } catch (e) {}
     try { buildCorrFilters(); } catch (e) {}
     try {
-      if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (!window.SymbiQ.core.reduced()) {
         buildProgress();
       }
     } catch (e) {}

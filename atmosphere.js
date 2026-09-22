@@ -33,7 +33,7 @@
   var W = window, D = document;
   W.SymbiQ = W.SymbiQ || {};
 
-  var reduced = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduced = window.SymbiQ.core.reduced();
 
   /* ---------------------------------------------------------------- */
   /* Colour, read from the cascade rather than hardcoded, so the lattice

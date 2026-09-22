@@ -140,7 +140,10 @@
   /* ------------------------------------------------------------------ *
    *  THE LEXICON ITSELF                                                 *
    * ------------------------------------------------------------------ */
-  function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  /* Escapes for a REGEX, not for HTML -- it shared the name `esc` with the
+     site's HTML escaper until plan 24 §2.2 moved that one into core.js.
+     Renamed so the collision cannot mislead a reader (or a grep) again. */
+  function reEsc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
   var SKIP_SEL = 'nav, footer, script, style, noscript, textarea, select, svg, code, ' +
     '.formula, .ket, a, button, .hud, .lx-term, .rcpt, .navpanel, .cyu, .g-ceremony, ' +
@@ -188,7 +191,7 @@
     var map = {};
     var alt = patterns.map(function (p) {
       if (!(p.text in map)) map[p.text] = p.id;
-      return esc(p.text);
+      return reEsc(p.text);
     }).join('|');
     var RE = new RegExp('(?<!\\w)(?:' + alt + ')(?!\\w)', 'g');
 

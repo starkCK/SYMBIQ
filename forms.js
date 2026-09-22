@@ -38,7 +38,18 @@
 
   function values(form) {
     var out = {}, els = form.querySelectorAll('input[name], textarea[name], select[name]');
-    for (var i = 0; i < els.length; i++) out[els[i].name] = els[i].value.trim();
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i], t = (el.type || '').toLowerCase();
+      // A checkbox or radio reports .value ("on") whether or not it is ticked,
+      // so reading .value alone would submit every checkbox as checked. Only a
+      // ticked one counts -- which is what the waitlist checkbox (plan 23 §7.6)
+      // needs before it can be added to the newsletter form.
+      if (t === 'checkbox' || t === 'radio') {
+        if (el.checked) out[el.name] = (el.value && el.value !== 'on') ? el.value : 'yes';
+        continue;
+      }
+      out[el.name] = el.value.trim();
+    }
     return out;
   }
 
@@ -112,6 +123,7 @@
 
       post(form, kind, data)
         .then(function () {
+          if (kind === 'newsletter') remember('subscribed');
           done(true, kind === 'newsletter'
             ? 'You’re on the list. Nothing else needed.'
             : 'Got it, thank you. Every report is read by a human.');
@@ -140,6 +152,56 @@
      form only once it knows nobody is signed in) never see init(), so they
      need a way in. handle() guards itself with a data-sq-wired flag, so a
      form reached by both paths is still bound exactly once. */
+  /* ASK AT THE WIN. The only newsletter form used to sit at the bottom of the
+     home page. People say yes right after they win something, so a game or the
+     Question can call capture(host) at that moment. It shows at most once per
+     page load, never again after a subscription (from any form), and not for
+     three weeks after "Not now". The whole state is one localStorage key. */
+  var CAP_KEY = 'symbiq.capture.v1', capShown = false, capN = 0;
+  function capState() { try { return JSON.parse(localStorage.getItem(CAP_KEY)) || {}; } catch (e) { return {}; } }
+  function remember(state) { try { localStorage.setItem(CAP_KEY, JSON.stringify({ state: state, at: Date.now() })); } catch (e) {} }
+  var CAP_COPY = {
+    question: 'One letter a week: the move of the week, a claim that moved, and the Question with last week’s answer.',
+    game: 'One letter a week from the desk: the move of the week, a claim that moved, and a seeded board to beat.'
+  };
+  function ensureCapStyle() {
+    if (document.getElementById('sq-cap-style')) return;
+    var st = document.createElement('style');
+    st.id = 'sq-cap-style';
+    st.textContent =
+      '.sqcap{margin:14px 0 4px;padding:14px 16px;border:1px dashed var(--border);border-radius:12px;text-align:left;font-weight:400}' +
+      '.sqcap-lead{margin:0;font-size:.93rem}' +
+      '.sqcap .sqform{margin:10px 0 0}' +
+      '.sqcap-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}';
+    document.head.appendChild(st);
+  }
+  function capture(host, o) {
+    o = o || {};
+    if (!host || capShown) return false;
+    var s = capState();
+    if (s.state === 'subscribed') return false;
+    if (s.state === 'dismissed' && Date.now() - (s.at || 0) < 21 * 86400000) return false;
+    capShown = true; capN++;
+    var id = 'sqcap-email-' + capN, ctx = String(o.context || 'site').replace(/[^a-z]/g, '');
+    ensureCapStyle();
+    host.innerHTML =
+      '<div class="sqcap">' +
+        '<p class="sqcap-lead"><strong>' + (o.lead || 'Nice.') + '</strong> ' +
+          (ctx === 'question' ? CAP_COPY.question : CAP_COPY.game) + ' The first issue will find you.</p>' +
+        '<form class="sqform" data-sq="newsletter">' +
+          '<label class="sqcap-sr" for="' + id + '">Your email address</label>' +
+          '<input type="email" id="' + id + '" name="email" data-label="your email" required placeholder="you@example.com">' +
+          '<input type="hidden" name="source" value="' + ctx + '">' +
+          '<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
+          '<button type="submit">Send me the letter</button>' +
+          '<button type="button" class="ghost" data-sqcap-no>Not now</button>' +
+        '</form>' +
+      '</div>';
+    handle(host.querySelector('form'));
+    host.querySelector('[data-sqcap-no]').addEventListener('click', function () { remember('dismissed'); host.innerHTML = ''; });
+    return true;
+  }
+
   window.SymbiQ = window.SymbiQ || {};
-  window.SymbiQ.forms = { wire: function (form) { if (form) handle(form); } };
+  window.SymbiQ.forms = { wire: function (form) { if (form) handle(form); }, capture: capture };
 })();

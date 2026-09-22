@@ -384,3 +384,55 @@ create or replace view daily_leaderboard as
 comment on view daily_leaderboard is
   'Today''s best score per player per game. Read-only projection of '
   'daily_scores; RLS on the base tables still applies through the view.';
+
+-- ============================================================================
+-- L4 -- Hardening. Added 2026-09-18 (plan 24, finding S2). Re-run the whole
+-- file again in the SQL Editor; everything above is idempotent and so is this.
+--
+-- WHY: every write policy above checks WHO is writing and nothing else. No
+-- column had a length limit, so one signed-in account could insert rows until
+-- the 500 MB free-tier database was full and sign-in failed for everyone. And
+-- `profiles.handle` had no shape rule, so a member could set it to "SymbiQ
+-- Desk" or to ten megabytes of text. These CHECK constraints are the part of
+-- the fix a database can express. The other part -- how MANY rows per hour --
+-- needs a server in front of the writes (plan 24 §1.3, the Cloudflare Worker)
+-- and is not pretended at here.
+--
+-- Each constraint is dropped-if-exists then added, so re-running is safe.
+-- ============================================================================
+
+alter table profiles drop constraint if exists profiles_handle_shape;
+alter table profiles add constraint profiles_handle_shape
+  check (handle ~ '^[a-z0-9_]{1,40}$');
+
+alter table profiles drop constraint if exists profiles_display_name_len;
+alter table profiles add constraint profiles_display_name_len
+  check (length(display_name) between 1 and 60);
+
+alter table profiles drop constraint if exists profiles_bio_len;
+alter table profiles add constraint profiles_bio_len
+  check (bio is null or length(bio) <= 1000);
+
+alter table claim_submissions drop constraint if exists claim_submissions_lens;
+alter table claim_submissions add constraint claim_submissions_lens
+  check (length(raw_url) <= 500
+         and length(coalesce(raw_quote, '')) <= 4000
+         and length(coalesce(why, '')) <= 4000);
+
+alter table claim_forecasts drop constraint if exists claim_forecasts_rationale_len;
+alter table claim_forecasts add constraint claim_forecasts_rationale_len
+  check (rationale is null or length(rationale) <= 2000);
+
+alter table frontier_submissions drop constraint if exists frontier_submissions_lens;
+alter table frontier_submissions add constraint frontier_submissions_lens
+  check (length(question) <= 2000
+         and length(coalesce(why_open, '')) <= 4000
+         and length(coalesce(reading, '')) <= 1000);
+
+alter table frontier_model_votes drop constraint if exists frontier_model_votes_note_len;
+alter table frontier_model_votes add constraint frontier_model_votes_note_len
+  check (note is null or length(note) <= 2000);
+
+comment on constraint profiles_handle_shape on profiles is
+  'Lowercase letters, digits, underscore, 1-40 chars: the shape handle_new_user() '
+  'already generates. Stops impersonation-by-handle and oversized values.';

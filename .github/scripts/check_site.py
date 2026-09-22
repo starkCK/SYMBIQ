@@ -95,14 +95,18 @@ def html_files():
 
 
 def js_files():
-    """Top-level .js and .mjs, plus the vendored post-quantum ESM tree. The
+    """Top-level .js and .mjs, plus every vendored tree under vendor/. The
     vendored files are third-party and minified, which is exactly why they
-    should be parse-checked rather than assumed good."""
+    should be parse-checked rather than assumed good. Generalised from pq-only
+    on 2026-09-18 when vendor/supabase/ joined it."""
     out = sorted(f for f in os.listdir(ROOT) if f.endswith((".js", ".mjs")))
-    vend = os.path.join(ROOT, "vendor", "pq")
-    if os.path.isdir(vend):
-        out += sorted(os.path.join("vendor", "pq", f)
-                      for f in os.listdir(vend) if f.endswith(".mjs"))
+    vroot = os.path.join(ROOT, "vendor")
+    if os.path.isdir(vroot):
+        for pkg in sorted(os.listdir(vroot)):
+            vend = os.path.join(vroot, pkg)
+            if os.path.isdir(vend):
+                out += sorted(os.path.join("vendor", pkg, f)
+                              for f in os.listdir(vend) if f.endswith((".js", ".mjs")))
     return out
 
 
@@ -498,6 +502,319 @@ else:
         fail("cache-bust", line)
     if not moved and not stale:
         ok(f"cache-bust: all {n_ok} versioned asset(s) match the sha256 their ?v= stands for")
+
+# 9. VENDORED CODE MATCHES ITS MANIFEST -------------------------------------
+# Every directory under vendor/ carries a MANIFEST.json (written by the desk's
+# tools/vendor_dep.py) that pins the package to one exact version and records,
+# per file, sha256_local: the hash of the bytes AS THEY SIT ON DISK. That is
+# the field checked here, and the distinction matters. vendor/pq/ spent from
+# 2026-08-05 to 2026-09-18 with only sha256_upstream recorded, and its files
+# had been edited after download (CDN import paths rewritten to local ones), so
+# the recorded hash could never match and the manifest verified nothing. A
+# checksum that cannot match cannot detect tampering. This check fails on a
+# changed file, an unlisted script, or a package that is not pinned; it warns
+# on a file that has no sha256_local yet, because that file is unverifiable
+# rather than known-bad.
+VROOT = os.path.join(ROOT, "vendor")
+if os.path.isdir(VROOT):
+    v_checked, v_unverifiable = 0, []
+    for pkg in sorted(os.listdir(VROOT)):
+        vdir = os.path.join(VROOT, pkg)
+        if not os.path.isdir(vdir):
+            continue
+        mpath = os.path.join(vdir, "MANIFEST.json")
+        if not os.path.exists(mpath):
+            fail("vendor", f"vendor/{pkg}/ has no MANIFEST.json -- unrecorded third-party code")
+            continue
+        try:
+            man = json.load(open(mpath, encoding="utf-8"))
+        except Exception as e:
+            fail("vendor", f"vendor/{pkg}/MANIFEST.json does not parse -> {e}")
+            continue
+        pkg_id = str(man.get("package", ""))
+        if "@" not in pkg_id.lstrip("@"):
+            fail("vendor", f"vendor/{pkg}: package {pkg_id!r} is not pinned to an exact version")
+        listed = set()
+        for entry in man.get("files", []):
+            local = entry.get("local", "")
+            listed.add(local)
+            fpath = os.path.join(vdir, local)
+            if not os.path.exists(fpath):
+                fail("vendor", f"vendor/{pkg}/{local} is in the manifest but missing from disk")
+                continue
+            want = entry.get("sha256_local")
+            if not want:
+                v_unverifiable.append(f"vendor/{pkg}/{local}")
+                continue
+            h = hashlib.sha256()
+            with open(fpath, "rb") as fh:
+                for chunk in iter(lambda: fh.read(65536), b""):
+                    h.update(chunk)
+            if h.hexdigest() != want:
+                fail("vendor", f"vendor/{pkg}/{local} CHANGED since it was recorded "
+                               f"(on disk {h.hexdigest()[:12]}, manifest {want[:12]}) -- "
+                               f"if deliberate, re-run tools/vendor_dep.py in the desk repo")
+            else:
+                v_checked += 1
+        # Any script in the directory that the manifest does not list is
+        # exactly the thing this check exists to catch.
+        for name in sorted(os.listdir(vdir)):
+            if name.endswith((".js", ".mjs")) and name not in listed:
+                fail("vendor", f"vendor/{pkg}/{name} is a script the manifest does not list")
+    if v_unverifiable:
+        warn("vendor", f"{len(v_unverifiable)} vendored file(s) have no sha256_local and cannot be "
+                       f"verified: {', '.join(v_unverifiable[:4])} -- run "
+                       f"`python tools/vendor_dep.py --backfill` in the desk repo")
+    if not [f for f in FAILS if f.startswith("vendor")]:
+        ok(f"vendor: {v_checked} vendored file(s) match the sha256 recorded for them")
+
+# --------------------------------------------------------------------------
+# 10. core.js -- the single copy of esc / reduced / store (plan 24 §2.2)
+#
+# Three rules, each replacing a thing a person used to have to remember:
+#
+#   a) every page loads core.js, FIRST, and NOT deferred. Ordering here is
+#      not document order: a classic script runs at parse time and beats
+#      every deferred script on the page. Four core.js consumers on this
+#      site (scene.js, missions.js, coherence.js, feasible-tools.js) load
+#      without `defer`, so a deferred core.js loses the race and they throw.
+#      That exact bug shipped for the length of one verifier run.
+#   b) no site script re-declares its own esc(). Twelve did, and three of
+#      the twelve were weaker than the rest -- which is why the escaping
+#      guarantee used to require auditing 300 call sites instead of reading
+#      one function.
+#   c) no site script reads the OS reduced-motion query directly. SymbiQ has
+#      its own "Reduce motion" switch; ten of twelve motion files ignored it
+#      and kept their rAF loops running. core.reduced() reads both.
+# --------------------------------------------------------------------------
+CORE_TAG = re.compile(r'<script\s+src="core\.js[^"]*"([^>]*)>')
+ANY_SRC = re.compile(r'<script\s+src="([^"]+)"([^>]*)>')
+
+core_ok = 0
+for fname in pages:
+    html = pages[fname][1]
+    tags = ANY_SRC.findall(html)
+    if not tags:
+        continue
+    first_src, first_attrs = tags[0]
+    if not CORE_TAG.search(html):
+        fail("core", f"{fname} does not load core.js -- run "
+                     f"`python tools/apply_core.py` in the desk repo")
+    elif not first_src.startswith("core.js"):
+        fail("core", f"{fname} loads {first_src} before core.js; core.js must be "
+                     f"the first script on the page")
+    elif "defer" in first_attrs:
+        fail("core", f"{fname} loads core.js with `defer` -- a classic script "
+                     f"(save.js, games.js, scene.js, missions.js, coherence.js, "
+                     f"feasible-tools.js) would run before it and throw")
+    else:
+        core_ok += 1
+
+for f in js_files():
+    name = os.path.basename(f)
+    if name == "core.js" or "vendor" in f.replace("\\", "/"):
+        continue
+    src = open(os.path.join(ROOT, f), encoding="utf-8").read()
+    if re.search(r"function\s+esc\s*\(", src):
+        fail("core", f"{name} declares its own esc() -- use window.SymbiQ.core.esc "
+                     f"so the escaping guarantee stays one function")
+    if re.search(r"matchMedia\s*\(\s*'\(prefers-reduced-motion", src):
+        fail("core", f"{name} reads the OS reduced-motion query directly -- use "
+                     f"window.SymbiQ.core.reduced(), which also honours SymbiQ's "
+                     f"own Reduce-motion switch")
+
+if not [f for f in FAILS if f.startswith("core")]:
+    ok(f"core: core.js loads first and undeferred on {core_ok} pages; "
+       f"no duplicate esc(), no OS-only motion check")
+
+# --------------------------------------------------------------------------
+# 11. games.js is 336 KB, the largest file the site ships. play.html and
+# journey.html ARE the games and load it outright; the three explainer pages
+# that host a single cabinet load it on approach instead (2026-09-21), via a
+# <script> whose unrecognised `type` stops the browser fetching it.
+#
+# That tag is inert, so if the inline loader beside it is ever deleted or
+# renamed, nothing errors -- the widget just silently stops existing, on a page
+# whose prose introduces it. Which is exactly the class of defect a reader
+# reports and a checker should have caught, so: an inert tag must be paired
+# with a loader that names it, and a page that mounts a cabinet must carry one
+# of the two arrangements.
+LAZY_TYPE = "text/symbiq-lazy"
+games_eager, games_lazy = [], []
+for fname, (p, raw) in pages.items():
+    tags = [(a_type, src) for a_type, src, _ in p.scripts
+            if src and src.split("?")[0] == "games.js"]
+    # The exact invariant, not a guess from element ids: a page that reaches
+    # for the module has to be a page that loads it. (Several pages use an
+    # unrelated `*-mount` host, so matching on that name would be wrong.)
+    uses = "SymbiQ.games" in raw
+    if not tags:
+        if uses:
+            fail("games", f"{fname} uses SymbiQ.games but never loads games.js")
+        continue
+    if len(tags) > 1:
+        fail("games", f"{fname} loads games.js {len(tags)} times")
+        continue
+    a_type, _src = tags[0]
+    if not a_type:
+        games_eager.append(fname)
+        continue
+    if a_type != LAZY_TYPE:
+        fail("games", f'{fname} loads games.js with type="{a_type}" -- the browser '
+                      f'will not run that. Use no type (eager) or "{LAZY_TYPE}".')
+        continue
+    games_lazy.append(fname)
+    # Inert: the loader beside it is the only thing that will ever fetch it.
+    if 'id="games-src"' not in raw:
+        fail("games", f"{fname} has an inert games.js tag with no id=\"games-src\" "
+                      f"for its loader to find")
+    if "getElementById('games-src')" not in raw:
+        fail("games", f"{fname} has an inert games.js tag that nothing loads -- "
+                      f"the widget would silently never appear")
+    if "loadScript" not in raw:
+        fail("games", f"{fname} has an inert games.js tag but no loadScript call")
+    # The host the loader names must actually exist in the page.
+    for host_id in set(re.findall(r"getElementById\('([a-z-]+-mount)'\)", raw)):
+        if f'id="{host_id}"' not in raw:
+            fail("games", f"{fname}'s loader mounts into #{host_id}, which is not on the page")
+    # The reserved height is what stops the page jumping under a fast scroller.
+    if "minHeight" not in raw:
+        fail("games", f"{fname} mounts a game on approach without reserving its "
+                      f"height -- the page will jump when it lands")
+
+if not [f for f in FAILS if f.startswith("games")]:
+    ok(f"games: games.js eager on {len(games_eager)} page(s), "
+       f"loaded on approach with a paired loader on {len(games_lazy)}")
+
+# --------------------------------------------------------------------------
+# 12. innerHTML-must-esc(), the companion S3-stage-2 rule plan 24 asks for
+#     ("a check_site.py rule that fails any innerHTML assignment
+#     concatenating a bare identifier not wrapped in esc()") -- built,
+#     calibrated against the real 40-file corpus, and deliberately shipped
+#     as ADVISORY (a WARN), not a FAIL, for a reason worth recording so a
+#     future session does not re-derive it and does not "fix" it into a
+#     FAIL either:
+#
+#     A literal "flag every bare identifier" rule was tried first and found
+#     ~100 hits, all of them safe (NS, EPOCHS, pct, cls, out, html -- local
+#     constants and accumulators the plan's own S7 audit already traced and
+#     cleared). A narrower "flag .map() calls with zero esc() in the same
+#     statement" rule was tried next and still found 12, still all safe
+#     (LV/HOLES/BOARDS/CORR/DIST -- this codebase's own convention for
+#     hardcoded, author-written game-data tables, mapped straight into HTML
+#     with no external content anywhere in them). Even the narrowest version
+#     -- flag known Supabase/external field NAMES (handle, bio, note,
+#     rationale, why, question, reading, quote, raw_url, raw_quote,
+#     why_open) appearing unescaped -- still found two: games.js's Max-Cut
+#     district object carries its own `note` field, which is this
+#     codebase's own authored flavour copy, not a database column that
+#     happens to share the name.
+#
+#     Conclusion: this codebase's actual escaping risk is not "a bare
+#     identifier" or "a .map() without esc()" -- both are its dominant SAFE
+#     pattern, used for hardcoded game data everywhere. The field-name
+#     signal is the only one with a plausible real positive (a NEW call
+#     site rendering a genuinely external field), so that is what ships,
+#     as a WARN: loud enough to make a human look, never loud enough to
+#     block a page that reused `note` for a level's own flavour text.
+# --------------------------------------------------------------------------
+RISKY_FIELDS = ("handle", "bio", "rationale", "raw_url", "raw_quote", "why_open",
+                "why", "question", "reading", "quote", "note")
+RISKY_TERM = re.compile(
+    r"\.(?:" + "|".join(RISKY_FIELDS) + r"|value)\b")
+ESC_CALL = re.compile(r"\besc\s*\(")
+
+# Verified-safe as of 2026-09-22, each checked against the real source, not
+# guessed: Max-Cut's district copy (a hardcoded flavour-text field that
+# happens to share a name with a real Supabase column); the Bottleneck's
+# `solve()` result (a computed profit number, run through fmt(), not text);
+# a static English-copy lookup table (CAP_COPY = {question: '...', game:
+# '...'} a few lines above its use, nothing dynamic in the key). Keyed on
+# the exact statement text so a genuine future edit re-triggers review
+# rather than silently inheriting the pass.
+ESC_ALLOW = {
+    ("games.js", "d.note"),
+    ("feasible-tools.js", "sol.value"),
+    ("forms.js", "CAP_COPY.question"),
+}
+
+
+def _statement_at(src, start, budget=1500):
+    """Same bracket/string-aware scan as bump_assets' cousins: the RHS of an
+    assignment up to its top-level terminating ';'. This is NOT a real JS
+    tokenizer -- it does not know a regex literal's '/' from a division, so
+    a quote character inside something like /"/g is misread as opening a
+    string and can desync the whole scan (found live: it ran 17,500 chars
+    past the real statement on games.js's share-link panel, which builds its
+    URL with url.replace(/"/g, '&quot;')). Real innerHTML statements in this
+    codebase top out at a few hundred characters, so budget is generous; if
+    no terminator turns up inside it, the scan is untrustworthy and returns
+    None rather than a wrong line number -- a missed check is safer than a
+    misleading one."""
+    depth, i, n, instr, esc = 0, start, len(src), None, False
+    while i < n:
+        if i - start > budget:
+            return None
+        c = src[i]
+        if instr:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == instr:
+                instr = None
+            i += 1
+            continue
+        if c in ("'", '"', "`"):
+            instr = c
+        elif c in "([{":
+            depth += 1
+        elif c in ")]}":
+            depth -= 1
+            if depth < 0:
+                return src[start:i]
+        elif c == ";" and depth == 0:
+            return src[start:i]
+        i += 1
+    return src[start:i]
+
+
+esc_hits = 0
+for f in js_files():
+    name = os.path.basename(f)
+    if "vendor" in f.replace("\\", "/"):
+        continue
+    src = open(os.path.join(ROOT, f), encoding="utf-8").read()
+    for m in re.finditer(r"\.innerHTML\s*\+?=(?!=)", src):
+        start = m.end()
+        while start < len(src) and src[start] in " \t\n\r":
+            start += 1
+        rhs = _statement_at(src, start)
+        if rhs is None:
+            continue
+        for term_m in RISKY_TERM.finditer(rhs):
+            # The dotted access itself, e.g. "d.note" or "row.value".
+            pre = rhs[:term_m.start()]
+            recv_m = re.search(r"([A-Za-z_$][\w$]*)$", pre)
+            recv = recv_m.group(1) if recv_m else "?"
+            term_text = recv + term_m.group(0)
+            if (name, term_text) in ESC_ALLOW:
+                continue
+            # Wrapped in esc(...) right around this exact term -- not flagged.
+            window = rhs[max(0, term_m.start() - 40):term_m.end() + 2]
+            if ESC_CALL.search(window):
+                continue
+            line = src.count("\n", 0, start + term_m.start()) + 1
+            esc_hits += 1
+            warn("innerHTML-esc",
+                 f"{name}:{line} renders `{term_text}` (a name plan-24 flags as "
+                 f"externally-sourced) without an esc() nearby -- if this is "
+                 f"real user/DB content it needs escaping; if it is authored "
+                 f"copy, add (\"{name}\", \"{term_text}\") to ESC_ALLOW with why")
+
+if esc_hits == 0:
+    ok("innerHTML-esc: no unescaped occurrence of a known external field name "
+       f"({', '.join(RISKY_FIELDS)}, .value) outside the reviewed allowlist")
 
 # --------------------------------------------------------------------------
 print("=" * 66)

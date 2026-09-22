@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-v7VTL9bjwkZY1vyurNVZKRo8FPuYnGaFUjBfWvlUN24=' 'sha256-IUt7enE1GtLXTqrUO6yQ8sKF5iQi9rH5t+vI5KkhbXE=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>What is a qubit actually made of?</title>
@@ -28,27 +29,27 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=49">
-<link rel="stylesheet" href="motion.css?v=2">
+<link rel="stylesheet" href="p/circuits.css?v=2">
+
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
-<link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=5">
-<link rel="stylesheet" href="hud.css?v=3">
+
+
+
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
-<link rel="stylesheet" href="theme.css?v=2">
+
 <!-- The spatial-glass layer. Own file, own cache-buster, same rule as
      motion.css / vivid.css: additive, opt-in via one body attribute,
      reverts by deleting this <link> and the attribute. -->
-<link rel="stylesheet" href="glass.css?v=4">
+
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
-<link rel="stylesheet" href="dynamics.css?v=3">
-<link rel="stylesheet" href="lexicon.css?v=1">
-<link rel="stylesheet" href="receipts.css?v=1">
-<link rel="stylesheet" href="search.css?v=3">
+
+
+
+
 <style>
 .cw-grid { display: grid; grid-template-columns: 1fr 170px; gap: 16px; align-items: center; }
 .cw-scope { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
@@ -113,30 +114,31 @@
   ]
 }
 </script>
-<script src="nav.js?v=9" defer></script>
-<script src="depth.js" defer></script>
-<script src="tiers.js?v=4" defer></script>
-<script src="rung.js?v=2" defer></script>
-<script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=4" defer></script>
-<script src="supabase-config.js" defer></script>
-<script src="auth.js?v=3" defer></script>
+<script src="core.js?v=2"></script>
+<script src="p/circuits.js?v=1" defer></script>
+
+
+
+
+
+
+
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
      reads --mo-x / --mo-y and only this file writes them. The lattice itself
      still gates internally: data-lattice at any width, otherwise 1440px and
      up, where rails.css has put furniture in the margins. -->
-<script src="atmosphere.js?v=2" defer></script>
-<script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=4" defer></script>
-<script src="alive.js?v=9" defer></script>
-<script src="hud.js?v=3" defer></script>
-<script src="theme.js?v=2" defer></script>
-<script src="dynamics.js?v=4" defer></script>
-<script src="lexicon.js?v=1" defer></script>
-<script src="receipts.js?v=1" defer></script>
-<script src="search.js?v=5" defer></script>
+
+
+
+
+
+
+
+
+
+
 </head>
 <body data-motion data-rails data-tiers data-rung="L0" data-alive data-glass>
 <div class="wrap">
@@ -325,10 +327,17 @@
 <p><strong>The drive, and why it is a gate.</strong> Coupling a classical microwave tone to the circuit adds a drive term to the Hamiltonian; in the rotating frame, under the rotating-wave approximation, and restricted to the {|0⟩, |1⟩} subspace, this reduces to the textbook two-level Rabi problem. On resonance, the population in |1⟩ evolves as</p>
 <div class="formula">P<sub>1</sub>(t) = sin²(Ωt / 2)</div>
 <p>where Ω is the Rabi frequency set by the drive amplitude. A pulse cut off at Ωt = π (a <strong>π-pulse</strong>) leaves P<sub>1</sub> = 1: full population transfer from |0⟩ to |1⟩, which is how the X gate is physically implemented. A π/2-pulse instead leaves an equal superposition, the same primitive the homepage's own |0⟩→|+⟩ widget asks you to apply. This is the exact mechanism behind every single-qubit gate on real superconducting hardware, surveyed in full in Krantz, Kjaergaard, Yan, Orlando, Gustavsson &amp; Oliver, <a href="https://arxiv.org/abs/1904.06560">arXiv 1904.06560</a> (<em>Applied Physics Reviews</em> 6, 021318 (2019)); the broader circuit-QED framework this all sits inside is reviewed in Blais, Grimsmo, Girvin &amp; Wallraff, <a href="https://arxiv.org/abs/2005.12667">arXiv 2005.12667</a> (<em>Rev. Mod. Phys.</em> 93, 025005 (2021)).</p>
+<p><strong>Off resonance, the same formula generalises.</strong> A drive detuned from ω<sub>01</sub> by Δ gives P<sub>1</sub>(t; Ω, Δ) = (Ω²/(Ω²+Δ²))·sin²(√(Ω²+Δ²)·t/2), with Δ = 0 recovering the on-resonance case above exactly. Detuning does two things at once. The oscillation runs at the <em>generalised</em> Rabi frequency √(Ω²+Δ²), which is faster than Ω, so the peak arrives earlier than a π-pulse's timing would suggest; and the peak itself is capped at Ω²/(Ω²+Δ²), so a badly detuned drive cannot reach full population transfer however long you run it. That ceiling is the whole subject of the section below.</p>
 <p><strong>The catch this page's widget deliberately simplifies away.</strong> Because the transmon is only <em>weakly</em> anharmonic, a fast drive tuned to ω<sub>01</sub> has non-negligible spectral weight at the nearby ω<sub>12</sub> gap too, leaking population into level 2, which is an error, not a feature. The standard fix is <strong>DRAG</strong> (Derivative Removal by Adiabatic Gate): add a second control tone proportional to the time-derivative of the first, which analytically cancels the leading leakage term without slowing the gate down. Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009)) reported <span class="rcpt" data-rcpt="cir-drag-10x">roughly an order-of-magnitude error reduction relative to the state of the art at realistic transmon parameters</span>, and some form of DRAG shaping runs on essentially every superconducting qubit gate in production today.</p>
 
-<h2 id="calibration">Recalibrating this same gate, blind</h2>
-<p>The π-pulse above assumed the drive was exactly on resonance with ω<sub>01</sub>. Real hardware drifts off resonance constantly (flux noise and two-level-system defects shift a qubit's own frequency slightly, hour to hour), so the drive is usually slightly <strong>detuned</strong>, and the formula above generalizes to P<sub>1</sub>(t; Ω, Δ) = (Ω²/(Ω²+Δ²))·sin²(√(Ω²+Δ²)·t/2), Δ = 0 recovering the on-resonance case exactly. Detuning does two things at once: it shifts <em>where</em> the peak sits in time, and it caps <em>how high</em> that peak can ever reach: a badly detuned drive cannot reach a full π-pulse no matter how long you run it. The game below is what recalibrating against that drift looks like when you cannot see Δ directly, only noisy measurement shots.</p>
+<!-- data-tier-keep, like every other interactive widget on this site: a game is
+     why a reader is on the page, so it shows at every depth. Without it this
+     section inherits the 🔴 chip above and tiers.js hides the whole thing from
+     anyone who has not chosen 🔴 — which is exactly what happened here between
+     2026-08-27 and 2026-09-21. The maths that used to open this section now
+     sits in the 🔴 section above, where it is gated on purpose. -->
+<h2 id="calibration" data-tier-keep>Recalibrating this same gate, blind</h2>
+<p>Everything above assumed one thing: that the drive is exactly in tune with the qubit. Real hardware will not hold still. Flux noise and stray two-level-system defects nudge a qubit's own frequency hour to hour, so the drive ends up slightly out of tune — <strong>detuned</strong> — and a detuned drive cannot flip the qubit all the way, however long you run it. Worse, you cannot read the detuning off any dial. All you get back is noisy measurement shots. The game below is what recalibrating against that drift actually looks like. (<a href="#red">The 🔴 section above</a> has the formula that ceiling falls out of.)</p>
 <div class="card" id="calibration-game">
   <h3>The Calibration</h3>
   <p class="tagline" style="margin:6px 0 14px">You never drive the qubit yourself. You configure the agent that has to find it, blind, while it drifts underneath you.</p>
@@ -554,18 +563,62 @@
   } catch (e) { /* the widget is additive -- the explanation above stands without it */ }
 })();
 </script>
-<script src="games.js?v=43"></script>
+<!-- INERT ON PURPOSE. An unrecognised `type` means the browser never
+     fetches or runs this; the inline block below pulls it in through
+     core.loadScript once the reader is heading for the widget. The tag
+     stays here, with the real versioned URL, so check_site.py's
+     cache-bust guard and tools/bump_assets.py both still see it. -->
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=44"></script>
 <script>
 (function () {
+  /* games.js is 336 KB, the largest file on the site, and this widget sits
+     about two thirds of the way down a long page -- most readers never reach
+     it. Since 2026-09-21 the tag above is inert and core.loadScript fetches it
+     once the reader is within about a screen and a half of the widget, so the
+     engine costs nothing at all to everyone who stops reading before here.
+
+     The reserved height is MEASURED, and tools/verify_games_lazy.mjs fails if
+     the mounted widget drifts away from it -- otherwise a fast scroller on a
+     slow connection watches the page jump when it lands. It is set from JS
+     rather than CSS on purpose: a reader with scripts off must not be left
+     holding a 508px gap reserved for a game they will never be shown. */
   var host = document.getElementById('calibration-mount');
-  var G = window.SymbiQ && window.SymbiQ.games;
-  if (!G || !G.get('calibration')) {
-    if (host) host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
-    return;
+  var tag = document.getElementById('games-src');
+  var C = window.SymbiQ && window.SymbiQ.core;
+  if (!host || !tag || !C) return;
+
+  function release() { if (card) card.style.minHeight = ''; }
+  function fail() {
+    release();
+    host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
   }
-  G.mount('calibration', host, { mode: 'arcade' });
-  var note = document.getElementById('calibration-honest');
-  if (note) note.innerHTML = G.get('calibration').honest;
+
+  /* Reserved on the CARD, not the mount host. The host's own height was
+     reserved exactly and the page still jumped, because the honest note
+     below it is written from the module too -- 202px of it here on a
+     desktop and 1,771px on a phone in the worst case. Measured at both
+     widths; tools/verify_games_lazy.mjs re-measures and also asserts the
+     thing this is really for: that loading the engine does not move the
+     content underneath it. */
+  var card = document.getElementById('calibration-game');
+  if (card) card.style.minHeight = (window.innerWidth < 720 ? 2682 : 1299) + 'px';
+  C.onNear(host, function () {
+    C.loadScript(tag.src).then(function () {
+      var G = window.SymbiQ && window.SymbiQ.games;
+      if (!G || !G.get('calibration')) return fail();
+      /* Mount UNDER the reservation, then drop it. Releasing first
+         collapses the host to nothing for a frame and then jumps it
+         to full height -- two shifts instead of one, and on qec.html
+         the 🔴 section sits directly below this, so the Through-Line's
+         scroll-linked figure lost its target mid-scroll. Done this way
+         the only movement is (real height - reserved), which
+         tools/verify_games_lazy.mjs holds to a few per cent. */
+      G.mount('calibration', host, { mode: 'arcade' });
+      release();
+      var note = document.getElementById('calibration-honest');
+      if (note) note.innerHTML = G.get('calibration').honest;
+    })['catch'](fail);
+  });
 })();
 </script>
 <div id="search" class="sr-wrap" hidden></div>

@@ -1131,6 +1131,47 @@
    *  touched. Both solvers are exposed on SymbiQ.games so the desk's     *
    *  verifiers can compare them against independent Python.              *
    * ==================================================================== */
+  /* ---- CHALLENGE LINKS ------------------------------------------------------
+     A friend's result as a URL: play.html#play/<cabinet>/vs/<code>. The code
+     carries only what rebuilds the same contest: a Knocker night is a seed and
+     a score, a Border War board is its number, the opponent and a score. The
+     banner reports a score as what the link "says", and a score that cannot be
+     real is not repeated. play.html's router hands the code over with set(). */
+  var CHALLENGE = (function () {
+    var pending = {};
+    function code(game, d) {
+      if (game === 'grover') return 'k' + (d.seed >>> 0).toString(36) + '-' + d.score;
+      if (game === 'maxcut') return 'b' + (d.board + 1) + (d.opp === 'hard' ? 'h' : 'e') + '-' + d.cut + '-' + d.bound;
+      return '';
+    }
+    function parse(game, c) {
+      var m;
+      if (game === 'grover' && (m = /^k([0-9a-z]{1,7})-([0-8])$/.exec(c))) return { seed: parseInt(m[1], 36) >>> 0, score: +m[2] };
+      if (game === 'maxcut' && (m = /^b([1-9])([eh])-(\d{1,2})-(\d{1,2})$/.exec(c))) return { board: +m[1] - 1, opp: m[2] === 'h' ? 'hard' : 'easy', cut: +m[3], bound: +m[4] };
+      return null;
+    }
+    function url(game, d) {
+      return location.origin + location.pathname.replace(/[^\/]*$/, '') + 'play.html#play/' + game + '/vs/' + code(game, d);
+    }
+    function copy(text, btn) {
+      var was = btn.textContent;
+      function ok() { btn.textContent = 'Link copied ✓'; setTimeout(function () { btn.textContent = was; }, 2200); }
+      function manual() { window.prompt('Copy this and send it:', text); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, manual);
+      else manual();
+    }
+    return { code: code, parse: parse, url: url, copy: copy,
+             set: function (game, c) { pending[game] = c; },
+             has: function (game) { return !!pending[game]; },
+             take: function (game) { var c = pending[game]; delete pending[game]; return c ? parse(game, c) : null; } };
+  })();
+  function withChallenge(opts, game) {
+    var o = {};
+    for (var k in opts) if (Object.prototype.hasOwnProperty.call(opts, k)) o[k] = opts[k];
+    o.challenge = CHALLENGE.take(game);
+    return o;
+  }
+
   function ensureVsStyle() {
     if (document.getElementById('sq-vs-style')) return;
     var st = document.createElement('style');
@@ -1145,6 +1186,7 @@
       '.kn-door.exit{background:var(--teal);opacity:1;box-shadow:0 0 0 2px rgba(45,212,191,.5)}' +
       // .preset sets its own display, which beats the UA [hidden] rule; restate it
       '[data-k][hidden]{display:none!important}' +
+      '.kn-chal{margin:0 0 12px;padding:10px 14px;border:1px solid var(--violet);border-radius:10px;font-size:.92rem;text-align:center}' +
       '.kn-coach{font-size:.86rem;color:var(--muted);text-align:center;min-height:1.3em;margin:4px 0 8px}' +
       '.vs-sub{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;justify-content:center;margin:0 0 10px;font-size:.85rem}' +
       '.vs-sub .preset[aria-pressed=true]{border-color:var(--teal);color:var(--teal)}' +
@@ -1239,6 +1281,7 @@
       function plural(n, w) { return n + ' ' + (n === 1 ? w : w === 'life' ? 'lives' : w + 's'); }
 
       host.innerHTML =
+        '<p class="kn-chal" data-k="chal" hidden></p>' +
         '<div class="hud" data-k="hud"></div>' +
         '<div class="verdict" style="text-align:center" data-k="say" aria-live="polite"></div>' +
         '<p class="kn-lab">Your register <span data-k="odds"></span></p>' +
@@ -1249,19 +1292,33 @@
           '<button class="preset" type="button" data-k="amp">Amplify ↑</button>' +
           '<button class="preset" type="button" data-k="meas">Measure</button>' +
           '<button class="preset" type="button" data-k="next" hidden>Next vault ▸</button>' +
-          '<button class="preset" type="button" data-k="new" hidden>New night</button></p>' +
+          '<button class="preset" type="button" data-k="new" hidden>New night</button>' +
+          '<button class="preset" type="button" data-k="share" hidden>Challenge a friend</button></p>' +
+        '<div data-k="capture"></div>' +
         '<div class="kn-coach" data-k="coach"></div>' +
         '<dl class="rows" data-k="rows"></dl>';
 
-      function newNight() {
+      /* A night is a seed. The exit and the rival's knocks come from their own
+         streams, so a friend on the same seed meets the same doors and the same
+         knocks in the same order whatever they decide; only the dice their own
+         measurements meet depend on their choices. A lost vault is retried on
+         a fresh draw (tries), so a retry is not a replay. */
+      var challenge = opts.challenge || null;
+      function newNight(seed) {
         if (timer) { clearTimeout(timer); timer = null; }
-        night = { v: 0, lives: LIVES, cracked: 0, over: false };
+        night = { v: 0, lives: LIVES, cracked: 0, over: false, tries: [],
+                  seed: seed == null ? (Math.floor(Math.random() * 4294967296) >>> 0) : (seed >>> 0) };
         startVault();
+      }
+      function stream(tag) {
+        var t = night.tries[night.v] || 0;
+        return FRAME.rng((night.seed ^ Math.imul(night.v + 1, 2654435761) ^ Math.imul(t + 1, 40503) ^ Math.imul(tag, 2246822519)) >>> 0);
       }
       function startVault() {
         var V = VAULTS[night.v];
         sol = solve(V.n, V.m);
-        race = { vi: night.v, n: V.n, m: V.m, exit: Math.floor(Math.random() * V.n),
+        var exitRng = stream(1);
+        race = { vi: night.v, n: V.n, m: V.m, exit: Math.floor(exitRng() * V.n), rivalRng: stream(2), measRng: stream(3),
                  open: {}, o: 0, fresh: [], gone: {}, e: 0, k: 0, turn: 'rival',
                  done: false, won: false, landed: -1, missP: 0, winP: 0,
                  decisions: [], start: sol.start() };
@@ -1277,7 +1334,7 @@
           for (i = 0; i < race.n; i++) if (!race.open[i]) pool.push(i);
           race.fresh = [];
           for (i = 0; i < race.m && pool.length; i++) {
-            var r = Math.floor(Math.random() * pool.length);
+            var r = Math.floor(race.rivalRng() * pool.length);
             race.fresh.push(pool[r]); race.open[pool[r]] = true; pool.splice(r, 1);
           }
           race.o += race.fresh.length;
@@ -1295,12 +1352,12 @@
         race.landed = -1;
         if (choice === 'amp') { race.k++; rivalTurn(); return; }
         var p = pexit(neff, race.k), landed;
-        if (neff <= 1 || Math.random() < p) landed = race.exit;
+        if (neff <= 1 || race.measRng() < p) landed = race.exit;
         else {
           // a miss is spread evenly over every other door still in your register
           var others = [];
           for (var i = 0; i < race.n; i++) if (!race.gone[i] && i !== race.exit) others.push(i);
-          landed = others[Math.floor(Math.random() * others.length)];
+          landed = others[Math.floor(race.measRng() * others.length)];
         }
         race.landed = landed;
         if (landed === race.exit) { race.winP = p; endRace(true); return; }
@@ -1311,9 +1368,12 @@
         race.done = true; race.won = won;
         if (won) {
           night.cracked++; night.v++;
+          var F = window.SymbiQ && SymbiQ.forms;
+          if (F && F.capture) F.capture(q('capture'), { context: 'knocker', lead: 'Vault cracked.' });
           if (SAVE && SAVE.set && night.cracked > API.best()) SAVE.set(KEY, night.cracked);
           if (night.v >= VAULTS.length) night.over = true;
         } else {
+          night.tries[night.v] = (night.tries[night.v] || 0) + 1;
           night.lives--;
           if (night.lives <= 0) night.over = true;
         }
@@ -1417,6 +1477,14 @@
         q('next').hidden = !(race.done && !night.over);
         q('next').textContent = race.won ? 'Next vault ▸' : 'Try this vault again ▸';
         q('new').hidden = !(race.done && night.over);
+        q('share').hidden = !(race.done && night.over);
+        var chal = q('chal');
+        if (challenge) {
+          chal.hidden = false;
+          chal.innerHTML = 'A friend’s link says they cracked <strong>' + challenge.score + ' of ' + VAULTS.length +
+            '</strong> vaults on this night. You meet the same exits and the same rival knocks in the same order; your calls, and the dice they meet, are your own.' +
+            (night.over ? ' <strong>' + (night.cracked > challenge.score ? 'You beat it.' : night.cracked === challenge.score ? 'A dead heat.' : 'They keep the night.') + '</strong>' : '');
+        } else chal.hidden = true;
 
         var coach = q('coach');
         if (guided && myTurn) {
@@ -1434,9 +1502,13 @@
       q('amp').addEventListener('click', function () { youAct('amp'); });
       q('meas').addEventListener('click', function () { youAct('meas'); });
       q('next').addEventListener('click', function () { if (race && race.done && !night.over) startVault(); });
-      q('new').addEventListener('click', newNight);
-      newNight();
-      return { state: function () { return { night: night, race: race }; } };
+      q('new').addEventListener('click', function () { challenge = null; newNight(); });
+      q('share').addEventListener('click', function () {
+        var link = CHALLENGE.url('grover', { seed: night.seed, score: night.cracked });
+        CHALLENGE.copy('I cracked ' + night.cracked + ' of ' + VAULTS.length + ' vaults racing a classical crew on SymbiQ. Same doors, same rival. Beat it: ' + link, q('share'));
+      });
+      newNight(challenge ? challenge.seed : null);
+      return { state: function () { return { night: night, race: race, challenge: challenge }; } };
     };
     return API;
   })();
@@ -1563,6 +1635,8 @@
       var guided = opts.level === 'guided';
       var SAVE = window.SymbiQ && SymbiQ.save;
       var bi = 0, opp = 'hard', brush = 1, S = null, st = null, timer = null;
+      var challenge = opts.challenge || null;
+      if (challenge) { bi = challenge.board; opp = challenge.opp; }
       function q(k) { return host.querySelector('[data-k=' + k + ']'); }
       var COL = { 1: 'teal', 2: 'violet' };
 
@@ -1571,9 +1645,11 @@
           '<button class="preset" type="button" data-o="easy">Computer · easy</button>' +
           '<button class="preset" type="button" data-o="hard">Computer · hard</button>' +
           '<button class="preset" type="button" data-o="friend">A friend, same screen</button></div>' +
+        '<p class="kn-chal" data-k="chal" hidden></p>' +
         '<div class="holes" data-k="boards"></div>' +
         '<div class="hud" data-k="hud"></div>' +
         '<div class="verdict" style="text-align:center" data-k="say" aria-live="polite"></div>' +
+        '<div data-k="capture"></div>' +
         '<svg class="mcsvg" viewBox="0 0 300 250" xmlns="' + NS + '" data-k="svg" aria-label="Border War board. Click an unpainted district to paint it with the current brush."></svg>' +
         '<div class="vs-sub"><span style="color:var(--muted)">Brush</span>' +
           '<button class="preset" type="button" data-b="1"><span style="color:var(--teal)">●</span> Teal</button>' +
@@ -1639,6 +1715,10 @@
       }
       function finish() {
         st.done = true;
+        if (opp !== 'friend' && st.cut > st.bound) {
+          var F = window.SymbiQ && SymbiQ.forms;
+          if (F && F.capture) F.capture(q('capture'), { context: 'border', lead: 'Board won.' });
+        }
         if (opp === 'friend' || st.cut <= st.bound || !(SAVE && SAVE.set)) return;
         var r = record().split('');
         if (opp === 'hard') r[bi] = 'h'; else if (r[bi] !== 'h') r[bi] = 'e';
@@ -1656,7 +1736,7 @@
             (rec[k] === 'h' ? ', beaten on hard' : rec[k] === 'e' ? ', beaten on easy' : '') + '">' + (k + 1) + '</span>';
         }).join('');
         Array.prototype.forEach.call(host.querySelectorAll('[data-bi]'), function (h) {
-          h.addEventListener('click', function () { bi = +h.getAttribute('data-bi'); start(); });
+          h.addEventListener('click', function () { bi = +h.getAttribute('data-bi'); challenge = null; start(); });
         });
         Array.prototype.forEach.call(host.querySelectorAll('[data-o]'), function (x) {
           x.setAttribute('aria-pressed', x.getAttribute('data-o') === opp ? 'true' : 'false');
@@ -1664,6 +1744,15 @@
         Array.prototype.forEach.call(host.querySelectorAll('[data-b]'), function (x) {
           x.setAttribute('aria-pressed', +x.getAttribute('data-b') === brush ? 'true' : 'false');
         });
+
+        var chalEl = q('chal');
+        if (challenge && challenge.board === bi) {
+          var real = challenge.cut + challenge.bound === b.E.length && challenge.cut > challenge.bound;
+          chalEl.hidden = false;
+          chalEl.innerHTML = real
+            ? 'A friend’s link says they beat <strong>' + b.name + '</strong> on ' + challenge.opp + ', ' + challenge.cut + '–' + challenge.bound + '. Your move.'
+            : 'A friend sent you <strong>' + b.name + '</strong> on ' + challenge.opp + '. Your move.';
+        } else chalEl.hidden = true;
 
         var cutterNow = S.cutterToMove(st.s);
         q('hud').innerHTML =
@@ -1715,7 +1804,8 @@
           } else if (d > 0) {
             say.innerHTML = '<strong>You win ' + st.cut + '–' + st.bound + '.</strong> ' +
               (opp === 'hard' ? 'The hard computer never makes a mistake, so every move you made kept the win.' : 'Perfect play on this board wins by ' + v0 + '.') +
-              (st.gift ? ' <span style="color:var(--muted)">The computer let the board slip at move ' + st.gift.move + ', which is what Easy does.</span>' : '');
+              (st.gift ? ' <span style="color:var(--muted)">The computer let the board slip at move ' + st.gift.move + ', which is what Easy does.</span>' : '') +
+              ' <button class="preset" type="button" data-k="share">Challenge a friend</button>';
           } else {
             say.innerHTML = '<strong>' + (d < 0 ? 'The computer wins ' + st.bound + '–' + st.cut : 'A draw, ' + st.cut + '–' + st.bound) + '.</strong> ' +
               'Perfect play on this board wins for you by ' + v0 + '.';
@@ -1737,6 +1827,12 @@
               (st.last + 1) + ' ' + COL[st.color[st.last]] + '.</span>' : '');
         }
 
+        var shareBtn = say.querySelector('[data-k=share]');
+        if (shareBtn) shareBtn.addEventListener('click', function () {
+          var link = CHALLENGE.url('maxcut', { board: bi, opp: opp, cut: st.cut, bound: st.bound });
+          CHALLENGE.copy('I beat ' + b.name + ' on ' + opp + ' in SymbiQ’s Border War, ' + st.cut + '–' + st.bound + '. Your move: ' + link, shareBtn);
+        });
+
         var coach = q('coach');
         if (guided && !st.done && humanMayMove()) {
           var ms = S.moves(st.s), best = null;
@@ -1753,7 +1849,7 @@
       }
 
       Array.prototype.forEach.call(host.querySelectorAll('[data-o]'), function (x) {
-        x.addEventListener('click', function () { opp = x.getAttribute('data-o'); start(); });
+        x.addEventListener('click', function () { opp = x.getAttribute('data-o'); challenge = null; start(); });
       });
       Array.prototype.forEach.call(host.querySelectorAll('[data-b]'), function (x) {
         x.addEventListener('click', function () { brush = +x.getAttribute('data-b'); render(); });
@@ -2145,7 +2241,7 @@
         if (std) std.hidden = on;
         if (!host) return;
         host.hidden = !on;
-        if (on && !vsMounted) { RACE.mount(host, opts); vsMounted = true; }
+        if (on && !vsMounted) { host.__vs = RACE.mount(host, withChallenge(opts, 'grover')); vsMounted = true; }
       }
 
       /* ---- Deep Dive mode toggle (arcade Standard / Guided only) ---------- */
@@ -2202,6 +2298,7 @@
       })();
 
       fresh(); render();
+      if (!mission && CHALLENGE.has('grover')) { vsShow(true); syncGmode(); }
     }
   };
 
@@ -2610,7 +2707,7 @@
         if (std) std.hidden = on;
         if (!host) return;
         host.hidden = !on;
-        if (on && !vsMounted) { BORDER.mount(host, opts); vsMounted = true; }
+        if (on && !vsMounted) { host.__vs = BORDER.mount(host, withChallenge(opts, 'maxcut')); vsMounted = true; }
       }
 
       /* ---- The Sprawl: run flow + mode toggle (arcade Standard/Guided) ---- */
@@ -2684,6 +2781,7 @@
       })();
 
       initDist(); render();
+      if (!mission && CHALLENGE.has('maxcut')) { vsShow(true); syncMCmode(); }
     }
   };
 
@@ -4998,6 +5096,7 @@
     all: G,
     frame: FRAME,
     medals: MEDALS,
+    challenge: CHALLENGE,   // challenge links; play.html's router calls set()
     race: RACE,       // the Knocker: exact race DP, exposed for tools/verify_vs_modes.mjs
     border: BORDER,   // Border War: exhaustive minimax, exposed for the same
     wsSearch: WS,   // The Workshop's pure search engine, exposed for tools/verify_workshop.mjs

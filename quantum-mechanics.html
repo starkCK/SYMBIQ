@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-r/oDPFGgR2It+9CSceW+J/gNkPfZEKOoDpe5H+peZOc=' 'sha256-lASeec2kKf4gJlceV6+o2upYYZXh+NJ1F7lRk6Z9mxY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>Is quantum computing just quantum mechanics?</title>
@@ -28,36 +29,37 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=49">
-<link rel="stylesheet" href="motion.css?v=2">
+<link rel="stylesheet" href="p/quantum-mechanics.css?v=2">
+
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
-<link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=5">
-<link rel="stylesheet" href="hud.css?v=3">
+
+
+
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
-<link rel="stylesheet" href="theme.css?v=2">
+
 <!-- The spatial-glass layer. Own file, own cache-buster, same rule as
      motion.css / vivid.css: additive, opt-in via one body attribute,
      reverts by deleting this <link> and the attribute. -->
-<link rel="stylesheet" href="glass.css?v=4">
+
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
-<link rel="stylesheet" href="dynamics.css?v=3">
-<link rel="stylesheet" href="living.css?v=2">
-<link rel="stylesheet" href="lexicon.css?v=1">
-<link rel="stylesheet" href="receipts.css?v=1">
-<link rel="stylesheet" href="search.css?v=3">
-<script src="nav.js?v=9" defer></script>
-<script src="depth.js" defer></script>
-<script src="tiers.js?v=4" defer></script>
-<script src="rung.js?v=2" defer></script>
-<script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=4" defer></script>
-<script src="supabase-config.js" defer></script>
-<script src="auth.js?v=3" defer></script>
+
+
+
+
+
+<script src="core.js?v=2"></script>
+<script src="p/quantum-mechanics.js?v=1" defer></script>
+
+
+
+
+
+
+
 <style>
 #bloch-svg { display: block; margin: 0 auto; max-width: 340px; width: 100%; height: auto; }
 .sphere { fill: none; stroke: var(--border); }
@@ -142,17 +144,17 @@
      reads --mo-x / --mo-y and only this file writes them. The lattice itself
      still gates internally: data-lattice at any width, otherwise 1440px and
      up, where rails.css has put furniture in the margins. -->
-<script src="atmosphere.js?v=2" defer></script>
-<script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=4" defer></script>
-<script src="alive.js?v=9" defer></script>
-<script src="hud.js?v=3" defer></script>
-<script src="theme.js?v=2" defer></script>
-<script src="dynamics.js?v=4" defer></script>
-<script src="living.js?v=1" defer></script>
-<script src="lexicon.js?v=1" defer></script>
-<script src="receipts.js?v=1" defer></script>
-<script src="search.js?v=5" defer></script>
+
+
+
+
+
+
+
+
+
+
+
 </head>
 <body data-motion data-rails data-tiers data-rung="L1" data-alive data-glass data-living>
 <div class="wrap">
@@ -455,7 +457,12 @@
 <footer>The same laws as a cooling coffee, asked a harder question.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
 </div>
 
-<script src="games.js?v=43"></script>
+<!-- INERT ON PURPOSE. An unrecognised `type` means the browser never
+     fetches or runs this; the inline block below pulls it in through
+     core.loadScript once the reader is heading for the widget. The tag
+     stays here, with the real versioned URL, so check_site.py's
+     cache-bust guard and tools/bump_assets.py both still see it. -->
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=44"></script>
 <script>
 (function () {
   // One qubit: |psi> = a|0> + b|1>, complex a,b as [re,im].
@@ -581,15 +588,54 @@
 })();
 
 (function () {
+  /* games.js is 336 KB, the largest file on the site, and this widget sits
+     about two thirds of the way down a long page -- most readers never reach
+     it. Since 2026-09-21 the tag above is inert and core.loadScript fetches it
+     once the reader is within about a screen and a half of the widget, so the
+     engine costs nothing at all to everyone who stops reading before here.
+
+     The reserved height is MEASURED, and tools/verify_games_lazy.mjs fails if
+     the mounted widget drifts away from it -- otherwise a fast scroller on a
+     slow connection watches the page jump when it lands. It is set from JS
+     rather than CSS on purpose: a reader with scripts off must not be left
+     holding a 525px gap reserved for a game they will never be shown. */
   var host = document.getElementById('chsh-mount');
-  var G = window.SymbiQ && window.SymbiQ.games;
-  if (!G || !G.get('chsh')) {
-    if (host) host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
-    return;
+  var tag = document.getElementById('games-src');
+  var C = window.SymbiQ && window.SymbiQ.core;
+  if (!host || !tag || !C) return;
+
+  function release() { if (card) card.style.minHeight = ''; }
+  function fail() {
+    release();
+    host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
   }
-  G.mount('chsh', host, { mode: 'arcade' });
-  var note = document.getElementById('chsh-honest');
-  if (note) note.innerHTML = G.get('chsh').honest;
+
+  /* Reserved on the CARD, not the mount host. The host's own height was
+     reserved exactly and the page still jumped, because the honest note
+     below it is written from the module too -- 202px of it here on a
+     desktop and 1,771px on a phone in the worst case. Measured at both
+     widths; tools/verify_games_lazy.mjs re-measures and also asserts the
+     thing this is really for: that loading the engine does not move the
+     content underneath it. */
+  var card = document.getElementById('chsh');
+  if (card) card.style.minHeight = (window.innerWidth < 720 ? 1225 : 825) + 'px';
+  C.onNear(host, function () {
+    C.loadScript(tag.src).then(function () {
+      var G = window.SymbiQ && window.SymbiQ.games;
+      if (!G || !G.get('chsh')) return fail();
+      /* Mount UNDER the reservation, then drop it. Releasing first
+         collapses the host to nothing for a frame and then jumps it
+         to full height -- two shifts instead of one, and on qec.html
+         the 🔴 section sits directly below this, so the Through-Line's
+         scroll-linked figure lost its target mid-scroll. Done this way
+         the only movement is (real height - reserved), which
+         tools/verify_games_lazy.mjs holds to a few per cent. */
+      G.mount('chsh', host, { mode: 'arcade' });
+      release();
+      var note = document.getElementById('chsh-honest');
+      if (note) note.innerHTML = G.get('chsh').honest;
+    })['catch'](fail);
+  });
 })();
 </script>
 

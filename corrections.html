@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>Corrections · SymbiQ</title>
@@ -28,50 +29,51 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=49">
-<link rel="stylesheet" href="motion.css?v=2">
+<link rel="stylesheet" href="p/corrections.css?v=2">
+
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
      every one of them. Nothing here is required for any page to work -- below
      1440px rails.js builds nothing at all. -->
-<link rel="stylesheet" href="rails.css?v=5">
-<link rel="stylesheet" href="alive.css?v=5">
-<link rel="stylesheet" href="hud.css?v=3">
+
+
+
 <!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
-<link rel="stylesheet" href="theme.css?v=2">
+
 <!-- The spatial-glass layer. Own file, own cache-buster, same rule as
      motion.css / vivid.css: additive, opt-in via one body attribute,
      reverts by deleting this <link> and the attribute. -->
-<link rel="stylesheet" href="glass.css?v=4">
+
 <!-- The premium-feel response layer. Rides glass.css's data-glass gate;
      pairs with dynamics.js. Feedback motion only, no ambient. -->
-<link rel="stylesheet" href="dynamics.css?v=3">
-<link rel="stylesheet" href="lexicon.css?v=1">
-<link rel="stylesheet" href="receipts.css?v=1">
-<link rel="stylesheet" href="search.css?v=3">
-<script src="nav.js?v=9" defer></script>
-<script src="depth.js" defer></script>
-<script src="tiers.js?v=4" defer></script>
-<script src="analytics.js?v=3" defer></script>
-<script src="forms.js?v=4" defer></script>
-<script src="supabase-config.js" defer></script>
-<script src="auth.js?v=3" defer></script>
+
+
+
+
+<script src="core.js?v=2"></script>
+<script src="p/corrections.js?v=1" defer></script>
+
+
+
+
+
+
 <!-- The atmosphere layer: the generative lattice and the pointer-tracked card
      sheen. Was homepage-only until 2026-08-28, which meant every other page
      had a still background AND cards with no light source, since motion.css
      reads --mo-x / --mo-y and only this file writes them. The lattice itself
      still gates internally: data-lattice at any width, otherwise 1440px and
      up, where rails.css has put furniture in the margins. -->
-<script src="atmosphere.js?v=2" defer></script>
-<script src="qubit.js?v=1" defer></script>
-<script src="rails.js?v=4" defer></script>
-<script src="alive.js?v=9" defer></script>
-<script src="hud.js?v=3" defer></script>
-<script src="theme.js?v=2" defer></script>
-<script src="dynamics.js?v=4" defer></script>
-<script src="lexicon.js?v=1" defer></script>
-<script src="receipts.js?v=1" defer></script>
-<script src="search.js?v=5" defer></script>
+
+
+
+
+
+
+
+
+
+
 </head>
 <body data-motion data-rails data-alive data-glass>
 <div class="wrap">
@@ -185,15 +187,27 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>5 corrections logged</h3>
+  <h3>6 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>5</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>6</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 6 &middot; published 2026-08-27 &middot; corrected 2026-09-21 &middot; live for 25 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">A whole game was invisible to almost everyone who visited the page it lives on.</h3>
+
+    <p><strong>What we said.</strong> <a href="circuits.html">What is a qubit actually made of?</a> introduces The Calibration in its own words — &ldquo;the game below is what recalibrating against that drift looks like&rdquo; — and the page shipped with a game below that sentence.</p>
+
+    <p><strong>What&#39;s true.</strong> There was no game below that sentence for most readers. Its heading sat immediately after the page&#39;s 🔴 marker and carried no <code>data-tier-keep</code>, so <code>tiers.js</code> filed the entire section under 🔴 and hid it from anyone who had not chosen that depth. At the page&#39;s default depth, and at 🟢, and at 🟡, the prose promised a game and then stopped. Only a reader who switched to 🔴, or who arrived on the <code>#calibration</code> link from the Arcade, ever saw it. Every other interactive widget on this site carries that attribute for exactly this reason. It does now too, and the detuned-Rabi formula that used to open the section has moved up into the 🔴 derivation where it belongs, so the game is introduced in language that works at any depth.</p>
+
+    <p><strong>Why we missed it.</strong> Nothing was broken, so nothing failed. The HTML was valid, the game mounted correctly when reached, every checker passed, and the Arcade&#39;s own deep link worked — which is the link a builder clicks when testing. The defect only exists for a reader who scrolls the page normally at the depth it opens at, and no check, and no author, had ever done that. It was found while measuring something else entirely: the widget reported zero height in an automated layout pass, which was supposed to be a measurement and turned out to be a symptom. <code>tools/verify_games_lazy.mjs</code> now loads the page at every depth and fails if the game is not on screen.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-21 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 5 · published 2026-08-27 · corrected 2026-09-08 · live for 12 days · caught by the desk</p>
     <h3 style="margin-top:6px">The Ledger hand-typed its own claim count, and the number went stale in under a fortnight.</h3>

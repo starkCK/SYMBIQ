@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "transportation-cost-240",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "fsb-transport-240",
+  "question": {
+    "text": "The transportation-problem widget finds a minimum total cost of 240 for its 2-source, 3-destination instance, confirmed by both exhaustive search and an LP relaxation. Does 240 tell you anything about what a real shipping network would cost?",
+    "options": [
+      "No — it's the optimum of this one specific toy instance; change a single shipping cost and the optimal plan, and the number, changes",
+      "Yes — 240 is the theoretical minimum cost for any 2-source, 3-destination transportation network, regardless of the actual costs involved",
+      "No — the LP relaxation and exhaustive search disagree in general, so agreeing here doesn't confirm anything",
+      "Yes, because the totally-unimodular property guarantees this same cost for any transportation problem with this many sources and destinations"
+    ],
+    "answerIndex": 0,
+    "hint": "Two different methods agreeing on 240 tells you the calculation is correct for THIS set of costs. Does either method know anything about a different set of costs?",
+    "explain": {
+      "g": "240 is the right answer to a specific, fully-specified puzzle: these exact costs, these exact supply and demand numbers. That two independent methods — brute-force search and a linear program — agree on it is good evidence the arithmetic is right, not evidence that 240 means anything for a different set of routes or prices.",
+      "y": "min Σ c_ij x_ij subject to every supply used and every demand met, solved here for 2 sources × 3 destinations (6 routes), giving a plan that ships 15 units S1→D1, 15 S1→D3, 20 S2→D2 at total cost 240. Exhaustive integer search over all feasible plans and the LP relaxation both land on 240 because the constraint matrix is totally unimodular — a structural property of transportation problems that makes the LP's optimum always integral, not a claim about which number that optimum will be.",
+      "r": "tools/verify_transportation_csp.py checks all 461 square submatrices of the constraint matrix for the unimodularity property, then verifies the LP and brute-force optima agree at 240 for this specific cost matrix. Total unimodularity is a general fact about transportation-problem structure; the specific optimum of 240 is not — it is entirely a function of the particular costs fed in."
+    }
+  }
+}

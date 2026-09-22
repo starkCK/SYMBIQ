@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "evpi-forecast-budget",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "fsb-evpi",
+  "question": {
+    "text": "The newsvendor widget's expected value of perfect information (EVPI) comes out to 120 − 80 = 40. If a demand-forecasting service offered to sell a forecast for this problem, what should 40 be treated as?",
+    "options": [
+      "An upper bound on what any forecast could be worth — a real forecast, being imperfect, is worth less than this",
+      "The exact fair price to pay for any forecast that improves on guessing",
+      "The minimum any useful forecast must be worth, since a worse forecast wouldn't be worth buying at all",
+      "The extra profit guaranteed once a forecasting service is under contract, regardless of its accuracy"
+    ],
+    "answerIndex": 0,
+    "hint": "'Perfect information' means knowing demand exactly, every time, before you decide. Does any real forecast do that?",
+    "explain": {
+      "g": "EVPI answers a specific, somewhat unrealistic question: what would it be worth to know the future exactly, every single time, before making a decision? Nobody sells that. It's useful precisely as a ceiling — a real forecast, which is right most of the time rather than always, can only be worth some fraction of this number, never more.",
+      "y": "EVPI = E[profit | perfect forecast] − E[profit at the stochastic optimum]. In this newsvendor instance (cost 2, price 5, demand 20 or 60 at probability ½ each), the stochastic-optimal order Q* = 60 earns 80 in expectation, while knowing demand in advance every time earns 120 — a 40 gap. That gap prices a forecast that is exactly right on every single occasion, which is the theoretical best case, not a service anyone can actually deliver.",
+      "r": "tools/verify_or5_or6.py runs both expected-profit calculations. In practice, the expected value of SAMPLE information — an imperfect but informative forecast — is what a real service would be priced against, and it is provably no greater than EVPI; 40 functions as a budget ceiling for evaluating whether a real forecast is worth its price, not a price itself."
+    }
+  }
+}

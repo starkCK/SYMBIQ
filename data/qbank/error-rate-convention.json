@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "error-rate-convention",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "bas-1-in-1000",
+  "question": {
+    "text": "Every calculator on this site — the threshold widget, the logical-qubit estimator, the Bitcoin estimator — runs on a standard physical error rate of about 1 in 1,000 operations. Is that a spec sheet number for a real quantum computer?",
+    "options": [
+      "No — it's a modelling convention rounded to one significant figure, and real error rates vary by operation type, drift with calibration, and differ across platforms",
+      "Yes — every leading quantum-computing company publishes 10⁻³ as their two-qubit gate error rate",
+      "No — the real industry-standard figure is 10⁻⁶, and 10⁻³ is a decade-old number this site hasn't updated",
+      "Yes, and it applies equally to single-qubit gates, two-qubit gates and measurement, since all three are limited by the same physical noise source"
+    ],
+    "answerIndex": 0,
+    "hint": "This number appears in three different calculators on three different pages. Would a real device's actual, calibrated error rate stay that consistent everywhere it's used?",
+    "explain": {
+      "g": "10⁻³ is the number every estimate on this site is built on — which is exactly why it's marked as an assumption rather than presented quietly. It's a round figure chosen because it's roughly where the best reported two-qubit gate errors sit, not a reading taken off any one machine's datasheet.",
+      "y": "Single-qubit gates on real hardware typically run one to two orders of magnitude better than two-qubit gates; measurement is usually worse than either; and all of it drifts with calibration and differs by platform. Webber et al. (2022) and Gidney et al. (2026) both cost their surface-code machines at p ≈ 10⁻³ — it's a resource-estimation convention shared across the field, not a device spec.",
+      "r": "Webber, Elfving, Weidt and Hensinger, AVS Quantum Science 4, 013801 (2022); Gidney, Babbush, Drake, Boneh et al., arXiv:2603.28846. Quoting 10⁻³ as a specific machine's measured error rate would be wrong precisely because it's a rounded, order-of-magnitude planning assumption shared across independent resource estimates, not a calibration result."
+    }
+  }
+}

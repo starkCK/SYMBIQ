@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "extrapolating-lambda-nine-steps",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "bas-nine-steps",
+  "question": {
+    "text": "Nine steps of code distance at Willow's measured Λ = 2.14 gives 2.14⁹ ≈ 941× suppression — the calculation behind the famous 'about a thousand qubits per logical qubit' headline. Willow's own suppression measurement only covered distances d = 3, 5, 7. What does that mean for the nine-step figure?",
+    "options": [
+      "It extrapolates Λ nine steps beyond where it was actually measured (to d = 23), and nothing guarantees the same suppression factor holds that far out",
+      "Nothing — Λ is a property of the surface code's mathematics, so it holds at any distance by construction",
+      "It means the 941× figure is measured directly, since Willow's own data already reaches nine steps",
+      "It means the calculation is invalid and should be discarded until a distance-23 device is built"
+    ],
+    "answerIndex": 0,
+    "hint": "Where was Λ actually measured, and how far past that does d = 23 sit?",
+    "explain": {
+      "g": "Λ = 2.14 comes from a real chip at real, modest distances. Multiplying it by itself nine times to reach a much larger distance assumes the same suppression keeps working that whole way out — which is a reasonable extrapolation to try, but an extrapolation all the same. New error mechanisms that don't show up at small distances can appear as a device scales.",
+      "y": "n = ⌊log(1000)/log(2.14)⌋ = 9 steps takes the code distance from where Λ was fit (around d = 5–7) out to d = 23 — well past the d = 3, 5, 7 series the measurement actually covers. The arithmetic (2.14⁹ ≈ 941×) is exact given the input; the input itself is a measured constant being carried far past where it was checked.",
+      "r": "tools/verify_basics_overhead.py runs the extrapolation exactly as described, without claiming the extrapolation is validated at d = 23. Google Quantum AI, Nature 638, 920 (2025) reports Λ up to d = 7; nothing in that measurement rules out Λ drifting at larger distances, where correlated noise and crosstalk effects that don't dominate at small d can start to matter."
+    }
+  }
+}

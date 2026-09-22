@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "lq-factor-20",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "lq-factor",
+  "question": {
+    "text": "Comparing two machines' patch sizes — 6,962 physical qubits per logical qubit versus 338 — the calculator reports a factor of 20.6. Is that factor a fixed property of the two machines being compared?",
+    "options": [
+      "No — it's computed at one shared error target; move the target and both machines' required distances shift, changing the factor",
+      "Yes — the factor only depends on the two machines' physical qubit counts, which don't change",
+      "No — the factor is actually fixed, but 20.6 itself is wrong; the exact 2d²−1 counts give a different ratio entirely",
+      "Yes — once two machines' code distances are set by their hardware, the ratio between their patch costs is permanent"
+    ],
+    "answerIndex": 0,
+    "hint": "Both patch sizes came from picking one target error rate and solving for distance. What happens to both distances if that shared target moves?",
+    "explain": {
+      "g": "20.6 isn't a property of the hardware alone — it's the answer to 'how much more does machine A cost than machine B, to hit this one chosen reliability target.' Ask for a looser or tighter target and both machines' required distances change, and not necessarily by the same amount, so the ratio between them moves too.",
+      "y": "6,962 / 338 = 20.6, where the two patch sizes come from d = 59 and d = 13 respectively, both solved for a shared 10⁻⁹ target. The exact rotated-code counts (2d²−1 rather than the rounded 2d² convention) give 20.65 — a 0.3% correction, not a different story. The bigger point stands regardless: this factor describes one comparison at one target, not a permanent exchange rate between the two machines.",
+      "r": "tools/verify_logical_qubit.py computes both distances and both exact patch counts. Because d scales with the target error's order of magnitude while patch cost scales as d², the ratio between two machines at different underlying error ratios r is itself a function of the chosen target — it does not factor out."
+    }
+  }
+}

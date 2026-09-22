@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "tang-dequantization",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "r",
+  "receipt": "ai-dequantization",
+  "question": {
+    "text": "Ewin Tang's 2018 result gave a classical recommendation-system algorithm running polylogarithmic in dimension, collapsing what had been the flagship quantum speedup for recommendation systems. It runs under ℓ²-norm sample-and-query access. Does 'dequantized' mean this classical algorithm runs efficiently on ordinary data access, like reading a CSV file?",
+    "options": [
+      "No — ℓ²-norm sample-and-query access is a specific data-access assumption, chosen to mirror what QRAM would give a quantum algorithm; a different access model changes the comparison",
+      "Yes — 'dequantized' specifically means the algorithm works with no special data structure at all, on data stored in any ordinary format",
+      "No — the algorithm still requires an actual quantum computer to run the sampling step, despite being called classical",
+      "Yes — Tang's result proves quantum computers offer no speedup whatsoever for any linear-algebra problem, under any data-access model"
+    ],
+    "answerIndex": 0,
+    "hint": "The quantum algorithm this result compares against assumed QRAM — a quantum data structure with its own access properties. What would a fair classical comparison need to assume instead?",
+    "explain": {
+      "g": "\"Dequantized\" here means: take away the quantum computer, but keep an access assumption that's just as generous as the quantum one was, and see if a classical algorithm can still do the job fast. That's a genuinely important result — it showed the original quantum speedup depended more on the generous access assumption than on quantum mechanics itself — but it isn't the same as showing the algorithm is fast on data accessed the ordinary way, like scanning a file top to bottom.",
+      "y": "Ewin Tang, arXiv:1807.04271 (2018) collapsed the exponential separation claimed for the Kerenidis & Prakash quantum recommendation-system algorithm by giving a classical algorithm that is polylogarithmic in dimension under ℓ²-norm sample-and-query access — a model specifically constructed to give the classical algorithm the same kind of structured access QRAM would give a quantum one. Change that access assumption to something weaker (plain array access, say) and the classical algorithm's efficient behaviour is no longer guaranteed.",
+      "r": "The result is a landmark in \"dequantization\" precisely because it isolates the source of a claimed speedup: not quantum mechanics itself, but an access-model assumption that happened to be doing most of the work. This pattern repeated across several other early quantum machine-learning speedup claims. \"Dequantized\" is a technical term about matching access models, not a claim about ordinary classical data access."
+    }
+  }
+}

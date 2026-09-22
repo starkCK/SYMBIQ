@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "btc-half-million-moves",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "btc-500k",
+  "question": {
+    "text": "A 2026 re-costing puts breaking one Bitcoin key inside its confirmation window at under half a million physical qubits. The same page notes a 2022 estimate, under the same assumptions, put this at 1.9 billion. Should the half-million figure be treated as the settled number from here on?",
+    "options": [
+      "No — most of that three-order-of-magnitude drop came from better algorithms, not hardware, so another algorithmic advance could move the number again",
+      "Yes — the 2026 figure comes from a peer-reviewed paper, and peer review is what settles a resource estimate",
+      "No — the 2026 figure will only move if a quantum computer with that many physical qubits is actually built",
+      "Yes — once an estimate improves on an older one it supersedes it, the same way a newer software version replaces an old one"
+    ],
+    "answerIndex": 0,
+    "hint": "Ask what actually changed between 2022 and 2026 to close the gap — was it a machine that got bigger, or a computation that got cheaper?",
+    "explain": {
+      "g": "The number dropped a thousandfold without any hardware being built in between — it dropped because someone found a cheaper way to run the same algorithm. A cost estimate built on the current-best algorithm is only as stable as the current-best algorithm, and nothing here says that search is finished.",
+      "y": "The 2026 figure needs fewer than 1,200 logical qubits and fewer than 90 million Toffoli gates, under surface-code assumptions and a physical error rate around 10⁻³ — the same kind of assumptions the 2022 estimate used. The gap closed on the algorithmic side: better circuit constructions, windowed arithmetic, and precomputing the part of the attack that depends only on public curve parameters.",
+      "r": "Gidney, Babbush, Drake, Boneh et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (March 2026), against Webber, Elfving, Weidt and Hensinger, AVS Quantum Sci. 4, 013801 (2022). Both are costings of a machine nobody has built, not measurements of one that exists — a resource estimate this dependent on algorithmic state of the art should be read as a snapshot, not a floor."
+    }
+  }
+}

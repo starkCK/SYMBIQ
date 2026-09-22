@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "diraq-foundry-fidelity",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "cmp-diraq-99",
+  "question": {
+    "text": "Diraq/UNSW reported control fidelities above 99% across four silicon spin-qubit devices fabricated in a 300-millimetre commercial semiconductor foundry — imec, not a university cleanroom. What does 'unit cells exceeding 99% fidelity' establish?",
+    "options": [
+      "That industrial fabrication of a handful of qubits at a time can hit fidelities comparable to bespoke lab devices — not that wiring and crosstalk stay manageable at the qubit counts leading modalities have reached",
+      "That silicon spin qubits fabricated this way can now be scaled to hundreds of qubits without new engineering challenges",
+      "That fidelity above 99% has been demonstrated at the same qubit count as the leading superconducting processors",
+      "That imec's foundry process is now the industry-standard way every quantum computer is manufactured"
+    ],
+    "answerIndex": 0,
+    "hint": "'Unit cell' is doing a lot of work in that phrase. How many qubits does a unit cell actually contain?",
+    "explain": {
+      "g": "The headline result here is about manufacturing, not qubit count: a commercial chip foundry, not a university lab, produced small groups of qubits that perform this well. That's genuinely significant for whether this technology could ever be mass-produced — but it doesn't say anything about what happens when you wire hundreds of these together, which is a different and much less tested problem.",
+      "y": "Steinacker, Dumoulin Stuyck, Lim, Tanttu, Feng et al., Nature 646, 81–87 (2025) reports single- and two-qubit control fidelities above 99% across all four devices tested, with state-preparation-and-measurement fidelity up to 99.9% — but 'unit cells' means a handful of qubits per device, fabricated in a 300mm imec line rather than a bespoke cleanroom. None of this is at the qubit counts the leading modalities (superconducting, trapped-ion) have reached.",
+      "r": "The thesis under test is industrial-scale fabrication compatibility, not qubit-count scaling — those are separate axes. Whether control wiring, crosstalk and calibration overhead stay manageable as unit-cell counts climb from a handful to hundreds is explicitly untested by this result, and is the open question the source paper itself frames the work around."
+    }
+  }
+}

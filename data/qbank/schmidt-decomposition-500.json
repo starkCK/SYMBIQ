@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "schmidt-decomposition-500",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "r",
+  "receipt": "fml-schmidt-500",
+  "question": {
+    "text": "500 random bipartite states, dimensions 2×2 through 3×4, reconstruct exactly from their SVD-based Schmidt decomposition (error under 10⁻¹⁴). Does this check exercise the hardest cases for a Schmidt decomposition — states like unentangled product states, or maximally entangled ones?",
+    "options": [
+      "No — random states are generically full-Schmidt-rank, so this exercises the typical case; the degenerate cases (product states, maximally entangled states) are checked separately",
+      "Yes — random sampling across 500 states is guaranteed to include product states and maximally entangled states in proportion to their importance",
+      "No — the SVD approach used here cannot handle any bipartite state above dimension 2×2, degenerate or not",
+      "Yes — dimensions 2×2 through 3×4 were specifically chosen to force the sampler through every degenerate case"
+    ],
+    "answerIndex": 0,
+    "hint": "'Random' doesn't mean 'representative of every special case.' What kind of bipartite states are rare, by measure, among all possible states?",
+    "explain": {
+      "g": "Pick a bipartite quantum state uniformly at random and it will almost always be a fully generic, fully-entangled-in-the-typical-sense state — the special cases, like two completely unentangled particles or two maximally entangled ones, are a vanishingly small slice of all possible states. So a test built on random sampling is a strong check of the common case, and says little on its own about the rare, structurally different ones.",
+      "y": "Schmidt decomposition via SVD is checked here by comparing the reduced-density-matrix eigenvalues against λᵢ² across 500 random states spanning dimensions 2×2 up to 3×4, with measured maximum error 4.8×10⁻¹⁵ — a strong result for the generic, full-Schmidt-rank case the sampling naturally produces. Degenerate cases (product states, which have Schmidt rank 1, and maximally entangled states, where all Schmidt coefficients are equal) involve numerical rank decisions — near-zero singular values that are delicate to classify — that this random sample essentially never lands on.",
+      "r": "tools/verify_teleport_superdense_schmidt.py checks product states and maximally entangled states separately, by name, rather than relying on random sampling to surface them, precisely because they occur with probability zero under any continuous random-state distribution and because SVD-based rank determination near-degenerate singular values is where a real implementation bug would most likely hide."
+    }
+  }
+}

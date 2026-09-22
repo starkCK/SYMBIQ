@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "webber-1.9-billion-threat-model",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "home-webber-2022",
+  "question": {
+    "text": "Webber et al.'s widely-cited 2022 estimate puts breaking a Bitcoin key at 1.9 billion physical qubits. If someone quotes 1.9 billion as the cost of breaking a Bitcoin key \"eventually,\" with no time pressure, are they using the number correctly?",
+    "options": [
+      "No — 1.9 billion is specifically the cost of breaking a key inside Bitcoin's roughly ten-minute confirmation window, a much harder target than breaking it with unlimited time",
+      "Yes — the 1.9 billion figure was always defined as the cost with no time constraint at all",
+      "No — 1.9 billion has been superseded and retracted; only the 2026 half-million figure should ever be quoted",
+      "Yes, and the confirmation-window version of the attack would actually need a smaller number of qubits, not the same one"
+    ],
+    "answerIndex": 0,
+    "hint": "Racing a transaction's confirmation window and having unlimited time to break the same key are two very different attacks. Which one does 1.9 billion price?",
+    "explain": {
+      "g": "How hard an attack is depends heavily on the deadline it has to work with. Breaking a key with no time limit at all is one problem; breaking it inside the roughly ten minutes a Bitcoin transaction has before it confirms is a much harder, faster version of the same problem. 1.9 billion prices the harder, time-pressured version — quoting it for the easier, unlimited-time version would be citing the right number for the wrong question.",
+      "y": "Webber, Elfving, Weidt and Hensinger, AVS Quantum Sci. 4, 013801 (2022) targets specifically the confirmation-window threat model: an attacker who must complete the break before the transaction confirms, not one with unlimited time to eventually recover a key. That deadline is what pushes the qubit requirement as high as it is — an unlimited-time break of the same key would need a smaller machine, not the same 1.9 billion.",
+      "r": "This is the same paper the home-collapse and bitcoin-estimate-collapse receipts draw their 2022 baseline from; the 3,800× drop those receipts describe compares this confirmation-window figure against the 2026 re-costing's own confirmation-window figure — a like-for-like comparison. Quoting 1.9 billion against a different, looser threat model breaks that comparison and states the wrong number for the question being asked."
+    }
+  }
+}

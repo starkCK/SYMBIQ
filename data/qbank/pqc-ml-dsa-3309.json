@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "pqc-ml-dsa-3309",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "pqc-3309",
+  "question": {
+    "text": "The signing widget measures a real ML-DSA-65 signature, produced live in your own browser, at 3,309 bytes. Several other sources quote 3,293 bytes for the same parameter set. Which figure is wrong?",
+    "options": [
+      "Neither — 3,293 is round-3 Dilithium3, the predecessor scheme; 3,309 is the finalised FIPS 204 ML-DSA-65, and the two are not the same signature format",
+      "3,309 is wrong — the widget's WebCrypto measurement includes 16 bytes of transport overhead that shouldn't be counted",
+      "3,293 is wrong — it was a typo in an early NIST draft that several papers copied without checking",
+      "Both are correct simultaneously, because ML-DSA-65 signature length varies by a few bytes on every signing operation"
+    ],
+    "answerIndex": 0,
+    "hint": "One of these numbers has a standard's number attached to it. The other belongs to what that standard replaced.",
+    "explain": {
+      "g": "Dilithium went through several rounds of NIST's standardisation process before becoming ML-DSA. The round-3 version and the finalised FIPS 204 version aren't byte-for-byte identical — small changes were made along the way — so a number quoted for one doesn't automatically apply to the other, even though people call both by roughly the same name.",
+      "y": "3,309 bytes is measured live, from a real WebCrypto-backed ML-DSA-65 sign operation — the actual FIPS-204-final scheme. 3,293 is the figure several secondary sources still quote from round-3 Dilithium3, which predates the final standard. An implementation still built to the round-3 spec would legitimately measure 3,293; this page's own instrument is measuring the standard that actually shipped.",
+      "r": "FIPS 204 (ML-DSA), finalised 2024. The discrepancy is a real artefact of standardisation drift between the round-3 CRYSTALS-Dilithium submission and the NIST-finalised ML-DSA, not a measurement error on either side — both numbers are correct for the scheme they each describe."
+    }
+  }
+}

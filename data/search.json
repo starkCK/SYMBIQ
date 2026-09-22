@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "generated": "2026-09-08",
- "pages": 26,
- "count": 419,
+ "generated": "2026-09-22",
+ "pages": 27,
+ "count": 421,
  "records": [
   {
    "k": "s",
@@ -529,7 +529,7 @@
    "p": "circuits.html#calibration",
    "t": "What is a qubit actually made of?",
    "h": "Recalibrating this same gate, blind",
-   "x": "The π-pulse above assumed the drive was exactly on resonance with ω01. Real hardware drifts off resonance constantly (flux noise and two-level-system defects shift a qubit's own frequency slightly, hour to hour), so the drive is usually sli",
+   "x": "Everything above assumed one thing: that the drive is exactly in tune with the qubit. Real hardware will not hold still. Flux noise and stray two-level-system defects nudge a qubit's own frequency hour to hour, so the drive ends up slightly",
    "w": 2
   },
   {
@@ -744,8 +744,16 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "5 corrections logged",
+   "h": "6 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "A whole game was invisible to almost everyone who visited the page it lives on.",
+   "x": "What we said. What is a qubit actually made of? introduces The Calibration in its own words — “the game below is what recalibrating against that drift looks like” — and the page shipped with a game below that sentence. What's true. There wa",
    "w": 1
   },
   {
@@ -2259,6 +2267,14 @@
    "h": "How The Signal works",
    "x": "A daily pass over a short list of primary sources drafts at most one story, never a roundup or filler for a quiet day. The draft cannot state any number that is not in the source, has to name what a reader would wrongly conclude from the he",
    "w": 2
+  },
+  {
+   "k": "s",
+   "p": "standing.html",
+   "t": "The Standing",
+   "h": "The Standing",
+   "x": "One persistent record of your own reasoning on this site, split honestly into two kinds: proofs, checked the instant they happen against a known-right answer, and predictions, staked now and scored only when reality actually settles the que",
+   "w": 3
   },
   {
    "k": "s",

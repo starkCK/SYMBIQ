@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "silicon-threshold-2022",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "cmp-riken-995",
+  "question": {
+    "text": "In January 2022, silicon spin qubits from RIKEN/QuTech cleared the fault-tolerance threshold — 99.5% two-qubit and 99.8% single-qubit fidelity, a 100-nanosecond two-qubit gate — and two other groups reported similar crossings the same month. What does clearing the threshold in this kind of device tell you about whether silicon spin qubits will work at scale?",
+    "options": [
+      "Very little on its own — a fidelity above threshold in a small device says nothing about whether that fidelity survives as the device grows, which the source material addresses separately",
+      "That silicon spin qubits are now the leading modality, having overtaken superconducting and trapped-ion approaches",
+      "That fault-tolerant quantum computing with silicon spin qubits was achieved in January 2022",
+      "Nothing new — RIKEN/QuTech's result was one lab's claim, unconfirmed by any other group"
+    ],
+    "answerIndex": 0,
+    "hint": "Three different groups reported similar crossings the same month. Does a threshold-clearing gate fidelity, on its own, say anything about wiring hundreds of those gates together?",
+    "explain": {
+      "g": "Clearing the fault-tolerance threshold means the gates are, in principle, good enough that error correction could in theory keep errors from growing as a computation gets longer — a real and necessary milestone. It says nothing about whether that same fidelity holds up once you're controlling hundreds or thousands of qubits instead of two, which is a separate, much harder engineering problem.",
+      "y": "Noiri, Takeda, Nakajima et al., Nature 601, 338–342 (2022) is one of three simultaneous 2022 results (alongside TU Delft and UNSW) putting silicon spin qubits above the fault-tolerance threshold. That three independent groups crossed it the same month makes it a field-level result, not one lab's outlier claim — but the source explicitly notes the open question of scale in the paragraph right after reporting the fidelity numbers.",
+      "r": "The threshold theorem guarantees error suppression AT SCALE only under assumptions — independent, sufficiently-below-threshold errors, adequate qubit connectivity, low enough crosstalk — that a two-qubit demonstration cannot itself verify. Whether silicon spin systems retain 99%+ fidelities as qubit count and wiring complexity grow is exactly the open question this receipt's falsifier flags, and cmp-diraq-99 covers a later, larger-scale check of the same modality."
+    }
+  }
+}

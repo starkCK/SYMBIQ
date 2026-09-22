@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "teleport-12000-trials",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "r",
+  "receipt": "fml-teleport-12000",
+  "question": {
+    "text": "Simulating quantum teleportation across 12,000 random states and all four measurement outcomes, the corrected state matches the original to within 10⁻¹⁵ — as close to exact as floating-point arithmetic gets. Does that 10⁻¹⁵ figure represent an error budget a real teleportation experiment could expect to hit?",
+    "options": [
+      "No — it's noiseless, exact-arithmetic simulation proving the protocol's algebra is correct; 10⁻¹⁵ is floating-point round-off, not a device error rate",
+      "Yes — 10⁻¹⁵ fidelity has been demonstrated on real teleportation hardware, matching this simulation",
+      "No — the simulation actually understates real hardware's precision, which typically achieves better than 10⁻¹⁵",
+      "Yes — since the protocol is mathematically exact, any real implementation should reach the same 10⁻¹⁵ figure given enough trials"
+    ],
+    "answerIndex": 0,
+    "hint": "This ran on a classical simulator doing exact linear algebra, not on quantum hardware. What's the source of any residual error in that kind of calculation?",
+    "explain": {
+      "g": "This check runs teleportation as pure, noiseless mathematics on a classical computer, and confirms that the algebra behind the protocol works out — the corrected state really does match the original, up to the tiny rounding error any computer's arithmetic carries. It says the protocol is correct, not that any physical device implementing it would be anywhere near this precise; real hardware has real noise that a noiseless simulation doesn't touch.",
+      "y": "12,000 random |ψ⟩ states (unique complex α, β on the Bloch sphere), all four measurement outcomes each, run through exact state-vector simulation of the teleportation circuit plus the four Pauli correction maps, with measured maximum phase-fixed difference 8.4×10⁻¹⁶ — well within floating-point precision. That figure is a statement about the simulator's numerical accuracy, not about any physical fidelity.",
+      "r": "tools/verify_teleport_superdense_schmidt.py performs exact linear algebra with no noise model; 10⁻¹⁵-scale residuals are the expected floating-point round-off for double-precision arithmetic on operations of this size, not an error rate. Verifying the protocol's algebra this way says nothing about the fidelities real teleportation experiments (which involve genuine decoherence, gate error and measurement error) actually achieve."
+    }
+  }
+}

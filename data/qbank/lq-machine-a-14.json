@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "lq-machine-a-14",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "lq-machine-a",
+  "question": {
+    "text": "Feed a hypothetical 100,000-physical-qubit machine into the calculator — error ratio r = 1/2, target logical error 10⁻⁹ — and it comes back with 14 logical qubits. If a real device with that same qubit count had a worse prefactor A than the calculator assumes, would 14 still be right?",
+    "options": [
+      "No — a larger A pushes the required distance up, which grows the per-patch cost and lowers the logical-qubit count below 14",
+      "Yes — the prefactor A cancels out of the final logical-qubit count regardless of its value",
+      "No — a larger A would actually raise the logical-qubit count, since it means each patch needs fewer physical qubits",
+      "Yes — A only affects the target error rate, not the number of logical qubits a fixed budget can support"
+    ],
+    "answerIndex": 0,
+    "hint": "The formula assumes A = 1 in p_L ≈ A(p/p_th)^⌊(d+1)/2⌋. If A were actually bigger than 1, would you need MORE or LESS distance to hit the same target?",
+    "explain": {
+      "g": "14 is what the calculator gets under a specific, stated assumption — that the formula's leading constant is exactly 1. Real hardware doesn't guarantee that; if the true prefactor is larger, each patch needs to be bigger to hit the same error target, which means fewer patches fit in the same qubit budget, which means fewer logical qubits than 14.",
+      "y": "d = 2⌈t / −log₁₀r⌉ − 1 sets the distance needed to reach target error t at ratio r, patch cost is 2d², and logical count is ⌊N / patch⌋. At r = 1/2, N = 10⁵, target 10⁻⁹, this works out to d = 59, patch 6,962, giving 14. If A in p_L ≈ A(p/p_th)^⌊(d+1)/2⌋ is really above 1, the same target needs a larger d, which grows 2d² and shrinks how many patches fit in 10⁵ qubits.",
+      "r": "tools/verify_logical_qubit.py runs this arithmetic exactly; A = 1 is the idealisation the whole calculator is built on. This receipt's own bare-patch caveat (lq-exchange) also applies on top: 14 is 14 patches holding logical state, not 14 logical qubits' worth of usable, interconnected fault-tolerant computation."
+    }
+  }
+}

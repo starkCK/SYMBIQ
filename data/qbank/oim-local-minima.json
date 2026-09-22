@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "oim-local-minima",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "ana-local-minima",
+  "question": {
+    "text": "Exhaustive search over a 5-node graph's 32 spin assignments finds that every discrete local minimum is also a global optimum. Does that mean an Ising machine solving this graph can never get stuck?",
+    "options": [
+      "No — this is true of this one 5-node graph only, and \"local minimum\" here means discrete single-spin-flip, not the continuous phase dynamics a real analog machine actually follows",
+      "Yes — a graph with this property guarantees any physical Ising machine implementing it converges to the global optimum every time",
+      "No — the exhaustive search actually found a counterexample, and the page was corrected to reflect that",
+      "Yes, and this property is known to hold for any graph built from a cycle plus chords, regardless of size"
+    ],
+    "answerIndex": 0,
+    "hint": "Two different things can both be called 'stuck': a discrete solver flipping one spin at a time, and a continuous physical system settling into a fixed point. Which one did the exhaustive search actually test?",
+    "explain": {
+      "g": "This result is specific in two ways: it's about one particular small graph, and it's about a specific, simplified notion of \"stuck\" — no single spin-flip can improve the solution. A real analog machine follows continuous physics, not discrete flips, and can have its own fixed points that don't correspond to any of the discrete local minima this search checked. Neither specificity generalises for free.",
+      "y": "All 2⁵ = 32 spin assignments on this 5-cycle-plus-chords graph (J = −1 on the cycle, +1 on chords (0,2) and (1,3)) were enumerated, and every single-spin-flip local minimum among them ties the global best energy of −5 (6 of 7 edges satisfied) — four assignments across two arrangements and their mirror images. This is a fact about this graph's discrete energy landscape, established by brute force, not a general theorem about graphs of this shape or about continuous dynamics.",
+      "r": "tools/verify_oim_settle.py performs the exhaustive enumeration and single-spin-flip test. The page itself corrected an earlier claim of \"only one\" such minimum to the accurate \"four\" (correction 3, logged 2026-09-04) — a reminder that even a small, fully-enumerable instance can be gotten wrong on first pass, and that a discrete local-minimum count says nothing about a physical coherent-Ising-machine's continuous phase dynamics, which have their own, separately-analysed fixed points."
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "vonneumann-1932",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "qm-1932",
+  "question": {
+    "text": "The page states that the postulates quantum computing runs on — states, unitaries, the Born rule, tensor products — were written down by 1932, citing von Neumann's Mathematische Grundlagen der Quantenmechanik. Does that mean quantum mechanics itself was fully worked out by 1932?",
+    "options": [
+      "No — it dates the axiomatisation into one Hilbert-space framework; the Born rule (1926) and Dirac's transformation theory (1927) predate it, and decoherence theory and much of the modern measurement literature came decades later",
+      "Yes — 1932 is when Schrödinger and Heisenberg's formulations were reconciled and no further foundational physics was needed",
+      "No — von Neumann's 1932 book only covers unitary evolution; the Born rule wasn't formalised until the 1950s",
+      "Yes — every open question in the interpretation of quantum mechanics was resolved by von Neumann's measurement postulate"
+    ],
+    "answerIndex": 0,
+    "hint": "The claim is about which POSTULATES quantum computing needs, not about the full history of quantum theory. What's the difference between axiomatising a set of rules and finishing the physics?",
+    "explain": {
+      "g": "1932 is when someone pulled the existing rules of quantum mechanics — several of which were already a few years old — into one tidy mathematical package. That's a real and useful milestone, but it's a statement about organising known machinery, not about physics being finished. Big questions about what measurement actually is, and how the everyday world emerges from quantum rules, were still open long after.",
+      "y": "Born's probability rule dates to 1926 and Dirac's transformation theory to 1927 — both predate von Neumann's 1932 synthesis. What 1932 contributes is the first fully axiomatic Hilbert-space formulation tying state vectors, unitary evolution, the Born rule and tensor-product composition together in one framework — which happens to be exactly the postulate set quantum computing needs, and nothing more was added to that specific list afterward.",
+      "r": "J. von Neumann, Mathematische Grundlagen der Quantenmechanik (Springer, 1932). Decoherence theory (Zeh, 1970s onward) and the substantial modern literature on measurement and interpretation are genuinely later and genuinely unresolved in places; the claim this receipt supports is narrowly that quantum computing's mathematical toolkit adds no new postulate beyond what 1932 already assembled, not that the foundations of quantum mechanics are a closed subject."
+    }
+  }
+}

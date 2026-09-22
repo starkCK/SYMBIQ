@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "lq-patch-exchange-rate",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "lq-exchange",
+  "question": {
+    "text": "The logical qubit calculator uses ≈2d² physical qubits per surface-code patch, where d is the code distance. For real quantum computation — not just holding one logical qubit in memory — is a patch's own 2d² qubits the whole physical-qubit bill?",
+    "options": [
+      "No — routing between patches and the magic-state factories real algorithms need sit on top of it, and for real computation can rival or exceed the patch itself",
+      "Yes — 2d² already includes everything a fault-tolerant algorithm needs beyond raw storage",
+      "No — 2d² overcounts, since the exact rotated-code convention only needs d² physical qubits, not 2d²",
+      "Yes, because magic-state factories are built from spare data qubits already inside the 2d² patch"
+    ],
+    "answerIndex": 0,
+    "hint": "2d² is the cost of holding one logical qubit still. A real algorithm needs logical qubits to talk to each other and to run non-Clifford gates — where does that happen?",
+    "explain": {
+      "g": "2d² buys you one logical qubit sitting in memory, protected to a chosen error rate. It says nothing about wiring that qubit to others, or about the extra machinery — magic-state factories — that most useful algorithms need to run gates a surface code can't do natively. Those additions aren't small; on some estimates they cost more than the data qubits themselves.",
+      "y": "This page's own convention rounds the exact rotated-code count of 2d²−1 to 2d² for readability — a minor, stated simplification. The much larger omission is architectural: real fault-tolerant machines spend a substantial fraction of their physical qubits on routing and magic-state distillation, neither of which this per-patch formula touches at all.",
+      "r": "tools/verify_logical_qubit.py checks the 2d²−1 arithmetic itself; the routing/magic-state overhead is a separate, architecture-dependent cost this page doesn't attempt to estimate, and different fault-tolerant architectures (lattice surgery, defect-based, etc.) allocate that overhead differently."
+    }
+  }
+}

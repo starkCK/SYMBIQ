@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "transmon-charging-energy",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "cir-ec-250",
+  "question": {
+    "text": "The transmon widget holds the charging energy E_C fixed at 250 MHz while you move the E_J/E_C slider. Is 250 MHz meant to be read as a real device's charging energy?",
+    "options": [
+      "No — it's an illustrative, representative value; real designs typically sit within a factor of two of it, and the widget's point is the shape of the anharmonicity-versus-charge-noise trade-off, not this exact number",
+      "Yes — 250 MHz is the value specified in the original transmon paper as the required charging energy for the regime it describes",
+      "No — E_C isn't a real physical quantity at all; it's a dimensionless parameter used only for plotting convenience",
+      "Yes, and every fabricated transmon since 2007 has been built to match this figure as closely as possible"
+    ],
+    "answerIndex": 0,
+    "hint": "The widget moves E_J/E_C by changing E_J while holding E_C fixed. Why would it need to fix ANY value for a real design choice, rather than deriving it?",
+    "explain": {
+      "g": "250 MHz is a stand-in chosen to make the widget's slider meaningful, not a measurement of any particular chip. Real transmons are designed with a range of charging energies depending on what trade-offs the designer wants; the widget fixes one representative value so that moving the other parameter (E_J) illustrates the trade-off clearly, without claiming to be any specific device's datasheet.",
+      "y": "The widget stays inside the E_J/E_C ≫ 1 regime the transmon paper describes, holding E_C fixed at an illustrative 250 MHz while E_J moves. Real fabricated designs typically land within a factor of two of that figure, but E_C is itself a design choice made via the qubit's capacitance geometry — a different design intentionally sets a different E_C, and the widget's spectrum would shift accordingly if it did.",
+      "r": "Koch, Yu, Gambetta, Houck, Schuster, Majer, Blais, Devoret, Girvin & Schoelkopf, Phys. Rev. A 76, 042319 (2007) (arXiv cond-mat/0703002) — the transmon paper. The widget's pedagogical point is the shape of the anharmonicity-versus-charge-noise-sensitivity trade-off as E_J/E_C moves through the transmon regime, which holds qualitatively across a range of E_C choices; the exact 250 MHz value is not load-bearing for that argument."
+    }
+  }
+}

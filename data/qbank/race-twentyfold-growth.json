@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "race-twentyfold-growth",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "race-growth",
+  "question": {
+    "text": "The race page reports roughly twenty-fold growth in physical qubits from 2019 to 2023 — 1,180 (Atom Computing, 2023) against 53 (Google Sycamore, 2019). Is this a census of every quantum computer built in that window?",
+    "options": [
+      "No — it's the largest announced milestone each year on a hand-curated list; one unlisted machine, or a different counting convention, moves it",
+      "Yes — every publicly announced quantum processor from 2019 to 2023 is included in this comparison",
+      "No — the comparison is invalid because Atom Computing and Google use completely unrelated qubit technologies",
+      "Yes, and the twenty-fold figure is a hard lower bound that any future accounting would only increase"
+    ],
+    "answerIndex": 0,
+    "hint": "What does it take to build a timeline like this — every machine ever announced, or the biggest one anyone reported each year?",
+    "explain": {
+      "g": "The chart tracks the largest chip anyone announced in a given year, which is a reasonable way to show a trend but not the same as counting every machine that existed. It also compares \"physical qubits\" across two very different kinds of hardware — trapped-ion sites and superconducting qubits — where the same word doesn't always mean the same amount of usable hardware.",
+      "y": "1,180 ÷ 53 = 22.3×, rounded to roughly twenty-fold. Atom Computing's 1,180 are trap sites in a neutral-atom array, not qubits proven good enough to compute with, and Sycamore's 53 are wired superconducting qubits — two different notions of \"physical qubit\" sitting on either end of the ratio. A milestone list is also, by construction, incomplete: it tracks what got announced, not a census.",
+      "r": "tools/verify_hardware.py pulls both milestones from data/hardware.json's curated timeline. \"Physical qubits\" spans fabricated sites, individually controlled qubits, and qubits good enough to run a real computation with — the three numbers are not interchangeable, and this receipt's own value mixes the first and second across the two years compared."
+    }
+  }
+}

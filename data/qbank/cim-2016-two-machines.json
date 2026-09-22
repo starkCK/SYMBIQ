@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "cim-2016-two-machines",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "ana-cim-2016",
+  "question": {
+    "text": "The same week in 2016, two groups published coherent-Ising-machine demonstrations: one with 2,000 nodes (time-multiplexed pulses, measurement-and-feedback coupling), the other with a fully-connected 100 spins (every pair optically coupled). Which machine was the more capable one?",
+    "options": [
+      "Neither is simply \"more capable\" — node count and connectivity are different currencies that trade against each other, and the two machines solve different problem shapes",
+      "The 2,000-node machine, since it demonstrates a twenty-fold larger scale on the same task",
+      "The 100-spin machine, since full connectivity is strictly harder to achieve than time-multiplexing",
+      "Both were shown to outperform the best classical solvers of 2016 on the same benchmark problem"
+    ],
+    "answerIndex": 0,
+    "hint": "One machine traded connectivity for scale; the other traded scale for connectivity. What kind of problem needs which trade?",
+    "explain": {
+      "g": "2,000 weakly-coupled nodes and 100 fully-coupled ones aren't two points on the same ruler — they're built for different jobs. A problem that needs every variable able to interact with every other needs the full connectivity the smaller machine offers; a problem with sparser interactions can use the larger, more scalable but less-connected design instead. Neither number alone says which machine \"wins.\"",
+      "y": "Inagaki et al., Science 354, 603 (2016) demonstrates 2,000 time-multiplexed optical pulses with measurement-and-feedback coupling — scalable, but coupling is implemented indirectly. McMahon et al., Science 354, 614 (2016), published the same week, demonstrates 100 spins with every pair directly, optically coupled — full connectivity, at a much smaller scale. Neither paper claims to beat a classical solver in general; both are hardware demonstrations of two different architectural trade-offs.",
+      "r": "The connectivity-versus-scale trade is fundamental to analog Ising-machine design: full pairwise coupling costs resources that grow with the square of the node count, which is why the fully-connected demonstration tops out at 100 while the time-multiplexed one reaches 2,000. Comparing raw node counts across the two treats them as the same currency when they are not."
+    }
+  }
+}

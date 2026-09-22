@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "three-orders-not-six",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "home-gap-orders",
+  "question": {
+    "text": "The homepage says the gap between today's largest quantum computer and the qubit count a racing Bitcoin attack would need is roughly three orders of magnitude, not six. The actual numbers work out to 2.6 orders in 2026 and 6.2 orders back in 2022. Why does the page say \"three\" instead of \"two\" or \"2.6\"?",
+    "options": [
+      "\"Three\" rounds 2.6 upward — in the direction that makes the quantum threat look further away, not closer, which the page flags as the less flattering rounding to be honest about",
+      "\"Three\" is simply a typo for \"2.6\" that should be corrected",
+      "\"Three\" refers to the 2022 figure, since 6.2 rounds down to roughly six, half of which is three",
+      "\"Three\" is deliberately chosen because it splits the difference between the 2022 and 2026 figures"
+    ],
+    "answerIndex": 0,
+    "hint": "Rounding 2.6 up to 3 makes the gap look BIGGER, not smaller. Whose interest does that direction of rounding serve — the reader's caution, or the page's drama?",
+    "explain": {
+      "g": "2.6 orders of magnitude sits between two and three; rounding it to three overstates the gap slightly, which is the more cautious direction to round in, not the more alarming one. The honest reading, as the page itself says, is \"between two and three\" — three is the conservative, not the precise, figure.",
+      "y": "log₁₀(5×10⁵ ÷ 1,180) = log₁₀(424) ≈ 2.6 orders for 2026, against log₁₀(1.9×10⁹ ÷ 1,180) ≈ 6.2 orders for 2022 — both measured against the same reference, the largest physical-qubit count on record (Atom Computing's 1,180-site array, October 2023). \"Three\" for the current gap rounds 2.6 up rather than down to two, which is the direction that keeps the estimate cautious rather than closer than the numbers actually show.",
+      "r": "tools/verify_hardware.py computes both ratios from data/hardware.json. The comparison itself carries a separate caveat: it measures a 2026 attack estimate against a 2023 hardware record, because the field stopped competing on raw physical-qubit count as the headline metric after 2023 — a larger array announced tomorrow would shrink this gap with zero algorithmic progress on the attack side at all, which is exactly the kind of movement this receipt warns could happen again."
+    }
+  }
+}

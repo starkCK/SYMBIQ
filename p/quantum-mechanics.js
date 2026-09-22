@@ -489,6 +489,9 @@
           out.className = 'cyu-out ' + (right ? 'ok' : 'no');
           why.hidden = false;
           bump(right);
+          /* Optional: The Standing, when it has loaded on this page. Guarded
+             so a page without standing.js behaves exactly as before. */
+          try { window.SymbiQ && SymbiQ.standing && SymbiQ.standing.recordCyu(right); } catch (e) {}
         });
       });
     });

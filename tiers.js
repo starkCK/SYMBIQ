@@ -255,6 +255,65 @@
      an explanation as children. No answer key in JS, so the markup stays
      readable and a scripts-off reader can still see the question and reasoning.
      ======================================================================= */
+  /* ---- THE STANDING, loaded only if this reader actually reaches a question
+     ----------------------------------------------------------------------
+     standing.js records a correct/incorrect answer as a "proof" in the
+     reader's own record. It is ~15 KB and irrelevant to anyone who never
+     reaches a .cyu block, so it is NOT in these pages' bundles: they carry an
+     inert <script id="standing-src" type="text/symbiq-lazy"> whose unrecognised
+     type stops the browser fetching it, and it is fetched from here instead.
+
+     ⚠ WHY THIS EXISTS AT ALL. The first version of The Standing (2026-09-22)
+     hooked recordCyu() from the click handler below, guarded, and shipped
+     standing.js on exactly two pages -- ledger.html and standing.html -- while
+     the .cyu blocks live on ten OTHERS. The intersection was empty, so the
+     hook could never once fire and half the feature was an empty room. The
+     guard that makes the hook safe is the same guard that hid it being
+     unwired, which is why the pairing is now checked in check_site.py §13.
+
+     Belt and braces, on purpose: preload() warms it when a question comes into
+     view, and record() still loads-then-records if it somehow has not arrived
+     (a reader who answers instantly, or an IntersectionObserver-less browser).
+     loadScript is memoised, so the two paths cost one fetch between them. */
+  function standingSrc() {
+    var tag = document.getElementById('standing-src');
+    return tag ? tag.getAttribute('src') : null;
+  }
+
+  function ensureStanding() {
+    var S = window.SymbiQ;
+    if (S && S.standing) return Promise.resolve(S.standing);
+    var src = standingSrc();
+    if (!src || !S || !S.core || !S.core.loadScript) return Promise.resolve(null);
+    return S.core.loadScript(src).then(function () {
+      return window.SymbiQ.standing || null;
+    });
+  }
+
+  /* Record one answer. Never allowed to throw into the click handler, and
+     never allowed to change what the reader sees -- a page with no standing
+     tag at all behaves exactly as it did before this existed. */
+  function recordProof(right) {
+    try {
+      var S = window.SymbiQ;
+      if (S && S.standing) { S.standing.recordCyu(right); return; }
+      ensureStanding().then(function (st) {
+        if (st) { try { st.recordCyu(right); } catch (e) {} }
+      })['catch'](function () {});
+    } catch (e) {}
+  }
+
+  function preloadStanding() {
+    try {
+      var first = $('.cyu');
+      if (!first || !standingSrc()) return;
+      var S = window.SymbiQ;
+      if (S && S.core && S.core.onNear) {
+        S.core.onNear(first, function () { ensureStanding()['catch'](function () {}); }, 400);
+      }
+    } catch (e) {}
+  }
+
   function buildChecks() {
     all('.cyu').forEach(function (box, n) {
       var opts = all('[data-opt]', box);
@@ -287,9 +346,7 @@
           out.className = 'cyu-out ' + (right ? 'ok' : 'no');
           why.hidden = false;
           bump(right);
-          /* Optional: The Standing, when it has loaded on this page. Guarded
-             so a page without standing.js behaves exactly as before. */
-          try { window.SymbiQ && SymbiQ.standing && SymbiQ.standing.recordCyu(right); } catch (e) {}
+          recordProof(right);
         });
       });
     });
@@ -337,6 +394,7 @@
     try { if (document.body.hasAttribute('data-tiers')) buildToggle(); }
     catch (e) { /* leave every tier visible, the failure mode must be "shows too much" */ }
     try { buildChecks(); } catch (e) {}
+    try { preloadStanding(); } catch (e) {}
     try { buildCorrFilters(); } catch (e) {}
     try {
       if (!window.SymbiQ.core.reduced()) {

@@ -114,7 +114,14 @@
 }
 </script>
 <script src="core.js?v=2"></script>
-<script src="p/compare.js?v=2" defer></script>
+<!-- INERT ON PURPOSE. An unrecognised `type` means the browser never
+     fetches or runs this; tiers.js pulls it in through core.loadScript
+     when a question comes into view, or on the first answer. The tag
+     stays here, with the real versioned URL, so check_site.py's
+     cache-bust guard and tools/bump_assets.py both still see it.
+     Paired loader required -- see check_site.py §13. -->
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=1"></script>
+<script src="p/compare.js?v=3" defer></script>
 
 
 

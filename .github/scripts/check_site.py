@@ -817,6 +817,76 @@ if esc_hits == 0:
        f"({', '.join(RISKY_FIELDS)}, .value) outside the reviewed allowlist")
 
 # --------------------------------------------------------------------------
+# 13. THE STANDING: a page that can generate a proof must be able to record one.
+#
+# standing.js turns a check-your-understanding answer into a "proof" in the
+# reader's own record. It shipped on 2026-09-22 loaded on exactly two pages --
+# ledger.html and standing.html -- while every .cyu block lives on ten OTHERS.
+# The intersection was empty, so recordCyu() could not fire once and half the
+# feature was an empty room. Nothing caught it because the call site is
+# guarded: the same guard that makes the hook safe to add ahead of the module
+# is the guard that hides the module never arriving.
+#
+# So: a page with a .cyu block must carry the inert standing.js tag, and an
+# inert tag must be paired with a loader that names it.
+#
+# ⚠ THE LOADER IS NOT IN THE PAGE. It lives in tiers.js, which is bundled into
+# p/<stem>.js -- so this reads the built artifact, not the HTML. Grepping raw
+# HTML for the loader is the exact mistake that made four other tools lie the
+# same morning this rule was written.
+STANDING_LAZY_TYPE = "text/symbiq-lazy"
+st_lazy, st_pages = [], []
+for fname, (p_, raw) in pages.items():
+    n_cyu = raw.count('class="cyu"')
+    tags = [(a_type, src) for a_type, src, _ in p_.scripts
+            if src and src.split("?")[0] == "standing.js"]
+
+    if n_cyu and not tags:
+        fail("standing", f"{fname} carries {n_cyu} check-your-understanding "
+                         f"block(s) but never loads standing.js -- every answer "
+                         f"on this page is silently discarded")
+        continue
+    if not tags:
+        continue
+    if len(tags) > 1:
+        fail("standing", f"{fname} loads standing.js {len(tags)} times")
+        continue
+
+    a_type, _src = tags[0]
+    if not a_type:
+        st_pages.append(fname)          # loaded outright (standing.html itself)
+        continue
+    if a_type != STANDING_LAZY_TYPE:
+        fail("standing", f'{fname} loads standing.js with type="{a_type}". A '
+                         f'type the browser recognises is fetched eagerly, which '
+                         f'defeats the point; any other is never run at all. Use '
+                         f'no type (eager) or "{STANDING_LAZY_TYPE}" (lazy).')
+        continue
+
+    st_lazy.append(fname)
+    if 'id="standing-src"' not in raw:
+        fail("standing", f'{fname} has an inert standing.js tag with no '
+                         f'id="standing-src" for its loader to find')
+    stem = os.path.splitext(fname)[0]
+    bundle = os.path.join(ROOT, "p", stem + ".js")
+    built = ""
+    if os.path.exists(bundle):
+        with open(bundle, encoding="utf-8") as fh:
+            built = fh.read()
+    # The CALL, not the bare id: tiers.js's own explanatory comment names
+    # "standing-src" too, so a substring test passes even after the loader has
+    # been deleted -- which is exactly how the first draft of this rule failed
+    # its own mutation test.
+    LOADER = "getElementById('standing-src')"
+    if LOADER not in built and LOADER not in raw:
+        fail("standing", f"{fname} has an inert standing.js tag that nothing "
+                         f"loads -- answers here would be silently discarded")
+
+if not [f for f in FAILS if f.startswith("standing")]:
+    ok(f"standing: standing.js eager on {len(st_pages)} page(s), loaded on "
+       f"approach with a paired loader on {len(st_lazy)}")
+
+# --------------------------------------------------------------------------
 print("=" * 66)
 print(f"SymbiQ site guard -- {len(pages)} pages, {len(js_files())} js files")
 print("=" * 66)

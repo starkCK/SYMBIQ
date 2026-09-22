@@ -32,11 +32,7 @@
     submission: 'proposed by a reader, promoted by the desk',
   };
 
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
   function fmtDate(s) {
     if (!s) return '';
     try {
@@ -225,9 +221,14 @@
   function wireProposeForm(container) {
     if (!container) return;
     var auth = window.SymbiQ.auth;
-    if (!auth || !auth.client) {
+    /* auth.ready, not auth.client: since 2026-09-21 auth.js only fetches the
+       218 KB Supabase library for a reader who has a session or asks for one,
+       so a signed-out visitor has no client -- and the branch they land on,
+       "sign in to propose a question", never needed one. `ready` means the
+       signed-in/out answer is known, which is the real question here. */
+    if (!auth || !auth.ready) {
       container.innerHTML = '<p class="frn-nr">Checking sign-in status…</p>';
-      return; // symbiq:authchange re-calls this once auth.js finishes loading
+      return; // symbiq:authchange re-calls this the moment the answer lands
     }
     var user = auth.getUser();
     if (!user) {

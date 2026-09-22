@@ -25,11 +25,17 @@
   };
   var DOMAIN_LABEL = { quantum: 'Quantum', ai: 'AI', or: 'Optimisation', crypto: 'Crypto / PQC' };
 
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  var esc = window.SymbiQ.core.esc;   /* plan 24 §2.2 -- one copy, in core.js */
+
+  /* What a reader sees when the forecast back end can't be reached. It used
+     to print the raw exception -- "Could not load forecasts (TypeError:
+     Failed to fetch)" -- which is every visitor's view today, because the
+     Supabase schema has never been run. A stack-trace fragment is not a
+     sentence, and this is the page whose whole argument is that claims get
+     checked carefully. The detail still goes to the console for whoever is
+     debugging; the page says what it means. */
+  var FORECAST_OFFLINE = 'Crowd forecasts aren’t available yet. The claim, its resolution ' +
+    'criteria and its sources above are the record, and they don’t depend on this.';
 
   function fmtDate(s) {
     if (!s) return '';
@@ -136,11 +142,39 @@
   function wireForecast(slug, el) {
     var auth = window.SymbiQ.auth;
     if (!auth || !auth.client) {
-      el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">Checking sign-in status…</p>';
-      return; // symbiq:authchange fires once auth.js finishes loading; see mount()'s listener
+      el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">Reading the crowd…</p>';
+      /* Opening a claim's forecast panel is the one place a signed-OUT reader
+         still needs the Supabase client, to read what everyone else has
+         forecast. Since 2026-09-21 auth.js no longer ships that 218 KB to
+         every visitor, so ask for it here, at the moment it is wanted. It
+         resolves instantly if some other panel already asked. */
+      if (!auth || !auth.ensure) return;
+      auth.ensure().then(function (c) {
+        if (c) wireForecast(slug, el);
+        else el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">' + FORECAST_OFFLINE + '</p>';
+      });
+      return; // symbiq:authchange also re-runs this on any sign-in change
     }
+
+    /* Don't make anyone watch a spinner for eight seconds. supabase-js retries
+       a failed read with backoff, so when the back end is unreachable -- which
+       is every reader's experience today, the schema having never been run --
+       the rejection arrives around 7-9s after the claim is opened. Measured,
+       not assumed: tools/verify_auth_lazy.mjs times it.
+
+       The crowd summary is the one thing on this panel that isn't already on
+       the page. The claim, its frozen resolution criteria and its sources are
+       right above, so after a couple of seconds say so and stop waiting. The
+       real read is NOT cancelled: if it is merely slow rather than dead, it
+       lands a moment later and quietly replaces this. */
+    var slow = setTimeout(function () {
+      el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">' + FORECAST_OFFLINE + '</p>';
+    }, 2500);
+    var done = function () { clearTimeout(slow); };
+
     Promise.resolve(auth.client.from('claim_forecasts').select('p').eq('claim_slug', slug))
       .then(function (res) {
+        done();
         // supabase-js resolves (not rejects) on an API error, packing it into
         // res.error -- checking res.data alone would silently read a real
         // failure as "zero forecasts exist yet."
@@ -176,7 +210,9 @@
         });
       })
       .catch(function (err) {
-        el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">Could not load forecasts (' + esc(err.message) + ').</p>';
+        done();
+        try { console.warn('SymbiQ ledger: forecasts unavailable', err); } catch (e) {}
+        el.innerHTML = '<h4>Forecast</h4><p class="ldg-nr">' + FORECAST_OFFLINE + '</p>';
       });
   }
 
@@ -530,7 +566,14 @@
 
   function wireSubmitForm(container) {
     var auth = window.SymbiQ.auth;
-    if (!auth || !auth.client) {
+    /* Gate on auth.ready, not auth.client: since 2026-09-21 the Supabase
+       library is only fetched for a reader who has a session or asks for one,
+       so a signed-out visitor never gets a `client` -- and the branch they
+       land on, the no-account form, doesn't need one. `ready` is the question
+       actually being asked here ("do we know yet?"), and getUser() is
+       authoritative once it is true. A signed-in user always has the client,
+       because a stored session is exactly what makes auth.js load it. */
+    if (!auth || !auth.ready) {
       container.innerHTML = '<p class="ldg-nr">Checking sign-in status…</p>';
       return;
     }

@@ -54,8 +54,20 @@
   /* Brier's own multi-category score (Brier 1950): sum over classes of
    * (forecast probability - actual outcome)^2, outcome 1 for the class that
    * happened and 0 for the others. 0 = perfect, 2 = maximally wrong for a
-   * 3-class forecast. A uniform 33/33/34 guess scores ~0.33 regardless of
-   * outcome, which is the honest baseline "I have no information" gets. */
+   * 3-class forecast.
+   *
+   * A uniform 33/33/34 guess scores ~0.67 whatever happens (0.6534 when the
+   * 34 lands, 0.6734 otherwise) -- the honest baseline "I have no information"
+   * gets, and the number to beat.
+   *
+   * ⚠ This said "~0.33" until 2026-09-22, which is that same baseline on the
+   * OTHER convention: divide by the number of classes and Brier runs [0,1]
+   * instead of [0,2]. The code was always right and the reader-facing copy
+   * always said "0 is perfect, 2 is maximally wrong"; only this comment mixed
+   * the two, which is the exact shape of error this project keeps finding --
+   * never the arithmetic, always the convention or the label on it.
+   * tools/verify_standing_predictions.mjs pins the value so it cannot drift
+   * back. */
   function brier(p, verdict) {
     var sum = 0;
     CLASSES.forEach(function (c) {

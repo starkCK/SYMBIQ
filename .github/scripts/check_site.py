@@ -36,6 +36,25 @@ WARNS = []
 OKS = []
 
 
+def canonical_sha256(path):
+    """sha256 of a file as git stores it and GitHub Pages serves it.
+
+    .gitattributes stores text as LF, but the desk works on Windows, where the
+    checkout and any text-mode write leave CRLF on disk. The desk tools used
+    to record hashes of those CRLF bytes, and this guard, run in CI on an LF
+    checkout, then failed every push from 2026-09-22 to 2026-09-23 on assets
+    that had not changed -- a guard that always fails guards nothing. Text is
+    normalised CRLF -> LF; a NUL in the first 8000 bytes means binary (git's
+    own test) and is hashed as is. Must stay identical to sha() in the desk's
+    tools/bump_assets.py and canonical() in tools/vendor_dep.py.
+    """
+    with open(path, "rb") as fh:
+        data = fh.read()
+    if b"\0" not in data[:8000]:
+        data = data.replace(b"\r\n", b"\n")
+    return hashlib.sha256(data).hexdigest()
+
+
 def fail(check, msg):
     FAILS.append(f"{check}: {msg}")
 
@@ -477,11 +496,7 @@ else:
         if not os.path.exists(full):
             stale.append(f"{path} is in the manifest but not in the repo")
             continue
-        h = hashlib.sha256()
-        with open(full, "rb") as fh:
-            for chunk in iter(lambda: fh.read(65536), b""):
-                h.update(chunk)
-        digest = h.hexdigest()
+        digest = canonical_sha256(full)
         if digest != rec.get("sha256"):
             moved.append(path)
             continue
@@ -546,13 +561,10 @@ if os.path.isdir(VROOT):
             if not want:
                 v_unverifiable.append(f"vendor/{pkg}/{local}")
                 continue
-            h = hashlib.sha256()
-            with open(fpath, "rb") as fh:
-                for chunk in iter(lambda: fh.read(65536), b""):
-                    h.update(chunk)
-            if h.hexdigest() != want:
+            got = canonical_sha256(fpath)
+            if got != want:
                 fail("vendor", f"vendor/{pkg}/{local} CHANGED since it was recorded "
-                               f"(on disk {h.hexdigest()[:12]}, manifest {want[:12]}) -- "
+                               f"(on disk {got[:12]}, manifest {want[:12]}) -- "
                                f"if deliberate, re-run tools/vendor_dep.py in the desk repo")
             else:
                 v_checked += 1

@@ -171,8 +171,9 @@ body[data-vivid]::before {
     radial-gradient(780px circle at 4% -8%, var(--glow1), transparent 60%),
     radial-gradient(900px circle at 98% 6%, var(--glow3), transparent 58%),
     radial-gradient(920px circle at 92% 110%, var(--glow2), transparent 60%),
-    radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
-  background-size: auto, auto, auto, 26px 26px;
+    radial-gradient(circle, var(--dot) 1px, transparent 1.5px),
+    var(--grain-url);   /* style.css's shared token -- researched top-10 item 7 */
+  background-size: auto, auto, auto, 26px 26px, 140px 140px;
 }
 
 /* The top hairline becomes a full spectral sweep. The drift

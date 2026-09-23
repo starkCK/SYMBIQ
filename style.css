@@ -42,6 +42,16 @@
   --red: #f87171;
   --nav-bg: rgba(11, 15, 26, 0.82);
   --dot: rgba(167, 139, 250, 0.07);
+  /* THE GRAIN (researched top-10 item 7, 2026-09-23). One texture, shared
+     by style.css's own body::before AND vivid.css's richer override of it
+     -- a custom property rather than the same long data: URI pasted twice,
+     since it is genuinely the same image both times, not two things that
+     happen to look alike. Theme-independent on purpose: unlike --glow1/
+     --glow2/--dot above, it is never re-declared under the light-mode or
+     explicit-theme blocks, so every appearance state inherits this one
+     value from here. See style.css's body::before for what it does and
+     why a plain, low, fixed alpha rather than mix-blend-mode: overlay. */
+  --grain-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --glow1: rgba(139, 92, 246, 0.14);
   --glow2: rgba(45, 212, 191, 0.10);
   --shadow: rgba(0, 0, 0, 0.3);
@@ -168,7 +178,26 @@ body {
   font-optical-sizing: auto;
   line-height: 1.65;
 }
-/* ambient layer: two soft glows + the lattice dot grid (the Lattice IS the brand) */
+/* ambient layer: two soft glows + the lattice dot grid (the Lattice IS the
+   brand) + a film-grain texture (2026-09-23, researched top-10 item 7).
+
+   A wide radial gradient over a near-black ground is exactly where 8-bit
+   colour BANDS -- visible steps instead of a smooth fade, worst on the
+   cheap displays a reader is likeliest to be on. A few percent of noise
+   breaks the banding up by dithering the boundary, which is the same
+   reason film stock and printed halftones never band the way flat digital
+   colour does; it reads as texture, not decoration.
+
+   Self-contained: an SVG data: URI (img-src already allows data:, so this
+   needs no CSP change) with feTurbulence generating the noise and
+   feColorMatrix converting it straight to a LOW, FIXED alpha -- white
+   speckle at ~3.5%, baked into the image itself rather than tuned via a
+   separate CSS opacity, so it is the same texture in every browser that
+   can rasterise an SVG filter, not a second moving part to keep in sync.
+   Composited NORMALLY, not blended: mix-blend-mode: overlay reads more
+   "correct" in photography but doubles the surface this rule has to be
+   proven safe on, and normal compositing at this alpha is close enough to
+   invisible in light mode that it costs nothing to leave unconditional. */
 body::before {
   content: "";
   position: fixed;
@@ -178,8 +207,9 @@ body::before {
   background-image:
     radial-gradient(640px circle at 12% -4%, var(--glow1), transparent 62%),
     radial-gradient(760px circle at 88% 104%, var(--glow2), transparent 62%),
-    radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
-  background-size: auto, auto, 26px 26px;
+    radial-gradient(circle, var(--dot) 1px, transparent 1.5px),
+    var(--grain-url);
+  background-size: auto, auto, 26px 26px, 140px 140px;
 }
 /* hairline accent bar, drifting slowly */
 body::after {
@@ -270,6 +300,12 @@ nav a.link { position: relative; color: var(--muted); text-decoration: none; fon
 nav a.link::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
 nav a.link:hover { color: var(--text); }
 nav a.link.active { color: var(--text); border-bottom-color: var(--teal); }
+/* researched top-10 item 8, 2026-09-23: balanced headings, no orphaned
+   last word; pretty-wrapped prose, no orphaned last word on a paragraph
+   either. Both degrade to today's plain wrapping wherever unsupported --
+   text-wrap is a value a non-supporting browser simply ignores, so this
+   needed no @supports gate and touches no other rule on the page. */
+h1, h2, h3 { text-wrap: balance; }
 h1 {
   font-size: 1.9rem; line-height: 1.25; margin-bottom: 10px;
   background: linear-gradient(95deg, var(--h1-a) 30%, var(--h1-b) 72%, var(--h1-c) 100%);
@@ -285,7 +321,7 @@ h2::before {
   width: 3px; border-radius: 2px;
   background: linear-gradient(180deg, var(--violet), var(--teal));
 }
-p { margin-bottom: 14px; }
+p { margin-bottom: 14px; text-wrap: pretty; }
 .tagline { color: var(--muted); font-size: 1.05rem; margin-bottom: 28px; animation: fadeUp 0.5s ease-out 0.08s both; }
 /* The spine: one sentence, above the three-door router, answering the
    question the router itself cannot -- why quantum/OR/security are one site

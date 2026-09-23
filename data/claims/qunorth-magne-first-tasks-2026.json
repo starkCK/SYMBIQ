@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "speaker": "QuNorth, EIFO and the Novo Nordisk Foundation (press release)",
+  "source_archive_url": "https://web.archive.org/web/20250717161439/https://qunorth.com/news/eifo-and-the-novo-nordisk-foundation-acquire-the-worlds-most-powerful-quantum-computer/",
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-09-23",
+  "hedge_score": 2,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "g",
+  "checkins": [
+    {
+      "at": "2026-09-23",
+      "signal": "at_risk",
+      "source_url": "https://thequantuminsider.com/2026/09/02/qunorth-clears-facility-milestone-for-magne-quantum-computer/",
+      "note": "On 2 September 2026 The Quantum Insider reported the building complete and installation only beginning, and that \"MAGNE is expected to be fully operational in the spring of 2027\". Full operation is a later bar than first tasks, so this is a warning, not a verdict. The archived copy was taken on 23 September 2026.",
+      "source_archive_url": "https://web.archive.org/web/20260923144254/https://thequantuminsider.com/2026/09/02/qunorth-clears-facility-milestone-for-magne-quantum-computer/",
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-09-23",
+  "updated_at": "2026-09-23",
+  "sourcing_note": "Magne is the Level 2 machine behind the Ledger's resolved Atom Computing / Microsoft claim, whose verdict rests partly on the same schedule. This entry tracks QuNorth's own date, not that claim's.",
+  "slug": "qunorth-magne-first-tasks-2026",
+  "claimant": "qunorth",
+  "verbatim": "Construction of Magne will begin in autumn 2025, and the computer is expected to be ready for its first tasks by the new year 2026/27.",
+  "headline": "QuNorth said Magne, the logical-qubit machine it is buying from Microsoft and Atom Computing, would be ready for its first tasks by the new year 2026/27.",
+  "source_url": "https://qunorth.com/news/eifo-and-the-novo-nordisk-foundation-acquire-the-worlds-most-powerful-quantum-computer/",
+  "source_date": "2025-07-17",
+  "source_kind": "press release",
+  "kind": "commercial",
+  "domain": "quantum",
+  "resolution_criteria": "Resolves VERIFIED if, by 31 Dec 2026 (plus grace), Magne is installed in Copenhagen and has run its first user or research workloads, reported by QuNorth, Microsoft or Atom Computing plus independent reporting. Commissioning and acceptance testing are not first tasks. PARTIALLY_VERIFIED if the machine is installed and running acceptance tests but no workloads by the deadline. NOT_VERIFIED if it is not installed.",
+  "resolver_sources": [
+    "https://qunorth.com/news/",
+    "https://novonordiskfonden.dk/en/news/",
+    "https://thequantuminsider.com"
+  ],
+  "resolves_by": "2026-12-31",
+  "concept_ids": [
+    "neutral-atom",
+    "logical-qubit"
+  ]
+}

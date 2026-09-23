@@ -5,7 +5,7 @@
     {
       "claimant": "ibm",
       "name": "IBM",
-      "n_tracked": 1,
+      "n_tracked": 3,
       "n_resolved": 0,
       "verified_rate": null,
       "weighted_rate": null,
@@ -55,7 +55,7 @@
     {
       "claimant": "ionq",
       "name": "IonQ",
-      "n_tracked": 1,
+      "n_tracked": 2,
       "n_resolved": 1,
       "verified_rate": 0.0,
       "weighted_rate": 0.0,
@@ -101,10 +101,80 @@
       "weighted_rate": 0.0,
       "slip_days_median": 265,
       "rankable": false
+    },
+    {
+      "claimant": "quera",
+      "name": "QuEra Computing",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "fujitsu-riken",
+      "name": "Fujitsu and RIKEN",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "pasqal",
+      "name": "Pasqal",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "qunorth",
+      "name": "QuNorth",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "psiquantum",
+      "name": "PsiQuantum",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "eu-nis-cooperation-group",
+      "name": "NIS Cooperation Group (EU)",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
+    },
+    {
+      "claimant": "nist",
+      "name": "NIST",
+      "n_tracked": 1,
+      "n_resolved": 0,
+      "verified_rate": null,
+      "weighted_rate": null,
+      "slip_days_median": null,
+      "rankable": false
     }
   ],
   "ours": {
-    "n_captured": 10,
+    "n_captured": 20,
     "n_resolved": 2,
     "n_void": 0,
     "void_rate": 0.0,

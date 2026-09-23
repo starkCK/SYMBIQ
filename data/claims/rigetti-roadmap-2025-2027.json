@@ -25,10 +25,18 @@
       "note": "Captured at seed. Worth noting for context: Rigetti's public roadmap has moved before -- an earlier iteration of this same roadmap targeted 100+ qubits with 99.5% median two-qubit fidelity specifically \"by the end of 2025,\" reported the same week -- so the 2025 leg of this claim is the nearest-term thing to watch first.",
       "source_url": null,
       "author": "desk"
+    },
+    {
+      "at": "2026-09-23",
+      "signal": "off_track",
+      "source_url": "https://investors.rigetti.com/news-releases/news-release-details/rigetti-computing-provides-update-108-qubit-system",
+      "note": "The 2025 interim target, a 100+ qubit chiplet-based system, slipped. On 9 January 2026 Rigetti said it was revising its roadmap and that its 108-qubit Cepheus-1-108Q was \"now expected to reach general availability around the end of the first quarter of 2026\". Under this claim's criteria an interim slip still leaves PARTIALLY_VERIFIED open if the 2027 target is substantially met.",
+      "source_archive_url": "https://web.archive.org/web/20260110031756/https://investors.rigetti.com/news-releases/news-release-details/rigetti-computing-provides-update-108-qubit-system",
+      "author": "desk"
     }
   ],
   "created_at": "2026-08-27",
-  "updated_at": "2026-08-27",
+  "updated_at": "2026-09-23",
   "sourcing_note": "No individual executive quote was found attached to these specific year-by-year figures -- they are Rigetti's own reported roadmap targets rather than a spoken quotation, the same shape of sourcing already used for the IBM Starling entry. Rigetti.com itself was not directly fetchable during capture; the figures are corroborated by an independent trade publication's direct reporting on the Q3 2025 earnings call.",
   "slug": "rigetti-roadmap-2025-2027",
   "claimant": "rigetti",

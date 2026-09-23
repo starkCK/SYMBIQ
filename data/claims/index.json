@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-09-22",
+  "generated": "2026-09-23",
   "entries": [
     {
       "slug": "atom-computing-microsoft-24-logical-qubits-2025",
@@ -39,6 +39,30 @@
       "source_date": "2026-06-22"
     },
     {
+      "slug": "eu-pqc-national-strategies-2026",
+      "claimant": "eu-nis-cooperation-group",
+      "headline": "The EU's NIS Cooperation Group set the end of 2026 for every Member State to have started a national post-quantum transition.",
+      "domain": "crypto",
+      "kind": "security",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "g",
+      "source_date": "2025-06-23"
+    },
+    {
+      "slug": "fujitsu-riken-1000-qubit-2026",
+      "claimant": "fujitsu-riken",
+      "headline": "Fujitsu and RIKEN scheduled the launch of a 1,000-qubit superconducting quantum computer for 2026.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "g",
+      "source_date": "2025-04-22"
+    },
+    {
       "slug": "google-pqc-migration-2029",
       "claimant": "google",
       "headline": "Google has set 2029 as its internal deadline to complete post-quantum cryptography migration across its infrastructure.",
@@ -63,6 +87,18 @@
       "source_date": "2025-01-07"
     },
     {
+      "slug": "ibm-kookaburra-2026",
+      "claimant": "ibm",
+      "headline": "IBM will deliver Kookaburra, its first modular processor designed to store and process encoded information, in 2026.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "y",
+      "source_date": "2025-06-10"
+    },
+    {
       "slug": "ibm-starling-2029",
       "claimant": "ibm",
       "headline": "IBM will deliver a large-scale, fault-tolerant quantum computer (“Starling”) by 2029, running 100 million quantum operations on 200 logical qubits.",
@@ -73,6 +109,30 @@
       "resolves_by": "2029-12-31",
       "evidence_tier": "y",
       "source_date": "2025-06-10"
+    },
+    {
+      "slug": "ibm-verified-quantum-advantage-2026",
+      "claimant": "ibm",
+      "headline": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+      "domain": "quantum",
+      "kind": "scientific",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "y",
+      "source_date": "2025-11-12"
+    },
+    {
+      "slug": "ionq-10000-qubits-single-chip-2027",
+      "claimant": "ionq",
+      "headline": "IonQ's roadmap puts 10,000 physical qubits on a single chip in 2027.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2027-12-31",
+      "evidence_tier": "g",
+      "source_date": "2025-06-13"
     },
     {
       "slug": "ionq-five-nines-2025",
@@ -99,6 +159,42 @@
       "source_date": "2025-02-19"
     },
     {
+      "slug": "nist-hqc-final-standard-2027",
+      "claimant": "nist",
+      "headline": "NIST expects to finalise a standard for HQC, its backup post-quantum key-exchange algorithm, in 2027.",
+      "domain": "crypto",
+      "kind": "security",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2027-12-31",
+      "evidence_tier": "g",
+      "source_date": "2025-03-11"
+    },
+    {
+      "slug": "pasqal-10000-qubits-2026",
+      "claimant": "pasqal",
+      "headline": "Pasqal's roadmap pointed to 10,000 qubits in 2026.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "g",
+      "source_date": "2024-03-12"
+    },
+    {
+      "slug": "psiquantum-brisbane-operational-2027",
+      "claimant": "psiquantum",
+      "headline": "PsiQuantum planned to have its utility-scale quantum computing site near Brisbane operational by the end of 2027.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2027-12-31",
+      "evidence_tier": "g",
+      "source_date": "2024-04-29"
+    },
+    {
       "slug": "quantinuum-apollo-2030",
       "claimant": "quantinuum",
       "headline": "Quantinuum will deliver universal, fully fault-tolerant quantum computing (system “Apollo”) by 2030.",
@@ -109,6 +205,30 @@
       "resolves_by": "2030-12-31",
       "evidence_tier": "y",
       "source_date": "2024-09-10"
+    },
+    {
+      "slug": "quera-100-logical-qubits-2026",
+      "claimant": "quera",
+      "headline": "QuEra will introduce a quantum computer with 100 logical qubits and over 10,000 physical qubits in 2026.",
+      "domain": "quantum",
+      "kind": "milestone",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "y",
+      "source_date": "2024-01-09"
+    },
+    {
+      "slug": "qunorth-magne-first-tasks-2026",
+      "claimant": "qunorth",
+      "headline": "QuNorth said Magne, the logical-qubit machine it is buying from Microsoft and Atom Computing, would be ready for its first tasks by the new year 2026/27.",
+      "domain": "quantum",
+      "kind": "commercial",
+      "status": "tracking",
+      "verdict": null,
+      "resolves_by": "2026-12-31",
+      "evidence_tier": "g",
+      "source_date": "2025-07-17"
     },
     {
       "slug": "rigetti-roadmap-2025-2027",

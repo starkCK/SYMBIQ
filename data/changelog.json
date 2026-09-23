@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 98,
+ "count": 112,
  "events": [
   {
    "at": "2026-09-23",
@@ -30,10 +30,130 @@
   {
    "at": "2026-09-23",
    "kind": "claim",
+   "tag": "Now tracking",
+   "title": "The EU's NIS Cooperation Group set the end of 2026 for every Member State to have started a national post-quantum transition.",
+   "href": "ledger.html#c-eu-pqc-national-strategies-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Fujitsu and RIKEN scheduled the launch of a 1,000-qubit superconducting quantum computer for 2026.",
+   "href": "ledger.html#c-fujitsu-riken-1000-qubit-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
    "tag": "Check-in, no signal",
    "title": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
    "href": "ledger.html#c-huang-useful-quantum-15-30-years",
    "note": "On 20 March 2025, at Nvidia's Quantum Day, Huang walked the remark back: \"This is the first event in history where a company CEO invites all of the guests to explain why he was wrong\" (CNBC). He named no revised range, so there is no new dated claim to track. This one stands as stated and resolves on its own criteria."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IBM will deliver Kookaburra, its first modular processor designed to store and process encoded information, in 2026.",
+   "href": "ledger.html#c-ibm-kookaburra-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+   "href": "ledger.html#c-ibm-verified-quantum-advantage-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+   "href": "ledger.html#c-ibm-verified-quantum-advantage-2026",
+   "note": "On 30 July 2026 IBM and Qedma announced a quantum-advantage result on commercially available IBM hardware and released the circuits to the Quantum Advantage Tracker for classical benchmarking. That is the claimant's own announcement, so it is logged without a signal. The claim scores confirmation by the wider community"
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IonQ's roadmap puts 10,000 physical qubits on a single chip in 2027.",
+   "href": "ledger.html#c-ionq-10000-qubits-single-chip-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "NIST expects to finalise a standard for HQC, its backup post-quantum key-exchange algorithm, in 2027.",
+   "href": "ledger.html#c-nist-hqc-final-standard-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Pasqal's roadmap pointed to 10,000 qubits in 2026.",
+   "href": "ledger.html#c-pasqal-10000-qubits-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, at risk",
+   "title": "Pasqal's roadmap pointed to 10,000 qubits in 2026.",
+   "href": "ledger.html#c-pasqal-10000-qubits-2026",
+   "note": "Pasqal's own 2025 roadmap (12 June 2025) says it is \"moving towards 10,000 qubits by 2028\". The claimant has moved the date two years. The 2026 claim is still scored as it was made."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "PsiQuantum planned to have its utility-scale quantum computing site near Brisbane operational by the end of 2027.",
+   "href": "ledger.html#c-psiquantum-brisbane-operational-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "QuEra will introduce a quantum computer with 100 logical qubits and over 10,000 physical qubits in 2026.",
+   "href": "ledger.html#c-quera-100-logical-qubits-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "QuNorth said Magne, the logical-qubit machine it is buying from Microsoft and Atom Computing, would be ready for its first tasks by the new year 2026/27.",
+   "href": "ledger.html#c-qunorth-magne-first-tasks-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, at risk",
+   "title": "QuNorth said Magne, the logical-qubit machine it is buying from Microsoft and Atom Computing, would be ready for its first tasks by the new year 2026/27.",
+   "href": "ledger.html#c-qunorth-magne-first-tasks-2026",
+   "note": "On 2 September 2026 The Quantum Insider reported the building complete and installation only beginning, and that \"MAGNE is expected to be fully operational in the spring of 2027\". Full operation is a later bar than first tasks, so this is a warning, not a verdict. The archived copy was taken on 23 September 2026."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, off track",
+   "title": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
+   "href": "ledger.html#c-rigetti-roadmap-2025-2027",
+   "note": "The 2025 interim target, a 100+ qubit chiplet-based system, slipped. On 9 January 2026 Rigetti said it was revising its roadmap and that its 108-qubit Cepheus-1-108Q was \"now expected to reach general availability around the end of the first quarter of 2026\". Under this claim's criteria an interim slip still leaves PAR"
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: show scored calls on resolved claims; archive every source; corrections 7-9",
+   "href": "",
+   "note": ""
   },
   {
    "at": "2026-09-23",
@@ -624,14 +744,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "The Calibration: the 🔴 Ruthless card — \"Budget Crunch\"",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Quantum Tic-Tac-Toe: the 🔴 Ruthless card — \"The Adversary\"",
    "href": "",
    "note": ""
   },

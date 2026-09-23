@@ -199,7 +199,12 @@ body[data-vivid] h1 {
   font-size: clamp(2.05rem, 1.3rem + 3.4vw, 3rem);
   line-height: 1.12;
   letter-spacing: -0.022em;
-  font-weight: 800;
+  /* --h1-w, not a bare font-weight: 800 -- style.css's h1-settle keyframes
+     (researched top-10 item 9) read this same token back, so the weight
+     the headline settles TO is still correct on a vivid page without a
+     second copy of those keyframes here. */
+  --h1-w: 800;
+  font-weight: var(--h1-w);
   background-image: linear-gradient(96deg, var(--h1-a) 20%, var(--h1-b) 62%, var(--h1-c) 100%);
 }
 /* A faint coloured bloom behind the display line. Dark mode only:

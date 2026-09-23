@@ -307,13 +307,39 @@ nav a.link.active { color: var(--text); border-bottom-color: var(--teal); }
    needed no @supports gate and touches no other rule on the page. */
 h1, h2, h3 { text-wrap: balance; }
 h1 {
+  /* --h1-w: the headline's own FINAL weight, as a token rather than a bare
+     number -- vivid.css overrides it to 800 on vivid pages via the same
+     name, and the settle animation below reads it back rather than each
+     file needing its own copy of the keyframes. */
+  --h1-w: 700;
   font-size: 1.9rem; line-height: 1.25; margin-bottom: 10px;
+  font-weight: var(--h1-w);
   background: linear-gradient(95deg, var(--h1-a) 30%, var(--h1-b) 72%, var(--h1-c) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: fadeUp 0.5s ease-out both;
 }
+/* researched top-10 item 9, 2026-09-23: the headline settles from a lighter
+   weight to its real one, once, on arrival. Costs nothing extra to
+   download -- fonts/inter-latin-wght-normal.woff2 is a true variable font
+   (@font-face declares font-weight: 100 900), so this is the SAME file
+   already loaded for every other weight on the page, just a different
+   frame of it. A second, independent animation on the SAME element as
+   fadeUp above -- the two are listed together, not two competing
+   `animation` declarations, since a second `animation` shorthand would
+   replace the first rather than add to it. font-weight is its own
+   property, untouched by fadeUp's opacity/transform, so both run at once
+   without fighting. Killed entirely by the site's existing blanket
+   `*, *::before, *::after { animation: none !important }` reduced-motion
+   rule below -- no separate guard needed here. */
+@media (prefers-reduced-motion: no-preference) {
+  /* ease-out, matching fadeUp on the same element -- not motion.css's
+     --ease-out-quint, so style.css keeps needing nothing from a file it
+     does not itself require. */
+  h1 { animation: fadeUp 0.5s ease-out both, h1-settle 700ms ease-out both; }
+}
+@keyframes h1-settle { from { font-weight: 380; } to { font-weight: var(--h1-w); } }
 h2 { font-size: 1.25rem; margin: 36px 0 12px; padding-left: 13px; position: relative; }
 h2::before {
   content: "";

@@ -5085,7 +5085,8 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   /* ======================================================================
      3 + 4. THE STATIONS AND THE COMPANION
      ----------------------------------------------------------------------
-     Twelve [data-station] sections; a -38% / -38% root margin means a
+     Thirteen [data-station] sections (twelve, then the evidence board
+     added 2026-09-23); a -38% / -38% root margin means a
      station counts as reached only when it is genuinely the thing in the
      middle of the screen, not when one pixel of it clips the bottom edge.
 
@@ -5115,13 +5116,14 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   }
 
   /* The reading name of each station, for the "you are here" line and the
-     door stamps. Authored, not derived from a heading, because four of the
-     twelve have no heading of their own. */
+     door stamps. Authored, not derived from a heading, because several of
+     these (including the evidence board) have no heading of their own. */
   var STATION_NAME = {
     hero: 'The argument',
     threshold: 'The threshold instrument',
     spine: 'The short version',
     router: 'Three doors',
+    evidence: 'The evidence board',
     question: 'The Question',
     loop: 'The loop',
     games: 'Nine games',
@@ -6029,6 +6031,101 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     ready: function () { return !!ctx; }
   };
 
+  /* ======================================================================
+     8. THE EVIDENCE BOARD
+     ----------------------------------------------------------------------
+     Researched top-10 item 3 (and item 4's odometer digits, built into it
+     rather than shipped as a separate demo -- these fetched numbers are
+     exactly the case a count-up reads honestly on, since they visibly
+     ARRIVE after the page does, unlike the instrument's numbers above,
+     which are already an instantaneous function of a slider).
+
+     Four independent fetches, each of the SAME JSON its own page already
+     reads -- nothing here is a new source of truth. One tile's source
+     going missing or malformed degrades to index.html's own static
+     fallback copy (already correct, not a loading state) and never blocks
+     the other three; nothing here can make the page worse than the plain
+     HTML it starts as.
+     ==================================================================== */
+  var EV_SOURCES = {
+    ledger: {
+      url: 'data/claims/index.json',
+      read: function (d) {
+        var entries = d.entries || [];
+        var resolved = entries.filter(function (e) { return e.status === 'resolved'; }).length;
+        var verified = entries.filter(function (e) { return e.verdict === 'verified'; }).length;
+        return {
+          n: entries.length,
+          sub: resolved + ' resolved' + (verified ? ', ' + verified + ' verified' : ', none yet verified')
+        };
+      }
+    },
+    signal: {
+      url: 'data/signals/index.json',
+      read: function (d) {
+        return { n: d.count || (d.entries || []).length, sub: 'news items checked against the loop' };
+      }
+    },
+    archive: {
+      url: 'data/archive/index.json',
+      read: function (d) {
+        return { n: d.count || (d.entries || []).length, sub: 'questions really asked, every answer kept' };
+      }
+    },
+    frontier: {
+      url: 'data/frontier/index.json',
+      read: function (d) {
+        var entries = d.entries || [];
+        var open = entries.filter(function (e) { return e.status === 'open'; }).length;
+        return { n: entries.length, sub: open + ' still open, put to a model panel' };
+      }
+    }
+  };
+
+  /* Ten digits, stacked in a column one row tall each; the roll is just
+     translateY by whole rows. Reduced motion sets the final row directly --
+     no intermediate "0" frame to flash before the CSS transition (only
+     declared under prefers-reduced-motion: no-preference, home.css section
+     11) would otherwise have a chance to suppress. */
+  function mountOdometer(el, n) {
+    var s = String(Math.max(0, Math.round(n) || 0));
+    var rows = '';
+    for (var i = 0; i <= 9; i++) rows += '<span>' + i + '</span>';
+    /* aria-hidden on the visual roll: unhidden, a screen reader would read
+       "0123456789..." once per digit column, not the number. .rung-sr
+       (style.css, already site-wide) is the real accessible text -- the
+       same clip-to-nothing technique rung.js already uses for its own
+       icon-plus-label links, reused rather than a second one invented. */
+    el.setAttribute('data-value', s);
+    el.innerHTML = '<span aria-hidden="true">' + s.split('').map(function () {
+      return '<span class="dig"><span class="dig-roll">' + rows + '</span></span>';
+    }).join('') + '</span><span class="rung-sr">' + s + '</span>';
+    var rolls = $$('.dig-roll', el);
+    function place(ch, i) { rolls[i].style.transform = 'translateY(-' + ((+ch) * 1.1).toFixed(2) + 'em)'; }
+    if (reduce) { s.split('').forEach(place); return; }
+    rolls.forEach(function (r) { r.style.transform = 'translateY(0)'; });
+    void el.offsetHeight;               /* commit the 0-position before animating away from it */
+    W.requestAnimationFrame(function () { s.split('').forEach(place); });
+  }
+
+  function buildEvidence() {
+    var tiles = $$('.ev-tile[data-ev]');
+    if (!tiles.length) return;
+    tiles.forEach(function (tile) {
+      var src = EV_SOURCES[tile.getAttribute('data-ev')];
+      if (!src) return;
+      fetch(src.url, { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+        .then(function (data) {
+          var out = src.read(data);
+          var numEl = $('.ev-num', tile), subEl = $('.ev-sub', tile);
+          if (numEl && typeof out.n === 'number') mountOdometer(numEl, out.n);
+          if (subEl && out.sub) subEl.textContent = out.sub;
+        })
+        .catch(function () { /* the static fallback already in the markup stands */ });
+    });
+  }
+
   /* ====================================================================== */
   function boot() {
     try { buildInstrument(); } catch (e) {}
@@ -6039,6 +6136,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     try { bindKeys(); } catch (e) {}
     try { buildField(); } catch (e) {}
     try { bindSheen(); } catch (e) {}
+    try { buildEvidence(); } catch (e) {}
   }
 
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', boot);

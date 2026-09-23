@@ -7087,3 +7087,56 @@ body > .wrap { position: relative; z-index: 1; }
     translate: none !important;
   }
 }
+
+/* ---------------------------------------------------------------- 11
+   THE EVIDENCE BOARD  (2026-09-23, researched top-10 item 3 -- and item 4,
+   the odometer digits, is built into it rather than shipped separately:
+   these fetched numbers are exactly the case a count-up reads honestly on,
+   since they visibly ARRIVE after the page does.)
+
+   Four .card-weight tiles, not four cards -- 14px padding, a plain 1px
+   border, no gradient, no glass: the .bigplay gradient stays the page's one
+   loud thing (the button-taste rule this site has followed since 2026-08),
+   and these are numbers a reader checks, not calls to action. */
+.evidence-lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; }
+.ev-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (min-width: 720px) { .ev-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.ev-tile {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 15px; border-radius: 12px;
+  border: 1px solid var(--border); background: var(--panel);
+  color: var(--text); text-decoration: none;
+  transition: border-color var(--hm-fast) var(--hm-ease), box-shadow var(--hm-fast) var(--hm-ease);
+}
+.ev-tile:hover { border-color: var(--teal); box-shadow: var(--elev-1); }
+.ev-tile:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.ev-eyebrow {
+  font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.ev-num {
+  font-size: 1.7rem; font-weight: 800; line-height: 1.1;
+  font-variant-numeric: tabular-nums; color: var(--teal);
+}
+.ev-sub { font-size: .76rem; line-height: 1.35; color: var(--muted); }
+
+/* THE ODOMETER. Built only once a real value has arrived (section 8), so a
+   reader whose fetch fails or whose JS never runs sees the plain "–"
+   fallback above, not an empty or broken control -- and one already
+   correct in tone ("a number withheld" rather than "a number that failed"). */
+.ev-num .dig {
+  display: inline-block; height: 1.1em; overflow: hidden;
+  line-height: 1.1; vertical-align: top;
+}
+.ev-num .dig-roll { display: flex; flex-direction: column; }
+.ev-num .dig-roll span { height: 1.1em; line-height: 1.1; }
+@media (prefers-reduced-motion: no-preference) {
+  .ev-num .dig-roll {
+    /* home.css's own alias, not motion.css's --dur-slow -- section 0's rule:
+       this file works standalone even if motion.css is ever unlinked. */
+    transition: transform var(--hm-base) var(--hm-ease);
+  }
+}

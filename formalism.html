@@ -2,13 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-gxPe1LEx6IGOSj7vZQclkr6cK/Lr/zC21LnnqGOmG/M=' 'sha256-Ht20tI/oYCCM+3eM7F6fdCVCs6As/EwElvMT/c/qo/A=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-gxPe1LEx6IGOSj7vZQclkr6cK/Lr/zC21LnnqGOmG/M=' 'sha256-Ht20tI/oYCCM+3eM7F6fdCVCs6As/EwElvMT/c/qo/A=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Machinery: the mathematical spine of quantum computing | SymbiQ</title>
 <meta name="description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices and mixed states, measurement done properly, and the no-cloning theorem, with proofs, not just claims.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/formalism.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
@@ -29,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/formalism.css?v=5">
+<link rel="stylesheet" href="p/formalism.css?v=6">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -53,7 +83,7 @@
 
 <script src="core.js?v=2"></script>
 <script src="save.js"></script>
-<script src="p/formalism.js?v=1" defer></script>
+<script src="p/formalism.js?v=2" defer></script>
 
 
 

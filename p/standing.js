@@ -665,7 +665,22 @@
     return;
   }
 
-  document.head.appendChild(s);
+  /* 2026-09-23: speculation-rules.json can fetch this page's HTML into the
+     cache on a mere HOVER, well before a reader has visited it (it never
+     runs page JavaScript, so this guard only matters if a rule ever grows
+     into "prerender" -- currently the site uses "prefetch" only, which does
+     not execute this file at all). If it ever does, appending the beacon
+     script here would count a hover as a visit. document.prerendering is
+     true only while the page is being rendered in the background; wait for
+     it to actually become the active page before sending anything. Browsers
+     without prerendering support don't define the property, so this is a
+     no-op there and the script loads immediately as it always has. */
+  function fire() { document.head.appendChild(s); }
+  if (document.prerendering) {
+    document.addEventListener('prerenderingchange', fire, { once: true });
+  } else {
+    fire();
+  }
 
   /* Report a named event (a mission cleared, a question answered) if the
    * provider supports it. Safe to call whether or not analytics is on, so

@@ -2,13 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-apxpZqj71Iy5U3YFgNIc20YL03pNNRWIWva6KfBmy84=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-apxpZqj71Iy5U3YFgNIc20YL03pNNRWIWva6KfBmy84=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Ledger · SymbiQ</title>
 <meta name="description" content="Public claims about quantum computing, tracked from the moment they're made to a dated, sourced verdict. Pre-registered criteria, archived sources, two keys to resolve, and our own error rate published next to theirs.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/ledger.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
 <link rel="alternate" type="application/rss+xml" title="SymbiQ · The Ledger" href="ledger.xml">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -30,7 +60,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/ledger.css?v=6">
+<link rel="stylesheet" href="p/ledger.css?v=7">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -53,7 +83,7 @@
 
 
 <script src="core.js?v=2"></script>
-<script src="p/ledger.js?v=4" defer></script>
+<script src="p/ledger.js?v=5" defer></script>
 
 
 

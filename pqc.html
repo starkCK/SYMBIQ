@@ -2,13 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-akde+xB6Mc7koBok/7zlpjUemCRMDvfDbgUNrViU8cA=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-akde+xB6Mc7koBok/7zlpjUemCRMDvfDbgUNrViU8cA=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<script>/* door morph arrival (doormorph.js companion, 2026-09-23): MUST run this early, as a classic head script, not from the deferred doormorph.js file. pagereveal fires the moment this document is first rendered -- the API's own description is "equivalent to the first requestAnimationFrame() run ... if you were to trigger it in the head" -- which is well before a deferred script has loaded, so a listener registered from one would miss the event outright (found live: the sessionStorage handoff was never consumed until this moved here). The querySelector below still works from this early: pagereveal's own documented use case is exactly "read/write an element on the newly revealed page", and by the time the callback actually FIRES the browser has parsed enough of the document to paint it, h1 included. */try{if('onpagereveal' in window){window.addEventListener('pagereveal',function(e){var raw=null;try{raw=sessionStorage.getItem('sq-vt-door');sessionStorage.removeItem('sq-vt-door');}catch(_){}if(!raw||!e.viewTransition)return;var i=raw.lastIndexOf(':');if(i<0)return;var track=raw.slice(0,i),stamp=+raw.slice(i+1);if(!(Date.now()-stamp<4000))return;var mine=document.body&&document.body.getAttribute('data-door');if(track!==mine)return;var h1=document.querySelector('.wrap > h1');if(!h1)return;h1.style.viewTransitionName='sq-door-'+track;var restore=function(){try{h1.style.viewTransitionName='';}catch(_e){}};e.viewTransition.ready.then(restore,restore);});}}catch(er){}</script>
 <title>What does post-quantum cryptography cost on the wire? | SymbiQ</title>
 <meta name="description" content="Post-quantum TLS is not slower because the maths is slow. It is slower because the keys and signatures are large. Measure the real byte cost in your own browser, with real ML-KEM and ML-DSA keys.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/pqc.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b0f1a">
@@ -29,7 +60,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/pqc.css?v=5">
+<link rel="stylesheet" href="p/pqc.css?v=6">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -104,7 +135,7 @@
 }
 </script>
 <script src="core.js?v=2"></script>
-<script src="p/pqc.js?v=1" defer></script>
+<script src="p/pqc.js?v=3" defer></script>
 
 
 
@@ -492,7 +523,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 
 </head>
-<body data-motion data-rails data-rung="L4" data-alive data-glass>
+<body data-motion data-rails data-rung="L4" data-alive data-glass data-door="pqc">
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">

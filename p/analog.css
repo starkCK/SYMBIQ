@@ -2433,6 +2433,22 @@ a.tbtn { text-decoration: none; }
 nav .brand { view-transition-name: mo-brand; }
 .wrap > h1 { view-transition-name: mo-title; }
 
+/* THE DOOR MORPH (2026-09-23, doormorph.js). Three names, never declared in
+   CSS on any element -- doormorph.js writes them as an inline style, once,
+   only for the one navigation a router-door click starts, then hands the
+   destination's h1 back to mo-title above. A static rule here would be a
+   note about a name nothing on the page carries; this only retimes the
+   browser's own default cross-fade-and-resize group animation to the site's
+   law (decelerate, settle, never bounce) for the moment it IS in use. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(sq-door-quantum),
+  ::view-transition-group(sq-door-or),
+  ::view-transition-group(sq-door-pqc) {
+    animation-duration: var(--dur-slow);
+    animation-timing-function: var(--ease-out-quint);
+  }
+}
+
 /* prefers-reduced-motion still gets the transition -- it is a cross-fade,
    not movement -- but loses the travel. Killing it entirely would be worse:
    the white flash it replaces is itself a motion event. */

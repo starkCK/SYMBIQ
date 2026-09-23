@@ -6,8 +6,8 @@
   "criteria_frozen_at": "2026-08-27",
   "hedge_score": 1,
   "stated_confidence": null,
-  "status": "proposed",
-  "verdict": null,
+  "status": "resolved",
+  "verdict": "not_verified",
   "verdict_reasoning": "Evidence gathered from the pre-registered resolver sources only. The criteria required a commercial customer to have RECEIVED AND OPERATED a system matching the 24-entangled-logical-qubit specification by 31 Dec 2025 plus the 30-day grace (30 Jan 2026), and said in advance that an order or a demo does not count.\n\nOne commercial sale is identifiable in the named sources: QuNorth (Denmark, funded by EIFO and the Novo Nordisk Foundation), which contracted in 2025 for Magne — an Atom Computing / Microsoft system specified at roughly 50 logical qubits on about 1,225 physical neutral atoms, announced July 2025 with construction beginning that autumn. As of 2 September 2026, more than seven months after the grace period closed, The Quantum Insider reports that the building intended to house Magne has only just been completed, that installation is beginning, and that the system is expected to be fully operational in spring 2027.\n\nSo no system was operating at a customer site inside the window — not at the announced 24-logical specification, and not at the differently-specified 50-logical one. That also rules out PARTIALLY_VERIFIED, which required a differently-specified system to have shipped in the window; none did. The January 2025 HPCwire roll-out report logged at intake describes an offering being made available, not a delivery — exactly the distinction the criteria fixed in advance, which is the whole reason it was fixed in advance.\n\nNothing here is a judgement about intent. Hardware schedules slip, and the original announcement was explicit that delivery was a 2025 plan. What the Ledger records is that the dated, falsifiable version of the claim did not come true inside its own window.",
   "verdict_sources": [
     "https://thequantuminsider.com/2026/09/02/qunorth-clears-facility-milestone-for-magne-quantum-computer/",
@@ -15,7 +15,7 @@
     "https://azure.microsoft.com/en-us/blog/quantum/2024/11/19/microsoft-and-atom-computing-offer-a-commercial-quantum-machine-with-the-largest-number-of-entangled-logical-qubits-on-record/",
     "https://www.hpcwire.com/2025/01/20/atom-computing-microsoft-roll-out-on-premise-system-supporting-50-logical-qubits/"
   ],
-  "resolved_at": null,
+  "resolved_at": "2026-09-22",
   "captured_by": "desk",
   "resolved_by": "agent:claude-opus-5",
   "reviewed_by": null,
@@ -40,7 +40,7 @@
     }
   ],
   "created_at": "2026-08-27",
-  "updated_at": "2026-09-08",
+  "updated_at": "2026-09-22",
   "sourcing_note": "Deadline (31 Dec 2025 + 30-day grace = 30 Jan 2026) has passed as of capture (2026-08-27). Flagged resolvable by the seeding pass, NOT resolved -- a January 2025 follow-up report (HPCwire) described Atom Computing and Microsoft rolling out an on-premise system supporting up to 50 logical qubits, which reads as meeting or exceeding this claim, but the desk should verify the exact 24-logical-qubit specification was what actually shipped before writing a VERIFIED verdict, per the two-key rule.",
   "slug": "atom-computing-microsoft-24-logical-qubits-2025",
   "claimant": "atom-computing",

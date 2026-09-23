@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-09-08",
+  "generated": "2026-09-22",
   "entries": [
     {
       "slug": "atom-computing-microsoft-24-logical-qubits-2025",
@@ -8,8 +8,8 @@
       "headline": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
       "domain": "quantum",
       "kind": "commercial",
-      "status": "proposed",
-      "verdict": null,
+      "status": "resolved",
+      "verdict": "not_verified",
       "resolves_by": "2025-12-31",
       "evidence_tier": "y",
       "source_date": "2024-11-19"
@@ -80,8 +80,8 @@
       "headline": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
       "domain": "quantum",
       "kind": "performance",
-      "status": "proposed",
-      "verdict": null,
+      "status": "resolved",
+      "verdict": "not_verified",
       "resolves_by": "2025-12-31",
       "evidence_tier": "y",
       "source_date": "2024-07-22"

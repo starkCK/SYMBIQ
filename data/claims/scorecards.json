@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-09-08",
+  "generated": "2026-09-22",
   "claimants": [
     {
       "claimant": "ibm",
@@ -56,10 +56,10 @@
       "claimant": "ionq",
       "name": "IonQ",
       "n_tracked": 1,
-      "n_resolved": 0,
-      "verified_rate": null,
-      "weighted_rate": null,
-      "slip_days_median": null,
+      "n_resolved": 1,
+      "verified_rate": 0.0,
+      "weighted_rate": 0.0,
+      "slip_days_median": 265,
       "rankable": false
     },
     {
@@ -96,16 +96,16 @@
       "claimant": "atom-computing",
       "name": "Atom Computing",
       "n_tracked": 1,
-      "n_resolved": 0,
-      "verified_rate": null,
-      "weighted_rate": null,
-      "slip_days_median": null,
+      "n_resolved": 1,
+      "verified_rate": 0.0,
+      "weighted_rate": 0.0,
+      "slip_days_median": 265,
       "rankable": false
     }
   ],
   "ours": {
     "n_captured": 10,
-    "n_resolved": 0,
+    "n_resolved": 2,
     "n_void": 0,
     "void_rate": 0.0,
     "corrections_from_right_of_reply": 0,

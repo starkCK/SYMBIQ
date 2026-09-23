@@ -6,18 +6,16 @@
 <atom:link href="https://starkck.github.io/SYMBIQ/ledger.xml" rel="self" type="application/rss+xml" />
 <description>Every public, dated, falsifiable claim SymbiQ tracks about quantum computing, and every check-in, proposed verdict and resolution against it. Criteria are frozen before the deadline; misses are never deleted.</description>
 <language>en-GB</language>
-<lastBuildDate>Tue, 08 Sep 2026 00:00:00 +0000</lastBuildDate>
+<lastBuildDate>Tue, 22 Sep 2026 00:00:00 +0000</lastBuildDate>
 <ttl>1440</ttl>
 <item>
-<title>Proposed verdict, Not verified (not yet final): Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.</title>
+<title>Resolved, Not verified: Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.</title>
 <link>https://starkck.github.io/SYMBIQ/ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025</link>
-<guid isPermaLink="false">symbiq-ledger:atom-computing-microsoft-24-logical-qubits-2025:proposed:2026-09-08</guid>
-<pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
-<category>proposed</category>
+<guid isPermaLink="false">symbiq-ledger:atom-computing-microsoft-24-logical-qubits-2025:resolved:2026-09-22</guid>
+<pubDate>Tue, 22 Sep 2026 00:00:00 +0000</pubDate>
+<category>resolved</category>
 <category>atom-computing</category>
-<description>A verdict has been drafted and sourced. Under the Ledger's two-key rule it is not published as resolved until a second reviewer signs it off.
-
-Evidence gathered from the pre-registered resolver sources only. The criteria required a commercial customer to have RECEIVED AND OPERATED a system matching the 24-entangled-logical-qubit specification by 31 Dec 2025 plus the 30-day grace (30 Jan 2026), and said in advance that an order or a demo does not count.
+<description>Evidence gathered from the pre-registered resolver sources only. The criteria required a commercial customer to have RECEIVED AND OPERATED a system matching the 24-entangled-logical-qubit specification by 31 Dec 2025 plus the 30-day grace (30 Jan 2026), and said in advance that an order or a demo does not count.
 
 One commercial sale is identifiable in the named sources: QuNorth (Denmark, funded by EIFO and the Novo Nordisk Foundation), which contracted in 2025 for Magne — an Atom Computing / Microsoft system specified at roughly 50 logical qubits on about 1,225 physical neutral atoms, announced July 2025 with construction beginning that autumn. As of 2 September 2026, more than seven months after the grace period closed, The Quantum Insider reports that the building intended to house Magne has only just been completed, that installation is beginning, and that the system is expected to be fully operational in spring 2027.
 
@@ -26,15 +24,13 @@ So no system was operating at a customer site inside the window — not at the a
 Nothing here is a judgement about intent. Hardware schedules slip, and the original announcement was explicit that delivery was a 2025 plan. What the Ledger records is that the dated, falsifiable version of the claim did not come true inside its own window.</description>
 </item>
 <item>
-<title>Proposed verdict, Not verified (not yet final): IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.</title>
+<title>Resolved, Not verified: IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.</title>
 <link>https://starkck.github.io/SYMBIQ/ledger.html#c-ionq-five-nines-2025</link>
-<guid isPermaLink="false">symbiq-ledger:ionq-five-nines-2025:proposed:2026-09-08</guid>
-<pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
-<category>proposed</category>
+<guid isPermaLink="false">symbiq-ledger:ionq-five-nines-2025:resolved:2026-09-22</guid>
+<pubDate>Tue, 22 Sep 2026 00:00:00 +0000</pubDate>
+<category>resolved</category>
 <category>ionq</category>
-<description>A verdict has been drafted and sourced. Under the Ledger's two-key rule it is not published as resolved until a second reviewer signs it off.
-
-Evidence gathered from the pre-registered resolver sources only. The tracked target, as stated in IonQ's July 2024 roadmap announcement, was 99.999% (“five nines”) LOGICAL two-qubit gate fidelity using small-distance quantum error-correcting codes, by the end of 2025.
+<description>Evidence gathered from the pre-registered resolver sources only. The tracked target, as stated in IonQ's July 2024 roadmap announcement, was 99.999% (“five nines”) LOGICAL two-qubit gate fidelity using small-distance quantum error-correcting codes, by the end of 2025.
 
 Inside the window (31 Dec 2025 plus the 30-day grace, i.e. by 30 Jan 2026) IonQ did publish a two-qubit gate result: on 20–21 October 2025 it reported a gate error of 8.4(7)×10⁻⁵ — about 99.9916% fidelity — using Electronic Qubit Control without ground-state cooling, demonstrated on prototype systems in IonQ's R&amp;D labs (arXiv:2510.17286; IonQ newsroom; The Quantum Insider, 21 Oct 2025). That is a PHYSICAL (native) gate fidelity. No error-correcting code is involved, and it is measured on prototype hardware rather than a deployed system. It is a real advance, it was reported as a world record on the physical axis, and it comfortably clears the same roadmap's separate &gt;99.9% native target — but it is not the claim tracked here. No result at or above 99.999% logical two-qubit gate fidelity with small-distance QEC codes appears in any named resolver source inside the window.
 

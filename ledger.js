@@ -62,14 +62,27 @@
     }).join('');
   }
 
+  /* " (archived 9 Jan 2025)" -- an independent Wayback Machine copy, with the
+     date it was taken read off the snapshot URL itself. The date is shown
+     because it matters: a copy from before a verdict proves what the page
+     said then; one taken after says only what it says now. */
+  function archivedLink(url) {
+    if (!url) return '';
+    var m = /web\.archive\.org\/web\/(\d{4})(\d{2})(\d{2})\d{6}\//.exec(url);
+    return ' (<a href="' + esc(url) + '" rel="noopener noreferrer">archived' +
+      (m ? ' ' + esc(fmtDate(m[1] + '-' + m[2] + '-' + m[3])) : '') + '</a>)';
+  }
+
   /* The sources a verdict was actually written from. Rendered for a proposed
      verdict as well as a resolved one: the whole point of pre-registering
      resolver_sources is that a reader can check the working before the desk
      signs it off, not only after. */
-  function verdictSources(list) {
+  function verdictSources(list, archives) {
     if (!list || !list.length) return '';
+    archives = archives || {};
     return '<h5>Evidence</h5><ul class="ldg-vsrc">' + list.map(function (u) {
-      return '<li><a href="' + esc(u) + '" rel="noopener noreferrer">' + esc(u) + '</a></li>';
+      return '<li><a href="' + esc(u) + '" rel="noopener noreferrer">' + esc(u) + '</a>' +
+        archivedLink(archives[u]) + '</li>';
     }).join('') + '</ul>';
   }
 
@@ -81,7 +94,8 @@
       return '<li class="' + esc(ci.signal || '') + '">' +
         '<span class="tl-date">' + esc(fmtDate(ci.at)) + '</span>' +
         '<p class="tl-note">' + esc(ci.note) +
-        (ci.source_url ? ' <a href="' + esc(ci.source_url) + '" rel="noopener noreferrer">source →</a>' : '') +
+        (ci.source_url ? ' <a href="' + esc(ci.source_url) + '" rel="noopener noreferrer">source →</a>' +
+          archivedLink(ci.source_archive_url) : '') +
         '</p></li>';
     }).join('') + '</ol>';
   }
@@ -230,7 +244,7 @@
       '<cite>' + (c.speaker ? esc(c.speaker) + ', ' : '') + esc(claimantName) +
       ', <a href="' + esc(c.source_url) + '" rel="noopener noreferrer">' +
       esc(c.source_kind || 'source') + '</a>, ' + esc(fmtDate(c.source_date)) +
-      (c.source_archive_url ? ' (<a href="' + esc(c.source_archive_url) + '" rel="noopener noreferrer">archived</a>)' : '') +
+      archivedLink(c.source_archive_url) +
       '</cite></blockquote>';
 
     out += '<div class="ldg-section"><h4>Resolution criteria, frozen ' +
@@ -252,7 +266,11 @@
 
     if (c.status === 'resolved') {
       out += '<div class="ldg-section"><h4>Verdict, ' + verdictBadge(c.verdict) + '</h4>' +
-        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources) + '</div>';
+        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources, c.verdict_source_archives) + '</div>';
+      // Empty marker: standing.js hangs the reader's own scored call here,
+      // or nothing if they never staked one. No forecast form on a verdict.
+      out += '<div class="ldg-yourcall" data-slug="' + esc(c.slug) + '" data-resolved-at="' +
+        esc(c.resolved_at || '') + '"></div>';
     }
 
     /* A proposed verdict is shown in full, and shown as NOT YET FINAL. Two
@@ -266,7 +284,7 @@
         '<p class="ldg-nr">Drafted by ' + esc(c.resolved_by || 'the desk') +
         '. Under the Ledger’s two-key rule this is not published as resolved until a second ' +
         'reviewer, who is not the person who captured the claim, signs it off.</p>' +
-        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources) + '</div>';
+        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources, c.verdict_source_archives) + '</div>';
     }
     if (c.claimant_response) {
       out += '<div class="ldg-section"><h4>Right of reply</h4><p>' + esc(c.claimant_response) +

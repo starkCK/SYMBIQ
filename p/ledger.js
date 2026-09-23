@@ -1275,14 +1275,27 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     }).join('');
   }
 
+  /* " (archived 9 Jan 2025)" -- an independent Wayback Machine copy, with the
+     date it was taken read off the snapshot URL itself. The date is shown
+     because it matters: a copy from before a verdict proves what the page
+     said then; one taken after says only what it says now. */
+  function archivedLink(url) {
+    if (!url) return '';
+    var m = /web\.archive\.org\/web\/(\d{4})(\d{2})(\d{2})\d{6}\//.exec(url);
+    return ' (<a href="' + esc(url) + '" rel="noopener noreferrer">archived' +
+      (m ? ' ' + esc(fmtDate(m[1] + '-' + m[2] + '-' + m[3])) : '') + '</a>)';
+  }
+
   /* The sources a verdict was actually written from. Rendered for a proposed
      verdict as well as a resolved one: the whole point of pre-registering
      resolver_sources is that a reader can check the working before the desk
      signs it off, not only after. */
-  function verdictSources(list) {
+  function verdictSources(list, archives) {
     if (!list || !list.length) return '';
+    archives = archives || {};
     return '<h5>Evidence</h5><ul class="ldg-vsrc">' + list.map(function (u) {
-      return '<li><a href="' + esc(u) + '" rel="noopener noreferrer">' + esc(u) + '</a></li>';
+      return '<li><a href="' + esc(u) + '" rel="noopener noreferrer">' + esc(u) + '</a>' +
+        archivedLink(archives[u]) + '</li>';
     }).join('') + '</ul>';
   }
 
@@ -1294,7 +1307,8 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       return '<li class="' + esc(ci.signal || '') + '">' +
         '<span class="tl-date">' + esc(fmtDate(ci.at)) + '</span>' +
         '<p class="tl-note">' + esc(ci.note) +
-        (ci.source_url ? ' <a href="' + esc(ci.source_url) + '" rel="noopener noreferrer">source →</a>' : '') +
+        (ci.source_url ? ' <a href="' + esc(ci.source_url) + '" rel="noopener noreferrer">source →</a>' +
+          archivedLink(ci.source_archive_url) : '') +
         '</p></li>';
     }).join('') + '</ol>';
   }
@@ -1443,7 +1457,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       '<cite>' + (c.speaker ? esc(c.speaker) + ', ' : '') + esc(claimantName) +
       ', <a href="' + esc(c.source_url) + '" rel="noopener noreferrer">' +
       esc(c.source_kind || 'source') + '</a>, ' + esc(fmtDate(c.source_date)) +
-      (c.source_archive_url ? ' (<a href="' + esc(c.source_archive_url) + '" rel="noopener noreferrer">archived</a>)' : '') +
+      archivedLink(c.source_archive_url) +
       '</cite></blockquote>';
 
     out += '<div class="ldg-section"><h4>Resolution criteria, frozen ' +
@@ -1465,7 +1479,11 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
 
     if (c.status === 'resolved') {
       out += '<div class="ldg-section"><h4>Verdict, ' + verdictBadge(c.verdict) + '</h4>' +
-        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources) + '</div>';
+        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources, c.verdict_source_archives) + '</div>';
+      // Empty marker: standing.js hangs the reader's own scored call here,
+      // or nothing if they never staked one. No forecast form on a verdict.
+      out += '<div class="ldg-yourcall" data-slug="' + esc(c.slug) + '" data-resolved-at="' +
+        esc(c.resolved_at || '') + '"></div>';
     }
 
     /* A proposed verdict is shown in full, and shown as NOT YET FINAL. Two
@@ -1479,7 +1497,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         '<p class="ldg-nr">Drafted by ' + esc(c.resolved_by || 'the desk') +
         '. Under the Ledger’s two-key rule this is not published as resolved until a second ' +
         'reviewer, who is not the person who captured the claim, signs it off.</p>' +
-        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources) + '</div>';
+        paras(c.verdict_reasoning) + verdictSources(c.verdict_sources, c.verdict_source_archives) + '</div>';
     }
     if (c.claimant_response) {
       out += '<div class="ldg-section"><h4>Right of reply</h4><p>' + esc(c.claimant_response) +
@@ -1922,6 +1940,10 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     var total = CLASSES.reduce(function (t, c) { return t + (+p[c] || 0); }, 0);
     if (Math.abs(total - 100) > 1) return null; // must sum to ~100, same rule the crowd form enforces client-side
     var s = load();
+    // A scored call is final. Overwriting it would reset the record to
+    // pending, and the next resolution pass would then score a stake placed
+    // with the verdict already known.
+    if (s.predictions[slug] && s.predictions[slug].resolved) return null;
     s.predictions[slug] = {
       p: { verified: +p.verified || 0, partially_verified: +p.partially_verified || 0, not_verified: +p.not_verified || 0 },
       note: note ? String(note).slice(0, 500) : '',
@@ -1953,7 +1975,9 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
           var rec = s.predictions[slug];
           rec.resolved = true;
           rec.verdict = e.verdict;
-          rec.resolved_at = new Date().toISOString().slice(0, 10);
+          // The claim's own date when the index carries it; otherwise the day
+          // this browser noticed, which is all it can honestly say.
+          rec.resolved_at = e.resolved_at || new Date().toISOString().slice(0, 10);
           rec.brier = brier(rec.p, e.verdict);
           newlyResolved.push({ slug: slug, verdict: e.verdict, brier: rec.brier, headline: e.headline });
         });
@@ -2027,12 +2051,32 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     return head + note + stakeFormHTML(slug, existing);
   }
 
+  /* A resolved claim gets no stake form -- a call placed after the verdict
+   * would score itself. It shows the reader's own call and its score, if
+   * they made one, and nothing at all if they did not. */
+  function renderResolvedCall(slug, resolvedAt) {
+    var r = getPrediction(slug);
+    if (!r) return '';
+    var head = '<h4>Your call <span class="stg-local">local, not the crowd</span></h4>';
+    var staked = 'You staked ' + r.p.verified + '% verified / ' + r.p.partially_verified + '% partially / ' +
+      r.p.not_verified + '% not verified on ' + esc(r.staked_at) + '.';
+    if (!r.resolved) {
+      return head + '<p class="stg-nr">' + staked + ' Your score appears here once the verdict loads.</p>';
+    }
+    return head + '<p class="stg-nr">' + staked + ' The verdict' +
+      (resolvedAt ? ', published ' + esc(resolvedAt) + ',' : '') + ' was ' +
+      esc(CLASS_LABEL[r.verdict] || r.verdict) + '. Your call scored <strong>' + r.brier.toFixed(2) +
+      '</strong> (0 is perfect, 2 is maximally wrong). <a href="standing.html">Full record →</a></p>';
+  }
+
   function wireStakePanel(slug, el) {
     el.innerHTML = renderStakePanel(slug);
     var form = el.querySelector('.stg-stake-form');
     if (!form) return;
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
+      var cur = getPrediction(slug);
+      if (cur && cur.resolved) { wireStakePanel(slug, el); return; } // scored already: show the score
       var p = {};
       CLASSES.forEach(function (c) { p[c] = form.querySelector('[data-k="' + c + '"]').value; });
       var status = form.querySelector('.stg-status');
@@ -2049,8 +2093,15 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
    * timing -- a MutationObserver on the list container is the one thing
    * that is correct regardless of how long ledger.js's own fetch takes,
    * and needs no change to ledger.js itself. */
+  /* Open claims carry .ldg-forecast (the crowd form); resolved claims carry
+   * an empty .ldg-yourcall marker instead, because ledger.js renders no
+   * forecast section once a verdict is in. Until 2026-09-23 this matched
+   * only the first, so the resolved branch of the panel could never render
+   * for the only claims it applies to. */
+  var MOUNT_SEL = '.ldg-forecast[data-slug], .ldg-yourcall[data-slug]';
+
   function mountLedgerStakes() {
-    checkResolutions();
+    var ready = checkResolutions(); // one fetch, shared by every resolved claim opened
     function mountOne(fEl) {
       if (fEl.dataset.stgMounted) return;
       fEl.dataset.stgMounted = '1';
@@ -2058,17 +2109,26 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       if (!slug) return;
       var panel = D.createElement('div');
       panel.className = 'ldg-section stg-stake';
+      if (fEl.classList.contains('ldg-yourcall')) {
+        ready.then(function () {
+          var html = renderResolvedCall(slug, fEl.getAttribute('data-resolved-at'));
+          if (!html) return; // no call made here: say nothing
+          panel.innerHTML = html;
+          fEl.parentNode.insertBefore(panel, fEl.nextSibling);
+        });
+        return;
+      }
       fEl.parentNode.insertBefore(panel, fEl.nextSibling);
       wireStakePanel(slug, panel);
     }
-    all('.ldg-forecast[data-slug]').forEach(mountOne);
+    all(MOUNT_SEL).forEach(mountOne);
     var list = D.getElementById('ldg-mount') || D.body;
     new MutationObserver(function (muts) {
       muts.forEach(function (m) {
         Array.prototype.forEach.call(m.addedNodes, function (n) {
           if (n.nodeType !== 1) return;
-          if (n.matches && n.matches('.ldg-forecast[data-slug]')) mountOne(n);
-          if (n.querySelectorAll) all('.ldg-forecast[data-slug]', n).forEach(mountOne);
+          if (n.matches && n.matches(MOUNT_SEL)) mountOne(n);
+          if (n.querySelectorAll) all(MOUNT_SEL, n).forEach(mountOne);
         });
       });
     }).observe(list, { childList: true, subtree: true });
@@ -2093,7 +2153,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
 
   function predictionRow(r) {
     if (r.resolved) {
-      return '<li class="stg-pred is-resolved"><span class="stg-pred-slug">' + esc(r.slug) + '</span>' +
+      return '<li class="stg-pred is-resolved"><span class="stg-pred-slug"><a href="ledger.html#c-' + esc(r.slug) + '">' + esc(r.slug) + '</a></span>' +
         '<span class="stg-pred-verdict">' + esc(CLASS_LABEL[r.verdict] || r.verdict) + '</span>' +
         '<span class="stg-pred-brier">Brier ' + r.brier.toFixed(2) + '</span></li>';
     }

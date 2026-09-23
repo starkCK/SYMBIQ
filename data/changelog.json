@@ -1,8 +1,240 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 93,
+ "count": 98,
  "events": [
+  {
+   "at": "2026-09-23",
+   "kind": "correction",
+   "tag": "Correction 9",
+   "title": "This page said two Ledger verdicts were waiting for a second reviewer after both had been published.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-22 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "correction",
+   "tag": "Correction 8",
+   "title": "A quote on the Ledger cited a page that never printed it.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "correction",
+   "tag": "Correction 7",
+   "title": "The Ledger promised an archived copy of every source. None had one.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
+   "href": "ledger.html#c-huang-useful-quantum-15-30-years",
+   "note": "On 20 March 2025, at Nvidia's Quantum Day, Huang walked the remark back: \"This is the first event in history where a company CEO invites all of the guests to explain why he was wrong\" (CNBC). He named no revised range, so there is no new dated claim to track. This one stands as stated and resolves on its own criteria."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "site guard: hash files as git stores them, so CI stops failing every push",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendation 9: the headline settles from a lighter weight, once",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 7+8: film grain against banding; balanced headings, pretty prose",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 5+6: the loop figure draws itself in; a refraction lens on the float",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 3+4: the evidence board, with rolling odometer digits",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 1+2: router doors morph into their destination; internal links prefetch on hover",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Home hero: the threshold instrument floats instead of taking a column",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: publish the first two verdicts, both not_verified",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "claim",
+   "tag": "Resolved, Not verified",
+   "title": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
+   "href": "ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025",
+   "note": "Evidence gathered from the pre-registered resolver sources only. The criteria required a commercial customer to have RECEIVED AND OPERATED a system matching the 24-entangled-logical-qubit specification by 31 Dec 2025 plus the 30-day grace (30 Jan 2026), and said in advance that an order or a demo does not count.\n\nOne c"
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "claim",
+   "tag": "Resolved, Not verified",
+   "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
+   "href": "ledger.html#c-ionq-five-nines-2025",
+   "note": "Evidence gathered from the pre-registered resolver sources only. The tracked target, as stated in IonQ's July 2024 roadmap announcement, was 99.999% (“five nines”) LOGICAL two-qubit gate fidelity using small-distance quantum error-correcting codes, by the end of 2025.\n\nInside the window (31 Dec 2025 plus the 30-day gra"
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "standing.js: correct the Brier baseline in the scoring comment",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Every question visible at every depth, plus four measured UX fixes",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Standing records a proof: load standing.js on approach to a question",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Standing, registered as page 27; question bank 21 -> 53",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Bundling: p/*.css and p/*.js, the manifest, and the version registry",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Pages: CSP application, core.js load order, and the bundle-tag rewrite",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Vendor: pin Supabase's client library locally (plan 24 §7.1, finding S1)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Vendor pinning hashes and schema hardening (plan 24 §7.1, finding S2)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Perf: games.js loads on approach for the three single-cabinet explainers",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Perf: on-demand Supabase client, and the modules that wait on it (plan 24 §7.2)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Core.js: one copy of esc/reduced/store, wired into every module (plan 24 §2.2)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "vs-Computer: waitlist checkbox on capture-at-the-win, challenge-link routing",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-21",
+   "kind": "correction",
+   "tag": "Correction 6",
+   "title": "A whole game was invisible to almost everyone who visited the page it lives on.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-15",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Two games that play back, and copy that sounds like a person wrote it",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-15",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The desk opens up: an About page, a changelog, search, and The Signal seeded by hand",
+   "href": "",
+   "note": ""
+  },
   {
    "at": "2026-09-08",
    "kind": "correction",
@@ -30,26 +262,10 @@
   {
    "at": "2026-09-08",
    "kind": "claim",
-   "tag": "Verdict proposed, Not verified",
-   "title": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
-   "href": "ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025",
-   "note": "Drafted and sourced; not published until a second reviewer signs it off."
-  },
-  {
-   "at": "2026-09-08",
-   "kind": "claim",
    "tag": "Check-in, off track",
    "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
    "href": "ledger.html#c-ionq-five-nines-2025",
    "note": "Resolution pass run. IonQ's in-window publication (20–21 Oct 2025) is a PHYSICAL two-qubit gate fidelity of ~99.9916% on prototype hardware, not the 99.999% LOGICAL figure with small-distance QEC codes that this claim tracks. Moved to proposed with a drafted NOT_VERIFIED verdict and full reasoning; awaiting the second "
-  },
-  {
-   "at": "2026-09-08",
-   "kind": "claim",
-   "tag": "Verdict proposed, Not verified",
-   "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
-   "href": "ledger.html#c-ionq-five-nines-2025",
-   "note": "Drafted and sourced; not published until a second reviewer signs it off."
   },
   {
    "at": "2026-09-08",
@@ -416,182 +632,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "Quantum Tic-Tac-Toe: the 🔴 Ruthless card — \"The Adversary\"",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The Annealing Volcano: the 🔴 Ruthless card — \"The Deep Country\"",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Max-Cut: the 🔴 Ruthless card — \"The Frustrated Ward\"",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Grover's Escape: the 🔴 Ruthless card — \"The Long Corridors\"",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Circuit Golf: the 🔴 Ruthless card — \"The Back Nine\"",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Missions: carry the FRAME ceremony's through-line into the consequence beat",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "HUD: surface the Contract of the Day on the homepage",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Games: the difficulty selector — 🟢 Guided / 🟡 Standard / 🔴 Ruthless",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Games: wire the FRAME loss/ceremony layer into the other five cabinets",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The Contract of the Day: one arcade challenge, date-seeded, its own streak",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The Frame: failure lines and a clear-screen for the arcade (Part 4, core)",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Static question bank: rotate the archive when the daily feed is stale (Part 3, B1)",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Dead-rule audit: drop the retired corrections-log CSS (Scorekeeper Part 1, move 7)",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "content-visibility on curriculum module bodies (Scorekeeper Part 1, move 4)",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "HUD: ship the two files the last commit referenced but never added",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The response layer: alive.css/alive.js, plus four shipped defects",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Buttons inherit the page font",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Self-host Inter as a Latin variable woff2",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Apply DESIGN.md recommendations; dial the vivid palette back to the base",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Add DESIGN.md + .impeccable sidecar",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "vivid.css: add the motion layer -- ambient life, no new JS",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "vivid.css: an opt-in bolder visual world for the 6 landing/pillar pages",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-28",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Polish pass on the rails: contrast, optical alignment, press, labels",
    "href": "",
    "note": ""
   },

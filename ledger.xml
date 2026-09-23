@@ -6,8 +6,17 @@
 <atom:link href="https://starkck.github.io/SYMBIQ/ledger.xml" rel="self" type="application/rss+xml" />
 <description>Every public, dated, falsifiable claim SymbiQ tracks about quantum computing, and every check-in, proposed verdict and resolution against it. Criteria are frozen before the deadline; misses are never deleted.</description>
 <language>en-GB</language>
-<lastBuildDate>Tue, 22 Sep 2026 00:00:00 +0000</lastBuildDate>
+<lastBuildDate>Wed, 23 Sep 2026 00:00:00 +0000</lastBuildDate>
 <ttl>1440</ttl>
+<item>
+<title>Check-in (no signal): NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”</title>
+<link>https://starkck.github.io/SYMBIQ/ledger.html#c-huang-useful-quantum-15-30-years</link>
+<guid isPermaLink="false">symbiq-ledger:huang-useful-quantum-15-30-years:checkin:2026-09-23</guid>
+<pubDate>Wed, 23 Sep 2026 00:00:00 +0000</pubDate>
+<category>checkin</category>
+<category>nvidia</category>
+<description>On 20 March 2025, at Nvidia's Quantum Day, Huang walked the remark back: "This is the first event in history where a company CEO invites all of the guests to explain why he was wrong" (CNBC). He named no revised range, so there is no new dated claim to track. This one stands as stated and resolves on its own criteria.</description>
+</item>
 <item>
 <title>Resolved, Not verified: Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.</title>
 <link>https://starkck.github.io/SYMBIQ/ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025</link>

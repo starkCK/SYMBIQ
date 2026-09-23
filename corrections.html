@@ -218,15 +218,51 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>6 corrections logged</h3>
+  <h3>9 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>6</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>9</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 9 &middot; published 2026-09-22 &middot; corrected 2026-09-23 &middot; live for 1 day &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">This page said two Ledger verdicts were waiting for a second reviewer after both had been published.</h3>
+
+    <p><strong>What we said.</strong> Lower down this page, under &ldquo;Claims we got wrong on The Ledger&rdquo;: &ldquo;Two claims have now passed their resolution date and carry a drafted verdict awaiting a second reviewer.&rdquo;</p>
+
+    <p><strong>What&#39;s true.</strong> Both verdicts were published on 22 September, as <em>Not verified</em>, and neither was waiting on anything. The sentence was typed by hand when the verdicts were drafted and was not touched when they shipped. It no longer states a count or a status. It says what <code>void</code> means and that every verdict so far was decided by its own pre-registered criteria.</p>
+
+    <p><strong>Why we missed it.</strong> The same failure as Correction 5: a hand-typed number about data that lives somewhere else. Publishing the verdicts updated the claim files, the Ledger index and the scorecards. Nothing connected that step to a sentence on this page.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-23 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 8 &middot; published 2026-08-27 &middot; corrected 2026-09-23 &middot; live for 27 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">A quote on the Ledger cited a page that never printed it.</h3>
+
+    <p><strong>What we said.</strong> The <a href="ledger.html#c-huang-useful-quantum-15-30-years">Ledger entry</a> for Jensen Huang&#39;s remark that useful quantum computers are 15 to 30 years away quoted him in full. It gave Quantum Computing Report&#39;s article on the remark as the source, with a note saying that article &ldquo;directly transcribes the Q&amp;A exchange.&rdquo;</p>
+
+    <p><strong>What&#39;s true.</strong> That article discusses the remark and never prints it. None of its twelve archived copies, from January 2025 to this month, contains the quoted words. The quote is real: Constellation Research printed the same three sentences on 8 January 2025, and an archived copy from the next day still shows them. The entry now cites that report and links the copy, and its sourcing note records the change. The claim and its resolution criteria are unchanged. We also logged something the entry had missed: Huang walked the remark back in March 2025, without naming a new range.</p>
+
+    <p><strong>Why we missed it.</strong> The quote was repeated so widely that it looked checked. The sourcing note described the source we meant to cite, and nobody opened the linked page to look for the words. It surfaced on 23 September, when every Ledger source was archived for the first time and each copy was searched for the text it is cited for.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-23 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 7 &middot; published 2026-08-27 &middot; corrected 2026-09-23 &middot; live for 27 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Ledger promised an archived copy of every source. None had one.</h3>
+
+    <p><strong>What we said.</strong> On <a href="ledger.html">The Ledger</a>, rule 3: &ldquo;Every source gets an independent snapshot the moment it&#39;s captured, so an edited or deleted press release can&#39;t make a claim unprovable later.&rdquo;</p>
+
+    <p><strong>What&#39;s true.</strong> All ten claims shipped with no archived copy, and so did the evidence behind the first two verdicts, published on 22 September. Both verdicts say a named company missed a dated claim, and one leaned partly on that company&#39;s own investor-relations pages, which is the situation the rule exists to prevent. Every source and every piece of verdict evidence now links to a dated Wayback Machine copy. Seventeen of the eighteen copies were taken on or before the day we relied on the page. The eighteenth, the 2 September article behind the Atom Computing verdict, had never been archived successfully. It was saved on 23 September, a day after the verdict, and its link shows that date.</p>
+
+    <p><strong>Why we missed it.</strong> The Ledger already showed an &ldquo;archived&rdquo; link whenever the field was filled, so the feature looked finished. The checker that guards the claim files tested the other rules on that list and not this one, so an empty field passed. It now fails any tracking claim without an archived source, and any verdict whose evidence lacks one.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-23 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 6 &middot; published 2026-08-27 &middot; corrected 2026-09-21 &middot; live for 25 days &middot; caught by the desk</p>
     <h3 style="margin-top:6px">A whole game was invisible to almost everyone who visited the page it lives on.</h3>
@@ -311,7 +347,7 @@ quietly dropped. This section mirrors <a href="ledger.html#ours">the Ledger's ow
 duplicating it by hand.</p>
 <div class="card corr-summary">
   <h3>0 void claims</h3>
-  <p>Two claims have now passed their resolution date and carry a drafted verdict awaiting a second reviewer. Neither is <code>void</code>: a claim is void only when <em>our</em> criteria turn out unscoreable, and in both cases the criteria decided it cleanly.</p>
+  <p>A claim is <code>void</code> only when <em>our</em> criteria turn out unscoreable. Every verdict published so far was decided by its own pre-registered criteria.</p>
   <div class="corr-stats">
     <div><b>0</b><span>void (our error)</span></div>
     <div><b>0</b><span>verdicts changed by right of reply</span></div>

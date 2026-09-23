@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "generated": "2026-09-22",
+ "generated": "2026-09-23",
  "pages": 27,
- "count": 421,
+ "count": 424,
  "records": [
   {
    "k": "s",
@@ -744,8 +744,32 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "6 corrections logged",
+   "h": "9 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "This page said two Ledger verdicts were waiting for a second reviewer after both had been published.",
+   "x": "What we said. Lower down this page, under “Claims we got wrong on The Ledger”: “Two claims have now passed their resolution date and carry a drafted verdict awaiting a second reviewer.” What's true. Both verdicts were published on 22 Septem",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "A quote on the Ledger cited a page that never printed it.",
+   "x": "What we said. The Ledger entry for Jensen Huang's remark that useful quantum computers are 15 to 30 years away quoted him in full. It gave Quantum Computing Report's article on the remark as the source, with a note saying that article “dire",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Ledger promised an archived copy of every source. None had one.",
+   "x": "What we said. On The Ledger, rule 3: “Every source gets an independent snapshot the moment it's captured, so an edited or deleted press release can't make a claim unprovable later.” What's true. All ten claims shipped with no archived copy,",
    "w": 1
   },
   {
@@ -809,7 +833,7 @@
    "p": "corrections.html",
    "t": "We got this wrong →",
    "h": "0 void claims",
-   "x": "Two claims have now passed their resolution date and carry a drafted verdict awaiting a second reviewer. Neither is void: a claim is void only when our criteria turn out unscoreable, and in both cases the criteria decided it cleanly. 0void ",
+   "x": "A claim is void only when our criteria turn out unscoreable. Every verdict published so far was decided by its own pre-registered criteria. 0void (our error) 0verdicts changed by right of reply",
    "w": 1
   },
   {

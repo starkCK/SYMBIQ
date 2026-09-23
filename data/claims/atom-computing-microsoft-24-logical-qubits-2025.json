@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "speaker": "Ben Bloom, CEO, Atom Computing",
-  "source_archive_url": null,
+  "source_archive_url": "https://web.archive.org/web/20250724224530/https://thequantuminsider.com/2024/11/19/in-step-toward-scientific-advantage-microsoft-and-atom-computing-announce-the-launch-of-quantum-machine-with-record-breaking-logical-qubits/",
   "grace_days": 30,
   "criteria_frozen_at": "2026-08-27",
   "hedge_score": 1,
@@ -15,6 +15,12 @@
     "https://azure.microsoft.com/en-us/blog/quantum/2024/11/19/microsoft-and-atom-computing-offer-a-commercial-quantum-machine-with-the-largest-number-of-entangled-logical-qubits-on-record/",
     "https://www.hpcwire.com/2025/01/20/atom-computing-microsoft-roll-out-on-premise-system-supporting-50-logical-qubits/"
   ],
+  "verdict_source_archives": {
+    "https://thequantuminsider.com/2026/09/02/qunorth-clears-facility-milestone-for-magne-quantum-computer/": "https://web.archive.org/web/20260923144254/https://thequantuminsider.com/2026/09/02/qunorth-clears-facility-milestone-for-magne-quantum-computer/",
+    "https://thequantuminsider.com/2025/07/17/microsoft-and-atom-computing-partner-on-level-2-quantum-system-for-nordic-users/": "https://web.archive.org/web/20251205045034/https://thequantuminsider.com/2025/07/17/microsoft-and-atom-computing-partner-on-level-2-quantum-system-for-nordic-users/",
+    "https://azure.microsoft.com/en-us/blog/quantum/2024/11/19/microsoft-and-atom-computing-offer-a-commercial-quantum-machine-with-the-largest-number-of-entangled-logical-qubits-on-record/": "https://web.archive.org/web/20260901231614/https://azure.microsoft.com/en-us/blog/quantum/2024/11/19/microsoft-and-atom-computing-offer-a-commercial-quantum-machine-with-the-largest-number-of-entangled-logical-qubits-on-record/",
+    "https://www.hpcwire.com/2025/01/20/atom-computing-microsoft-roll-out-on-premise-system-supporting-50-logical-qubits/": "https://web.archive.org/web/20260610143753/https://www.hpcwire.com/2025/01/20/atom-computing-microsoft-roll-out-on-premise-system-supporting-50-logical-qubits/"
+  },
   "resolved_at": "2026-09-22",
   "captured_by": "desk",
   "resolved_by": "agent:claude-opus-5",

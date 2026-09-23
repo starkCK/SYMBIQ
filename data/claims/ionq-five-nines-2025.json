@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "speaker": "Dean Kassmann, SVP of Engineering & Technology, IonQ",
-  "source_archive_url": null,
+  "source_archive_url": "https://web.archive.org/web/20260808051553/https://investors.ionq.com/news/news-details/2024/IonQ-Unveils-Accelerated-Roadmap-and-New-Technical-Milestones-to-Propel-Commercial-Quantum-Advantage-Forward/default.aspx",
   "grace_days": 30,
   "criteria_frozen_at": "2026-08-27",
   "hedge_score": 1,
@@ -15,6 +15,12 @@
     "https://www.ionq.com/blog/accelerating-towards-fault-tolerance-unlocking-99-99-two-qubit-gate",
     "https://investors.ionq.com/news/news-details/2025/IonQ-Achieves-Landmark-Result-Setting-New-World-Record-in-Quantum-Computing-Performance/default.aspx"
   ],
+  "verdict_source_archives": {
+    "https://arxiv.org/abs/2510.17286": "https://web.archive.org/web/20260827202352/https://arxiv.org/abs/2510.17286",
+    "https://thequantuminsider.com/2025/10/21/ionq-achieves-99-99-two-qubit-gate-performance/": "https://web.archive.org/web/20251118104915/https://thequantuminsider.com/2025/10/21/ionq-achieves-99-99-two-qubit-gate-performance/",
+    "https://www.ionq.com/blog/accelerating-towards-fault-tolerance-unlocking-99-99-two-qubit-gate": "https://web.archive.org/web/20260808063536/https://www.ionq.com/blog/accelerating-towards-fault-tolerance-unlocking-99-99-two-qubit-gate",
+    "https://investors.ionq.com/news/news-details/2025/IonQ-Achieves-Landmark-Result-Setting-New-World-Record-in-Quantum-Computing-Performance/default.aspx": "https://web.archive.org/web/20260808062950/https://investors.ionq.com/news/news-details/2025/IonQ-Achieves-Landmark-Result-Setting-New-World-Record-in-Quantum-Computing-Performance/default.aspx"
+  },
   "resolved_at": "2026-09-22",
   "captured_by": "desk",
   "resolved_by": "agent:claude-opus-5",

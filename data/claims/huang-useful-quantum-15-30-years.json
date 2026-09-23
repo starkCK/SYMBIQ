@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "speaker": "Jensen Huang, CEO, NVIDIA",
-  "source_archive_url": null,
+  "source_archive_url": "https://web.archive.org/web/20250109033540/https://www.constellationr.com/blog-news/insights/here-s-what-nvidia-ceo-jensen-huang-said-about-quantum-computing-project-digits",
   "grace_days": 30,
   "criteria_frozen_at": "2026-08-27",
   "hedge_score": 4,
@@ -25,16 +25,24 @@
       "note": "Captured at seed, 19 months after the remark. Real-world consequence worth noting for context (not evidence toward the verdict): the comment briefly wiped tens of billions of dollars off publicly traded quantum companies' market capitalisation the same week, and Huang has since visibly softened the framing at subsequent public appearances -- a check-in for the desk to track is whether he has ever named a revised range, which would be a genuine restatement worth logging as its own event.",
       "source_url": null,
       "author": "desk"
+    },
+    {
+      "at": "2026-09-23",
+      "signal": "no_signal",
+      "note": "On 20 March 2025, at Nvidia's Quantum Day, Huang walked the remark back: \"This is the first event in history where a company CEO invites all of the guests to explain why he was wrong\" (CNBC). He named no revised range, so there is no new dated claim to track. This one stands as stated and resolves on its own criteria.",
+      "source_url": "https://www.cnbc.com/2025/03/20/nvidia-ceo-huang-says-was-wrong-about-timeline-for-quantum-computing.html",
+      "source_archive_url": "https://web.archive.org/web/20250320184827/https://www.cnbc.com/2025/03/20/nvidia-ceo-huang-says-was-wrong-about-timeline-for-quantum-computing.html",
+      "author": "desk"
     }
   ],
   "created_at": "2026-08-27",
-  "updated_at": "2026-08-27",
-  "sourcing_note": "A secondary source (Quantum Computing Report) is used as source_url because it directly transcribes the Q&A exchange; no single official NVIDIA transcript of the CES Q&A session was found. The quote is corroborated verbatim across multiple independent outlets covering the same CES 2025 session, which is why it is treated as reliably attributed despite the indirect source.",
+  "updated_at": "2026-09-23",
+  "sourcing_note": "Source is Constellation Research's report of Huang's CES 2025 Q&A with analysts (Larry Dignan, 8 January 2025), which prints the three sentences above word for word; its archived copy was taken on 9 January 2025, the day after. No official NVIDIA transcript of the session was found.\n\nCorrected 23 September 2026: until then this entry cited Quantum Computing Report's commentary on the remark and said that piece transcribed the exchange. It discusses the remark but never prints it, so the quote had no source on the page that carried it. The quote itself was never in question; its citation was.",
   "slug": "huang-useful-quantum-15-30-years",
   "claimant": "nvidia",
   "verbatim": "We're probably five or six orders of magnitudes away, 15 years for useful quantum computers and that would be on the early side. 30 years is probably on the late side. If you picked 20 years a whole bunch of us would believe it.",
   "headline": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
-  "source_url": "https://quantumcomputingreport.com/our-thoughts-on-jensen-huangs-truly-useful-in-15-30-years-quantum-statements/",
+  "source_url": "https://www.constellationr.com/blog-news/insights/here-s-what-nvidia-ceo-jensen-huang-said-about-quantum-computing-project-digits",
   "source_date": "2025-01-07",
   "source_kind": "Q&A remarks at CES 2025, reported",
   "kind": "timeline",

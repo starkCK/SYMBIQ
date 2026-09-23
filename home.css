@@ -294,6 +294,7 @@ body[data-vivid][data-glass] {
 
 .inst-orb {
   --orb-c: var(--teal);
+  position: relative;      /* the anchor the lens overlay (section 13) needs */
   display: inline-flex; align-items: center; gap: 12px;
   min-height: 44px; max-width: 100%;
   margin: 0 0 26px; padding: 8px 16px 8px 10px;
@@ -1004,6 +1005,110 @@ body > .wrap { position: relative; z-index: 1; }
     /* home.css's own alias, not motion.css's --dur-slow -- section 0's rule:
        this file works standalone even if motion.css is ever unlinked. */
     transition: transform var(--hm-base) var(--hm-ease);
+  }
+}
+
+/* ---------------------------------------------------------------- 12
+   THE LOOP FIGURE DRAWS ITSELF IN  (2026-09-23, researched top-10 item 5)
+
+   Pure CSS, no JS: a view-progress timeline on the two reveal-mask paths
+   index.html's <defs> now carries (see that file's own comment for why the
+   mask exists and why pathLength="1"). The solid "reads the errors" arc
+   draws across the FIRST half of the figure's scroll-through; the dashed
+   "will feed the data" arc starts a beat later and draws more slowly across
+   nearly the whole scroll-through, arriving last -- which is the honest
+   order: what already ships, then the route that mostly doesn't exist yet.
+   It stays dashed throughout, because the mask only ever widens or narrows
+   the WINDOW the real dashed arc is allowed to show through; the arc's own
+   stroke-dasharray (style.css) never changes.
+
+   THE FALLBACK IS THE FIRST RULE, NOT AN AFTERTHOUGHT. An SVG <mask> with
+   nothing painted in it hides its target completely -- so outside the
+   @supports gate below, dashoffset is pinned to 0 (fully revealed) for
+   every browser without this feature, which is most mail clients, image
+   proxies rendering the OG card, and (at time of writing) Firefox. A reader
+   there gets the plain, always-correct diagram this figure has always been;
+   only a browser that can actually run the animation ever sees the arcs
+   start hidden. */
+.loop-reveal { stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* A NAMED timeline on .figloop itself, not the view() shorthand on the
+       mask paths directly. The paths live inside .figscroll, which sets
+       overflow-x: auto for the mobile swipe note above -- any non-visible
+       overflow value (auto/hidden, on either axis) makes an element a
+       scroll container, so view()'s own ancestor search could anchor the
+       timeline to THAT unscrollable-in-Y box instead of the page, and
+       never fire the entry/exit progress this needs. Naming it on .figloop
+       -- the outer <figure>, a plain block in the page's normal flow --
+       removes the ambiguity instead of hoping the lookup guesses right. */
+    .figloop { view-timeline-name: --figloop-enter; view-timeline-axis: block; }
+    /* animation-duration: auto, explicitly, after the shorthand -- the
+       shorthand's own default is 0s, and a scroll/view timeline needs
+       'auto' to mean "map across the whole active range" instead of
+       collapsing to a zero-length animation. living.css's own
+       scroll(root block) rule for this same figure's flow dots sets the
+       identical override for the identical reason; found here by the
+       identical symptom -- offset stuck at 0 no matter the scroll
+       position, because the animation had no length to have a position
+       IN. */
+    .loop-reveal-now {
+      animation: figloop-draw linear both;
+      animation-duration: auto;
+      animation-timeline: --figloop-enter;
+      animation-range: entry 10% entry 55%;
+    }
+    .loop-reveal-ahead {
+      animation: figloop-draw linear both;
+      animation-duration: auto;
+      animation-timeline: --figloop-enter;
+      animation-range: entry 25% entry 92%;
+    }
+    @keyframes figloop-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  }
+}
+
+/* ---------------------------------------------------------------- 13
+   THE LENS  (2026-09-23, researched top-10 item 6)
+
+   index.html's own header comment explains the filter and why this is an
+   independent ::after overlay rather than a change to glass.css's own
+   backdrop-filter rule: a browser that cannot apply an SVG filter to
+   backdrop content (Safari, Firefox, checked live) gets an inert pseudo-
+   element here and the plain frost glass.css already gives it, never a
+   broken or missing blur.
+
+   inset: -1px, not 0: at 0 a hairline gap sometimes shows between the
+   overlay's own antialiased edge and the border it sits inside, on a
+   fractional device pixel ratio -- measured on the panel at 1.25x. One
+   pixel of overlap costs nothing, since the overlay paints only backdrop,
+   never a fill, and border-radius: inherit keeps it tracking whichever
+   radius its host has at the current width (the orb's pill, the panel's
+   16px, the phone sheet's 18px) without a second number to keep in sync. */
+@supports ((backdrop-filter: url(#sq-lens)) or (-webkit-backdrop-filter: url(#sq-lens))) {
+  .inst-orb::after,
+  #hero-inst:popover-open::after {
+    content: ""; position: absolute; inset: -1px; z-index: 1;
+    border-radius: inherit; pointer-events: none;
+    -webkit-backdrop-filter: url(#sq-lens);
+            backdrop-filter: url(#sq-lens);
+  }
+  /* the real content -- the orb's core and text, the panel's sliders and
+     readouts -- must still paint ABOVE the lens layer, or the refraction
+     would smear the very numbers this instrument exists to show. Without
+     this, a positive z-index on an absolutely positioned ::after paints
+     above ordinary in-flow children regardless of source order; it is not
+     enough that the overlay comes first in the markup. */
+  .inst-orb > *,
+  #hero-inst:popover-open > * { position: relative; z-index: 2; }
+
+  /* reduce-transparency asks for a flat surface, not a warped one */
+  :root[data-transparency-pref="reduce"] .inst-orb::after,
+  :root[data-transparency-pref="reduce"] #hero-inst:popover-open::after {
+    display: none;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .inst-orb::after, #hero-inst:popover-open::after { display: none; }
   }
 }
 

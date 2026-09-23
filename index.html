@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/index.css?v=12">
+<link rel="stylesheet" href="p/index.css?v=15">
 <!-- The motion layer ships as its own file, with its own cache-buster, for the
      same reason home.css below does: style.css is shared by 24 pages and
      touching it forces a bump on every one of them (the 2026-07-24 scar).
@@ -146,6 +146,30 @@
        generative background, and this page no longer loads that file. Leaving
        it would be a note about a script that is not here. -->
 <body data-motion data-rails data-vivid data-alive data-glass data-hud-return data-living>
+<!-- THE LENS (2026-09-23, researched top-10 item 6). One SVG <filter>, never
+     rendered itself (0x0, aria-hidden) -- glass.css's frosted surfaces
+     already carry four of the five ingredients a real "liquid glass" needs
+     (translucency+blur, a rim highlight, a depth shadow, a hue-tinted
+     cast); the one missing piece is REFRACTION, a backdrop that bends
+     instead of just blurring. `backdrop-filter: url(#sq-lens) blur(...)
+     saturate(...)` composes an SVG filter into the SAME backdrop-filter
+     chain glass.css already sets. Chromium accepts an SVG filter operating
+     on captured backdrop content; Safari and Firefox do not (checked
+     2026-09-23, not assumed) -- so this is layered as an independent
+     ::after overlay (home.css), never a change to glass.css's own working
+     rule, and gated behind @supports besides: a browser that cannot honour
+     it gets an inert, invisible pseudo-element and the plain frost
+     underneath, exactly as it did before this existed. Scoped to the
+     instrument's orb and open panel for now, the two floating surfaces
+     this session's own work put on the page -- the sticky nav and the
+     category dropdowns are the natural next reach, left for a session that
+     can also touch the 26 other pages nav lives on. -->
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <filter id="sq-lens" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="11" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -542,6 +566,25 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
       <marker id="loopArrowV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
         <path d="M0 0 L10 5 L0 10 z" fill="var(--violet)"/>
       </marker>
+      <!-- THE SCROLL-DRAWN REVEAL (2026-09-23, researched top-10 item 5). Each
+           mask holds a COPY of its arc's own path, wide enough to fully cover
+           the visible stroke, with pathLength="1" -- the trick that makes
+           stroke-dasharray/dashoffset math trivial (1 unit = the whole path)
+           instead of needing this curve's real length computed or hardcoded.
+           home.css animates dashoffset 1 -> 0 on a scroll(view()) timeline;
+           unmasked (unsupported browser, or the @supports gate never
+           matches), a mask is fully revealed nowhere BY DEFAULT unless its
+           content paints something -- so the base rule outside that gate
+           must set dashoffset: 0 explicitly, or every reader without the
+           feature would see empty arcs forever. See home.css section 12. -->
+      <mask id="figloopRevealNow" maskUnits="userSpaceOnUse" x="0" y="0" width="640" height="262">
+        <path class="loop-reveal loop-reveal-now" pathLength="1" d="M 206 100 Q 320 26 434 100"
+              stroke="#fff" stroke-width="40" stroke-linecap="round" fill="none"/>
+      </mask>
+      <mask id="figloopRevealAhead" maskUnits="userSpaceOnUse" x="0" y="0" width="640" height="262">
+        <path class="loop-reveal loop-reveal-ahead" pathLength="1" d="M 434 160 Q 320 234 206 160"
+              stroke="#fff" stroke-width="40" stroke-linecap="round" fill="none"/>
+      </mask>
     </defs>
 
     <!-- the two halves -->
@@ -556,13 +599,13 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
     <text class="lbl-s" x="490" y="154" text-anchor="middle">falls apart</text>
 
     <!-- top: what already works -->
-    <path class="arc now" d="M 206 100 Q 320 26 434 100" marker-end="url(#loopArrowT)"/>
+    <path class="arc now" d="M 206 100 Q 320 26 434 100" marker-end="url(#loopArrowT)" mask="url(#figloopRevealNow)"/>
     <text class="lbl-b teal" x="320" y="44" text-anchor="middle">reads the errors</text>
     <text class="lbl-s teal" x="320" y="58" text-anchor="middle">SHIPPING NOW: learned decoders beat the hand-written ones</text>
     <circle class="flow pulse f1" r="4"/>
 
     <!-- bottom: what is still ahead. the dashes ARE the honesty -->
-    <path class="arc ahead" d="M 434 160 Q 320 234 206 160" marker-end="url(#loopArrowV)"/>
+    <path class="arc ahead" d="M 434 160 Q 320 234 206 160" marker-end="url(#loopArrowV)" mask="url(#figloopRevealAhead)"/>
     <text class="lbl-b violet" x="320" y="222" text-anchor="middle">will feed the data</text>
     <text class="lbl-s violet" x="320" y="236" text-anchor="middle">MOSTLY AHEAD: one route is real, the rest are oversold</text>
     <circle class="flow violet pulse2 f2" r="4"/>

@@ -267,53 +267,118 @@ body[data-vivid][data-glass] {
 }
 
 /* ---------------------------------------------------------------- 1
-   THE HERO, TWO COLUMNS
+   THE HERO, ONE COLUMN, AND THE ORB  (2026-09-23)
 
-   The h1 is NOT in this grid -- it is a direct child of .wrap, full width,
-   above the split (see index.html). The first screen therefore opens on the
-   headline alone, and the instrument begins beside the TAGLINE rather than
-   beside the headline: present, but plainly second.
+   Until 2026-09-23 this was a two-column grid with the instrument as a
+   300px column on the right. At 1440px and up that column landed in the
+   middle of the screen: prose on its left, The Ladder rail on its right, a
+   tall glass box between two runs of text. Chinmoy asked for "something
+   floating slowly upon click" instead, so:
 
-   Below 1024px .wrap is 780px (740px of content) and a 300px instrument
-   would leave the copy a 410px column, narrower than the type is drawn for.
-   So the split happens at the same 1024px step where .wrap widens, and below
-   it the instrument is simply the next thing you meet.
+     - the hero is one column at every width; the copy keeps its 74ch cap;
+     - the instrument is a native popover, closed on load (section 2b);
+     - THE ORB is its face: a small glass capsule with one live figure.
+
+   WHERE THE ORB SITS: at the far end of the call-to-action row, pushed
+   right by an auto margin. The first attempt floated it in the band the
+   tagline's 74ch cap leaves on its right, and measuring killed it: the
+   tagline runs at 1.05rem, so ITS 74ch is 784px and the band at 1536px is
+   216px, against a ~250px orb -- a 79px collision with the prose. The CTA
+   row has ~500px spare at every width from 1024px up, and it is the row a
+   reader's eye is already on when deciding what to do. It is a flex row
+   that wraps, so a narrow screen puts the orb on a line of its own, and
+   below 560px the row stacks and the orb takes the full width.
    ---------------------------------------------------------------- */
-.hero2 { display: block; }
+.hero2 { display: block; position: relative; }
 .hero2 > .hero-copy { min-width: 0; }
 
-@media (min-width: 1024px) {
-  .hero2 {
-    display: grid;
-    /* 300px, not 340: the instrument is a readout beside the argument, and
-       the argument is what the first screen is for. */
-    grid-template-columns: minmax(0, 1fr) 300px;
-    grid-template-rows: auto auto;
-    column-gap: 40px;
-    row-gap: 0;
-    align-items: start;
-  }
-  .hero2 > .hero-copy   { grid-column: 1; grid-row: 1; }
-  .hero2 > .hero-spine  { grid-column: 1; grid-row: 2; }
-  /* The instrument spans both rows, so the left column keeps flowing past it
-     instead of leaving the row's full height empty under the CTA. */
-  .hero2 > .inst        { grid-column: 2; grid-row: 1 / span 2; }
-  /* Drops the instrument clear of the tagline's first line, so its top edge
-     never reads as competing with the copy for the top of the column. */
-  .hero2 > .inst { margin-top: 10px; }
-  .hero2 > .hero-spine .spine-tag { margin-top: 6px; }
+.inst-orb {
+  --orb-c: var(--teal);
+  display: inline-flex; align-items: center; gap: 12px;
+  min-height: 44px; max-width: 100%;
+  margin: 0 0 26px; padding: 8px 16px 8px 10px;
+  /* The receipts toggle directly above it is a pill too: the two read as
+     one family of "evidence" controls, and neither borrows .bigplay's
+     gradient, which stays the page's one primary action. */
+  border-radius: 999px;
+  border: 1px solid var(--gl-edge, var(--border));
+  background: var(--gl-tint, var(--panel));
+  box-shadow: inset 0 1px 0 var(--gl-rim, rgba(255, 255, 255, .08)),
+              var(--gl-depth, 0 20px 48px -24px rgba(0, 0, 0, .5));
+  color: var(--text); font: inherit; text-align: left; cursor: pointer;
+  transition: border-color var(--hm-fast) var(--hm-ease),
+              box-shadow var(--hm-base) var(--hm-ease);
 }
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .inst-orb {
+    -webkit-backdrop-filter: blur(var(--gl-blur-card, 10px)) saturate(var(--gl-sat, 1.6));
+            backdrop-filter: blur(var(--gl-blur-card, 10px)) saturate(var(--gl-sat, 1.6));
+  }
+}
+.inst-orb:hover {
+  border-color: color-mix(in oklab, var(--teal) 70%, var(--border));
+  box-shadow: inset 0 1px 0 var(--gl-rim-hi, rgba(255, 255, 255, .14)),
+              var(--gl-depth-hi, 0 30px 64px -26px rgba(0, 0, 0, .55)),
+              0 10px 34px -14px color-mix(in oklab, var(--orb-c) 45%, transparent);
+}
+.inst-orb:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+.inst-orb[aria-expanded="true"] { border-color: var(--teal); }
+/* [data-station] carries a 12px radius for the arrival flare (section 7);
+   this is one step more specific so the capsule stays a capsule. */
+.herocta > .inst-orb { border-radius: 999px; }
+
+/* the core: a lit point inside a ring, the verdict's colour. It pings
+   outward once every few seconds, the way a live instrument's status light
+   does, and that is the only thing on the orb that moves by itself. */
+.orb-core {
+  position: relative; flex: none;
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--orb-c) 45%, transparent);
+  background: radial-gradient(circle, var(--orb-c) 0 3.5px,
+              color-mix(in oklab, var(--orb-c) 22%, transparent) 4.5px, transparent 9px);
+  transition: border-color var(--hm-base) var(--hm-ease);
+}
+.orb-core::after {
+  content: ""; position: absolute; inset: -1px; border-radius: 50%;
+  border: 1px solid var(--orb-c); opacity: 0;
+}
+.orb-txt { display: flex; flex-direction: column; gap: 1px; line-height: 1.25; min-width: 0; }
+.orb-eye {
+  font-size: .64rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.orb-read { font-size: .84rem; color: var(--text); font-variant-numeric: tabular-nums; }
+.orb-read b { color: var(--orb-c); font-weight: 700; }
+/* margin-left: auto pins the arrow to the capsule's end when the capsule is
+   wider than its words -- the full-width phone row, below 560px. */
+.orb-go {
+  margin-left: auto; padding-left: 2px; color: var(--muted); font-size: .9rem;
+  transition: translate var(--hm-base) var(--hm-ease), color var(--hm-fast) var(--hm-ease);
+}
+.inst-orb:hover .orb-go, .inst-orb:focus-visible .orb-go { translate: 2px -2px; color: var(--teal); }
+
+/* The Colour Law, reused: the verdict's own three colours (style.css
+   .verdict.good / .split / .bad), so the orb says below / at / above
+   threshold in the same colour the open instrument's banner does. */
+.inst-orb[data-verdict="split"] { --orb-c: var(--violet); }
+.inst-orb[data-verdict="bad"]   { --orb-c: var(--red); }
+
+.herocta > .inst-orb { margin: 0; }
+@media (min-width: 1024px) { .herocta > .inst-orb { margin-left: auto; } }
+
+/* A popover-less browser shows the instrument in the flow instead (section
+   2b), so an orb there would be a button that does nothing. */
+@supports not selector(:popover-open) { .inst-orb, .inst-x { display: none; } }
 
 /* ---------------------------------------------------------------- 2
    THE THRESHOLD INSTRUMENT
 
    A readout, not a section. DESIGN.md's card is 20-22px of padding on
    --panel; this is 15px on the same ground with a smaller type ramp, which
-   lands it at roughly half a card's visual weight -- deliberately, because
-   the hero's argument is the h1 and this is the evidence beside it.
+   lands it at roughly half a card's visual weight.
 
    Nothing on its face is a hand-written number. Every figure is computed in
-   home.js section 2 from the two sliders, by the same scaling law qec.html
+   home.js section 1 from the two sliders, by the same scaling law qec.html
    and race.html already run and tools/verify_threshold.py brute-forces.
    ---------------------------------------------------------------- */
 .inst {
@@ -323,11 +388,24 @@ body[data-vivid][data-glass] {
   padding: 15px;
   max-width: 340px;
 }
-@media (min-width: 1024px) { .hero2 > .inst { max-width: 300px; } }
 .inst-top {
-  display: flex; align-items: baseline; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   gap: 8px; margin: 0 0 10px;
 }
+.inst-top .inst-eyebrow { margin-right: auto; }
+.inst-grip { display: none; }
+/* 44px of hit area for the ×, pulled into the header's own height with
+   negative margins so the header does not grow to fit it. */
+.inst-x {
+  width: 44px; height: 44px; min-width: 44px; min-height: 44px;
+  margin: -12px -10px -12px 0;
+  display: grid; place-items: center; padding: 0;
+  border: 1px solid transparent; border-radius: 10px;
+  background: none; color: var(--muted); font-size: 1.1rem; cursor: pointer;
+  transition: color var(--hm-fast) var(--hm-ease), border-color var(--hm-fast) var(--hm-ease);
+}
+.inst-x:hover { color: var(--text); border-color: var(--border); }
+.inst-x:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 .inst-eyebrow {
   font-size: .68rem; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; color: var(--muted); margin: 0;
@@ -396,6 +474,167 @@ body[data-vivid][data-glass] {
   margin: 10px 0 0;
 }
 .inst-note code { font-size: .95em; padding: 0 3px; }
+
+/* ---------------------------------------------------------------- 2b
+   THE FLOAT  (2026-09-23)
+
+   The open instrument is a native popover in the top layer: above the
+   sticky header, the rails and every z-index on the page without claiming a
+   number of its own. Everything here is gated on :popover-open support, so a
+   browser without it never meets a fixed, transparent box -- it gets the
+   plain .inst card above, in the flow, where the grid column used to be.
+
+   WHERE IT OPENS. home.js places it where the orb is (top edge on the orb's
+   top edge, same side of the screen) and sets transform-origin on the orb's
+   centre, so the panel grows out of the thing that was clicked. Without
+   home.js it falls back to the top-right of the reading column.
+
+   THE MOTION, all of it slow and none of it a bounce:
+     - arrival: 760ms from 22px low, 92% scale and transparent, on an
+       expo-out curve, so it rises and then settles;
+     - at rest: a 5px drift over 7.5s, which is what "floating" means here.
+       It stops the moment a pointer is over the panel or focus is inside
+       it -- nobody should chase a slider that is bobbing;
+     - leaving: 420ms, shorter than the arrival, because a closing thing
+       should get out of the way;
+     - DRAGGED by its header (home.js); the drift pauses while held.
+   Reduced motion, either the OS switch or the site's own, gets none of it:
+   the panel simply appears and disappears.
+
+   Below 720px it is a bottom sheet instead: a floating card 300px wide
+   over a 375px screen covers the text either way, and a sheet is the
+   convention a phone reader already knows how to dismiss.
+   ---------------------------------------------------------------- */
+@supports selector(:popover-open) {
+  #hero-inst[popover] {
+    /* the UA popover sheet centres the box in the viewport with auto
+       margins and draws a Canvas-coloured border; none of that applies */
+    inset: auto; margin: 0; overflow: visible;
+    color: var(--text);
+  }
+  #hero-inst:popover-open {
+    position: fixed;
+    top: var(--inst-top, 96px);
+    right: max(16px, calc((100vw - 1040px) / 2 + 20px));
+    left: auto;
+    width: 304px; max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - var(--inst-top, 96px) - 12px);
+    overflow-y: auto; overscroll-behavior: contain;
+    padding: 16px 16px 15px;
+    border-radius: 16px;
+    border: 1px solid var(--gl-edge, var(--border));
+    background: var(--gl-tint-2, var(--panel));
+    box-shadow: inset 0 1px 0 var(--gl-rim-hi, rgba(255, 255, 255, .14)),
+                var(--gl-depth-hi, 0 30px 64px -26px rgba(0, 0, 0, .55)),
+                0 24px 70px -30px var(--gl-cast, rgba(167, 139, 250, .25));
+  }
+  @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    #hero-inst:popover-open {
+      -webkit-backdrop-filter: blur(var(--gl-blur, 18px)) saturate(var(--gl-sat, 1.6));
+              backdrop-filter: blur(var(--gl-blur, 18px)) saturate(var(--gl-sat, 1.6));
+    }
+  }
+  /* the explicit "reduce transparency" switch, and the OS one: solid */
+  :root[data-transparency-pref="reduce"] #hero-inst:popover-open,
+  :root[data-transparency-pref="reduce"] .inst-orb {
+    -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--panel);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    #hero-inst:popover-open, .inst-orb {
+      -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--panel);
+    }
+  }
+  /* The dialog container takes focus on open so Tab lands on the first
+     slider next; ringing the whole panel in mint would be noise. Same call
+     as .sqov-card in section 5. */
+  #hero-inst:focus, #hero-inst:focus-visible { outline: none; }
+
+  /* the header is the handle */
+  @media (min-width: 720px) and (pointer: fine) {
+    #hero-inst:popover-open .inst-top,
+    #hero-inst:popover-open .inst-grip { cursor: grab; touch-action: none; user-select: none; }
+    #hero-inst[data-drag] .inst-top,
+    #hero-inst[data-drag] .inst-grip { cursor: grabbing; }
+    #hero-inst:popover-open .inst-grip {
+      display: block; width: 32px; height: 4px; margin: -6px auto 8px;
+      border-radius: 999px; background: var(--border);
+    }
+  }
+
+  /* the phone: a sheet along the bottom edge. !important because home.js
+     writes left/top inline for the floating card, and a reader who narrows
+     the window with it open must still get the sheet. */
+  @media (max-width: 719.98px) {
+    #hero-inst:popover-open {
+      top: auto !important; left: 8px !important; right: 8px !important; bottom: 8px;
+      width: auto; max-width: none; max-height: 78dvh;
+      border-radius: 18px;
+      padding-top: 10px;
+    }
+    #hero-inst:popover-open .inst-grip {
+      display: block; width: 36px; height: 4px; margin: 0 auto 10px;
+      border-radius: 999px; background: var(--border);
+    }
+    #hero-inst:popover-open .inst-top,
+    #hero-inst:popover-open .inst-grip { touch-action: none; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    #hero-inst[popover] {
+      opacity: 0;
+      transform: translateY(10px) scale(.97);
+      transition: opacity 420ms var(--hm-ease), transform 420ms var(--hm-ease),
+                  display 420ms allow-discrete, overlay 420ms allow-discrete;
+    }
+    #hero-inst:popover-open {
+      opacity: 1; transform: none;
+      transition-duration: 760ms;
+      transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      animation: inst-drift 7.5s ease-in-out 900ms infinite;
+    }
+    @starting-style {
+      #hero-inst:popover-open { opacity: 0; transform: translateY(22px) scale(.92); }
+    }
+    /* :focus-visible rather than :focus-within: home.js focuses the panel
+       itself on every open, so :focus-within would freeze the drift for
+       good the moment it arrived. A keyboard reader's focus IS visible, so
+       they still get a panel that holds still while they work it. */
+    #hero-inst:popover-open:hover,
+    #hero-inst:popover-open:focus-visible,
+    #hero-inst:popover-open:has(:focus-visible),
+    #hero-inst[data-drag] { animation-play-state: paused; }
+    #hero-inst[data-drag] { transition: none; }
+
+    /* the orb drifts too, on a different period so the two never move in
+       step, and holds still under the pointer */
+    .inst-orb { animation: inst-drift 6.5s ease-in-out infinite; }
+    .inst-orb:hover, .inst-orb:focus-visible { animation-play-state: paused; }
+    .orb-core::after { animation: orb-ping 3.6s var(--hm-ease) infinite; }
+  }
+  @media (prefers-reduced-motion: no-preference) and (max-width: 719.98px) {
+    /* a sheet rises from the edge it lives on, and does not bob.
+       `transform: none` is restated on the open state HERE, after the
+       closed-state rule: [popover] and :popover-open weigh the same (1,1,0),
+       so without it the closed state's 24px wins on source order and the
+       open sheet sits 24px below the bottom of the screen -- measured. */
+    #hero-inst[popover] { transform: translateY(24px); }
+    #hero-inst:popover-open { transform: none; animation: none; }
+    @starting-style { #hero-inst:popover-open { transform: translateY(60px); } }
+  }
+  /* the site's own reduce-motion switch (theme.js), which the media query
+     above cannot see */
+  :root[data-motion-pref="reduce"] #hero-inst[popover],
+  :root[data-motion-pref="reduce"] .inst-orb,
+  :root[data-motion-pref="reduce"] .orb-core::after {
+    transition: none !important; animation: none !important;
+  }
+  :root[data-motion-pref="reduce"] #hero-inst[popover] { opacity: 1; transform: none; }
+}
+@keyframes inst-drift { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
+@keyframes orb-ping {
+  0%   { transform: scale(.75); opacity: .55; }
+  70%, 100% { transform: scale(1.6); opacity: 0; }
+}
 
 /* ---------------------------------------------------------------- 3
    THE POINTER PARALLAX
@@ -654,8 +893,16 @@ body > .wrap { position: relative; z-index: 1; }
    a 1024px viewport has 72px of gutter each side and -32px spends 12px of
    it. The wider widen is granted only where it is provably free, and still
    uses no vw unit.
-   ---------------------------------------------------------------- */
-@media (min-width: 1024px) {
+
+   CORRECTED 2026-09-23: "from 1024px up" was not provably free. At 1100px
+   section 0 widens .wrap to 1180px, which a 1100-1203px window cannot hold,
+   so .wrap IS the viewport again and -32px ran the loop figure 12px off the
+   right edge: a sideways scrollbar on every window in that band. Found by
+   verify_home_ux.mjs's new 1100px row, which the old width list skipped.
+   The widen now stops at 1099px and resumes at 1240px -- 1180px of column,
+   plus 24px of widen, plus a 17px classic scrollbar, plus air. Between the
+   two the base -20px from living.css applies, which is exactly the edge. */
+@media (min-width: 1024px) and (max-width: 1099.98px), (min-width: 1240px) {
   body[data-living] .breakout {
     margin-inline: -32px;
     padding-inline: 32px;

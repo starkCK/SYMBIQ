@@ -4644,6 +4644,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
  * THE HOME PAGE LAYER.  index.html only.  Pairs with home.css.
  *
  *   1. THE INSTRUMENT   two sliders, three computed readouts, one verdict
+ *   1b. THE FLOAT       the orb's live figure; placing, dragging, closing the panel
  *   2. THE PARALLAX     --px / --py on <html>, consumed by home.css section 3
  *   3. THE STATIONS     an IntersectionObserver over [data-station]
  *   4. THE COMPANION    the bottom-left progress ring and its card
@@ -4656,7 +4657,9 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
  * needs, and every entry point sits inside its own try/catch.  If it 404s or
  * throws on line one the page is a complete, readable, fully linked document
  * -- the instrument degrades to two labelled sliders with static markup
- * around them, and every section is still reachable by scrolling.
+ * around them, and every section is still reachable by scrolling.  (Since
+ * 2026-09-23 the instrument sits in a native popover the orb toggles; the
+ * BROWSER opens and closes it, so that still holds without this file.)
  *
  * ORDERING.  Loads LAST, after nav.js, tiers.js, qubit.js and alive.js, so
  * section 5 can see what those bound and cooperate with it rather than
@@ -4799,6 +4802,9 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     var pOut = $('#ti-pv', box), dOut = $('#ti-dv', box);
     var vPl = $('#ti-pl', box), vQb = $('#ti-qb', box), vLf = $('#ti-lf', box);
     var vLfU = $('#ti-lfu', box), vVer = $('#ti-verdict', box);
+    /* The orb's one live figure (section 1b). Outside the panel on purpose:
+       it is what the closed instrument still says. */
+    var orb = $('#inst-orb'), orbRead = $('#ti-orb');
 
     function render() {
       /* The p slider counts tenths of a percent (1..41) so every step is an
@@ -4839,11 +4845,201 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         vVer.className = 'verdict bad';
         vVer.textContent = 'Above threshold. More qubits make it worse, not better.';
       }
+
+      /* The closed instrument keeps talking: the orb carries the lifetime
+         while the setting is below threshold, and the verdict itself when it
+         is not, since a lifetime that SHRINKS with more qubits would be read
+         as good news. Same colour law as the banner: mint / lavender / red. */
+      if (orb && orbRead) {
+        var v = p < P_TH ? 'good' : (p === P_TH ? 'split' : 'bad');
+        orb.setAttribute('data-verdict', v);
+        orbRead.innerHTML = v === 'good'
+          ? '<b>' + lf[0] + ' ' + lf[1] + '</b> lifetime at d = ' + d
+          : '<b>' + (v === 'split' ? 'At threshold' : 'Above threshold') + '</b> at '
+            + (pTenths / 10).toFixed(1) + '%';
+      }
     }
 
     pIn.addEventListener('input', render);
     dIn.addEventListener('input', render);
     render();
+  }
+
+  /* ======================================================================
+     1b. THE FLOAT  (2026-09-23)
+     ----------------------------------------------------------------------
+     The instrument is a native popover the orb opens (index.html). The
+     browser already does the toggling, so this adds only what needs a
+     script, and the page loses nothing but polish if it never runs:
+
+       - PLACEMENT. Before the panel shows, it is moved to where the orb is:
+         top edge on the orb's top edge, on the orb's side of the screen,
+         clamped under the sticky header and inside the viewport, with its
+         transform-origin on the orb's centre so the CSS arrival (home.css
+         2b) grows it OUT of the orb rather than out of nowhere. Done in
+         `beforetoggle`, i.e. before the first frame, so it never paints at
+         the fallback position and then jumps.
+       - DRAG, by the header, on a fine pointer. Once dragged it stays where
+         the reader put it for the rest of the visit.
+       - SWIPE DOWN to dismiss the phone sheet.
+       - ESC from inside it (the sliders are inputs, so section 5's
+         document handler, which ignores keys typed into inputs, never sees
+         that Escape), with focus returned to the orb.
+     ==================================================================== */
+  var FLOAT = null;
+  var HEADER_CLEAR = 84;    /* the sticky header's ~70px, plus air */
+  var EDGE = 12;            /* nearest the panel gets to any screen edge */
+
+  function bindFloat() {
+    var box = $('#hero-inst'), orb = $('#inst-orb');
+    if (!box || !orb || typeof box.showPopover !== 'function') return;
+
+    var dragged = false;
+
+    function isOpen() {
+      try { return box.matches(':popover-open'); } catch (e) { return false; }
+    }
+    function sheet() { return W.innerWidth < 720; }
+
+    function put(left, top) {
+      var w = box.offsetWidth || 304;
+      var h = box.offsetHeight || 0;
+      left = Math.max(EDGE, Math.min(left, W.innerWidth - w - EDGE));
+      /* A panel taller than the room left below the header scrolls inside
+         itself (max-height in home.css), so only the top is clamped hard. */
+      var maxTop = h ? W.innerHeight - h - EDGE : top;
+      top = Math.max(HEADER_CLEAR, Math.min(top, maxTop));
+      box.style.left = Math.round(left) + 'px';
+      box.style.right = 'auto';
+      box.style.setProperty('--inst-top', Math.round(top) + 'px');
+    }
+
+    /* The panel is still display:none when `beforetoggle` fires, so its
+       height is measured by laying it out once, invisibly, at the width it
+       will open at. An estimate was tried first and was 50px short: the
+       panel opened with its last line cut off into an inner scrollbar on a
+       screen with room to spare. The 8px covers the grip bar, which only
+       exists in the open state. */
+    function naturalHeight(w) {
+      var s = box.style;
+      var keep = [s.display, s.visibility, s.position, s.width, s.maxHeight, s.transition];
+      /* transition off for the round trip: home.css transitions `display`
+         (allow-discrete) for the exit, and without this the block -> none
+         restore would itself start a 420ms exit, in the flow. */
+      s.transition = 'none';
+      s.display = 'block'; s.visibility = 'hidden'; s.position = 'fixed';
+      s.width = w + 'px'; s.maxHeight = 'none';
+      var h = box.offsetHeight + 8;
+      s.display = keep[0]; s.visibility = keep[1]; s.position = keep[2];
+      s.width = keep[3]; s.maxHeight = keep[4];
+      void box.offsetHeight;            /* commit the restore with no transition */
+      s.transition = keep[5];
+      return h || 480;
+    }
+
+    function place() {
+      if (sheet()) {
+        box.style.left = ''; box.style.right = '';
+        box.style.removeProperty('--inst-top');
+        box.style.transformOrigin = '';
+        return;
+      }
+      if (dragged && box.style.left) {
+        put(parseFloat(box.style.left), parseFloat(box.style.getPropertyValue('--inst-top')));
+        return;
+      }
+      var r = orb.getBoundingClientRect();
+      var w = 304;
+      var right = (r.left + r.width / 2) > W.innerWidth / 2;
+      var left = right ? r.right - w : r.left;
+      var h = naturalHeight(w);
+      var top = Math.max(HEADER_CLEAR, Math.min(r.top, W.innerHeight - h - EDGE));
+      left = Math.max(EDGE, Math.min(left, W.innerWidth - w - EDGE));
+      box.style.left = Math.round(left) + 'px';
+      box.style.right = 'auto';
+      box.style.setProperty('--inst-top', Math.round(top) + 'px');
+      box.style.transformOrigin =
+        Math.round(r.left + r.width / 2 - left) + 'px ' + Math.round(r.top + r.height / 2 - top) + 'px';
+    }
+
+    box.addEventListener('beforetoggle', function (e) {
+      if (e.newState === 'open') place();
+    });
+    box.addEventListener('toggle', function (e) {
+      var open = e.newState === 'open';
+      orb.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        try { box.focus({ preventScroll: true }); } catch (err) {}
+      } else if (D.activeElement === D.body || box.contains(D.activeElement)) {
+        try { orb.focus({ preventScroll: true }); } catch (err) {}
+      }
+    });
+    orb.setAttribute('aria-expanded', 'false');
+
+    function close() {
+      if (!isOpen()) return false;
+      try { box.hidePopover(); } catch (e) { return false; }
+      try { orb.focus({ preventScroll: true }); } catch (e) {}
+      return true;
+    }
+
+    box.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (close()) { e.preventDefault(); e.stopPropagation(); }
+    });
+
+    /* -- drag (card) and swipe-down (sheet), one pointer path -- */
+    /* The handle is the header row and the grip bar above it. Listening on
+       the panel and filtering by target covers both without two bindings. */
+    box.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 || !isOpen()) return;
+      var t = e.target;
+      if (!t.closest || !t.closest('.inst-top, .inst-grip')) return;
+      if (t.closest('button, a, input')) return;
+      var asSheet = sheet();
+      if (!asSheet && !(W.matchMedia && W.matchMedia('(pointer: fine)').matches)) return;
+
+      var sx = e.clientX, sy = e.clientY;
+      var l0 = parseFloat(box.style.left) || box.getBoundingClientRect().left;
+      var t0 = parseFloat(box.style.getPropertyValue('--inst-top')) || box.getBoundingClientRect().top;
+      var dy = 0;
+      try { box.setPointerCapture(e.pointerId); } catch (err) {}
+      box.setAttribute('data-drag', '');
+      e.preventDefault();
+
+      function move(ev) {
+        if (asSheet) {
+          dy = Math.max(0, ev.clientY - sy);
+          box.style.transform = 'translateY(' + dy + 'px)';
+        } else {
+          put(l0 + ev.clientX - sx, t0 + ev.clientY - sy);
+        }
+      }
+      function up() {
+        box.removeEventListener('pointermove', move);
+        box.removeEventListener('pointerup', up);
+        box.removeEventListener('pointercancel', up);
+        box.removeAttribute('data-drag');
+        if (asSheet) {
+          box.style.transform = '';
+          if (dy > 70) close();
+        } else {
+          dragged = true;
+        }
+      }
+      box.addEventListener('pointermove', move);
+      box.addEventListener('pointerup', up);
+      box.addEventListener('pointercancel', up);
+    });
+
+    var rt;
+    W.addEventListener('resize', function () {
+      if (!isOpen()) return;
+      W.clearTimeout(rt);
+      rt = W.setTimeout(place, 120);
+    }, { passive: true });
+
+    FLOAT = { el: box, orb: orb, isOpen: isOpen, close: close };
   }
 
   /* ======================================================================
@@ -5057,15 +5253,30 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
          trust a margin at some assumed viewport, watch the instrument
          itself: while any part of it is on screen the companion is not.
          That is a guarantee at every width and every zoom level, not an
-         estimate. */
-      var inst = $('#hero-inst');
-      if (inst) {
+         estimate.
+
+         Since 2026-09-23 the instrument has two bodies: the orb in the
+         hero, and the floating panel it opens, which can be carried (or
+         dragged) anywhere on screen. So the companion stands down while the
+         orb is in view OR the panel is open -- the open panel is by
+         definition on screen, and at phone widths it is a sheet across the
+         very corner the companion lives in. */
+      var orbEl = $('#inst-orb'), panel = $('#hero-inst');
+      var orbOn = !!orbEl, panelOn = false;
+      var sync = function () { co.show(!orbOn && !panelOn); };
+      if (orbEl) {
         new W.IntersectionObserver(function (entries) {
-          co.show(!entries[0].isIntersecting);
-        }, { threshold: 0 }).observe(inst);
-      } else {
-        co.show(true);
+          orbOn = entries[0].isIntersecting;
+          sync();
+        }, { threshold: 0 }).observe(orbEl);
       }
+      if (panel) {
+        panel.addEventListener('toggle', function (e) {
+          panelOn = e.newState === 'open';
+          sync();
+        });
+      }
+      sync();
     } else {
       /* No observer: no ring, but also no half-built furniture. */
       co.show(false);
@@ -5357,6 +5568,10 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         if (_keymap && _keymap.isOpen()) closed = _keymap.close() || closed;
         if (_primes && _primes.isOpen()) closed = _primes.close() || closed;
         if (COMPANION && COMPANION.isOpen()) { COMPANION.toggle(false); closed = true; }
+        /* The floating instrument, when focus has wandered out of it (its
+           own handler covers Escape typed inside it). One Escape, one
+           thing closed: it goes only if nothing above did. */
+        if (!closed && FLOAT && FLOAT.isOpen()) closed = FLOAT.close();
         if (closed) { e.preventDefault(); e.stopPropagation(); }
         return;   /* not closed by us: nav.js still needs it for the menus */
       }
@@ -5802,6 +6017,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   /* ====================================================================== */
   function boot() {
     try { buildInstrument(); } catch (e) {}
+    try { bindFloat(); } catch (e) {}
     try { bindParallax(); } catch (e) {}
     try { bindStations(); } catch (e) {}
     try { buildNavButton(); } catch (e) {}

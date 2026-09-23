@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/index.css?v=5">
+<link rel="stylesheet" href="p/index.css?v=10">
 <!-- The motion layer ships as its own file, with its own cache-buster, for the
      same reason home.css below does: style.css is shared by 24 pages and
      touching it forces a bump on every one of them (the 2026-07-24 scar).
@@ -74,7 +74,7 @@
 }
 </style>
 <script src="core.js?v=2"></script>
-<script src="p/index.js?v=3" defer></script>
+<script src="p/index.js?v=7" defer></script>
 
 
 
@@ -223,7 +223,8 @@
 
 
 <!-- ── THE HERO ──────────────────────────────────────────────────────────
-     Two columns from 1024px up (home.css section 1), one below it. h1 and
+     One column at every width since 2026-09-23 (home.css section 1); the
+     instrument floats above it on request instead of taking a column. h1 and
      .tagline stay ADJACENT SIBLINGS: hud.js mounts its returning-visitor
      card with `h1 + .tagline` and the Contract line after that, so
      breaking that adjacency would silently drop both. -->
@@ -244,6 +245,30 @@
   <p class="gh-row herocta">
     <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
     <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
+    <!-- ── THE ORB (2026-09-23) ──────────────────────────────────────────────
+         The instrument used to stand as a 300px column beside the copy, which
+         at 1440px+ put a tall glass box in the middle of the text with prose on
+         one side and The Ladder rail on the other. Chinmoy: "I wanted something
+         floating slowly upon click." So the hero is one column again and the
+         instrument lives behind this orb: a small glass capsule carrying one
+         live figure, which lifts the full instrument out as a floating panel.
+
+         The toggle is the NATIVE Popover API (popovertarget), not a script, so
+         the instrument still opens and closes if home.js never loads. home.js
+         adds only what a script is needed for: growing the panel out of the
+         orb, dragging, Esc, and the live figure on the orb's face. The station
+         the companion counts moved here from the panel, which is hidden until
+         asked for and so could never be "reached" by scrolling. -->
+    <button type="button" class="inst-orb" id="inst-orb" popovertarget="hero-inst"
+            data-station="threshold" aria-haspopup="dialog"
+            aria-label="Is it below threshold? Open the threshold instrument">
+      <span class="orb-core" aria-hidden="true"></span>
+      <span class="orb-txt">
+        <span class="orb-eye">Is it below threshold?</span>
+        <span class="orb-read" id="ti-orb">Open the live instrument</span>
+      </span>
+      <span class="orb-go" aria-hidden="true">↗</span>
+    </button>
   </p>
   <p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a>: two minutes, one choir, no equations.</p>
   </div>
@@ -257,13 +282,17 @@
        tools/verify_threshold.py and, for this instrument specifically, by
        tools/verify_home_threshold.py.
 
-       It is a readout, not a section: 15px of padding against a card's 20-22,
-       which is what keeps it at about half a card's weight beside the h1. -->
-  <aside class="inst" id="hero-inst" data-station="threshold"
+       A native popover since 2026-09-23 (see THE ORB above). popover="manual"
+       rather than "auto": this is a tool you keep open while you read, so a
+       click elsewhere on the page must not dismiss it. -->
+  <aside class="inst" id="hero-inst" popover="manual" role="dialog" tabindex="-1"
          aria-label="Threshold instrument: is this machine below threshold?">
+    <span class="inst-grip" aria-hidden="true"></span>
     <div class="inst-top">
       <p class="inst-eyebrow">Is it below threshold?</p>
       <p class="inst-live">live</p>
+      <button type="button" class="inst-x" popovertarget="hero-inst"
+              popovertargetaction="hide" aria-label="Close the instrument">×</button>
     </div>
 
     <div class="inst-ctl">
@@ -303,13 +332,9 @@
       moves the lifetime by orders of magnitude. <a href="qec.html#threshold-widget">The full explorer ▸</a></p>
   </aside>
 
-  <!-- The spine rides in the hero grid's SECOND ROW of the left column, beside
-       the instrument rather than below it. Without it the row was as tall as
-       the instrument and the left column ran ~500px of empty space under the
-       call to action -- measured at 1360px. Filling it with the sentence that
-       was going to come next anyway costs nothing and keeps the first screen
-       reading as content rather than as a gap. Below 1024px .hero2 is a plain
-       block, so the DOM order (copy, instrument, spine) is what stacks. -->
+  <!-- The spine follows the copy directly. It used to ride a second grid row
+       beside the instrument column; with the instrument floating there is no
+       column to sit beside, so it is simply the next thing you read. -->
   <section data-station="spine" class="hero-spine">
 <!-- ── THE SPINE ─────────────────────────────────────────────────────────────
      One sentence, above the router, answering the question the three doors

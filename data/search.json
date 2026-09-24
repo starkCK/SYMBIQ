@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-09-24",
- "pages": 27,
- "count": 426,
+ "pages": 26,
+ "count": 424,
  "records": [
   {
    "k": "s",
@@ -17,14 +17,14 @@
    "p": "about.html#how-a-number-gets-here",
    "t": "About the desk",
    "h": "How a number gets onto this site",
-   "x": "Figures that carry weight come from the primary source: the paper, the standard, the regulation, the press release itself. A confident summary by somebody else doesn’t count. When a number is calculated rather than quoted, the calculation l",
+   "x": "Figures that carry weight come from the primary source: the paper, the standard, the regulation, the press release itself. A confident summary by somebody else doesn’t count. When a number is calculated rather than quoted, a script recomput",
    "w": 2
   },
   {
    "k": "s",
    "p": "about.html#claims",
    "t": "About the desk",
-   "h": "Claims are judged by rules written before the answer is known",
+   "h": "Claims are judged by rules fixed before the verdict is written",
    "x": "The Ledger tracks public, dated, falsifiable claims about quantum computing made by labs, executives and regulators. Its rules are the interesting part: The resolution criteria, and the exact sources that will settle them, are frozen the da",
    "w": 2
   },
@@ -49,7 +49,7 @@
    "p": "about.html#contact",
    "t": "About the desk",
    "h": "Telling us we got something wrong",
-   "x": "The fastest route is the correction report. It lands on the desk directly, and it is the one message here that always gets a reply. For anything else: chinmoyuas@gmail.com. Last updated: 15 September 2026.",
+   "x": "The fastest route is the correction report. It lands on the desk directly, and it is read by the desk. For anything else: chinmoyuas@gmail.com. Last updated: 24 September 2026.",
    "w": 2
   },
   {
@@ -138,14 +138,6 @@
    "t": "Will quantum computers make AI more powerful?",
    "h": "🏁 The Race",
    "x": "Who's building the hardware both halves of the loop depend on.Scoreboard →",
-   "w": 1
-  },
-  {
-   "k": "s",
-   "p": "ai.html",
-   "t": "Will quantum computers make AI more powerful?",
-   "h": "🔭 The open question",
-   "x": "Which of these four routes pays off within ten years, put verbatim to a panel of frontier AI models, still unanswered.The Frontier →",
    "w": 1
   },
   {
@@ -744,8 +736,40 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "11 corrections logged",
+   "h": "15 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The hardware table called 24 logical qubits a record, one row below 48.",
+   "x": "What we said. In the hardware table and its data file, the November 2024 Atom Computing and Microsoft entry called its 24 logical qubits “the largest logical-qubit count claimed to date”. The data file also still said Google's Willow “is sm",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "A Signal called an error-detected circuit error-corrected, and kept figures the authors had revised.",
+   "x": "What we said. The Signal on IBM and the University of Chicago said they “ran 70 logical qubits” with 468 T gates and 2,415 logical two-qubit operations, and that “because the circuit was error-corrected” its error rate came out ten times lo",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The site offered things it could not deliver yet.",
+   "x": "What we said. The homepage offered a weekly letter (“the first issue will find you”) and a Discord where your streak would “count”, and a box after a won game offered the same letter. Every page could show a sign-in button. Most pages' foot",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Ledger said a second person writes every verdict, and that its rules come before the answer is known. Neither was true of its first two verdicts.",
+   "x": "What we said. On The Ledger, rule 2: “Whoever captures a claim does not resolve it. A second person writes the verdict.” On the About page: “Resolving a claim takes two people”, claims are “judged by rules written before the answer is known",
    "w": 1
   },
   {
@@ -761,7 +785,7 @@
    "p": "corrections.html",
    "t": "We got this wrong →",
    "h": "The Ledger said it logged every claim the day it was made. It never had.",
-   "x": "What we said. At the top of The Ledger: every claim is “logged the day it's made”. The page's search and link-preview descriptions said claims are “tracked from the moment they're made”. What's true. None of the twenty claims was logged on ",
+   "x": "What we said. At the top of The Ledger: every claim is “logged the day it's made”. The page's search and link-preview descriptions said claims are “tracked from the moment they're made”, and the homepage said “predictions are logged the day",
    "w": 1
   },
   {
@@ -1219,46 +1243,6 @@
    "h": "The three topics",
    "x": "QMA & the local Hamiltonian problemthe quantum analogue of NP QMA-completenessthe quantum Cook–Levin theorem Adiabatic universality & the quantum PCP conjectureone proven, one still open 18 QMA & the local Hamiltonian problem NP has a check",
    "w": 1
-  },
-  {
-   "k": "s",
-   "p": "frontier.html",
-   "t": "The Frontier",
-   "h": "The Frontier",
-   "x": "The questions the field has not settled: timelines nobody can falsify yet, bottlenecks that might or might not bind, the routes from quantum to better AI that are still arguments. Each one goes verbatim to a panel of frontier AI models and ",
-   "w": 3
-  },
-  {
-   "k": "s",
-   "p": "frontier.html",
-   "t": "The Frontier",
-   "h": "Loading The Frontier…",
-   "x": "If this does not fill in, the data could not be fetched. It lives at data/frontier/index.json.",
-   "w": 1
-  },
-  {
-   "k": "s",
-   "p": "frontier.html#how",
-   "t": "The Frontier",
-   "h": "How The Frontier works",
-   "x": "SymbiQ's locked editorial rule is that nothing user-generated auto-publishes. Peer review, replies and live threads cannot live on the same surface as that rule, so The Frontier uses two: The reviewed answer: canonical, evidence-tiered, sou",
-   "w": 2
-  },
-  {
-   "k": "s",
-   "p": "frontier.html#panel",
-   "t": "The Frontier",
-   "h": "The model panel",
-   "x": "Each question goes to several frontier models under one public, identical prompt. Every answer is published verbatim, tagged with the exact model version and the date it was asked, since a leaderboard against a family name is meaningless si",
-   "w": 2
-  },
-  {
-   "k": "s",
-   "p": "frontier.html#propose",
-   "t": "The Frontier",
-   "h": "Know a question that belongs here?",
-   "x": "It has to be an unanswered question (not something the site already answers), stated in one sentence, and falsifiable in principle even if not yet in practice. Nothing publishes automatically; the desk opens it as a real question, and sends",
-   "w": 2
   },
   {
    "k": "s",
@@ -1921,7 +1905,7 @@
    "p": "privacy.html#what-you-choose-to-send-us",
    "t": "Privacy",
    "h": "What you choose to send us",
-   "x": "Two forms exist on this site: the newsletter signup and the correction report. Both are delivered to our inbox through Web3Forms, which passes the message on and does not retain it for other purposes. We only ever receive what you type into",
+   "x": "Two forms are open on this site: the correction report and the Ledger's claim submission. Both are delivered to our inbox through Web3Forms, which passes the message on and does not retain it for other purposes. We only ever receive what yo",
    "w": 2
   },
   {
@@ -1969,7 +1953,7 @@
    "p": "privacy.html#contact",
    "t": "Privacy",
    "h": "Contact",
-   "x": "Questions about privacy, or a request about your data: chinmoyuas@gmail.com. Last updated: 8 September 2026. SymbiQ is operated by an individual, not a company; who that is, and how the site is checked, is on the About the desk page.",
+   "x": "Questions about privacy, or a request about your data: chinmoyuas@gmail.com. Last updated: 24 September 2026. SymbiQ is operated by an individual, not a company; who that is, and how the site is checked, is on the About the desk page.",
    "w": 2
   },
   {
@@ -2273,7 +2257,7 @@
    "p": "race.html#scaling",
    "t": "The Race",
    "h": "What got built",
-   "x": "The scoreboard above is empty by choice. This is not: a hand-curated set of milestones, each dated and sourced, on a log axis. Two things show up. Physical qubit counts climbed about twenty-fold from 2019 to 2023 — and then the frontier sto",
+   "x": "The scoreboard above is empty by choice. This is not: a hand-curated set of milestones, each dated and sourced, on a log axis. Two things show up. Physical qubit counts climbed about twenty-fold from 2019 to 2023 — and then the leading supe",
    "w": 2
   },
   {
@@ -2305,7 +2289,7 @@
    "p": "signals.html#how",
    "t": "The Signal",
    "h": "How The Signal works",
-   "x": "A daily pass over a short list of primary sources drafts at most one story, never a roundup or filler for a quiet day. The draft cannot state any number that is not in the source, has to name what a reader would wrongly conclude from the he",
+   "x": "When it runs, a daily pass over a short list of primary sources will draft at most one story, never a roundup or filler for a quiet day. The draft cannot state any number that is not in the source, has to name what a reader would wrongly co",
    "w": 2
   },
   {

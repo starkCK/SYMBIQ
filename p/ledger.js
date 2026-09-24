@@ -878,9 +878,14 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       '.sqcap-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}';
     document.head.appendChild(st);
   }
+  /* HIDDEN-UNTIL-HOSTED (2026-09-24): there is no newsletter yet. This form
+     promised "one letter a week" and "the first issue will find you" while
+     the address only reached an inbox, so it is off. Set to true once a
+     newsletter platform is sending issues. */
+  var CAPTURE_ON = false;
   function capture(host, o) {
     o = o || {};
-    if (!host || capShown) return false;
+    if (!CAPTURE_ON || !host || capShown) return false;
     var s = capState();
     if (s.state === 'subscribed') return false;
     if (s.state === 'dismissed' && Date.now() - (s.at || 0) < 21 * 86400000) return false;
@@ -1001,8 +1006,23 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   };
   window.SymbiQ.auth = API;
 
+  /* HIDDEN-UNTIL-HOSTED (2026-09-24). Accounts are switched off for readers.
+     The database schema has never been run and no sign-in has ever
+     completed, so a sign-in button offered something the site cannot
+     deliver. With this false, auth behaves exactly like an unconfigured fork:
+     no account button, no 218 KB library, a definite "nobody is signed in"
+     announced to every consumer. To turn accounts back on, set ACCOUNTS to
+     true. The localStorage override exists only so tools/verify_auth_lazy.mjs
+     can keep testing the signed-in machinery while it is hidden. */
+  var ACCOUNTS = false;
+  function accountsOn() {
+    if (ACCOUNTS) return true;
+    try { return localStorage.getItem('symbiq.dev.accounts') === 'on'; } catch (e) { return false; }
+  }
+  API.enabled = accountsOn();
+
   function configured() {
-    return !!(window.SymbiQ.SUPABASE_URL && window.SymbiQ.SUPABASE_ANON_KEY);
+    return accountsOn() && !!(window.SymbiQ.SUPABASE_URL && window.SymbiQ.SUPABASE_ANON_KEY);
   }
 
   /* The key supabase-js will itself use for the persisted session:
@@ -1495,8 +1515,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       out += '<div class="ldg-section ldg-proposed"><h4>Proposed verdict, ' +
         verdictBadge(c.proposed_verdict) + ' <span class="ldg-pending">not yet final</span></h4>' +
         '<p class="ldg-nr">Drafted by ' + esc(c.resolved_by || 'the desk') +
-        '. Under the Ledger’s two-key rule this is not published as resolved until a second ' +
-        'reviewer, who is not the person who captured the claim, signs it off.</p>' +
+        '. It is shown in full, and marked not yet final, before it is published as resolved.</p>' +
         paras(c.verdict_reasoning) + verdictSources(c.verdict_sources, c.verdict_source_archives) + '</div>';
     }
     if (c.claimant_response) {
@@ -1602,7 +1621,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
           ? '<b>' + n.resolved + '</b> resolved'
           : '<b>none</b> resolved yet');
         if (n.proposed) {
-          bits.push('<b>' + n.proposed + '</b> with a verdict drafted and awaiting a second reviewer');
+          bits.push('<b>' + n.proposed + '</b> with a verdict drafted and not yet published');
         }
         stateEl.innerHTML = 'Right now: ' + bits.join(', ') + '.';
       }
@@ -1684,7 +1703,12 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
             var cl = claimantMap[c.claimant];
             body.innerHTML = renderOne(c, cl ? cl.name : c.claimant);
             var fEl = body.querySelector('.ldg-forecast');
-            if (fEl) { openForecasts[c.slug] = true; wireForecast(c.slug, fEl); }
+            /* HIDDEN-UNTIL-HOSTED (2026-09-24): the crowd forecast needs accounts,
+               which are off. The element stays in the DOM, hidden, because the
+               reader's own local "Your call" panel (standing.js) mounts right
+               after it and needs no account at all. */
+            if (fEl && !(window.SymbiQ.auth && window.SymbiQ.auth.enabled)) fEl.hidden = true;
+            else if (fEl) { openForecasts[c.slug] = true; wireForecast(c.slug, fEl); }
           })
           .catch(function (err) {
             body.innerHTML = '<p class="archq-loading">Could not load this one (' + esc(err.message) + ').</p>';
@@ -3124,7 +3148,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     'pqc.html':             ['race.html',             'Who is actually ahead',      'The race, without the press releases'],
     'play.html':            ['journey.html',          'The story, end to end',      'Six acts, from the first qubit to the consequence'],
     'journey.html':         ['play.html',             'The games themselves',       'Where the score cannot be faked'],
-    'race.html':            ['frontier.html',         'The open frontier',          'What nobody has settled yet'],
+    'race.html':            ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'frontier.html':        ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'ledger.html':          ['corrections.html',      'Corrections',                'What we got wrong, and when'],
     'corrections.html':     ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],

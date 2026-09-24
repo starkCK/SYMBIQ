@@ -145,10 +145,10 @@
 <script src="core.js?v=2"></script>
 <script src="save.js"></script>
 <script src="coherence.js?v=3"></script>
-<script src="games.js?v=44"></script>
+<script src="games.js?v=46"></script>
 <script src="scene.js?v=6"></script>
 <script src="missions.js?v=11"></script>
-<script src="p/play.js?v=4" defer></script>
+<script src="p/play.js?v=6" defer></script>
 
 
 
@@ -287,7 +287,6 @@
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -409,8 +408,10 @@
     </div>
   </div>
 
-  <h2>Coming next</h2>
-  <div class="card">
+  <!-- HIDDEN-UNTIL-HOSTED (2026-09-24): announced a board game as "designed" that has no
+       design yet. Restore when it exists. -->
+  <h2 hidden>Coming next</h2>
+  <div class="card" hidden>
     <p>A <strong>board game</strong> for two to four players about quantum computing and the corners of AI that touch it, where knowing more wins and the pieces are worth looking at. <strong>Designed, not yet started</strong>, and deliberately queued behind the machines above. Border War and the Knocker are its first two playtests: every mechanic on this page either earns a square on that board or gets cut.</p>
   </div>
 </div>
@@ -436,7 +437,7 @@
      missions.js draws its own "Leave" control inside this host. -->
 <div id="mission-host" hidden></div>
 
-<footer>Here the physics does the judging.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+<footer>Here the physics does the judging.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 </div>
 
 <script>

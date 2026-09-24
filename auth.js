@@ -75,8 +75,23 @@
   };
   window.SymbiQ.auth = API;
 
+  /* HIDDEN-UNTIL-HOSTED (2026-09-24). Accounts are switched off for readers.
+     The database schema has never been run and no sign-in has ever
+     completed, so a sign-in button offered something the site cannot
+     deliver. With this false, auth behaves exactly like an unconfigured fork:
+     no account button, no 218 KB library, a definite "nobody is signed in"
+     announced to every consumer. To turn accounts back on, set ACCOUNTS to
+     true. The localStorage override exists only so tools/verify_auth_lazy.mjs
+     can keep testing the signed-in machinery while it is hidden. */
+  var ACCOUNTS = false;
+  function accountsOn() {
+    if (ACCOUNTS) return true;
+    try { return localStorage.getItem('symbiq.dev.accounts') === 'on'; } catch (e) { return false; }
+  }
+  API.enabled = accountsOn();
+
   function configured() {
-    return !!(window.SymbiQ.SUPABASE_URL && window.SymbiQ.SUPABASE_ANON_KEY);
+    return accountsOn() && !!(window.SymbiQ.SUPABASE_URL && window.SymbiQ.SUPABASE_ANON_KEY);
   }
 
   /* The key supabase-js will itself use for the persisted session:

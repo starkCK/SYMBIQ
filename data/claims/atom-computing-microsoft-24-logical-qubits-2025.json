@@ -46,8 +46,8 @@
     }
   ],
   "created_at": "2026-08-27",
-  "updated_at": "2026-09-22",
-  "sourcing_note": "Deadline (31 Dec 2025 + 30-day grace = 30 Jan 2026) has passed as of capture (2026-08-27). Flagged resolvable by the seeding pass, NOT resolved -- a January 2025 follow-up report (HPCwire) described Atom Computing and Microsoft rolling out an on-premise system supporting up to 50 logical qubits, which reads as meeting or exceeding this claim, but the desk should verify the exact 24-logical-qubit specification was what actually shipped before writing a VERIFIED verdict, per the two-key rule.",
+  "updated_at": "2026-09-24",
+  "sourcing_note": "Deadline (31 Dec 2025 + 30-day grace = 30 Jan 2026) has passed as of capture (2026-08-27). Flagged resolvable by the seeding pass, NOT resolved -- a January 2025 follow-up report (HPCwire) described Atom Computing and Microsoft rolling out an on-premise system supporting up to 50 logical qubits, which reads as meeting or exceeding this claim, but the desk should verify the exact 24-logical-qubit specification was what actually shipped before writing a VERIFIED verdict, per the two-key rule.\n\nLogged on 27 August 2026, after this claim's 31 December 2025 deadline and its 30-day grace period had both passed. Its resolution criteria were therefore written with the deadline already behind it: they were frozen before the verdict was drafted, but they are not pre-registered in the sense of being fixed before the outcome could be known.",
   "slug": "atom-computing-microsoft-24-logical-qubits-2025",
   "claimant": "atom-computing",
   "verbatim": "By coupling our state-of-the-art neutral-atom qubits with Microsoft's qubit-virtualization system, we are now able to offer reliable logical qubits on a commercial quantum machine.",

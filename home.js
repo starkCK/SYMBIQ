@@ -481,8 +481,10 @@
   /* ======================================================================
      3 + 4. THE STATIONS AND THE COMPANION
      ----------------------------------------------------------------------
-     Thirteen [data-station] sections (twelve, then the evidence board
-     added 2026-09-23); a -38% / -38% root margin means a
+     Twelve [data-station] sections (twelve, then the evidence board added
+     2026-09-23, then "Join the loop" hidden until hosted on 2026-09-24,
+     which renames its marker to data-station-hidden so it is not counted);
+     a -38% / -38% root margin means a
      station counts as reached only when it is genuinely the thing in the
      middle of the screen, not when one pixel of it clips the bottom edge.
 

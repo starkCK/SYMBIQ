@@ -282,8 +282,7 @@
       out += '<div class="ldg-section ldg-proposed"><h4>Proposed verdict, ' +
         verdictBadge(c.proposed_verdict) + ' <span class="ldg-pending">not yet final</span></h4>' +
         '<p class="ldg-nr">Drafted by ' + esc(c.resolved_by || 'the desk') +
-        '. Under the Ledger’s two-key rule this is not published as resolved until a second ' +
-        'reviewer, who is not the person who captured the claim, signs it off.</p>' +
+        '. It is shown in full, and marked not yet final, before it is published as resolved.</p>' +
         paras(c.verdict_reasoning) + verdictSources(c.verdict_sources, c.verdict_source_archives) + '</div>';
     }
     if (c.claimant_response) {
@@ -389,7 +388,7 @@
           ? '<b>' + n.resolved + '</b> resolved'
           : '<b>none</b> resolved yet');
         if (n.proposed) {
-          bits.push('<b>' + n.proposed + '</b> with a verdict drafted and awaiting a second reviewer');
+          bits.push('<b>' + n.proposed + '</b> with a verdict drafted and not yet published');
         }
         stateEl.innerHTML = 'Right now: ' + bits.join(', ') + '.';
       }
@@ -471,7 +470,12 @@
             var cl = claimantMap[c.claimant];
             body.innerHTML = renderOne(c, cl ? cl.name : c.claimant);
             var fEl = body.querySelector('.ldg-forecast');
-            if (fEl) { openForecasts[c.slug] = true; wireForecast(c.slug, fEl); }
+            /* HIDDEN-UNTIL-HOSTED (2026-09-24): the crowd forecast needs accounts,
+               which are off. The element stays in the DOM, hidden, because the
+               reader's own local "Your call" panel (standing.js) mounts right
+               after it and needs no account at all. */
+            if (fEl && !(window.SymbiQ.auth && window.SymbiQ.auth.enabled)) fEl.hidden = true;
+            else if (fEl) { openForecasts[c.slug] = true; wireForecast(c.slug, fEl); }
           })
           .catch(function (err) {
             body.innerHTML = '<p class="archq-loading">Could not load this one (' + esc(err.message) + ').</p>';

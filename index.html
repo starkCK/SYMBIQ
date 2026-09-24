@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-dR5EwJldmnRf45dra6So6hzwwLL8yNl+fjh37IU6U5M=' 'sha256-YGcImvj6ECrfwZgxjpTR16q/6V6BPXshfUK/omX1zlw=' 'sha256-VI9z9y6Y/frOMK5VU2xZG8wk0eOu+Yj4hXLti4vjbdY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-dR5EwJldmnRf45dra6So6hzwwLL8yNl+fjh37IU6U5M=' 'sha256-Cvv17i+mPJR3msGsNxroi1XCcaQZKFL1W2PWx2Mk5bU=' 'sha256-VI9z9y6Y/frOMK5VU2xZG8wk0eOu+Yj4hXLti4vjbdY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>SymbiQ: Two broken geniuses, fixing each other.</title>
@@ -104,7 +104,7 @@
 }
 </style>
 <script src="core.js?v=2"></script>
-<script src="p/index.js?v=11" defer></script>
+<script src="p/index.js?v=12" defer></script>
 
 
 
@@ -261,7 +261,6 @@
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -295,7 +294,7 @@
 
 <div class="hero2">
   <div class="hero-copy" data-station="hero">
-  <p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. Most of what you read about either arrives as a claim with no receipt attached. <strong>Claims get checked here.</strong> Numbers come from the primary paper, the games are refereed by mathematics, and predictions are logged the day they're made and scored when the deadline lands.</p>
+  <p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. Most of what you read about either arrives as a claim with no receipt attached. <strong>Claims get checked here.</strong> Numbers come from the primary paper, the games are refereed by mathematics, and claims are logged with the date they were made and scored when the deadline lands.</p>
   <p class="gh-row herocta">
     <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
     <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
@@ -521,11 +520,15 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
       <span class="ev-num">–</span>
       <span class="ev-sub">questions really asked, every answer kept</span>
     </a>
+    <!-- HIDDEN-UNTIL-HOSTED (2026-09-24): The Frontier's model panel has never run, so its
+         tile is out of the markup (a `hidden` attribute lost to .ev-tile's display:flex).
+         To restore, uncomment:
     <a class="ev-tile" href="frontier.html" data-ev="frontier">
       <span class="ev-eyebrow">The Frontier</span>
       <span class="ev-num">–</span>
       <span class="ev-sub">open questions, put to a model panel</span>
     </a>
+    -->
   </div>
 </section>
 
@@ -720,7 +723,12 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
 </figure>
 </section>
 
-<section data-station="join">
+<!-- HIDDEN-UNTIL-HOSTED (2026-09-24): the Discord has two members and no one
+     running it, and there is no newsletter yet, so this section offered a
+     community and a weekly letter the site cannot deliver. To restore: drop
+     `hidden`, rename data-station-hidden back to data-station, and put the
+     streak link in the Question widget back (search HIDDEN-UNTIL-HOSTED). -->
+<section data-station-hidden="join" hidden>
 <h2 id="join-loop">Join the loop</h2>
 <!-- Discord + X are live (2026-07-25). The newsletter is now a real capture form
      (2026-07-29) rather than a link to Discord: addresses go through forms.js to
@@ -746,7 +754,7 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
 </div>
 </section>
 
-<footer>SymbiQ · The Symbiosis newsletter · No hype, no financial advice, sources always.</footer>
+<footer>SymbiQ · No hype, no financial advice, sources always.</footer>
 </div>
 
 <script>
@@ -859,7 +867,7 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
       document.getElementById('dq-lattice').innerHTML =
         'The Lattice: <strong>' + D.lattice.f.toLocaleString('en-US') + ' F</strong> of ' +
         D.lattice.goal.toLocaleString('en-US') + ' to reach code distance d=' + D.lattice.nextD +
-        '. It only grows in the <a href="#join-loop">Discord</a>.';
+        '.';
     }
     if (done) reveal(D, done.pick, null);
   }
@@ -907,8 +915,9 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
       '<details><summary>🟡 Why (some math)</summary><p>' + esc(q.explain.y) + '</p></details>' +
       '<details><summary>🔴 Why (real math)</summary><p>' + esc(q.explain.r) + '</p></details>' +
       '<div class="dq-heat" id="dq-heat" title="Your last 12 weeks"></div>' +
-      '<p style="margin-top:10px"><button class="preset" id="dq-share">Share result</button> ' +
-      '<a href="#join-loop" style="margin-left:8px">Streaks here are local; make them count in the Discord →</a></p>';
+      /* HIDDEN-UNTIL-HOSTED (2026-09-24): a link here said "make them count in the
+         Discord" -- streaks have never counted anywhere but this browser. */
+      '<p style="margin-top:10px"><button class="preset" id="dq-share">Share result</button></p>';
     heat(s);
     document.getElementById('dq-share').addEventListener('click', function () { share(D, ok, streak); });
     // Ask for the address right after an answer, when a yes is likeliest.

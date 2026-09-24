@@ -878,9 +878,14 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       '.sqcap-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}';
     document.head.appendChild(st);
   }
+  /* HIDDEN-UNTIL-HOSTED (2026-09-24): there is no newsletter yet. This form
+     promised "one letter a week" and "the first issue will find you" while
+     the address only reached an inbox, so it is off. Set to true once a
+     newsletter platform is sending issues. */
+  var CAPTURE_ON = false;
   function capture(host, o) {
     o = o || {};
-    if (!host || capShown) return false;
+    if (!CAPTURE_ON || !host || capShown) return false;
     var s = capState();
     if (s.state === 'subscribed') return false;
     if (s.state === 'dismissed' && Date.now() - (s.at || 0) < 21 * 86400000) return false;
@@ -1001,8 +1006,23 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   };
   window.SymbiQ.auth = API;
 
+  /* HIDDEN-UNTIL-HOSTED (2026-09-24). Accounts are switched off for readers.
+     The database schema has never been run and no sign-in has ever
+     completed, so a sign-in button offered something the site cannot
+     deliver. With this false, auth behaves exactly like an unconfigured fork:
+     no account button, no 218 KB library, a definite "nobody is signed in"
+     announced to every consumer. To turn accounts back on, set ACCOUNTS to
+     true. The localStorage override exists only so tools/verify_auth_lazy.mjs
+     can keep testing the signed-in machinery while it is hidden. */
+  var ACCOUNTS = false;
+  function accountsOn() {
+    if (ACCOUNTS) return true;
+    try { return localStorage.getItem('symbiq.dev.accounts') === 'on'; } catch (e) { return false; }
+  }
+  API.enabled = accountsOn();
+
   function configured() {
-    return !!(window.SymbiQ.SUPABASE_URL && window.SymbiQ.SUPABASE_ANON_KEY);
+    return accountsOn() && !!(window.SymbiQ.SUPABASE_URL && window.SymbiQ.SUPABASE_ANON_KEY);
   }
 
   /* The key supabase-js will itself use for the persisted session:
@@ -2229,7 +2249,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     'pqc.html':             ['race.html',             'Who is actually ahead',      'The race, without the press releases'],
     'play.html':            ['journey.html',          'The story, end to end',      'Six acts, from the first qubit to the consequence'],
     'journey.html':         ['play.html',             'The games themselves',       'Where the score cannot be faked'],
-    'race.html':            ['frontier.html',         'The open frontier',          'What nobody has settled yet'],
+    'race.html':            ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'frontier.html':        ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'ledger.html':          ['corrections.html',      'Corrections',                'What we got wrong, and when'],
     'corrections.html':     ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],

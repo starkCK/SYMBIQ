@@ -1,8 +1,40 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 114,
+ "count": 118,
  "events": [
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 15",
+   "title": "The hardware table called 24 logical qubits a record, one row below 48.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-01 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 14",
+   "title": "A Signal called an error-detected circuit error-corrected, and kept figures the authors had revised.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-08 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 13",
+   "title": "The site offered things it could not deliver yet.",
+   "href": "corrections.html",
+   "note": "Live from 2026-07-29 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 12",
+   "title": "The Ledger said a second person writes every verdict, and that its rules come before the answer is known. Neither was true of its first two verdicts.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
   {
    "at": "2026-09-24",
    "kind": "correction",
@@ -18,6 +50,22 @@
    "title": "The Ledger said it logged every claim the day it was made. It never had.",
    "href": "corrections.html",
    "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Bigger type site-wide; home hero uses the full width, makes room for the instrument only when open",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger rule 5: right of reply is open at any time, not promised in advance",
+   "href": "",
+   "note": ""
   },
   {
    "at": "2026-09-24",
@@ -455,9 +503,9 @@
    "at": "2026-09-08",
    "kind": "signal",
    "tag": "Signal, Proven",
-   "title": "IBM and Chicago ran 70 logical qubits — and could prove the answer was right",
+   "title": "IBM and Chicago ran a hard, encoded circuit, and certified how good the answer was",
    "href": "signals.html#ibm-uchicago-70-logical-qubits-verified",
-   "note": "2,415 logical two-qubit gates and 468 T gates, at effective error rates about ten times below the physical ones underneath. The new part is not the size. It is that the result is checkable."
+   "note": "A 64-qubit circuit with 314 T gates, encoded in 76 physical qubits, with gate errors about ten times lower once runs that flagged an error were thrown out. The new part is not the size. It is the certificate."
   },
   {
    "at": "2026-09-05",
@@ -744,22 +792,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "Circuit Golf + Max-Cut: endless score-chase modes (\"The Long Game\" / \"The Sprawl\")",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The Annealing Volcano: The Descent — an endless, generated score-chase",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Grover's Escape: Deep Dive — an endless, score-chased mode",
    "href": "",
    "note": ""
   },

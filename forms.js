@@ -175,9 +175,14 @@
       '.sqcap-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}';
     document.head.appendChild(st);
   }
+  /* HIDDEN-UNTIL-HOSTED (2026-09-24): there is no newsletter yet. This form
+     promised "one letter a week" and "the first issue will find you" while
+     the address only reached an inbox, so it is off. Set to true once a
+     newsletter platform is sending issues. */
+  var CAPTURE_ON = false;
   function capture(host, o) {
     o = o || {};
-    if (!host || capShown) return false;
+    if (!CAPTURE_ON || !host || capShown) return false;
     var s = capState();
     if (s.state === 'subscribed') return false;
     if (s.state === 'dismissed' && Date.now() - (s.at || 0) < 21 * 86400000) return false;

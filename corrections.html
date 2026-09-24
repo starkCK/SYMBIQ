@@ -81,7 +81,7 @@
 
 
 <script src="core.js?v=2"></script>
-<script src="p/corrections.js?v=4" defer></script>
+<script src="p/corrections.js?v=6" defer></script>
 
 
 
@@ -197,7 +197,6 @@
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain active">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -218,15 +217,63 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3>11 corrections logged</h3>
+  <h3>15 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>11</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>15</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 15 &middot; published 2026-09-01 &middot; corrected 2026-09-24 &middot; live for 23 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The hardware table called 24 logical qubits a record, one row below 48.</h3>
+
+    <p><strong>What we said.</strong> In <a href="race.html#scaling">the hardware table</a> and its data file, the November 2024 Atom Computing and Microsoft entry called its 24 logical qubits &ldquo;the largest logical-qubit count claimed to date&rdquo;. The data file also still said Google&#39;s Willow &ldquo;is smaller than its own 2019 Sycamore&rdquo;, the claim retracted as Correction 1.</p>
+
+    <p><strong>What&#39;s true.</strong> The December 2023 entry directly above it lists 48 logical qubits. What Microsoft and Atom Computing claimed was a record for logical qubits <em>entangled together</em>, and the entry now says that. Willow has 105 qubits against Sycamore&#39;s 53; Correction 1 fixed three copies of that sentence and missed a fourth, in a caveat inside <code>data/hardware.json</code> that the page does not display but the file publishes.</p>
+
+    <p><strong>Why we missed it.</strong> The record claim was copied from the announcement without its qualifier. The check that guards this table compared its prose with the data but never tested one row&#39;s superlative against the rows around it, and the Correction 1 sweep searched the pages, not the data files behind them. Both are checked now.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-24 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 14 &middot; published 2026-09-08 &middot; corrected 2026-09-24 &middot; live for 16 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">A Signal called an error-detected circuit error-corrected, and kept figures the authors had revised.</h3>
+
+    <p><strong>What we said.</strong> The <a href="signals.html">Signal</a> on IBM and the University of Chicago said they &ldquo;ran 70 logical qubits&rdquo; with 468 T gates and 2,415 logical two-qubit operations, and that &ldquo;because the circuit was error-corrected&rdquo; its error rate came out ten times lower.</p>
+
+    <p><strong>What&#39;s true.</strong> The paper uses error <em>detection</em>: runs where the code flagged an error were thrown away, and the tenfold improvement is measured on the runs that were kept. Nothing was corrected. Its July version did describe a 70-qubit circuit with 468 T gates, but the authors revised it in September to a 64-qubit circuit with 314 T gates on 76 physical qubits. The Signal no longer quotes a two-qubit gate count, which we could not confirm against the paper&#39;s abstract. It now reports the current version, says what changed, and explains detection versus correction.</p>
+
+    <p><strong>Why we missed it.</strong> The story was written from the first version of the paper and a news report of it, and the report&#39;s framing was carried over. Nobody re-read the abstract for the one word the whole site is about, and nothing watches a cited preprint for new versions.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-24 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 13 &middot; published 2026-07-29 &middot; corrected 2026-09-24 &middot; live for 57 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The site offered things it could not deliver yet.</h3>
+
+    <p><strong>What we said.</strong> The homepage offered a weekly letter (&ldquo;the first issue will find you&rdquo;) and a Discord where your streak would &ldquo;count&rdquo;, and a box after a won game offered the same letter. Every page could show a sign-in button. Most pages&#39; footers said a reported error is &ldquo;the biggest bounty we pay&rdquo;. The Arcade announced a board game as &ldquo;designed&rdquo;. The Frontier described answers reviewed by a second person and a panel of AI models. The About page said our calculations live in &ldquo;open code that runs again before every release&rdquo;, that three checks can each &ldquo;stop a release&rdquo;, that the correction report &ldquo;always gets a reply&rdquo;, and that &ldquo;everything&rdquo; is &ldquo;checked twice&rdquo;.</p>
+
+    <p><strong>What&#39;s true.</strong> There is no newsletter yet; the form only delivered an address to our inbox. The Discord has two members, and streaks have never counted anywhere but your own browser. No sign-in has ever completed, because the database behind it has never been set up. There is no bounty. The board game has no design yet. The Frontier&#39;s model panel has never run. Most of our checking scripts live in a private repository and are run by the desk, not on every release; one guard runs automatically on each change. All of these are now hidden or reworded, and The Frontier is unlisted until its panel runs. What is still offered works today: the correction report, the Ledger&#39;s claim form, the games, and the progress your browser keeps for you.</p>
+
+    <p><strong>Why we missed it.</strong> Each feature was written as if the service behind it was about to exist, and the copy was never taken down when it didn&#39;t. The checks on this site compare numbers with their sources and sentences with their tables; nothing compared a promise with whether it could be kept.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-24 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 12 &middot; published 2026-08-27 &middot; corrected 2026-09-24 &middot; live for 28 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Ledger said a second person writes every verdict, and that its rules come before the answer is known. Neither was true of its first two verdicts.</h3>
+
+    <p><strong>What we said.</strong> On <a href="ledger.html">The Ledger</a>, rule 2: &ldquo;Whoever captures a claim does not resolve it. A second person writes the verdict.&rdquo; On the About page: &ldquo;Resolving a claim takes two people&rdquo;, claims are &ldquo;judged by rules written before the answer is known&rdquo;, and criteria are frozen &ldquo;long before its deadline&rdquo;.</p>
+
+    <p><strong>What&#39;s true.</strong> SymbiQ is one person working with AI tools. The two verdicts published on 22 September were drafted by an AI model, in a pass separate from the one that logged the claims, and published by the desk; no second person reviewed them. Both claims were also logged on 27 August 2026, eight months after their 31 December 2025 deadlines, so their criteria were written when the outcome could already be known. Rule 2 now says what happens: a verdict is written after the deadline, in its own pass, against the criteria frozen when the claim was logged, and it cites its evidence. The About page and both claims now say that these two were logged after their deadlines.</p>
+
+    <p><strong>Why we missed it.</strong> The rules were written for a desk of more than one person and for claims logged as they are made. The first verdicts passed our checker&#39;s version of rule 2, which only tests that the verdict&#39;s author field differs from the capture field. Nothing asked who those authors were, or put each claim&#39;s capture date beside its deadline.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-24 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 11 &middot; published 2026-09-22 &middot; corrected 2026-09-24 &middot; live for 2 days &middot; caught by the desk</p>
     <h3 style="margin-top:6px">The Ledger promised companies a reply before a Not verified verdict. The first two got none.</h3>
@@ -235,7 +282,7 @@
 
     <p><strong>What&#39;s true.</strong> The first two verdicts, on IonQ and on Atom Computing with Microsoft, were published as <em>Not verified</em> on 22 September without either company being contacted first. The rule now says what the Ledger does: any claimant can answer a verdict at any time, the reply is published in full beside it, and a reply that shows the verdict is wrong changes it, with the change logged here. Both verdicts are open to a reply on those terms.</p>
 
-    <p><strong>Why we missed it.</strong> Publishing a verdict ran through the checks a machine can do: criteria frozen, sources archived, a second key. Contacting the company is not one of those, and no step in the process owned it, so the verdicts shipped on the checks that did run.</p>
+    <p><strong>Why we missed it.</strong> Publishing a verdict ran through the checks a machine can do: criteria frozen and sources archived. Contacting the company is not one of those, and no step in the process owned it, so the verdicts shipped on the checks that did run.</p>
 
     <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-23 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
   </li>
@@ -243,9 +290,9 @@
     <p class="eyebrow">Correction 10 &middot; published 2026-08-27 &middot; corrected 2026-09-24 &middot; live for 28 days &middot; caught by the desk</p>
     <h3 style="margin-top:6px">The Ledger said it logged every claim the day it was made. It never had.</h3>
 
-    <p><strong>What we said.</strong> At the top of <a href="ledger.html">The Ledger</a>: every claim is &ldquo;logged the day it&#39;s made&rdquo;. The page&#39;s search and link-preview descriptions said claims are &ldquo;tracked from the moment they&#39;re made&rdquo;.</p>
+    <p><strong>What we said.</strong> At the top of <a href="ledger.html">The Ledger</a>: every claim is &ldquo;logged the day it&#39;s made&rdquo;. The page&#39;s search and link-preview descriptions said claims are &ldquo;tracked from the moment they&#39;re made&rdquo;, and the homepage said &ldquo;predictions are logged the day they&#39;re made&rdquo;.</p>
 
-    <p><strong>What&#39;s true.</strong> None of the twenty claims was logged on the day it was made. The first ten were captured on 27 August 2026 from statements made between July 2024 and June 2026, and the next ten on 23 September 2026 from statements going back to January 2024. What each entry does carry is the date the claim was made, a quote checked against the source, and an archived copy of that source, so the gap between the claim and our logging of it is visible rather than hidden. The tagline and all three descriptions now say that.</p>
+    <p><strong>What&#39;s true.</strong> None of the twenty claims was logged on the day it was made. The first ten were captured on 27 August 2026 from statements made between July 2024 and June 2026, and the next ten on 23 September 2026 from statements going back to January 2024. What each entry does carry is the date the claim was made, a quote checked against the source, and an archived copy of that source, so the gap between the claim and our logging of it is visible rather than hidden. The tagline, all three descriptions and the homepage now say that.</p>
 
     <p><strong>Why we missed it.</strong> The sentence described the Ledger we meant to run, a desk that logs claims as they are announced, and was written before any claim was captured. Seeding it from statements that were already months old made it false on the first day, and nothing compared the tagline with the dates sitting in the entries below it.</p>
 
@@ -405,7 +452,7 @@ duplicating it by hand.</p>
          style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
   <button type="submit">Send the catch →</button>
 </form>
-<p class="sqnote">Read by a human, always. If you'd rather do it in the open, <a href="https://discord.gg/fWKGSb7ZHE">post it in Discord</a>. Public catches are just as welcome, and easier for everyone else to learn from.</p>
+<p class="sqnote">Read by a human, always.</p>
 
 <h2>How we try to avoid needing this page</h2>
 <p>Every 🔴 topic gets an independent review before it ships, and facts from secondary coverage are checked against primary sources. Those passes returned hundreds of findings, all fixed before publication. This page counts only what got past them.</p>
@@ -442,7 +489,7 @@ duplicating it by hand.</p>
     <text class="lbl-s teal" x="10" y="150">WHEN ONE GETS THROUGH ANYWAY</text>
     <rect class="box ai" x="8" y="160" width="128" height="58" rx="12"/>
     <text class="lbl-b teal" x="72" y="183" text-anchor="middle">you catch it</text>
-    <text class="lbl-s" x="72" y="200" text-anchor="middle">biggest bounty we pay</text>
+    <text class="lbl-s" x="72" y="200" text-anchor="middle">credited by name</text>
 
     <rect class="box" x="166" y="160" width="128" height="58" rx="12"/>
     <text class="lbl-b" x="230" y="183" text-anchor="middle">verified</text>
@@ -461,7 +508,7 @@ duplicating it by hand.</p>
   <figcaption><strong>The last box is the unusual one.</strong> The convention almost everywhere is that a correction runs smaller and later than the claim it fixes, so the mistake reaches more people than the repair ever does. Here it is inverted: the correction gets <em>more</em> room than the original, and it runs under the name of whoever caught it, because a reader who checks our work is worth far more to us than one who trusts it.</figcaption>
 </figure>
 
-<footer>We print our mistakes louder than the original.<br>SymbiQ · Found an error we haven't? Post it in Discord. Being corrected by you is the best content we can get.</footer>
+<footer>We print our mistakes louder than the original.<br>SymbiQ · Found an error we haven't? <a href="#report">Tell us</a>. Being corrected by you is the best content we can get.</footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

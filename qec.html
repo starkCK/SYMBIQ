@@ -132,7 +132,7 @@
      core.loadScript once the reader is heading for the widget. The tag
      stays here, with the real versioned URL, so check_site.py's
      cache-bust guard and tools/bump_assets.py both still see it. -->
-<script id="games-src" type="text/symbiq-lazy" src="games.js?v=44"></script>
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=46"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -180,7 +180,7 @@
   ]
 }
 </script>
-<script src="p/qec.js?v=4" defer></script>
+<script src="p/qec.js?v=6" defer></script>
 
 
 
@@ -299,7 +299,6 @@
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -424,7 +423,7 @@
 <p><strong>Transversal gates.</strong> A transversal gate applies the same physical operation to every physical qubit of a logical block independently (one qubit at a time, never a two-qubit gate between two physical qubits inside the same block), so a single faulty gate can corrupt at most one physical qubit's worth of information and has nowhere to spread within the block; that's what makes the gate fault-tolerant by construction rather than by extra circuitry bolted on afterward. It has a hard ceiling, though: the <strong>Eastin–Knill theorem</strong> proves that any code able to detect an arbitrary error on a single physical qubit cannot have a gate set that is both transversal and universal (Eastin &amp; Knill, <a href="https://arxiv.org/abs/0811.4262">arXiv 0811.4262</a> (<em>Phys. Rev. Lett.</em> 102, 110502 (2009))). That forces universality to come from outside the transversal gate set entirely, which is exactly why the magic-state machinery two paragraphs up isn't a separate topic from this one: distillation is how that outside ingredient gets purified to usable fidelity, precisely because transversality alone has been proven unable to supply it. On the surface code specifically: logical CNOT between two patches is transversal, but only if the patches are arranged with each physical qubit adjacent to its partner, which a flat 2D layout can't generally give two side-by-side patches; logical Hadamard is transversal on a single patch too, but a bare transversal-H layer swaps the patch's X- and Z-type boundaries, so recovering the original orientation costs a geometric rotation of the patch on top of the gate; S is not transversal on the surface code at all and has to be reached some other way, such as gate teleportation through an ancilla state.</p>
 <p><strong>Lattice surgery.</strong> Instead of executing a two-qubit logical gate transversally (which, as above, needs qubit <em>i</em> of one patch physically adjacent to qubit <em>i</em> of the other), lattice surgery gets there by physically merging adjacent surface-code patches: briefly, a new set of joint stabilizers is measured across the boundary where two patches touch, amounting to a joint measurement of a logical operator, X̄X̄ or Z̄Z̄, after which the patches are split back apart. A single merge-and-split measures a joint parity; it is not by itself a deterministic CNOT. The actual logical-CNOT protocol (Horsman, Fowler, Devitt &amp; Van Meter, <a href="https://arxiv.org/abs/1111.4022">arXiv 1111.4022</a> (<em>New Journal of Physics</em> 14, 123011 (2012))) needs a third patch, an ancilla prepared in a fixed logical state, merged with the control patch and split, then merged with the target patch and split: two merge-split cycles across three patches, sequenced right, rather than one operation between two. The saving is still real, just not "no ancilla at all": every patch in that sequence is an ordinary surface-code patch measured in the same 2D plane, never a separate teleportation channel or a third dimension to line qubits up in. The paper's own stated aim is the previous paragraph made concrete: coupling planar codes <em>without</em> transversal operations, so the array stays nearest-neighbor, touching only along shared edges. That's the mechanism, not a side detail, behind moving logical information around the kind of array the overhead figures above describe: the [[<em>d</em>²,1,<em>d</em>]] structure and its 2<em>d</em>²−1-per-logical-qubit cost describe a static patch, and a real circuit still has to bring logical qubits together to interact, and merge-and-split is how that happens without breaking the flat, nearest-neighbor layout those qubit counts assume in the first place.</p>
 <p><strong>Where AI enters.</strong> Minimum-weight perfect matching decodes the graph with edge weights from an assumed independent-Pauli noise model: provably good under that model, degraded by what real chips do (correlated errors, leakage, cross-talk, drift). <strong>AlphaQubit</strong> (arXiv 2310.05900, <em>Nature</em> 2024) is a recurrent transformer over per-round syndrome inputs, crucially consuming analog "soft" readout rather than binarized measurements, pretrained on simulated samples and fine-tuned on device data. Reported: ~6% fewer logical errors than tensor-network decoders (near-optimal but far too slow for real time) and ~30% fewer than correlated matching, maintained to d=11 in simulation.</p>
-<p><strong>The real-time constraint.</strong> A decoder slower than the syndrome cycle accumulates backlog and the machine stalls: accuracy without latency is a benchmark, not a decoder. The frontier moved in 2026: an FPGA neural decoder reached 550 ns system latency (124 ns inference) inside a 1.25 μs cycle on superconducting hardware (arXiv 2605.04892). Open problems: scaling learned decoders to large d in real time, and doing it for the multi-logical-qubit patches an actual algorithm needs, <a href="frontier.html#q-real-time-decoding-at-scale">tracked as an open question on The Frontier</a>, where it is also put to a panel of frontier AI models.</p>
+<p><strong>The real-time constraint.</strong> A decoder slower than the syndrome cycle accumulates backlog and the machine stalls: accuracy without latency is a benchmark, not a decoder. The frontier moved in 2026: an FPGA neural decoder reached 550 ns system latency (124 ns inference) inside a 1.25 μs cycle on superconducting hardware (arXiv 2605.04892). Open problems: scaling learned decoders to large d in real time, and doing it for the multi-logical-qubit patches an actual algorithm needs.</p>
 
 <h2>References</h2>
 <div class="card">
@@ -463,7 +462,7 @@
   <div class="card"><h3>🏁 The Race</h3><p>Who's furthest below threshold. The table is still empty, and the page says why.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 
-<footer>Error correction: the door AI walked in through.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+<footer>Error correction: the door AI walked in through.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 </div>
 
 <script>

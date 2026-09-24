@@ -63,7 +63,7 @@
     'pqc.html':             ['race.html',             'Who is actually ahead',      'The race, without the press releases'],
     'play.html':            ['journey.html',          'The story, end to end',      'Six acts, from the first qubit to the consequence'],
     'journey.html':         ['play.html',             'The games themselves',       'Where the score cannot be faked'],
-    'race.html':            ['frontier.html',         'The open frontier',          'What nobody has settled yet'],
+    'race.html':            ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'frontier.html':        ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'ledger.html':          ['corrections.html',      'Corrections',                'What we got wrong, and when'],
     'corrections.html':     ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],

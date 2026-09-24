@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Ledger · SymbiQ</title>
-<meta name="description" content="Public claims about quantum computing, each logged with the date it was made and an archived source, and tracked to a dated verdict. Pre-registered criteria, two keys to resolve, and our own error rate published next to theirs.">
+<meta name="description" content="Public claims about quantum computing, each logged with the date it was made and an archived source, and tracked to a dated verdict. Criteria frozen when a claim is logged, and our own error rate published next to theirs.">
 <!-- social:start -->
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/ledger.html">
 <script type="speculationrules">{
@@ -83,7 +83,7 @@
 
 
 <script src="core.js?v=2"></script>
-<script src="p/ledger.js?v=7" defer></script>
+<script src="p/ledger.js?v=9" defer></script>
 
 
 
@@ -200,7 +200,6 @@
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -256,16 +255,15 @@ false), <strong>deadlined</strong>, and its resolution criteria are <strong>pre-
 tracking starts. If a claim can't clear that bar as stated, we either rewrite it with an explicit
 SymbiQ-constructed interpretation (flagged as such; see
 <a href="#c-microsoft-topological-years-not-decades">Microsoft's entry</a> for a live example) or file it
-as unfalsifiable, which is itself a published verdict. A claim that resolves unfalsifiable, or a
-prediction the field has not settled, becomes an open question on
-<a href="frontier.html">The Frontier</a>, where the desk's reviewed answer runs next to a panel of
-frontier AI models asked the same thing verbatim.</p>
+as unfalsifiable, which is itself a published verdict.</p>
 <ol class="asks" style="margin:16px 0 0;padding:0;list-style:none">
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Pre-registration and freeze.</strong>
   Resolution criteria and resolver sources are locked the moment a claim starts tracking. Changing them
   after the fact voids the claim from scoring, in public, never as a quiet edit.</li>
-  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Two keys.</strong> Whoever captures
-  a claim does not resolve it. A second person writes the verdict.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>A separate verdict.</strong> A verdict
+  is written after the deadline, in its own pass, against the criteria and sources frozen when the claim was
+  logged, and it cites every piece of evidence it uses. A drafted verdict is shown in full, marked as not yet
+  final, before it is published.</li>
   <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Archive at intake.</strong> No claim
   starts tracking without an independent, dated snapshot of its source, and no verdict ships without one for
   every piece of evidence it rests on, so an edited or deleted press release can't make a claim unprovable
@@ -321,7 +319,7 @@ tracked here at all, and saying so is half the work.</p>
 </script>
 
 <footer>Nothing here is a judgment of anyone's character, only of whether a dated, public claim came
-true.<br>SymbiQ · Think we got a resolution wrong? <a href="corrections.html#report">That pays the biggest bounty we have</a>.</footer>
+true.<br>SymbiQ · Think we got a resolution wrong? <a href="corrections.html#report">Tell us</a>.</footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

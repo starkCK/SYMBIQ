@@ -151,7 +151,7 @@
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=3"></script>
-<script src="p/compare.js?v=4" defer></script>
+<script src="p/compare.js?v=6" defer></script>
 
 
 
@@ -270,7 +270,6 @@
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
       <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="frontier.html" class="navmain">The Frontier<span class="sub">Open questions, put to a model panel</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -398,7 +397,7 @@
 <h3 id="nisq">NISQ &amp; quantum advantage experiments</h3>
 <p>Preskill, <em>Quantum</em> 2, 79 (2018), named the era we are in: <strong>NISQ</strong>, Noisy Intermediate-Scale Quantum: machines too small and too error-prone for fault tolerance, but potentially large enough to do something a classical computer cannot. In October 2019, Google claimed the first demonstration: Arute et al., <em>Nature</em> 574, 505&ndash;510 (2019), reported a task their Sycamore chip completed in 200 seconds that a top supercomputer would need roughly ten thousand years to match. <strong>Since then the claim has been fought over by both sides, in public, and it has moved more than once.</strong> IBM immediately countered that a smarter classical technique could do it in about 2.5 days, not ten millennia. Over the following two years classical simulations kept improving further, at one point matching Sycamore's own sample quality in under a day on a GPU cluster. Google's own follow-up work then moved the target again: Morvan, Villalonga, Mi et al., "Phase transitions in random circuit sampling," <em>Nature</em> 634, 328&ndash;333 (2024), showed that running at lower noise let the same style of chip pull back ahead of the classical simulations available at the time. And the most recent move belongs to the classical side again: Zhao, Zhong, Pan, Chen, Fu, Su, Xie, Zhao, Zhang, Ouyang, Lu, Pan &amp; Chen, <em>National Science Review</em> 12, nwae317 (2025), reproduced Sycamore's original 2019 benchmark roughly 7&times; faster using 1,432 GPUs, stating plainly that this "provides the first unambiguous experimental evidence to refute Sycamore's claim of quantum advantage" on that specific task. Nobody has the last word here, which is exactly why this page's own answer, above, never uses raw sampling-advantage headlines as evidence for anything on <a href="race.html">The Race</a>.</p>
 
-<footer>Four machines, five trade-offs, no favourites.<br>SymbiQ · Sources cited inline · Found an error? That's <a href="corrections.html">the biggest bounty we pay</a>.</footer>
+<footer>Four machines, five trade-offs, no favourites.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 </div>
 
 <script>

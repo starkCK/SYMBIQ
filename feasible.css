@@ -104,7 +104,7 @@ body.fr h2::before { background: var(--or) !important; }
   font-size: .75rem; font-variant-numeric: tabular-nums; flex: 0 0 auto;
 }
 .fr-toc a:hover { background: var(--rowhover); }
-.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 0 auto; }
+.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 1 auto; text-align: right; }
 
 /* ---- a curriculum module --------------------------------------------- */
 .mod {

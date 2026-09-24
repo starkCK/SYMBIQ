@@ -160,6 +160,14 @@ button, input, select, textarea { font-family: inherit; }
    wraps to two rows still parks its targets in the open. Below 720px the header
    is not sticky, so the padding is deliberately zero. */
 html { scroll-behavior: smooth; }
+/* THE TYPE SIZE (2026-09-24). Chinmoy: "people should not have to zoom in to
+   check what's written there or strain their eyes." Every font-size on the
+   site is in rem, so the root is the one dial that moves all of it: body text
+   goes 16px -> 17px on a phone and 18px from 720px up, and every label,
+   caption and control scales in proportion. A PERCENTAGE, not px, so a reader
+   who has already raised their browser's default size keeps that on top. */
+html { font-size: 106.25%; }
+@media (min-width: 720px) { html { font-size: 112.5%; } }
 :root { --nav-h: 82px; }
 @media (min-width: 720px) {
   html { scroll-padding-top: calc(var(--nav-h) + 14px); }
@@ -178,6 +186,11 @@ body {
   font-feature-settings: "cv05" 1, "cv08" 1, "ss03" 1;
   font-optical-sizing: auto;
   line-height: 1.65;
+  /* Breaks a word only when it cannot fit on a line by itself. With the
+     larger type (2026-09-24) two did not on a 375px phone and pushed the
+     whole page sideways: analog.html's "disagree/disagree/..." run and a
+     file path in <code> on ledger.html. */
+  overflow-wrap: break-word;
 }
 /* ambient layer: two soft glows + the lattice dot grid (the Lattice IS the
    brand) + a film-grain texture (2026-09-23, researched top-10 item 7).
@@ -230,8 +243,16 @@ body::after {
    grid, table and card on the site was still capped to that width too,
    so widescreen desktops never got to use the extra room. Widened in two
    steps rather than one jump so very large monitors don't overshoot into
-   uncomfortably long text lines. */
-@media (min-width: 1024px) { .wrap { max-width: 880px; } }
+   uncomfortably long text lines.
+
+   2026-09-24: the 1024-1439 step went 880px -> 1180px with the type-size
+   change above. At 18px the header needs ~942px to stay one row, and an
+   880px column wrapped it to two on every page. Those widths have no rails
+   in the gutters (rails.css starts at 1440), so the column simply takes the
+   screen, the way index.html's own home.css override already did; running
+   prose is still held to THE MEASURE below. 1440 and up stays 1040px
+   because the rails are positioned against exactly that width. */
+@media (min-width: 1024px) { .wrap { max-width: 1180px; } }
 @media (min-width: 1440px) { .wrap { max-width: 1040px; } }
 
 /* THE MEASURE. The two steps above did what that comment wanted for grids,
@@ -5400,7 +5421,7 @@ body.fr h2::before { background: var(--or) !important; }
   font-size: .75rem; font-variant-numeric: tabular-nums; flex: 0 0 auto;
 }
 .fr-toc a:hover { background: var(--rowhover); }
-.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 0 auto; }
+.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 1 auto; text-align: right; }
 
 /* ---- a curriculum module --------------------------------------------- */
 .mod {

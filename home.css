@@ -289,8 +289,24 @@ body[data-vivid][data-glass] {
    that wraps, so a narrow screen puts the orb on a line of its own, and
    below 560px the row stacks and the orb takes the full width.
    ---------------------------------------------------------------- */
-.hero2 { display: block; position: relative; }
+.hero2 { display: block; position: relative; --inst-w: 19rem; }
 .hero2 > .hero-copy { min-width: 0; }
+
+/* THE ROOM (2026-09-24). Chinmoy: "cover the entire screen, there are too
+   much empty spaces near the floating widget, it should make space for the
+   widget only when it is clicked." The 74ch / 66ch caps left a band of bare
+   background down the right of the hero that nothing ever filled, because
+   the instrument that used to stand there only floats in on demand now.
+   So, closed, the hero copy runs the full column. Open, at 1024px and up,
+   home.js puts .inst-room on .hero2: the copy steps in by the panel's width
+   and the panel docks in the column that frees up, scrolling with the page
+   like any other part of it. Drag the panel off and the room closes again.
+   The room is script-only on purpose: without home.js the panel floats as
+   before, and a gap nothing fills would be the complaint all over again. */
+.hero2 .tagline, .hero2 .spine { max-width: none; }
+@media (min-width: 1024px) {
+  .hero2.inst-room { padding-right: calc(var(--inst-w) + 28px); }
+}
 
 .inst-orb {
   --orb-c: var(--teal);
@@ -364,8 +380,11 @@ body[data-vivid][data-glass] {
 .inst-orb[data-verdict="split"] { --orb-c: var(--violet); }
 .inst-orb[data-verdict="bad"]   { --orb-c: var(--red); }
 
+/* No margin-left: auto any more (2026-09-24): pinned to the far end, the orb
+   left an empty stretch of row between itself and the call to action, which
+   is exactly the "empty space near the widget" Chinmoy flagged. It now sits
+   beside the two links it belongs with. */
 .herocta > .inst-orb { margin: 0; }
-@media (min-width: 1024px) { .herocta > .inst-orb { margin-left: auto; } }
 
 /* A popover-less browser shows the instrument in the flow instead (section
    2b), so an orb there would be a button that does nothing. */
@@ -512,13 +531,15 @@ body[data-vivid][data-glass] {
        margins and draws a Canvas-coloured border; none of that applies */
     inset: auto; margin: 0; overflow: visible;
     color: var(--text);
+    /* on the closed state too, so home.js can measure the width it will
+       open at; in rem so the panel grows with the type (.hero2 sets it) */
+    width: var(--inst-w, 19rem); max-width: calc(100vw - 24px);
   }
   #hero-inst:popover-open {
     position: fixed;
     top: var(--inst-top, 96px);
     right: max(16px, calc((100vw - 1040px) / 2 + 20px));
     left: auto;
-    width: 304px; max-width: calc(100vw - 24px);
     max-height: calc(100dvh - var(--inst-top, 96px) - 12px);
     overflow-y: auto; overscroll-behavior: contain;
     padding: 16px 16px 15px;
@@ -528,6 +549,13 @@ body[data-vivid][data-glass] {
     box-shadow: inset 0 1px 0 var(--gl-rim-hi, rgba(255, 255, 255, .14)),
                 var(--gl-depth-hi, 0 30px 64px -26px rgba(0, 0, 0, .55)),
                 0 24px 70px -30px var(--gl-cast, rgba(167, 139, 250, .25));
+  }
+  /* DOCKED (THE ROOM, section 1): in the column .inst-room frees up, placed
+     in page coordinates so it scrolls with the hero it sits beside, and
+     tall enough for all of itself -- the page scrolls, not the panel. */
+  #hero-inst[data-dock]:popover-open {
+    position: absolute;
+    max-height: none; overflow: visible;
   }
   @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     #hero-inst:popover-open {
@@ -902,8 +930,12 @@ body > .wrap { position: relative; z-index: 1; }
    verify_home_ux.mjs's new 1100px row, which the old width list skipped.
    The widen now stops at 1099px and resumes at 1240px -- 1180px of column,
    plus 24px of widen, plus a 17px classic scrollbar, plus air. Between the
-   two the base -20px from living.css applies, which is exactly the edge. */
-@media (min-width: 1024px) and (max-width: 1099.98px), (min-width: 1240px) {
+   two the base -20px from living.css applies, which is exactly the edge.
+
+   2026-09-24: style.css now widens .wrap to 1180px from 1024px on every
+   page (the type-size change), so the 1024-1099 band is full-bleed too and
+   lost its spare gutter. The widen now starts at 1240px only. */
+@media (min-width: 1240px) {
   body[data-living] .breakout {
     margin-inline: -32px;
     padding-inline: 32px;

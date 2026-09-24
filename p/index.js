@@ -4901,12 +4901,19 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
          document handler, which ignores keys typed into inputs, never sees
          that Escape), with focus returned to the orb.
      ==================================================================== */
+  /* 2026-09-24, THE ROOM (home.css section 1): at ROOM_MIN and up the open
+     panel no longer floats over the copy. .inst-room on .hero2 steps the
+     copy in by the panel's width and the panel DOCKS in the column that
+     frees up, in page coordinates, so it scrolls with the hero. Dragging it
+     away, closing it, or narrowing the window below ROOM_MIN gives the
+     column back. Closed, the copy has the full width and nothing is held. */
   var FLOAT = null;
   var HEADER_CLEAR = 84;    /* the sticky header's ~70px, plus air */
   var EDGE = 12;            /* nearest the panel gets to any screen edge */
+  var ROOM_MIN = 1024;      /* matches the .inst-room media query in home.css */
 
   function bindFloat() {
-    var box = $('#hero-inst'), orb = $('#inst-orb');
+    var box = $('#hero-inst'), orb = $('#inst-orb'), hero = $('.hero2');
     if (!box || !orb || typeof box.showPopover !== 'function') return;
 
     var dragged = false;
@@ -4915,6 +4922,11 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       try { return box.matches(':popover-open'); } catch (e) { return false; }
     }
     function sheet() { return W.innerWidth < 720; }
+    function roomy() { return !!hero && !dragged && W.innerWidth >= ROOM_MIN; }
+    function undock() {
+      box.removeAttribute('data-dock');
+      if (hero) hero.classList.remove('inst-room');
+    }
 
     function put(left, top) {
       var w = box.offsetWidth || 304;
@@ -4935,24 +4947,46 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
        panel opened with its last line cut off into an inner scrollbar on a
        screen with room to spare. The 8px covers the grip bar, which only
        exists in the open state. */
-    function naturalHeight(w) {
+    /* Width as well since 2026-09-24: it is 19rem in home.css now, so it
+       follows the type size instead of being a number repeated here. */
+    function naturalSize() {
       var s = box.style;
-      var keep = [s.display, s.visibility, s.position, s.width, s.maxHeight, s.transition];
+      var keep = [s.display, s.visibility, s.position, s.maxHeight, s.transition];
       /* transition off for the round trip: home.css transitions `display`
          (allow-discrete) for the exit, and without this the block -> none
          restore would itself start a 420ms exit, in the flow. */
       s.transition = 'none';
       s.display = 'block'; s.visibility = 'hidden'; s.position = 'fixed';
-      s.width = w + 'px'; s.maxHeight = 'none';
-      var h = box.offsetHeight + 8;
+      s.maxHeight = 'none';
+      var w = box.offsetWidth, h = box.offsetHeight + 8;
       s.display = keep[0]; s.visibility = keep[1]; s.position = keep[2];
-      s.width = keep[3]; s.maxHeight = keep[4];
+      s.maxHeight = keep[3];
       void box.offsetHeight;            /* commit the restore with no transition */
-      s.transition = keep[5];
-      return h || 480;
+      s.transition = keep[4];
+      return { w: w || 342, h: h || 520 };
+    }
+
+    function dock() {
+      hero.classList.add('inst-room');  /* reflow first: the orb moves with it */
+      box.setAttribute('data-dock', '');
+      var w = naturalSize().w;
+      var hr = hero.getBoundingClientRect(), r = orb.getBoundingClientRect();
+      var sx = W.scrollX || W.pageXOffset || 0, sy = W.scrollY || W.pageYOffset || 0;
+      /* Level with the top of the hero copy; if the reader has scrolled that
+         under the sticky header, just below the header instead, but never
+         lower than the orb that was clicked. */
+      var top = Math.max(hr.top, Math.min(r.top, HEADER_CLEAR));
+      var left = hr.right - w;
+      box.style.left = Math.round(left + sx) + 'px';
+      box.style.right = 'auto';
+      box.style.setProperty('--inst-top', Math.round(top + sy) + 'px');
+      box.style.transformOrigin =
+        Math.round(r.left + r.width / 2 - left) + 'px ' + Math.round(r.top + r.height / 2 - top) + 'px';
     }
 
     function place() {
+      if (roomy()) { dock(); return; }
+      undock();
       if (sheet()) {
         box.style.left = ''; box.style.right = '';
         box.style.removeProperty('--inst-top');
@@ -4964,10 +4998,9 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         return;
       }
       var r = orb.getBoundingClientRect();
-      var w = 304;
+      var m = naturalSize(), w = m.w, h = m.h;
       var right = (r.left + r.width / 2) > W.innerWidth / 2;
       var left = right ? r.right - w : r.left;
-      var h = naturalHeight(w);
       var top = Math.max(HEADER_CLEAR, Math.min(r.top, W.innerHeight - h - EDGE));
       left = Math.max(EDGE, Math.min(left, W.innerWidth - w - EDGE));
       box.style.left = Math.round(left) + 'px';
@@ -4983,6 +5016,10 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     box.addEventListener('toggle', function (e) {
       var open = e.newState === 'open';
       orb.setAttribute('aria-expanded', open ? 'true' : 'false');
+      /* Give the column back as soon as it closes. data-dock stays until the
+         next place(): dropping it now would switch the panel to fixed
+         positioning mid-exit and jump it by the scroll offset. */
+      if (!open && hero) hero.classList.remove('inst-room');
       if (open) {
         try { box.focus({ preventScroll: true }); } catch (err) {}
       } else if (D.activeElement === D.body || box.contains(D.activeElement)) {
@@ -5017,6 +5054,13 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       var sx = e.clientX, sy = e.clientY;
       var l0 = parseFloat(box.style.left) || box.getBoundingClientRect().left;
       var t0 = parseFloat(box.style.getPropertyValue('--inst-top')) || box.getBoundingClientRect().top;
+      /* a docked panel's left / --inst-top are page coordinates; put()
+         works in screen coordinates */
+      var docked = box.hasAttribute('data-dock');
+      if (docked) {
+        l0 -= W.scrollX || W.pageXOffset || 0;
+        t0 -= W.scrollY || W.pageYOffset || 0;
+      }
       var dy = 0;
       try { box.setPointerCapture(e.pointerId); } catch (err) {}
       box.setAttribute('data-drag', '');
@@ -5026,9 +5070,17 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         if (asSheet) {
           dy = Math.max(0, ev.clientY - sy);
           box.style.transform = 'translateY(' + dy + 'px)';
-        } else {
-          put(l0 + ev.clientX - sx, t0 + ev.clientY - sy);
+          return;
         }
+        /* Pulled out of the dock (a real move, not a click on the header):
+           it becomes a floating card and the copy gets its width back. */
+        if (docked) {
+          if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 4) return;
+          docked = false;
+          dragged = true;
+          undock();
+        }
+        put(l0 + ev.clientX - sx, t0 + ev.clientY - sy);
       }
       function up() {
         box.removeEventListener('pointermove', move);
@@ -5038,7 +5090,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         if (asSheet) {
           box.style.transform = '';
           if (dy > 70) close();
-        } else {
+        } else if (!docked) {
           dragged = true;
         }
       }

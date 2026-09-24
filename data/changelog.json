@@ -1,8 +1,16 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 113,
+ "count": 114,
  "events": [
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 11",
+   "title": "The Ledger promised companies a reply before a Not verified verdict. The first two got none.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-22 until it was caught and published here."
+  },
   {
    "at": "2026-09-24",
    "kind": "correction",
@@ -10,6 +18,14 @@
    "title": "The Ledger said it logged every claim the day it was made. It never had.",
    "href": "corrections.html",
    "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: the tagline stops claiming claims are logged the day they're made",
+   "href": "",
+   "note": ""
   },
   {
    "at": "2026-09-23",
@@ -744,14 +760,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "Grover's Escape: Deep Dive — an endless, score-chased mode",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Quantum Tic-Tac-Toe: two-player modes — Pass & play / vs Computer / Pass a link",
    "href": "",
    "note": ""
   },

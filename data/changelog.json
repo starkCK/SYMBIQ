@@ -1,8 +1,16 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 112,
+ "count": 113,
  "events": [
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 10",
+   "title": "The Ledger said it logged every claim the day it was made. It never had.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
   {
    "at": "2026-09-23",
    "kind": "correction",
@@ -146,6 +154,14 @@
    "title": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
    "href": "ledger.html#c-rigetti-roadmap-2025-2027",
    "note": "The 2025 interim target, a 100+ qubit chiplet-based system, slipped. On 9 January 2026 Rigetti said it was revising its roadmap and that its 108-qubit Cepheus-1-108Q was \"now expected to reach general availability around the end of the first quarter of 2026\". Under this claim's criteria an interim slip still leaves PAR"
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: ten claims that resolve by the end of 2027 (10 -> 20)",
+   "href": "",
+   "note": ""
   },
   {
    "at": "2026-09-23",
@@ -736,14 +752,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "Quantum Tic-Tac-Toe: two-player modes — Pass & play / vs Computer / Pass a link",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-08-29",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The Calibration: the 🔴 Ruthless card — \"Budget Crunch\"",
    "href": "",
    "note": ""
   },

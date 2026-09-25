@@ -25,6 +25,12 @@
 }
 
 :root {
+  /* Tells the browser which palette its OWN surfaces should use: form-control chrome, date
+     pickers, <select> menus, checkboxes, autofill, scrollbar tracks, the overscroll canvas.
+     Without it a dark page showed light native controls (and a light page dark ones in some
+     engines). Follows the theme in the three places the tokens do: here, the light media
+     block, and theme.css's explicit Light / Dark / Dim. */
+  color-scheme: dark;
   --bg: #0b0f1a;
   --panel: #131a2b;
   --text: #e8ecf6;
@@ -87,6 +93,7 @@
 }
 @media (prefers-color-scheme: light) {
   :root {
+    color-scheme: light;
     --bg: #f8fafc;
     --panel: #ffffff;
     --text: #0f172a;
@@ -1425,7 +1432,12 @@ nav .link.pathlink:hover { color: var(--violet); }
   transition: border-color .18s cubic-bezier(.22,.7,.3,1);
 }
 .sqform textarea { flex-basis: 100%; min-height: 130px; resize: vertical; }
-.sqform input:focus, .sqform textarea:focus { outline: none; border-color: var(--teal); }
+.sqform input:focus, .sqform textarea:focus {
+  outline: none; border-color: var(--teal);
+  /* a 1px border-colour change alone is a weak focus indicator (WCAG 2.4.7 / 1.4.11); the
+     ring is the visible part, the border keeps the shape */
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 30%, transparent);
+}
 /* Was a flat solid-teal fill -- the one button on the site with no gradient,
    next to "Load a code" which already got the nicer ghost treatment. Brought
    in line with .bigplay's gradient language (Chinmoy, 2026-08-06: "some of
@@ -1448,7 +1460,13 @@ nav .link.pathlink:hover { color: var(--violet); }
 .sqmsg { margin: 10px 0 0; font-size: .93rem; }
 .sqmsg.ok  { color: var(--teal); }
 .sqmsg.err { color: var(--red); }
-.sqfield { flex: 1 1 100%; }
+.sqfield { flex: 1 1 100%; max-width: 44rem; }
+/* The inputs' own `flex: 1 1 220px` only works when the parent is a flex container, and a
+   .sqfield is a plain block: so every field shrank to its browser-default width (250px, 228px,
+   181px on one form). Text-like fields and textareas now fill their field; dates and numbers
+   keep their natural width. */
+.sqfield input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=hidden]):not([type=submit]):not([type=button]):not([type=date]):not([type=number]),
+.sqfield textarea { width: 100%; box-sizing: border-box; }
 .sqfield label { display: block; font-size: .86rem; color: var(--muted); margin-bottom: 5px; }
 
 /* ================================================================
@@ -1946,6 +1964,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
    ================================================================ */
 
 .mission-scene {
+  color-scheme: dark;
   --bg: #0b0f1a; --panel: #131a2b; --text: #e8ecf6; --muted: #9aa5bd;
   --violet: #a78bfa; --teal: #2dd4bf; --border: #232d45;
   --rowhover: rgba(148,163,184,.06); --shadow: rgba(0,0,0,.45);
@@ -4312,6 +4331,7 @@ body[data-alive] .sq-help-hint {
    :root` is (0,1,0); the bare `:root` is (0,1,0). So each block here
    wins regardless of the OS setting, which is the point. */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #f8fafc;
   --panel: #ffffff;
   --text: #0f172a;
@@ -4341,6 +4361,7 @@ body[data-alive] .sq-help-hint {
    and text softer in §1b. (mirror of style.css :root) */
 :root[data-theme="dark"],
 :root[data-theme="dim"] {
+  color-scheme: dark;
   --bg: #0b0f1a;
   --panel: #131a2b;
   --text: #e8ecf6;

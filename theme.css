@@ -41,6 +41,7 @@
    :root` is (0,1,0); the bare `:root` is (0,1,0). So each block here
    wins regardless of the OS setting, which is the point. */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #f8fafc;
   --panel: #ffffff;
   --text: #0f172a;
@@ -70,6 +71,7 @@
    and text softer in §1b. (mirror of style.css :root) */
 :root[data-theme="dark"],
 :root[data-theme="dim"] {
+  color-scheme: dark;
   --bg: #0b0f1a;
   --panel: #131a2b;
   --text: #e8ecf6;

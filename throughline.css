@@ -58,8 +58,21 @@
 .tl-close:hover, .tl-close:focus-visible { color: var(--text); }
 .tl-svg { display: block; width: 100%; height: auto; }
 
-/* ---- >=720px: the fixed corner card ------------------------------- */
-@media (min-width: 720px) {
+/* ---- >=1440px: the fixed corner card -------------------------------
+   2026-09-25: was >=720px. The 2026-09-24 type-size change widened the column
+   to 1180px at 1024-1439px, which left NO free margin at any width below the
+   rails: at 1280 the card sat on top of the prose (text cut off behind it) and
+   at 1440 on top of the right rail's story card. The card now only exists where
+   the rails do, and the right rail steps aside for it (below). Everything
+   narrower gets the in-flow band, which never floats over anything. */
+@media (min-width: 1440px) {
+  /* the right rail is a vertically-centred column that reaches down to where
+     this card lives; pin it to the top and cap it so the two never touch. */
+  body[data-throughline] .sqrail-r .sqrail-col {
+    align-self: flex-start;
+    margin-top: 130px;
+    max-height: calc(100vh - 130px - 340px);
+  }
   .tl-panel {
     position: fixed;
     right: 20px; bottom: 20px;
@@ -89,8 +102,10 @@
   .tl-cap { font-size: 0.76rem; color: var(--muted); line-height: 1.4; margin: 6px 0 0; }
 }
 
-/* ---- <720px: the sticky band -------------------------------------- */
-@media (max-width: 719px) {
+/* ---- <1440px: the sticky band --------------------------------------
+   Phones pin it to the top of the viewport (the header is not sticky there).
+   From 720px the header IS sticky, so the band pins just under it. */
+@media (max-width: 1439px) {
   .tl-panel {
     position: sticky;
     top: 0;
@@ -124,6 +139,10 @@
   @media (prefers-reduced-motion: no-preference) {
     .tl-cap { transition: opacity 160ms var(--ease-out-quint, ease); }
   }
+}
+
+@media (min-width: 720px) and (max-width: 1439px) {
+  .tl-panel { top: calc(var(--nav-h, 82px) + 8px); }
 }
 
 @media print { .tl-panel { display: none; } }

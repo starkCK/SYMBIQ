@@ -68,6 +68,23 @@
   if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(panel, anchor.nextSibling);
   else D.body.appendChild(panel);
 
+  /* From 720 to 1439px the panel is the in-flow band and pins under the sticky
+     header. The depth bar (.tbar) is sticky too, at top:60px, and wraps to two
+     rows on a tablet, so its height is measured rather than assumed -- pinning
+     at a fixed offset put the band on top of it. Below 720 (header not sticky)
+     and from 1440 (a fixed corner card) the inline style is cleared. */
+  function place() {
+    var w = W.innerWidth;
+    if (w < 720 || w >= 1440) { panel.style.top = ''; return; }
+    var nav = D.querySelector('nav');
+    var navH = nav ? nav.offsetHeight : 82;
+    var tb = D.querySelector('.tbar');
+    panel.style.top = (Math.max(navH, tb ? 60 + tb.offsetHeight : 0) + 8) + 'px';
+  }
+  place();
+  W.addEventListener('resize', place);
+  W.addEventListener('load', place);
+
   var svg = panel.querySelector('.tl-svg');
   var cap = panel.querySelector('[data-r="cap"]');
   panel.querySelector('.tl-close').addEventListener('click', function () {

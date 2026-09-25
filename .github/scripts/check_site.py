@@ -15,6 +15,7 @@ witness, so one runs here on every push.
 
 Exit code 0 = clean, 1 = at least one FAIL.
 """
+import glob
 import hashlib
 import json
 import os
@@ -453,6 +454,24 @@ if os.path.exists(QBANK):
             n_arch = sum(1 for p in pool if isinstance(p, str) or p.get("src", "archive") == "archive")
             ok(f"qbank.json: {len(pool)} question(s) in the stale-feed rotation "
                f"({n_arch} asked, {len(pool) - n_arch} written for the bank)")
+
+# 7c. NO BROKEN FRAGMENT REFERENCE INSIDE A BUNDLED DATA URI -----------------
+# The bundler once re-based the `url(%23g)` inside style.css's film-grain SVG
+# to `url(../%23g)`. A filter that points at nothing makes Chrome paint its
+# <rect> as opaque black: a black layer over every page (near-black canvas in
+# dark mode, unreadable text in light). Fragment references never take a
+# `../` prefix, so any `(../%23` in a shipped stylesheet is that bug.
+_bad_frag = []
+for _css in sorted(glob.glob(os.path.join(ROOT, "*.css")) + glob.glob(os.path.join(ROOT, "p", "*.css"))):
+    with open(_css, encoding="utf-8") as _fh:
+        _txt = _fh.read()
+    if "(../%23" in _txt or "(../#" in _txt:
+        _bad_frag.append(os.path.relpath(_css, ROOT))
+if _bad_frag:
+    fail("css-fragment", "url(../%23...) inside a stylesheet points at nothing and paints black: "
+         + ", ".join(_bad_frag[:6]))
+else:
+    ok("css-fragment: no re-based #fragment reference in any stylesheet")
 
 # 8. CACHE-BUSTERS MATCH THE BYTES THEY STAND FOR --------------------------
 # Section 2 proves every page agrees on a version. It cannot prove the version

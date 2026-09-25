@@ -5,10 +5,10 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The Standing · SymbiQ</title>
-<meta name="description" content="One persistent record of your own calibrated reasoning across SymbiQ: proofs (games and curriculum, checked instantly against a known-right answer) and predictions (Ledger claims you staked, scored with a real Brier score once they resolve). Local to this browser, no account needed.">
+<title>Apply to write · SymbiQ</title>
+<meta name="description" content="Apply to publish an Insight Note on SymbiQ under your own name: a short form covering your field, background and a first pitch. Reviewed by the desk before anything runs — no account, no upload, one person reads every application.">
 <!-- social:start -->
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/standing.html">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/apply.html">
 <script type="speculationrules">{
   "prefetch": [
     {
@@ -45,57 +45,40 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/standing.html">
-<meta property="og:title" content="The Standing · SymbiQ">
-<meta property="og:description" content="Your own proofs and predictions, in one place, scored honestly and never blended into one fake number.">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/apply.html">
+<meta property="og:title" content="Apply to write · SymbiQ">
+<meta property="og:description" content="Apply to publish an Insight Note on SymbiQ under your own name. Reviewed by the desk before anything runs — no account, one person reads every application.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Standing · SymbiQ">
-<meta name="twitter:description" content="Your own proofs and predictions, in one place, scored honestly and never blended into one fake number.">
+<meta name="twitter:title" content="Apply to write · SymbiQ">
+<meta name="twitter:description" content="Apply to publish an Insight Note on SymbiQ under your own name. Reviewed by the desk before anything runs — no account, one person reads every application.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/standing.css?v=11">
-
-<!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
-     has one: style.css is shared by 24 pages and touching it forces a bump on
-     every one of them. Nothing here is required for any page to work -- below
-     1440px rails.js builds nothing at all. -->
+<link rel="stylesheet" href="p/apply.css?v=1">
 
 
 
-<!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 
-<!-- The spatial-glass layer. Own file, own cache-buster, same rule as
-     motion.css / vivid.css: additive, opt-in via one body attribute,
-     reverts by deleting this <link> and the attribute. -->
 
-<!-- The premium-feel response layer. Rides glass.css's data-glass gate;
-     pairs with dynamics.js. Feedback motion only, no ambient. -->
+
 
 
 
 
 
 <script src="core.js?v=2"></script>
-<script src="p/standing.js?v=7" defer></script>
+<script src="p/apply.js?v=1" defer></script>
 
 
 
 
 
 
-
-<!-- The atmosphere layer: the generative lattice and the pointer-tracked card
-     sheen. Was homepage-only until 2026-08-28, which meant every other page
-     had a still background AND cards with no light source, since motion.css
-     reads --mo-x / --mo-y and only this file writes them. The lattice itself
-     still gates internally: data-lattice at any width, otherwise 1440px and
-     up, where rails.css has put furniture in the margins. -->
 
 
 
@@ -198,9 +181,9 @@
         <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
-      <a href="standing.html" class="navmain active">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
       <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from researchers and practitioners, not the desk</span></a>
-      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply to publish under your own name</span></a>
+      <a href="apply.html" class="navmain active">Write for SymbiQ<span class="sub">Apply to publish under your own name</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
       <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
@@ -213,17 +196,66 @@
     <div class="navpanel" id="sq-auth"></div>
   </details>
 </nav>
+<h1>Apply to write for SymbiQ</h1>
+<p class="lede">SymbiQ runs on one strict rule: <strong>the desk decides what publishes, but the desk doesn&rsquo;t have to write it alone.</strong> If you work in quantum computing, operations research or post-quantum security &mdash; as a researcher, a practitioner, or a serious enthusiast &mdash; you can apply to publish an <a href="insights.html">Insight Note</a> here under your own name.</p>
 
-<h1>The Standing</h1>
-<p class="lede">One persistent record of your own reasoning on this site, split honestly into two kinds: proofs, checked the instant they happen against a known-right answer, and predictions, staked now and scored only when reality actually settles the question. Local to this browser. No account, nothing sent anywhere.</p>
+<h2 id="what-this-is">What this is</h2>
+<p>A place for short, evidence-tiered essays &mdash; not a feed, not a forum. Every note gets the same 🟢🟡🔴 tier discipline and citation standard the rest of this site holds itself to, reviewed before it runs, credited to you, never edited into something you didn&rsquo;t say. See <a href="insights.html">Insight Notes</a> for what one looks like, and <a href="insights.html#researchers">why it might be worth your time specifically if you&rsquo;re a working scientist or researcher</a>.</p>
 
-<p>These are never blended into one number. A gold medal in Circuit Golf and a correctly-called Ledger claim are different kinds of being right, and pretending otherwise would be exactly the false precision this site exists to catch elsewhere.</p>
+<h2 id="how-it-works">How it works</h2>
+<div class="grid">
+  <div class="card"><h3>1. You apply</h3><p>Tell the desk who you are and what you&rsquo;d want to write about. No account, no upload &mdash; the form below, or email.</p></div>
+  <div class="card"><h3>2. It gets read</h3><p>SymbiQ is one person. A reply won&rsquo;t be instant, but every application is read personally and every one gets answered.</p></div>
+  <div class="card"><h3>3. You write, the desk publishes it under your name</h3><p>An approved pitch becomes a draft; the desk checks it against the same citation and tier rules every page here follows, then it goes up credited to you.</p></div>
+</div>
 
-<div id="stg-mount"><p class="archq-loading">Reading your record…</p></div>
+<h2 id="apply">Apply</h2>
+<p>Fields marked * are the ones the desk actually needs to make a decision. Everything else helps but isn&rsquo;t a gate.</p>
 
-<p class="cl-more">Predictions are staked from any open claim on <a href="ledger.html">The Ledger</a>. Proofs come from <a href="play.html">The Arcade</a> and this browser's curriculum answers, both read, never written, from here.</p>
+<form class="sqform" data-sq="creator-application">
+  <div class="sqfield">
+    <label for="ca-name">Your name *</label>
+    <input type="text" id="ca-name" name="name" data-label="your name" required placeholder="How you&#39;d want to be credited">
+  </div>
+  <div class="sqfield">
+    <label for="ca-email">Email *</label>
+    <input type="email" id="ca-email" name="email" data-label="your email" required placeholder="you@example.com">
+  </div>
+  <div class="sqfield">
+    <label for="ca-field">What&#39;s your field or area of work? *</label>
+    <input type="text" id="ca-field" name="field" data-label="your field" required placeholder="e.g. superconducting qubit fabrication, combinatorial optimisation, PKI migration at a bank">
+  </div>
+  <div class="sqfield">
+    <label for="ca-background">Educational or institutional background *</label>
+    <textarea id="ca-background" name="background" data-label="your background" required placeholder="Degree(s), institution(s), current role or lab — whatever tells the desk you know this material. A line or two is fine."></textarea>
+  </div>
+  <div class="sqfield">
+    <label for="ca-links">Links (LinkedIn, ORCID, Google Scholar, a paper, your own site — anything that backs the above)</label>
+    <textarea id="ca-links" name="links" placeholder="One per line"></textarea>
+  </div>
+  <div class="sqfield">
+    <label for="ca-cv">CV, résumé or writing sample (a link — this site can&#39;t take file uploads)</label>
+    <input type="url" id="ca-cv" name="cv_link" placeholder="https://...">
+  </div>
+  <div class="sqfield">
+    <label for="ca-pitch">What would your first note be about? *</label>
+    <textarea id="ca-pitch" name="pitch" data-label="your pitch" required placeholder="One or two sentences. A specific claim you'd check, a result you'd explain, a mistake you keep seeing repeated — specific beats broad."></textarea>
+  </div>
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+         style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+  <button type="submit">Send the application →</button>
+</form>
+<p class="sqnote">Read by a human, always. This is not an account signup &mdash; nothing publishes until the desk has reviewed it.</p>
 
-<footer>SymbiQ &middot; The Standing is local to this browser and never sent anywhere. <a href="about.html">About the desk</a></footer>
+<h2 id="expect">What to expect</h2>
+<ul>
+<li><strong>No payment.</strong> This isn&rsquo;t a content mill and it isn&rsquo;t pretending to be one. What you get is a citable, dated, evidence-tiered byline under your own name &mdash; small an audience as this site has today.</li>
+<li><strong>Edited for the same things every page here is edited for</strong>: does the citation say what it&rsquo;s cited for, does the tier match the evidence, is the claim falsifiable. Not for voice &mdash; that stays yours.</li>
+<li><strong>A &ldquo;not yet&rdquo; is possible and isn&rsquo;t personal.</strong> It usually means the pitch needs to be sharper or more specific, and the desk will say which.</li>
+</ul>
+
+<p class="verif">Questions before applying? <a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a>.</p>
+<footer>SymbiQ &middot; One person and a stubborn test suite. <a href="insights.html">Insight Notes</a> &middot; <a href="corrections.html">Corrections</a></footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

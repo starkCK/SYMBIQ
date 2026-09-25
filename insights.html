@@ -5,10 +5,10 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The Standing · SymbiQ</title>
-<meta name="description" content="One persistent record of your own calibrated reasoning across SymbiQ: proofs (games and curriculum, checked instantly against a known-right answer) and predictions (Ledger claims you staked, scored with a real Brier score once they resolve). Local to this browser, no account needed.">
+<title>Insight Notes · SymbiQ</title>
+<meta name="description" content="Short, evidence-tiered essays about quantum computing, operations research and post-quantum security, written by researchers and practitioners outside the desk — reviewed before they run, credited by name, held to the same citation rules as every other page here.">
 <!-- social:start -->
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/standing.html">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/insights.html">
 <script type="speculationrules">{
   "prefetch": [
     {
@@ -45,57 +45,40 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/standing.html">
-<meta property="og:title" content="The Standing · SymbiQ">
-<meta property="og:description" content="Your own proofs and predictions, in one place, scored honestly and never blended into one fake number.">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/insights.html">
+<meta property="og:title" content="Insight Notes · SymbiQ">
+<meta property="og:description" content="Short, evidence-tiered essays written by researchers and practitioners outside the desk — reviewed before they run, credited by name, same citation rules as everywhere else on SymbiQ.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@symbiq">
-<meta name="twitter:title" content="The Standing · SymbiQ">
-<meta name="twitter:description" content="Your own proofs and predictions, in one place, scored honestly and never blended into one fake number.">
+<meta name="twitter:title" content="Insight Notes · SymbiQ">
+<meta name="twitter:description" content="Short, evidence-tiered essays written by researchers and practitioners outside the desk — reviewed before they run, credited by name, same citation rules as everywhere else on SymbiQ.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/standing.css?v=11">
-
-<!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
-     has one: style.css is shared by 24 pages and touching it forces a bump on
-     every one of them. Nothing here is required for any page to work -- below
-     1440px rails.js builds nothing at all. -->
+<link rel="stylesheet" href="p/insights.css?v=1">
 
 
 
-<!-- The theme layer: explicit System/Light/Dim/Dark + comfort switches. Site-wide. -->
 
-<!-- The spatial-glass layer. Own file, own cache-buster, same rule as
-     motion.css / vivid.css: additive, opt-in via one body attribute,
-     reverts by deleting this <link> and the attribute. -->
 
-<!-- The premium-feel response layer. Rides glass.css's data-glass gate;
-     pairs with dynamics.js. Feedback motion only, no ambient. -->
+
 
 
 
 
 
 <script src="core.js?v=2"></script>
-<script src="p/standing.js?v=7" defer></script>
+<script src="p/insights.js?v=1" defer></script>
 
 
 
 
 
 
-
-<!-- The atmosphere layer: the generative lattice and the pointer-tracked card
-     sheen. Was homepage-only until 2026-08-28, which meant every other page
-     had a still background AND cards with no light source, since motion.css
-     reads --mo-x / --mo-y and only this file writes them. The lattice itself
-     still gates internally: data-lattice at any width, otherwise 1440px and
-     up, where rails.css has put furniture in the margins. -->
 
 
 
@@ -198,8 +181,8 @@
         <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
         <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
       </div>
-      <a href="standing.html" class="navmain active">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from researchers and practitioners, not the desk</span></a>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <a href="insights.html" class="navmain active">Insight Notes<span class="sub">Essays from researchers and practitioners, not the desk</span></a>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply to publish under your own name</span></a>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
       <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
@@ -213,17 +196,40 @@
     <div class="navpanel" id="sq-auth"></div>
   </details>
 </nav>
+<h1>Insight Notes</h1>
+<p class="lede">Short, evidence-tiered essays about quantum computing, operations research and post-quantum security &mdash; written by people outside the desk, reviewed before they run, and held to the same 🟢🟡🔴 tier and citation rules as everything else here. Not a feed you scroll. A shelf you can trust.</p>
 
-<h1>The Standing</h1>
-<p class="lede">One persistent record of your own reasoning on this site, split honestly into two kinds: proofs, checked the instant they happen against a known-right answer, and predictions, staked now and scored only when reality actually settles the question. Local to this browser. No account, nothing sent anywhere.</p>
+<h2 id="why">Why this exists</h2>
+<p>Everything else on this site is one person&rsquo;s read of the field. That&rsquo;s honest, but it&rsquo;s also a ceiling: one person cannot have worked a real qubit fab line, sat inside a real operations-research team&rsquo;s scheduling problem, or run a PQC migration for a real bank. The people who have are who this page is for.</p>
 
-<p>These are never blended into one number. A gold medal in Circuit Golf and a correctly-called Ledger claim are different kinds of being right, and pretending otherwise would be exactly the false precision this site exists to catch elsewhere.</p>
+<h2 id="researchers">If you&rsquo;re a scientist or researcher</h2>
+<p>Most places that want your writing offer reach, in exchange for your name sitting next to whatever else an algorithm decided to rank that day. SymbiQ offers something narrower, and we think more useful to you specifically:</p>
+<div class="grid">
+  <div class="card"><h3>A citable byline</h3><p>Dated, permanent, evidence-tiered, and never silently edited. Something you can actually link from a CV or a lab page &mdash; not a post that scrolls out of relevance by tomorrow.</p></div>
+  <div class="card"><h3>The rigor you already hold yourself to</h3><p>Every claim on this site is checked against citations, and every miss goes on <a href="corrections.html">a public corrections log</a> with more prominence than the error. Your name runs next to that standard, not next to an algorithmic feed&rsquo;s.</p></div>
+  <div class="card"><h3>A reader who checks the citation</h3><p>People here are already used to reading a tier and following a source before believing a number. That&rsquo;s a rarer, more useful reader than a bigger one.</p></div>
+  <div class="card"><h3>No popularity contest</h3><p>Nothing here is ranked by votes, likes or engagement. A note earns its place by being checkable, not by being loud.</p></div>
+</div>
+<p>If any of that is useful to you &mdash; faculty, a graduate student, a national-lab researcher, or working the problem inside a company &mdash; <a href="apply.html">apply here</a>. It takes a few minutes and every application is read personally.</p>
 
-<div id="stg-mount"><p class="archq-loading">Reading your record…</p></div>
+<h2 id="notes">The notes</h2>
+<p id="in-empty">The first Insight Notes are being reviewed now. This section fills in as they&rsquo;re approved &mdash; <a href="apply.html">be one of the first</a>.</p>
+<!-- Future notes are added here by the desk, one per approved application, in
+     the format below. Nothing here auto-publishes -- see apply.html and
+     CLAUDE.md rule 8 ("the desk decides"). -->
 
-<p class="cl-more">Predictions are staked from any open claim on <a href="ledger.html">The Ledger</a>. Proofs come from <a href="play.html">The Arcade</a> and this browser's curriculum answers, both read, never written, from here.</p>
+<h2 id="format">What a note looks like</h2>
+<p>One example, so the bar is clear before you write one. This is a template, not a real submission.</p>
+<div class="card">
+  <h3>Example: &ldquo;Why a 1,000-qubit chip isn&rsquo;t a 1,000-qubit computer&rdquo; <span style="color:var(--muted);font-weight:400">&mdash; a template, not a published note</span></h3>
+  <p>🟡 Working tier. A working researcher explains, in their own words, one thing they&rsquo;ve watched people get wrong in their own field &mdash; with the same citation and tier discipline as the rest of this site, and a byline that&rsquo;s really theirs.</p>
+</div>
 
-<footer>SymbiQ &middot; The Standing is local to this browser and never sent anywhere. <a href="about.html">About the desk</a></footer>
+<h2 id="talk">Comment and share</h2>
+<p>There&rsquo;s no comment thread here yet. If a note raises a question for its author, <a href="mailto:chinmoyuas@gmail.com">email the desk</a> and it&rsquo;ll be forwarded. Every note carries a plain, permanent link &mdash; share it wherever you like. There&rsquo;s no reshare-into-feed mechanic here, on purpose: SymbiQ doesn&rsquo;t run a feed.</p>
+
+<p class="verif">Have a note you want to write? <a href="apply.html">Apply to write for SymbiQ →</a></p>
+<footer>SymbiQ &middot; One person and a stubborn test suite. <a href="apply.html">Write for SymbiQ</a> &middot; <a href="corrections.html">Corrections</a></footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

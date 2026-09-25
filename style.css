@@ -495,7 +495,17 @@ a:hover { text-decoration-color: currentColor; }
   text-decoration-color: currentColor;
   text-decoration-thickness: 2px;
 }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }
+/* The grid owns its spacing. .card carries margin: 18px 0 for cards that sit alone in the
+   flow, so inside a grid the rows were 50px apart (14 gap + 2 x 18 margin) while the
+   columns were 14px apart. Zeroing the card margin and moving it into the grid's own
+   margin keeps the space above and below (24 + 18 = 42px) and evens the gaps to 16px. */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 42px 0; }
+.grid > .card { margin: 0; }
+/* Two-up variant for cards that carry a paragraph, not a label. At the 1180px column
+   the auto-fit grid above makes four ~260px columns of 8-10-line paragraphs, which is
+   the wrong shape for reading; two columns keep a line to ~60 characters. */
+.grid.grid-2 { grid-template-columns: 1fr; }
+@media (min-width: 720px) { .grid.grid-2 { grid-template-columns: repeat(2, 1fr); } }
 .grid .card { animation: fadeUp 0.5s ease-out both; }
 .grid .card:nth-child(2) { animation-delay: 0.08s; }
 .grid .card:nth-child(3) { animation-delay: 0.16s; }

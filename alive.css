@@ -370,17 +370,25 @@ body[data-alive] .sq-marker-tab {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
   cursor: pointer;
-  opacity: 0.62;
-  transition: opacity var(--al-base) var(--al-ease),
-              border-color var(--al-quick) var(--al-ease),
+  /* The quiet resting state dims the CONTENTS, not the chip. It used to dim the
+     whole element (opacity .62), which let the page's own text show through the
+     frosted glass: on a phone "1/5" printed straight over a heading. */
+  transition: border-color var(--al-quick) var(--al-ease),
               color var(--al-quick) var(--al-ease),
               transform 0.05s var(--al-ease);
 }
+body[data-alive] .sq-marker-tab > * {
+  opacity: 0.68;
+  transition: opacity var(--al-base) var(--al-ease);
+}
+body[data-alive] .sq-marker-tab:hover > *,
+body[data-alive] .sq-marker-tab:focus-visible > *,
+body[data-alive] .sq-marker[data-open] .sq-marker-tab > * { opacity: 1; }
 body[data-alive] .sq-marker-tab:hover,
-body[data-alive] .sq-marker-tab:focus-visible { opacity: 1; border-color: var(--teal); color: var(--text); }
+body[data-alive] .sq-marker-tab:focus-visible { border-color: var(--teal); color: var(--text); }
 body[data-alive] .sq-marker-tab:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 body[data-alive] .sq-marker-tab:active { transform: translateY(1px); }
-body[data-alive] .sq-marker[data-open] .sq-marker-tab { opacity: 1; border-color: var(--teal); color: var(--text); }
+body[data-alive] .sq-marker[data-open] .sq-marker-tab { border-color: var(--teal); color: var(--text); }
 
 body[data-alive] .sq-marker-glyph { color: var(--violet); flex: none; }
 body[data-alive] .sq-marker-count { flex: none; font-weight: 700; color: var(--text); }

@@ -54,7 +54,7 @@ body.fr h2::before { background: var(--violet) !important; }
 .fr-toc h3 { margin: 0 0 4px; font-size: .95rem; }
 .fr-toc p { margin: 0 0 14px; font-size: .86rem; color: var(--muted); }
 .fr-toc ol { list-style: none; counter-reset: t; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px 18px; }
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 2px 18px; }
 .fr-toc li { counter-increment: t; }
 /* Number left, title right, subtitle UNDER the title -- the same three-part
    shape `.mod > summary` already uses below (mod-n / mod-t / mod-q), so the

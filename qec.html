@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-aKQnHCMyMSNtzSic+L0QUvBkaCS6In1aUBSHDPKGgJk=' 'sha256-wWzVORFJ68FhKbos5c6NcSsTd6Ryc8+LIeKaEZaE20Q=' 'sha256-nssAx+kMLyYFaUxWFwCMUlxfdH6UrEMQ4DX1lqLj5ms=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-aKQnHCMyMSNtzSic+L0QUvBkaCS6In1aUBSHDPKGgJk=' 'sha256-qmvqZJR+ZejmpuiTtihS/KY45Bw4Ub50lzXbP1dfgA0=' 'sha256-nssAx+kMLyYFaUxWFwCMUlxfdH6UrEMQ4DX1lqLj5ms=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>What is quantum error correction?</title>
@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/qec.css?v=19">
+<link rel="stylesheet" href="p/qec.css?v=20">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -627,7 +627,7 @@
      thing this is really for: that loading the engine does not move the
      content underneath it. */
   var card = document.getElementById('duel');
-  if (card) card.style.minHeight = (window.innerWidth < 720 ? 1542 : 948) + 'px';
+  if (card) card.style.minHeight = (window.innerWidth < 720 ? 1679 : 948) + 'px';
   C.onNear(host, function () {
     C.loadScript(tag.src).then(function () {
       var G = window.SymbiQ && window.SymbiQ.games;

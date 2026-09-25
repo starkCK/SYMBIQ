@@ -166,8 +166,11 @@ html { scroll-behavior: smooth; }
    goes 16px -> 17px on a phone and 18px from 720px up, and every label,
    caption and control scales in proportion. A PERCENTAGE, not px, so a reader
    who has already raised their browser's default size keeps that on top. */
-html { font-size: 106.25%; }
-@media (min-width: 720px) { html { font-size: 112.5%; } }
+/* 2026-09-25: phones went 17px -> 18px as well (Chinmoy: "increase fonts for mobile").
+   Measured first: on a 375px viewport 72% of all text was the 17px body and a quarter
+   was the 14.5px captions, notes and 12px labels, which is where a phone reader squints.
+   One root, one dial: the whole hierarchy moves together. */
+html { font-size: 112.5%; }
 :root { --nav-h: 82px; }
 @media (min-width: 720px) {
   html { scroll-padding-top: calc(var(--nav-h) + 14px); }

@@ -92,19 +92,19 @@ body.fr h2::before { background: var(--or) !important; }
 .fr-toc h3 { margin: 0 0 4px; font-size: .95rem; }
 .fr-toc p { margin: 0 0 14px; font-size: .86rem; color: var(--muted); }
 .fr-toc ol { list-style: none; counter-reset: t; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 2px 18px; }
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px 18px; }
 .fr-toc li { counter-increment: t; }
-.fr-toc a {
+.fr-toc li a {
   display: flex; gap: 10px; align-items: baseline; padding: 7px 8px; border-radius: 8px;
   text-decoration: none; color: var(--text); font-size: .92rem;
   min-height: 44px;
 }
-.fr-toc a::before {
+.fr-toc li a::before {
   content: counter(t, decimal-leading-zero); color: var(--or); font-weight: 700;
   font-size: .75rem; font-variant-numeric: tabular-nums; flex: 0 0 auto;
 }
-.fr-toc a:hover { background: var(--rowhover); }
-.fr-toc a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 1 auto; text-align: right; }
+.fr-toc li a:hover { background: var(--rowhover); }
+.fr-toc li a em { font-style: normal; color: var(--muted); font-size: .8rem; margin-left: auto; flex: 0 1 auto; text-align: right; }
 
 /* ---- a curriculum module --------------------------------------------- */
 .mod {

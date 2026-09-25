@@ -311,9 +311,9 @@ function mount(root, opts) {
 
     out.innerHTML = `
       ${verdict}
-      <h4 class="sc-h">ClientHello <span>${n(r.clientHello)} bytes</span></h4>
+      <h4 class="sc-h" aria-level="3">ClientHello <span>${n(r.clientHello)} bytes</span></h4>
       ${bar(r.clientHello, MSS, '1,460 B, one packet', '1,460 B', chSegs)}
-      <h4 class="sc-h">Server flight <span>${n(r.serverFlight)} bytes</span></h4>
+      <h4 class="sc-h" aria-level="3">Server flight <span>${n(r.serverFlight)} bytes</span></h4>
       ${bar(r.serverFlight, INITCWND, '14,600 B, initial congestion window', '14,600 B', sfSegs)}
       <div class="sc-grid">
         ${row('Client key share', r.k.client, r.k.measured === false ? 'mod' : 'meas')}
@@ -3040,7 +3040,7 @@ function mount(root, opts) {
   var PRESETS = [
     { id: 'bank',     label: 'A bank',            x: 15, note: 'account records, regulator-driven retention' },
     { id: 'hospital', label: 'A hospital record', x: 30, note: 'a diagnosis outlives the system that recorded it' },
-    { id: 'tls',      label: 'A TLS session',      x: 0,  note: 'gone when the connection closes -- unless someone logged it' },
+    { id: 'tls',      label: 'A TLS session',      x: 0,  note: 'gone when the connection closes — unless someone logged it' },
     { id: 'state',    label: 'A state secret',     x: 50, note: 'the harvest-now case the inequality was written for' }
   ];
 
@@ -3055,7 +3055,7 @@ function mount(root, opts) {
   function banner(v) {
     if (v.state === 'late') {
       return '<div class="verdict bad"><b>Already late.</b> Data you encrypt today is readable by an adversary for ' +
-        '<b>' + v.gap + ' year' + (v.gap === 1 ? '' : 's') + '</b> before you finish migrating -- assuming Z arrives ' +
+        '<b>' + v.gap + ' year' + (v.gap === 1 ? '' : 's') + '</b> before you finish migrating — assuming Z arrives ' +
         'when you guessed.</div>';
     }
     if (v.state === 'exact') {
@@ -3081,13 +3081,13 @@ function mount(root, opts) {
           return '<button type="button" class="preset' + (p.id === activePreset ? ' on' : '') + '" data-preset="' +
             p.id + '">' + esc(p.label) + '<em>' + esc(p.note) + '</em></button>';
         }).join('') + '</div>' +
-        '<div class="es-ctl"><label class="es-lab">X -- years this data must stay secret: <b>' + x + '</b> ' +
+        '<div class="es-ctl"><label class="es-lab">X — years this data must stay secret: <b>' + x + '</b> ' +
           '<span class="cb-tag">your input</span></label>' +
           '<input type="range" id="mo-x" min="0" max="50" step="1" value="' + x + '" aria-label="X, years data must stay secret"></div>' +
-        '<div class="es-ctl"><label class="es-lab">Y -- years your migration takes: <b>' + y + '</b> ' +
+        '<div class="es-ctl"><label class="es-lab">Y — years your migration takes: <b>' + y + '</b> ' +
           '<span class="cb-tag">your input</span></label>' +
           '<input type="range" id="mo-y" min="0" max="20" step="1" value="' + y + '" aria-label="Y, years migration takes"></div>' +
-        '<div class="es-ctl"><label class="es-lab">Z -- years until a cryptographically relevant quantum computer: <b>' + z + '</b> ' +
+        '<div class="es-ctl"><label class="es-lab">Z — years until a cryptographically relevant quantum computer: <b>' + z + '</b> ' +
           '<span class="cb-tag">Heuristic estimate</span></label>' +
           '<input type="range" id="mo-z" min="0" max="30" step="1" value="' + z + '" aria-label="Z, years until a cryptographically relevant quantum computer"></div>' +
         '<div class="es-out">' + banner(v) + '</div>' +

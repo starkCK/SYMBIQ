@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/circuits.css?v=17">
+<link rel="stylesheet" href="p/circuits.css?v=18">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -151,7 +151,7 @@
      stays here, with the real versioned URL, so check_site.py's
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
-<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=3"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="p/circuits.js?v=6" defer></script>
 
 
@@ -288,7 +288,7 @@
 <p class="tagline">Strip away the Bloch sphere and the bra-kets: physically, a superconducting qubit is a capacitor wired across one nonlinear component. Here is what that component does, and why everything hinges on it.</p>
 
 <div class="card">
-<h3>The answer in four lines</h3>
+<h3 aria-level="2">The answer in four lines</h3>
 <p>Any qubit needs two things: something that oscillates, and something that makes the oscillation <em>uneven</em>. An LC circuit, a coil and a capacitor, oscillates beautifully, but its energy levels are evenly spaced, which makes it useless as a qubit: the pulse that drives level 0 to level 1 also drives 1 to 2, and 2 to 3. Swap the coil for a <strong>Josephson junction</strong>, a component that acts like an inductor whose effective inductance depends on the current already flowing through it, and the levels bunch up unevenly. Now the bottom two levels can be addressed on their own, and a resonant pulse rotating you between them <em>is</em> a quantum logic gate.</p>
 </div>
 

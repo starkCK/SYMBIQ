@@ -496,6 +496,10 @@ a:hover { text-decoration-color: currentColor; }
   text-decoration-color: currentColor;
   text-decoration-thickness: 2px;
 }
+/* The topic indexes on The Feasible Region and The Machinery are menus, not prose: each row
+   is a numbered, padded, hover-highlighted block that already reads as a link. The prose
+   rule above underlined both the title and its right-hand blurb. Rows keep their hover fill. */
+.fr-toc li a:not([class]) { text-decoration-line: none; }
 /* The grid owns its spacing. .card carries margin: 18px 0 for cards that sit alone in the
    flow, so inside a grid the rows were 50px apart (14 gap + 2 x 18 margin) while the
    columns were 14px apart. Zeroing the card margin and moving it into the grid's own

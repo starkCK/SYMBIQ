@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/phase-kickback.css?v=17">
+<link rel="stylesheet" href="p/phase-kickback.css?v=18">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -141,7 +141,7 @@
      stays here, with the real versioned URL, so check_site.py's
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
-<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=3"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="p/phase-kickback.js?v=6" defer></script>
 
 
@@ -278,7 +278,7 @@
 <p class="tagline">One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name, phase kickback, and this site never said it out loud until now.</p>
 
 <div class="card">
-<h3>The answer in four lines</h3>
+<h3 aria-level="2">The answer in four lines</h3>
 <p>Apply a controlled gate where the target qubit is already sitting in one of that gate's own <strong>eigenstates</strong>, and something backwards happens: the target doesn't change at all (it can't, an eigenstate just gets multiplied by a number), but that number's phase has to go <em>somewhere</em>, and it lands on the <strong>control</strong> qubit instead, as a twist between its |0⟩ and |1⟩. That misdirected phase is <strong>phase kickback</strong>, and it is the entire mechanism behind quantum algorithms that look, on the surface, unrelated: Grover's oracle marking an answer, and quantum phase estimation, which is quite literally named after this effect and is the engine inside Shor's algorithm.</p>
 </div>
 

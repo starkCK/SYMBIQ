@@ -60,7 +60,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/feasible.css?v=17">
+<link rel="stylesheet" href="p/feasible.css?v=20">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -232,7 +232,7 @@
 </header>
 
 <div class="card">
- <h3>The whole field in four lines</h3>
+ <h3 aria-level="2">The whole field in four lines</h3>
  <p><strong>1.</strong> You have a decision to make, and you can&#39;t do everything. There are limits on time, money, people, trucks, machines, beds.<br>
  <strong>2.</strong> Write the limits down as inequalities. The set of choices that satisfy <em>all</em> of them at once is the <strong>feasible region</strong>. Everything outside it is fantasy.<br>
  <strong>3.</strong> Write down what &quot;good&quot; means as a single number to push up or down. That&#39;s the <strong>objective</strong>.<br>
@@ -304,7 +304,7 @@
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 620 380" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A two-variable linear program drawn to scale. Two constraint lines cut a four-sided feasible region out of the positive quadrant. The best continuous answer sits at the corner where both constraints bind, at x equals 3 and y equals 1.5, worth 21.">
@@ -338,14 +338,14 @@
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Every problem in this field has exactly three parts, and once you see the pattern you cannot unsee it: <strong>the choices</strong> (what am I allowed to decide?), <strong>the limits</strong> (what stops me?), and <strong>the goal</strong> (what does better mean, as one number?).</p>
  <p>Nurse rostering, parcel routing, factory scheduling, portfolio construction and airline crew pairing are the same three questions wearing different clothes. The feasible region is just the honest name for &quot;the plans that are not fantasy&quot;.</p>
  <p>The skill that takes longest to learn is not the solving: solvers are free and somebody else wrote them. It is <strong>writing the problem down correctly</strong>: noticing that &quot;we should keep customers happy&quot; is not yet a number, that &quot;a driver cannot work 14 hours&quot; is a constraint you forgot, and that the objective everyone agreed on in the meeting quietly rewards the wrong behaviour. Most failed optimisation projects failed here, not in the mathematics.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>A linear program in standard form is:</p>
  <code class="eq">maximise c₁x₁ + c₂x₂ + … + cₙxₙ
 subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
@@ -357,7 +357,7 @@ subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Refinery blending, since 1952</span>
       The first great industrial application, and still one of the largest. A refinery takes several crude streams with different sulphur, octane and density, and blends them into petrol, diesel and jet fuel that must each meet a specification. Choices: how much of each stream into each product. Limits: the specifications, the tank capacities, the demand. Objective: margin. Refineries have run linear programs for this since the 1950s, and the margins such a model finds are the difference between a profitable plant and a marginal one.</p>
  </div>
@@ -379,7 +379,7 @@ subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A convex polygon with three parallel dashed lines sweeping across it. The last line to still touch the region touches it at a single corner, which is the optimum.">
@@ -407,14 +407,14 @@ subject to  a₁₁x₁ + … + a₁ₙxₙ  ≤  b₁
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Here is the thing that should bother you about the picture in topic 01: the feasible region contains <em>infinitely many</em> points. Any of them could be your plan. So how does anything ever get solved?</p>
  <p>Because you never have to look inside. Push the objective line outward and it leaves the region at a corner. There are finitely many corners, so an infinite search collapses into a finite one. <strong>That collapse is the single most important fact in linear programming</strong>, and it is why a field about continuous quantities is computable at all.</p>
  <p>The simplex method (Dantzig, 1947) simply walks from corner to neighbouring corner, never downhill, and stops when no neighbour is better. (Never downhill rather than always uphill: when a vertex is <em>degenerate</em> a step can move sideways for no gain, which is why anti-cycling rules exist.) Because the region is convex, no-better-than-any-neighbour means genuinely best. There are no local traps to get stuck in. That is a luxury you lose the moment the problem stops being convex, which is topic 04 and, later, topic 10.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>The result being used is the <strong>fundamental theorem of linear programming</strong>: if a linear program has an optimal solution, then it has one at an extreme point (a vertex) of the feasible region.</p>
  <p>The reason is convexity. Take any feasible point <em>x</em> that is not a vertex. Then <em>x</em> lies on a segment between two other feasible points, so it can be written as a blend:</p>
  <code class="eq">x = λu + (1 − λ)v ,   0 &lt; λ &lt; 1 , u, v feasible
@@ -425,7 +425,7 @@ so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Airline crew pairing</span>
       An airline must cover every flight with a crew, obeying rest rules, base assignments, licence types and duty-hour limits, at minimum cost. The natural formulation has one variable per legal <em>pairing</em> (a multi-day sequence of flights that starts and ends at a crew base) and there can be billions of them. Nobody enumerates them. Instead the LP is solved over a small subset, and the dual prices from that solve are used to ask &quot;does any pairing we have not generated look attractive?&quot; That is <strong>column generation</strong>, and it is duality (topic 03) used as a search strategy. Crew is one of an airline&#39;s largest controllable costs, which is why a percent found here is worth a great deal.</p>
  </div>
@@ -448,7 +448,7 @@ so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Profit plotted against machine-hours. The real curve rises steeply, then briefly less steeply, then goes completely flat. A dashed line shows what naively extrapolating the initial slope would have predicted, ending far above the truth.">
@@ -481,7 +481,7 @@ so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Solve a linear program and you get more than the plan. You get, for free, <strong>what each limit is costing you</strong>: the amount your objective would improve if you had one more unit of it. That number is the <strong>shadow price</strong>, and it is the answer to the question the person paying for the model actually had, which is almost never &quot;what should we build&quot; and almost always &quot;where should we spend next&quot;.</p>
  <p>Two consequences, both counterintuitive, both worth internalising:</p>
  <p><strong>A resource with slack is worth exactly zero.</strong> Not &quot;a little&quot;. Zero. If the best plan is not using all the material you already have, more material cannot change the best plan. Everyone&#39;s instinct is to buy more of the expensive thing or the scarce-feeling thing; the correct answer is to buy more of whatever is <em>binding</em>.</p>
@@ -489,7 +489,7 @@ so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>Every linear program has a twin. Where the primal asks &quot;what should I build?&quot;, the dual asks &quot;what are my limits worth?&quot;:</p>
  <code class="eq">PRIMAL              DUAL
 maximise cᵀx       minimise  bᵀy
@@ -505,7 +505,7 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Electricity markets, every five minutes</span>
       Wholesale power markets clear by solving an optimisation: meet demand at every node, respect every transmission line&#39;s capacity and every generator&#39;s ramp rate, at least cost. <strong>The shadow price of the demand constraint at each node is the price you pay for electricity there.</strong> It is not set by a committee; it falls out of the dual of the dispatch problem. When a transmission line binds, prices on either side of it separate. That is congestion, and the price gap is literally the line&#39;s shadow price. <em>How finely those prices are reported differs by market:</em> the North American ISOs publish a price per node (locational marginal pricing), while Europe, Australia and India clear on the same kind of optimisation but publish prices per zone or region. The duals are doing the pricing either way; only the granularity changes.</p>
  </div>
@@ -528,7 +528,7 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 620 380" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="The same feasible region, now showing only the whole-number points inside it. The best continuous answer at 3 and 1.5 is not one of them, and the best whole-number answer is at a different corner, 4 and 0.">
@@ -567,7 +567,7 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Add one word, &quot;integer&quot;, and the ground gives way.</p>
  <p>The reason is that <strong>convexity dies</strong>. The feasible region stops being a solid shape and becomes a scatter of isolated dots. There is no longer a sensible notion of sliding to a corner, because the dots are not corners of anything. Every guarantee from topic 02 evaporates at once.</p>
  <p>It matters enormously in practice because whole numbers are what most real decisions are made of. You cannot dispatch 0.4 of a truck, open 2.7 of a warehouse, or assign 1.5 nurses to a ward. The moment a model touches the physical world it usually needs integers, and the moment it needs integers it becomes a fundamentally harder problem than the one it looks like.</p>
@@ -575,7 +575,7 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>An integer linear program is a linear program plus an integrality requirement:</p>
  <code class="eq">maximise cᵀx
 s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
@@ -590,7 +590,7 @@ s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Where to put the warehouses</span>
       The facility-location problem: given demand across a country and a set of candidate sites, decide which sites to open and which customers each serves, trading a fixed cost per open site against transport cost. The open/closed decision is inherently binary (half a warehouse serves nobody) so this is integer by nature, not by choice. The same structure decides mobile-tower placement, hospital catchments, and where a delivery company puts its depots. Instances with thousands of candidate sites are solved routinely today; the same instances were hopeless in 1990, and the improvement came far more from better algorithms than from faster machines.</p>
  </div>
@@ -612,7 +612,7 @@ s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A search tree. One branch is expanded and yields a good answer. A sibling branch has a bound lower than that answer, so its entire subtree is greyed out and never searched.">
@@ -651,7 +651,7 @@ s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>You cannot enumerate. A 60-item yes/no problem has 2⁶⁰ ≈ 1.15 × 10¹⁸ combinations (roughly two and a half times the number of seconds that have elapsed since the Big Bang) and no computer will ever be fast enough to visit them one at a time. So the trick is to stop trying.</p>
  <p><strong>Branching</strong> splits the problem: either we take this item or we don&#39;t, and each branch is a smaller problem of the same shape. That alone buys nothing. It is just enumeration drawn as a tree.</p>
  <p><strong>Bounding</strong> is where everything happens. Before opening a branch, ask a deliberately easier question, <em>what if I could take fractions of things?</em>, and solve that instead. The easy answer is optimistic by construction, because you relaxed a restriction. So if even the optimistic figure cannot beat an answer you already hold, everything below that branch is provably worthless and you delete it unopened. Not &quot;probably worthless&quot;. Provably.</p>
@@ -659,7 +659,7 @@ s.t.      Ax ≤ b ,  x ≥ 0 ,  x ∈ ℤⁿ</code>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>Maintain an <strong>incumbent</strong> z* (the best feasible objective found so far) and a list of unexplored subproblems. For each subproblem P, compute a bound U(P) ≥ max{cᵀx : x feasible in P}. Then:</p>
  <code class="eq">if U(P) ≤ z* discard P entirely      (fathom by bound)
 if P is infeasible  discard P              (fathom by infeasibility)
@@ -672,7 +672,7 @@ otherwise           split P and repeat     (branch)</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Everywhere, invisibly</span>
       Branch and bound is the engine under essentially every commercial optimisation solver, and therefore under vehicle routing, production scheduling, sports-league fixture generation, portfolio selection with cardinality limits, and gate assignment at airports. The reason those problems became solvable is largely this algorithm getting better at proving things absent: reported solver speedups over the last three decades come substantially from improved cuts, bounds and presolve rather than from hardware alone.</p>
  </div>
@@ -695,7 +695,7 @@ otherwise           split P and repeat     (branch)</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A four-node network from source to sink. The maximum flow through it is 15, and the cheapest set of pipes that would sever the network also totals 15.">
@@ -730,14 +730,14 @@ otherwise           split P and repeat     (branch)</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Flow problems are the friendliest corner of the whole field, and it is worth knowing why: they are <em>integer problems that behave like continuous ones</em>. Give a network whole-number capacities and the linear program will hand you a whole-number flow all by itself, with no branching required. That is a structural gift, not a coincidence: see the mathematics below.</p>
  <p>The max-flow/min-cut theorem is the kind of result that feels like a magic trick until you see it from the right angle, at which point it becomes obvious. Any cut is a wall between source and sink; all flow must cross it; so no flow can exceed any cut&#39;s capacity. That much is easy. The hard and beautiful half is that the <em>best</em> flow always exactly achieves the <em>cheapest</em> wall. There is never a gap.</p>
  <p>The practical payoff is that a min-cut <strong>tells you where to invest</strong>. Widening any pipe not on the cut does nothing at all. It is the same lesson as shadow prices in topic 03, arriving from a completely different direction.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>Maximise the flow value while conserving flow at every intermediate node and respecting capacities:</p>
  <code class="eq">maximise   Σ f(s,v)
 s.t. f(u,v) ≤ c(u,v)            for every edge
@@ -750,7 +750,7 @@ s.t. f(u,v) ≤ c(u,v)            for every edge
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Where the grid will actually break</span>
       Transmission planners model the network as a flow problem to find which combination of line failures would island a region: the min-cut is the answer, and it is rarely the line anyone was worried about. The same computation appears as image segmentation in computer vision (cutting a picture into foreground and background is literally a min-cut), as baseball elimination (is this team mathematically out?), and as project selection where the cut separates projects you fund from projects you don&#39;t.</p>
  </div>
@@ -772,7 +772,7 @@ s.t. f(u,v) ≤ c(u,v)            for every edge
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Three workers matched to three jobs. Taking each worker's cheapest job in turn costs 10. The genuine optimum costs 9, and it requires giving the first worker a job that is not their cheapest.">
@@ -811,14 +811,14 @@ s.t. f(u,v) ≤ c(u,v)            for every edge
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Matching is the problem of pairing two sets (workers to shifts, donors to recipients, students to schools, taxis to riders) so that the whole arrangement is as good as possible. The trap is that <em>the best arrangement is usually not made of the best individual choices</em>. Somebody has to be given their second preference so that everybody else can be served, and no amount of local reasoning will find who.</p>
  <p>The other reason matching matters here is that it is the direct ancestor of a modern idea. Edmonds&#39; 1965 paper on matching is also where the modern definition of an &quot;efficient algorithm&quot; comes from: he argued that polynomial time was the right dividing line between practical and impractical. The complexity class P essentially starts in a paper about pairing people up.</p>
  <p><strong>And it runs inside a quantum computer.</strong> Decoding a surface code in real time (deciding which physical qubits to correct from the pattern of alarms) is solved as minimum-weight perfect matching. The algorithm keeping quantum error correction alive is an operations research result that predates the field it now serves by three decades.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>The assignment problem as an integer program, with x<sub>ij</sub> = 1 if worker i takes job j:</p>
  <code class="eq">minimise  Σᵢ Σⱼ cᵢⱼ xᵢⱼ
 s.t.      Σⱼ xᵢⱼ = 1 every worker gets exactly one job
@@ -829,7 +829,7 @@ s.t.      Σⱼ xᵢⱼ = 1 every worker gets exactly one job
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Kidney exchange</span>
       A patient with a willing but incompatible donor can be matched into a chain: your donor gives to a stranger, whose donor gives to you. Finding the set of chains that saves the most lives is a matching problem on a graph of thousands of pairs, re-solved as the pool changes. It is non-bipartite (any pair can match any pair), it has side constraints real enough to hurt, and it is run for real by national programmes. This is the least abstract thing in this entire course.</p>
  <p><span class="where">And inside the machine</span>
@@ -854,7 +854,7 @@ s.t.      Σⱼ xᵢⱼ = 1 every worker gets exactly one job
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A small road network. The direct road from S to B costs 5, but going via A costs only 3. The shortest route from S to D is 8.">
@@ -896,7 +896,7 @@ s.t.      Σⱼ xᵢⱼ = 1 every worker gets exactly one job
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Bellman&#39;s <strong>principle of optimality</strong> is one line and it powers an enormous amount of the modern world: <em>the tail of an optimal plan is itself optimal.</em></p>
  <p>If the best route from Delhi to Chennai happens to pass through Nagpur, then the portion from Nagpur to Chennai must be the best route from Nagpur to Chennai. If it weren&#39;t, you could swap in the better one and improve a route you already called best: a contradiction.</p>
  <p>This is what lets you solve a huge problem by solving small ones once each and remembering the answers. You never re-derive &quot;best route from Nagpur&quot;; you look it up. The difference between exponential and linear is nothing more than that bookkeeping.</p>
@@ -904,7 +904,7 @@ s.t.      Σⱼ xᵢⱼ = 1 every worker gets exactly one job
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>The Bellman equation for shortest paths: a recursive definition that is also, read the other way, an algorithm:</p>
  <code class="eq">d(s) = 0
 d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
@@ -914,7 +914,7 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">The map on your phone</span>
       Every routing request is a shortest-path problem, though not a naive one: continental road networks are far too large for plain Dijkstra at interactive speed, so production systems precompute hierarchies and landmarks that let a query skip most of the graph. The objective is rarely pure distance either: it is a weighted blend of time, turns, tolls and live traffic, which is the same modelling judgement call from topic 01 showing up again.</p>
  <p><span class="where">And in reinforcement learning</span>
@@ -939,7 +939,7 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Average time in the system against utilisation. The curve is flat until about seventy percent and then rises almost vertically, going to infinity at one hundred percent.">
@@ -973,7 +973,7 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Almost every manager&#39;s instinct is that a resource running at 95% is being used well and one running at 60% is being wasted. The mathematics says the opposite, and it is not close.</p>
  <p>The reason is <strong>variability</strong>. If work arrived like clockwork and every job took exactly the same time, you could run at 100% with no queue at all. But arrivals clump and jobs differ, so idle time and backlog are not symmetric: an idle minute is gone forever, while a backlog persists and compounds. As utilisation rises there is less and less slack to absorb a clump, and the queue that forms has less and less opportunity to drain.</p>
  <p>So the spare capacity that looks like waste is doing real work. It is what stops a random cluster of arrivals turning into a two-hour wait. This is why emergency departments target occupancy well below 100%, why motorways jam at flow rates below their theoretical maximum, and why a disk at 95% IO utilisation feels broken rather than efficient.</p>
@@ -981,7 +981,7 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>The simplest useful model is <strong>M/M/1</strong>: Poisson arrivals at rate λ, exponential service at rate μ, one server. Write utilisation ρ = λ/μ. Then, in steady state:</p>
  <code class="eq">L = ρ / (1 − ρ) average number in the system
 W = 1 / (μ − λ)          average time in the system
@@ -994,7 +994,7 @@ W = 1 / (μ − λ)          average time in the system
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Emergency department capacity</span>
       Bed occupancy is the single most-argued number in hospital management, and this curve is why. Pushing occupancy from 85% to 95% looks like a 12% efficiency gain on a spreadsheet and behaves like a crisis on the floor: ambulances queue outside because there is no slack to absorb a bad hour. The same curve sets call-centre staffing (via Erlang C, the multi-server sibling), airport security lanes, and how much headroom a cloud service keeps before autoscaling.</p>
  </div>
@@ -1016,7 +1016,7 @@ W = 1 / (μ − λ)          average time in the system
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A landscape with two valleys. A ball that only ever rolls downhill settles in the shallow near valley and can never reach the deeper one beyond the ridge.">
@@ -1044,7 +1044,7 @@ W = 1 / (μ − λ)          average time in the system
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Topics 04 and 05 gave you the honest tools: formulate exactly, bound hard, prove optimality. Sometimes that is not available. The model is too large, or the objective is not something you can write as a formula, or you have four minutes and the exact method needs four days.</p>
  <p>Then you give up the certificate and keep the answer. A <strong>metaheuristic</strong> is a strategy for searching a space you cannot reason about exhaustively: simulated annealing, tabu search, genetic algorithms, large-neighbourhood search. They do not prove anything. Used well they routinely return solutions within a percent or two of optimal on problems where the exact method never finishes.</p>
  <p><strong>Simulated annealing</strong> is the cleanest to understand because it is stolen wholesale from metallurgy. Cool a metal fast and its atoms freeze wherever they happen to be, leaving a brittle mess; cool it slowly and they settle into a low-energy crystal. So: accept improvements always, accept worsening moves with a probability that falls as an artificial &quot;temperature&quot; drops. Hot early to explore, cold late to settle.</p>
@@ -1052,7 +1052,7 @@ W = 1 / (μ − λ)          average time in the system
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>The Metropolis acceptance rule: propose a neighbouring solution, then:</p>
  <code class="eq">ΔE = E(new) − E(current)
 
@@ -1070,7 +1070,7 @@ otherwise accept with probability exp(−ΔE / T)</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Chip layout, and the delivery van outside</span>
       Placing millions of components on silicon to minimise wire length is far beyond exact methods, and simulated annealing has been a workhorse there since the 1980s. Vehicle routing at national scale (thousands of stops, time windows, driver rules) is typically solved by large-neighbourhood search: destroy part of a good solution, repair it optimally, keep it if it improved. Nobody proves those routes optimal. They just have to be better than yesterday&#39;s, by tomorrow morning.</p>
  <p><span class="where">And the quantum connection</span>
@@ -1101,7 +1101,7 @@ otherwise accept with probability exp(−ΔE / T)</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A two by two payoff grid for two suspects who can stay silent or confess. Both silent scores three and three, the best joint outcome. Both confess scores one and one, worse for both, but it is the only cell neither player can improve by switching alone -- the Nash equilibrium.">
@@ -1131,14 +1131,14 @@ otherwise accept with probability exp(−ΔE / T)</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>A <strong>Nash equilibrium</strong> is a set of choices, one per player, where nobody can do better by unilaterally switching: given what everyone else is doing. Not &quot;the best outcome.&quot; Not &quot;fair.&quot; Just <em>stable</em>: no individual has a reason to move.</p>
  <p>The figure is the classic Prisoner&#39;s Dilemma, and its whole point is that <strong>stable and good are different properties.</strong> (Silent, silent) is better for both players than (confess, confess) (3 beats 1) but it is not an equilibrium, because each player, reasoning selfishly about their own payoff alone, always prefers to confess regardless of what the other does. That preference holds player by player even though it makes the group worse off. Nothing in the structure of the game pulls it back toward the good outcome; only external enforcement (a binding agreement neither can break alone) would.</p>
  <p>This is the pattern that recurs across the rest of this module: individually rational choices, made independently, landing somewhere nobody would have chosen on purpose.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>Formally, a strategy profile s* = (s₁*, …, sₙ*) is a Nash equilibrium if, for every player i and every alternative strategy sᵢ available to them:</p>
  <code class="eq">uᵢ(sᵢ*, s₋ᵢ*)  ≥ uᵢ(sᵢ, s₋ᵢ*)</code>
  <p>. Your actual payoff is at least as good as any unilateral deviation, holding everyone else&#39;s strategy fixed. <strong>Existence</strong> (Nash, 1950): every finite game (finitely many players, each with finitely many strategies) has at least one equilibrium, though it may require <em>mixed</em> strategies (randomising over pure choices) rather than a single deterministic one. The proof applies Kakutani&#39;s fixed-point theorem to the best-response correspondence: the map from &quot;what everyone else is doing&quot; to &quot;my best replies&quot; is continuous enough that it must have a fixed point, and a fixed point of best-response <em>is</em> an equilibrium by definition.</p>
@@ -1146,7 +1146,7 @@ otherwise accept with probability exp(−ΔE / T)</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Seoul, 2003</span>
       In July 2003, Seoul closed a six-lane elevated expressway carrying roughly 168,000 vehicles a day, as part of restoring the Cheonggyecheon stream buried underneath it. City officials expected worse congestion. Traffic around the city instead <em>sped up</em>. Now one of the most widely cited real demonstrations that removing road capacity from a selfishly-routed network can improve the equilibrium everyone actually experiences, the mirror image of Braess&#39;s paradox above. The general phenomenon is studied quantitatively as the &quot;price of anarchy&quot; (how much worse the selfish equilibrium is than the coordinated optimum) across real transportation networks (Youn, Gastner &amp; Jeong, <em>Physical Review Letters</em> 101, 128701 (2008)).</p>
  </div>
@@ -1169,7 +1169,7 @@ otherwise accept with probability exp(−ΔE / T)</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Matching pennies. Two by two grid, player one wins plus one if the coins match, player two wins plus one if they differ. No cell is stable: from any cell, one player always wants to flip. The only equilibrium is both players choosing heads or tails with fifty percent probability each.">
@@ -1197,14 +1197,14 @@ otherwise accept with probability exp(−ΔE / T)</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Topic 11&#39;s Prisoner&#39;s Dilemma had a stable outcome. <strong>Matching Pennies has none</strong>, not because it is more complicated, but because it is <em>zero-sum</em>: every point one player gains, the other loses, exactly. That structure guarantees the two players&#39; interests never align on a resting point.</p>
  <p>Say A always plays heads. B, knowing this, always plays tails and wins forever. So A cannot commit to any single pure choice without being exploited: the only way to stop being predictable is to genuinely randomise, and the only randomisation an opponent cannot exploit is fifty-fifty. This is the honest reason poker players, penalty takers and cryptographers all reach for randomness on purpose: not for variety, but because <strong>any predictable rule is a rule your opponent can play against.</strong></p>
  <p>Von Neumann&#39;s <strong>minimax theorem</strong> (1928) (years before Nash generalised equilibrium to games where interests are not purely opposed) says every finite zero-sum game has a well-defined <em>value</em>: the amount the best defensive play guarantees you, whichever side you defend. Matching Pennies&#39; value is exactly 0. Neither player can do better against a competent opponent, and neither has to accept doing worse.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>For a finite two-player zero-sum game with payoff matrix M (to the row player; the column player receives −M), von Neumann&#39;s theorem states:</p>
  <code class="eq">max over row strategies p min over column strategies q   pᵀMq
   =
@@ -1216,7 +1216,7 @@ min over column strategies q  max over row strategies p   pᵀMq
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Penalty kicks, tested on real data</span>
       A striker and goalkeeper choosing sides simultaneously is Matching Pennies with unequal payoffs. Chiappori, Levitt &amp; Groseclose (<em>American Economic Review</em> 92(4), 1138–1151 (2002)) tested professional penalty-kick data against the mixed-strategy prediction and found it a good fit: real, high-stakes, adversarial behaviour matching what the theorem says a genuinely unexploitable strategy must look like.</p>
  <p><span class="where">And in security proofs</span>
@@ -1241,7 +1241,7 @@ min over column strategies q  max over row strategies p   pᵀMq
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Three players. Player one holds a left glove, players two and three each hold a right glove. A matched pair is worth one dollar; any single glove is worth nothing. Only one pair can ever be sold, so the coalition of all three is worth exactly one dollar, the same as either two-player pair that includes player one.">
@@ -1269,14 +1269,14 @@ min over column strategies q  max over row strategies p   pᵀMq
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Topics 11 and 12 asked what stable, non-cooperative play looks like. <strong>Cooperative game theory asks a different question: given that a group creates value <em>together</em>, how should the value be split fairly among them?</strong> Cost-sharing a shared warehouse, splitting a startup&#39;s equity, dividing a prize a whole team won: all the same question with a different noun.</p>
  <p>The Shapley value (Shapley, 1953) answers it by asking, for each player, <em>&quot;across every possible order in which people could have joined this coalition, how much did adding me change the total value, on average?&quot;</em> A player who is essential wherever they arrive gets a large share. A player who never changes the outcome (a spare wheel) gets exactly zero, however friendly the room is.</p>
  <p>What makes it worth naming after one person is that it is not merely <em>a</em> reasonable split. Shapley proved it is the <strong>unique</strong> split satisfying four properties nearly everyone agrees a fair split should have: stated precisely below. Reasonable-sounding fairness rules turn out to pin down one specific formula.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>For a coalitional game with value function v (v(S) = the worth of any subset S of the n players, v(∅) = 0), player i&#39;s Shapley value averages their marginal contribution over every possible arrival order:</p>
  <code class="eq">φᵢ = (1/n!) · Σ over all orderings π   [ v(Pᵢ(π) ∪ {i}) − v(Pᵢ(π)) ]</code>
  <p>where P<sub>i</sub>(π) is the set of players arriving before i in ordering π. <strong>Uniqueness</strong> (Shapley, 1953): φ is the only allocation rule satisfying <em>efficiency</em> (the whole value v(N) gets fully distributed), <em>symmetry</em> (two players who contribute identically get identical shares), the <em>dummy/null player</em> property (a player who adds zero value in every coalition gets zero), and <em>additivity</em> (the value of two combined games is the sum of the two separate allocations).</p>
@@ -1290,7 +1290,7 @@ order 3,1,2: v(1,3)−v(3)=1      order 3,2,1: v(1,2,3)−v(2,3)=1
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Explaining machine-learning predictions</span>
  <strong>SHAP</strong> (SHapley Additive exPlanations) (one of the standard tools for explaining what a machine-learning model actually did) is the Shapley value applied to a model&#39;s <em>input features</em> as if they were players in a coalition, and the model&#39;s prediction as the value they jointly produced. &quot;How much did this feature move the prediction?&quot; is answered the same way &quot;how much did this player earn?&quot; is answered above: average its marginal effect over every possible order features could be revealed in. Lundberg &amp; Lee, &quot;A Unified Approach to Interpreting Model Predictions,&quot; <em>NeurIPS</em> (2017). One of the most cited papers in applied machine learning, precisely because it gave an ad hoc practice a 1953 game-theoretic proof of uniqueness.</p>
  <p><span class="where">And older: airport landing fees</span>
@@ -1314,7 +1314,7 @@ order 3,1,2: v(1,3)−v(3)=1      order 3,2,1: v(1,2,3)−v(2,3)=1
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Three sealed bids for an item: nine dollars, seven dollars, and four dollars. The nine dollar bidder wins, but pays the second highest bid, seven dollars, not their own. That gap between what you bid and what you pay is what makes bidding your true value the safe, dominant choice.">
@@ -1339,14 +1339,14 @@ order 3,1,2: v(1,3)−v(3)=1      order 3,2,1: v(1,2,3)−v(2,3)=1
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Every topic so far in this module <strong>analyses</strong> a game whose rules are already fixed. <strong>Mechanism design runs the logic backwards: choose the rules so that self-interested play produces the outcome you actually want.</strong> It is game theory used as an engineering discipline rather than a diagnostic one.</p>
  <p>The clearest example is an auction where honesty just wins. In a first-price sealed-bid auction, bidding your true value is a mistake. You should bid below it, since you pay whatever you bid. That forces everyone into a guessing game about everyone else&#39;s guesses. A <strong>second-price (Vickrey) auction</strong> removes the guessing entirely: the highest bidder wins but pays the <em>second</em>-highest bid, not their own. Suddenly there is no reason to shade your bid at all: bidding your honest value is always at least as good as any alternative, whatever anyone else does.</p>
  <p>That property has a name, <strong>strategy-proofness</strong>, or incentive compatibility, and it is the central design goal of the whole field: build a mechanism where the strategically smart move and the honest move are the same move, so nobody has to out-think anybody else to get a good outcome.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p><strong>Claim.</strong> In a second-price sealed-bid auction, bidding your true value v is a weakly dominant strategy: at least as good as any other bid b, against any bids from opponents.</p>
  <p><strong>Proof.</strong> Let m be the highest bid among your opponents. Compare bidding v against any other b:</p>
  <code class="eq">if m &lt; v: bidding v wins, profit = v − m &gt; 0.
@@ -1362,7 +1362,7 @@ if m = v:  every choice ties at profit 0.</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Selling public airwaves</span>
       Government spectrum auctions are mechanism design at national scale: badly designed auctions have historically left billions of dollars unclaimed or handed licenses to the wrong bidders. The FCC&#39;s 2017 broadcast incentive auction: a two-sided design (reverse auction to buy spectrum back from broadcasters, forward auction to sell it to carriers): raised <strong>$19.8 billion</strong>, with just over $10 billion paid to broadcasters and more than $7 billion going to the U.S. Treasury. Paul Milgrom and Robert Wilson won the 2020 Nobel Memorial Prize in Economic Sciences &quot;for improvements to auction theory and inventions of new auction formats,&quot; work whose formats are now used for spectrum, electricity and airport landing slots worldwide. (William Vickrey himself won the Nobel in 1996, three days after his death, for the theory the field still starts from.)</p>
  </div>
@@ -1385,7 +1385,7 @@ if m = v:  every choice ties at profit 0.</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Payoff to playing hawk and payoff to playing dove, plotted against the fraction of the population playing hawk. The two lines cross at fifty percent hawk. Below that point hawk earns more and spreads; above it dove earns more and spreads; the population is pulled back to the crossing point from either side.">
@@ -1415,14 +1415,14 @@ if m = v:  every choice ties at profit 0.</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Every topic above assumes a rational player choosing a strategy by reasoning about payoffs. <strong>Evolutionary game theory removes the reasoning entirely.</strong> Strategies are not chosen; they are inherited or copied, and whichever strategy currently earns more simply becomes more common next round: through literal reproduction in biology, or through imitation, learning and market share anywhere else. The question shifts from &quot;what should a rational player do?&quot; to &quot;what mix of strategies, once reached, resists being invaded?&quot;</p>
  <p>The classic setting is the <strong>Hawk–Dove game</strong> (Maynard Smith &amp; Price, 1973): contest a resource aggressively (Hawk) or back down (Dove). All-Hawk is not stable: constant injury costs more than the resource is worth, so a rare Dove, who never fights, does better than average and spreads. All-Dove is not stable either: a single Hawk walks in and wins every contest uncontested. The population is pulled toward a specific <em>mixture</em> from both directions, which is precisely what &quot;evolutionarily stable&quot; means: a strategy mix that, once established, cannot be invaded by any rare alternative.</p>
  <p>The bridge back into this course is direct: <strong>genetic algorithms (topic 10) are this idea, deliberately engineered.</strong> Breeding a population of candidate solutions and keeping the fitter half is evolutionary game dynamics run on purpose as a search method, rather than observed in nature.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>Payoffs for the Hawk–Dove game, resource value V, cost of injury C, with C &gt; V (losing a fight costs more than the resource is worth, the interesting case):</p>
  <code class="eq">Hawk vs Hawk:  (V − C) / 2 each     (fight; winner takes V, loser pays C, 50/50)
 Hawk vs Dove:  Hawk gets V, Dove gets 0
@@ -1436,7 +1436,7 @@ solving:  p* = V / C</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Treating cancer as an evolving population</span>
       Standard chemotherapy hits a tumour at maximum tolerated dose, which kills drug-<em>sensitive</em> cells fast and (precisely because it removes their competition) hands the field to drug-<em>resistant</em> cells, which then take over and the treatment fails. <strong>Adaptive therapy</strong> treats the tumour as competing strategies in an evolutionary game instead: dose just enough to control the sensitive population while deliberately leaving it around to keep out-competing the resistant cells for space and resources, rather than trying to eliminate everything at once. Zhang, Cunningham, Brown &amp; Gatenby, &quot;Integrating evolutionary dynamics into treatment of metastatic castrate-resistant prostate cancer,&quot; <em>Nature Communications</em> 8 (2017): in a real clinical trial, standard continuous dosing drove rapid selection for resistant cells and treatment failure, while adaptive, evolution-aware dosing suppressed the resistant population&#39;s growth for substantially longer. The mathematics is the Hawk–Dove machinery above, with tumour cell lines standing in for Hawks and Doves.</p>
  </div>
@@ -1463,7 +1463,7 @@ solving:  p* = V / C</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 620 400" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A five-sided feasible region. Arrows trace the simplex method's actual path: from the origin to the corner at four, zero, worth sixteen, then to four, two, worth twenty-two, then to two point five, five, worth twenty-five, where it stops because no neighbouring corner scores higher.">
@@ -1518,14 +1518,14 @@ solving:  p* = V / C</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Topic 02 proved something remarkable and then left a practical question hanging: the best plan is always at a corner, so you never have to search the infinite interior. But a feasible region can still have an enormous number of corners. Which ones do you actually visit?</p>
  <p>Dantzig&#39;s answer: developed in 1947 while he was at the Pentagon and later at RAND, and written up in full in <em>Linear Programming and Extensions</em> (Princeton University Press, 1963): is the simplex method, and it is almost insultingly simple once stated plainly: <strong>start at any vertex. Look at every neighbouring vertex. One along each edge. If any neighbour scores better, move to the best-looking one. If none does, stop.</strong> You are provably at the optimum, because topic 02&#39;s own convexity argument already ruled out anything better hiding elsewhere. That is the whole algorithm. Everything else: representing a vertex as a &quot;basic feasible solution&quot;, choosing which improving neighbour to try, avoiding a degenerate vertex that loops back on itself: is bookkeeping around that one idea.</p>
  <p>The figure above walks a real instance three pivots deep: origin → (4,0) → (4,2) → (2.5,5), stopping the moment the next neighbour, (0,5), would score worse. Three moves against five vertices is not much of a saving on a toy example. The saving is that, in practice, the number of pivots needed grows nowhere near as fast as the number of vertices does, which is exactly the complexity story the mathematics below has to tell honestly, because it is not always true.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>Maintain a basic feasible solution: a vertex, expressed as which variables (decision plus slack) are currently &quot;basic&quot;. At each iteration, compute the <strong>reduced cost</strong> of every non-basic variable: how much the objective would improve per unit if that variable entered the basis. Dantzig&#39;s original rule enters the variable with the most attractive reduced cost; a ratio test then finds which basic variable must leave to keep the solution feasible, and pivoting swaps the two:</p>
  <code class="eq">enter: the non-basic variable with the best reduced cost
 leave:  arg min over rows i with a_ij &gt; 0 of  b_i / a_ij      (the ratio test)
@@ -1536,7 +1536,7 @@ stop:   when no reduced cost is still improving. That is the certificate</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Still inside the solver, decades after being &quot;obsoleted&quot;</span>
       Interior-point methods (Karmarkar, 1984, and the barrier methods descended from it: topic 17 below builds on exactly that machinery) are usually the faster choice for solving one enormous linear program from a cold start. But branch and bound (topic 05) does not solve one LP. It solves thousands of closely related LPs, each just one added constraint away from the last, and needs an answer to each quickly. That is a warm-start problem, and it is where simplex, specifically its dual variant, still wins decisively: it can resume from a previous solution and restore feasibility in a handful of pivots, where a standard interior-point method has no equivalent warm start and effectively begins again. That is a structural reason rather than a single benchmark number, and it is honestly why commercial mixed-integer solvers still run (dual) simplex at every node of the search tree even when they reach for interior-point methods to solve the very first relaxation.</p>
  </div>
@@ -1559,7 +1559,7 @@ stop:   when no reduced cost is still improving. That is the certificate</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Three points forming a triangle, all pairwise connected. Their relaxed representation is three unit vectors at exactly one hundred twenty degrees to each other. A horizontal line through the centre, a random hyperplane, separates one vector from the other two, cutting two of the three edges -- the true optimum.">
@@ -1598,14 +1598,14 @@ stop:   when no reduced cost is still improving. That is the certificate</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Linear programming keeps the objective flat: a straight trade-off between variables. <strong>Quadratic programming (QP)</strong> lets it curve: minimise or maximise a quadratic function of the variables, still subject to linear constraints. Portfolio construction is the standard example: risk enters as a quadratic form (variance), return enters linearly, and Markowitz&#39;s 1952 mean-variance framework is exactly this shape.</p>
  <p>Whether the curve is a bowl or a saddle decides everything. A convex quadratic. One whose quadratic form never bends the &quot;wrong way&quot;, technically positive semidefinite: is still efficiently solvable, by the same interior-point machinery topic 16 just introduced for linear programs. The moment the quadratic form has even one direction that curves downward instead, the nice structure is gone and the problem becomes NP-hard: not harder in some cases, but provably hard in general, with the line between zero such directions and one being the entire boundary.</p>
  <p><strong>Semidefinite programming (SDP)</strong> is the next rung up the same ladder: instead of optimising over a vector of numbers, optimise a linear function over the cone of positive-semidefinite <em>matrices</em>. The chain is genuinely nested. LP ⊂ QP ⊂ SDP, each strictly more expressive than the last, and every one of them convex and solvable in polynomial time. What SDP buys is the ability to take a problem that is discrete and NP-hard, relax it into something continuous and convex, solve that exactly, and round the continuous answer back down with a provable guarantee on how much is lost. Doing exactly that to Max-Cut is one of the most celebrated results in the field, and the reason this topic ends up mattering to quantum computing.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>A quadratic program in standard form, and the line that decides its complexity:</p>
  <code class="eq">minimise   ½xᵀQx + cᵀx
 s.t.       Ax ≤ b
@@ -1631,7 +1631,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ for i = 1..m
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Combinatorial optimisation, exactly this way</span>
       Max-Cut and Max-SAT are the two problems Goemans and Williamson&#39;s own 1995 paper targets directly: the same NP-hard territory topic 10&#39;s metaheuristics search <em>without</em> a certificate, using a different tool (an exact convex relaxation with a proven worst-case ratio, not a heuristic search), and SDP relaxations of this style are now the standard rigorous approach across a wide family of NP-hard combinatorial problems, wherever a certified approximation ratio is worth more than an exact answer nobody can compute in time. (For the broader field this one result opens onto: provable approximation ratios for NP-hard problems in general, including set cover and facility location. Williamson &amp; Shmoys, <em>The Design of Approximation Algorithms</em>, CUP, 2011, is the standard text; Williamson is himself a co-author of the Goemans&ndash;Williamson result above.)</p>
  <p><span class="where">And on the quantum side of this page</span>
@@ -1660,7 +1660,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ for i = 1..m
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A bipartite network: two supply nodes S1 and S2 on the left, three demand nodes D1, D2 and D3 on the right. Three highlighted routes carry the optimal flow -- S1 to D1 fifteen units, S1 to D3 fifteen units, S2 to D2 twenty units -- for a total cost of 240. Three other routes exist but carry no flow in this optimal plan.">
@@ -1705,7 +1705,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ for i = 1..m
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Take topic 06&#39;s network-flow picture (a source, a sink, and whatever tangle of intermediate nodes and pipes sits between them) and strip out everything except two flat layers: a row of <strong>supply nodes</strong>, each holding a fixed amount of stock, and a row of <strong>demand nodes</strong>, each needing a fixed amount delivered, with a direct edge from every supply node to every demand node and nothing in between. That is the <strong>transportation problem</strong>: minimise total shipping cost, where each edge (i, j) costs c<sub>ij</sub> per unit and every supply and every demand must be met exactly.</p>
  <p>It is the single most structured special case of network flow on this whole page: bipartite, no intermediate nodes, every unit of supply going somewhere and every unit of demand coming from somewhere, and that extra structure is not incidental, as the mathematics below makes precise.</p>
  <p>It is also, unusually for this course, a problem with two independent discoveries rather than one. Frank Hitchcock published it first, as a pure distribution problem with no economic framing at all (1941). Tjalling Koopmans arrived at the same mathematical structure eight years later from the opposite direction: he spent 1942&ndash;44 as a statistician for the British Merchant Shipping Mission and the Combined Shipping Adjustment Board in Washington, a joint American&ndash;British wartime agency, working out how to route merchant shipping efficiently, and wrote the general problem up as a question about optimally allocating scarce cargo capacity to routes (1949). Koopmans shared the 1975 Nobel Memorial Prize in Economic Sciences with Leonid Kantorovich, awarded jointly &quot;for their contributions to the theory of optimum allocation of resources&quot;: work whose starting point was this same shipping-and-supply structure, reached from economics rather than from mathematics.</p>
@@ -1713,7 +1713,7 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ for i = 1..m
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>As a linear program, with x<sub>ij</sub> the amount shipped from source i to destination j, supplies s<sub>i</sub> and demands d<sub>j</sub> (balanced: Σs<sub>i</sub> = Σd<sub>j</sub>):</p>
  <code class="eq">minimise  Σᵢ Σⱼ cᵢⱼ xᵢⱼ
 s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
@@ -1725,7 +1725,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Restructuring a supply chain, for real</span>
       Procter &amp; Gamble&#39;s mid-1990s redesign of its North American product-sourcing and distribution network combined a facility-location decision (which plants stay open) with exactly this problem sitting underneath it: once the surviving plants and distribution centres are fixed, shipping product from each open plant to each distribution centre at minimum cost, against fixed plant capacities and centre demands, <em>is</em> a transportation problem in the textbook sense. Camm, Chorman, Dill, Evans, Sweeney &amp; Wegryn, &quot;Blending OR/MS, Judgment, and GIS: Restructuring P&amp;G&#39;s Supply Chain,&quot; <em>Interfaces</em> 27(1) (1997), 128&ndash;142, report the outcome: almost 20% fewer North American plants and over $200 million a year in pretax savings.</p>
  </div>
@@ -1748,7 +1748,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A constraint graph for map-colouring Australia's seven mainland-plus-island regions with three colours: amber, teal and violet. Every edge marks two regions that share a border and must get different colours. The valid colouring shown is Western Australia amber, Northern Territory teal, South Australia violet, Queensland amber, New South Wales teal, Victoria amber, Tasmania amber -- Tasmania shares no border with anything and is unconstrained. After Western Australia is fixed to amber, arc consistency alone shrinks both Northern Territory's and South Australia's domains from three colours to two, before any search happens.">
@@ -1806,14 +1806,14 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Stop and notice what every topic before this one has in common, including this course&#39;s own four-line opening. There has always been an objective: a number to push up or down, a plan to call &quot;best.&quot; <strong>Constraint satisfaction has no objective at all.</strong> The only question is whether some assignment exists that satisfies every constraint simultaneously, and if so, to produce one. There is no better or worse among the assignments that work: an assignment either satisfies every constraint or it does not, full stop. That is not a simplification made for this course; it is the honest, complete statement of what the field studies, and it is worth sitting with, because it means a good deal of the vocabulary built up over the last seventeen topics (shadow prices, bounds, approximation ratios) simply does not apply here. There is nothing to be a ratio <em>of</em>.</p>
  <p>The formal shape: a <strong>constraint satisfaction problem (CSP)</strong> is a set of variables, each with a <strong>domain</strong> of allowed values, and a set of <strong>constraints</strong>, each restricting which combinations of values its variables may jointly take. Solving it means finding an assignment of one value per variable that satisfies every constraint, or correctly reporting that none exists.</p>
  <p>Two techniques do essentially all the work, and they compose. <strong>Backtracking search</strong> assigns variables one at a time, checking constraints as it goes, and undoes an assignment the moment it conflicts with one already made. <strong>Constraint propagation</strong> runs before or between those assignments and removes domain values that could never appear in any solution, tightening the problem before search has to touch it. Neither is quantum, neither is exotic, and the worked example above shows exactly what propagation removes and why.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>General CSP (arbitrary finite domains, arbitrary constraints given as tables of allowed combinations) is <strong>NP-complete</strong>. Membership in NP is immediate: guess an assignment, and checking it against every constraint takes polynomial time. NP-hardness needs no new argument either, because two problems already on this page&#39;s own hardness ledger are themselves nothing but CSPs with a particular choice of variables, domains and constraints: graph k-colourability (also one of Karp&#39;s original 21 NP-complete problems, Karp, 1972: the same paper topic 04 cites for 0&ndash;1 integer programming, though it doesn&#39;t discuss colouring) and Boolean satisfiability (Cook, &quot;The Complexity of Theorem-Proving Procedures,&quot; <em>Proceedings of the 3rd ACM Symposium on Theory of Computing</em> (1971), 151&ndash;158: the theorem that opened the NP-complete class in the first place).</p>
  <p>That general statement hides something sharper. Restrict every variable&#39;s domain to just two values (Boolean CSP) and Schaefer proved the complexity of <em>every possible</em> constraint language collapses to exactly two outcomes, with nothing in between: T.J. Schaefer, &quot;The Complexity of Satisfiability Problems,&quot; <em>Proceedings of the 10th ACM Symposium on Theory of Computing</em> (1978), 216&ndash;226. Whatever set of allowed relations a Boolean CSP is built from, the resulting problem is either solvable in polynomial time. Schaefer names six tractable cases in full, among them Horn clauses, 2-SAT-like binary clauses, and linear equations over GF(2), and shows they cover every polynomial case there is, or it is NP-complete. No Boolean constraint language sits anywhere in between.</p>
  <p>The natural next question: does the same clean dichotomy hold once domains are allowed to be larger than two values, as in genuine graph colouring: stayed open for two decades as the Feder&ndash;Vardi conjecture (Feder &amp; Vardi, <em>SIAM Journal on Computing</em> 28(1) (1998), 57&ndash;104) before being proved independently, and published back-to-back in the same proceedings, by Bulatov, &quot;A Dichotomy Theorem for Nonuniform CSPs,&quot; <em>Proceedings of FOCS</em> (2017), 319&ndash;330, and Zhuk, &quot;A Proof of CSP Dichotomy Conjecture,&quot; <em>Proceedings of FOCS</em> (2017), 331&ndash;342: every fixed-template CSP, over any finite domain whatsoever, is either in P or NP-complete.</p>
@@ -1821,7 +1821,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Register allocation, every time a compiler runs</span>
       A compiler must assign each live temporary value in a program to one of a small number of physical registers, never giving the same register to two temporaries that are &quot;live&quot; at the same time. That is a CSP by construction: variables are temporaries, the domain is the set of physical registers, the constraint is &quot;different register from anything you interfere with&quot;, and it is standardly solved as graph colouring, on an interference graph built from the program. Chaitin, Auslander, Chandra, Cocke, Hopkins &amp; Markstein, &quot;Register Allocation via Coloring,&quot; <em>Computer Languages</em> 6(1) (1981), 47&ndash;57, is the paper that made this the industry-standard approach; when the graph is not colourable with the registers available, the compiler &quot;spills&quot; a value to memory and recolours.</p>
  <p><span class="where">And the puzzle everyone has already solved by hand</span>
@@ -1850,7 +1850,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="The same S-A-B-C-D road network from topic 08, now a Markov decision process: at S, A and B, the action you take succeeds 80 percent of the time and slips onto the state's other outgoing edge 20 percent of the time; C has only one outgoing edge, so no choice and no slip. Solving the resulting Bellman optimality equation exactly gives the same route as topic 08, S to A to B to C to D, but with expected cost 9.384, worse than topic 08's guaranteed 8, because the environment no longer promises to obey the chosen action.">
@@ -1902,7 +1902,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Topic 08&#39;s whole method rested on one quiet assumption: pick the cheapest edge out of a node, and you get that edge. A <strong>Markov decision process (MDP)</strong> is what is left of the shortest-path problem once that assumption is removed. You still choose an <strong>action</strong> at every <strong>state</strong>. The world still responds with a reward and a next state. But the next state is now drawn from a probability distribution over what your action makes <em>likely</em>, not a guarantee of what it makes <em>certain</em>, and &quot;Markov&quot; is the name for the specific, useful restriction that this distribution depends only on the current state and action, never on the path taken to reach them.</p>
  <p>This is exactly the gap topic 08 named on its way out the door: the same recursion, &quot;with an expectation where the min is.&quot; Where topic 08 asked <em>which edge is cheapest</em>, an MDP asks <em>which action has the best cheapest-in-expectation outcome</em>, averaged honestly over everything that action might actually cause.</p>
  <p>Solving an MDP still assumes you are handed the model. Every transition probability, every reward, known in advance, exactly like topic 08&#39;s road network was simply given. <strong>Reinforcement learning (RL)</strong> is what happens when that assumption goes too: no one hands you the probabilities or the rewards. You are dropped at S with nothing but the ability to try an action, observe what state you land in and what reward you got, and try again. The &quot;R&quot; in RL is the same reward as the Bellman equation&#39;s; &quot;learning&quot; means estimating that equation&#39;s answer from lived samples instead of computing it from a model you were never given.</p>
@@ -1910,7 +1910,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>An MDP is a tuple (S, A, P, R, &gamma;): states S, actions A, transition probabilities P(s&#39;|s,a), a reward R(s,a,s&#39;), and a discount factor &gamma; &isin; (0,1] weighting future reward against immediate reward. The <strong>Bellman optimality equation</strong> topic 08 forward-referenced, written in full:</p>
  <code class="eq">V*(s) = max over actions a of  Σ P(s&#39;|s,a) · [ R(s,a,s&#39;) + γ·V*(s&#39;) ]
  s&#39;</code>
@@ -1920,7 +1920,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">And on the quantum side of this page</span>
       A superconducting qubit drifts (its resonance frequency, its gate timings, the parameters a calibration pass tuned yesterday) and for years the standard fix has been to stop the machine and recalibrate from scratch. Baum, Amico, Howell, Hush, Liuzzi, Mundada, Merkh, Carvalho &amp; Biercuk (Q-CTRL), &quot;Experimental Deep Reinforcement Learning for Error-Robust Gate-Set Design on a Superconducting Quantum Computer,&quot; <em>PRX Quantum</em> 2, 040324 (2021), <a href="https://arxiv.org/abs/2105.01079">arXiv 2105.01079</a>, trained an RL agent directly against a real superconducting chip (no Hamiltonian model of the device supplied) to design an RX(&pi;/2) single-qubit gate and a ZX(&minus;&pi;/2) two-qubit gate robust to the chip&#39;s own error processes. It is exactly this page&#39;s state/action/reward loop, with the environment being real hardware instead of a simulated road network.</p>
  <p><span class="where">And the machine already named on this site&#39;s QEC page</span>
@@ -1952,7 +1952,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="A set-cover instance. Nine elements 1 to 9 sit in a row. Five available sets are shown as rows of membership dots below them: S1 covers 1,2,3,6,7,8; S2 covers 1,2,3,4,5; S3 covers 6,7,8,9; S4 covers 4,5; S5 covers 9. The greedy algorithm picks the largest set first, S1 with six elements, then S2 for two new elements, then S3 for one, using three sets in total. The true optimum is S2 together with S3, which covers all nine elements with only two sets. The greedy guarantee proved in advance is that it never uses more than H(6) times the optimum, where H(6) is 2.45, so three sets against an optimum of two is well inside the bound.">
@@ -2021,7 +2021,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>A <strong>greedy algorithm</strong> builds a solution one commitment at a time, and each commitment is whatever looks best <em>right now</em> by some fixed local rule (cheapest edge, largest set, highest ratio) with no lookahead and no backtracking. It is the first thing anyone tries on a new problem, and usually the first thing they abandon, because it is so easy to build an instance where grabbing the shiny thing early forces three bad choices later.</p>
  <p>Operations research keeps greedy in the toolkit anyway, for two precise reasons. <strong>First: on some problems greedy is not a heuristic at all. It is exactly optimal, provably, on every instance.</strong> Minimum spanning tree is the classic case: Kruskal&#39;s algorithm just adds the cheapest edge that doesn&#39;t form a cycle, forever, and the tree it ends on is the cheapest tree that exists. That is not luck. It is a structural property of the problem, the <em>matroid</em> property, made precise below.</p>
  <p><strong>Second: when greedy is not optimal, it often comes with a guarantee</strong>: a proof, worked out before you ever run it, that its answer is within a fixed factor of the best possible, no matter how adversarial the input. An algorithm that is always within 2&times; optimal, runs in a blink, and never needs tuning is worth a great deal, especially as the honest baseline a fancier method has to beat. This is the same role simulated annealing plays for quantum annealing in the bridges section below: you cannot claim a win without knowing what the cheap classical method already gets for free.</p>
@@ -2029,7 +2029,7 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p><strong>When greedy is exactly optimal: matroids.</strong> An independence system is a ground set E with a family of &ldquo;independent&rdquo; subsets closed under taking subsets. It is a <strong>matroid</strong> if it also satisfies the exchange property: whenever independent sets A and B have |A| &lt; |B|, some element of B\A can be added to A keeping it independent. Rado (1957) and Edmonds (&ldquo;Matroids and the Greedy Algorithm,&rdquo; <em>Mathematical Programming</em> 1, 127&ndash;136 (1971)) proved the sharp statement: <strong>the greedy algorithm returns a maximum-weight independent set for every weighting if and only if the independence system is a matroid.</strong> Forests of a graph form a matroid (the graphic matroid), which is exactly why Kruskal&#39;s cheapest-edge rule is optimal for minimum spanning tree, and why the same trick fails for shortest path or the travelling salesman, whose feasible structures are not matroids.</p>
  <p><strong>When greedy is not optimal: the approximation ratio.</strong> For a minimisation problem, an algorithm is a <strong>&rho;-approximation</strong> if on every instance it returns a solution of cost at most &rho; times the optimum, with &rho; fixed and known ahead of time. For set cover, greedy&#39;s ratio is the harmonic number:</p>
  <code class="eq">greedy sets  ≤  H(k) · OPT ,    H(k) = 1 + 1/2 + 1/3 + ⋯ + 1/k  ≈ ln k
@@ -2040,7 +2040,7 @@ k = size of the largest set</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Every compression you have ever used</span>
       Huffman coding builds an optimal prefix-free code by a pure greedy rule (repeatedly merge the two least-frequent symbols) and the code it produces is provably minimum-redundancy (Huffman, 1952). It is inside ZIP, PNG, JPEG, MP3 and HTTP/2 header compression. This is a greedy algorithm that is <em>exactly</em> optimal, not through matroid structure this time, but by a direct exchange argument: the two least-frequent symbols can always be taken as the deepest pair in <em>some</em> optimal tree, and induction on the merged instance does the rest.</p>
  <p><span class="where">Inside a quantum computer&#39;s real-time decoder</span>
@@ -2071,7 +2071,7 @@ k = size of the largest set</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="The newsvendor problem. You buy papers at cost 2 and sell at price 5, unsold papers are worthless. Demand is either 20 or 60 units, each with probability one half. A table shows profit for three candidate order quantities across the two demand outcomes, plus expected profit and worst-case profit. Ordering 20 gives profit 60 in both outcomes: expected 60, worst case 60 -- this is the robust max-min choice. Ordering 40, the plug-in-the-mean choice, gives 20 and 120: expected 70, worst case 20. Ordering 60, the stochastic optimum, gives minus 20 and 180: expected 80, worst case minus 20. With perfect information you would order exactly the demand for an expected profit of 120. The value of the stochastic solution is 80 minus 70 equals 10; the expected value of perfect information is 120 minus 80 equals 40; the critical ratio (5 minus 2) over (5 minus 0) equals 0.6 picks the order quantity 60.">
@@ -2125,7 +2125,7 @@ k = size of the largest set</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Real decisions are made before the facts are in. You order stock before you know demand, commit generating capacity before you know the wind, set a budget before you know the exchange rate. The naive move (take the average of each unknown, treat it as certain, solve the deterministic problem) is <strong>Flaw of Averages</strong> territory: it systematically misprices risk, because a plan that is fine on average can still be a disaster on the outcomes that actually matter. The figure above shows it directly, and topic 04&#39;s rounding trap and topic 18&#39;s northwest-corner trap were smaller versions of the same lesson: feasible-looking is not good.</p>
  <p>There are two disciplined ways to handle the gap, and they answer different questions.</p>
  <p><strong>Stochastic optimisation</strong> assumes you have a probability distribution over what might happen, and minimises <em>expected</em> cost (or maximises expected value). The standard shape is <strong>two-stage with recourse</strong>: choose a here-and-now decision x now, watch the random outcome &xi; land, then take a corrective wait-and-see decision y(&xi;). You are optimising x against the average cost of the best possible correction. This is the right frame when you trust your probabilities and you will face the situation many times, so the average is what you actually experience.</p>
@@ -2133,7 +2133,7 @@ k = size of the largest set</code>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p><strong>Two-stage stochastic program.</strong> With first-stage decision x, cost vector c, random data &xi; with distribution P, and a recourse cost Q(x, &xi;) equal to the optimal second-stage response:</p>
  <code class="eq">minimise cᵀx  +  E_ξ [ Q(x, ξ) ]
 Q(x, ξ) =  min { qᵀy : W y = h(ξ) − T(ξ) x ,  y ≥ 0 }</code>
@@ -2146,7 +2146,7 @@ F = cumulative distribution of demand</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Keeping the lights on, every day</span>
       Grid operators solve <strong>unit commitment</strong> a day ahead (which generators to switch on) before they know tomorrow&#39;s demand or wind and solar output. Cast as a two-stage stochastic program: commit plants now (first stage), redispatch against whatever the weather actually does (recourse), minimise expected cost subject to a feasible response in every scenario. It is a canonical application and an active research and pilot area. In day-to-day operation most system operators still run <em>deterministic</em> unit commitment hedged with reserve margins; scenario-based stochastic versions are so far deployed only in limited settings.</p>
  <p><span class="where">And on the quantum side of this page</span>
@@ -2177,7 +2177,7 @@ F = cumulative distribution of demand</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="Eight candidate plans plotted by cost on the horizontal axis and delay on the vertical axis, both to be minimised. Six plans P1 through P6 form the Pareto front, connected by a line: P1 at cost 1 delay 10, P2 at 2 and 6, P3 at 3 and 4, P4 at 5 and 3, P5 at 8 and 2, P6 at 10 and 1. Two plans are dominated and sit above the front: P7 at cost 4 delay 8, and P8 at cost 7 delay 5. P5 is circled and flagged: it is Pareto-optimal, but sweeping the weight in a weighted-sum objective never selects it, because it lies in a non-convex dent of the front. The epsilon-constraint method -- minimise delay subject to cost at most 8 -- does select P5.">
@@ -2223,14 +2223,14 @@ F = cumulative distribution of demand</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Almost every real decision has more than one axis of &ldquo;good&rdquo;: cost and risk, speed and quality, profit and emissions, coverage and privacy. Most of this course assumed those could be folded into a single objective number. Topic 23 is what you do when they honestly cannot, when the axes conflict, so pushing one down pushes another up, and there is no exchange rate between them that everyone would agree on.</p>
  <p>The organising idea is <strong>Pareto optimality</strong> (Vilfredo Pareto, 1906). A solution is Pareto-optimal, or <em>efficient</em>, if you cannot improve any one objective without making at least one other worse. The set of all such solutions is the <strong>Pareto front</strong>, and it is the honest output of a multi-objective problem: not an answer, but the complete menu of non-wasteful trade-offs. Anything not on the front is <em>dominated</em> (beaten outright by something on it) and can be discarded with no argument. Choosing a point <em>on</em> the front is a values judgement, and the method&#39;s job is to present the front clearly, not to pretend it can make that call for you.</p>
  <p>This is the exact mirror image of topic 19. There, constraint satisfaction had <em>no</em> objective and the only question was feasibility. Here there are <em>several</em> objectives and feasibility is easy: the difficulty has moved entirely into what &ldquo;best&rdquo; even means. Between them, the two topics bracket the assumption every other topic on this page quietly relied on: that there is exactly one number to optimise.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p>With objectives f<sub>1</sub>, &hellip;, f<sub>k</sub> all to be minimised over a feasible set X, point x <strong>dominates</strong> point x&prime; if f<sub>i</sub>(x) &le; f<sub>i</sub>(x&prime;) for every i and strictly less for at least one. x* is <strong>Pareto-optimal</strong> if nothing in X dominates it. The front is the image of all Pareto-optimal points in objective space. Two standard methods turn this back into ordinary single-objective problems:</p>
  <code class="eq">weighted sum: minimise  Σ wᵢ fᵢ(x) ,   wᵢ ≥ 0 ,  Σ wᵢ = 1
 ε-constraint:   minimise  f₁(x)   s.t.   fⱼ(x) ≤ εⱼ  for j ≠ 1</code>
@@ -2240,7 +2240,7 @@ F = cumulative distribution of demand</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Every engineered object you own</span>
       An aircraft wing trades weight against drag against manufacturing cost; a chip layout trades speed against power against area; a delivery schedule trades fuel against on-time rate against driver hours. None has a natural exchange rate, so the standard practice is to compute the Pareto front (often with NSGA-II) hand it to the people who own the decision, and let them pick. The method&#39;s honesty is the point: it makes the trade-off explicit instead of smuggling a weighting in under the label &ldquo;the optimal design.&rdquo;</p>
  <p><span class="where">And on the quantum side of this page</span>
@@ -2267,7 +2267,7 @@ F = cumulative distribution of demand</code>
  <div class="mod-body">
 
  <div class="layer see">
- <h4>See it</h4>
+ <h4 aria-level="3">See it</h4>
  <figure class="modfig">
  <div class="modscroll"><svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img"
              aria-label="The economic order quantity cost curve, drawn schematically with no numeric axis ticks and a vertical scale that does not begin at zero. The horizontal axis is order quantity Q, running from 100 to 600; the vertical axis is annual cost. A falling curve is the annual ordering cost, demand 3600 times setup cost 50 divided by Q. A rising straight line is the annual holding cost, Q over 2 times holding cost 4. Their sum is a U-shaped total-cost curve with its minimum at Q equals 300, where ordering cost and holding cost are both 600 and the total is 1200. The two component curves cross at exactly that point. The total-cost curve is flat near the bottom: at Q equals 250 and Q equals 360 the total is 1220, only 20 above the minimum. The optimal Q equals the square root of two times 50 times 3600 divided by 4, which is the square root of 90000, which is 300.">
@@ -2306,14 +2306,14 @@ F = cumulative distribution of demand</code>
  </div>
 
  <div class="layer">
- <h4>The intuition</h4>
+ <h4 aria-level="3">The intuition</h4>
  <p>Inventory exists to absorb the mismatch between how supply arrives and how demand draws it down. Hold too much and you pay to store it, insure it, and watch it go stale; hold too little and you stock out, losing the sale and sometimes the customer. Every inventory model is a way of pricing that trade-off precisely instead of by feel, and it is the problem operations research was arguably invented on, decades before it had the name: Ford Whitman Harris published the <strong>economic order quantity</strong> formula in 1913; he had worked it out as an engineer at Westinghouse.</p>
  <p>Three questions organise the whole area. <strong>How much to order at once</strong>: the batch-size trade-off in the figure. <strong>When to reorder</strong>. You cannot wait until the shelf is empty, because resupply takes time, so you trigger a new order once stock falls to a level that covers expected demand over that lead time. <strong>How much extra to carry as a cushion</strong>, <em>safety stock</em>, sized against demand variability and the service level you are willing to promise, which turns out to be topic 22&#39;s critical fractile wearing a different hat.</p>
  <p>Scale this from one shelf to a chain of suppliers, factories, warehouses and retailers and a new problem appears that no single stage can see: the <strong>bullwhip effect</strong>. Small wobbles in retail demand get amplified at every step upstream, so the factory sees wild swings even when the shop floor is nearly steady, and one of its documented causes is a rationing scramble that is, precisely, a game in topic 11&#39;s sense.</p>
  </div>
 
  <div class="layer maths">
- <h4>The mathematics</h4>
+ <h4 aria-level="3">The mathematics</h4>
  <p><strong>Economic order quantity.</strong> Demand D per year is steady, each order costs a fixed K to place regardless of size, holding one unit for a year costs h. Ordering Q at a time means D/Q orders a year and an average of Q/2 units on hand, so annual cost is</p>
  <code class="eq">C(Q) = (D/Q)·K  +  (Q/2)·h minimised at   Q* = √(2KD / h)</code>
  <p>Setting C&prime;(Q) = 0 gives it in one line, and at Q* the two terms are equal: ordering cost exactly matches holding cost, which is the fastest way to sanity-check any EOQ answer. With K = 50, D = 3600, h = 4 the formula gives &radic;90000 = 300, an integer scan of C(Q) confirms 300 is the minimum, and C(300) = 600 + 600 = 1200. The cost curve&#39;s flatness is not incidental: because C is the sum of a term in 1/Q and a term in Q, it rises only gently on either side of the optimum: ordering 20% above EOQ costs about 1.7% more (1,220 against 1,200), 20% below about 2.5% more (1,230), which is why rounded, practical order sizes lose almost nothing.</p>
@@ -2325,7 +2325,7 @@ F = cumulative distribution of demand</code>
  </div>
 
  <div class="layer real">
- <h4>Where it actually runs</h4>
+ <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Every retailer you have ever bought from</span>
       Continuous-review (s, S) and periodic base-stock policies, sized by EOQ-style batching and critical-fractile safety stock, are what replenishment systems at large retailers and distributors actually run, per stock-keeping unit, per location, nightly. Zara is the standard counter-example taught alongside them: it deliberately shortens and speeds its supply chain so that lead times are small, which shrinks the safety stock it must carry and damps the bullwhip it would otherwise amplify: a supply-chain design choice made to change the inputs to these formulas rather than to solve them harder.</p>
  <p><span class="where">Where this course&#39;s threads meet</span>

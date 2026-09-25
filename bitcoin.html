@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/bitcoin.css?v=17">
+<link rel="stylesheet" href="p/bitcoin.css?v=18">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -137,7 +137,7 @@
      stays here, with the real versioned URL, so check_site.py's
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
-<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=3"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="p/bitcoin.js?v=6" defer></script>
 
 
@@ -279,7 +279,7 @@
 <p class="tagline">Short answer: not today, and not with anything on a public roadmap. Long answer: the interesting one.</p>
 
 <div class="card">
-<h3>The answer in four lines</h3>
+<h3 aria-level="2">The answer in four lines</h3>
 <p>Breaking one Bitcoin key needed <strong>~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026's</strong>. Today's biggest chips have <strong>a few thousand noisy ones</strong>, and a noisy qubit is not a fraction of a corrected one until error rates are low enough. Mining is effectively safe forever. The real story is a <em>migration problem</em> whose deadline keeps moving closer.</p>
 </div>
 

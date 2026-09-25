@@ -290,7 +290,7 @@
    * the site's own 2026-09-21 lazy-loading rule); this page says so rather
    * than pretending "no medals" means "never played". */
   function medalRow(m) {
-    if (!m) return '<p class="stg-nr">No Arcade data in this tab yet -- visit ' +
+    if (!m) return '<p class="stg-nr">No Arcade data in this tab yet — visit ' +
       '<a href="play.html">The Arcade</a> first, then come back to this page in the same tab.</p>';
     return '<p class="stg-nr"><strong>' + m.gold + '</strong> gold (proven optimal) · ' +
       '<strong>' + m.silver + '</strong> silver · <strong>' + m.bronze + '</strong> bronze, of 6 cabinets.</p>';
@@ -333,7 +333,7 @@
             ' resolved prediction' + (sum.predictions.resolved.length === 1 ? '' : 's') + ': <strong>' +
             sum.predictions.meanBrier.toFixed(2) + '</strong>.</p>';
         } else {
-          predBlock += '<p class="stg-nr">' + sum.predictions.pending.length + ' pending, 0 resolved -- ' +
+          predBlock += '<p class="stg-nr">' + sum.predictions.pending.length + ' pending, 0 resolved — ' +
             'not enough resolved predictions yet for a calibration score. Claims on this site resolve on ' +
             'their own dated deadline, not on demand.</p>';
         }

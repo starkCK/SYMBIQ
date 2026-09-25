@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/basics.css?v=17">
+<link rel="stylesheet" href="p/basics.css?v=18">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -87,7 +87,7 @@
      stays here, with the real versioned URL, so check_site.py's
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
-<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=3"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="p/basics.js?v=6" defer></script>
 
 
@@ -281,7 +281,7 @@
 <p>For thirty years the conductor's rulebook was written by hand. In 2024 Google DeepMind trained an AI, AlphaQubit, to write its own, by listening to one real choir's recordings until it <em>learned</em> that choir's bad habits. It makes <span class="rcpt" data-rcpt="bas-alphaqubit">about 30% fewer wrong calls than the hand-written rulebooks fast enough to run on a live machine, and about 6% fewer than the slowest and most careful one</span>. It is still too slow to conduct a live performance, and making it fast enough is the race everyone is now running.</p>
 
 <div class="sowhat">
-  <h3>So what?</h3>
+  <h3 aria-level="2">So what?</h3>
   <p>Every promise you have read about quantum computers (breaking encryption, designing drugs, cracking optimisation) stands on this one unglamorous job, the way a skyscraper stands on plumbing nobody photographs. None of it happens on a machine that forgets its own state halfway through.</p>
   <p>What is finally making the job work is a machine-learning model doing what it does best: noticing a pattern nobody wrote down. <strong>A technology famous for being roughly right is rescuing one that only works when it is exactly right.</strong> That odd partnership is why this site exists.</p>
 </div>

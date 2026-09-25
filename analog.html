@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/analog.css?v=17">
+<link rel="stylesheet" href="p/analog.css?v=18">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -157,7 +157,7 @@
      stays here, with the real versioned URL, so check_site.py's
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
-<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=3"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="p/analog.js?v=6" defer></script>
 
 
@@ -296,7 +296,7 @@
 <p class="tagline">Every "quantum will revolutionise optimisation" headline has a classical rival built on the same underlying physics: coupled circuits settling into the answer, not calculating it. Meet the machine it has to beat.</p>
 
 <div class="card">
-<h3>The answer in four lines</h3>
+<h3 aria-level="2">The answer in four lines</h3>
 <p>An <strong>Ising machine</strong> is a physical network engineered so its own natural resting state <em>is</em> the answer to an optimisation problem: not calculated, arrived at. Wire many oscillators, lasers, or fluctuating bits together with couplings that encode a problem, and the network relaxes toward the minimum of an energy function called the <strong>Ising Hamiltonian</strong>, the exact same object a quantum annealer is built to minimise, reached by an entirely classical route. Three real hardware families compete on this today, one of them now running at a million-unit scale, and none of them wins every problem: which one is best depends on the instance, not the marketing.</p>
 
 <div class="contra" data-claim="dwave-magnetic-simulation-supremacy-2025">

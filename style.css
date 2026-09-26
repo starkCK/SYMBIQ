@@ -810,6 +810,29 @@ nav .link.pathlink:hover { color: var(--violet); }
   border-radius: 99px; border: 1px solid var(--border);
 }
 .navchip:hover { border-color: var(--teal); }
+
+/* Sub-headings inside a dropdown (2026-09-26, the Learn / Play / Community regroup).
+   Learn holds two tracks, so at 1000px and up its panel lays them out as two columns
+   instead of one 900px-tall list. Below that the panel is one column and scrolls inside
+   itself, so it can never run off the bottom of a short laptop screen. */
+.navhead {
+  margin: 10px 10px 2px; padding: 0; font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); font-weight: 700;
+}
+.navpanel > .navhead:first-child, .navcol > .navhead:first-child { margin-top: 4px; }
+@media (min-width: 720px) {
+  .navpanel { max-height: calc(100vh - 110px); overflow-y: auto; }
+}
+@media (min-width: 1000px) {
+  .navpanel-wide { display: grid; grid-template-columns: repeat(2, minmax(270px, 1fr)); gap: 0 14px; min-width: 590px; }
+}
+/* A small static dot on a tab marks the two places a first-time visitor should not miss:
+   the live security tools, and the new swipe deck. No pulse, no label: the width budget
+   of the nav's first row is 40-49px of control and no more. */
+.navcat[data-hot] > summary::before, .navcat[data-new] > summary::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex: none;
+}
+.navcat[data-new] > summary::before { background: var(--violet); }
 /* Light mode's teal (#0d9488) is dark enough that plain var(--teal) text
    fails 4.5:1 here -- measured 3.30/3.74/3.74:1 on the active summary, the
    current-page link and the widget chips. Same shape as every other
@@ -858,6 +881,13 @@ nav .link.pathlink:hover { color: var(--violet); }
 .gate.opened { display: none; }
 
 .cabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 20px 0 10px; }
+/* The three banners over the Arcade floor: a heading that spans the whole grid row, then its
+   cabinets, then a plain line of links to the same kind of game on other pages. */
+.cabband { grid-column: 1 / -1; margin-top: 12px; }
+.cabband:first-child { margin-top: 0; }
+.cabband h3 { margin: 0 0 2px; font-size: 1.05rem; }
+.cabband p { margin: 0; color: var(--muted); font-size: .9rem; }
+.cabalso { grid-column: 1 / -1; margin: -4px 0 0; font-size: .86rem; color: var(--muted); }
 .cab {
   text-align: left; background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
   padding: 18px 20px; cursor: pointer; font: inherit; color: var(--text); position: relative; overflow: hidden;
@@ -2462,3 +2492,11 @@ a.tbtn { text-decoration: none; }
   .tbtn, .corr-f, .scene-audio, .ms-leave, .ms-tell, .hole, .orjump, .ms-opt, .lv, .ctrlbtn, .pick,
   .mc-node, .duelwrap .dq, .dial-detent circle, .ornode.open circle { transition: none; }
 }
+
+/* A real photograph inside an article (2026-09-26). Credit and licence go in the caption, next to
+   the picture, because a CC BY licence asks for that. Width/height attributes are set in the
+   markup so the page does not jump when the file arrives. */
+.photo { margin: 18px 0; }
+.photo img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
+.photo figcaption { margin-top: 6px; font-size: .8rem; line-height: 1.5; color: var(--muted); }
+.photo figcaption a { color: inherit; text-decoration: underline; }

@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/apply.css?v=10">
+<link rel="stylesheet" href="p/apply.css?v=12">
 
 
 
@@ -72,7 +72,7 @@
 
 
 <script src="core.js?v=2"></script>
-<script src="p/apply.js?v=1" defer></script>
+<script src="p/apply.js?v=2" defer></script>
 
 
 
@@ -105,9 +105,11 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat" data-cat="quantum">
-      <summary>Quantum</summary>
-      <div class="navpanel">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
       <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
       <div class="navrow">
@@ -137,26 +139,59 @@
       <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
       <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
       </div>
-    </details>
-    <details class="navcat" data-cat="optimisation">
-      <summary>Optimisation</summary>
-      <div class="navpanel">
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
       <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
       <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
       <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
       </div>
+      </div>
     </details>
-    <details class="navcat" data-cat="security">
+    <details class="navcat" data-cat="security" data-hot="1">
       <summary>Security</summary>
       <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
       <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
       <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
       <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
       <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
       <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
       <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain active">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="play">
@@ -164,29 +199,19 @@
       <div class="navpanel">
       <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
-      </div>
-    </details>
-    <details class="navcat navcat-cur" data-cat="desk">
-      <summary>The Desk</summary>
-      <div class="navpanel">
-      <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
-      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
-      <div class="navrow">
-        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
-        <a href="race.html#threshold" class="navchip">threshold →</a>
-      </div>
-      <div class="navrow">
-        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
-        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
-      </div>
-      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from researchers and practitioners, not the desk</span></a>
-      <a href="apply.html" class="navmain active">Write for SymbiQ<span class="sub">Apply to publish under your own name</span></a>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
-      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
-      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
       </div>
     </details>
   </div>
@@ -196,9 +221,21 @@
     <div class="navpanel" id="sq-auth"></div>
   </details>
 </nav>
-<h1>Apply to write for SymbiQ</h1>
+<h1>Write for SymbiQ</h1>
 <p class="lede">SymbiQ runs on one strict rule: <strong>the desk decides what publishes, but the desk doesn&rsquo;t have to write it alone.</strong> If you work in quantum computing, operations research or post-quantum security &mdash; as a researcher, a practitioner, or a serious enthusiast &mdash; you can apply to publish an <a href="insights.html">Insight Note</a> here under your own name.</p>
 
+<div class="grid grid-2">
+  <div class="card">
+    <h3>Verified writer</h3>
+    <p>For researchers and practitioners who expect to write more than once. You apply with your background, once. If approved, your notes run under your own name with a <strong>Verified writer</strong> label.</p>
+    <a href="#apply">Apply as a verified writer &rarr;</a>
+  </div>
+  <div class="card">
+    <h3>Community post</h3>
+    <p>For anyone with something checkable to say. No background check and no account. Send a post; it is read before it runs, and it is labelled as a community post from a writer the desk has not verified.</p>
+    <a href="#post">Send a community post &rarr;</a>
+  </div>
+</div>
 <h2 id="what-this-is">What this is</h2>
 <p>A place for short, evidence-tiered essays &mdash; not a feed, not a forum. Every note gets the same 🟢🟡🔴 tier discipline and citation standard the rest of this site holds itself to, reviewed before it runs, credited to you, never edited into something you didn&rsquo;t say. See <a href="insights.html">Insight Notes</a> for what one looks like, and <a href="insights.html#researchers">why it might be worth your time specifically if you&rsquo;re a working scientist or researcher</a>.</p>
 
@@ -209,7 +246,7 @@
   <div class="card"><h3>3. You write, the desk publishes it under your name</h3><p>An approved pitch becomes a draft; the desk checks it against the same citation and tier rules every page here follows, then it goes up credited to you.</p></div>
 </div>
 
-<h2 id="apply">Apply</h2>
+<h2 id="apply">Apply as a verified writer</h2>
 <p>Fields marked * are the ones the desk actually needs to make a decision. Everything else helps but isn&rsquo;t a gate.</p>
 
 <form class="sqform" data-sq="creator-application">
@@ -247,10 +284,50 @@
 </form>
 <p class="sqnote">Read by a human, always. This is not an account signup &mdash; nothing publishes until the desk has reviewed it.</p>
 
+<h2 id="post">Send a community post</h2>
+<p>Write it the way an Insight Note is written: one claim, the evidence for it, and what would prove you wrong. Every number needs a source you can link. A post that is an advert, or that the desk cannot check against its sources, may be declined.</p>
+<form class="sqform" data-sq="community-post">
+  <div class="sqfield">
+    <label for="cp-name">Your name *</label>
+    <input type="text" id="cp-name" name="name" data-label="your name" required placeholder="For the desk; not shown unless you use it as your byline">
+  </div>
+  <div class="sqfield">
+    <label for="cp-email">Email *</label>
+    <input type="email" id="cp-email" name="email" data-label="your email" required placeholder="you@example.com">
+  </div>
+  <div class="sqfield">
+    <label for="cp-byline">Byline *</label>
+    <input type="text" id="cp-byline" name="byline" data-label="your byline" required placeholder="Your name, or a handle you would rather be credited by">
+  </div>
+  <div class="sqfield">
+    <label for="cp-title">Title *</label>
+    <input type="text" id="cp-title" name="title" data-label="a title" required placeholder="A specific claim beats a broad topic">
+  </div>
+  <div class="sqfield">
+    <label for="cp-topic">Topic</label>
+    <input type="text" id="cp-topic" name="topic" placeholder="Quantum computing, optimisation, or security">
+  </div>
+  <div class="sqfield">
+    <label for="cp-post">The post *</label>
+    <textarea id="cp-post" name="post" data-label="the post" required rows="12" placeholder="Plain text. A few hundred words is plenty."></textarea>
+  </div>
+  <div class="sqfield">
+    <label for="cp-sources">Sources *</label>
+    <textarea id="cp-sources" name="sources" data-label="your sources" required placeholder="One link per line. Every number or claim of fact in the post should trace to one."></textarea>
+  </div>
+  <div class="sqfield">
+    <label><input type="checkbox" name="own_work" value="yes" required> I wrote this myself, and I understand it will be labelled as an unverified community post.</label>
+  </div>
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+         style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+  <p class="sqnote" style="flex:1 1 100%;margin:0">Community posts are reviewed before they publish. This can take up to 48 hours.</p>
+  <button type="submit">Send the post for review &rarr;</button>
+</form>
 <h2 id="expect">What to expect</h2>
 <ul>
 <li><strong>No payment.</strong> This isn&rsquo;t a content mill and it isn&rsquo;t pretending to be one. What you get is a citable, dated, evidence-tiered byline under your own name &mdash; however small an audience this site has today.</li>
 <li><strong>Edited for the same things every page here is edited for</strong>: does the citation say what it&rsquo;s cited for, does the tier match the evidence, is the claim falsifiable. Not for voice &mdash; that stays yours.</li>
+<li><strong>Community posts are labelled.</strong> They run as posts from a writer the desk has not verified, and they get the same citation check as everything else. A verified label is earned by applying above, not by posting more.</li>
 <li><strong>A &ldquo;not yet&rdquo; is possible and isn&rsquo;t personal.</strong> It usually means the pitch needs to be sharper or more specific, and the desk will say which.</li>
 </ul>
 

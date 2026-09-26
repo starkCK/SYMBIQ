@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "generated": "2026-09-25",
- "pages": 28,
- "count": 443,
+ "generated": "2026-09-26",
+ "pages": 29,
+ "count": 466,
  "records": [
   {
    "k": "s",
@@ -255,15 +255,31 @@
   {
    "k": "s",
    "p": "apply.html",
-   "t": "Apply to write for SymbiQ",
-   "h": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
+   "h": "Write for SymbiQ",
    "x": "SymbiQ runs on one strict rule: the desk decides what publishes, but the desk doesn’t have to write it alone. If you work in quantum computing, operations research or post-quantum security — as a researcher, a practitioner, or a serious ent",
    "w": 3
   },
   {
    "k": "s",
+   "p": "apply.html",
+   "t": "Write for SymbiQ",
+   "h": "Verified writer",
+   "x": "For researchers and practitioners who expect to write more than once. You apply with your background, once. If approved, your notes run under your own name with a Verified writer label. Apply as a verified writer →",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "apply.html",
+   "t": "Write for SymbiQ",
+   "h": "Community post",
+   "x": "For anyone with something checkable to say. No background check and no account. Send a post; it is read before it runs, and it is labelled as a community post from a writer the desk has not verified. Send a community post →",
+   "w": 1
+  },
+  {
+   "k": "s",
    "p": "apply.html#what-this-is",
-   "t": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
    "h": "What this is",
    "x": "A place for short, evidence-tiered essays — not a feed, not a forum. Every note gets the same 🟢🟡🔴 tier discipline and citation standard the rest of this site holds itself to, reviewed before it runs, credited to you, never edited into somet",
    "w": 2
@@ -271,7 +287,7 @@
   {
    "k": "s",
    "p": "apply.html#how-it-works",
-   "t": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
    "h": "How it works",
    "x": "",
    "w": 2
@@ -279,7 +295,7 @@
   {
    "k": "s",
    "p": "apply.html",
-   "t": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
    "h": "1. You apply",
    "x": "Tell the desk who you are and what you’d want to write about. No account, no upload — the form below, or email.",
    "w": 1
@@ -287,15 +303,15 @@
   {
    "k": "s",
    "p": "apply.html",
-   "t": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
    "h": "2. It gets read",
-   "x": "SymbiQ is one person. A reply won’t be instant, but every application is read personally and every one gets answered.",
+   "x": "SymbiQ is one person. A reply won’t be instant, but the desk reads every application itself.",
    "w": 1
   },
   {
    "k": "s",
    "p": "apply.html",
-   "t": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
    "h": "3. You write, the desk publishes it under your name",
    "x": "An approved pitch becomes a draft; the desk checks it against the same citation and tier rules every page here follows, then it goes up credited to you.",
    "w": 1
@@ -303,17 +319,25 @@
   {
    "k": "s",
    "p": "apply.html#apply",
-   "t": "Apply to write for SymbiQ",
-   "h": "Apply",
+   "t": "Write for SymbiQ",
+   "h": "Apply as a verified writer",
    "x": "Fields marked * are the ones the desk actually needs to make a decision. Everything else helps but isn’t a gate. Your name * Email * What's your field or area of work? * Educational or institutional background * Links (LinkedIn, ORCID, Goog",
    "w": 2
   },
   {
    "k": "s",
+   "p": "apply.html#post",
+   "t": "Write for SymbiQ",
+   "h": "Send a community post",
+   "x": "Write it the way an Insight Note is written: one claim, the evidence for it, and what would prove you wrong. Every number needs a source you can link. A post that is an advert, or that the desk cannot check against its sources, may be decli",
+   "w": 2
+  },
+  {
+   "k": "s",
    "p": "apply.html#expect",
-   "t": "Apply to write for SymbiQ",
+   "t": "Write for SymbiQ",
    "h": "What to expect",
-   "x": "No payment. This isn’t a content mill and it isn’t pretending to be one. What you get is a citable, dated, evidence-tiered byline under your own name — small an audience as this site has today. Edited for the same things every page here is ",
+   "x": "No payment. This isn’t a content mill and it isn’t pretending to be one. What you get is a citable, dated, evidence-tiered byline under your own name — however small an audience this site has today. Edited for the same things every page her",
    "w": 2
   },
   {
@@ -1472,9 +1496,25 @@
    "k": "s",
    "p": "insights.html#notes",
    "t": "Insight Notes",
-   "h": "The notes",
-   "x": "The first Insight Notes are being reviewed now. This section fills in as they’re approved — be one of the first.",
+   "h": "The shelves",
+   "x": "Two lanes lead onto this page, and they are labelled differently on purpose. Verified writers applied with a background the desk checked. Community posts come from anyone, unverified, and run only after the desk has read them and checked th",
    "w": 2
+  },
+  {
+   "k": "s",
+   "p": "insights.html#verified",
+   "t": "Insight Notes",
+   "h": "Verified writers",
+   "x": "No notes from verified writers are published yet. Apply as one.",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "insights.html#community",
+   "t": "Insight Notes",
+   "h": "Community posts",
+   "x": "No community posts are published yet. Send one.",
+   "w": 1
   },
   {
    "k": "s",
@@ -2418,6 +2458,62 @@
    "t": "The Race",
    "h": "Our predictions",
    "x": "Every prediction we make is falsifiable, dated, and scored when it resolves. No deleting misses. As of 2026-08-27 this table moved to The Ledger, the same mechanism generalised to track claims from anyone, not only from us. Our own predicti",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Reality Check",
+   "x": "Movie scenes, myths and viral claims about quantum physics, one card at a time. Each card says what the story claims, what is real, what stands in the way today, and, marked as speculation, what would have to change for it to work. Swipe, o",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "reality.html#how",
+   "t": "Reality Check",
+   "h": "How a card is rated",
+   "x": "The rating asks one question: how much of the physics in this scene or claim holds up? It is the desk’s judgement, and every card lists the sources it rests on, so you can disagree with the rating and still see why it was given. A story tha",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Name only",
+   "x": "The word is real. The physics in the scene is not.",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Real seed",
+   "x": "One true idea sits underneath. Everything built on it is invented.",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Stretched",
+   "x": "The mechanism is real, and the scene pushes it past what it does.",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Faithful",
+   "x": "A working physicist would nod.",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "reality.html#rules",
+   "t": "Reality Check",
+   "h": "Two rules for every card",
+   "x": "The record and the speculation never blend. “What is real” and “What stands in the way” cite papers and standards. “What if” sits in its own violet box, labelled as speculation, because a reasoned guess about the future is not evidence. The",
    "w": 2
   },
   {
@@ -4309,6 +4405,94 @@
     "bullwhip effect",
     "supply chain optimization"
    ]
+  },
+  {
+   "k": "s",
+   "p": "reality.html#visionquest-mind-space",
+   "t": "Reality Check",
+   "h": "VisionQuest's mind space: is that how a quantum computer thinks?",
+   "x": "A press set-visit report (Blavity) says the show's creator Terry Matalas and director Christopher J. Byrne described Vision's \"mind space\", a house that exists only in his head and is full of AI personas, as a theatrical",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#ant-man-quantum-realm",
+   "t": "Reality Check",
+   "h": "Ant-Man's Quantum Realm: can you shrink into it?",
+   "x": "Shrink small enough and you slip into a separate realm below the atoms, where time and space behave differently. Quantum mechanics really is the physics of small things, and atoms really do behave unlike baseballs. An el",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#star-trek-transporter",
+   "t": "Reality Check",
+   "h": "Star Trek's transporter: is teleportation real?",
+   "x": "A machine reads a person on one platform, dissolves them, and rebuilds them somewhere else. Quantum teleportation is a real laboratory technique, proposed by Bennett and colleagues in 1993 and first demonstrated in 1997 ",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#entanglement-instant-messages",
+   "t": "Reality Check",
+   "h": "Can entanglement send messages faster than light?",
+   "x": "Twist one particle of an entangled pair and its partner reacts at once, however far away, so you can signal instantly. Entangled particles give measurement results that are correlated more strongly than any pre-agreed cl",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#tries-every-answer-at-once",
+   "t": "Reality Check",
+   "h": "Does a quantum computer try every answer at once?",
+   "x": "Superposition lets a quantum computer test every possibility in parallel, so hard problems fall in an instant. n qubits can hold a superposition over all 2ⁿ bit strings at once. A quantum algorithm then arranges interfer",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#cracks-every-password",
+   "t": "Reality Check",
+   "h": "Does a quantum computer crack every password in seconds?",
+   "x": "A quantum machine is plugged in and every lock in the building opens. Shor's algorithm (1994) factors integers and computes discrete logarithms efficiently, which would break RSA and elliptic-curve cryptography. Those pr",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#endgame-time-travel",
+   "t": "Reality Check",
+   "h": "Avengers: Endgame: can the Quantum Realm give you time travel?",
+   "x": "Pass through the Quantum Realm and you can step back in time, and the film's own rule is that changing the past spawns a new branch instead of rewriting your own future. General relativity does allow time travel on paper",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#doctor-strange-multiverse",
+   "t": "Reality Check",
+   "h": "Doctor Strange's multiverse: is that what physics says?",
+   "x": "Every choice spawns another universe, and with the right skill you can visit them. Hugh Everett III's 1957 formulation of quantum mechanics drops the collapse step. The wavefunction just keeps evolving, and each outcome ",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#quantum-brain",
+   "t": "Reality Check",
+   "h": "Is the brain a quantum computer? Does consciousness collapse the wavefunction?",
+   "x": "Consciousness is a quantum effect, and observing something with your mind is what makes reality pick an outcome. All chemistry is quantum mechanics, brains included. The open question is narrower: whether coherent superp",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#lk-99-room-temperature-superconductor",
+   "t": "Reality Check",
+   "h": "LK-99: was there a room-temperature superconductor?",
+   "x": "A copper-doped lead apatite, LK-99, superconducts above room temperature at ordinary pressure. A superconductor carries current with zero resistance and expels magnetic fields. At ambient pressure the record stood at 133",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html#quantum-levitation",
+   "t": "Reality Check",
+   "h": "Can a disc really float above a magnet and lock in place?",
+   "x": "A small disc hovers over a magnetic track, stays exactly where you put it, even upside-down, and glides along the track without touching it. This is real, and the name is fair. A thin superconducting disc is cooled below",
+   "w": 2
   }
  ]
 }

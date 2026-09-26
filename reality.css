@@ -1,0 +1,132 @@
+/* SymbiQ, reality.html only. Page-specific so it never forces a cache-buster bump on the
+   shared stylesheet. Colour law from style.css: teal = real / shipping, violet = theory and
+   speculation, yellow = the thing to look at. Only tokens are used, so the light, dim and dark
+   themes all follow without a rule of their own. */
+
+.sr-only-rc { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.rc-loading { color: var(--muted); }
+
+/* --- filters ------------------------------------------------------------ */
+.rc-filters { display: flex; flex-wrap: wrap; gap: 0; margin: 4px 0 14px; }
+.rc-chip[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); font-weight: 700; }
+.rc-chip span { font-size: .74rem; color: var(--muted); margin-left: 6px; font-weight: 400; }
+
+/* --- the deck ------------------------------------------------------------ */
+.rc-deck { margin: 0 0 8px; }
+.rc-track {
+  position: relative;
+  display: flex; gap: 16px;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  transition: height .25s ease;
+  border-radius: 14px;
+}
+.rc-track::-webkit-scrollbar { display: none; }
+.rc-track:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .rc-track { transition: none; } }
+:root[data-motion-pref="reduce"] .rc-track { transition: none; }
+
+.rc-slide {
+  flex: 0 0 100%; box-sizing: border-box;
+  scroll-snap-align: start; scroll-snap-stop: always;
+  align-self: flex-start;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 24px 20px;
+}
+.rc-slide[hidden] { display: none; }
+
+.rc-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 8px; font-size: .84rem; color: var(--muted); }
+.rc-kind {
+  display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  border: 1px solid var(--border); border-radius: 99px; padding: 2px 10px; color: var(--muted);
+}
+.rc-kind[data-k="Movie"]       { color: var(--violet); border-color: color-mix(in srgb, var(--violet) 45%, transparent); }
+.rc-kind[data-k="Myth"]        { color: var(--red);    border-color: color-mix(in srgb, var(--red) 45%, transparent); }
+.rc-kind[data-k="Claim"]       { color: var(--yellow); border-color: color-mix(in srgb, var(--yellow) 50%, transparent); }
+.rc-kind[data-k="Fun fact"]    { color: var(--green);  border-color: color-mix(in srgb, var(--green) 45%, transparent); }
+.rc-kind[data-k="Coming soon"] { color: var(--teal);   border-color: color-mix(in srgb, var(--teal) 50%, transparent); }
+.rc-src { flex: 1 1 200px; min-width: 0; }
+
+.rc-title { font-size: 1.45rem; line-height: 1.25; margin: 4px 0 14px; }
+
+/* rating: four segments, filled from the left */
+.rc-meter { display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; margin: 0 0 6px;
+            border: 1px solid var(--border); border-radius: 10px; background: var(--bg); }
+.rc-bar { display: inline-flex; gap: 4px; padding-top: 6px; flex: none; }
+.rc-bar i { display: block; width: 22px; height: 8px; border-radius: 3px; background: var(--border); }
+.rc-bar i.on { background: var(--teal); }
+.rc-meter[data-r="none"] .rc-bar i { background: repeating-linear-gradient(45deg, var(--border) 0 4px, transparent 4px 8px); }
+.rc-rlabel { display: flex; flex-direction: column; font-size: .92rem; line-height: 1.35; }
+.rc-rlabel b { font-size: .95rem; }
+.rc-rmean { color: var(--muted); font-size: .84rem; }
+
+.rc-sec { margin: 16px 0 0; }
+.rc-sec p, .rc-sec ul { margin: 0 0 8px; }
+.rc-sec ul { padding-left: 1.2em; }
+.rc-sec li { margin: 0 0 6px; }
+.rc-h { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 4px; }
+.rc-says { font-style: italic; }
+
+/* speculation is kept visibly apart from the record above it */
+.rc-what {
+  border-left: 3px solid var(--violet); border-radius: 0 10px 10px 0;
+  background: var(--bg); padding: 12px 16px 6px; margin-top: 18px;
+}
+.rc-what .rc-h { color: var(--violet); }
+.rc-spec { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--muted); margin-left: 6px; }
+
+.rc-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--border); font-size: .88rem; }
+.rc-foot p { margin: 0 0 6px; }
+.rc-learn span, .rc-refs span { display: inline-block; min-width: 6.5em; color: var(--muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+.rc-act { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 10px !important; }
+.rc-act .preset { margin: 0; }
+.rc-shared { font-size: .84rem; color: var(--teal); overflow-wrap: anywhere; }
+
+/* --- deck controls ------------------------------------------------------ */
+.rc-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 12px 0 0; }
+.rc-nav .preset { margin: 0; font-size: 1.1rem; min-width: 56px; }
+.rc-nav .preset:disabled { opacity: .35; cursor: default; transform: none; border-color: var(--border); }
+.rc-count { min-width: 6.5em; text-align: center; color: var(--muted); font-size: .92rem; font-variant-numeric: tabular-nums; }
+
+/* --- the plain list ----------------------------------------------------- */
+.rc-all { margin: 18px 0 0; }
+.rc-all summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: var(--muted); }
+.rc-all ol { margin: 6px 0 0; padding-left: 1.4em; }
+.rc-all li { margin: 0 0 8px; }
+.rc-all .rc-kind { margin-left: 6px; }
+
+/* --- method key --------------------------------------------------------- */
+.rc-key { display: grid; gap: 10px; grid-template-columns: 1fr; margin: 12px 0 0; }
+@media (min-width: 720px) { .rc-key { grid-template-columns: 1fr 1fr; } }
+.rc-key > div { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--panel); }
+.rc-key h3 { margin: 0 0 4px; font-size: 1rem; }
+.rc-key p { margin: 0; font-size: .9rem; color: var(--muted); }
+.rc-key .rc-bar { padding-top: 0; margin-bottom: 6px; display: flex; }
+
+@media (max-width: 560px) {
+  .rc-slide { padding: 18px 16px 16px; }
+  .rc-title { font-size: 1.28rem; }
+  .rc-src { flex-basis: 100%; }
+  .rc-meter { flex-direction: column; gap: 6px; }
+  .rc-bar { padding-top: 0; }
+  .rc-learn span, .rc-refs span { display: block; }
+}
+
+/* --- pictures ------------------------------------------------------------ */
+.rc-fig { margin: 0 0 14px; }
+.rc-img { position: relative; border-radius: 10px; overflow: hidden; background: var(--bg); border: 1px solid var(--border); line-height: 0; }
+.rc-img img { display: block; width: 100%; height: auto; max-height: 340px; object-fit: cover; }
+.rc-fig figcaption { margin: 6px 2px 0; font-size: .78rem; line-height: 1.45; color: var(--muted); }
+.rc-fig figcaption a { color: inherit; text-decoration: underline; text-decoration-color: currentColor; }
+/* the AI disclaimer: on the image itself, small, and never omitted */
+.rc-aibadge {
+  position: absolute; left: 8px; bottom: 8px; line-height: 1.2;
+  font-size: .64rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700;
+  padding: 3px 8px; border-radius: 99px; color: #fff; background: rgba(11, 15, 26, .78);
+  border: 1px solid rgba(255, 255, 255, .25);
+}
+/* A line-art diagram (black strokes on transparent) needs a light ground in every theme. */
+.rc-img.rc-light { background: #fff; }
+.rc-img.rc-light img { object-fit: contain; max-height: 260px; padding: 10px; box-sizing: border-box; }

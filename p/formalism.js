@@ -600,7 +600,11 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
           if (kind === 'newsletter') remember('subscribed');
           done(true, kind === 'newsletter'
             ? 'You’re on the list. Nothing else needed.'
-            : 'Got it, thank you. Every report is read by a human.');
+            : kind === 'community-post'
+              ? 'Received. It goes to the desk for review, which can take up to 48 hours.'
+              : kind === 'creator-application'
+                ? 'Received. The desk reads every application itself.'
+                : 'Got it, thank you. Every report is read by a human.');
         })
         .catch(function (err) {
           if (btn) { btn.disabled = false; btn.textContent = btn.dataset.was || 'Send'; }

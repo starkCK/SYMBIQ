@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-mHhQJLv5baZQoih/Ybb8C8Z1vP/qASOvcKqaxNog5Bo=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-xz2jfeoGDftmh1cFbfUaUCrBgu1Fd+TIrSvkRltEhiE=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Arcade · quantum games, free play</title>
@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/play.css?v=21">
+<link rel="stylesheet" href="p/play.css?v=23">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -148,7 +148,7 @@
 <script src="games.js?v=46"></script>
 <script src="scene.js?v=6"></script>
 <script src="missions.js?v=11"></script>
-<script src="p/play.js?v=6" defer></script>
+<script src="p/play.js?v=7" defer></script>
 
 
 
@@ -210,9 +210,11 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat" data-cat="quantum">
-      <summary>Quantum</summary>
-      <div class="navpanel">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
       <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
       <div class="navrow">
@@ -242,26 +244,59 @@
       <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
       <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
       </div>
-    </details>
-    <details class="navcat" data-cat="optimisation">
-      <summary>Optimisation</summary>
-      <div class="navpanel">
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
       <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
       <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
       <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
       </div>
+      </div>
     </details>
-    <details class="navcat" data-cat="security">
+    <details class="navcat" data-cat="security" data-hot="1">
       <summary>Security</summary>
       <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
       <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
       <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
       <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
       <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
       <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
       <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="play">
@@ -269,29 +304,19 @@
       <div class="navpanel">
       <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain active">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
-      </div>
-    </details>
-    <details class="navcat" data-cat="desk">
-      <summary>The Desk</summary>
-      <div class="navpanel">
-      <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
-      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
-      <div class="navrow">
-        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
-        <a href="race.html#threshold" class="navchip">threshold →</a>
-      </div>
-      <div class="navrow">
-        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
-        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
-      </div>
-      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from researchers and practitioners, not the desk</span></a>
-      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply to publish under your own name</span></a>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
-      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
-      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
       </div>
     </details>
   </div>
@@ -465,7 +490,9 @@
   // a plain anchor -- "workshop=HTHT" matches no element id, so the browser
   // cannot scroll to it on its own, and the door defaults shut. Open it
   // explicitly, same as the router does for every other machine.
-  if (/^#workshop=/.test(location.hash)) {
+  // The bare #workshop (from the nav's Play menu) needs the same treatment as #workshop=PATH:
+  // its heading sits inside the closed #floor, so the browser has nothing to scroll to.
+  if (/^#workshop(=|$)/.test(location.hash)) {
     openFloor();
     var wsCard = document.getElementById('workshop-card');
     if (wsCard) setTimeout(function () { wsCard.scrollIntoView({ block: 'start' }); }, 0);
@@ -488,14 +515,46 @@
     if (floor.hidden && gate.getBoundingClientRect().bottom < window.innerHeight * 0.55) openFloor();
   }, { passive: true });
 
+  /* Three banners over the six machines (2026-09-26), so a first-time visitor can tell the
+     kinds of game apart before reading a single hook. `also` lists the games of the same kind
+     that live on the page that explains them. A machine missing from BANDS is appended to the
+     last band, so a game added to games.js can never silently vanish from the floor. */
   function drawCabs() {
-    document.getElementById('cabs').innerHTML = GS.list.map(function (g) {
+    var BANDS = [
+      { t: 'Puzzles with a proven best answer',
+        d: 'Every par here is an optimum found by exhaustive search, so a score cannot be bluffed.',
+        ids: ['golf', 'grover', 'maxcut', 'volcano'],
+        also: [['The Prune', 'feasible.html#prune'], ['The Bottleneck', 'feasible.html#bottleneck']] },
+      { t: 'Head to head',
+        d: 'Someone, or something, plays back. Grover’s Escape and Max-Cut also carry a vs Computer mode inside.',
+        ids: ['qttt'],
+        also: [['The Decoder Duel', 'qec.html#duel'], ['The CHSH game', 'quantum-mechanics.html#chsh']] },
+      { t: 'Build and tune',
+        d: 'You set the rules or the strategy, and the machine tells you what it did.',
+        ids: ['calibration'],
+        also: [['The Workshop', '#workshop'], ['The Bench', 'analog.html#bench']] }
+    ];
+    var byId = {}, placed = {};
+    GS.list.forEach(function (g) { byId[g.id] = g; });
+    function cab(g) {
       var done = S && S.isComplete(g.id);
       return '<button class="cab" data-g="' + g.id + '">' +
         (done ? '<span class="cabdone" title="cleared on the Path">✓</span>' : '') +
         '<span class="cabname">' + g.title + '</span>' +
         '<span class="cabhook">' + g.hook + '</span>' +
         '<span class="cabtag">' + g.about.tier + ' · play ▸</span></button>';
+    }
+    document.getElementById('cabs').innerHTML = BANDS.map(function (b, bi) {
+      var ids = b.ids.slice();
+      if (bi === BANDS.length - 1) GS.list.forEach(function (g) {
+        var seen = BANDS.some(function (o) { return o.ids.indexOf(g.id) >= 0; });
+        if (!seen && ids.indexOf(g.id) < 0) ids.push(g.id);
+      });
+      return '<div class="cabband"><h3 aria-level="2">' + b.t + '</h3><p>' + b.d + '</p></div>' +
+        ids.filter(function (id) { return byId[id]; }).map(function (id) { return cab(byId[id]); }).join('') +
+        '<p class="cabalso">Also in this kind: ' + b.also.map(function (a) {
+          return '<a href="' + a[1] + '">' + a[0] + '</a>';
+        }).join(' · ') + '</p>';
     }).join('');
     Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) {
       b.addEventListener('click', function () { showStage(b.getAttribute('data-g')); });

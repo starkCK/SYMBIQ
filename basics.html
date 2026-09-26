@@ -59,7 +59,7 @@
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <!-- social:end -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/basics.css?v=21">
+<link rel="stylesheet" href="p/basics.css?v=23">
 
 <!-- The peripheral layer. Own file, own cache-buster, same reason motion.css
      has one: style.css is shared by 24 pages and touching it forces a bump on
@@ -88,7 +88,7 @@
      cache-bust guard and tools/bump_assets.py both still see it.
      Paired loader required -- see check_site.py §13. -->
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/basics.js?v=6" defer></script>
+<script src="p/basics.js?v=7" defer></script>
 
 
 
@@ -127,9 +127,11 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat navcat-cur" data-cat="quantum">
-      <summary>Quantum</summary>
-      <div class="navpanel">
+    <details class="navcat navcat-cur" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
       <a href="basics.html" class="navmain active">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
       <div class="navrow">
@@ -159,26 +161,59 @@
       <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
       <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
       </div>
-    </details>
-    <details class="navcat" data-cat="optimisation">
-      <summary>Optimisation</summary>
-      <div class="navpanel">
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
       <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
       <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
       <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
       <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
       </div>
+      </div>
     </details>
-    <details class="navcat" data-cat="security">
+    <details class="navcat" data-cat="security" data-hot="1">
       <summary>Security</summary>
       <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
       <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
       <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
       <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
       <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
       <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
       <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="play">
@@ -186,29 +221,19 @@
       <div class="navpanel">
       <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
-      </div>
-    </details>
-    <details class="navcat" data-cat="desk">
-      <summary>The Desk</summary>
-      <div class="navpanel">
-      <a href="index.html" class="navmain">Home<span class="sub">The Question + the loop</span></a>
-      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
-      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
-      <div class="navrow">
-        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
-        <a href="race.html#threshold" class="navchip">threshold →</a>
-      </div>
-      <div class="navrow">
-        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
-        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
-      </div>
-      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from researchers and practitioners, not the desk</span></a>
-      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply to publish under your own name</span></a>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
-      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
-      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
       </div>
     </details>
   </div>

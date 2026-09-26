@@ -1470,6 +1470,13 @@
         return { n: d.count || (d.entries || []).length, sub: 'questions really asked, every answer kept' };
       }
     },
+    reality: {
+      url: 'data/reality.json',
+      read: function (d) {
+        var n = (d.cards || []).length;
+        return { n: n, sub: 'movie scenes, myths and claims rated against the physics' };
+      }
+    },
     frontier: {
       url: 'data/frontier/index.json',
       read: function (d) {

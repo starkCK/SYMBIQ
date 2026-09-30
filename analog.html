@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it has to beat.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/analog.css?v=36">
+<link rel="stylesheet" href="p/analog.css?v=39">
 
 
 
@@ -137,10 +137,10 @@
   ]
 }
 </script>
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/analog.js?v=16" defer></script>
+<script src="p/analog.js?v=17" defer></script>
 
 
 
@@ -328,17 +328,17 @@
   <figcaption>The object every machine on this page is built to settle: a two-dimensional Ising model, spins on a lattice that each point up or down, with neighbouring spins pulling on each other. The lowest-energy pattern of ups and downs is the answer. Diagram: Ta2o, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer">CC BY 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:2D_ising_model_on_lattice.svg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 Plain</span>
+<span class="tier g"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span>
 <h2 id="green">The trick: don't calculate the answer, build something that settles into it</h2>
 <p>Tip a tray full of marbles onto a warped sheet and walk away. You didn't compute where they'd end up; you shaped the sheet, and physics did the rest. Every marble rolls downhill until it can't roll any further, and the resting positions are, in a real sense, the "answer" to "where is lowest here?" Nobody ran an algorithm. The shape of the sheet <em>was</em> the algorithm.</p>
 <p>Now imagine a much stranger version of the same trick, played with something simpler than marbles: a row of switches, each one either up or down. Wire pairs of them together, and let each wire carry an opinion: some wires want their two switches to <em>agree</em>, others want them to <em>disagree</em>. Count how many wires get their wish in any given arrangement of the switches. The best arrangement is whichever one keeps the most wires happy.</p>
 <p>That switches-and-wires puzzle has a name: <strong>Max-Cut</strong>, and this site's own <a href="feasible.html">operations research track</a> already teaches it as ordinary graph theory. The idea on this page is what happens when you stop treating that puzzle as something to search through, and start treating it as something to <em>build</em>: a real physical network where "settling toward the arrangement with the fewest unhappy wires" is just what the hardware does when you switch it on, the same way marbles roll downhill without being told to.</p>
-<p>Three quite different ways to build that network exist today. How they differ: <a href="#yellow">🟡 keep going ↓</a></p>
+<p>Three quite different ways to build that network exist today. How they differ: <a href="#yellow"><i class="dpt dpt-2" role="img" aria-label="Working level"></i> keep going ↓</a></p>
 
 <div data-living-strip></div>
 <p class="living-strip-note">Fourteen coupled oscillators settling toward one phase &mdash; no search, just the hardware relaxing. The &ldquo;Let it settle&rdquo; widget below does the same on a real problem graph.</p>
 
-<span class="tier y">🟡 Working</span>
+<span class="tier y"><i class="dpt dpt-2" aria-hidden="true"></i> Working</span>
 <h2 id="yellow">Three ways to build one</h2>
 <p>Every design below needs the same two ingredients: something with exactly two stable states (so it can stand in for a switch, or "spin"), and a way to wire pairs of them together so each connection can push its two spins toward agreeing or disagreeing. What differs is the physical substrate.</p>
 <div class="overflow"><table>
@@ -413,7 +413,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Limits: the true optimum is brute-forced over all 2⁸ = 256 arrangements at load, exactly as above. "Time budget" is not a perfectly fair unit across three kinds of machine, since a random-restart attempt, a single-spin-flip Metropolis step, and one Euler step of a continuous relaxation are not the same amount of physical work. And <strong>at a high budget on this tiny 256-arrangement graph, blind random restart can catch up to and even pass the annealer</strong>, not because randomness is clever but because trying enough independent guesses against a small enough haystack finds the needle by brute coverage. That evaporates the moment a graph is too large to nearly enumerate by luck, which is every real optimisation problem, and exactly why annealing exists at all.</p>
 </div>
 
-<span class="tier r">🔴 Formal</span>
+<span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span>
 <h2 id="red">The formalism, with receipts</h2>
 <p>The Ising Hamiltonian over spins s<sub>i</sub> ∈ {−1, +1} on a graph with couplings J<sub>ij</sub> is</p>
 <div class="formula">H(s) = − Σ<sub>(i,j)</sub> J<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></div>

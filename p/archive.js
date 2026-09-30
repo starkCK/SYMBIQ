@@ -241,9 +241,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '<i class="dpt dpt-1" aria-hidden="true"></i>', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '<i class="dpt dpt-2" aria-hidden="true"></i>', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '<i class="dpt dpt-3" aria-hidden="true"></i>', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -963,7 +963,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
 ;
 (function () {
   window.SymbiQ = window.SymbiQ || {};
-  var TIER = { g: '🟢 Plain', y: '🟡 Working', r: '🔴 Formal' };
+  var TIER = { g: '<i class="dpt dpt-1" aria-hidden="true"></i> Plain', y: '<i class="dpt dpt-2" aria-hidden="true"></i> Working', r: '<i class="dpt dpt-3" aria-hidden="true"></i> Formal' };
 
   var esc = window.SymbiQ.core.esc;
 
@@ -1005,7 +1005,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
                      '<summary>' +
                        '<span class="archq-num">#' + esc(e.qnum) + '</span>' +
                        '<span class="archq-txt">' + esc(e.question) + '…</span>' +
-                       '<span class="orbadge">' + esc(TIER[e.tier] || e.tier) + '</span>' +
+                       '<span class="orbadge">' + (TIER[e.tier] || esc(e.tier)) + '</span>' +
                        '<span class="orbadge">' + esc(e.date) + '</span>' +
                      '</summary>' +
                      '<div class="archq-body"><p class="archq-loading">Opening…</p></div>' +

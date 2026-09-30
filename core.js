@@ -117,6 +117,12 @@
   }
   W.SymbiQ.ev = ev;
 
+  function pre(id, html) {
+    if (!W.__PRERENDER__) return;
+    (W.__PRE = W.__PRE || {})[id] = html;
+  }
+  W.SymbiQ.pre = pre;
+
   W.SymbiQ.core = {
     editable: editable,
     esc: esc,

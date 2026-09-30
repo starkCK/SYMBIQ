@@ -2,7 +2,7 @@
  "schema": 1,
  "generated": "2026-10-01",
  "pages": 82,
- "count": 609,
+ "count": 620,
  "records": [
   {
    "k": "s",
@@ -136,7 +136,7 @@
    "k": "s",
    "p": "ai.html",
    "t": "Will quantum computers make AI more powerful?",
-   "h": "🟢 The other direction",
+   "h": "The other direction",
    "x": "How AI became quantum computing's repair crew: the half of the loop that ships today.Quantum error correction →",
    "w": 1
   },
@@ -144,7 +144,7 @@
    "k": "s",
    "p": "ai.html",
    "t": "Will quantum computers make AI more powerful?",
-   "h": "🔴 The math floor",
+   "h": "The math floor",
    "x": "Decoders, thresholds, and the overheads that decide which speedups survive.Read →",
    "w": 1
   },
@@ -352,7 +352,7 @@
    "k": "s",
    "p": "applications.html",
    "t": "Where might a quantum computer actually earn its keep?",
-   "h": "🔴 How the hybrid loop works",
+   "h": "How the hybrid loop works",
    "x": "QAOA and VQE in full, with the circuits and where they are stuck.The Machinery, topic 16 →",
    "w": 1
   },
@@ -360,7 +360,7 @@
    "k": "s",
    "p": "applications.html",
    "t": "Where might a quantum computer actually earn its keep?",
-   "h": "🟡 Sensing and networks",
+   "h": "Sensing and networks",
    "x": "The quantum technologies that already ship, and why they matter sooner than the computer.Sensing and networks →",
    "w": 1
   },
@@ -401,7 +401,7 @@
    "p": "apply.html#what-this-is",
    "t": "Write for SymbiQ",
    "h": "What this is",
-   "x": "A place for short, evidence-tiered essays — not a feed, not a forum. Every note gets the same 🟢🟡🔴 tier discipline and citation standard the rest of this site holds itself to, reviewed before it runs, credited to you, never edited into somet",
+   "x": "A place for short, evidence-tiered essays — not a feed, not a forum. Every note gets the same tier discipline and citation standard the rest of this site holds itself to, reviewed before it runs, credited to you, never edited into something",
    "w": 2
   },
   {
@@ -481,7 +481,7 @@
    "p": "archive.html#how-the-question-works",
    "t": "The Question Archive",
    "h": "How The Question works",
-   "x": "One question at a time, at one of three levels: 🟢 Plain, 🟡 Working, 🔴 Formal (the real mathematics). Every answer carries an explanation at all three levels, so you can always drop down a tier if the explanation loses you, or climb one if i",
+   "x": "One question at a time, at one of three levels: Plain, Working, Formal (the real mathematics). Every answer carries an explanation at all three levels, so you can always drop down a tier if the explanation loses you, or climb one if it bore",
    "w": 2
   },
   {
@@ -601,7 +601,7 @@
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
    "h": "The calculator: what would it take?",
-   "x": "Drag the sliders. The model is the one the 🔴 tier works in: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation: the 2017 textbook (Roetteler et al.) or the 2026 state of the art.",
+   "x": "Drag the sliders. The model is the one the tier works in: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation: the 2017 textbook (Roetteler et al.) or the 2026 state of the art.",
    "w": 2
   },
   {
@@ -640,7 +640,7 @@
    "k": "s",
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
-   "h": "🟢 Error correction, Plain",
+   "h": "Error correction, Plain",
    "x": "Why quantum computers need babysitting at all.Read →",
    "w": 1
   },
@@ -648,7 +648,7 @@
    "k": "s",
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
-   "h": "🔴 The math floor",
+   "h": "The math floor",
    "x": "Surface codes, decoders, and the Grover audit this page leans on.Read →",
    "w": 1
   },
@@ -904,7 +904,7 @@
    "k": "s",
    "p": "compare.html",
    "t": "Quantum computing companies compared",
-   "h": "🟡 The exchange rate",
+   "h": "The exchange rate",
    "x": "Why 50 clean qubits beat 1,000 noisy ones, calculated.What is a logical qubit? →",
    "w": 1
   },
@@ -912,7 +912,7 @@
    "k": "s",
    "p": "compare.html",
    "t": "Quantum computing companies compared",
-   "h": "🟢 Below threshold",
+   "h": "Below threshold",
    "x": "The error-correction result that made logical-qubit counts the measure that matters.Quantum error correction →",
    "w": 1
   },
@@ -1465,7 +1465,7 @@
    "p": "glossary.html",
    "t": "Glossary",
    "h": "Glossary",
-   "x": "Every term this site teaches, in one place, with the page that explains it. The same list drives the definitions that pop up on hover elsewhere, so the two cannot disagree. FilterAll🟢 plain🟡 working🔴 formal135 terms A B C D E F G H I J L M ",
+   "x": "Every term this site teaches, in one place, with the page that explains it. The same list drives the definitions that pop up on hover elsewhere, so the two cannot disagree. FilterAll plain working formal135 terms A B C D E F G H I J L M N O",
    "w": 3
   },
   {
@@ -1473,7 +1473,7 @@
    "p": "glossary.html#letter-a",
    "t": "Glossary",
    "h": "A",
-   "x": "adiabatic quantum computation 🔴 formal also: adiabatic universalityRelaxing a physical system slowly into a Hamiltonian's ground state — proven polynomially equivalent in power to the standard quantum circuit model. The Machinery → anharmon",
+   "x": "adiabatic quantum computation formal also: adiabatic universalityRelaxing a physical system slowly into a Hamiltonian's ground state — proven polynomially equivalent in power to the standard quantum circuit model. The Machinery → anharmonic",
    "w": 2
   },
   {
@@ -1481,7 +1481,7 @@
    "p": "glossary.html#letter-b",
    "t": "Glossary",
    "h": "B",
-   "x": "barren plateaus 🔴 formal also: barren plateauGradients that vanish exponentially with qubit count, so the variational circuit has nothing to descend. Will quantum boost AI? → Bell inequality 🟡 working also: CHSH, Bell test, Bell's theorem, ",
+   "x": "barren plateaus formal also: barren plateauGradients that vanish exponentially with qubit count, so the variational circuit has nothing to descend. Will quantum boost AI? → Bell inequality working also: CHSH, Bell test, Bell's theorem, Tsir",
    "w": 2
   },
   {
@@ -1489,7 +1489,7 @@
    "p": "glossary.html#letter-c",
    "t": "Glossary",
    "h": "C",
-   "x": "chemical accuracy 🟡 workingAn energy error of 1 kcal/mol, which is 1.59 milli-hartree: the threshold below which a computed reaction energy is useful to a chemist. Where quantum might help → CNSA 2.0 🟡 working also: CNSA, Commercial Nationa",
+   "x": "chemical accuracy workingAn energy error of 1 kcal/mol, which is 1.59 milli-hartree: the threshold below which a computed reaction energy is useful to a chemist. Where quantum might help → CNSA 2.0 working also: CNSA, Commercial National Se",
    "w": 2
   },
   {
@@ -1497,7 +1497,7 @@
    "p": "glossary.html#letter-d",
    "t": "Glossary",
    "h": "D",
-   "x": "data-loading problem 🟡 working also: input problem, data loading, state preparationThe toll that kills most quantum-ML speedups: getting classical data into the machine costs what the speedup saved. Will quantum boost AI? → decoder 🟡 workin",
+   "x": "data-loading problem working also: input problem, data loading, state preparationThe toll that kills most quantum-ML speedups: getting classical data into the machine costs what the speedup saved. Will quantum boost AI? → decoder working al",
    "w": 2
   },
   {
@@ -1505,7 +1505,7 @@
    "p": "glossary.html#letter-e",
    "t": "Glossary",
    "h": "E",
-   "x": "ECDSA 🟡 working also: elliptic curve, elliptic-curve cryptography, ECC, secp256k1The signature scheme protecting Bitcoin — and the one Shor's algorithm actually targets. Can quantum break Bitcoin? → economic order quantity 🟡 working also: E",
+   "x": "ECDSA working also: elliptic curve, elliptic-curve cryptography, ECC, secp256k1The signature scheme protecting Bitcoin — and the one Shor's algorithm actually targets. Can quantum break Bitcoin? → economic order quantity working also: EOQ, ",
    "w": 2
   },
   {
@@ -1513,7 +1513,7 @@
    "p": "glossary.html#letter-f",
    "t": "Glossary",
    "h": "F",
-   "x": "fault tolerance 🔴 formal also: fault-tolerant, fault tolerant quantum computing, FTQCComputing reliably out of unreliable parts — the regime the whole roadmap is aimed at. Start here → FeMoco 🟡 working also: FeMo-cofactor, FeMo cofactorThe ",
+   "x": "fault tolerance formal also: fault-tolerant, fault tolerant quantum computing, FTQCComputing reliably out of unreliable parts — the regime the whole roadmap is aimed at. Start here → FeMoco working also: FeMo-cofactor, FeMo cofactorThe meta",
    "w": 2
   },
   {
@@ -1521,7 +1521,7 @@
    "p": "glossary.html#letter-g",
    "t": "Glossary",
    "h": "G",
-   "x": "gate fidelity 🔴 formal also: two-qubit fidelity, gate error, fidelityThe metric that actually beats qubit count when you are reading a hardware announcement. How the companies compare → Gottesman-Knill theorem 🔴 formal also: Gottesman-Knill",
+   "x": "gate fidelity formal also: two-qubit fidelity, gate error, fidelityThe metric that actually beats qubit count when you are reading a hardware announcement. How the companies compare → Gottesman-Knill theorem formal also: Gottesman-Knill, st",
    "w": 2
   },
   {
@@ -1529,7 +1529,7 @@
    "p": "glossary.html#letter-h",
    "t": "Glossary",
    "h": "H",
-   "x": "harvest now, decrypt later 🟡 working also: harvest-now-decrypt-later, HNDL, store now decrypt later, retrospective decryptionTraffic recorded today, decrypted whenever a quantum computer arrives. It is why key exchange is urgent and signatu",
+   "x": "harvest now, decrypt later working also: harvest-now-decrypt-later, HNDL, store now decrypt later, retrospective decryptionTraffic recorded today, decrypted whenever a quantum computer arrives. It is why key exchange is urgent and signature",
    "w": 2
   },
   {
@@ -1537,7 +1537,7 @@
    "p": "glossary.html#letter-i",
    "t": "Glossary",
    "h": "I",
-   "x": "integer programming 🟡 working also: MILP, mixed-integer, integer programWhy demanding whole numbers turns an easy problem hard. The Feasible Region → Ising machine 🟡 working also: Ising machines, oscillator Ising machine, OIM, coherent Isin",
+   "x": "integer programming working also: MILP, mixed-integer, integer programWhy demanding whole numbers turns an easy problem hard. The Feasible Region → Ising machine working also: Ising machines, oscillator Ising machine, OIM, coherent Ising ma",
    "w": 2
   },
   {
@@ -1545,7 +1545,7 @@
    "p": "glossary.html#letter-j",
    "t": "Glossary",
    "h": "J",
-   "x": "Jordan–Wigner mapping 🔴 formal also: Jordan-Wigner, Jordan–WignerThe standard way to give each spin-orbital of a molecule one qubit, so N spatial orbitals need 2N qubits. Where quantum might help → Josephson junction 🟡 working also: Josephs",
+   "x": "Jordan–Wigner mapping formal also: Jordan-Wigner, Jordan–WignerThe standard way to give each spin-orbital of a molecule one qubit, so N spatial orbitals need 2N qubits. Where quantum might help → Josephson junction working also: Josephson j",
    "w": 2
   },
   {
@@ -1553,7 +1553,7 @@
    "p": "glossary.html#letter-l",
    "t": "Glossary",
    "h": "L",
-   "x": "Lambda suppression factor 🟡 working also: suppression factor, Willow, below-threshold demonstrationHow much the error rate falls per two steps of code distance. Google's Willow measured 2.14 for the d=5 to d=7 step. The Race → lattice surge",
+   "x": "Lambda suppression factor working also: suppression factor, Willow, below-threshold demonstrationHow much the error rate falls per two steps of code distance. Google's Willow measured 2.14 for the d=5 to d=7 step. The Race → lattice surgery",
    "w": 2
   },
   {
@@ -1561,7 +1561,7 @@
    "p": "glossary.html#letter-m",
    "t": "Glossary",
    "h": "M",
-   "x": "magic-state factories 🔴 formal also: magic state, magic states, magic-state distillationClifford gates alone are classically simulable, so universality is smuggled in via a purified magic state — consume several noisy copies, distill out fe",
+   "x": "magic-state factories formal also: magic state, magic states, magic-state distillationClifford gates alone are classically simulable, so universality is smuggled in via a purified magic state — consume several noisy copies, distill out fewe",
    "w": 2
   },
   {
@@ -1569,7 +1569,7 @@
    "p": "glossary.html#letter-n",
    "t": "Glossary",
    "h": "N",
-   "x": "Nash equilibrium 🟡 working also: Nash equilibria, equilibrium point, Wardrop equilibrium, Braess's paradoxThe outcome nobody can improve on alone — even when everyone would rather be somewhere else together. The Feasible Region → network fl",
+   "x": "Nash equilibrium working also: Nash equilibria, equilibrium point, Wardrop equilibrium, Braess's paradoxThe outcome nobody can improve on alone — even when everyone would rather be somewhere else together. The Feasible Region → network flow",
    "w": 2
   },
   {
@@ -1577,7 +1577,7 @@
    "p": "glossary.html#letter-o",
    "t": "Glossary",
    "h": "O",
-   "x": "operations research 🟢 plain also: OR, operational research, mathematical optimisation, mathematical optimizationThe field that already decides your delivery route, your shift roster and your power grid — and the classical baseline quantum o",
+   "x": "operations research plain also: OR, operational research, mathematical optimisation, mathematical optimizationThe field that already decides your delivery route, your shift roster and your power grid — and the classical baseline quantum opt",
    "w": 2
   },
   {
@@ -1585,7 +1585,7 @@
    "p": "glossary.html#letter-p",
    "t": "Glossary",
    "h": "P",
-   "x": "p-bit 🟡 working also: p-bits, probabilistic bit, probabilistic bitsA unit that keeps fluctuating between 0 and 1 instead of settling, with the odds of each set by its neighbours — a physical Boltzmann machine, now demonstrated at a million-",
+   "x": "p-bit working also: p-bits, probabilistic bit, probabilistic bitsA unit that keeps fluctuating between 0 and 1 instead of settling, with the odds of each set by its neighbours — a physical Boltzmann machine, now demonstrated at a million-un",
    "w": 2
   },
   {
@@ -1593,7 +1593,7 @@
    "p": "glossary.html#letter-q",
    "t": "Glossary",
    "h": "Q",
-   "x": "QAOA & VQE 🔴 formal also: QAOA, VQE, variational quantum eigensolver, quantum approximate optimization algorithm, variational quantum algorithmsThe same hybrid quantum-classical loop — a tunable circuit, measured, adjusted by a classical op",
+   "x": "QAOA & VQE formal also: QAOA, VQE, variational quantum eigensolver, quantum approximate optimization algorithm, variational quantum algorithmsThe same hybrid quantum-classical loop — a tunable circuit, measured, adjusted by a classical opti",
    "w": 2
   },
   {
@@ -1601,7 +1601,7 @@
    "p": "glossary.html#letter-r",
    "t": "Glossary",
    "h": "R",
-   "x": "Rabi oscillation 🔴 formal also: Rabi flop, Rabi frequency, Rabi drive, pi-pulseA resonant drive swinging a qubit's population between two levels — stop it exactly halfway (a pi-pulse) and you have physically performed an X gate. What is a q",
+   "x": "Rabi oscillation formal also: Rabi flop, Rabi frequency, Rabi drive, pi-pulseA resonant drive swinging a qubit's population between two levels — stop it exactly halfway (a pi-pulse) and you have physically performed an X gate. What is a qub",
    "w": 2
   },
   {
@@ -1609,7 +1609,7 @@
    "p": "glossary.html#letter-s",
    "t": "Glossary",
    "h": "S",
-   "x": "Schmidt decomposition 🔴 formal also: Schmidt rank, Schmidt coefficients, how entangled is a stateThe one basis pair in which any two-part quantum state collapses to a short matched list — the honest, basis-independent measure of how entangl",
+   "x": "Schmidt decomposition formal also: Schmidt rank, Schmidt coefficients, how entangled is a stateThe one basis pair in which any two-part quantum state collapses to a short matched list — the honest, basis-independent measure of how entangled",
    "w": 2
   },
   {
@@ -1617,7 +1617,7 @@
    "p": "glossary.html#letter-t",
    "t": "Glossary",
    "h": "T",
-   "x": "the AI-quantum loop 🟢 plain also: symbiosis, AI fixes quantum, quantum supercharges AISymbiQ's whole thesis in one diagram: one direction is shipping now, the other is mostly ahead. Will quantum boost AI? → The Bench 🟡 working also: three m",
+   "x": "the AI-quantum loop plain also: symbiosis, AI fixes quantum, quantum supercharges AISymbiQ's whole thesis in one diagram: one direction is shipping now, the other is mostly ahead. Will quantum boost AI? → The Bench working also: three metho",
    "w": 2
   },
   {
@@ -1625,7 +1625,7 @@
    "p": "glossary.html#letter-v",
    "t": "Glossary",
    "h": "V",
-   "x": "von Neumann entropy 🔴 formal also: quantum entropy, entanglement entropy, Holevo boundShannon entropy applied to a density matrix's eigenvalues — zero for any pure state, yet a pure whole can split into two individually maximally-uncertain ",
+   "x": "von Neumann entropy formal also: quantum entropy, entanglement entropy, Holevo boundShannon entropy applied to a density matrix's eigenvalues — zero for any pure state, yet a pure whole can split into two individually maximally-uncertain ha",
    "w": 2
   },
   {
@@ -1633,7 +1633,7 @@
    "p": "glossary.html#letter-z",
    "t": "Glossary",
    "h": "Z",
-   "x": "zero-sum games 🟡 working also: minimax, minimax theorem, mixed strategy, von Neumann minimaxWhy bluffing only works if it's genuinely random — and why solving it is a linear program in disguise. The Feasible Region → Nothing matches. Try a ",
+   "x": "zero-sum games working also: minimax, minimax theorem, mixed strategy, von Neumann minimaxWhy bluffing only works if it's genuinely random — and why solving it is a linear program in disguise. The Feasible Region → Nothing matches. Try a sh",
    "w": 2
   },
   {
@@ -1737,7 +1737,7 @@
    "p": "index.html",
    "t": "Two broken geniuses,fixing each other.",
    "h": "The Question",
-   "x": "Need a hint? + Missed one? Every previous question, with its answer Everyone is watching the AI race. The stranger race runs underneath it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum machines are",
+   "x": "Formal From the question bank, the daily feed is paused Google reports an error-suppression factor Λ = 2.14 ± 0.02 for Willow. Precisely what is that number a measurement of? A. A linear regression of ln(ε(d)) against d across the whole d =",
    "w": 1
   },
   {
@@ -1760,7 +1760,7 @@
    "k": "s",
    "p": "index.html",
    "t": "Two broken geniuses,fixing each other.",
-   "h": "🟢 Plain",
+   "h": "Plain",
    "x": "Two minutes, one analogy, zero equations, and a straight answer to \"so what?\". A choir where nobody may be heard singing alone.Start here →",
    "w": 1
   },
@@ -1768,7 +1768,7 @@
    "k": "s",
    "p": "index.html",
    "t": "Two broken geniuses,fixing each other.",
-   "h": "🟡 Working",
+   "h": "Working",
    "x": "The mechanism, plus one number worked by hand: why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.Open the mechanism →",
    "w": 1
   },
@@ -1776,7 +1776,7 @@
    "k": "s",
    "p": "index.html",
    "t": "Two broken geniuses,fixing each other.",
-   "h": "🔴 Formal",
+   "h": "Formal",
    "x": "The derivation carried through, primary sources, and five problems nobody has solved yet.The mathematics → The fork: same circuit, the other branch",
    "w": 1
   },
@@ -1881,7 +1881,7 @@
    "p": "insights.html",
    "t": "Insight Notes",
    "h": "Insight Notes",
-   "x": "Short, evidence-tiered essays about quantum computing, operations research and post-quantum security — written by people outside the desk, reviewed before they run, and held to the same 🟢🟡🔴 tier and citation rules as everything else here. N",
+   "x": "Short, evidence-tiered essays about quantum computing, operations research and post-quantum security — written by people outside the desk, reviewed before they run, and held to the same tier and citation rules as everything else here. Not a",
    "w": 3
   },
   {
@@ -1961,7 +1961,7 @@
    "p": "insights.html",
    "t": "Insight Notes",
    "h": "Example: “Why a 1,000-qubit chip isn’t a 1,000-qubit computer” — a template, not a published note",
-   "x": "🟡 Working tier. A working researcher explains, in their own words, one thing they’ve watched people get wrong in their own field — with the same citation and tier discipline as the rest of this site, and a byline that’s really theirs.",
+   "x": "Working tier. A working researcher explains, in their own words, one thing they’ve watched people get wrong in their own field — with the same citation and tier discipline as the rest of this site, and a byline that’s really theirs.",
    "w": 1
   },
   {
@@ -2008,7 +2008,7 @@
    "k": "s",
    "p": "learn.html",
    "t": "The course map",
-   "h": "🟢 Plain",
+   "h": "Plain",
    "x": "An analogy, no equations, no unexplained jargon. If you can follow a good magazine article, you can follow this.",
    "w": 1
   },
@@ -2016,7 +2016,7 @@
    "k": "s",
    "p": "learn.html",
    "t": "The course map",
-   "h": "🟡 Working",
+   "h": "Working",
    "x": "The real terms and light arithmetic: ratios, exponents, a formula you can plug numbers into.",
    "w": 1
   },
@@ -2024,7 +2024,7 @@
    "k": "s",
    "p": "learn.html",
    "t": "The course map",
-   "h": "🔴 Formal",
+   "h": "Formal",
    "x": "The actual formalism, with worked examples that are computed and checked, and the papers behind them. Pick a depth at the top of any page and the site remembers it. The glossary lists every term with the depth it is taught at.",
    "w": 1
   },
@@ -2105,7 +2105,7 @@
    "p": "ledger.html",
    "t": "The Ledger",
    "h": "Loading The Ledger…",
-   "x": "If this does not fill in, the data could not be fetched. It lives at data/claims/index.json.",
+   "x": "If this does not fill in, the data could not be fetched. It lives at data/claims/index.json. Next deadlineIBM: IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.31 Dec 2026 ·",
    "w": 1
   },
   {
@@ -2113,7 +2113,7 @@
    "p": "ledger.html#scorecards",
    "t": "The Ledger",
    "h": "Claimant scorecards",
-   "x": "Rebuilt every time a claim resolves. A claimant needs five resolved claims before we rank them; below that, the count shows but the rate is withheld, since one lucky or unlucky guess could swing it 20 points. Loading…",
+   "x": "Rebuilt every time a claim resolves. A claimant needs five resolved claims before we rank them; below that, the count shows but the rate is withheld, since one lucky or unlucky guess could swing it 20 points. ClaimantTrackedResolvedWeighted",
    "w": 2
   },
   {
@@ -2121,7 +2121,7 @@
    "p": "ledger.html#ours",
    "t": "The Ledger",
    "h": "Our own scorecard",
-   "x": "Published with the same prominence as theirs. If we write criteria that turn out unscoreable, that's our error, not the claimant's, and it counts here as void. Loading…",
+   "x": "Published with the same prominence as theirs. If we write criteria that turn out unscoreable, that's our error, not the claimant's, and it counts here as void. 20claims captured2resolved0void (our error)0verdicts changed by right of replyNo",
    "w": 2
   },
   {
@@ -2185,7 +2185,7 @@
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
    "h": "The calculator: physical qubits → logical qubits",
-   "x": "This is the exact model derived at 🟢 Basics, 🔴 tier. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.",
+   "x": "This is the exact model derived at Basics, tier. Pick a hardware quality and a chip size; it solves for the smallest code distance that hits your reliability target, then divides.",
    "w": 2
   },
   {
@@ -2193,7 +2193,7 @@
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
    "h": "Logical-qubit calculator",
-   "x": "Hardware quality, physical error vs threshold p/pth: 1/10 Chip size: 100,000 physical qubits Reliability target (logical error rate): 10⁻⁶ demo 10⁻⁹ serious 10⁻¹² cryptography Or drop in the two machines from the 🔴 worked example below: Mac",
+   "x": "Hardware quality, physical error vs threshold p/pth: 1/10 Chip size: 100,000 physical qubits Reliability target (logical error rate): 10⁻⁶ demo 10⁻⁹ serious 10⁻¹² cryptography Or drop in the two machines from the worked example below: Machi",
    "w": 1
   },
   {
@@ -2216,7 +2216,7 @@
    "k": "s",
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
-   "h": "🟢 How the correcting works",
+   "h": "How the correcting works",
    "x": "The error-correction machinery a logical qubit is built from, with a code you can break yourself.Quantum error correction →",
    "w": 1
   },
@@ -2224,7 +2224,7 @@
    "k": "s",
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
-   "h": "🔴 The math floor",
+   "h": "The math floor",
    "x": "Surface codes, distance, and the threshold theorem in full formalism.Read →",
    "w": 1
   },
@@ -2472,7 +2472,7 @@
    "k": "s",
    "p": "phase-kickback.html",
    "t": "Why do Grover's and Shor's algorithms actually work?",
-   "h": "🔴 The full proofs",
+   "h": "The full proofs",
    "x": "Every claim on this page, derived from scratch and numerically verified: Deutsch's, Deutsch-Jozsa, phase estimation, and Shor's period-finding.The Machinery →",
    "w": 1
   },
@@ -2641,7 +2641,7 @@
    "p": "pqc.html#quickcheck",
    "t": "What does post-quantum cryptography cost on the wire?",
    "h": "Quick Check",
-   "x": "One paste, or one domain name: this is the fast path. It reads what you give it with the same parser as the full Inventory below, then hands it straight to the Sequencer for a live verdict. If you already know the four instruments on this p",
+   "x": "Tool 1 of 7 · check your own system This needs JavaScript; it runs entirely in your browser. Nothing you paste or look up is sent anywhere except, if you choose the domain tab, a public certificate-transparency log. What this does, and how ",
    "w": 2
   },
   {
@@ -2665,7 +2665,7 @@
    "p": "pqc.html#cliff",
    "t": "What does post-quantum cryptography cost on the wire?",
    "h": "The Size Cliff",
-   "x": "Every cryptographic number below is the length of a real object (a key, a ciphertext, or a signature) that your browser generated when you clicked. Building it this way catches errors a lookup table would inherit: several published sources ",
+   "x": "This figure needs JavaScript; it generates real post-quantum keys in your browser. Nothing is sent anywhere. What this does, and how to read it Every cryptographic number below is the length of a real object (a key, a ciphertext, or a signa",
    "w": 2
   },
   {
@@ -2681,7 +2681,7 @@
    "p": "pqc.html#inventory",
    "t": "What does post-quantum cryptography cost on the wire?",
    "h": "The Inventory",
-   "x": "The tool below this one plans a migration across whatever estate you describe. Its own list of limits admits the obvious: it discovers nothing. A migration programme lives or dies on the inventory, and the inventory is the hard part. So sta",
+   "x": "📎 Drop .pem/.crt/.cer/.pub/.json files here, or choose files , read straight into the box below, alongside anything already pasted. This tool parses in your browser. It needs JavaScript. Nothing you paste is transmitted; there is no server ",
    "w": 2
   },
   {
@@ -2705,7 +2705,7 @@
    "p": "pqc.html#estate",
    "t": "What does post-quantum cryptography cost on the wire?",
    "h": "Your estate, not ours",
-   "x": "The figure above measures a decision. This one measures you. Describe what you run (the rows below start from a realistic example, and every one is editable) and it will tell you which of your assets are already past saving, in what order t",
+   "x": "This tool computes in your browser. It needs JavaScript. Nothing you type is sent anywhere; there is no server to send it to. What this does, and how to read it The figure above measures a decision. This one measures you. Describe what you ",
    "w": 2
   },
   {
@@ -2745,7 +2745,7 @@
    "p": "pqc.html#odds",
    "t": "What does post-quantum cryptography cost on the wire?",
    "h": "The Odds",
-   "x": "The Sequencer above gives every exposed asset a breakevenZ: the year a quantum computer would have to exist before your plan stopped protecting it. That number is exact arithmetic sitting next to a number nobody has: nobody knows when a cry",
+   "x": "Calibrated to 32 real forecasts This tool computes in your browser. It needs JavaScript, and it reads the plan you build in the Sequencer above, so nothing here is typed twice. What this does, and how to read it The Sequencer above gives ev",
    "w": 2
   },
   {
@@ -2977,7 +2977,7 @@
    "p": "qec.html",
    "t": "What is quantum error correction?",
    "h": "Decoder Duel",
-   "x": "🔴 Formal",
+   "x": "Formal",
    "w": 1
   },
   {
@@ -3016,7 +3016,7 @@
    "k": "s",
    "p": "qec.html",
    "t": "What is quantum error correction?",
-   "h": "🔴 The math floor",
+   "h": "The math floor",
    "x": "The decoder formalism this page compresses, with the derivations.Read →",
    "w": 1
   },
@@ -3113,7 +3113,7 @@
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
    "h": "The CHSH game",
-   "x": "🔴 Formal",
+   "x": "Formal",
    "w": 1
   },
   {
@@ -3144,7 +3144,7 @@
    "k": "s",
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
-   "h": "🟢 Start clean",
+   "h": "Start clean",
    "x": "The same ideas with no formalism at all, in plain language.Basics →",
    "w": 1
   },
@@ -3160,7 +3160,7 @@
    "k": "s",
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
-   "h": "🔴 The math floor",
+   "h": "The math floor",
    "x": "Formalism, derivations, citations.Read → Next in this trackWhat is quantum error correction?Prove itThe CHSH game: beat the best classical strategyJudge a claimWas that real physics? The swipe deck Sources and AIThis page links 10 external ",
    "w": 1
   },
@@ -3227,6 +3227,94 @@
    "h": "Reality Check",
    "x": "Movie scenes, myths and viral claims about quantum physics, one card at a time. Each card says what the story claims, what is real, what stands in the way today, and, marked as speculation, what would have to change for it to work. Swipe, o",
    "w": 3
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "VisionQuest's mind space: is that how a quantum computer thinks?",
+   "x": "What an actual quantum computer looks like: the cooling and wiring stack of an IBM quantum computer at IBM's Thomas J. Watson Research Center. Not a still from the show. OJB Quantum (Onri Jay Benally), cropped · CC BY 4.0 · sourceUnratedIt ",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Ant-Man's Quantum Realm: can you shrink into it?",
+   "x": "Real seedOne true idea sits underneath. Everything built on it is invented.Rating 2 of 4: Real seedThe story saysShrink small enough and you slip into a separate realm below the atoms, where time and space behave differently.What is realQua",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Star Trek's transporter: is teleportation real?",
+   "x": "Real seedOne true idea sits underneath. Everything built on it is invented.Rating 2 of 4: Real seedThe story saysA machine reads a person on one platform, dissolves them, and rebuilds them somewhere else.What is realQuantum teleportation is",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Can entanglement send messages faster than light?",
+   "x": "Real seedOne true idea sits underneath. Everything built on it is invented.Rating 2 of 4: Real seedThe story saysTwist one particle of an entangled pair and its partner reacts at once, however far away, so you can signal instantly.What is r",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Does a quantum computer try every answer at once?",
+   "x": "One qubit's state is one point on the Bloch sphere, a single direction. It is not a list of answers. Smite-Meister · CC BY-SA 3.0 · sourceStretchedThe mechanism is real, and the scene pushes it past what it does.Rating 3 of 4: StretchedThe ",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Does a quantum computer crack every password in seconds?",
+   "x": "D-Wave's 512-qubit Vesuvius chip in its package. It is a quantum annealer, a different design from the gate-based machines that could run Shor's algorithm. Steve Jurvetson, cropped · CC BY 2.0 · sourceStretchedThe mechanism is real, and the",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Avengers: Endgame: can the Quantum Realm give you time travel?",
+   "x": "Name onlyThe word is real. The physics in the scene is not.Rating 1 of 4: Name onlyThe story saysPass through the Quantum Realm and you can step back in time, and the film's own rule is that changing the past spawns a new branch instead of ",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Doctor Strange's multiverse: is that what physics says?",
+   "x": "Real seedOne true idea sits underneath. Everything built on it is invented.Rating 2 of 4: Real seedThe story saysEvery choice spawns another universe, and with the right skill you can visit them.What is realHugh Everett III's 1957 formulati",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Is the brain a quantum computer? Does consciousness collapse the wavefunction?",
+   "x": "Name onlyThe word is real. The physics in the scene is not.Rating 1 of 4: Name onlyThe story saysConsciousness is a quantum effect, and observing something with your mind is what makes reality pick an outcome.What is realAll chemistry is qu",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "LK-99: was there a room-temperature superconductor?",
+   "x": "The LK-99 pellet in the authors' own photo, shown partly lifted by a magnet. That lift is what went viral; later analysis put it down to ordinary magnetism. Hyun-Tak Kim, converted to JPEG · CC BY 4.0 · sourceName onlyThe word is real. The ",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "reality.html",
+   "t": "Reality Check",
+   "h": "Can a disc really float above a magnet and lock in place?",
+   "x": "A magnet floating above a YBCO superconductor cooled to −196 °C with liquid nitrogen. Julien Bobroff and Frederic Bouquet, Laboratoire de Physique des Solides, Orsay; cropped · CC BY-SA 3.0 · sourceFaithfulA working physicist would nod.Rati",
+   "w": 2
   },
   {
    "k": "s",
@@ -3568,7 +3656,7 @@
    "k": "s",
    "p": "sensing.html",
    "t": "Do quantum sensors and networks matter sooner than quantum computers?",
-   "h": "🔴 Teleportation, exactly",
+   "h": "Teleportation, exactly",
    "x": "The protocol behind every quantum network, worked and verified.The Machinery, topic 05 →",
    "w": 1
   },
@@ -3576,7 +3664,7 @@
    "k": "s",
    "p": "sensing.html",
    "t": "Do quantum sensors and networks matter sooner than quantum computers?",
-   "h": "🟡 Where computers might help",
+   "h": "Where computers might help",
    "x": "Chemistry and materials, and why the honest answer is still “not yet shown”.Applications →",
    "w": 1
   },
@@ -3601,7 +3689,7 @@
    "p": "signals.html",
    "t": "Desk notes",
    "h": "Loading the desk notes…",
-   "x": "If this does not fill in, the feed could not be fetched. It lives at data/signals/index.json.",
+   "x": "If this does not fill in, the feed could not be fetched. It lives at data/signals/index.json. 5 Signals published so far. Newest first, every one names its source and says what it does NOT mean.IBM and Chicago ran a hard, encoded circuit, a",
    "w": 1
   },
   {

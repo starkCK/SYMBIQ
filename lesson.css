@@ -21,3 +21,11 @@
 .aicard .aicard-h { margin: 0 0 4px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
 .aicard b { color: var(--text); font-weight: 600; }
 .aicard a { color: var(--link); }
+
+.gamerules .gr-real { padding: 0 16px 14px; color: var(--muted); font-size: .88rem; line-height: 1.5; }
+.gamerules .gr-real .lbl { color: var(--text); font-weight: 600; margin-right: 4px; }
+
+.toolnote { margin: 10px 0 26px; padding: 0 16px; border: 1px solid var(--border); border-radius: 12px; }
+.toolnote > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--muted); }
+.toolnote[open] > summary { color: var(--text); }
+.toolnote > summary:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }

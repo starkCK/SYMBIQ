@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Not today. The honest numbers: what Shor's algorithm can and can't do to Bitcoin, which coins are exposed, why mining is safe, and an interactive calculator of what it would actually take.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/bitcoin.css?v=43">
+<link rel="stylesheet" href="p/bitcoin.css?v=46">
 
 
 
@@ -117,10 +117,10 @@
   ]
 }
 </script>
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/bitcoin.js?v=17" defer></script>
+<script src="p/bitcoin.js?v=18" defer></script>
 
 
 
@@ -302,13 +302,13 @@
 <p>Breaking one Bitcoin key needed <strong>~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026's</strong>. Today's biggest superconducting chip, IBM's Condor, has <strong>1,121 noisy ones</strong>, and a noisy qubit is not a fraction of a corrected one until error rates are low enough. Mining is effectively safe forever. The real story is a <em>migration problem</em> whose deadline keeps moving closer.</p>
 </div>
 
-<span class="tier g">🟢 Plain</span>
+<span class="tier g"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span>
 <h2 id="green">What a quantum computer could steal</h2>
 <p>Your bitcoin is protected by a padlock (your public key) whose combination (your private key) is easy to check and absurdly hard to reverse. Every classical computer on Earth working together couldn't reverse it before the sun burns out. Shor's algorithm, the famous quantum one, reverses exactly this kind of padlock efficiently. So in principle: yes, a big enough quantum computer forges your signature and spends your coins.</p>
 <p>The catch is "big enough." Running Shor's algorithm on a Bitcoin key isn't a bigger version of anything today's machines do; it's the difference between a paper airplane and a cargo jet. The machine must run <em>flawlessly for many minutes to hours</em>, which requires error correction (<a href="basics.html">the thing AI is helping fix</a>, the subject of this whole site), which multiplies the hardware thousands of times over.</p>
 <p>One more wrinkle: a padlock can only be picked if the attacker can <em>see</em> it. Most Bitcoin addresses keep the padlock hidden behind a hash until the moment you spend. Coins at fresh, unused addresses show attackers nothing useful, but roughly a quarter to a third of all bitcoin, including Satoshi-era coins, sits with its padlock in plain view, and Taproot adoption keeps adding more.</p>
 
-<span class="tier y">🟡 Working</span>
+<span class="tier y"><i class="dpt dpt-2" aria-hidden="true"></i> Working</span>
 <h2 id="yellow">The three attack surfaces, ranked by real risk</h2>
 <div class="overflow"><table>
 <tr><th>Target</th><th>Quantum tool</th><th>Verdict</th></tr>
@@ -316,11 +316,11 @@
 <tr><td>Exposed-key coins (~25–30% of supply, est.)</td><td>Shor, at leisure</td><td>First victims. Attackable whenever hardware arrives; no time pressure.</td></tr>
 <tr><td>Mining (SHA-256)</td><td>Grover: quadratic only</td><td>Effectively safe. √ speedup loses to ASICs + error-correction overhead.</td></tr>
 </table></div>
-<p><strong>The 10-minute window.</strong> Spending from a hashed address reveals your public key while the transaction waits (~10 minutes) to confirm. An attacker would need to run Shor's algorithm <em>inside that window</em> to race you, which is why serious resource estimates ask not just "can it be done" but "can it be done in an hour." That requirement multiplies the machine size, though a 2026 result cut it sharply by precomputing half the algorithm before your transaction appears (see the calculator below, and the 2026 update in the 🔴 section).</p>
+<p><strong>The 10-minute window.</strong> Spending from a hashed address reveals your public key while the transaction waits (~10 minutes) to confirm. An attacker would need to run Shor's algorithm <em>inside that window</em> to race you, which is why serious resource estimates ask not just "can it be done" but "can it be done in an hour." That requirement multiplies the machine size, though a 2026 result cut it sharply by precomputing half the algorithm before your transaction appears (see the calculator below, and the 2026 update in the <i class="dpt dpt-3" role="img" aria-label="Formal level"></i> section).</p>
 <p><strong>Why mining shrugs.</strong> Grover cuts the exponent in half (today's ~2⁷⁸ hashes of work per block become ~2³⁹ quantum steps), which sounds fatal until you price it: each quantum "hash" runs through error-corrected logic millions of times slower than an ASIC's nanosecond hash, and the speedup can't be parallelized the way mining farms trivially are. This is the same wall-clock honesty as our <a href="basics.html#red">Grover audit</a>: quadratic speedups die in the overhead.</p>
 
 <h2 data-tier-keep>The calculator: what would it take?</h2>
-<p>Drag the sliders. The model is the one <a href="basics.html#red">the 🔴 tier</a> works in: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation: the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
+<p>Drag the sliders. The model is the one <a href="basics.html#red">the <i class="dpt dpt-3" role="img" aria-label="Formal level"></i> tier</a> works in: surface-code error correction, logical error target 10⁻¹², and your choice of circuit generation: the 2017 textbook (Roetteler et al.) or the 2026 state of the art.</p>
 
 <div class="card" id="shor-widget">
   <h3>Shor-vs-Bitcoin resource estimator</h3>
@@ -342,7 +342,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, order-of-magnitude only: distance-d surface code (2d² qubits/logical), ×3 routing/factory overhead, Toffoli gates executed serially at 1 μs × d per logical cycle. Circuit generations: <strong>2017 textbook</strong> = Roetteler et al. (2,330 logical qubits, 1.26×10¹¹ Toffolis); <strong>2026 state of the art</strong> = arXiv 2603.28846-class (~1,200 logical, ~7×10⁷ Toffolis). Caveats: serial execution runs ~30× slower than Webber's parallelized 2022 design at the same scale, and this plain accounting lands ~8× above the 2026 paper's compact layout (~500K qubits); read outputs as the conservative end. Real machines differ; the orders of magnitude don't.</p>
 </div>
 
-<span class="tier r">🔴 Formal</span>
+<span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span>
 <h2 id="red">The resource estimates, with receipts</h2>
 <p>Shor's algorithm for the elliptic-curve discrete logarithm on a 256-bit prime-field curve: <strong>2,330 logical qubits</strong> and ≈<strong>1.26×10¹¹ Toffoli gates</strong> (Roetteler, Naehrig, Svore &amp; Lauter, <a href="https://arxiv.org/abs/1706.06752">arXiv:1706.06752</a>, computed for NIST P-256; Bitcoin's secp256k1 is the same size and comparable cost). Later circuit work cuts the Toffoli count substantially (Litinski, <a href="https://arxiv.org/abs/2306.08585">arXiv:2306.08585</a>, ~5×10⁷ Toffolis via active-volume architecture and state-reuse tricks; windowed-arithmetic lines of work cut counts further), which moves the estimates down, not away.</p>
 <p>This page asserts those counts; it does not derive how Shor's algorithm reaches them. The mechanism (the quantum Fourier transform, phase estimation, and the period-finding step that turns "factor N" into "find a period") is worked through from scratch on <a href="machinery-13.html">The Machinery</a>. Want the one-sentence version of <em>why any of it works</em> before the full derivation? <a href="phase-kickback.html">Start with phase kickback</a>, the single mechanism this whole circuit runs on, repeated.</p>
@@ -446,8 +446,8 @@
 
 <h2>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🟢 Error correction, Plain</h3><p>Why quantum computers need babysitting at all.</p><a href="basics.html">Read →</a></div>
-  <div class="card"><h3>🔴 The math floor</h3><p>Surface codes, decoders, and the Grover audit this page leans on.</p><a href="basics.html#red">Read →</a></div>
+  <div class="card"><h3><i class="dpt dpt-1" role="img" aria-label="Plain level"></i> Error correction, Plain</h3><p>Why quantum computers need babysitting at all.</p><a href="basics.html">Read →</a></div>
+  <div class="card"><h3><i class="dpt dpt-3" role="img" aria-label="Formal level"></i> The math floor</h3><p>Surface codes, decoders, and the Grover audit this page leans on.</p><a href="basics.html#red">Read →</a></div>
   <div class="card"><h3>🏁 The Race</h3><p>Who's closest to machines that matter. The table is still empty, and the page says why.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 

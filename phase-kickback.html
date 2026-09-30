@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/phase-kickback.css?v=42">
+<link rel="stylesheet" href="p/phase-kickback.css?v=45">
 
 
 
@@ -121,10 +121,10 @@
   ]
 }
 </script>
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/phase-kickback.js?v=17" defer></script>
+<script src="p/phase-kickback.js?v=18" defer></script>
 
 
 
@@ -306,13 +306,13 @@
   <figcaption>Grover's algorithm as a circuit: Hadamard gates spread the amplitude evenly, then the oracle U<sub>&omega;</sub> and a diffusion step repeat about (&pi;/4)&radic;N times, then a measurement. Diagram by Fawly, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Grover's_algorithm_circuit.svg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 Plain</span>
+<span class="tier g"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span>
 <h2 id="green">The trick: aim at something that can't move, and watch the recoil</h2>
 <p>Picture a locked door with a combination dial, and a rule: turning the dial to the right number does nothing visible to the door: it was already unlocked, so "unlocking" it again just leaves it exactly as unlocked as before. But the person turning the dial isn't left unaffected. Their hand picks up a small, specific twist depending on whether the combination they tried was right or wrong: a twist you can't see by looking at the door, only by looking at the hand.</p>
 <p>Now do this in superposition: instead of trying combinations one at a time, hold every combination in your hand <em>at once</em>, and touch the dial once. The door, silent throughout, never changing, has left a different twist onto each of your simultaneously-held combinations. Nothing about the door tells you which twist went where. But if you now let all those twisted possibilities interfere with each other, the twisted-right combination reinforcing itself and the twisted-wrong ones cancelling out, the answer falls out.</p>
-<p>That is phase kickback, stated without a single equation. The "door" is a target qubit prepared so that touching it can never change it. The "twist" is a phase. And "letting them interfere" is exactly what a Hadamard gate, or the more elaborate Fourier transform used in Shor's algorithm, is for. The mechanism, with the equation: <a href="#yellow">🟡 keep going ↓</a></p>
+<p>That is phase kickback, stated without a single equation. The "door" is a target qubit prepared so that touching it can never change it. The "twist" is a phase. And "letting them interfere" is exactly what a Hadamard gate, or the more elaborate Fourier transform used in Shor's algorithm, is for. The mechanism, with the equation: <a href="#yellow"><i class="dpt dpt-2" role="img" aria-label="Working level"></i> keep going ↓</a></p>
 
-<span class="tier y">🟡 Working</span>
+<span class="tier y"><i class="dpt dpt-2" aria-hidden="true"></i> Working</span>
 <h2 id="yellow">The mechanism: eigenstates don't move, so the phase has nowhere else to go</h2>
 <p>An <strong>eigenstate</strong> of a gate U is a state that U leaves pointing the same direction: U only ever multiplies it by a number, U|u⟩ = λ|u⟩, called the eigenvalue. For any gate used in quantum computing, λ is a pure phase, λ = e<sup>iφ</sup>, since gates preserve length.</p>
 <p>The cleanest possible case: the gate Z flips the sign of |1⟩ and leaves |0⟩ alone, so |1⟩ is an eigenstate of Z with eigenvalue −1. Take the <strong>controlled</strong> version, CZ, wired so a control qubit decides whether Z is applied to a target held fixed at |1⟩, and put the control in an equal superposition |+⟩ = (|0⟩+|1⟩)/√2:</p>
@@ -350,7 +350,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Scope: this shows the cleanest case, a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full, numerical verification included, at <a href="machinery-08.html">The Machinery, topic f08</a>. It exists to make the mechanism visible before the proof.</p>
 </div>
 
-<span class="tier r">🔴 Formal</span>
+<span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span>
 <h2 id="red">Where this mechanism runs, and where the proofs already live</h2>
 <p>This page does not re-derive what <a href="formalism.html">The Machinery</a> has already proven and independently referee-verified. It exists to name the mechanism plainly and point at exactly where each proof lives.</p>
 <p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register, proven on <a href="machinery-08.html">topic f08</a> and <a href="machinery-09.html">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)), and numerically checked two different ways: <em>exhaustively</em> at f08's n=1 (all four possible one-bit functions), and by <em>sampling</em> at f09's n=4 (both constant functions, plus 20 of the 12,870 possible balanced ones); worth knowing which is which before quoting either as a full proof by enumeration.</p>
@@ -382,7 +382,7 @@
 
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🔴 The full proofs</h3><p>Every claim on this page, derived from scratch and numerically verified: Deutsch's, Deutsch-Jozsa, phase estimation, and Shor's period-finding.</p><a href="formalism.html">The Machinery →</a></div>
+  <div class="card"><h3><i class="dpt dpt-3" role="img" aria-label="Formal level"></i> The full proofs</h3><p>Every claim on this page, derived from scratch and numerically verified: Deutsch's, Deutsch-Jozsa, phase estimation, and Shor's period-finding.</p><a href="formalism.html">The Machinery →</a></div>
   <div class="card"><h3>🎯 Play the oracle</h3><p>Grover's algorithm's phase kickback, as a game: tilt the odds, look once, and see why looking twice loses it.</p><a href="play.html#grover">Grover's Escape →</a></div>
   <div class="card"><h3>₿ Where this ends up</h3><p>The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.</p><a href="bitcoin.html">Can quantum break Bitcoin? →</a></div>
 </div>

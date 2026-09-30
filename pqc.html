@@ -57,7 +57,7 @@
 <meta name="twitter:description" content="Every byte on this page is measured from a key your browser just generated. Not one number is copied from a table.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/pqc.css?v=42">
+<link rel="stylesheet" href="p/pqc.css?v=45">
 
 
 
@@ -121,7 +121,7 @@
   ]
 }
 </script>
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script src="p/pqc.js?v=15" defer></script>
 
@@ -658,13 +658,17 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <p class="tagline">Not in theory. In bytes, measured in this browser, from keys generated a moment ago.</p>
 
 <h2 id="quickcheck">Quick Check</h2>
-<p>One paste, or one domain name: this is the fast path. It reads what you give it with the same parser as the
-   full Inventory below, then hands it straight to the Sequencer for a live verdict. If you already know the four
-   instruments on this page, skip straight past this to <a href="#cliff">the Size Cliff</a>.</p>
 <div class="od-spotlight">
   <p class="pq-eyebrow" data-icon="⚡" style="margin-top:0">Tool 1 of 7 · check your own system</p>
   <div id="quickcheck-mount"><p class="sc-wait">This needs JavaScript; it runs entirely in your browser. Nothing you paste or look up is sent anywhere except, if you choose the domain tab, a public certificate-transparency log.</p></div>
 </div>
+
+<details class="toolnote"><summary>What this does, and how to read it</summary>
+<p>One paste, or one domain name: this is the fast path. It reads what you give it with the same parser as the
+   full Inventory below, then hands it straight to the Sequencer for a live verdict. If you already know the four
+   instruments on this page, skip straight past this to <a href="#cliff">the Size Cliff</a>.</p></details>
+
+
 
 <div class="pq-scorewrap" id="pq-score">
   <p class="pq-eyebrow" data-icon="📊" style="margin-top:0">Your current position</p>
@@ -705,11 +709,14 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 <p class="pq-eyebrow" data-icon="📏">Tool 2 of 7 · measured, not modelled</p>
 <h2 id="cliff">The Size Cliff</h2>
-<p>Every cryptographic number below is the length of a real object (a key, a ciphertext, or a signature) that your browser generated when you clicked. Building it this way catches errors a lookup table would inherit: several published sources give an ML-DSA-65 signature as 3,293 bytes, but sign one and measure it and the answer is <b><span class="rcpt" data-rcpt="pqc-3309" tabindex="0" role="button" aria-expanded="false">3,309</span></b>, which is what FIPS 204 specifies.</p>
-
 <div class="card">
   <div id="cliff-mount"><p class="sc-wait">This figure needs JavaScript; it generates real post-quantum keys in your browser. Nothing is sent anywhere.</p></div>
 </div>
+
+<details class="toolnote"><summary>What this does, and how to read it</summary>
+<p>Every cryptographic number below is the length of a real object (a key, a ciphertext, or a signature) that your browser generated when you clicked. Building it this way catches errors a lookup table would inherit: several published sources give an ML-DSA-65 signature as 3,293 bytes, but sign one and measure it and the answer is <b><span class="rcpt" data-rcpt="pqc-3309" tabindex="0" role="button" aria-expanded="false">3,309</span></b>, which is what FIPS 204 specifies.</p></details>
+
+
 
 <details class="pq-fold" open>
 <summary>What is measured, and what is modelled ▸</summary>
@@ -730,19 +737,21 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 <p class="pq-eyebrow" data-icon="🔍">Tool 3 of 7 · discover what you run</p>
 <h2 id="inventory">The Inventory</h2>
-
-<p>The tool below this one plans a migration across whatever estate you describe. Its own list of limits admits the obvious: <b>it discovers nothing.</b> A migration programme lives or dies on the inventory, and the inventory is the hard part.</p>
-
-<p>So start here instead. Paste the artefacts you already have (a certificate chain, the contents of an <code>authorized_keys</code> file, a JWKS document) and this reads them. Not pattern-matches them: <b>reads them</b>, decoding the ASN.1 byte by byte, the same structure <code>openssl x509</code> walks. Every field in the table is taken out of the artefact. Nothing is entered by you, and nothing is looked up in a table of what a key of that name is supposed to be.</p>
-
-<p>The parse is also checked against a second implementation. For every key your browser's own WebCrypto can import, we hand it the exact bytes and read the algorithm back from the browser. Agreement earns the row a <span class="cb-tag ok">CONFIRMED</span> tag. Where WebCrypto has no algorithm at all (ML-DSA and SLH-DSA today, Ed25519 on older browsers) the row says <span class="cb-tag">PARSED</span>: our decoder alone read it, nothing independent has.</p>
-
 <div class="card">
   <p class="cb-drop" id="cb-drop">📎 Drop <code>.pem</code>/<code>.crt</code>/<code>.cer</code>/<code>.pub</code>/<code>.json</code> files here, or
     <label for="cb-file" class="cb-filelab">choose files</label><input type="file" id="cb-file" accept=".pem,.crt,.cer,.pub,.json,.txt" multiple hidden>
     , read straight into the box below, alongside anything already pasted.</p>
   <div id="cbom-mount"><p class="sc-wait">This tool parses in your browser. It needs JavaScript. Nothing you paste is transmitted; there is no server to transmit it to.</p></div>
 </div>
+
+<details class="toolnote"><summary>What this does, and how to read it</summary>
+<p>The tool below this one plans a migration across whatever estate you describe. Its own list of limits admits the obvious: <b>it discovers nothing.</b> A migration programme lives or dies on the inventory, and the inventory is the hard part.</p>
+
+<p>So start here instead. Paste the artefacts you already have (a certificate chain, the contents of an <code>authorized_keys</code> file, a JWKS document) and this reads them. Not pattern-matches them: <b>reads them</b>, decoding the ASN.1 byte by byte, the same structure <code>openssl x509</code> walks. Every field in the table is taken out of the artefact. Nothing is entered by you, and nothing is looked up in a table of what a key of that name is supposed to be.</p>
+
+<p>The parse is also checked against a second implementation. For every key your browser's own WebCrypto can import, we hand it the exact bytes and read the algorithm back from the browser. Agreement earns the row a <span class="cb-tag ok">CONFIRMED</span> tag. Where WebCrypto has no algorithm at all (ML-DSA and SLH-DSA today, Ed25519 on older browsers) the row says <span class="cb-tag">PARSED</span>: our decoder alone read it, nothing independent has.</p></details>
+
+
 
 <h3>The finding that is worth the whole tool</h3>
 <p><b>A certificate contains two algorithms, not one.</b> There is the key it carries, and there is the algorithm its issuer used to sign it. They are usually different, and they usually belong to different people. An inventory with one algorithm column per certificate silently loses half the estate, and the half it loses is the half you may not control.</p>
@@ -763,16 +772,18 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 <p class="pq-eyebrow" data-icon="🧮">Tool 4 of 7 · sequence the migration</p>
 <h2 id="estate">Your estate, not ours</h2>
+<div class="card">
+  <div id="estate-mount"><p class="sc-wait">This tool computes in your browser. It needs JavaScript. Nothing you type is sent anywhere; there is no server to send it to.</p></div>
+</div>
 
+<details class="toolnote"><summary>What this does, and how to read it</summary>
 <p>The figure above measures a decision. This one measures <em>you</em>. Describe what you run (the rows below start from a realistic example, and every one is editable) and it will tell you which of your assets are already past saving, in what order to migrate, and whether your deadline is reachable at all.</p>
 
 <p><b>The idea that makes this different from a readiness scorecard.</b> Mosca's inequality says you are exposed when X (how long the data must stay secret) plus Y (how long migration takes) exceeds Z (how long until a quantum computer can break it). Almost everyone plugs in an asset's own effort as Y. <b>That is wrong the moment anything depends on anything.</b> Your real Y is <em>when the plan reaches that asset</em>: an embedded fleet sitting behind a code-signing pipeline sitting behind a certificate authority does not take eight quarters, it takes however long all three take in sequence at your actual capacity. So the schedule feeds back into the risk, and <b>changing the order changes who is exposed.</b> Change it below and watch the last column move.</p>
 
-<p><b>And nobody knows Z.</b> Predicting it is what every other tool in this space does and none of them can justify it. So the last column does not predict: it reports the <b>breakeven</b>, <em>this asset is exposed unless a cryptographically relevant quantum computer is further away than N years</em>. That is a claim you can check against your own belief instead of adopting ours.</p>
+<p><b>And nobody knows Z.</b> Predicting it is what every other tool in this space does and none of them can justify it. So the last column does not predict: it reports the <b>breakeven</b>, <em>this asset is exposed unless a cryptographically relevant quantum computer is further away than N years</em>. That is a claim you can check against your own belief instead of adopting ours.</p></details>
 
-<div class="card">
-  <div id="estate-mount"><p class="sc-wait">This tool computes in your browser. It needs JavaScript. Nothing you type is sent anywhere; there is no server to send it to.</p></div>
-</div>
+
 
 <h3>How to read the result</h3>
 <ul>
@@ -806,15 +817,17 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 <p class="pq-eyebrow" data-icon="🎲">Tool 5 of 7 · put a distribution behind the date</p>
 <h2 id="odds">The Odds</h2>
-
-<p>The Sequencer above gives every exposed asset a <b>breakevenZ</b>: the year a quantum computer would have to exist before your plan stopped protecting it. That number is exact arithmetic sitting next to a number nobody has: nobody knows when a cryptographically relevant quantum computer (CRQC) will exist. Reading "15.75 years" as a verdict is exactly the mistake the rest of this page exists to catch, so this tool puts a real distribution behind it instead of leaving you to supply your own gut feeling, and lets you test it against the estate a hospital, a bank or a utility would recognise.</p>
-
-<p>The <a href="https://globalriskinstitute.org/publication/2024-quantum-threat-timeline-report/">Global Risk Institute's Quantum Threat Timeline Report 2024</a> (Mosca &amp; Piani, December 2024) asked <b>32 named experts</b> for a likelihood range at five time horizons, from 5 to 30 years. Their answers, read straight off the report's own chart, are the only ten numbers this tool trusts: an optimistic and a pessimistic bound at each of the five horizons. Everything between them is <b>linear interpolation, stated as a modelling choice</b>, the same way the Size Cliff above states what it measured versus what it modelled. Past 30 years the survey stops, and so does this tool's precision: it reports a <b>floor</b> on your risk rather than inventing a tail nobody surveyed.</p>
-
 <div class="od-spotlight">
   <span class="od-eyebrow">Calibrated to 32 real forecasts</span>
   <div id="odds-mount"><p class="sc-wait">This tool computes in your browser. It needs JavaScript, and it reads the plan you build in the Sequencer above, so nothing here is typed twice.</p></div>
 </div>
+
+<details class="toolnote"><summary>What this does, and how to read it</summary>
+<p>The Sequencer above gives every exposed asset a <b>breakevenZ</b>: the year a quantum computer would have to exist before your plan stopped protecting it. That number is exact arithmetic sitting next to a number nobody has: nobody knows when a cryptographically relevant quantum computer (CRQC) will exist. Reading "15.75 years" as a verdict is exactly the mistake the rest of this page exists to catch, so this tool puts a real distribution behind it instead of leaving you to supply your own gut feeling, and lets you test it against the estate a hospital, a bank or a utility would recognise.</p>
+
+<p>The <a href="https://globalriskinstitute.org/publication/2024-quantum-threat-timeline-report/">Global Risk Institute's Quantum Threat Timeline Report 2024</a> (Mosca &amp; Piani, December 2024) asked <b>32 named experts</b> for a likelihood range at five time horizons, from 5 to 30 years. Their answers, read straight off the report's own chart, are the only ten numbers this tool trusts: an optimistic and a pessimistic bound at each of the five horizons. Everything between them is <b>linear interpolation, stated as a modelling choice</b>, the same way the Size Cliff above states what it measured versus what it modelled. Past 30 years the survey stops, and so does this tool's precision: it reports a <b>floor</b> on your risk rather than inventing a tail nobody surveyed.</p></details>
+
+
 
 <h3>What "roll the dice" actually means</h3>
 <p>There is <b>one true future, not one per asset</b>. Every line in your estate is judged against the <em>same</em> drawn year, because that is what "nobody knows Z" really means: Z is a single unknown shared by everything you own, not an independent coin flip on every row. So "your whole plan is breached" always works out to exactly the odds of your single riskiest asset, and shrinking that one number by reordering the plan is the same game the Sequencer above already had you playing. This tool just prices it, against opinions 32 people were willing to put their names to.</p>

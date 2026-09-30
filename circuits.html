@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Strip away the Bloch sphere and the bra-kets: a superconducting qubit is a capacitor wired across one nonlinear component. Live, driven, and turned into the same gate the homepage widget already uses.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/circuits.css?v=42">
+<link rel="stylesheet" href="p/circuits.css?v=45">
 
 
 
@@ -131,10 +131,10 @@
   ]
 }
 </script>
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/circuits.js?v=17" defer></script>
+<script src="p/circuits.js?v=18" defer></script>
 
 
 
@@ -316,14 +316,14 @@
   <figcaption>Where these circuits live: the cooling and wiring stack of an IBM quantum computer, at IBM&#39;s Thomas J. Watson Research Center. The processor sits at the coldest plate, at the bottom. Photo: OJB Quantum (Onri Jay Benally), cropped, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer">CC BY 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:IBM_Quantum_System_One.jpg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 Plain</span>
+<span class="tier g"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span>
 <h2 id="green">The problem: oscillators are too polite</h2>
 <p>Picture a swing. Push it, and it settles into a rhythm: back and forth at one fixed rate, forever, if nothing slows it down. An LC circuit, a capacitor (a bucket that stores charge) wired to a coil (a flywheel that stores current), does the electrical version of the same thing. Charge sloshes into the capacitor, drains out through the coil, sloshes back, and the whole thing rings at one fixed frequency set by how big the bucket and the flywheel are.</p>
 <p>Here is the catch. Quantum mechanically, that ringing circuit doesn't just have one energy: it has a whole ladder of allowed energies, evenly spaced, rung after rung, like a musical instrument's overtones. Evenly spaced sounds harmless. It's fatal for a qubit. If you send in a pulse tuned to boost the circuit from the bottom rung to the second rung, that <em>exact same</em> pulse is equally good at boosting it from the second rung to the third, and the third to the fourth. You can never cleanly stop at "just two levels", the two things every classical bit and every qubit need.</p>
 <p>So the goal isn't just "build something that oscillates"; a plain LC tank already does that beautifully, and it's useless. The goal is to build something that oscillates <em>unevenly</em>: where the first rung costs a noticeably different amount of energy to climb than the second one. That unevenness is called <strong>anharmonicity</strong>, and one component supplies almost all of it.</p>
-<p>How, in real terms: <a href="#yellow">🟡 keep going ↓</a></p>
+<p>How, in real terms: <a href="#yellow"><i class="dpt dpt-2" role="img" aria-label="Working level"></i> keep going ↓</a></p>
 
-<span class="tier y">🟡 Working</span>
+<span class="tier y"><i class="dpt dpt-2" aria-hidden="true"></i> Working</span>
 <h2 id="yellow">The fix: one component that refuses to be linear</h2>
 <p>The component is the <strong>Josephson junction</strong>: two superconductors separated by an insulating gap so thin (a couple of nanometers) that paired electrons (Cooper pairs) tunnel straight through it. Below a critical current it carries current with exactly zero resistance, which is already strange. What makes it useful here is stranger still: the relationship between the current flowing through it and the phase difference across it isn't a straight line, the way it is for a normal wire or a normal coil. It's a <strong>sine function</strong>. Wired into a circuit, it behaves like an inductor, but one whose effective "inductance" depends on how much current is already flowing through it. Push it harder, and it pushes back disproportionately. That disproportion is the nonlinearity the whole field is built on.</p>
 <p>Wire an ordinary capacitor straight across a single Josephson junction, and you get the <strong>transmon</strong>, far and away the most common superconducting qubit design, running under most of Google, IBM and Rigetti's hardware. Electrically it is almost the same object as the plain LC tank above, with one piece swapped: the linear coil is replaced by the junction's nonlinear one. Solve that circuit and the evenly-spaced ladder collapses into an <em>uneven</em> one: each rung costs a little less energy to climb than the rung below it.</p>
@@ -380,7 +380,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Toy model, limits stated: both the trace and the ladder come from real calculation: the plain-LC case exactly (E<sub>n</sub> evenly spaced), the junction case from the standard transmon leading-order approximation above (Koch et al. 2007), valid in the E<sub>J</sub>/E<sub>C</sub> ≫ 1 regime the slider stays inside. <span class="rcpt" data-rcpt="cir-ec-250">E<sub>C</sub> is held at an illustrative, representative 250 MHz throughout; real designs typically sit within a factor of two of that.</span> The drive animation restricts to levels 0 and 1 only and ignores leakage into level 2; real hardware corrects for exactly that leakage with shaped ("DRAG") pulses, not by ignoring it.</p>
 </div>
 
-<span class="tier r">🔴 Formal</span>
+<span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span>
 <h2 id="red">The formalism, with receipts</h2>
 <p>An LC circuit is quantized the same way a mechanical oscillator is: canonical conjugate variables (flux Φ across the inductor and charge Q on the capacitor) obey [Φ̂, Q̂] = iħ, and the Hamiltonian H = Q̂²/2C + Φ̂²/2L is exactly a quantum harmonic oscillator, with eigenvalues E<sub>n</sub> = (n + ½)ħω, ω = 1/√(LC). Evenly spaced, as claimed above: this is not an approximation, it is exact.</p>
 <p>A Josephson junction's current-phase relation is I = I<sub>c</sub> sin φ, with voltage V = (ħ/2e) dφ/dt across it. Treated as a circuit element this defines a nonlinear inductance L<sub>J</sub>(φ) = ħ/(2eI<sub>c</sub> cos φ): a real inductor, but one whose value depends on the bias point, which is exactly the sine-versus-straight-line nonlinearity described above. Its energy scale is the Josephson energy E<sub>J</sub> = ħI<sub>c</sub>/2e.</p>
@@ -394,7 +394,7 @@
 <p><strong>The catch this page's widget deliberately simplifies away.</strong> Because the transmon is only <em>weakly</em> anharmonic, a fast drive tuned to ω<sub>01</sub> has non-negligible spectral weight at the nearby ω<sub>12</sub> gap too, leaking population into level 2, which is an error, not a feature. The standard fix is <strong>DRAG</strong> (Derivative Removal by Adiabatic Gate): add a second control tone proportional to the time-derivative of the first, which analytically cancels the leading leakage term without slowing the gate down. Motzoi, Gambetta, Rebentrost &amp; Wilhelm, <a href="https://arxiv.org/abs/0901.0534">arXiv 0901.0534</a> (<em>Phys. Rev. Lett.</em> 103, 110501 (2009)) reported <span class="rcpt" data-rcpt="cir-drag-10x">roughly an order-of-magnitude error reduction relative to the state of the art at realistic transmon parameters</span>, and some form of DRAG shaping runs on essentially every superconducting qubit gate in production today.</p>
 
 <h2 id="calibration" data-tier-keep>Recalibrating this same gate, blind</h2>
-<p>Everything above assumed one thing: that the drive is exactly in tune with the qubit. Real hardware will not hold still. Flux noise and stray two-level-system defects nudge a qubit's own frequency hour to hour, so the drive ends up slightly out of tune — <strong>detuned</strong> — and a detuned drive cannot flip the qubit all the way, however long you run it. Worse, you cannot read the detuning off any dial. All you get back is noisy measurement shots. The game below is what recalibrating against that drift actually looks like. (<a href="#red">The 🔴 section above</a> has the formula that ceiling falls out of.)</p>
+<p>Everything above assumed one thing: that the drive is exactly in tune with the qubit. Real hardware will not hold still. Flux noise and stray two-level-system defects nudge a qubit's own frequency hour to hour, so the drive ends up slightly out of tune — <strong>detuned</strong> — and a detuned drive cannot flip the qubit all the way, however long you run it. Worse, you cannot read the detuning off any dial. All you get back is noisy measurement shots. The game below is what recalibrating against that drift actually looks like. (<a href="#red">The <i class="dpt dpt-3" role="img" aria-label="Formal level"></i> section above</a> has the formula that ceiling falls out of.)</p>
 <div class="card" id="calibration-game">
   <h3>The Calibration</h3>
   <p class="tagline" style="margin:6px 0 14px">You never drive the qubit yourself. You configure the agent that has to find it, blind, while it drifts underneath you.</p>

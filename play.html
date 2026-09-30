@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-vMS2vmM7SLXKzeYbUN9lklWpvGUu1q7b7ESjqJpOIz0=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-lLACeN7Sz9NU3/suIuKVNv32oAzIhozTJyX0FMtPCv0=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Arcade · Play · SymbiQ</title>
@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/play.css?v=36">
+<link rel="stylesheet" href="p/play.css?v=39">
 
 
 
@@ -129,14 +129,14 @@
 .lb-unit { font-size: .72rem; color: var(--muted); margin: 4px 0 0; }
 .lb-empty, .lb-foot { font-size: .8rem; color: var(--muted); margin: 6px 0 0; }
 </style>
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script src="save.js"></script>
 <script src="coherence.js?v=3"></script>
 <script src="games.js?v=49"></script>
 <script src="scene.js?v=7"></script>
 <script src="missions.js?v=13"></script>
-<script src="p/play.js?v=16" defer></script>
+<script src="p/play.js?v=17" defer></script>
 
 
 
@@ -435,10 +435,10 @@
   <h2 id="stage-title"></h2>
   <p id="stage-hook"></p>
   <div id="stage-chrome"></div>
-  <div id="stage-about"></div>
   <div class="card" id="stage-game"></div>
   <div id="stage-next"></div>
-  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="stage-honest"></p>
+  <div id="stage-about"></div>
+  <p class="stage-honest" id="stage-honest" hidden></p>
 </div>
 
 <div id="mission-host" hidden></div>
@@ -573,7 +573,18 @@
     document.getElementById('stage-mentor').textContent = g.mentor ? ('On the Path this is ' + g.mentor + "'s mission") : 'No mission on the Path; also lives natively on circuits.html';
     document.getElementById('stage-chrome').innerHTML = GS.chromeHTML ? GS.chromeHTML(id) : '';
     document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
-    document.getElementById('stage-honest').innerHTML = g.honest || '';
+    /* Game-stage template: the page shows the game, its level strip, par and hints. The rules and "what is real"
+       live together in one drawer under the game; the honest-model note moves into it. */
+    (function () {
+      var drawer = document.querySelector('#stage-about .gamerules');
+      if (drawer && g.honest) {
+        var real = document.createElement('div');
+        real.className = 'gr-real';
+        real.innerHTML = '<span class="lbl">What is real</span> ' + g.honest;
+        drawer.appendChild(real);
+      }
+    })();
+    document.getElementById('stage-honest').innerHTML = '';
     document.getElementById('stage-next').innerHTML = '';
     stage.hidden = false;
     var stageGame = document.getElementById('stage-game');

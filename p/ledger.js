@@ -241,9 +241,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '<i class="dpt dpt-1" aria-hidden="true"></i>', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '<i class="dpt dpt-2" aria-hidden="true"></i>', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '<i class="dpt dpt-3" aria-hidden="true"></i>', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -1319,7 +1319,24 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         '</details>';
       }).join('');
 
+      function nextDeadline() {
+        var today = new Date().toISOString().slice(0, 10);
+        var open = entries.filter(function (e) { return e.status !== 'resolved' && e.status !== 'void' && e.status !== 'superseded' && e.resolves_by; });
+        if (!open.length) return '';
+        open.sort(function (x, y) { return x.resolves_by.localeCompare(y.resolves_by); });
+        var ahead = open.filter(function (e) { return e.resolves_by >= today; });
+        var e = ahead.length ? ahead[0] : open[0];
+        var days = Math.round((Date.parse(e.resolves_by + 'T00:00:00Z') - Date.parse(today + 'T00:00:00Z')) / 86400000);
+        var when = days > 0 ? 'in ' + days + ' day' + (days === 1 ? '' : 's')
+                 : days === 0 ? 'today' : 'past due by ' + (-days) + ' day' + (days === -1 ? '' : 's') + ', verdict pending';
+        var cl = claimantMap[e.claimant];
+        return '<a class="ldg-next" href="#c-' + esc(e.slug) + '"><span class="eyebrow">Next deadline</span>' +
+          '<b>' + esc(cl ? cl.name : e.claimant) + ': ' + esc(e.headline) + '</b>' +
+          '<span>' + esc(fmtDate(e.resolves_by)) + ' &middot; ' + when + '</span></a>';
+      }
+
       host.innerHTML =
+        nextDeadline() +
         '<p class="ldg-count" id="ldg-visible-count"></p>' +
         filterBar +
         '<div id="ldg-list">' + listHtml + '</div>';
@@ -1388,6 +1405,10 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       }
       openFromHash();
       window.addEventListener('hashchange', openFromHash);
+      ['ldg-mount', 'ldg-scorecards', 'ldg-ours', 'ldg-state'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) window.SymbiQ.pre(id, el.innerHTML);
+      });
     }).catch(function (err) {
       host.innerHTML = '<p class="archq-loading">The Ledger could not be loaded (' + esc(err.message) + ').</p>';
     });

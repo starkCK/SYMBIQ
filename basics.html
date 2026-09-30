@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Quantum error correction and the AI decoder now beating thirty years of hand-written rulebooks. Read it Plain, Working or Formal (with citations), all on one page.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/basics.css?v=42">
+<link rel="stylesheet" href="p/basics.css?v=45">
 
 
 
@@ -67,10 +67,10 @@
 
 
 
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/basics.js?v=17" defer></script>
+<script src="p/basics.js?v=18" defer></script>
 
 
 
@@ -246,8 +246,8 @@
   <figcaption>What a quantum chip looks like: Google's Sycamore processor in its mount, on display at the Deutsches Museum in Munich. The chip sits at the centre of the mount. Photo: Coldupnorth, cropped, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Sycamore_Quantum_Chip.jpg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g" id="green">🟢 Plain</span>
-<p class="tier-lede">One analogy, no equations, about two minutes. The 🟡 tier builds the machinery and 🔴 carries the derivation.</p>
+<span class="tier g" id="green"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span>
+<p class="tier-lede">One analogy, no equations, about two minutes. The <i class="dpt dpt-2" role="img" aria-label="Working level"></i> tier builds the machinery and <i class="dpt dpt-3" role="img" aria-label="Formal level"></i> carries the derivation.</p>
 
 <p>A quantum computer is a choir in which every singer slowly drifts off key, and glancing at any one of them to check makes that singer forget the song. <em>(Singer = qubit, the machine's basic unit of information. Off key = the small error every qubit collects simply by existing. Those are the only two terms you need.)</em></p>
 
@@ -318,8 +318,8 @@
   <p class="cyu-why"><strong>Measuring one qubit on its own collapses its superposition</strong>, the property that made it worth having. A parity check dodges this by asking only <em>do these two agree?</em>, which reveals that something flipped without revealing what either one is. That single constraint is why quantum error correction looks so strange next to the classical kind: you are repairing a thing you are never allowed to inspect.</p>
 </div>
 
-<span class="tier y" id="yellow">🟡 Working</span>
-<p class="tier-lede">The mechanism, one worked number, and the picture you should have in your head. No derivations; those are in 🔴.</p>
+<span class="tier y" id="yellow"><i class="dpt dpt-2" aria-hidden="true"></i> Working</span>
+<p class="tier-lede">The mechanism, one worked number, and the picture you should have in your head. No derivations; those are in <i class="dpt dpt-3" role="img" aria-label="Formal level"></i>.</p>
 
 <h2 id="the-mechanism">The mechanism</h2>
 
@@ -403,8 +403,8 @@
   <p class="cyu-why">Each step of <em>d</em> → <em>d</em>+2 divides the logical error rate by Λ, so 1,000× needs log(1000)/log(2.14) ≈ 9.08 steps. Nine steps buys 2.14<sup>9</sup> ≈ <strong>941×</strong> and takes you from <em>d</em> = 5 to <strong><em>d</em> = 23</strong>, which is 2<em>d</em>²−1 = <strong>1,057 physical qubits</strong> for that one logical qubit. Note the trap in the wording: raising <em>d</em> from 5 to 6 would buy you nothing at all, because the exponent only moves when the distance moves by two.</p>
 </div>
 
-<span class="tier r" id="red">🔴 Formal</span>
-<p class="tier-lede">Formalism, one derivation carried through, primary sources, and the problems still open. Assumes stabilizer formalism. The 🟡 tier carries the same content without the algebra. Independently verified 2026-07-13.</p>
+<span class="tier r" id="red"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span>
+<p class="tier-lede">Formalism, one derivation carried through, primary sources, and the problems still open. Assumes stabilizer formalism. The <i class="dpt dpt-2" role="img" aria-label="Working level"></i> tier carries the same content without the algebra. Independently verified 2026-07-13.</p>
 
 <p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits, so a patch costs 2<em>d</em>²−1 physical qubits. Stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding is inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors, <em>not</em> the most probable error, which is a different and worse objective.</p>
 

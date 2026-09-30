@@ -241,9 +241,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '<i class="dpt dpt-1" aria-hidden="true"></i>', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '<i class="dpt dpt-2" aria-hidden="true"></i>', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '<i class="dpt dpt-3" aria-hidden="true"></i>', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -963,7 +963,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
 ;
 (function () {
   window.SymbiQ = window.SymbiQ || {};
-  var TIER = { g: '🟢 Plain', y: '🟡 Working', r: '🔴 Formal' };
+  var TIER = { g: '<i class="dpt dpt-1" aria-hidden="true"></i> Plain', y: '<i class="dpt dpt-2" aria-hidden="true"></i> Working', r: '<i class="dpt dpt-3" aria-hidden="true"></i> Formal' };
 
   var esc = window.SymbiQ.core.esc;
 
@@ -1005,7 +1005,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
                      '<summary>' +
                        '<span class="archq-num">#' + esc(e.qnum) + '</span>' +
                        '<span class="archq-txt">' + esc(e.question) + '…</span>' +
-                       '<span class="orbadge">' + esc(TIER[e.tier] || e.tier) + '</span>' +
+                       '<span class="orbadge">' + (TIER[e.tier] || esc(e.tier)) + '</span>' +
                        '<span class="orbadge">' + esc(e.date) + '</span>' +
                      '</summary>' +
                      '<div class="archq-body"><p class="archq-loading">Opening…</p></div>' +
@@ -4953,6 +4953,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
           var numEl = $('.ev-num', tile), subEl = $('.ev-sub', tile);
           if (numEl && typeof out.n === 'number') mountOdometer(numEl, out.n);
           if (subEl && out.sub) subEl.textContent = out.sub;
+          if (W.SymbiQ && W.SymbiQ.pre) W.SymbiQ.pre('ev:' + tile.getAttribute('data-ev'), JSON.stringify({ n: out.n, sub: out.sub }));
         })
         .catch(function () { });
     });
@@ -5013,6 +5014,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         if (refocus) { var nb = rc.querySelector('.dc-again'); if (nb) nb.focus(); }
       };
       show(false);
+      if (W.SymbiQ && W.SymbiQ.pre) W.SymbiQ.pre('dc-reality', rc.innerHTML);
     }).catch(function () {});
 
     if (tm) getJSON('data/concepts.json').then(function (d) {
@@ -5032,6 +5034,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       g.href = 'glossary.html';
       row.appendChild(g);
       tm.appendChild(row);
+      if (W.SymbiQ && W.SymbiQ.pre) W.SymbiQ.pre('dc-term', tm.innerHTML);
     }).catch(function () {});
   }
 

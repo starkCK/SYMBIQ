@@ -1,6 +1,6 @@
 (function () {
   window.SymbiQ = window.SymbiQ || {};
-  var TIER = { g: '🟢 Plain', y: '🟡 Working', r: '🔴 Formal' };
+  var TIER = { g: '<i class="dpt dpt-1" aria-hidden="true"></i> Plain', y: '<i class="dpt dpt-2" aria-hidden="true"></i> Working', r: '<i class="dpt dpt-3" aria-hidden="true"></i> Formal' };
 
   var esc = window.SymbiQ.core.esc;
 
@@ -42,7 +42,7 @@
                      '<summary>' +
                        '<span class="archq-num">#' + esc(e.qnum) + '</span>' +
                        '<span class="archq-txt">' + esc(e.question) + '…</span>' +
-                       '<span class="orbadge">' + esc(TIER[e.tier] || e.tier) + '</span>' +
+                       '<span class="orbadge">' + (TIER[e.tier] || esc(e.tier)) + '</span>' +
                        '<span class="orbadge">' + esc(e.date) + '</span>' +
                      '</summary>' +
                      '<div class="archq-body"><p class="archq-loading">Opening…</p></div>' +

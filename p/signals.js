@@ -241,9 +241,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '<i class="dpt dpt-1" aria-hidden="true"></i>', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '<i class="dpt dpt-2" aria-hidden="true"></i>', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '<i class="dpt dpt-3" aria-hidden="true"></i>', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -1020,6 +1020,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
             ? '<p class="archq-more"><a href="' + base + 'signals.html">See all ' + entries.length
               + ' Signals →</a></p>'
             : '');
+        window.SymbiQ.pre('sig-list', host.innerHTML);
 
         host.addEventListener('toggle', function (ev) {
           var d = ev.target;

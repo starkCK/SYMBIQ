@@ -117,3 +117,9 @@
 }
 .ldg-permalink a:hover, .ldg-permalink a:focus-visible { color: var(--teal); border-color: var(--teal); }
 .ldg-permalink span { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+.ldg-next { display: flex; flex-direction: column; gap: 4px; margin: 0 0 18px; padding: 14px 16px; border: 1px solid var(--tab-check, var(--teal)); border-radius: 12px; text-decoration: none; color: var(--text); background: rgba(96, 165, 250, .07); }
+.ldg-next:hover { background: rgba(96, 165, 250, .13); }
+.ldg-next .eyebrow { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--tab-check, var(--teal)); }
+.ldg-next b { font-size: 1.02rem; line-height: 1.35; }
+.ldg-next span:last-child { color: var(--muted); font-size: .88rem; }

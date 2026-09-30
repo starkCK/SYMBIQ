@@ -237,6 +237,7 @@
     var want = decodeURIComponent((location.hash || '').replace(/^#/, ''));
     if (want) openSlug(want, true);
     window.addEventListener('load', function () { fitHeight(); });
+    window.SymbiQ.pre('rc-app', host.innerHTML);
   }
 
   fetch('data/reality.json', { cache: 'no-store' })

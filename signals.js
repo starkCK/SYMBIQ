@@ -57,6 +57,7 @@
             ? '<p class="archq-more"><a href="' + base + 'signals.html">See all ' + entries.length
               + ' Signals →</a></p>'
             : '');
+        window.SymbiQ.pre('sig-list', host.innerHTML);
 
         host.addEventListener('toggle', function (ev) {
           var d = ev.target;

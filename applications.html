@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Chemistry is the strongest case for a quantum computer and still unproven. What would have to be true, and who is checking.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/applications.css?v=12">
+<link rel="stylesheet" href="p/applications.css?v=15">
 
 
 
@@ -68,10 +68,10 @@
 
 
 
-<script src="core.js?v=5"></script>
+<script src="core.js?v=6"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/applications.js?v=9" defer></script>
+<script src="p/applications.js?v=10" defer></script>
 
 
 
@@ -252,7 +252,7 @@
   <figcaption>The molecule the argument is about: the FeMo cofactor at the active site of nitrogenase, a cluster of iron and sulfur atoms around a central carbon, with a molybdenum atom at one end, held inside the protein. Drawn from protein data bank entry 6VXT. Image: Bic2020, cropped, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:The_FeMo_cofactor_of_nitrogenase,_((R-homocitrate)MoFe7S9C).png" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 Plain</span>
+<span class="tier g"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span>
 <h2 id="green">The case in one idea</h2>
 <p>Electrons in a molecule are entangled with one another. Writing that down exactly takes one number for every arrangement of the electrons among the available orbitals, and the count of arrangements multiplies with every orbital you add. With 30 spin-orbitals, each either occupied or empty, there are 2<sup>30</sup>, about a billion, arrangements; the standard model of FeMoco, 54 electrons in 54 orbitals, has around 10<sup>30</sup>. No classical memory holds that. A register of 108 qubits holds it natively, because the machine <em>is</em> a quantum system. That is the one place where a quantum computer&rsquo;s advantage is not a trick played on a puzzle: the problem is the machine&rsquo;s own physics.</p>
 <p>It is not automatic, though. Classical chemistry is not brute force. Methods such as density functional theory, coupled cluster and DMRG exploit structure, and for most molecules they are very good. A quantum machine only wins where the electrons are so strongly correlated that those shortcuts break, <strong>and whether such problems exist among the ones anybody needs solved is the open question</strong>.</p>
@@ -263,7 +263,7 @@
   <p style="margin-bottom:0"><strong>Not shown.</strong> A quantum computation of a chemistry quantity that no classical method can produce, for a molecule someone needs. That is the milestone that would settle it, and it has not happened.</p>
 </div>
 
-<span class="tier y">🟡 Working</span>
+<span class="tier y"><i class="dpt dpt-2" aria-hidden="true"></i> Working</span>
 <h2 id="yellow">Nitrogenase, and a target that moved</h2>
 <p>Nitrogenase is the enzyme that turns nitrogen from air into ammonia at room temperature; its active site is a metal cluster called FeMoco. In 2017 Reiher, Wiebe, Svore, Wecker and Troyer proposed it as a quantum target and published resource estimates (<a href="https://doi.org/10.1073/pnas.1619152114">PNAS 114, 7555</a>). Later work cut the cost sharply: Lee and colleagues put a FeMoco simulation at <strong>about four million physical qubits and under four days</strong>, assuming a 1&nbsp;µs cycle and physical gate errors no worse than 0.1% (<a href="https://arxiv.org/abs/2011.03494">PRX Quantum 2, 030305</a>).</p>
 <p>Then the classical side answered. In 2019 Li and colleagues in Garnet Chan&rsquo;s group showed that the 54-orbital model used for those estimates &ldquo;is not representative&rdquo; of the real cofactor&rsquo;s ground state, and proposed a replacement model as the benchmark (<a href="https://arxiv.org/abs/1809.10307">arXiv 1809.10307</a>). In January 2026 the same group posted a preprint that estimates that model&rsquo;s ground-state energy to chemical accuracy with coupled-cluster and DMRG calculations (<a href="https://arxiv.org/abs/2601.04621">arXiv 2601.04621</a>). It is a preprint, and an <em>estimate</em>, not an exact solution. But the flagship problem is no longer safely out of classical reach.</p>
@@ -280,7 +280,7 @@
   <p style="margin-bottom:0">It does not mean quantum chemistry is a dead end. It means the honest claim moved from &ldquo;quantum will transform chemistry&rdquo; to &ldquo;quantum <em>might</em> help on a narrow class of strongly correlated problems, and we are still looking for the first one.&rdquo; The <a href="ledger.html">Ledger</a> tracks the claims that say more than that.</p>
 </div>
 
-<span class="tier r">🔴 Formal</span>
+<span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span>
 <h2 id="red">The arithmetic behind the 108 qubits</h2>
 <p>In second quantisation the electronic Hamiltonian is</p>
 <div class="formula">H = Σ<sub>pq</sub> h<sub>pq</sub> a<sup>†</sup><sub>p</sub> a<sub>q</sub> + ½ Σ<sub>pqrs</sub> h<sub>pqrs</sub> a<sup>†</sup><sub>p</sub> a<sup>†</sup><sub>q</sub> a<sub>r</sub> a<sub>s</sub></div>
@@ -303,8 +303,8 @@
 
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🔴 How the hybrid loop works</h3><p>QAOA and VQE in full, with the circuits and where they are stuck.</p><a href="machinery-16.html">The Machinery, topic 16 →</a></div>
-  <div class="card"><h3>🟡 Sensing and networks</h3><p>The quantum technologies that already ship, and why they matter sooner than the computer.</p><a href="sensing.html">Sensing and networks →</a></div>
+  <div class="card"><h3><i class="dpt dpt-3" role="img" aria-label="Formal level"></i> How the hybrid loop works</h3><p>QAOA and VQE in full, with the circuits and where they are stuck.</p><a href="machinery-16.html">The Machinery, topic 16 →</a></div>
+  <div class="card"><h3><i class="dpt dpt-2" role="img" aria-label="Working level"></i> Sensing and networks</h3><p>The quantum technologies that already ship, and why they matter sooner than the computer.</p><a href="sensing.html">Sensing and networks →</a></div>
   <div class="card"><h3>◆ Optimisation</h3><p>The other big promise: &ldquo;quantum will transform scheduling&rdquo;, checked on one named instance.</p><a href="feasible.html#verdict">The Verdict →</a></div>
 </div>
 

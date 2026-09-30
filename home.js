@@ -1331,6 +1331,7 @@
           var numEl = $('.ev-num', tile), subEl = $('.ev-sub', tile);
           if (numEl && typeof out.n === 'number') mountOdometer(numEl, out.n);
           if (subEl && out.sub) subEl.textContent = out.sub;
+          if (W.SymbiQ && W.SymbiQ.pre) W.SymbiQ.pre('ev:' + tile.getAttribute('data-ev'), JSON.stringify({ n: out.n, sub: out.sub }));
         })
         .catch(function () { });
     });
@@ -1391,6 +1392,7 @@
         if (refocus) { var nb = rc.querySelector('.dc-again'); if (nb) nb.focus(); }
       };
       show(false);
+      if (W.SymbiQ && W.SymbiQ.pre) W.SymbiQ.pre('dc-reality', rc.innerHTML);
     }).catch(function () {});
 
     if (tm) getJSON('data/concepts.json').then(function (d) {
@@ -1410,6 +1412,7 @@
       g.href = 'glossary.html';
       row.appendChild(g);
       tm.appendChild(row);
+      if (W.SymbiQ && W.SymbiQ.pre) W.SymbiQ.pre('dc-term', tm.innerHTML);
     }).catch(function () {});
   }
 

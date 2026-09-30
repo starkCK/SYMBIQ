@@ -215,6 +215,12 @@ p { margin-bottom: 14px; text-wrap: pretty; }
   .rung-dot { width: 22px; height: 22px; }
   .rung-seg { width: 8px; }
 }
+.dpt { display: inline-block; width: 1.15em; height: .95em; vertical-align: -.1em; font-style: normal; background: currentColor;
+  clip-path: polygon(0 100%, 0 66%, 26% 66%, 26% 100%, 37% 100%, 37% 33%, 63% 33%, 63% 100%, 74% 100%, 74% 0, 100% 0, 100% 100%); }
+.dpt-1 { background: linear-gradient(90deg, currentColor 0 26%, color-mix(in srgb, currentColor 28%, transparent) 26% 100%); }
+.dpt-2 { background: linear-gradient(90deg, currentColor 0 63%, color-mix(in srgb, currentColor 28%, transparent) 63% 100%); }
+.dpt-3 { background: currentColor; }
+
 .ev { display: inline-flex; align-items: center; gap: .4em; font-size: .8rem; font-weight: 600; line-height: 1.2;
   padding: 2px 10px 2px 7px; border-radius: 99px; border: 1px solid currentColor; color: var(--muted); white-space: nowrap; }
 .ev::before { content: ""; flex: none; width: .8em; height: .8em; background: currentColor; }

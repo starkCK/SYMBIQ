@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "exchange-rate",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "y",
+  "receipt": "lq-machine-b",
+  "question": {
+    "text": "Machine A has 100,000 physical qubits running at p/p_th = 1/2. Machine B has 10,000 — a tenth the hardware — running at 1/20. Both target a logical error rate of 10⁻⁹. Which fields more logical qubits?",
+    "options": [
+      "Machine B, comfortably: 29 logical qubits against A's 14",
+      "Machine A: ten times the hardware cannot be overcome by a factor of ten in error rate",
+      "They tie, which is why the industry quotes physical qubit counts instead",
+      "Neither: below distance 25 no logical qubit exists at that target"
+    ],
+    "answerIndex": 0,
+    "hint": "The distance you need depends on how far below threshold you are, and the patch cost goes as the square of that distance. Work out each machine's distance first.",
+    "explain": {
+      "g": "Cleaner hardware wins, and it is not close. The noisy machine needs an enormous protective patch around every logical qubit, so its hundred thousand parts get eaten fast. The clean machine needs a small patch, so its ten thousand stretch much further. That is the whole argument for spending the next engineering budget on quality rather than on more of the same noisy hardware.",
+      "y": "A: (1/2)^⌊(d+1)/2⌋ ≤ 10⁻⁹ needs the exponent ≥ 9/log₁₀2 ≈ 29.9, so 30, so d ≥ 59. Patch ≈ 2·59² = 6,962, giving 10⁵/6,962 ≈ 14 logical qubits. B: exponent ≥ 9/log₁₀20 ≈ 6.9, so 7, so d ≥ 13. Patch ≈ 2·13² = 338, giving 10⁴/338 ≈ 29. Being further below threshold shrinks the distance you need, and you pay for distance squared, so error rate beats hardware count twice over.",
+      "r": "Under p_L ≈ (p/p_th)^⌊(d+1)/2⌋ with A = 1 and a patch of ≈2d², the smallest odd d meeting target t is d = 2⌈t/−log₁₀ r⌉ − 1. That closed form is checked against exhaustive integer search over odd distances in tools/verify_logical_qubit.py. The toy model ignores routing, magic-state factories and per-patch overhead, which for real computation can rival or exceed the data-patch cost — so the exchange-rate *shape* is what is honest here, not either count."
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.gl-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 6px 0 10px; }
+.gl-lab { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.gl-tools input[type=search] {
+  flex: 1 1 14rem; min-width: 0; min-height: 44px; padding: 8px 12px; font: inherit;
+  background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 10px;
+}
+.gl-tools input[type=search]:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.gl-chips { display: inline-flex; flex-wrap: wrap; }
+.gl-chip { margin: 0 6px 0 0; }
+.gl-chip[aria-pressed="true"] { border-color: var(--teal); color: var(--teal); font-weight: 700; }
+.gl-count { color: var(--muted); font-size: .88rem; font-variant-numeric: tabular-nums; }
+.gl-az { display: flex; flex-wrap: wrap; gap: 2px 4px; margin: 6px 0 4px; font-weight: 700; }
+.gl-az a { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 40px; text-decoration: none; border-radius: 8px; }
+.gl-az a:hover { background: var(--rowhover); }
+
+.gl-letter { margin: 26px 0 6px; font-size: 1.4rem; }
+.gl-group { margin: 0; }
+.gl-item { padding: 12px 0; border-top: 1px solid var(--border); }
+.gl-item[hidden], .gl-group[hidden], .gl-letter[hidden] { display: none; }
+.gl-item dt { font-weight: 700; font-size: 1.02rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.gl-item dd { margin: 4px 0 0; color: var(--text); }
+.gl-tier { font-size: .68rem; font-weight: 700; letter-spacing: .04em; border: 1px solid var(--border); border-radius: 99px; padding: 1px 8px; color: var(--muted); white-space: nowrap; }
+.gl-tier.gl-g { color: var(--green); border-color: color-mix(in srgb, var(--green) 45%, transparent); }
+.gl-tier.gl-y { color: var(--yellow); border-color: color-mix(in srgb, var(--yellow) 50%, transparent); }
+.gl-tier.gl-r { color: var(--red); border-color: color-mix(in srgb, var(--red) 45%, transparent); }
+.gl-also { font-weight: 400; font-size: .84rem; color: var(--muted); }
+.gl-where { white-space: nowrap; font-weight: 600; margin-left: 4px; }
+@media (max-width: 560px) { .gl-where { white-space: normal; display: inline-block; } }
+.gl-hit { background: color-mix(in srgb, var(--teal) 14%, transparent); border-radius: 8px; transition: background 1.5s ease; }

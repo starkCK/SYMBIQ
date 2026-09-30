@@ -1,0 +1,72 @@
+
+.contra { margin: 20px 0; }
+.contra:empty { display: none; }
+
+.contra-card {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--muted);
+  border-radius: var(--r-md, 12px);
+  background: var(--surface-2, var(--panel));
+  padding: 16px 18px;
+}
+.contra-card.is-contested, .contra-card.is-overdue { border-left-color: var(--red); }
+.contra-card.is-ontrack { border-left-color: var(--teal); }
+
+.contra-kicker {
+  display: block;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  margin: 0 0 8px;
+}
+.contra-card.is-contested .contra-kicker,
+.contra-card.is-overdue .contra-kicker { color: var(--red); }
+.contra-card.is-ontrack .contra-kicker { color: var(--teal); }
+
+.contra-claim { margin: 0 0 4px; font-size: 0.98rem; line-height: 1.55; }
+.contra-claim q { font-style: italic; }
+.contra-who { display: block; color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+
+.contra-list { list-style: none; margin: 0 0 12px; padding: 0; }
+.contra-list li {
+  position: relative;
+  padding-left: 18px;
+  margin: 0 0 10px;
+  font-size: 0.88rem; line-height: 1.55;
+  color: var(--text);
+}
+.contra-list li::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted);
+}
+.contra-list li.at_risk::before, .contra-list li.off_track::before { background: var(--red); }
+.contra-list li.on_track::before { background: var(--teal); }
+.contra-when { display: block; color: var(--muted); font-size: 0.76rem;
+  letter-spacing: 0.04em; margin-bottom: 2px; }
+
+.contra-foot {
+  margin: 0; padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 0.82rem; line-height: 1.5;
+}
+.contra-foot a { min-height: 0; }
+
+@media (max-width: 620px) {
+  .contra-card { padding: 14px; }
+}
+
+.contra-cell { display: block; line-height: 1.45; }
+.contra-cell a { white-space: nowrap; }
+.contra-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); margin-right: 7px; vertical-align: middle;
+}
+.contra-cell.is-contested .contra-dot,
+.contra-cell.is-overdue .contra-dot { background: var(--red); }
+.contra-cell.is-ontrack .contra-dot { background: var(--teal); }
+.contra-cell-note {
+  display: block; color: var(--muted);
+  font-size: 0.78rem; margin-top: 2px;
+}
+.contra-cell.is-contested .contra-cell-note,
+.contra-cell.is-overdue .contra-cell-note { color: var(--red); }

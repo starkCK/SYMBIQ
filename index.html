@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-dR5EwJldmnRf45dra6So6hzwwLL8yNl+fjh37IU6U5M=' 'sha256-Cvv17i+mPJR3msGsNxroi1XCcaQZKFL1W2PWx2Mk5bU=' 'sha256-VI9z9y6Y/frOMK5VU2xZG8wk0eOu+Yj4hXLti4vjbdY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>SymbiQ: Two broken geniuses, fixing each other.</title>
+<meta name="description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/">
+<meta property="og:title" content="SymbiQ: Two broken geniuses, fixing each other.">
+<meta property="og:description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ. Two broken geniuses, fixing each other.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="SymbiQ: Two broken geniuses, fixing each other.">
+<meta name="twitter:description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/index.css?v=46">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+/* Hero CTA. Page-local on purpose: style.css is shared by 24 pages and
+   changing it forces a cache-buster bump on every one of them (the 2026-07-24
+   scar). This rule belongs to one page, so it lives on that page.
+   .gh-row is scoped to .gamehero in style.css, so the layout is restated here. */
+.herocta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin: 18px 0 26px; }
+.herocta-alt { font-size: .95rem; color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+.herocta-alt:hover { color: var(--teal); border-bottom-color: var(--teal); }
+@media (max-width: 560px) {
+  .herocta { flex-direction: column; align-items: stretch; gap: 10px; }
+  .herocta-alt { text-align: center; padding: 10px 0; }   /* keeps the 44px touch minimum */
+}
+</style>
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/index.js?v=24" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-vivid data-alive data-glass data-hud-return data-living>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <filter id="sq-lens" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="11" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+<div class="wrap">
+<nav>
+  <a class="brand active" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+
+<h1>Two broken geniuses,<br>fixing each other.</h1>
+
+<div class="hero2">
+  <div class="hero-copy" data-station="hero">
+  <p class="tagline">AI is fixing quantum computing's errors. Quantum will supercharge AI. Most of what you read about either arrives as a claim with no receipt attached. <strong>Claims get checked here.</strong> Numbers come from the primary paper, the games are refereed by mathematics, and claims are logged with the date they were made and scored when the deadline lands.</p>
+  <p class="gh-row herocta">
+    <a class="bigplay" href="journey.html">Play The Solver&#39;s Path <span class="kbd">no signup</span></a>
+    <a class="herocta-alt" href="#daily-q">or answer The Question &#9662;</a>
+    <button type="button" class="inst-orb" id="inst-orb" popovertarget="hero-inst"
+            data-station="threshold" aria-haspopup="dialog"
+            aria-label="Is it below threshold? Open the threshold instrument">
+      <span class="orb-core" aria-hidden="true"></span>
+      <span class="orb-txt">
+        <span class="orb-eye">Is it below threshold?</span>
+        <span class="orb-read" id="ti-orb">Open the live instrument</span>
+      </span>
+      <span class="orb-go" aria-hidden="true">↗</span>
+    </button>
+  </p>
+  <p style="color:var(--muted);font-size:.95rem;margin-top:-8px">New here? <a href="basics.html">Start at 🟢 Basics</a>: two minutes, one choir, no equations.</p>
+  </div>
+
+  <aside class="inst" id="hero-inst" popover="manual" role="dialog" tabindex="-1"
+         aria-label="Threshold instrument: is this machine below threshold?">
+    <span class="inst-grip" aria-hidden="true"></span>
+    <div class="inst-top">
+      <p class="inst-eyebrow">Is it below threshold?</p>
+      <p class="inst-live">live</p>
+      <button type="button" class="inst-x" popovertarget="hero-inst"
+              popovertargetaction="hide" aria-label="Close the instrument">×</button>
+    </div>
+
+    <div class="inst-ctl">
+      <label for="ti-p">Physical error rate <b id="ti-pv">0.5%</b></label>
+      <input type="range" id="ti-p" min="1" max="41" step="1" value="5">
+    </div>
+    <div class="inst-ctl">
+      <label for="ti-d">Code distance <b id="ti-dv">d = 11</b></label>
+      <input type="range" id="ti-d" min="3" max="27" step="2" value="11">
+    </div>
+
+    <div role="status" aria-live="polite">
+      <div class="inst-out">
+        <span class="inst-cell">
+          <span class="inst-lab">Error / round</span>
+          <span class="inst-val q" id="ti-pl">—</span>
+          <span class="inst-sub">p<sub>L</sub></span>
+        </span>
+        <span class="inst-cell">
+          <span class="inst-lab">Physical qubits</span>
+          <span class="inst-val q" id="ti-qb">—</span>
+          <span class="inst-sub">2d² − 1</span>
+        </span>
+        <span class="inst-cell">
+          <span class="inst-lab">Lifetime</span>
+          <span class="inst-val t"><span id="ti-lf">—</span> <span id="ti-lfu"></span></span>
+          <span class="inst-sub">before one error</span>
+        </span>
+      </div>
+      <p class="verdict" id="ti-verdict"></p>
+    </div>
+
+    <p class="inst-note">Under the hood: p<sub>L</sub> = 0.1 · (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup> with
+      p<sub>th</sub> = 1% (<a href="https://arxiv.org/abs/1208.0928">Fowler et al. 2012</a>), a rotated
+      surface-code patch at 2d²−1 physical qubits, one syndrome round per microsecond.
+      <em>Wrong if</em> your hardware's threshold is not 1% or its round is not 1&nbsp;µs — either
+      moves the lifetime by orders of magnitude. <a href="qec.html#threshold-widget">The full explorer ▸</a></p>
+  </aside>
+
+  <section data-station="spine" class="hero-spine">
+<p class="spine-tag">The short version</p>
+<p class="spine">Every machine on this site is a physical object built to settle a mathematical question: a <a href="circuits.html">circuit made stranger</a> until it holds a qubit, made to <a href="qec.html">survive</a>, then pointed at <a href="formalism.html">something worth asking</a>. Couple many of the same circuits instead, and you get the machine <a href="feasible.html">operations research</a> already runs on. Both roads end at <a href="pqc.html">the locks you will have to change</a>.</p>
+
+<p class="spine">Each door opens onto the same job, which is checking. <a href="play.html">The games</a> test
+claims about quantum <em>advantage</em>; every par is a proven optimum, so a score can't be bluffed.
+<a href="feasible.html">The Feasible Region</a> tests claims about <em>optimisation</em>, since
+&ldquo;quantum will transform scheduling&rdquo; is a sentence about operations research wearing a lab coat.
+<a href="pqc.html">Post-quantum cryptography</a> tests your <em>own</em> exposure, on your real
+certificates. And <a href="ledger.html">the Ledger</a> keeps score on everyone else, against criteria
+frozen before each deadline, with <a href="corrections.html">our own misses</a> pinned up beside theirs.</p>
+
+<div data-living-strip></div>
+<p class="living-strip-note">Fourteen coupled oscillators drifting into step, like metronomes ticking on one shared shelf. The oscillator-Ising machines on this site settle the same way.</p>
+<p class="dive-hint"><a class="dive-btn" id="dive-btn" href="inside.html#chip" data-no-speculate>&#9670; Fall through the field</a>
+<span>The dots behind this page are a lattice of coupled circuits. Hold the pointer still on empty space for three seconds, or press <kbd>i</kbd>, to fall into a model of a real one.</span></p>
+  </section>
+</div>
+
+
+<section data-station="router">
+<div class="introute" id="introute">
+  <p class="introute-lede" id="introute-lede">Three tracks run through this site. Which one brought you here?</p>
+  <div class="introute-grid">
+    <a class="introute-card" href="journey.html" data-track="quantum"><span class="ic" aria-hidden="true">🧬</span><span class="tt">Quantum computing</span><span class="sb">The story, the games, the maths behind them</span><span class="pg" hidden></span></a>
+    <a class="introute-card" href="feasible.html" data-track="or"><span class="ic" aria-hidden="true">📐</span><span class="tt">Optimisation / OR</span><span class="sb">The field hiding behind every quantum-optimisation headline</span><span class="pg" hidden></span></a>
+    <a class="introute-card" href="pqc.html" data-track="pqc"><span class="ic" aria-hidden="true">🔒</span><span class="tt">Post-quantum security</span><span class="sb">Test your own systems against the deadline</span><span class="pg" hidden></span></a>
+  </div>
+</div>
+<script>
+/* Progress-aware hub. Reads localStorage DIRECTLY rather than through
+   SymbiQ.save, because index.html deliberately does not load save.js — one
+   read of two keys is not worth another script tag on the front page. Both
+   shapes are owned elsewhere and documented there: save.js (solverpath) and
+   pqc-tools.js §PERSIST (pqc). If either changes shape this degrades to the
+   first-time state, which is the correct failure. */
+(function () {
+  try {
+    function J(k) { try { return JSON.parse(localStorage.getItem(k)) || null; } catch (e) { return null; } }
+    var sp  = J('symbiq.solverpath.v1') || {};
+    var pq  = J('symbiq.pqc.v1') || {};
+    var kv  = sp.kv || {};
+
+    var missions = sp.missions || {}, acts = 0;
+    ['grover', 'golf', 'maxcut', 'volcano', 'chsh', 'knot'].forEach(function (m) {
+      if (missions[m] && missions[m].complete) acts++;
+    });
+    var formalism = (kv['curriculum.formalism'] || []).length;
+    var orTopics  = (kv['curriculum.feasible']  || []).length;
+    var pqcStarted = !!(pq && (pq.assets || pq.estate || pq.estateText || pq.cbomText));
+
+    var state = {
+      quantum: acts || formalism
+        ? (acts ? acts + ' of 6 acts cleared' : '') +
+          (acts && formalism ? ' · ' : '') +
+          (formalism ? formalism + ' of 20 topics' : '')
+        : '',
+      or:  orTopics ? orTopics + ' of 24 topics understood' : '',
+      pqc: pqcStarted ? 'your estate is saved here' : ''
+    };
+    var any = state.quantum || state.or || state.pqc;
+    if (!any) return;   // genuine first-timer: leave the question as written
+
+    document.getElementById('introute-lede').textContent = 'Pick up where you left off.';
+    [].slice.call(document.querySelectorAll('.introute-card')).forEach(function (c) {
+      var t = c.getAttribute('data-track'), v = state[t];
+      var pg = c.querySelector('.pg');
+      if (!pg) return;
+      if (v) { pg.textContent = '↻ ' + v; pg.hidden = false; c.classList.add('resume'); }
+      else   { pg.textContent = 'not started'; pg.hidden = false; }
+    });
+  } catch (e) { /* first-time state stands */ }
+})();
+</script>
+
+<div class="intent" role="navigation" aria-label="Start by what you want">
+  <span class="intent-lede">Or start by what you want:</span>
+  <a class="intent-chip" href="reality.html">Just curious: are the movies right?</a>
+  <a class="intent-chip" href="learn.html">Teach me from zero</a>
+  <a class="intent-chip" href="applications.html">What is it actually for?</a>
+  <a class="intent-chip" href="pqc.html">Is my encryption safe?</a>
+</div>
+</section>
+
+<section data-station="evidence" class="evidence">
+  <p class="evidence-lede">Four numbers this desk keeps on itself, counted the same way every time:</p>
+  <div class="ev-grid">
+    <a class="ev-tile" href="ledger.html" data-ev="ledger">
+      <span class="ev-eyebrow">The Ledger</span>
+      <span class="ev-num">–</span>
+      <span class="ev-sub">claims tracked, scored when the deadline lands</span>
+    </a>
+    <a class="ev-tile" href="signals.html" data-ev="signal">
+      <span class="ev-eyebrow">The Signal</span>
+      <span class="ev-num">–</span>
+      <span class="ev-sub">news items checked against the loop</span>
+    </a>
+    <a class="ev-tile" href="archive.html" data-ev="archive">
+      <span class="ev-eyebrow">The Question Archive</span>
+      <span class="ev-num">–</span>
+      <span class="ev-sub">questions really asked, every answer kept</span>
+    </a>
+    <a class="ev-tile" href="reality.html" data-ev="reality">
+      <span class="ev-eyebrow">Reality Check</span>
+      <span class="ev-num">–</span>
+      <span class="ev-sub">movie scenes, myths and claims rated against the physics</span>
+    </a>
+  </div>
+</section>
+
+<section class="record" id="record" aria-label="The desk's own record">
+  <p class="record-lede">This desk publishes its own mistakes. <a href="corrections.html">Read the corrections</a> or <a href="changelog.html">see everything that changed</a>.</p>
+</section>
+
+<section class="discover" aria-label="Today on the desk">
+  <div class="dc-card" id="dc-reality">
+    <span class="dc-eyebrow">Reality Check</span>
+    <p class="dc-title">Movie scenes, myths and claims, rated against the physics.</p>
+    <p class="dc-body">Each card says what the scene claims, what is real, and how much of it holds up.</p>
+    <a class="dc-link" href="reality.html">Open the deck &rarr;</a>
+  </div>
+  <div class="dc-card" id="dc-term">
+    <span class="dc-eyebrow">Term of the day</span>
+    <p class="dc-title">The glossary</p>
+    <p class="dc-body">Every term this site uses, in one plain sentence each.</p>
+    <a class="dc-link" href="glossary.html">Open the glossary &rarr;</a>
+  </div>
+</section>
+
+<section data-station="question">
+<div class="card" id="daily-q">
+  <h3 aria-level="2">The Question</h3>
+  <p id="dq-meta"></p>
+  <p id="dq-q" style="font-size:1.05rem;font-weight:600"></p>
+  <div id="dq-opts"></div>
+  <p style="margin:8px 0 0"><button id="dq-hint" class="preset">Need a hint?</button></p>
+  <div id="dq-out" aria-live="polite"></div>
+  <p id="dq-lattice" style="color:var(--muted);font-size:.9rem;margin-bottom:0"></p>
+
+  <details class="dq-prev">
+    <summary><span class="dq-prev-x" aria-hidden="true">+</span> Missed one? <b>Every previous question, with its answer</b></summary>
+    <div id="dq-archive"></div>
+  </details>
+</div>
+</section>
+
+<section data-station="loop">
+<p>Everyone is watching the AI race. The stranger race runs underneath it: AI now catches the errors that kept quantum computers useless for 30 years, and quantum machines are being pointed at data AI can't get anywhere else. Each story is half a sentence without the other. SymbiQ follows the whole loop.</p>
+
+<figure class="fig figloop figcard breakout">
+  <div class="figscroll"><svg viewBox="0 0 640 262" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Diagram of the loop: AI fixes quantum's errors today, drawn as a solid arrow; quantum will supercharge AI later, drawn as a dashed arrow.">
+    <defs>
+      <marker id="loopArrowT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/>
+      </marker>
+      <marker id="loopArrowV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--violet)"/>
+      </marker>
+      <mask id="figloopRevealNow" maskUnits="userSpaceOnUse" x="0" y="0" width="640" height="262">
+        <path class="loop-reveal loop-reveal-now" pathLength="1" d="M 206 100 Q 320 26 434 100"
+              stroke="#fff" stroke-width="40" stroke-linecap="round" fill="none"/>
+      </mask>
+      <mask id="figloopRevealAhead" maskUnits="userSpaceOnUse" x="0" y="0" width="640" height="262">
+        <path class="loop-reveal loop-reveal-ahead" pathLength="1" d="M 434 160 Q 320 234 206 160"
+              stroke="#fff" stroke-width="40" stroke-linecap="round" fill="none"/>
+      </mask>
+    </defs>
+
+    <circle class="node ai" cx="150" cy="130" r="62"/>
+    <text class="lbl-b teal" x="150" y="124" text-anchor="middle">AI</text>
+    <text class="lbl-s" x="150" y="142" text-anchor="middle">learns patterns,</text>
+    <text class="lbl-s" x="150" y="154" text-anchor="middle">never exact</text>
+
+    <circle class="node q" cx="490" cy="130" r="62"/>
+    <text class="lbl-b violet" x="490" y="124" text-anchor="middle">QUANTUM</text>
+    <text class="lbl-s" x="490" y="142" text-anchor="middle">exactly right,</text>
+    <text class="lbl-s" x="490" y="154" text-anchor="middle">falls apart</text>
+
+    <path class="arc now" d="M 206 100 Q 320 26 434 100" marker-end="url(#loopArrowT)" mask="url(#figloopRevealNow)"/>
+    <text class="lbl-b teal" x="320" y="44" text-anchor="middle">reads the errors</text>
+    <text class="lbl-s teal" x="320" y="58" text-anchor="middle">SHIPPING NOW: learned decoders beat the hand-written ones</text>
+    <circle class="flow pulse f1" r="4"/>
+
+    <path class="arc ahead" d="M 434 160 Q 320 234 206 160" marker-end="url(#loopArrowV)" mask="url(#figloopRevealAhead)"/>
+    <text class="lbl-b violet" x="320" y="222" text-anchor="middle">will feed the data</text>
+    <text class="lbl-s violet" x="320" y="236" text-anchor="middle">MOSTLY AHEAD: one route is real, the rest are oversold</text>
+    <circle class="flow violet pulse2 f2" r="4"/>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>Look at the line styles.</strong> The top arrow is solid because it has already happened: AI decoders run against real chips today. The bottom arrow is dashed because mostly it hasn't. The credible near-term route is quantum hardware <em>growing</em> training data about nature that no classical source can produce. The loudest claim, an exponential speedup for the linear algebra under machine learning, usually starves at the loading dock, because getting ordinary data into the machine can eat the whole speedup. <a href="ai.html">Both directions, ranked ▸</a></figcaption>
+</figure>
+</section>
+
+<section class="orhero gamehero" data-station="games">
+  <p class="eyebrow">The part you play</p>
+  <h2 id="twelve-games-where-you-cannot-fake-a-score">Twelve games where you cannot fake a score</h2>
+  <p class="orhero-lede">Most explainers ask you to take their word for it. Here the mathematics holds the whistle: <strong>every par is an optimum found by exhaustive search, and every probability on screen is computed rather than chosen by a designer</strong>. Two of the machines now play back, against a computer that solved the board before you sat down.</p>
+
+  <div class="orhero-grid">
+    <div><b>The Knocker</b><span>Your quantum register against a classical crew, one query each per turn. Measure too soon and you waste the vault; wait too long and they knock on the right door first.</span></div>
+    <div><b>Border War</b><span>Take turns painting a city map with a computer that scores every road you fail to cut. Nine boards, each solved outright, and on the boss exactly one opening move wins.</span></div>
+    <div><b>The Decoder Duel</b><span>Ten rounds against the textbook decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</span></div>
+    <div><b>The Annealing Volcano</b><span>You play the weather, not the hiker: set the temperature and let the landscape settle. Your schedule is replayed 500 times, so one lucky run earns nothing.</span></div>
+  </div>
+
+  <p>Two ways in. <strong>The Solver's Path</strong> is the campaign: five fractures, six characters, a map and a save file. <strong>The Arcade</strong> is the same machines with the story switched off, so you can walk straight to the one you want.</p>
+
+  <p class="gh-row" style="margin-bottom:0">
+    <a class="bigplay" href="journey.html">Play The Solver's Path <span class="kbd">the story</span></a>
+    <a class="bigplay ghost" href="play.html">Enter The Arcade</a>
+  </p>
+  <p class="gh-note">No account and nothing to install. Progress lives in this browser, and a short code carries it to another device.</p>
+</section>
+
+<section data-station="depth">
+<h2 id="read-it-instead">Read it instead</h2>
+<p>One story, how AI learned to read a quantum computer's errors, told at three depths. They differ in what they ask of you more than in how long they run. Pick one, and the toggle at the top of every explainer page will meet you at the same depth.</p>
+<div class="grid">
+  <div class="card" id="tier-g"><h3>🟢 Plain</h3><p><strong>Two minutes, one analogy, zero equations</strong>, and a straight answer to "so what?". A choir where nobody may be heard singing alone.</p><a href="basics.html">Start here →</a></div>
+  <div class="card" id="tier-y"><h3>🟡 Working</h3><p><strong>The mechanism, plus one number worked by hand</strong>: why a thousand physical qubits buy you one reliable one, and the picture to hold in your head.</p><a href="basics.html#yellow">Open the mechanism →</a></div>
+  <div class="card" id="tier-r"><h3>🔴 Formal</h3><p><strong>The derivation carried through</strong>, primary sources, and five problems nobody has solved yet.</p><a href="basics.html#red">The mathematics →</a></div>
+</div>
+</section>
+
+<section class="orhero" data-station="or">
+  <p class="eyebrow">The fork: same circuit, the other branch</p>
+  <h2 id="operations-research">Operations research: the field that already decides your day</h2>
+  <p class="orhero-lede">Every quantum-optimisation headline you have read is secretly a claim about <strong>operations research</strong>, the mathematics of choosing well when you can't have everything. The field is a century old and already runs under your day like wiring behind plaster. Without it, you have no way to judge a single quantum-optimisation claim.</p>
+
+  <div class="orhero-grid">
+    <div><b>It routed your parcel</b><span>And staffed tonight's hospital shift, and priced your flight twice while you looked at it.</span></div>
+    <div><b>It runs inside the quantum computer</b><span>Surface-code decoding is minimum-weight matching (Edmonds, 1965), so an OR algorithm sits inside the machine as a working part.</span></div>
+    <div><b>It is what the hype is about</b><span>Every &ldquo;quantum will transform optimisation&rdquo; pitch is a claim about this field. Learn the field and the pitch becomes testable.</span></div>
+    <div><b>It is more learnable than it looks</b><span>School algebra and one drawing get you the core idea. The first step is shorter than the field's reputation suggests.</span></div>
+  </div>
+
+  <p>So it gets its own front door. Come for the theory on its own terms, then keep it as the ruler every quantum claim on this site gets measured against.</p>
+  <p style="margin-bottom:0"><a class="bigplay" href="feasible.html">Enter The Feasible Region <span class="kbd">the OR track</span></a></p>
+</section>
+
+<section class="orhero pqhero" data-station="pqc">
+  <p class="eyebrow">Real keys on the bench</p>
+  <h2 id="post-quantum-cryptography">Post-quantum cryptography: is your own system exposed?</h2>
+  <p class="orhero-lede">The sections above explain physics and mathematics. This one hands you the cryptography itself: <strong>real ML-KEM and ML-DSA keys, generated and deliberately tampered with in your own browser</strong>, and then your own certificates, domains and migration plan held up against them.</p>
+
+  <div class="orhero-grid">
+    <div><b>Working cryptography</b><span>A key exchange and a signature, each tampered with five different ways, so you watch them fail instead of trusting a green tick.</span></div>
+    <div><b>Your own systems, checked</b><span>Paste a certificate or a domain and see which algorithms it runs today.</span></div>
+    <div><b>Deadlines with dates on them</b><span>Four regulatory lines (EO 14412, CNSA 2.0, NIST IR 8547, the EU roadmap) laid against your own migration plan.</span></div>
+    <div><b>A plan you can hand to a CISO</b><span>An executive dashboard, a shareable plan link, a migration timeline, and a print-ready report. No account, nothing sent to a server.</span></div>
+  </div>
+
+  <p style="margin-bottom:0"><a class="bigplay ghost" href="pqc.html">Check your own exposure <span class="kbd">7 tools, no signup</span></a></p>
+</section>
+
+<section data-station="timing">
+<h2 id="why-the-timing-matters">Why the timing matters</h2>
+<p>Estimates in this field can move by orders of magnitude in a few years. The clearest case, with every number sourced to a primary paper: how many physical qubits it would take to steal one Bitcoin key <em>inside the ten-minute window</em> before your transaction confirms.</p>
+
+<figure class="fig figbar figcard">
+  <div class="figscroll"><svg viewBox="0 0 600 216" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Logarithmic bar chart: the 2022 estimate for a racing attack on a Bitcoin key was 1.9 billion physical qubits; the 2026 estimate is about 500,000; today's biggest chips hold a few thousand.">
+    <text class="lbl" x="158" y="44" text-anchor="end">2022 estimate</text>
+    <text class="lbl-s" x="158" y="57" text-anchor="end">Webber et al.</text>
+    <rect class="track" x="168" y="30" width="380" height="26" rx="6"/>
+    <rect class="bar old" x="168" y="30" width="341" height="26" rx="6"/>
+    <text class="num violet" x="519" y="48">1.9 billion</text>
+
+    <text class="lbl" x="158" y="98" text-anchor="end">2026 estimate</text>
+    <text class="lbl-s" x="158" y="111" text-anchor="end">Gidney et al.</text>
+    <rect class="track" x="168" y="84" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="84" width="147" height="26" rx="6"/>
+    <text class="num teal" x="325" y="102">~500 thousand</text>
+
+    <text class="lbl" x="158" y="152" text-anchor="end">biggest chip today</text>
+    <text class="lbl-s" x="158" y="165" text-anchor="end">and it is noisy</text>
+    <rect class="track" x="168" y="138" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="138" width="26" height="26" rx="6"/>
+    <text class="num yellow" x="204" y="156">a few thousand</text>
+
+    <line class="sMuted" x1="168" y1="184" x2="548" y2="184"/>
+    <g class="lbl-s" text-anchor="middle">
+      <line class="sMuted" x1="168" y1="184" x2="168" y2="189"/><text x="168" y="200">10³</text>
+      <line class="sMuted" x1="277" y1="184" x2="277" y2="189"/><text x="277" y="200">10⁵</text>
+      <line class="sMuted" x1="385" y1="184" x2="385" y2="189"/><text x="385" y="200">10⁷</text>
+      <line class="sMuted" x1="494" y1="184" x2="494" y2="189"/><text x="494" y="200">10⁹</text>
+    </g>
+    <text class="lbl-s" x="358" y="213" text-anchor="middle">physical qubits (logarithmic scale, so each step right is 100×)</text>
+  </svg></div>
+  <p class="swipe">← swipe the diagram to see all of it →</p>
+  <figcaption><strong>The same attack got <span class="rcpt" data-rcpt="home-collapse">3,800× cheaper in four years</span>.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at <span class="rcpt" data-rcpt="home-webber-2022">1.9 billion physical qubits</span>. In March 2026 a Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor's algorithm can be precomputed before your transaction appears. The gap from today's hardware is now roughly <span class="rcpt" data-rcpt="home-gap-orders"><strong>three</strong> orders of magnitude, not six</span>. The axis is logarithmic, so the stubby yellow bar is much further from the others than it looks. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
+</figure>
+</section>
+
+<section class="orhero">
+  <p class="eyebrow">Not written by the desk alone</p>
+  <h2 id="insight-notes">Insight Notes: essays from people outside the desk</h2>
+  <p class="orhero-lede">Researchers, practitioners and serious enthusiasts can publish short, evidence-tiered essays here under their own name &mdash; reviewed before they run, held to the same 🟢🟡🔴 tier and citation rules as everything else on this site.</p>
+  <p class="gh-row" style="margin-bottom:0">
+    <a class="bigplay ghost" href="insights.html">Read Insight Notes <span class="kbd">for scientists &amp; researchers</span></a>
+    <a class="bigplay ghost" href="apply.html">Write for SymbiQ →</a>
+  </p>
+</section>
+
+<section data-station-hidden="join" hidden>
+<h2 id="join-loop">Join the loop</h2>
+<div class="grid">
+  <div class="card"><h3>Discord</h3><p>Still small, so whatever you post lands straight on the desk. Free, always.</p><a href="https://discord.gg/fWKGSb7ZHE" id="join-discord">Join the server →</a></div>
+  <div class="card"><h3>The Symbiosis</h3><p>One letter a week about the loop: what moved, what it doesn't mean, and one question to chew on. Leave an address and the first issue will find you.</p>
+    <form class="sqform" data-sq="newsletter">
+      <input type="email" name="email" data-label="your email" required placeholder="you@example.com" aria-label="Your email address">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+             style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <button type="submit" id="join-newsletter">Subscribe →</button>
+    </form>
+    <p class="sqnote">One email a week at most. Unsubscribe in one click. We never sell or share the list.</p>
+  </div>
+</div>
+</section>
+
+<footer>SymbiQ · No hype, no financial advice, sources always.</footer>
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById('daily-q');
+  if (!box) return;
+  var KEY = 'symbiq_dq_v1';
+  var TIER = { g: ['🟢', 'No math'], y: ['🟡', 'Some math'], r: ['🔴', 'Real math'] };
+  var TICK = { true: '🟩', false: '🟥' };
+
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function daysBetween(a, b) {   // whole days from ISO date a to ISO date b
+    return Math.floor((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+  }
+
+  /* The daily pipeline has never run (no repo secrets), so data/today.json can
+     sit frozen for weeks. Rather than show one stale question forever, once it
+     is more than two days old (the same threshold check_site.py warns at) the
+     widget rotates through the referee-verified questions that DID run, one per
+     calendar day, drawn from data/qbank.json -> data/archive/<date>.json. The
+     served object's date is set to today so it is answerable fresh and the
+     heatmap lines up; qnum becomes a monotonic day counter so the streak still
+     grows honestly (you did show up N days running) and is shown as an archive
+     note, not a number. When the pipeline resumes, today.json is fresh again
+     and none of this runs. */
+  function fromBank(stale) {
+    return fetch('data/qbank.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (bank) {
+        var pool = bank.pool || [];
+        if (!pool.length) throw 0;
+        var since = daysBetween(bank.anchor, todayISO());
+        if (since < 0) since = 0;
+        var pick = pool[((since % pool.length) + pool.length) % pool.length];
+        /* A pool entry is either a date we really asked (src "archive") or a
+           question written for the bank that has never run (src "bank").
+           They must not be conflated: archive.html promises "every question we
+           have ever asked", so a bank question is NOT in the archive and does
+           not claim to be. Plain strings are still accepted as archive dates. */
+        var id = (typeof pick === 'string') ? pick : pick.id;
+        var src = (typeof pick === 'string') ? 'archive' : (pick.src || 'archive');
+        var path = (src === 'bank' ? 'data/qbank/' : 'data/archive/') + id + '.json';
+        return fetch(path, { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+          .then(function (A) {
+            A.date = todayISO();
+            A.qnum = ((stale && stale.qnum) || 7) + since;
+            if (src === 'bank') A._fromBank = true; else A._fromArchive = true;
+            return A;
+          });
+      })
+      .catch(function () { return stale; });   // bank unreachable: the stale one still beats nothing
+  }
+
+  fetch('data/today.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (D) {
+      return (D && D.date && daysBetween(D.date, todayISO()) > 2) ? fromBank(D) : D;
+    })
+    .then(init)
+    .catch(function () {
+      document.getElementById('dq-out').innerHTML =
+        '<p style="color:var(--muted)">The Question reads <code>data/today.json</code>, so it needs the site to be served (it will work on the live site; for a local preview run <code>python -m http.server 8642 --directory site</code>).</p>';
+      document.getElementById('dq-hint').style.display = 'none';
+    });
+
+  function init(D) {
+    var s = load(), q = D.question, done = s.history && s.history[D.date];
+    // No calendar date here on purpose -- streaks key off consecutive question
+    // numbers, not days (see answer()), so the date was never actually load-
+    // bearing and only ever raised "is this stale?" for a reader to wonder
+    // about. The streak is the honest evergreen thing to show instead: it is
+    // the reader's own real progress, and it never goes out of date.
+    var streak = s.streak || 0;
+    var label = D._fromArchive
+      ? '<span style="color:var(--muted)"> From the archive, the daily feed is paused</span>'
+      : D._fromBank
+        ? '<span style="color:var(--muted)"> From the question bank, the daily feed is paused</span>'
+        : '<span style="color:var(--muted)"> Question #' + D.qnum + '</span>';
+    document.getElementById('dq-meta').innerHTML =
+      '<span class="tier ' + D.tier + '">' + TIER[D.tier][0] + ' ' + TIER[D.tier][1] + '</span> ' +
+      label +
+      (streak > 0 ? ' <span class="dq-streak">🔥 ' + streak + '-question streak</span>' : '');
+    document.getElementById('dq-q').textContent = q.text;
+
+    var opts = document.getElementById('dq-opts');
+    q.options.forEach(function (o, i) {
+      var b = document.createElement('button');
+      b.className = 'preset dq-opt';
+      b.textContent = String.fromCharCode(65 + i) + '. ' + o;
+      b.setAttribute('data-i', i);
+      b.addEventListener('click', function () { answer(D, i); });
+      opts.appendChild(b);
+    });
+    var hint = document.getElementById('dq-hint');
+    hint.addEventListener('click', function () {
+      hint.outerHTML = '<p style="color:var(--muted)"><em>Hint: ' + esc(q.hint) + '</em></p>';
+    });
+    // A progress bar reading zero signals "abandoned", not "early" — so the
+    // Lattice line stays off until it has something true to report. Flagged in
+    // the 2026-07-30 audit; do not restore the always-on version.
+    if (D.lattice && D.lattice.f > 0) {
+      document.getElementById('dq-lattice').innerHTML =
+        'The Lattice: <strong>' + D.lattice.f.toLocaleString('en-US') + ' F</strong> of ' +
+        D.lattice.goal.toLocaleString('en-US') + ' to reach code distance d=' + D.lattice.nextD +
+        '.';
+    }
+    if (done) reveal(D, done.pick, null);
+  }
+
+  function answer(D, pick) {
+    var s = load();
+    s.history = s.history || {};
+    if (s.history[D.date]) return;
+    var ok = pick === D.question.answerIndex;
+    var grace = false;
+    if (s.lastQnum == null) { s.streak = 1; }
+    else {
+      var gap = D.qnum - s.lastQnum;
+      if (gap === 1) { s.streak = (s.streak || 0) + 1; }
+      else if (gap === 2 && (s.graceQnum == null || D.qnum - s.graceQnum > 7)) {
+        s.streak = (s.streak || 0) + 1; s.graceQnum = D.qnum; grace = true;
+      }
+      else if (gap > 1) { s.streak = 1; }
+    }
+    s.lastQnum = D.qnum;
+    s.history[D.date] = { pick: pick, ok: ok, q: D.qnum };
+    save(s);
+    reveal(D, pick, grace);
+  }
+
+  function reveal(D, pick, grace) {
+    var s = load(), q = D.question, ok = pick === q.answerIndex;
+    Array.prototype.forEach.call(document.querySelectorAll('.dq-opt'), function (b) {
+      var i = +b.getAttribute('data-i');
+      b.disabled = true;
+      if (i === q.answerIndex) b.className = 'preset dq-opt dq-ok';
+      else if (i === pick) b.className = 'preset dq-opt dq-no';
+      else b.style.opacity = '.45';
+    });
+    var h = document.getElementById('dq-hint'); if (h) h.style.display = 'none';
+    var streak = s.streak || 1;
+    var line = ok
+      ? '<strong style="color:var(--teal)">Correct.</strong>'
+      : '<strong style="color:var(--red)">Not this one.</strong> Wrong answers still keep your streak alive; showing up is the mechanic.';
+    var gnote = grace ? ' <span style="color:var(--teal)">(error corrected ✓: one missed day repaired, fault-tolerant streaks survive a single error)</span>' : '';
+    var out = document.getElementById('dq-out');
+    out.innerHTML =
+      '<p style="margin-top:12px">' + line + ' Coherence streak: <strong>' + streak + '</strong> day' + (streak === 1 ? '' : 's') + '.' + gnote + '</p>' +
+      '<details' + ' open><summary>🟢 Why (no math)</summary><p>' + esc(q.explain.g) + '</p></details>' +
+      '<details><summary>🟡 Why (some math)</summary><p>' + esc(q.explain.y) + '</p></details>' +
+      '<details><summary>🔴 Why (real math)</summary><p>' + esc(q.explain.r) + '</p></details>' +
+      '<div class="dq-heat" id="dq-heat" title="Your last 12 weeks"></div>' +
+      /* HIDDEN-UNTIL-HOSTED (2026-09-24): a link here said "make them count in the
+         Discord" -- streaks have never counted anywhere but this browser. */
+      '<p style="margin-top:10px"><button class="preset" id="dq-share">Share result</button></p>';
+    heat(s);
+    document.getElementById('dq-share').addEventListener('click', function () { share(D, ok, streak); });
+    // Ask for the address right after an answer, when a yes is likeliest.
+    // forms.js decides whether to show it at all; grace is null when the page
+    // is only re-showing an answer given on an earlier visit.
+    if (grace !== null && window.SymbiQ && SymbiQ.forms && SymbiQ.forms.capture) {
+      var cap = document.createElement('div');
+      out.appendChild(cap);
+      SymbiQ.forms.capture(cap, { context: 'question', lead: 'Keep the habit?' });
+    }
+  }
+
+  function heat(s) {
+    var el = document.getElementById('dq-heat'), hist = s.history || {};
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var html = '', wk = '<span class="w">';
+    for (var i = 83; i >= 0; i--) {
+      var d = new Date(today.getTime() - i * 86400000);
+      var k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      var c = hist[k] ? (hist[k].ok ? 'background:var(--teal)' : 'background:#8B5CF6;opacity:.6') : '';
+      wk += '<i style="' + c + '" title="' + k + '"></i>';
+      if (i % 7 === 0) { html += wk + '</span>'; wk = '<span class="w">'; }
+    }
+    el.innerHTML = html;
+  }
+
+  function share(D, ok, streak) {
+    var s = load(), hist = s.history || {};
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var row = '';
+    for (var i = 6; i >= 0; i--) {
+      var d = new Date(today.getTime() - i * 86400000);
+      var k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      row += hist[k] ? TICK[hist[k].ok] : '⬛';
+    }
+    var txt = 'SymbiQ Daily #' + D.qnum + ' ' + TIER[D.tier][0] + ' ' + (ok ? '✅' : '❌') +
+      '\nCoherence streak: ' + streak + '\n' + row + '\n' + location.origin + location.pathname;
+    var btn = document.getElementById('dq-share');
+    function done() { btn.textContent = 'Copied ✓'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function () { fallback(txt, done); });
+    } else { fallback(txt, done); }
+  }
+  function fallback(txt, done) {
+    var t = document.createElement('textarea');
+    t.value = txt; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); done(); } catch (e) { window.prompt('Copy your result:', txt); }
+    document.body.removeChild(t);
+  }
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.dq-opt{display:block;width:100%;text-align:left;margin:6px 0}' +
+    '.dq-opt:disabled{cursor:default}' +
+    '.dq-ok{border-color:var(--teal)!important;box-shadow:0 0 0 1px var(--teal)}' +
+    '.dq-no{border-color:var(--red)!important;opacity:.8}' +
+    '#daily-q details{margin:6px 0;padding:6px 10px;border:1px solid var(--border);border-radius:8px}' +
+    '#daily-q summary{cursor:pointer}' +
+    '.dq-heat{display:flex;gap:3px;margin-top:12px}' +
+    '.dq-heat .w{display:flex;flex-direction:column;gap:3px}' +
+    '.dq-heat i{width:9px;height:9px;border-radius:2px;background:var(--border);display:block}' +
+    '.dq-streak{font-weight:600;color:var(--teal)}' +
+    '@media (prefers-color-scheme:light){.dq-streak{color:#0f766e}}';
+  document.head.appendChild(st);
+})();
+</script>
+<script>
+// Mount the shared archive inside the Question card, lazily: the fetch
+// only happens the first time the reader actually opens it.
+(function () {
+  var d = document.querySelector(".dq-prev"), host = document.getElementById("dq-archive");
+  if (!d || !host) return;
+  d.addEventListener("toggle", function once() {
+    if (!d.open) return;
+    d.removeEventListener("toggle", once);
+    if (window.SymbiQ && SymbiQ.archive) SymbiQ.archive.mount(host, { limit: 5 });
+  });
+})();
+</script>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

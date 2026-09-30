@@ -1,0 +1,22 @@
+# Line endings are normalised to LF in the repository.
+#
+# Why this file exists: on 2026-08-10 `git status` showed 37 modified files.
+# Thirty-five of them were pure CRLF churn — ~12,000 phantom line changes with
+# zero content difference — masking the two files that had actually changed.
+# An editor or tool had rewritten the tree with CRLF; the committed blobs are
+# LF. Without normalisation every such rewrite buries the real diff, and a
+# review that cannot see the change cannot catch anything.
+#
+# `text=auto eol=lf` means: git decides what is text, stores it LF, and checks
+# it out LF on every platform. This site is static files served over HTTP —
+# nothing here needs CRLF, and the CI guard parses these files directly.
+* text=auto eol=lf
+
+# Binary, never touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary

@@ -1,0 +1,89 @@
+
+
+body[data-living] [data-living-strip] {
+  display: block;
+  height: 40px;
+  margin: 10px 0 2px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg) 92%, var(--violet) 8%);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+body[data-living] .living-strip-cvs {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+body[data-living] .living-strip-cvs.on { opacity: 1; }
+
+body[data-living] .living-strip-note {
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body[data-living] [data-living-strip] { background: var(--bg); }
+}
+
+
+body[data-living] .breakout {
+  position: relative;
+  isolation: isolate;
+  margin-left: calc(-1 * var(--gl, 20px));
+  margin-right: calc(-1 * var(--gr, 20px));
+  padding: 20px var(--gr, 20px) 8px var(--gl, 20px);
+  border-radius: 0;
+}
+body[data-living] .breakout > * { position: relative; z-index: 1; }
+body[data-living] .breakout::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 140% at 50% 0%,
+      color-mix(in srgb, var(--violet) 9%, transparent) 0%,
+      transparent 62%),
+    radial-gradient(120% 140% at 50% 100%,
+      color-mix(in srgb, var(--teal) 7%, transparent) 0%,
+      transparent 62%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+body[data-living] .breakout.figcard {
+  border-inline: 0;
+  border-block: 0;
+  background: none;
+}
+body[data-living] .breakout.figcard:hover {
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body[data-living] .breakout::before {
+    background: none;
+    border-color: var(--border);
+  }
+}
+
+body[data-living] .breakout.fig { margin-block: 32px; }
+
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    body[data-living] .figloop .pulse,
+    body[data-living] .figloop .pulse2 {
+      animation-timeline: scroll(root block);
+      animation-range: 0% 100%;
+      animation-duration: auto;
+      animation-iteration-count: 1;
+    }
+  }
+}

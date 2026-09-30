@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-bjMG10VeiSy10B+lTKL4Ze5+19nfIBgf2P+Kw6Dt69E=' 'sha256-lASeec2kKf4gJlceV6+o2upYYZXh+NJ1F7lRk6Z9mxY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Is quantum computing just quantum mechanics?</title>
+<meta name="description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/quantum-mechanics.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/quantum-mechanics.html">
+<meta property="og:title" content="Is quantum computing just quantum mechanics?">
+<meta property="og:description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="Is quantum computing just quantum mechanics?">
+<meta name="twitter:description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/quantum-mechanics.css?v=33">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
+<script src="p/quantum-mechanics.js?v=13" defer></script>
+
+
+
+
+
+
+
+<style>
+#bloch-svg { display: block; margin: 0 auto; max-width: 340px; width: 100%; height: auto; }
+.sphere { fill: none; stroke: var(--border); }
+.equator { fill: none; stroke: var(--border); stroke-dasharray: 3 4; }
+.axis3 { stroke: var(--border); stroke-width: 1; }
+.axlab { fill: var(--muted); font-size: 11px; font-family: inherit; text-anchor: middle; }
+.statevec { stroke: var(--teal); stroke-width: 2.5; stroke-linecap: round; }
+.statedot { fill: var(--teal); }
+.trail { fill: none; stroke: var(--violet); stroke-width: 1.5; opacity: .5; }
+.gatebtn { font-family: "Cambria Math", Georgia, serif; font-size: 1rem; font-weight: 700; min-width: 44px; }
+.probbar { height: 22px; border-radius: 5px; background: var(--border); overflow: hidden; position: relative; }
+.probfill { height: 100%; transition: width .4s cubic-bezier(.2,.7,.3,1); }
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 6px; }
+@media (max-width: 560px) { .twocol { grid-template-columns: 1fr; } }
+.readout { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--bg); }
+.readout h4 { font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+.ket { font-family: "Cambria Math", Georgia, serif; font-size: 1.02rem; }
+.circuit { font-family: "Cambria Math", Georgia, serif; font-size: .95rem; word-break: break-all; min-height: 1.4em; }
+/* decoherence playground (#decohere): reuses the sphere classes above */
+#dec-svg { display: block; margin: 0 auto; max-width: 340px; width: 100%; height: auto; }
+#decohere .statedot { transition: r .3s ease, fill-opacity .3s ease; }
+.dec-rows { display: grid; gap: 12px; margin: 12px 0 4px; }
+.dec-row { display: grid; grid-template-columns: 4.5em 1fr 5.5em; align-items: center; gap: 10px; }
+.dec-row label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+.dec-row output { font-size: .85rem; font-variant-numeric: tabular-nums; text-align: right; }
+.dec-row input[type=range] { width: 100%; min-height: 44px; accent-color: var(--teal); }
+.dec-meters { display: grid; gap: 8px; }
+.dec-meter { font-size: .8rem; color: var(--muted); }
+.dec-meter b { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 700; }
+.dec-btns { text-align: center; margin: 6px 0 2px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Is quantum computing just quantum mechanics?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-21",
+      "dateModified": "2026-08-06",
+      "description": "Quantum computing is not a separate theory from quantum mechanics. It uses the same laws, the same mathematics, and the same meaning of the word 'quantum', but asks a different question, and has fed genuinely new ideas back into physics."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "Is quantum computing just quantum mechanics?", "item": "quantum-mechanics.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is quantum computing the same as quantum mechanics?",
+          "acceptedAnswer": {"@type": "Answer", "text": "No, but they are not separate either. Quantum mechanics is the physical theory describing how matter and energy behave at small scales. Quantum computing is an engineering and computer-science discipline built on top of that theory: it uses quantum mechanical behaviour deliberately, to process information. Quantum computing proposes no new laws of physics; every quantum computer obeys the same Schrodinger equation as everything else. The relationship is roughly that of electromagnetism to electrical engineering."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is quantum computing derived from quantum mechanics?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every element of quantum computing is a direct restatement of a quantum-mechanical postulate. A qubit is a two-level quantum system, a state is a unit vector in a Hilbert space, a quantum gate is a unitary operator implementing Schrodinger evolution, and measurement follows the Born rule. Quantum computing adds no physics; it adds a question, namely what can be computed efficiently by a machine that runs on these rules."}
+        },
+        {
+          "@type": "Question",
+          "name": "Does the word quantum mean the same thing in quantum computing?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. In quantum computing, 'quantum' carries its exact physical meaning, referring to genuine superposition, entanglement and interference in a real physical system. This is unlike a usage such as 'quantum healing', where the word is pure decoration. 'Quantum leap' is a middle case: it derives from a real phenomenon, an electron jumping between energy levels, but popular usage inverted its meaning into 'an enormous change' when the actual jump is discrete and indivisible - the system cannot make a smaller, gradual change - which is what quantum meant in the first place."}
+        },
+        {
+          "@type": "Question",
+          "name": "Has quantum computing changed physics itself?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes, in the reverse direction. Thinking about quantum systems as information processors produced ideas that physics adopted: entanglement treated as a quantifiable resource, quantum error correction, and connections between error-correcting codes and phases of matter. Quantum information has become a working tool in condensed matter physics and in research on black holes and quantum gravity."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-tiers data-rung="L1" data-alive data-glass data-living>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain active">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+
+
+
+<h1>Is quantum computing just<br>quantum mechanics?</h1>
+<p class="tagline">Not the same thing, but not a different theory either. The word means exactly what it means in physics, down to the letter.</p>
+
+<div class="card">
+<h3 aria-level="2">The answer in four lines</h3>
+<p>Quantum mechanics is a <strong>theory of nature</strong>. Quantum computing is a <strong>thing you build</strong> with it. Every quantum computer obeys the same equations as every atom: quantum computing proposes no new physics whatsoever, and the word "quantum" in it carries its full literal meaning. What changed was the <strong>question</strong>: physics asks what nature does; quantum computing asks what you can <em>compute</em> with what nature does. That question turned out to matter to physics too, and the ideas have flowed back.</p>
+</div>
+
+<a class="orjump" href="circuits.html">
+  <span>◆ <b>Want the physical object first, before the abstraction?</b> A qubit is a real circuit (a capacitor wired across one nonlinear component) and the Bloch sphere below is what that circuit's own two lowest energy levels look like.<span class="arr"> What is a qubit made of? ▸</span></span>
+</a>
+
+<figure class="photo">
+  <img src="img/pages/double-slit-electrons-tonomura.jpg" width="1000" height="182" loading="lazy" decoding="async" alt="Three black-and-white panels of white dots on a dark field: a handful of scattered dots, then a dense random scatter, then faint vertical light and dark bands.">
+  <figcaption>Electrons sent through a double slit one at a time. After 11 arrivals there is nothing to see, after 6,000 a scatter, and after 140,000 the interference bands appear. Every electron lands at a single point; the pattern exists only in the crowd. Experiment by Akira Tonomura and colleagues at Hitachi; panels a, c and e of a five-panel figure, cropped and rearranged. Image: Belsazar, with permission of Dr. Tonomura, <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="noopener noreferrer">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Double-slit_experiment_results_Tonomura_2.jpg" rel="noopener noreferrer">source</a>.</figcaption>
+</figure>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">The rulebook and the machine</h2>
+<p>Quantum mechanics is the rulebook. Worked out in the 1920s, it describes how very small things behave, and they behave nothing like the objects we have intuitions about. A particle can be in a blend of two states at once. Looking at it changes it. Two particles can be linked so that neither has a definite state on its own. None of this is a metaphor or a gap in our knowledge. Its most stringently tested piece, quantum electrodynamics, predicts the electron's magnetic moment, and prediction and measurement agree to about <strong>one part in a trillion</strong>. That is among the most precisely checked predictions anyone has ever made about anything.</p>
+<p>For more than fifty years, that rulebook was used mainly to <em>explain</em> things: why the sun shines, why metals conduct, why chemistry works. The machine came later. In the early 1980s a few people asked a stranger question: not "what does nature do?" but <em>"what could I compute, if I built something that runs on these rules by design?"</em></p>
+<p>The difference lives in the question. A quantum computer adds no new physics: it is a very carefully built quantum-mechanical system whose behaviour you have chosen, so that the answer you want falls out at the end. Same rulebook. New use.</p>
+
+<div class="card">
+<h3>An analogy that holds up</h3>
+<p>Quantum mechanics is to quantum computing roughly what <strong>electromagnetism is to electrical engineering</strong>. Maxwell wrote down how electric and magnetic fields behave; he did not invent the laptop. Everything in your laptop obeys Maxwell's equations and adds nothing to them, yet getting from the equations to a processor took a century of separate, hard-won ideas about how to <em>use</em> them. Quantum computing sits in the same relationship to quantum mechanics. What the analogy does <em>not</em> transfer is a schedule: Maxwell to the microprocessor took about 106 years, and quantum mechanics is now about 100 years old, but the two clocks are not the same clock and nothing here predicts that a useful quantum computer is therefore due.</p>
+</div>
+
+<p>One thing worth saying plainly, because the word is so abused: in "quantum computing," <strong>quantum</strong> means quantum. It is the same word physicists use, pointing at the same phenomena in a real refrigerated chip. It is not true of "quantum healing" or a quantum-branded shampoo, where the word is pure decoration. "Quantum leap" is the interesting middle case: it <em>does</em> come from something real (an electron jumping between energy levels) but popular use inverted the meaning into "an enormous change," when the actual jump is <em>discrete and indivisible</em> (the system cannot make a smaller, gradual change), which is what "quantum" meant in the first place. Quantum computing is the case where the label stayed literal.</p>
+
+<h2 data-tier-keep>One state, two questions</h2>
+<p>Here is the whole relationship in a single object. Below is a <strong>Bloch sphere</strong>, the standard picture of one qubit. Every <em>pure</em> state of a single qubit is a point on that surface, and every quantum gate is a <em>rotation</em> of it.</p>
+<p>Press the gates and watch the arrow move. Then read the two panels underneath: the same state, described the way a physicist would and the way a programmer would. Neither panel is a translation of the other; they are the same fact, asked about differently.</p>
+
+<div class="card" id="bloch" data-sq3d="bloch">
+  <h3>Turn a qubit</h3>
+  <svg id="bloch-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-label="Bloch sphere showing the current state of one qubit"></svg>
+  <p style="margin:10px 0 4px;text-align:center">
+    <button class="preset gatebtn" data-g="X" title="Bit flip: 180° about x">X</button>
+    <button class="preset gatebtn" data-g="Y" title="180° about y">Y</button>
+    <button class="preset gatebtn" data-g="Z" title="Phase flip: 180° about z">Z</button>
+    <button class="preset gatebtn" data-g="H" title="Hadamard: makes a superposition">H</button>
+    <button class="preset gatebtn" data-g="S" title="90° about z">S</button>
+    <button class="preset gatebtn" data-g="T" title="45° about z">T</button>
+    <button class="preset" id="bloch-reset" title="Back to |0⟩">Reset</button>
+  </p>
+  <div class="twocol">
+    <div class="readout">
+      <h4>The physicist's question</h4>
+      <p style="margin:0 0 6px;font-size:.88rem;color:var(--muted)">What is the state, and what will I see if I measure it?</p>
+      <p class="ket" id="bl-ket" style="margin:0 0 8px"></p>
+      <div style="font-size:.82rem;color:var(--muted);margin-bottom:3px">measure 0 &nbsp;<span id="bl-p0"></span></div>
+      <div class="probbar"><div class="probfill" id="bl-bar0" style="background:var(--teal)"></div></div>
+      <div style="font-size:.82rem;color:var(--muted);margin:6px 0 3px">measure 1 &nbsp;<span id="bl-p1"></span></div>
+      <div class="probbar"><div class="probfill" id="bl-bar1" style="background:var(--violet)"></div></div>
+    </div>
+    <div class="readout">
+      <h4>The programmer's question</h4>
+      <p style="margin:0 0 6px;font-size:.88rem;color:var(--muted)">What circuit did I just run, and what does it compute?</p>
+      <p class="circuit" id="bl-circuit" style="margin:0 0 8px"></p>
+      <p style="margin:0;font-size:.88rem" id="bl-note"></p>
+    </div>
+  </div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow is the Bloch vector; the faint violet trail is where the state has been. All six gates are the real 2×2 unitary matrices, applied to full complex amplitudes, so the picture is a projection of the arithmetic itself. Limits: one qubit only, so <strong>entanglement cannot appear here</strong>; it needs at least two, and it is the ingredient a Bloch sphere cannot draw. The sphere also shows only pure states; real qubits decohere and sink inside it.</p>
+</div>
+
+<h2 data-tier-keep>Now let it decohere</h2>
+<p>The sphere above is the perfect case: every gate is a clean rotation and the arrow never leaves the surface. A real qubit is not left alone &mdash; it leaks energy to its surroundings and its phase smears out &mdash; so the arrow spirals <em>inward</em>. Two numbers set the clock: <strong>T<sub>1</sub></strong>, the time to fall back toward <span class="ket">|0⟩</span>, and <strong>T<sub>2</sub></strong>, the shorter time for the phase (the part that does the computing) to wash out. Set them, pick a starting state, and press play.</p>
+
+<div class="card" id="decohere">
+  <h3>The clock every quantum computer races</h3>
+  <svg id="dec-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-label="Bloch sphere showing a qubit state decaying inward under T1 and T2"></svg>
+  <div class="dec-rows">
+    <div class="dec-row">
+      <label for="dec-t1">T<sub>1</sub></label>
+      <input type="range" id="dec-t1" min="10" max="300" step="5" value="120" aria-label="T1 relaxation time in microseconds">
+      <output id="dec-t1-o">120 µs</output>
+    </div>
+    <div class="dec-row">
+      <label for="dec-t2">T<sub>2</sub></label>
+      <input type="range" id="dec-t2" min="5" max="300" step="5" value="90" aria-label="T2 dephasing time in microseconds">
+      <output id="dec-t2-o">90 µs</output>
+    </div>
+    <div class="dec-row">
+      <label for="dec-det">detuning</label>
+      <input type="range" id="dec-det" min="-3" max="3" step="0.1" value="1" aria-label="detuning in cycles per T2, sets how fast the state precesses">
+      <output id="dec-det-o">+1.0</output>
+    </div>
+  </div>
+  <p class="dec-btns">
+    <button class="preset" id="dec-play" type="button">▶ Play</button>
+    <button class="preset" id="dec-restart" type="button">Restart</button>
+    <button class="preset" id="dec-start-plus" type="button">start at |+⟩</button>
+    <button class="preset" id="dec-start-tilt" type="button">start tilted</button>
+  </p>
+  <div class="twocol">
+    <div class="readout">
+      <h4>How mixed is it?</h4>
+      <div style="font-size:.82rem;color:var(--muted);margin-bottom:3px">Bloch vector length &nbsp;<span id="dec-rlen"></span> <span style="opacity:.6">(1 = pure, 0 = noise)</span></div>
+      <div class="probbar"><div class="probfill" id="dec-rbar" style="background:var(--violet)"></div></div>
+      <div style="font-size:.82rem;color:var(--muted);margin:8px 0 3px">Phase coherence left &nbsp;<span id="dec-clen"></span></div>
+      <div class="probbar"><div class="probfill" id="dec-cbar" style="background:var(--teal)"></div></div>
+    </div>
+    <div class="readout">
+      <h4>What it costs you</h4>
+      <div class="dec-meters">
+        <div class="dec-meter">purity Tr(ρ²): <b id="dec-purity"></b></div>
+        <div class="dec-meter">elapsed: <b id="dec-elapsed"></b></div>
+        <div class="dec-meter"><span class="rcpt" data-rcpt="qm-gate-budget">two-qubit gates (20 ns) before the phase halves</span>: <b id="dec-gates"></b></div>
+      </div>
+      <p style="margin:8px 0 0;font-size:.85rem" id="dec-verdict"></p>
+    </div>
+  </div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow follows the exact solution of the single-qubit Bloch equations for constant rates: the transverse part decays as e<sup>−t/T₂</sup> while it precesses at the detuning, and z relaxes toward <span class="ket">|0⟩</span> as e<sup>−t/T₁</sup>. The slider forces <strong><span class="rcpt" data-rcpt="qm-t2-bound">T<sub>2</sub> ≤ 2T<sub>1</sub></span></strong> because past that the density matrix stops being a valid state. This is the Markovian picture &mdash; real devices also have slow drift and 1/f noise that a single T<sub>2</sub> does not capture. The closed form the widget draws is checked against a direct RK4 integration of the same ODEs, plus the physical bounds and both limiting cases, before shipping.</p>
+</div>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">The same postulates, renamed</h2>
+<p>The clearest way to see that quantum computing is not a separate theory is to lay the two vocabularies side by side. Every item in the right column <em>is</em> the item on its left: the same mathematical object, given a job title.</p>
+<div class="overflow"><table>
+<tr><th>Quantum mechanics says</th><th>Quantum computing calls it</th></tr>
+<tr><td>The <em>state</em> of a two-level system is a unit vector in a complex Hilbert space</td><td>The state of a <strong>qubit</strong> (or a register of them)</td></tr>
+<tr><td>Closed systems evolve by a unitary operator, from the Schrödinger equation</td><td>A <strong>gate</strong>, and a sequence of them is a <strong>circuit</strong></td></tr>
+<tr><td>Measurement yields outcome <em>k</em> with probability |⟨k|ψ⟩|² (the Born rule)</td><td><strong>Readout</strong>, the only way to get classical bits out</td></tr>
+<tr><td>Composite systems combine by tensor product, so <em>n</em> parts need 2<sup><em>n</em></sup> amplitudes</td><td>The <strong>space a quantum computer works in</strong>: necessary for hardness, but not sufficient on its own</td></tr>
+<tr><td>Non-product states exist (entanglement)</td><td>A <strong>necessary ingredient</strong> for going beyond a probabilistic classical machine, though (like the big state space) not sufficient on its own: stabilizer circuits are entangled yet classically simulable</td></tr>
+</table></div>
+<p>That fourth row deserves a correction that the popular version always skips. It is often said that 2<sup><em>n</em></sup> amplitudes are <em>why</em> quantum computers beat classical ones. That can't be the full explanation, because there is a large family of quantum circuits (<strong>stabilizer circuits</strong>, built from a specific gate set) that live in exactly the same exponential space and yet can be simulated efficiently on a laptop (the Gottesman–Knill theorem). Enormous state space is <em>necessary</em> for a quantum advantage; it is nowhere near <em>sufficient</em>. Whatever the advantage is, it is subtler than counting amplitudes.</p>
+<p>Nothing was added. The postulates were <span class="rcpt" data-rcpt="qm-1932">written down by 1932</span> and quantum computing uses them unchanged, which is why a physics graduate can read a quantum-algorithms paper without learning new physics, only new goals.</p>
+<p><strong>So what <em>did</em> quantum computing add?</strong> Three things, none of them physical laws. First, the <strong>circuit model</strong>: a discipline of building any evolution out of a small reusable gate set. Second, <strong>complexity</strong>: the machinery for asking how the cost of a computation grows with problem size, which is a computer-science question that physics simply had never posed about physical systems. Third, and most usefully, <strong>error correction</strong>: the realisation that a fragile quantum state can be protected by encoding it across many physical carriers. That last one has since become a physics tool in its own right.</p>
+<p>Where does interference come in? A quantum computer is not a machine that "tries every answer at once"; that phrasing is the most common way the subject is oversold. Superposition alone gets you nothing, because measurement hands back a single random outcome. The work is done by <strong>interference</strong>: a good algorithm arranges the amplitudes of wrong answers to cancel and the right ones to reinforce, so that the final measurement is likely to land where you want. Designing that cancellation is the actual craft, and it is why useful quantum algorithms are rare and hard to find rather than automatic.</p>
+
+<h2 data-tier-keep>The part the sphere cannot draw</h2>
+<p>The widget above is one qubit, and one qubit is as far as that picture can go. Entanglement needs two, and it is where the difference between quantum mechanics and any classical story stops being a matter of interpretation and becomes something you can <strong>win a bet with</strong>.</p>
+<p>Here is that bet, in its cleanest form: the <strong>CHSH game</strong>, from Clauser, Horne, Shimony and Holt in 1969. Two players, Alice and Bob, are separated and cannot communicate. A referee sends each of them a random bit. Each must answer with a bit of their own. They win the round if their two answers differ <em>only</em> when both received a 1.</p>
+<p>They may agree on any strategy beforehand. Here is the theorem: if the world is <strong>local and classical</strong> (Alice's answer depending only on her own bit and whatever they agreed in advance) then no strategy on earth wins more than <strong>75%</strong> of rounds. No amount of cleverness gets past it, because the ceiling is a theorem. Sharing an entangled pair lifts the ceiling to <strong>85.4%</strong>. Play both and watch.</p>
+<p>This exact statistic has a job outside the game. Swap the referee's win condition for &quot;do these two measurement settings still correlate the way only entanglement can explain,&quot; and the same 75%-classical-ceiling-vs-higher-observed-rate logic <em>is</em> the security proof behind the Ekert91 quantum key distribution protocol, <a href="pqc.html#qkd">covered in full on the post-quantum cryptography page</a>, including why national cybersecurity agencies still recommend against relying on it in place of the mathematics that page is about.</p>
+
+<div class="card" id="chsh">
+  <h3>The CHSH game</h3>
+  <div id="chsh-mount"></div>
+  <p id="chsh-honest" style="font-size:0.85rem;color:var(--muted);margin:12px 0 0"></p>
+</div>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">The formal statement, and its caveats</h2>
+<p>Take the standard postulates. A pure state of a register is a unit vector |ψ⟩ ∈ ℋ ≅ (ℂ²)<sup>⊗<em>n</em></sup>, dim = 2<sup><em>n</em></sup>. Closed evolution over time <em>t</em> is |ψ(t)⟩ = U(t)|ψ(0)⟩ with U = exp(−<em>i</em>H<em>t</em>/ℏ) for Hamiltonian H = H<sup>†</sup>. A projective measurement in basis {|k⟩} returns <em>k</em> with probability |⟨k|ψ⟩|², leaving the state in |k⟩.</p>
+<p>A quantum <em>circuit</em> is nothing but a factorisation of one such U into a product of local unitaries:</p>
+<div class="formula">U = U<sub>L</sub> ⋯ U<sub>2</sub> U<sub>1</sub>, each U<sub>j</sub> acting on one or two qubits</div>
+<p>The Solovay–Kitaev theorem says any single-qubit unitary can be approximated to accuracy ε by O(log<sup>c</sup>(1/ε)) gates from a fixed universal set closed under inverses (c &lt; 4; see Dawson &amp; Nielsen, <a href="https://arxiv.org/abs/quant-ph/0505030">quant-ph/0505030</a>). So "programming" a quantum computer means choosing an H you can physically implement whose induced U factorises into gates you can run. It is engineering constrained by the Hamiltonian your hardware can produce: the physics is a given, not a variable.</p>
+<p><strong>The complexity layer is the new part.</strong> BQP is the class of decision problems solvable by a uniform family of polynomial-size quantum circuits with error ≤ 1/3. The known containments are</p>
+<div class="formula">P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE</div>
+<p>and here is the caveat the field's marketing usually omits: <strong>not one of those inclusions has been proven strict.</strong> (Not that they all should be: most complexity theorists expect P = BPP outright, on derandomisation grounds. The point is that the chain is a ladder of open questions, not a ladder of established gaps.) In particular, BQP ≠ BPP has never been demonstrated, and proving it would imply P ≠ PSPACE, settling a famous open problem along the way. Shor's algorithm factors in polynomial time (<a href="https://arxiv.org/abs/quant-ph/9508027">quant-ph/9508027</a>), but "exponential speedup" there is measured against the best <em>known</em> classical algorithm, not against a proven classical lower bound; no one has ruled out a fast classical factoring algorithm. What we do have is proven separation relative to an <strong>oracle</strong>, and the two standard results are not the same size, which is worth stating precisely rather than lumping them together. Bernstein &amp; Vazirani's recursive Fourier sampling gives a <em>superpolynomial</em> gap; Simon's problem gives a fully <em>exponential</em> one (Bernstein &amp; Vazirani, <em>SIAM J. Comput.</em> 26, 1411 (1997); Simon, <em>SIAM J. Comput.</em> 26, 1474 (1997)). To those add, in 2018, an <em>unconditional</em> separation between constant-depth quantum circuits and constant-depth classical circuits of bounded fan-in (Bravyi, Gosset &amp; König, <em>Science</em> 362, 308; <a href="https://arxiv.org/abs/1704.00690">arXiv 1704.00690</a>). Those are real theorems about restricted models, not the general claim.</p>
+<p><strong>The loop runs backwards too.</strong> The traffic has not been one-way from physics into computing. Treating entanglement as a quantifiable resource, and stabiliser codes as objects in their own right, changed how physicists work: the toric code is simultaneously an error-correcting code and an exactly solvable model of topological order (Kitaev, <a href="https://arxiv.org/abs/quant-ph/9707021">quant-ph/9707021</a>); entanglement entropy is now a standard diagnostic of quantum phases; and tensor-network methods born in quantum-information language are routine in condensed-matter numerics. In high-energy theory, the Ryu–Takayanagi result ties entanglement entropy to geometry (<a href="https://arxiv.org/abs/hep-th/0603001">hep-th/0603001</a>), and quantum error correction has become an explicit part of how the AdS/CFT correspondence is understood (Almheiri, Dong &amp; Harlow, <a href="https://arxiv.org/abs/1411.7041">arXiv 1411.7041</a>). So the accurate picture is a cycle rather than a hierarchy: physics supplied the laws, computing supplied a new set of questions about them, and the answers changed physics.</p>
+<p>This is also where <a href="ai.html">this site's subject</a> sits. AI decoding quantum errors is not a new physical principle either: it is a statistical-inference technique aimed at a problem that quantum mechanics created and cannot solve on its own.</p>
+
+<h2>References</h2>
+<div class="card">
+  <p>• Feynman, "Simulating Physics with Computers," <em>Int. J. Theor. Phys.</em> 21, 467 (1982). The question that started it<br>
+  • Deutsch, "Quantum theory, the Church–Turing principle and the universal quantum computer," <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985)<br>
+  • Shor's algorithm: <a href="https://arxiv.org/abs/quant-ph/9508027">quant-ph/9508027</a> (<em>SIAM J. Comput.</em> 26, 1484 (1997))<br>
+  • Solovay–Kitaev, constructive proof: Dawson &amp; Nielsen, <a href="https://arxiv.org/abs/quant-ph/0505030">quant-ph/0505030</a><br>
+  • Constant-depth unconditional separation: Bravyi, Gosset &amp; König, <a href="https://arxiv.org/abs/1704.00690">arXiv 1704.00690</a> (<em>Science</em> 362, 308 (2018))<br>
+  • Toric code / topological order: Kitaev, <a href="https://arxiv.org/abs/quant-ph/9707021">quant-ph/9707021</a><br>
+  • Entanglement entropy and geometry: Ryu &amp; Takayanagi, <a href="https://arxiv.org/abs/hep-th/0603001">hep-th/0603001</a><br>
+  • Error correction in AdS/CFT: Almheiri, Dong &amp; Harlow, <a href="https://arxiv.org/abs/1411.7041">arXiv 1411.7041</a><br>
+  • Standard text: Nielsen &amp; Chuang, <em>Quantum Computation and Quantum Information</em> (CUP, 10th anniv. ed. 2010)<br>
+  • Lecture notes, freely available and continually updated: Preskill, <em>Ph219/CS219: Quantum Computation</em>, Caltech (<a href="https://www.preskill.caltech.edu/ph219/">preskill.caltech.edu/ph219</a>)<br>
+  • A gentler, complexity-theory-flavoured companion: Aaronson, <em>Quantum Computing Since Democritus</em> (CUP, 2013). The BQP/QMA material it covers is built formally, with proofs, on <a href="formalism.html#f18">The Machinery&#39;s own complexity-theory section</a></p>
+</div>
+
+<div class="cyu" data-tier-keep data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Why is a 2ⁿ-dimensional state space <em>not</em> on its own a reason quantum computers are hard to simulate?</p>
+  <div class="cyu-opts">
+    <button data-opt>Because 2ⁿ is smaller than it looks for realistic n.</button>
+    <button data-opt>Because stabilizer circuits occupy the same exponential space and simulate efficiently.</button>
+    <button data-opt>Because classical computers also use exponential space.</button>
+    <button data-opt>It is the reason; that is the standard argument.</button>
+  </div>
+  <p class="cyu-why">The Gottesman–Knill theorem is the counterexample: stabilizer circuits live in the same 2ⁿ-dimensional space and are simulable in polynomial time on a classical machine. So exponential dimension is <strong>necessary but not sufficient</strong>. Whatever makes quantum computation hard to simulate, it is not the size of the vector alone, which is worth knowing, because "2ⁿ amplitudes" is the most common hand-wave in popular coverage. This page used to make that slip; it was caught in editing, before <a href="corrections.html">the corrections log</a> started counting.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🟢 Start clean</h3><p>The same ideas with no formalism at all, in plain language.</p><a href="basics.html">Basics →</a></div>
+  <div class="card"><h3>🛡️ The hard part</h3><p>Why fragile quantum states need protecting, and how a code does it.</p><a href="qec.html">Error correction →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>Formalism, derivations, citations.</p><a href="basics.html#red">Read →</a></div>
+</div>
+
+<footer>The same laws as a cooling coffee, asked a harder question.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
+</div>
+
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=46"></script>
+<script id="sq3d-src" type="text/symbiq-lazy" src="sq3d.js?v=2"></script>
+<script>
+(function () {
+  // One qubit: |psi> = a|0> + b|1>, complex a,b as [re,im].
+  // Bloch vector: x = 2Re(a* b), y = 2Im(a* b), z = |a|^2 - |b|^2.
+  // Gates are the real 2x2 unitaries; the drawing is a projection of the arithmetic.
+  var svg = document.getElementById('bloch-svg');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg', R = 96, CX = 150, CY = 140;
+  var S2 = 1 / Math.sqrt(2), C = Math.cos(Math.PI / 4), Sn = Math.sin(Math.PI / 4);
+
+  function cm(p, q) { return [p[0] * q[0] - p[1] * q[1], p[0] * q[1] + p[1] * q[0]]; }
+  function ca(p, q) { return [p[0] + q[0], p[1] + q[1]]; }
+  var G = {
+    X: [[0, 0], [1, 0], [1, 0], [0, 0]],
+    Y: [[0, 0], [0, -1], [0, 1], [0, 0]],
+    Z: [[1, 0], [0, 0], [0, 0], [-1, 0]],
+    H: [[S2, 0], [S2, 0], [S2, 0], [-S2, 0]],
+    S: [[1, 0], [0, 0], [0, 0], [0, 1]],
+    T: [[1, 0], [0, 0], [0, 0], [C, Sn]]
+  };
+  var DESC = {
+    X: '180° about x, the bit flip: it swaps |0⟩ and |1⟩.',
+    Y: '180° about y: a bit flip and a phase flip at once.',
+    Z: '180° about z: leaves |0⟩ and |1⟩ alone and flips the sign between them. Invisible to a measurement in this basis, decisive for interference.',
+    H: 'The Hadamard: it turns a definite state into an even superposition, and back again. Almost every algorithm opens with it.',
+    S: '90° about z: a quarter turn of phase.',
+    T: '45° about z: the gate that makes the set universal, and the expensive one to make fault-tolerant.'
+  };
+
+  var st = [[1, 0], [0, 0]], hist = [], trail = [];
+
+  // Published so the 3D view (sq3d.js, loaded only when a reader asks for it) draws the SAME state
+  // rather than keeping a second copy that could drift. The flat widget's behaviour is unchanged.
+  var subs = [];
+  window.SymbiQ = window.SymbiQ || {};
+  window.SymbiQ.bloch2d = {
+    state: function () { return st; },
+    on: function (f) { subs.push(f); f(st, null, true); }
+  };
+
+  function applyGate(g) {
+    var m = G[g], a = st[0], b = st[1];
+    st = [ca(cm(m[0], a), cm(m[1], b)), ca(cm(m[2], a), cm(m[3], b))];
+    hist.push(g);
+    if (hist.length > 14) hist.shift();
+    render(g);
+  }
+  function bloch() {
+    var a = st[0], b = st[1];
+    var acb = cm([a[0], -a[1]], b);
+    return [2 * acb[0], 2 * acb[1],
+            (a[0] * a[0] + a[1] * a[1]) - (b[0] * b[0] + b[1] * b[1])];
+  }
+  // view: azimuth -35deg, elevation 18deg
+  var AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
+  function proj(v) {
+    var x = v[0], y = v[1], z = v[2];
+    return [CX + R * (-x * Math.sin(AZ) + y * Math.cos(AZ)),
+            CY + R * (x * Math.cos(AZ) * Math.sin(EL) + y * Math.sin(AZ) * Math.sin(EL) - z * Math.cos(EL))];
+  }
+  function el(tag, a, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in a) n.setAttribute(k, a[k]);
+    (parent || svg).appendChild(n); return n;
+  }
+
+  el('circle', { 'class': 'sphere', cx: CX, cy: CY, r: R });
+  var eq = '';
+  for (var i = 0; i <= 72; i++) {
+    var t = i / 72 * 2 * Math.PI, p = proj([Math.cos(t), Math.sin(t), 0]);
+    eq += (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1);
+  }
+  el('path', { 'class': 'equator', d: eq });
+  [[[0, 0, 1], '|0⟩'], [[0, 0, -1], '|1⟩'], [[1, 0, 0], '|+⟩'], [[0, 1, 0], '|i⟩']].forEach(function (ax) {
+    var p = proj(ax[0]), o = proj([0, 0, 0]);
+    el('line', { 'class': 'axis3', x1: o[0], y1: o[1], x2: p[0], y2: p[1], opacity: .55 });
+    el('text', { 'class': 'axlab', x: p[0], y: p[1] + (ax[0][2] > 0 ? -8 : 14) }).textContent = ax[1];
+  });
+  var trailPath = el('path', { 'class': 'trail', d: '' });
+  var vec = el('line', { 'class': 'statevec', x1: CX, y1: CY, x2: CX, y2: CY - R });
+  var dot = el('circle', { 'class': 'statedot', cx: CX, cy: CY - R, r: 5.5 });
+
+  function fmtAmp(c) {
+    var re = Math.abs(c[0]) < 1e-10 ? 0 : c[0], im = Math.abs(c[1]) < 1e-10 ? 0 : c[1];
+    if (re === 0 && im === 0) return '0';
+    if (im === 0) return re.toFixed(3).replace(/\.?0+$/, '');
+    if (re === 0) return im.toFixed(3).replace(/\.?0+$/, '') + 'i';
+    return '(' + re.toFixed(3).replace(/\.?0+$/, '') + (im > 0 ? '+' : '') + im.toFixed(3).replace(/\.?0+$/, '') + 'i)';
+  }
+
+  function render(last) {
+    var v = bloch(), p = proj(v);
+    vec.setAttribute('x2', p[0]); vec.setAttribute('y2', p[1]);
+    dot.setAttribute('cx', p[0]); dot.setAttribute('cy', p[1]);
+    trail.push(p);
+    if (trail.length > 40) trail.shift();
+    trailPath.setAttribute('d', trail.map(function (q, i) {
+      return (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+    }).join(''));
+
+    var a = st[0], b = st[1];
+    var p0 = a[0] * a[0] + a[1] * a[1], p1 = b[0] * b[0] + b[1] * b[1];
+    document.getElementById('bl-ket').innerHTML =
+      '|ψ⟩ = ' + fmtAmp(a) + '|0⟩ + ' + fmtAmp(b) + '|1⟩';
+    document.getElementById('bl-p0').textContent = (100 * p0).toFixed(1) + '%';
+    document.getElementById('bl-p1').textContent = (100 * p1).toFixed(1) + '%';
+    document.getElementById('bl-bar0').style.width = (100 * p0).toFixed(1) + '%';
+    document.getElementById('bl-bar1').style.width = (100 * p1).toFixed(1) + '%';
+
+    document.getElementById('bl-circuit').innerHTML = hist.length
+      ? '|0⟩ ' + hist.map(function (g) { return '[' + g + ']'; }).join(' ') + ' '
+      : '<span style="color:var(--muted)">|0⟩ (no gates yet)</span>';
+    var note = document.getElementById('bl-note');
+    if (!last) {
+      note.innerHTML = '<span style="color:var(--muted)">Apply a gate. Each one is a rotation: the state never leaves the sphere, which is what "unitary" means.</span>';
+    } else if (Math.abs(p0 - 0.5) < 1e-9) {
+      note.innerHTML = '<strong>' + last + '</strong>: ' + DESC[last] +
+        ' <span style="color:var(--teal)">A 50/50 state, and not the same thing as a coin already landed under a cup. ' +
+        'Proving that difference needs two qubits, which is what <a href="#chsh">the CHSH game</a> does below.</span>';
+    } else {
+      note.innerHTML = '<strong>' + last + '</strong>: ' + DESC[last];
+    }
+    subs.forEach(function (f) { f(st, last, false); });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('#bloch .gatebtn'), function (b) {
+    b.addEventListener('click', function () { applyGate(b.getAttribute('data-g')); });
+  });
+  document.getElementById('bloch-reset').addEventListener('click', function () {
+    st = [[1, 0], [0, 0]]; hist = []; trail = []; render(null);
+  });
+  render(null);
+})();
+
+(function () {
+  /* games.js is 336 KB, the largest file on the site, and this widget sits
+     about two thirds of the way down a long page -- most readers never reach
+     it. Since 2026-09-21 the tag above is inert and core.loadScript fetches it
+     once the reader is within about a screen and a half of the widget, so the
+     engine costs nothing at all to everyone who stops reading before here.
+
+     The reserved height is MEASURED, and tools/verify_games_lazy.mjs fails if
+     the mounted widget drifts away from it -- otherwise a fast scroller on a
+     slow connection watches the page jump when it lands. It is set from JS
+     rather than CSS on purpose: a reader with scripts off must not be left
+     holding a 525px gap reserved for a game they will never be shown. */
+  var host = document.getElementById('chsh-mount');
+  var tag = document.getElementById('games-src');
+  var C = window.SymbiQ && window.SymbiQ.core;
+  if (!host || !tag || !C) return;
+
+  function release() { if (card) card.style.minHeight = ''; }
+  function fail() {
+    release();
+    host.innerHTML = '<p style="color:var(--muted)">The game could not load. Reload the page.</p>';
+  }
+
+  /* Reserved on the CARD, not the mount host. The host's own height was
+     reserved exactly and the page still jumped, because the honest note
+     below it is written from the module too -- 202px of it here on a
+     desktop and 1,771px on a phone in the worst case. Measured at both
+     widths; tools/verify_games_lazy.mjs re-measures and also asserts the
+     thing this is really for: that loading the engine does not move the
+     content underneath it. */
+  var card = document.getElementById('chsh');
+  if (card) card.style.minHeight = (window.innerWidth < 720 ? 1391 : 825) + 'px';
+  C.onNear(host, function () {
+    C.loadScript(tag.src).then(function () {
+      var G = window.SymbiQ && window.SymbiQ.games;
+      if (!G || !G.get('chsh')) return fail();
+      /* Mount UNDER the reservation, then drop it. Releasing first
+         collapses the host to nothing for a frame and then jumps it
+         to full height -- two shifts instead of one, and on qec.html
+         the 🔴 section sits directly below this, so the Through-Line's
+         scroll-linked figure lost its target mid-scroll. Done this way
+         the only movement is (real height - reserved), which
+         tools/verify_games_lazy.mjs holds to a few per cent. */
+      G.mount('chsh', host, { mode: 'arcade' });
+      release();
+      var note = document.getElementById('chsh-honest');
+      if (note) note.innerHTML = G.get('chsh').honest;
+    })['catch'](fail);
+  });
+})();
+</script>
+
+<script>
+/* Decoherence Playground (#decohere). The Bloch vector under the exact
+   solution of the single-qubit Bloch equations with constant rates -- the
+   same model brute-forced in tools/verify_decoherence.py (desk repo). No
+   solver in the page: x,y decay as e^(-t/T2) while precessing at the
+   detuning, z relaxes toward |0> (+z) as e^(-t/T1). */
+(function () {
+  'use strict';
+  var svg = document.getElementById('dec-svg');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg', R = 96, CX = 150, CY = 140, ZEQ = 1;
+  var AZ = -35 * Math.PI / 180, EL = 18 * Math.PI / 180;
+
+  var reduce = false;
+  try {
+    reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+             document.documentElement.getAttribute('data-motion-pref') === 'reduce';
+  } catch (e) {}
+
+  function proj(v) {
+    var x = v[0], y = v[1], z = v[2];
+    return [CX + R * (-x * Math.sin(AZ) + y * Math.cos(AZ)),
+            CY + R * (x * Math.cos(AZ) * Math.sin(EL) + y * Math.sin(AZ) * Math.sin(EL) - z * Math.cos(EL))];
+  }
+  function el(tag, a, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in a) n.setAttribute(k, a[k]);
+    (parent || svg).appendChild(n);
+    return n;
+  }
+
+  el('circle', { 'class': 'sphere', cx: CX, cy: CY, r: R });
+  var eq = '';
+  for (var i = 0; i <= 72; i++) {
+    var a = i / 72 * 2 * Math.PI, p = proj([Math.cos(a), Math.sin(a), 0]);
+    eq += (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1);
+  }
+  el('path', { 'class': 'equator', d: eq });
+  [[[0, 0, 1], '|0⟩'], [[0, 0, -1], '|1⟩'], [[1, 0, 0], '|+⟩'], [[0, 1, 0], '|i⟩']].forEach(function (ax) {
+    var pp = proj(ax[0]);
+    el('line', { 'class': 'axis3', x1: CX, y1: CY, x2: pp[0], y2: pp[1], opacity: .55 });
+    el('text', { 'class': 'axlab', x: pp[0], y: pp[1] + (ax[0][2] > 0 ? -8 : 14) }).textContent = ax[1];
+  });
+  var trailPath = el('path', { 'class': 'trail', d: '' });
+  var vec = el('line', { 'class': 'statevec', x1: CX, y1: CY, x2: CX, y2: CY - R });
+  var dot = el('circle', { 'class': 'statedot', cx: CX, cy: CY - R, r: 5.5 });
+
+  var STARTS = {
+    plus: [1, 0, 0],
+    tilt: (function () { var v = [0.94, 0, 0.34]; var n = Math.hypot(v[0], v[1], v[2]); return [v[0] / n, v[1] / n, v[2] / n]; })()
+  };
+  var r0 = STARTS.plus.slice();
+  var T1 = 120, T2 = 90, detCycles = 1;
+  var t = 0, trail = [], raf = 0, playing = false, lastTs = 0;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var elT1 = $('dec-t1'), elT2 = $('dec-t2'), elDet = $('dec-det');
+
+  function clampT2() {
+    /* T2 <= 2 T1: past that rho is not a valid state (verify_decoherence.py [3]) */
+    if (T2 > 2 * T1) { T2 = 2 * T1; elT2.value = String(T2); }
+  }
+
+  function blochAt(tt) {
+    var e2 = Math.exp(-tt / T2);
+    var delta = detCycles * 2 * Math.PI / T2;      /* detuning: "cycles per T2" */
+    var c = Math.cos(delta * tt), s = Math.sin(delta * tt);
+    var x = e2 * (r0[0] * c - r0[1] * s);
+    var y = e2 * (r0[0] * s + r0[1] * c);
+    var z = ZEQ + (r0[2] - ZEQ) * Math.exp(-tt / T1);
+    return [x, y, z];
+  }
+
+  function gatesLeft() {
+    return Math.floor(T2 * Math.log(2) / 0.02);   /* 0.02 us = one 20 ns gate */
+  }
+
+  function fmtGates(n) {
+    return n >= 1000 ? Math.round(n / 100) / 10 + 'k' : String(n);
+  }
+
+  function verdictFor(clen, rlen) {
+    if (t < 1e-6) return 'Full coherence. Press play and watch the arrow spiral in.';
+    if (clen < 0.08) return 'The phase has washed out. Whatever was still being computed is gone — only a classical bit’s worth of the state survives.';
+    if (clen < 0.4) return 'Over half the phase information is lost. This is where a real algorithm has to have already finished.';
+    if (rlen < 0.75) return 'The state is sinking into the ball: it is now partly noise, and no gate can polish that back out.';
+    return 'Still mostly coherent — the usable window.';
+  }
+
+  function render() {
+    var v = blochAt(t);
+    var pp = proj(v);
+    vec.setAttribute('x2', pp[0].toFixed(1));
+    vec.setAttribute('y2', pp[1].toFixed(1));
+    dot.setAttribute('cx', pp[0].toFixed(1));
+    dot.setAttribute('cy', pp[1].toFixed(1));
+
+    var rlen = Math.hypot(v[0], v[1], v[2]);
+    var clen = Math.hypot(v[0], v[1]);
+    dot.setAttribute('r', (3.2 + 2.3 * rlen).toFixed(2));
+    dot.setAttribute('fill-opacity', (0.35 + 0.65 * rlen).toFixed(3));
+
+    if (!reduce) {
+      trail.push(pp);
+      if (trail.length > 90) trail.shift();
+      trailPath.setAttribute('d', trail.map(function (q, i) {
+        return (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+      }).join(''));
+    }
+
+    $('dec-rlen').textContent = rlen.toFixed(3);
+    $('dec-clen').textContent = clen.toFixed(3);
+    $('dec-rbar').style.width = (100 * rlen).toFixed(1) + '%';
+    $('dec-cbar').style.width = (100 * clen).toFixed(1) + '%';
+    $('dec-purity').textContent = ((1 + rlen * rlen) / 2).toFixed(3);
+    $('dec-elapsed').textContent = t < 1 ? t.toFixed(2) + ' µs' : Math.round(t) + ' µs';
+    $('dec-gates').textContent = fmtGates(gatesLeft());
+    $('dec-verdict').textContent = verdictFor(clen, rlen);
+  }
+
+  function stop() { playing = false; raf && cancelAnimationFrame(raf); raf = 0; $('dec-play').textContent = '▶ Play'; }
+  function frame(ts) {
+    if (!playing) return;
+    var dtMs = lastTs ? Math.min(ts - lastTs, 48) : 16;
+    lastTs = ts;
+    /* real-time feel: a full 3*T2 run takes ~7.5 s regardless of the sliders */
+    t += (dtMs / 1000) * (3 * T2 / 7.5);
+    var done = t > 6 * Math.max(T1, T2);
+    if (done) t = 6 * Math.max(T1, T2);
+    render();
+    if (done) { stop(); return; }
+    raf = requestAnimationFrame(frame);
+  }
+  function play() {
+    if (playing) { stop(); return; }
+    if (t >= 6 * Math.max(T1, T2) - 1e-6) { t = 0; trail = []; }
+    playing = true; lastTs = 0; $('dec-play').textContent = '❙❙ Pause';
+    raf = requestAnimationFrame(frame);
+  }
+  function restart(keepPlaying) {
+    t = 0; trail = []; lastTs = 0;
+    render();
+    if (!keepPlaying) stop();
+  }
+
+  elT1.addEventListener('input', function () {
+    T1 = +elT1.value; clampT2(); T2 = +elT2.value;
+    $('dec-t1-o').textContent = T1 + ' µs';
+    $('dec-t2-o').textContent = T2 + ' µs';
+    render();
+  });
+  elT2.addEventListener('input', function () {
+    T2 = +elT2.value; clampT2(); T2 = +elT2.value;
+    $('dec-t2-o').textContent = T2 + ' µs';
+    render();
+  });
+  elDet.addEventListener('input', function () {
+    detCycles = +elDet.value;
+    $('dec-det-o').textContent = (detCycles >= 0 ? '+' : '') + detCycles.toFixed(1);
+    render();
+  });
+  $('dec-play').addEventListener('click', play);
+  $('dec-restart').addEventListener('click', function () { restart(false); });
+  $('dec-start-plus').addEventListener('click', function () { r0 = STARTS.plus.slice(); restart(false); });
+  $('dec-start-tilt').addEventListener('click', function () { r0 = STARTS.tilt.slice(); restart(false); });
+
+  clampT2();
+  $('dec-t1-o').textContent = T1 + ' µs';
+  $('dec-t2-o').textContent = T2 + ' µs';
+  $('dec-det-o').textContent = '+' + detCycles.toFixed(1);
+  render();
+})();
+</script>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

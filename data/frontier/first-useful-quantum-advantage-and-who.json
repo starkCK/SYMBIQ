@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "slug": "first-useful-quantum-advantage-and-who",
+  "question": "When will a quantum computer first solve a problem of real commercial or scientific value faster or more cheaply than the best classical method — and which hardware approach gets there first?",
+  "dek": "Every major vendor has a dated milestone on record and the Ledger tracks them individually. This question is the one they are all really answering, and the honest state of it is that credible published estimates for a first genuinely useful result span from the late 2020s to the 2050s, with no consensus on whether superconducting, trapped-ion, neutral-atom, or photonic hardware gets there first.",
+  "status": "open",
+  "evidence_tier": "r",
+  "opened_at": "2026-08-27",
+  "origin": {
+    "kind": "claim",
+    "ref": "huang-useful-quantum-15-30-years",
+    "note": "Huang's 15-to-30-year range is the widest public marker; it sits against IBM's 2029 (ibm-starling-2029), Quantinuum's 2030 (quantinuum-apollo-2030), and Microsoft's “years, not decades” (microsoft-topological-years-not-decades). A claim that cannot be cleanly falsified as stated is, by the Ledger's own rule, an open question — this is that question."
+  },
+  "concept_ids": [
+    "fault-tolerance",
+    "nisq-quantum-advantage"
+  ],
+  "prompt_ref": "prompt.txt",
+  "prompt_sha": "7f10ab457b66ae0ab1ce91b1bcfc011141a5a42c44f66205680e4e4238c4867d",
+  "model_answers": [],
+  "desk_answer": null,
+  "floor": null,
+  "background": "Two things are worth separating. The first is a demonstrated computational advantage on an artificial benchmark — random circuit sampling, boson sampling — where the result is real but the task was chosen because a quantum device is good at it, and classical simulations have repeatedly narrowed or erased the claimed margin afterward. The second is an advantage on a problem someone outside the field actually wants solved: a molecule whose ground-state energy matters to a chemist, a materials question, an optimisation a logistics team would pay for. No instance of the second kind has been independently verified. The disagreement among serious people is not about direction but about timing and about which bottleneck binds first — physical error rates, the physical-to-logical qubit overhead, decoder latency, or the classical co-processing around the quantum core. This question asks the panel to commit to a horizon and a hardware bet, and to say plainly what would have to be observed for the answer to become knowable.",
+  "reading": [
+    {
+      "label": "SymbiQ — The Ledger (the individual vendor milestones)",
+      "url": "ledger.html"
+    },
+    {
+      "label": "SymbiQ — How the companies compare",
+      "url": "compare.html"
+    },
+    {
+      "label": "Preskill, “Quantum Computing in the NISQ era and beyond” (Quantum 2, 79, 2018)",
+      "url": "https://arxiv.org/abs/1801.00862"
+    }
+  ],
+  "created_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

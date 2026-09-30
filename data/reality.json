@@ -1,0 +1,428 @@
+{
+ "updated": "2026-09-26",
+ "cards": [
+  {
+   "slug": "visionquest-mind-space",
+   "kind": "Coming soon",
+   "added": "2026-09-26",
+   "title": "VisionQuest's mind space: is that how a quantum computer thinks?",
+   "source": "VisionQuest (Marvel, Disney+, eight episodes, premieres 14 October 2026)",
+   "rating": null,
+   "says": "A press set-visit report (Blavity) says the show's creator Terry Matalas and director Christopher J. Byrne described Vision's \"mind space\", a house that exists only in his head and is full of AI personas, as a theatrical stand-in for how a quantum computer processes information. That wording is the reporter's paraphrase, not a direct quote, so this card judges the show's framing at second hand. Nothing has aired yet.",
+   "real": "A quantum computer does not hold rooms of characters that each explore a different thought. It holds a register of qubits whose joint state carries an amplitude for every possible bit string. An algorithm then steers those amplitudes so wrong answers cancel and right ones add up. Nothing inside is talking. Reading the register out collapses it to one ordinary answer.",
+   "blocked": [
+    "Vision's personas (F.R.I.D.A.Y., J.A.R.V.I.S., Ultron) are AI software, which is a different technology from quantum hardware. Running a conversational AI on a quantum machine has no known advantage, and our AI page ranks the routes where quantum might help AI at all.",
+    "Interference only pays off for problems with the right structure: factoring, simulating quantum systems, some search. Nobody has shown a task like that for thinking.",
+    "Today's machines are small and noisy."
+   ],
+   "whatif": "A theatre metaphor is fair if you read each room as one branch of a computation that later interferes with the others. If a future machine ran a mind-like model that way, the hard part would still be the readout: one run gives one branch's worth of answer. The interesting version would be a task where interference between branches does the reasoning. No one has proposed one for cognition, so treat this as a thought experiment.",
+   "learn": [
+    {
+     "t": "Quantum mechanics vs computing",
+     "h": "quantum-mechanics.html"
+    },
+    {
+     "t": "Will quantum boost AI?",
+     "h": "ai.html"
+    },
+    {
+     "t": "Why these algorithms work",
+     "h": "phase-kickback.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Set-visit report (Blavity), the source of the framing",
+     "h": "https://blavity.com/entertainment/visionquest-set-what-we-learned"
+    },
+    {
+     "t": "Premiere date and episode count (Wikipedia)",
+     "h": "https://en.wikipedia.org/wiki/VisionQuest"
+    }
+   ],
+   "image": {
+    "src": "img/reality/visionquest-ibm-quantum-system-one.jpg",
+    "w": 1000,
+    "h": 625,
+    "ai": false,
+    "alt": "A gold-plated stack of round plates joined by rods and coiled wiring hangs from a steel housing: the cooling assembly of an IBM quantum computer.",
+    "caption": "What an actual quantum computer looks like: the cooling and wiring stack of an IBM quantum computer at IBM's Thomas J. Watson Research Center. Not a still from the show.",
+    "credit": "OJB Quantum (Onri Jay Benally), cropped",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "source_url": "https://commons.wikimedia.org/wiki/File:IBM_Quantum_System_One.jpg"
+   }
+  },
+  {
+   "slug": "ant-man-quantum-realm",
+   "kind": "Movie",
+   "added": "2026-09-26",
+   "title": "Ant-Man's Quantum Realm: can you shrink into it?",
+   "source": "Ant-Man (2015), Ant-Man and the Wasp (2018), Ant-Man and the Wasp: Quantumania (2023)",
+   "rating": "seed",
+   "says": "Shrink small enough and you slip into a separate realm below the atoms, where time and space behave differently.",
+   "real": "Quantum mechanics really is the physics of small things, and atoms really do behave unlike baseballs. An electron in a hydrogen atom is spread over a region about 10⁻¹⁰ m wide, and the size of that region, the Bohr radius (5.29 × 10⁻¹¹ m), is set by the electron's mass, its charge and Planck's constant.",
+   "blocked": [
+    "There is no smaller world underneath ours. The quantum regime is the same world seen at a scale where wave behaviour cannot be ignored.",
+    "Atom size comes from those constants, not from how much of you there is. You cannot shrink a body and keep its atoms' chemistry: either you remove atoms, and it is no longer you, or you change the constants, and nothing works as before.",
+    "No physics has time running differently \"in the quantum scale\". Time dilation comes from speed and gravity."
+   ],
+   "whatif": "Suppose some field rescaled the length that sets atom sizes, say through a change in the electron's mass or in the strength of electromagnetism. Atoms would shrink. Physicists do test whether such constants drift, and atomic-clock comparisons find no drift in the fine-structure constant or the proton-to-electron mass ratio within their precision. Even if one did, you would be rescaling chemistry itself, and you would arrive in the same universe, only smaller.",
+   "learn": [
+    {
+     "t": "Quantum mechanics vs computing",
+     "h": "quantum-mechanics.html"
+    },
+    {
+     "t": "What is a qubit made of?",
+     "h": "circuits.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Bohr radius (NIST CODATA)",
+     "h": "https://physics.nist.gov/cgi-bin/cuu/Value?bohrrada0"
+    }
+   ]
+  },
+  {
+   "slug": "star-trek-transporter",
+   "kind": "Movie",
+   "added": "2026-09-26",
+   "title": "Star Trek's transporter: is teleportation real?",
+   "source": "Star Trek (from 1966), and every story that borrows the word",
+   "rating": "seed",
+   "says": "A machine reads a person on one platform, dissolves them, and rebuilds them somewhere else.",
+   "real": "Quantum teleportation is a real laboratory technique, proposed by Bennett and colleagues in 1993 and first demonstrated in 1997 and 1998. It moves the state of one qubit onto another qubit, using a shared entangled pair plus two ordinary classical bits. The original's state is destroyed in the process, because the no-cloning theorem forbids keeping a copy. The distance record is a photon's state sent from a ground station in Tibet to the Micius satellite, at up to 1,400 km, in 2017.",
+   "blocked": [
+    "It moves no matter and no energy, only a state, and the receiving qubit has to be waiting at the far end.",
+    "It cannot beat light. The receiver cannot decode anything until the two classical bits arrive by an ordinary channel.",
+    "A person is about 7 × 10²⁷ atoms. What has been teleported so far is the state of a single particle or a handful of qubits."
+   ],
+   "whatif": "Suppose we could read out the full quantum state of a body. The no-cloning theorem would suit a transporter that destroys the original. What stays unsolved is that we have no way to define, let alone measure, the complete state of a living thing. The nearer payoff is a quantum internet: state transfer between distant quantum computers. That is useful, and much less cinematic.",
+   "learn": [
+    {
+     "t": "Quantum teleportation, worked exactly (The Machinery, topic 05)",
+     "h": "formalism.html#f05"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Bennett et al. 1993, the original proposal",
+     "h": "https://doi.org/10.1103/PhysRevLett.70.1895"
+    },
+    {
+     "t": "Ren et al. 2017, ground-to-satellite teleportation (Nature)",
+     "h": "https://www.nature.com/articles/nature23675"
+    }
+   ]
+  },
+  {
+   "slug": "entanglement-instant-messages",
+   "kind": "Myth",
+   "added": "2026-09-26",
+   "title": "Can entanglement send messages faster than light?",
+   "source": "The ansible of Ursula K. Le Guin's fiction, and every \"quantum radio\" since",
+   "rating": "seed",
+   "says": "Twist one particle of an entangled pair and its partner reacts at once, however far away, so you can signal instantly.",
+   "real": "Entangled particles give measurement results that are correlated more strongly than any pre-agreed classical rule allows. That is tested: three loophole-free Bell experiments in 2015 (Delft, Vienna, NIST), and the 2022 Nobel Prize in Physics went to Aspect, Clauser and Zeilinger for this line of work.",
+   "blocked": [
+    "On its own, each side sees a stream of random coin flips. Nothing you do at one end changes what the other end sees.",
+    "The correlation appears only when the two records are compared, and comparing needs an ordinary message, at light speed or slower.",
+    "This is the no-signalling theorem. It holds in standard quantum mechanics at any distance."
+   ],
+   "whatif": "A faster-than-light message would need either a break in no-signalling, which by the usual relativity argument also lets you message the past, or a theory that replaces quantum mechanics. Every test so far, including Bell tests with distant stations, matches quantum mechanics. A departure from it would be a huge result, and a check worth running hard. The real payoff of entanglement is secure keys and linked computers.",
+   "learn": [
+    {
+     "t": "The CHSH game: beat the classical limit",
+     "h": "quantum-mechanics.html#chsh"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Hensen et al. 2015, loophole-free Bell test (Nature)",
+     "h": "https://www.nature.com/articles/nature15759"
+    },
+    {
+     "t": "2022 Nobel Prize in Physics",
+     "h": "https://www.nobelprize.org/prizes/physics/2022/press-release/"
+    }
+   ]
+  },
+  {
+   "slug": "tries-every-answer-at-once",
+   "kind": "Myth",
+   "added": "2026-09-26",
+   "title": "Does a quantum computer try every answer at once?",
+   "source": "Most news explainers, and any film with a glowing chip",
+   "rating": "stretched",
+   "says": "Superposition lets a quantum computer test every possibility in parallel, so hard problems fall in an instant.",
+   "real": "n qubits can hold a superposition over all 2ⁿ bit strings at once. A quantum algorithm then arranges interference so that wrong strings cancel and the right ones reinforce. That steering is the working part, and it is real.",
+   "blocked": [
+    "Measurement returns one string, chosen at random by its amplitude. Without the interference step, you read out a random guess.",
+    "Only some problem structures allow that steering. For unstructured search, Grover's algorithm gives a square-root speedup, and Bennett, Bernstein, Brassard and Vazirani proved in 1997 that in the black-box (oracle) model no quantum algorithm can do better.",
+    "So the exponential speedups on offer are for particular problems: factoring, simulating quantum systems, and a short list of others."
+   ],
+   "whatif": "The list of problems with the right structure is an open research question, and each new entry changes what these machines are for. The claim is easy to test on any advertised advantage: ask what structure the algorithm uses to make wrong answers cancel. If there is no answer, there is no speedup.",
+   "learn": [
+    {
+     "t": "Why do these algorithms work?",
+     "h": "phase-kickback.html"
+    },
+    {
+     "t": "Is quantum computing just quantum mechanics?",
+     "h": "quantum-mechanics.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Grover 1996, quantum search",
+     "h": "https://arxiv.org/abs/quant-ph/9605043"
+    },
+    {
+     "t": "Bennett et al. 1997, strengths and weaknesses",
+     "h": "https://arxiv.org/abs/quant-ph/9701001"
+    }
+   ],
+   "image": {
+    "src": "img/reality/bloch-sphere.svg",
+    "w": 238,
+    "h": 252,
+    "ai": false,
+    "alt": "A sphere with axes and a single arrow from the centre to a point on its surface: the Bloch sphere.",
+    "caption": "One qubit's state is one point on the Bloch sphere, a single direction. It is not a list of answers.",
+    "credit": "Smite-Meister",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Bloch_sphere.svg"
+   }
+  },
+  {
+   "slug": "cracks-every-password",
+   "kind": "Movie",
+   "added": "2026-09-26",
+   "title": "Does a quantum computer crack every password in seconds?",
+   "source": "Hacking thrillers, from the 1990s on",
+   "rating": "stretched",
+   "says": "A quantum machine is plugged in and every lock in the building opens.",
+   "real": "Shor's algorithm (1994) factors integers and computes discrete logarithms efficiently, which would break RSA and elliptic-curve cryptography. Those protect web connections, software signatures and Bitcoin keys.",
+   "blocked": [
+    "It needs an error-corrected machine far larger than any built. Our Bitcoin page tracks the qubit estimates, which have fallen sharply on paper and still sit orders of magnitude above what exists.",
+    "Passwords and symmetric ciphers such as AES face only Grover's square-root speedup, so a longer key answers it.",
+    "A password guess usually needs the login server to reply to each try. The limit is the service, not the attacker's processor."
+   ],
+   "whatif": "The plausible danger is slower and quieter: record encrypted traffic today, open it years from now. That is why NIST published its first post-quantum standards in August 2024 (FIPS 203, 204 and 205) and why migration is under way now. What would change the timeline is a fault-tolerant machine arriving earlier than the estimates say, so the estimates are worth watching more than the headlines.",
+   "learn": [
+    {
+     "t": "Can quantum break Bitcoin?",
+     "h": "bitcoin.html"
+    },
+    {
+     "t": "Post-quantum, on the wire",
+     "h": "pqc.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Shor 1994",
+     "h": "https://arxiv.org/abs/quant-ph/9508027"
+    },
+    {
+     "t": "NIST's first three post-quantum standards",
+     "h": "https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards"
+    }
+   ],
+   "image": {
+    "src": "img/reality/dwave-vesuvius-chip.jpg",
+    "w": 1000,
+    "h": 625,
+    "ai": false,
+    "alt": "A square silicon chip at the centre of a gold-plated mounting board with green circuit traces and braided copper cables.",
+    "caption": "D-Wave's 512-qubit Vesuvius chip in its package. It is a quantum annealer, a different design from the gate-based machines that could run Shor's algorithm.",
+    "credit": "Steve Jurvetson, cropped",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "source_url": "https://commons.wikimedia.org/wiki/File:D-Wave_Two_512_qubit_Vesuvius_chip.jpg"
+   }
+  },
+  {
+   "slug": "endgame-time-travel",
+   "kind": "Movie",
+   "added": "2026-09-26",
+   "title": "Avengers: Endgame: can the Quantum Realm give you time travel?",
+   "source": "Avengers: Endgame (2019)",
+   "rating": "name",
+   "says": "Pass through the Quantum Realm and you can step back in time, and the film's own rule is that changing the past spawns a new branch instead of rewriting your own future.",
+   "real": "General relativity does allow time travel on paper: Gödel found solutions with closed timelike curves in 1949, and rotating or wormhole geometries have been proposed since. Quantum theory has models for them too. Deutsch's 1991 model keeps physics consistent without paradoxes, and Aaronson and Watrous showed in 2009 that with such a loop, quantum and classical computers become equally powerful: both can solve any PSPACE problem. In 2011 a group used teleportation and postselection to test, in the lab, a related model of such a loop (not Deutsch's).",
+   "blocked": [
+    "That lab work simulates the logic of a loop. It is not a time machine.",
+    "Gödel's solution needs a universe that rotates, and ours does not appear to. Traversable wormholes and similar designs need exotic matter with negative energy density, in amounts nobody can produce. Hawking's chronology protection conjecture (1992) suggests physics may forbid the loops altogether.",
+    "Nothing about being small or \"quantum\" gives you a route to the past."
+   ],
+   "whatif": "The film's branching rule resembles how Deutsch's model is sometimes read through many-worlds, which is an interpretation and untested. If loops of this kind ever existed, computer science would change more than history would: a classical computer with such a loop would become as powerful as a quantum one, both reaching PSPACE. The site's own page on complexity classes notes that PSPACE is not proven to be larger than BQP, so even that gap is open.",
+   "learn": [
+    {
+     "t": "Where quantum computers sit among complexity classes",
+     "h": "quantum-mechanics.html#red"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Aaronson and Watrous 2009",
+     "h": "https://arxiv.org/abs/0808.2669"
+    },
+    {
+     "t": "Lloyd et al. 2011, a lab simulation via postselection",
+     "h": "https://arxiv.org/abs/1005.2219"
+    }
+   ]
+  },
+  {
+   "slug": "doctor-strange-multiverse",
+   "kind": "Movie",
+   "added": "2026-09-26",
+   "title": "Doctor Strange's multiverse: is that what physics says?",
+   "source": "Doctor Strange in the Multiverse of Madness (2022), Everything Everywhere All at Once (2022)",
+   "rating": "seed",
+   "says": "Every choice spawns another universe, and with the right skill you can visit them.",
+   "real": "Hugh Everett III's 1957 formulation of quantum mechanics drops the collapse step. The wavefunction just keeps evolving, and each outcome of a measurement exists as one branch of the whole. It is an interpretation: it makes the same predictions as textbook quantum mechanics, so no experiment separates them today.",
+   "blocked": [
+    "In Everett's picture, decoherence makes branches stop interfering with each other, so within the theory there is no route to travel between them or to send a message across.",
+    "Nothing in the theory lets you choose which branch you end up in.",
+    "Physicists disagree over whether it is the right reading. Copenhagen-style, Bohmian and collapse-model readings all exist.",
+    "The cosmological multiverse of inflation and string theory is a separate speculation with a separate basis."
+   ],
+   "whatif": "Collapse models such as GRW and Penrose's do predict tiny departures from standard quantum mechanics, and experiments with ever larger objects in superposition are testing them. If one were confirmed, Everett's picture would be out. If none ever is, the branches stay unreachable, and the question stays philosophical.",
+   "learn": [
+    {
+     "t": "Quantum mechanics vs computing",
+     "h": "quantum-mechanics.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Everett 1957 (Reviews of Modern Physics)",
+     "h": "https://doi.org/10.1103/RevModPhys.29.454"
+    }
+   ]
+  },
+  {
+   "slug": "quantum-brain",
+   "kind": "Myth",
+   "added": "2026-09-26",
+   "title": "Is the brain a quantum computer? Does consciousness collapse the wavefunction?",
+   "source": "What the Bleep Do We Know!? (2004), \"quantum healing\" books, and the Penrose-Hameroff proposal",
+   "rating": "name",
+   "says": "Consciousness is a quantum effect, and observing something with your mind is what makes reality pick an outcome.",
+   "real": "All chemistry is quantum mechanics, brains included. The open question is narrower: whether coherent superpositions do computational work in neurons. Roger Penrose and Stuart Hameroff proposed a version, Orch OR, and it is a real, if minority, hypothesis.",
+   "blocked": [
+    "Max Tegmark's 2000 estimate put decoherence times for the specific superpositions such models propose at 10⁻¹³ to 10⁻²⁰ seconds, against 10⁻³ to 10⁻¹ seconds for neural firing. Hagan, Hameroff and Tuszynski replied in 2002 that he had modelled a different scenario from the one Orch OR proposes, and argued for much longer times. No experiment has shown quantum computation in a brain.",
+    "In most readings of quantum mechanics, \"measurement\" needs a physical interaction that records the outcome, and no mind is required. Whether that fully settles the question depends on the interpretation."
+   ],
+   "whatif": "Quantum biology is a live field: radical-pair chemistry as a possible compass in birds, and quantum effects in some enzymes, are being tested. If someone measured long-lived coherence in neural tissue that changes how neurons fire, the story would change. A measurement, and not another argument, is what is missing.",
+   "learn": [
+    {
+     "t": "Quantum mechanics vs computing",
+     "h": "quantum-mechanics.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Tegmark 2000, decoherence in brain processes",
+     "h": "https://arxiv.org/abs/quant-ph/9907009"
+    },
+    {
+     "t": "Hagan, Hameroff and Tuszynski 2002, the reply",
+     "h": "https://arxiv.org/abs/quant-ph/0005025"
+    }
+   ]
+  },
+  {
+   "slug": "lk-99-room-temperature-superconductor",
+   "kind": "Claim",
+   "added": "2026-09-26",
+   "title": "LK-99: was there a room-temperature superconductor?",
+   "source": "arXiv preprints, July 2023, and a very viral month",
+   "rating": "name",
+   "says": "A copper-doped lead apatite, LK-99, superconducts above room temperature at ordinary pressure.",
+   "real": "A superconductor carries current with zero resistance and expels magnetic fields. At ambient pressure the record stood at 133 K for three decades, in a mercury copper oxide (Hg-1223). In March 2026 Deng, Chu and colleagues reported 151 K (about −122 °C) in the same material, by a pressure-quench protocol. Room temperature is still about 140 K higher. Within weeks of the LK-99 claim, groups around the world made samples and tested them.",
+   "blocked": [
+    "None showed zero resistance or a true Meissner effect.",
+    "The sharp resistivity drop, near 385 K (about 112 °C), was most likely a structural transition in copper(I) sulfide, an impurity left by the synthesis (Zhu et al.; Jain's analysis puts the same transition at about 104 °C). The partial \"levitation\" in the viral video is consistent with the material's ordinary magnetism, without any superconductivity.",
+    "A claim like this needs three things: zero resistance, flux expulsion, and independent replication. LK-99 met none."
+   ],
+   "whatif": "Nothing in known theory forbids an ambient-pressure room-temperature superconductor, and nothing tells us how to make one. It would mean lossless power lines and cheap strong magnets. Searches, some machine-assisted, continue. The useful habit LK-99 taught is the three-part test above, and it applies to every future claim.",
+   "learn": [
+    {
+     "t": "The Ledger: claims scored when the deadline lands",
+     "h": "ledger.html"
+    }
+   ],
+   "refs": [
+    {
+     "t": "Zhu et al. 2023: first-order transition in LK-99 containing Cu2S (arXiv)",
+     "h": "https://arxiv.org/abs/2308.04353"
+    },
+    {
+     "t": "Jain 2023: copper(I) sulfide and LK-99 (arXiv)",
+     "h": "https://arxiv.org/abs/2308.05222"
+    },
+    {
+     "t": "Deng et al. 2026: 151 K at ambient pressure in Hg-1223 (PNAS, open copy)",
+     "h": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/"
+    }
+   ],
+   "image": {
+    "src": "img/reality/lk99-pellet-and-magnet.jpg",
+    "w": 848,
+    "h": 544,
+    "ai": false,
+    "alt": "A small dark fragment of LK-99 tilted above a large disc-shaped magnet.",
+    "caption": "The LK-99 pellet in the authors' own photo, shown partly lifted by a magnet. That lift is what went viral; later analysis put it down to ordinary magnetism.",
+    "credit": "Hyun-Tak Kim, converted to JPEG",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "source_url": "https://commons.wikimedia.org/wiki/File:LK-99_pellet.png"
+   }
+  },
+  {
+   "slug": "quantum-levitation",
+   "kind": "Fun fact",
+   "added": "2026-09-26",
+   "title": "Can a disc really float above a magnet and lock in place?",
+   "source": "The viral \"quantum levitation\" and \"quantum locking\" videos",
+   "rating": "faithful",
+   "says": "A small disc hovers over a magnetic track, stays exactly where you put it, even upside-down, and glides along the track without touching it.",
+   "real": "This is real, and the name is fair. A thin superconducting disc is cooled below its critical temperature inside a magnetic field. In a type-II superconductor, magnetic field lines get trapped in quantised tubes of flux, pinned at tiny defects in the material, and the pinning holds the disc where it was cooled, in position and orientation. The usual material, YBCO, superconducts below about 90 K, so liquid nitrogen at 77 K is enough to run it.",
+   "blocked": [
+    "It only works while the disc stays cold. Left alone, it warms up and drops.",
+    "It locks where it was field-cooled. Cool it above the track and it stays there; move it and it resists.",
+    "The video's \"quantum\" is a macroscopic effect: quantised flux, and a superconducting state that is a quantum state of a very large number of electrons together."
+   ],
+   "whatif": "The same physics underlies MRI magnets and particle-accelerator magnets. A material that stayed superconducting at room temperature would let you keep the disc floating on a kitchen table, and see the LK-99 card for why that has not happened yet.",
+   "learn": [],
+   "refs": [
+    {
+     "t": "Wu et al. 1987, superconductivity at 93 K in Y-Ba-Cu-O",
+     "h": "https://doi.org/10.1103/PhysRevLett.58.908"
+    },
+    {
+     "t": "Blatter et al. 1994, vortices in high-temperature superconductors",
+     "h": "https://doi.org/10.1103/RevModPhys.66.1125"
+    }
+   ],
+   "image": {
+    "src": "img/reality/levitation-magnet-over-ybco.jpg",
+    "w": 900,
+    "h": 562,
+    "ai": false,
+    "alt": "A small disc-shaped magnet hovering above a dark, frosted superconducting disc under blue light.",
+    "caption": "A magnet floating above a YBCO superconductor cooled to −196 °C with liquid nitrogen.",
+    "credit": "Julien Bobroff and Frederic Bouquet, Laboratoire de Physique des Solides, Orsay; cropped",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Levitation_superconductivity.JPG"
+   }
+  }
+ ]
+}

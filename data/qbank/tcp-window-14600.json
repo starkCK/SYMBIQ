@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "tcp-window-14600",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "pqc-14600",
+  "question": {
+    "text": "The page gives 14,600 bytes as how much data fits in a TCP connection's initial congestion window — ten segments of 1,460 bytes each, on a standard 1,500-byte Ethernet MTU. Is 14,600 a fixed property of TCP itself?",
+    "options": [
+      "No — it follows from a standard default (a 10-segment initial window) and a standard MTU; either one can differ on a real path or server",
+      "Yes — the TCP protocol specification fixes the initial congestion window at exactly 10 segments for every connection",
+      "No — TCP doesn't have an initial congestion window at all; this describes a legacy setting removed after Linux 2.6",
+      "Yes — 1,460 bytes per segment is a hard limit set by the IP packet header, not a configurable default"
+    ],
+    "answerIndex": 0,
+    "hint": "Two numbers multiply to get 14,600: a segment count and a segment size. Are either of those numbers required by the protocol itself, or just what's typically configured?",
+    "explain": {
+      "g": "14,600 is what you get from combining two common defaults, not a law of networking. A path with a smaller maximum packet size, or a server configured with a different starting window, gets a different number in the same slot of the same calculation. It's the standard case, not a universal constant.",
+      "y": "10 segments × 1,460-byte payload (which itself comes from a 1,500-byte Ethernet MTU minus IP/TCP headers) = 14,600. The 10-segment initial congestion window is RFC 6928's recommendation, not a mandate baked into TCP's design; it's been the Linux default since kernel 2.6.39, but other stacks or manual tuning can set it differently, and a smaller-MTU path changes the other factor.",
+      "r": "RFC 6928 (IETF, April 2013); default in Linux since kernel 2.6.39 (May 2011). Networks with a smaller MTU — many VPNs, some mobile links — reduce the per-segment payload below 1,460, and servers running an older kernel or custom sysctl can carry a different initial cwnd. Both inputs to this number are configuration, not protocol invariants."
+    }
+  }
+}

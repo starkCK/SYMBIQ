@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "3800x-floor-not-point",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "home-collapse",
+  "question": {
+    "text": "The homepage headline says breaking one Bitcoin key got 3,800× cheaper in four years — 1.9 billion physical qubits in 2022 down to under half a million in 2026, exactly. Once a quantum computer with under half a million qubits exists, does 3,800× tell you the attack is demonstrated?",
+    "options": [
+      "No — 3,800× is a floor rather than a point value, since the 2026 figure is itself an upper bound (\"fewer than half a million\"), and neither number has been demonstrated on real hardware",
+      "Yes — 3,800× exactly is how much cheaper the attack has already been shown to be on a physical quantum device",
+      "No — the 3,800× figure is wrong, since 1.9 billion divided by 500,000 is 3,800, but the real 2026 number is smaller than 500,000",
+      "Yes, and any machine built with under half a million physical qubits would immediately succeed at the racing attack in nine minutes"
+    ],
+    "answerIndex": 0,
+    "hint": "One of the two numbers in this ratio is described as \"under\" a figure, not \"exactly\" a figure. What does that do to the ratio built from it?",
+    "explain": {
+      "g": "\"3,800× cheaper\" describes how two cost estimates compare to each other — it doesn't describe anything that has actually happened on real hardware. Both the 2022 and 2026 numbers are costings of a machine nobody has built, and the 2026 side of the ratio is itself stated as an upper bound, which makes 3,800× the least dramatic the drop could be, not a precise reading.",
+      "y": "1.9×10⁹ (Webber et al., 2022) ÷ 5×10⁵ (arXiv:2603.28846, March 2026) = 3,800× exactly as arithmetic — but the 2026 figure is reported as \"fewer than half a million,\" meaning the true 2026 estimate could be smaller still, which would make the real collapse even larger than 3,800×. Read literally, 3,800× is a floor on how much the estimate has dropped, not the drop itself measured to some fixed precision.",
+      "r": "Webber, Elfving, Weidt and Hensinger, AVS Quantum Sci. 4, 013801 (2022); Babbush, Gidney, Drake, Boneh et al., arXiv:2603.28846. Both figures are resource estimates — theoretical costings under stated assumptions — not results from hardware that has run the attack. The headline number describes movement in the estimate over time, which is real and worth tracking, but carries no claim that either endpoint has been physically demonstrated."
+    }
+  }
+}

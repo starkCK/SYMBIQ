@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "btc-nine-minutes",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "g",
+  "receipt": "btc-9min",
+  "question": {
+    "text": "The site quotes about nine minutes for the racing attack on a Bitcoin key, once a large enough quantum computer exists. Does that number mean every bitcoin in existence would fall within nine minutes of such a machine switching on?",
+    "options": [
+      "No — it's an upper bound on how fast the attack could run once a public key is exposed, and applies only to coins whose key has been revealed",
+      "Yes — nine minutes is how long it takes to break the underlying elliptic-curve cryptography for any key, exposed or not",
+      "No — nine minutes only covers the precomputation; the live attack itself would take substantially longer",
+      "Yes, but only for the largest wallets, since smaller transactions use a different signature scheme"
+    ],
+    "answerIndex": 0,
+    "hint": "Half the attack can be precomputed. What does it need to know before it can even start — and which coins actually give it that?",
+    "explain": {
+      "g": "A public key only becomes visible once it's used in a transaction that reveals it. Coins that have never spent from an address, or whose key has stayed hidden, don't hand the attacker anything to precompute against. Nine minutes describes how fast the visible, exposed-key case could go — not a blanket clock on everything.",
+      "y": "The precomputable half of Shor's algorithm depends only on the curve's public parameters, which are fixed in advance and don't depend on any one key. Once a specific public key is revealed — inside a confirmation window, for instance — the remaining, key-dependent work is what the nine-minute figure times. Coins whose keys have never been exposed give the attacker nothing to start that clock on.",
+      "r": "Gidney, Babbush, Drake, Boneh et al., arXiv:2603.28846 (March 2026). Nine minutes is specifically an upper bound on the racing-attack window, not a general factoring time for the underlying curve — the relevant threat model is a transaction that has revealed its public key but not yet confirmed, which is a minority of the coins in circulation at any moment."
+    }
+  }
+}

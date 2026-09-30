@@ -1,0 +1,23 @@
+{
+  "package": "three@0.186.1",
+  "license": "MIT",
+  "source": "cdn.jsdelivr.net",
+  "files": [
+    {
+      "local": "three.core.js",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.min.js",
+      "sha256_upstream": "3b346151f65ffdfca3e4c002bd58966b78c423087fb48a873f83200de1bffc48",
+      "bytes_upstream": 415816,
+      "sha256_local": "3b346151f65ffdfca3e4c002bd58966b78c423087fb48a873f83200de1bffc48",
+      "bytes_local": 415816
+    },
+    {
+      "local": "three.module.min.js",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+      "sha256_upstream": "3bc833fceb6577bd1a380388f832ae61cd6e2f78ad02b0bf0d5adf5a4a9334fe",
+      "bytes_upstream": 392831,
+      "sha256_local": "3bc833fceb6577bd1a380388f832ae61cd6e2f78ad02b0bf0d5adf5a4a9334fe",
+      "bytes_local": 392831
+    }
+  ]
+}

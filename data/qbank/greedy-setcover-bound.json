@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "greedy-setcover-bound",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "fsb-setcover-h6",
+  "question": {
+    "text": "For a set-cover instance where the largest set has 6 elements, the harmonic bound H(6) = 2.45 says greedy is guaranteed to use no more than 2.45× the optimal number of sets. Greedy actually takes 3 sets against an optimum of 2 — well under 2.45 × 2 = 4.9. Does that mean greedy usually comes this close to the bound?",
+    "options": [
+      "No — H(k) is a worst-case guarantee; greedy is usually much closer to optimal than the bound allows, and the bound is only tight on adversarial instances",
+      "Yes — 3 against an optimum of 2 is exactly H(6), confirming greedy always performs at precisely the harmonic-number ratio",
+      "No — the bound doesn't actually apply here, since it requires k to be the number of sets, not the largest set's size",
+      "Yes — every set-cover instance greedy is run on lands close to H(k) times optimal, which is why the bound is useful in practice"
+    ],
+    "answerIndex": 0,
+    "hint": "A worst-case bound tells you how bad things could get, not how bad they usually get. Where does 3 sit relative to the bound of 4.9?",
+    "explain": {
+      "g": "H(6) = 2.45 is a ceiling, not a forecast — it says greedy will never do worse than 2.45 times optimal on an instance where the biggest set has 6 elements, not that it will typically get that close to the ceiling. Landing at 3 sets against an optimum of 2, well inside the bound of 4.9, is actually the ordinary case: the guarantee exists for the rare adversarial instance where greedy really does struggle.",
+      "y": "greedy ≤ H(k) · OPT with H(6) = 1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 = 2.45, k the size of the largest set. This instance's optimum is 2, so the bound permits up to 4.9; greedy's actual 3 sits comfortably inside that, illustrating that the bound is loose on typical instances and only becomes tight when an adversary constructs a set system specifically designed to make greedy struggle.",
+      "r": "tools/verify_or5_or6.py checks both the greedy run and the harmonic-bound arithmetic. The bound's dependence on k being the largest set's SIZE, not the count of sets in the instance, is itself a detail worth being precise about — swapping those two would give a different, wrong bound."
+    }
+  }
+}

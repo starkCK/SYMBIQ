@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "thousand-to-one",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "g",
+  "receipt": "bas-1057",
+  "question": {
+    "text": "The headline “about a thousand physical qubits to make one logical qubit” comes from a real calculation: nine steps of code distance at Willow's measured suppression factor, landing at distance 23 and 1,057 physical qubits. What does that 1,057 actually buy?",
+    "options": [
+      "Roughly a thousandfold reduction in error — which is short of the millionfold the stated target needs",
+      "A logical qubit reliable enough to run a cryptographically relevant algorithm end to end",
+      "Exactly the reliability target, which is why 1,057 is the number everyone quotes",
+      "A thousand times more computing power than a single physical qubit provides"
+    ],
+    "answerIndex": 0,
+    "hint": "Compare the starting error rate with the target one and count the orders of magnitude between them. Then ask how many of those the nine steps actually cover.",
+    "explain": {
+      "g": "Starting at one error per thousand operations and needing fewer than one per billion means closing a gap of a million. Nine distance steps close about a thousand of it. So 1,057 qubits is a real number from a real calculation, and it gets you part of the way rather than all of it. The famous headline is the cost of one leg, quoted as though it were the whole fare.",
+      "y": "Physical error 10⁻³ to a target logical error 10⁻⁹ is a suppression factor of 10⁶. At Λ = 2.14 per distance step, log(1000)/log(2.14) ≈ 9.08, so nine whole steps buy 2.14⁹ ≈ 941×. Nine steps take d = 5 to d = 23, and a rotated surface-code patch costs 2d²−1 = 1,057 physical qubits. The full 10⁶ needs nineteen steps, d = 43 and 3,697 qubits — before routing or magic-state factories are counted at all.",
+      "r": "With p_L ∝ (p/p_th)^⌊(d+1)/2⌋ the exponent rises by one per two units of distance, so suppression after n steps is Λⁿ. Λ = 2.14 ± 0.02 measured on Willow (Google Quantum AI, Nature 638, 920 (2025)). n = ⌊log(10³)/log(2.14)⌋ = 9 gives 941× and d = 5 + 2·9 = 23, cost 2(23²)−1 = 1,057. n = ⌈log(10⁶)/log(2.14)⌉ = 19 gives d = 43 and 3,697. Every step, including the shortfall, is brute-forced in tools/verify_basics_overhead.py."
+    }
+  }
+}

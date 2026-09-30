@@ -1,0 +1,224 @@
+
+body[data-glass] {
+  --gl-tint:   rgba(18, 26, 44, 0.74);
+  --gl-tint-2: rgba(19, 27, 45, 0.95);
+  --gl-nav:    rgba(9, 13, 23, 0.72);
+
+  --gl-blur:      18px;
+  --gl-blur-card: 10px;
+  --gl-blur-hero: 6px;
+  --gl-sat:       1.6;
+
+  --gl-rim:    rgba(255, 255, 255, 0.10);
+  --gl-rim-hi: rgba(255, 255, 255, 0.17);
+
+  --gl-edge: color-mix(in oklab, var(--indigo, #7f8cf3) 30%, var(--border));
+
+  --gl-depth:    0 20px 48px -24px rgba(0, 0, 0, 0.50);
+  --gl-depth-hi: 0 30px 64px -26px rgba(0, 0, 0, 0.55);
+  --gl-cast:     color-mix(in oklab, var(--violet) 22%, transparent);
+}
+
+body[data-vivid][data-glass] {
+  --gl-tint:   rgba(43, 31, 27, 0.74);
+  --gl-tint-2: rgba(34, 25, 23, 0.95);
+  --gl-nav:    rgba(22, 16, 15, 0.72);
+}
+
+@media (prefers-color-scheme: light) {
+  body[data-glass] {
+    --gl-tint:   rgba(255, 255, 255, 0.78);
+    --gl-tint-2: rgba(244, 247, 252, 0.96);
+    --gl-nav:    rgba(248, 250, 252, 0.80);
+
+    --gl-blur:      16px;
+    --gl-blur-card: 10px;
+    --gl-blur-hero: 6px;
+    --gl-sat:       1.4;
+
+    --gl-rim:    rgba(255, 255, 255, 0.75);
+    --gl-rim-hi: rgba(255, 255, 255, 0.92);
+
+    --gl-edge: color-mix(in oklab, var(--indigo, #4a5ad0) 20%, var(--border));
+
+    --gl-depth:    0 20px 44px -26px rgba(15, 23, 42, 0.18);
+    --gl-depth-hi: 0 28px 58px -28px rgba(15, 23, 42, 0.22);
+    --gl-cast:     color-mix(in oklab, var(--violet) 12%, transparent);
+  }
+
+  :root:not([data-theme="dark"]):not([data-theme="dim"]) body[data-vivid][data-glass] {
+    --gl-tint:   rgba(255, 255, 255, 0.78);
+    --gl-tint-2: rgba(244, 247, 252, 0.96);
+    --gl-nav:    rgba(248, 250, 252, 0.80);
+  }
+}
+
+:root[data-theme="dark"] body[data-glass],
+:root[data-theme="dim"] body[data-glass] {
+  --gl-tint:   rgba(18, 26, 44, 0.74);
+  --gl-tint-2: rgba(19, 27, 45, 0.95);
+  --gl-nav:    rgba(9, 13, 23, 0.72);
+  --gl-blur:      18px;
+  --gl-blur-card: 10px;
+  --gl-blur-hero: 6px;
+  --gl-sat:       1.6;
+  --gl-rim:    rgba(255, 255, 255, 0.10);
+  --gl-rim-hi: rgba(255, 255, 255, 0.17);
+  --gl-edge: color-mix(in oklab, var(--indigo, #7f8cf3) 30%, var(--border));
+  --gl-depth:    0 20px 48px -24px rgba(0, 0, 0, 0.50);
+  --gl-depth-hi: 0 30px 64px -26px rgba(0, 0, 0, 0.55);
+  --gl-cast:     color-mix(in oklab, var(--violet) 22%, transparent);
+}
+:root[data-theme="dark"] body[data-vivid][data-glass],
+:root[data-theme="dim"] body[data-vivid][data-glass] {
+  --gl-tint:   rgba(43, 31, 27, 0.74);
+  --gl-tint-2: rgba(34, 25, 23, 0.95);
+  --gl-nav:    rgba(22, 16, 15, 0.72);
+}
+
+@media (min-width: 720px) {
+  body[data-glass] nav:not(.rung-rail) {
+    background: var(--nav-bg);
+    background: var(--gl-nav);
+    box-shadow:
+      inset 0 -1px 0 color-mix(in oklab, var(--border) 60%, transparent),
+      0 10px 30px -18px rgba(0, 0, 0, 0.5);
+  }
+
+  @supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+    body[data-glass] nav:not(.rung-rail) {
+      -webkit-backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+      backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+    }
+  }
+
+  body[data-glass] nav:not(.rung-rail)::after {
+    content: "";
+    position: absolute; left: 0; right: 0; top: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gl-rim-hi), transparent);
+    pointer-events: none;
+  }
+}
+
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+
+  @media (min-width: 720px) {
+    body[data-glass] .navpanel {
+      background: var(--panel);
+      background: var(--gl-tint-2);
+      border-color: var(--gl-edge);
+      -webkit-backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+      backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+      box-shadow:
+        inset 0 1px 0 var(--gl-rim),
+        0 22px 52px -22px rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  @media (max-width: 719px) {
+    body[data-glass] #navcats {
+      background: var(--panel);
+      background: var(--gl-tint-2);
+      border-color: var(--gl-edge);
+      -webkit-backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+      backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+      box-shadow:
+        inset 0 1px 0 var(--gl-rim),
+        0 22px 52px -22px rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  body[data-glass] .sq-account .navpanel {
+    background: var(--panel);
+    background: var(--gl-tint-2);
+    border-color: var(--gl-edge);
+    -webkit-backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+    backdrop-filter: blur(var(--gl-blur)) saturate(var(--gl-sat));
+    box-shadow:
+      inset 0 1px 0 var(--gl-rim),
+      0 22px 52px -22px rgba(0, 0, 0, 0.55);
+  }
+}
+
+body[data-glass] .card,
+body[data-glass] .introute-card {
+  border-color: var(--gl-edge);
+  box-shadow:
+    inset 0 1px 0 var(--gl-rim),
+    var(--gl-depth);
+}
+body[data-glass] .card:hover,
+body[data-glass] .introute-card:hover {
+  box-shadow:
+    inset 0 1px 0 var(--gl-rim-hi),
+    var(--gl-depth-hi),
+    0 0 26px -6px color-mix(in oklab, var(--violet) 22%, transparent);
+}
+
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  body[data-glass] .card,
+  body[data-glass] .introute-card {
+    background: var(--panel);
+    background: linear-gradient(180deg,
+      color-mix(in oklab, var(--violet) 7%, var(--gl-tint)),
+      var(--gl-tint) 46%);
+    -webkit-backdrop-filter: blur(var(--gl-blur-card)) saturate(var(--gl-sat));
+    backdrop-filter: blur(var(--gl-blur-card)) saturate(var(--gl-sat));
+  }
+}
+
+body[data-glass] .orhero {
+  border-color: var(--gl-edge);
+  box-shadow:
+    inset 0 1px 0 var(--gl-rim-hi),
+    0 30px 70px -40px var(--gl-cast),
+    var(--gl-depth);
+}
+body[data-glass] .gate {
+  box-shadow:
+    inset 0 1px 0 var(--gl-rim),
+    var(--gl-depth);
+}
+
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  body[data-glass] .orhero {
+    -webkit-backdrop-filter: blur(var(--gl-blur-hero)) saturate(1.3);
+    backdrop-filter: blur(var(--gl-blur-hero)) saturate(1.3);
+  }
+}
+
+body[data-glass] .hud-return,
+body[data-glass] .hud-contract {
+  box-shadow:
+    inset 0 1px 0 var(--gl-rim),
+    var(--gl-depth);
+}
+
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  body[data-glass] .hud-return,
+  body[data-glass] .hud-contract {
+    -webkit-backdrop-filter: blur(8px) saturate(var(--gl-sat));
+    backdrop-filter: blur(8px) saturate(var(--gl-sat));
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body[data-glass] nav:not(.rung-rail),
+  body[data-glass] .navpanel,
+  body[data-glass] #navcats,
+  body[data-glass] .sq-account .navpanel,
+  body[data-glass] .card,
+  body[data-glass] .introute-card,
+  body[data-glass] .orhero,
+  body[data-glass] .hud-return,
+  body[data-glass] .hud-contract {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  body[data-glass] nav:not(.rung-rail) { background: var(--nav-bg); }
+  body[data-glass] .navpanel,
+  body[data-glass] #navcats,
+  body[data-glass] .sq-account .navpanel { background: var(--panel); }
+  body[data-glass] .card,
+  body[data-glass] .introute-card { background: var(--panel); }
+}

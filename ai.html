@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-NAlWS1djeHphEWJb86AcBJ7KNQjboQDEYb7IkDBxwRY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Will quantum computers make AI more powerful?</title>
+<meta name="description" content="The honest version of the reverse loop: what quantum computing can and can't do for AI, why the data-loading problem kills most of the hype, and the one advantage that's actually real.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/ai.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/ai.html">
+<meta property="og:title" content="Will quantum computers make AI more powerful?">
+<meta property="og:description" content="The honest version of the reverse loop: what quantum computing can and can't do for AI, why the data-loading problem kills most of the hype, and the one advantage that's actually real.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="Will quantum computers make AI more powerful?">
+<meta name="twitter:description" content="The honest version of the reverse loop: what quantum computing can and can't do for AI, why the data-loading problem kills most of the hype, and the one advantage that's actually real.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/ai.css?v=32">
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+#loop-svg { display: block; margin: 0 auto; max-width: 460px; width: 100%; height: auto; }
+.node { transition: filter .18s; cursor: default; }
+.node-ai .ring { fill: none; stroke: var(--violet); stroke-width: 8; }
+.node-q .ring { fill: none; stroke: var(--teal); stroke-width: 8; }
+.node-label { fill: var(--text); font-weight: 700; font-size: 20px; text-anchor: middle; }
+.node-sub { fill: var(--muted); font-size: 11px; text-anchor: middle; }
+.arc { fill: none; stroke-width: 7; cursor: pointer; transition: stroke-width .15s, opacity .15s; }
+.arc:hover, .arc.sel { stroke-width: 11; }
+.arc-solid { stroke: var(--violet); }
+.arc-dash { stroke: var(--teal); stroke-dasharray: 3 9; stroke-linecap: round; }
+.arc-hit { fill: none; stroke: transparent; stroke-width: 34; cursor: pointer; }
+.arc-cap { font-size: 12px; font-weight: 600; cursor: pointer; }
+.arc-cap.ai { fill: var(--violet); }
+.arc-cap.q { fill: var(--teal); }
+.flow { fill: var(--muted); }
+.maturebadge { font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+#loop-detail { min-height: 4.5em; }
+#loop-detail .lead { font-weight: 700; }
+.dirtag { display: inline-block; font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 99px; margin-right: 8px; vertical-align: 1px; }
+.dirtag.now { color: var(--violet); border: 1px solid var(--violet); }
+.dirtag.soon { color: var(--teal); border: 1px solid var(--teal); }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Will quantum computers make AI more powerful?",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-15",
+      "dateModified": "2026-07-15",
+      "description": "The honest answer to whether quantum computing will supercharge AI: which of the four proposed routes survive scrutiny, why the data-loading problem defeats most of them, and where the real advantage lies."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "Will quantum computers make AI more powerful?", "item": "ai.html"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Will quantum computers make AI more powerful?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Eventually, narrowly, and not the way most headlines suggest. The near-term win is not running today's neural networks faster, it's quantum hardware generating training data about nature (molecules, materials, quantum experiments) that no classical source can produce. The famous 'exponential speedups' for machine learning on ordinary data mostly collapse once you account for the cost of loading that data into the machine. The relationship is real but specific: quantum is a data factory for AI, not a faster GPU."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is the data-loading problem in quantum machine learning?",
+          "acceptedAnswer": {"@type": "Answer", "text": "To process N classical numbers, a quantum computer must first encode them into quantum amplitudes. Without large-scale QRAM (which nobody has built), that loading costs on the order of N operations, so even an algorithm that is exponentially faster once the data is inside still sits behind an O(N) toll bridge, and the total runtime is no better than classical. This is why quantum-for-AI claims are trustworthy mainly when the data is already quantum (from sensors or simulations) and suspect when it is ordinary classical data."}
+        },
+        {
+          "@type": "Question",
+          "name": "Did a quantum machine learning speedup get disproven?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. In 2018, then-undergraduate Ewin Tang found a classical algorithm for recommendation systems that matched the quantum algorithm's performance under comparable data-access assumptions, erasing its claimed exponential advantage. The technique, called dequantization, went on to kill several other proposed quantum ML speedups. The lesson: a quantum speedup only exists relative to the best possible classical algorithm, which sometimes hasn't been invented yet."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is a barren plateau in quantum machine learning?",
+          "acceptedAnswer": {"@type": "Answer", "text": "For large random parameterized quantum circuits, the training gradient's variance vanishes exponentially with the number of qubits, the optimization landscape becomes almost perfectly flat, so gradient descent gets no signal to follow. Scaling the circuit up makes it worse, the opposite of deep learning's scaling story. Mitigations include physics-informed circuit structures, local cost functions, and careful initialization."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
+<script src="p/ai.js?v=12" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-tiers data-rung="L2" data-vivid data-alive data-glass data-living>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain active">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+
+
+
+<h1>Will quantum computers make AI more powerful?</h1>
+<p class="tagline">This is the loop in the name. Half of it ships today; the other half is real, slower, and wildly oversold. Here's how to tell them apart.</p>
+
+<div class="card">
+<h3 aria-level="2">The answer in four lines</h3>
+<p>One direction of the loop is already running: <strong>AI keeps quantum computers alive</strong>, catching their errors, tuning their hardware. The return leg, <strong>quantum making AI smarter</strong>, is real but narrow: the near-term win isn't a faster GPU, it's quantum hardware growing <em>training data about nature</em> that no classical source can produce. Most "exponential speedup for AI" headlines die at the door, because getting ordinary data <em>into</em> a quantum computer is itself slow.</p>
+</div>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">The loop, and which half is real today</h2>
+<p>Picture two brilliant specialists who can't function alone. AI is a genius that's confidently, fluently wrong just often enough to be dangerous. A quantum computer is a genius that knows nature's deepest secrets but forgets them the instant you stop babysitting it. Point them at each other and something useful happens, but the two directions are at very different stages.</p>
+<p><strong>Direction one, shipping now:</strong> AI is the repair crew. ML calibration and hardware tune-up are already routine in real labs; learned decoders (like AlphaQubit-class networks) match or beat hand-written methods at reading the error alarms (<a href="qec.html">that's the error-correction story</a>) and are moving toward real-time deployment. This half of the loop is the mature one.</p>
+<p><strong>Direction two, real but early:</strong> what does quantum give back to AI? Here is the version that survives scrutiny. Quantum computers are <em>terrible</em> at almost everything your laptop is good at: spreadsheets, video, browsing. They are naturally good at exactly one strange thing: <em>being nature</em>. Molecules, materials, and probability patterns that would take a classical computer longer than the age of the universe to imitate simply <em>happen</em> on quantum hardware, because it runs on the same underlying rules. AI has a bottomless appetite for rare data of exactly that kind. So the trade is real, but it's about <strong>growing data no one else can grow</strong>, not running today's neural networks faster.</p>
+<p>And the catch that kills most of the hype: getting ordinary, everyday data <em>into</em> a quantum computer is so slow that for normal datasets the speedup usually dies before it starts. The loop runs on nature's data, not your spreadsheet. Hover the diagram below to see what flows in each direction.</p>
+
+<h2 data-tier-keep>The loop, both directions</h2>
+<p>Click either arrow. Solid violet = AI helping quantum (mature). Dashed teal = quantum helping AI (nascent; the dashes are the point).</p>
+
+<div class="card" id="loop-widget">
+  <svg id="loop-svg" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" aria-label="Interactive diagram of the AI–quantum loop: AI helps quantum today; quantum helps AI in the near future">
+    <path class="arc arc-solid" id="arc-top" d="M 130 118 A 130 78 0 0 1 330 118" marker-end="url(#head-v)"/>
+    <path class="arc-hit" id="hit-top" d="M 130 118 A 130 78 0 0 1 330 118"/>
+    <path class="arc arc-dash" id="arc-bot" d="M 330 182 A 130 78 0 0 1 130 182" marker-end="url(#head-t)"/>
+    <path class="arc-hit" id="hit-bot" d="M 330 182 A 130 78 0 0 1 130 182"/>
+    <g class="node node-ai">
+      <circle class="ring" cx="90" cy="150" r="46"/>
+      <text class="node-label" x="90" y="146">AI</text>
+      <text class="node-sub" x="90" y="164">pattern, speed,</text>
+      <text class="node-sub" x="90" y="177">confidently wrong</text>
+    </g>
+    <g class="node node-q">
+      <circle class="ring" cx="370" cy="150" r="46"/>
+      <text class="node-label" x="370" y="146">Quantum</text>
+      <text class="node-sub" x="370" y="164">nature's data,</text>
+      <text class="node-sub" x="370" y="177">forgets instantly</text>
+    </g>
+    <text class="arc-cap ai" id="cap-top" x="230" y="60" text-anchor="middle">AI fixes quantum ▲</text>
+    <text class="maturebadge" x="230" y="44" text-anchor="middle" fill="var(--violet)">SHIPPING NOW</text>
+    <text class="arc-cap q" id="cap-bot" x="230" y="250" text-anchor="middle">quantum feeds AI ▼</text>
+    <text class="maturebadge" x="230" y="266" text-anchor="middle" fill="var(--teal)">MOSTLY AHEAD</text>
+    <defs>
+      <marker id="head-v" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 z" fill="var(--violet)"/></marker>
+      <marker id="head-t" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 z" fill="var(--teal)"/></marker>
+    </defs>
+  </svg>
+  <div id="loop-detail" class="formula" aria-live="polite"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">The asymmetry is the headline: the down-arrow is in production (AlphaQubit-class decoders, ML calibration); the up-arrow is a research frontier where one route shows real promise and three are mostly hype. The diagram is deliberately drawn with the return leg dashed.</p>
+</div>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">Four ways quantum could help AI, ranked by how much to trust them</h2>
+<div class="overflow"><table>
+<tr><th>Route</th><th>The claim</th><th>Honest verdict</th></tr>
+<tr><td><strong>Quantum data</strong></td><td>Train scientific AI on chemistry/materials/experiment data that is <em>born quantum</em></td><td><strong>The real one.</strong> No data-loading problem: the data starts on the device. Least hyped, most solid.</td></tr>
+<tr><td>Sampling</td><td>Quantum devices natively sample from distributions that are provably hard classically</td><td>Legitimate for benchmarks today; generative-modeling payoff is speculative but not silly.</td></tr>
+<tr><td>Optimization</td><td>QAOA / annealing explore rugged loss landscapes</td><td>Evidence mixed; classical baselines keep catching up. Trust specific results, not the category.</td></tr>
+<tr><td>Linear algebra</td><td>HHL-style "exponential speedup" for solving the big systems under ML</td><td><strong>Most oversold.</strong> Dies to the data-loading toll, conditioning, and readout (see 🔴).</td></tr>
+</table></div>
+<a class="orjump" href="feasible.html#t05">
+  <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> The thing quantum would have to beat is <b>branch and bound</b>, which does not search the space at all; it proves most of it cannot contain the answer. That is exactly the structure Grover is blind to.<span class="arr"> Topic 05: Branch and bound ▸</span></span>
+</a>
+
+<p><strong>The data-loading toll.</strong> To touch <em>N</em> classical numbers a quantum computer must first load them into amplitudes. Without large-scale QRAM (which nobody has built) that costs ~<em>N</em> operations. So an algorithm that's exponentially faster <em>after</em> loading still sits behind an O(<em>N</em>) toll bridge, and the total time is no better than classical. The algorithm is fast; the door is slow.</p>
+<p><strong>Two more dragons.</strong> <em>Dequantization</em>: in 2018 an 18-year-old, Ewin Tang, found a classical algorithm matching a flagship quantum recommendation-system speedup under comparable assumptions; the exponential separation evaporated, and the trick generalized to several others. <em>Barren plateaus</em>: for big random quantum circuits the training gradient's variance vanishes exponentially with qubit count, so the landscape goes flat and gradient descent gets no signal: bigger trains <em>worse</em>, the exact opposite of deep learning. The rule of thumb that survives all of this: <strong>trust quantum-for-AI claims about quantum data; audit everything about classical data.</strong></p>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">The reverse loop, with receipts</h2>
+<p>HHL solves <em>A</em><strong>x</strong>=<strong>b</strong> in Õ(log <em>N</em> · <em>s</em>²κ²/ε) time for an <em>s</em>-sparse, well-conditioned <em>A</em> with an efficiently preparable |<strong>b</strong>⟩. The "fine print" (Aaronson, <a href="https://www.nature.com/articles/nphys3272">Nat. Phys. 2015</a>) is where the exponential speedup usually leaks out: preparing an arbitrary classical <strong>b</strong> costs Ω(<em>N</em>) without QRAM; the condition number κ enters polynomially; and the output is the quantum state |<strong>x</strong>⟩, so reading out classical components costs another ~Ω(<em>N</em>) sampling overhead. Three separate O(<em>N</em>) tolls on a "log <em>N</em>" algorithm.</p>
+<p>HHL's own engine is quantum phase estimation: it reads out <em>A</em>'s eigenvalues, inverts them coherently, then uncomputes. It is the same subroutine <a href="formalism.html#f12">derived from scratch on The Machinery</a>, where it is also named as phase estimation's other real use besides factoring.</p>
+<p><strong>Dequantization.</strong> Tang (<a href="https://arxiv.org/abs/1807.04271">arXiv 1807.04271</a>) gave <span class="rcpt" data-rcpt="ai-dequantization">a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access</span>, collapsing the claimed exponential separation; the technique generalized to kill several QML speedups in low-rank regimes. The lesson isn't "quantum lost"; it's that a speedup is defined <em>against the best classical algorithm</em>, which may not exist yet.</p>
+<p><strong>Barren plateaus.</strong> For random parameterized circuits forming approximate 2-designs, <span class="rcpt" data-rcpt="ai-barren-plateau">Var[∂<sub>θ</sub><em>C</em>] decays exponentially in qubit count <em>n</em></span> (McClean et al., <a href="https://arxiv.org/abs/1803.11173">arXiv 1803.11173</a>); global cost functions make it worse (Cerezo et al.). Trainability then requires structured or symmetry-constrained ansätze: you must smuggle physics back in to make the "learning" learn.</p>
+<p><strong>Where the reverse loop pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup (Grover-style quadratic gaps) die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="basics.html#red">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and, in the constructive results, classical ML gains provable power from data, which shrinks the room left for a quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Real advantage clusters around tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong>, sampling and Hamiltonian simulation feeding classical AI, not QML on classical data.</p>
+<p><strong>The classical side of this page's own loop, for further reading.</strong> Everything above assumes familiarity with how classical ML works: gradient descent, cost landscapes, what "training" means. This page doesn't re-teach that; the standard references are Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006); Murphy, <em>Probabilistic Machine Learning: An Introduction</em> (MIT Press, 2022) and its companion <em>Advanced Topics</em> (MIT Press, 2023); Goodfellow, Bengio &amp; Courville, <em>Deep Learning</em> (MIT Press, 2016); and, for the free, course-form version, Stanford's CS229 (Machine Learning) and CS25 (Transformers United).</p>
+
+<div class="cyu" data-tier-keep data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Which of the four routes from quantum computing to AI is the most defensible in the near term?</p>
+  <div class="cyu-opts">
+    <button data-opt>Exponential speedups for the linear algebra underneath machine learning.</button>
+    <button data-opt>Quantum optimisation beating classical solvers on real scheduling problems.</button>
+    <button data-opt>Learning from data that was generated by a quantum process in the first place.</button>
+    <button data-opt>Running today’s neural networks on a quantum computer.</button>
+  </div>
+  <p class="cyu-why">The strongest route is <strong>quantum-generated data</strong>, where the machine is a data factory for a classical learner, and there is <span class="rcpt" data-rcpt="ai-quantum-data">a proven exponential advantage for learning from quantum experiments</span> (<a href="https://arxiv.org/abs/2112.00778">arXiv:2112.00778</a>). The loudest claim, exponential speedup for ML linear algebra, mostly dies on the data-loading toll and on dequantization results (<a href="https://arxiv.org/abs/1807.04271">Tang, arXiv:1807.04271</a>). Optimisation stays heuristic, and classical baselines keep catching up.</p>
+</div>
+<div class="pathway-nudge" hidden>
+  <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated.
+</div>
+
+<h2 data-tier-stop>So what's the one-line version?</h2>
+<p>Quantum won't make your chatbot faster. It may, within the decade, hand AI a firehose of data about molecules, materials, and quantum systems that no classical instrument can generate, and <em>that</em> is a real way to make AI more powerful at the science that matters. Meanwhile the other direction of the loop is already load-bearing. Both halves running at once, in one machine, is the whole thesis of this site.</p>
+
+<h2>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🟢 The other direction</h3><p>How AI became quantum computing's repair crew: the half of the loop that ships today.</p><a href="qec.html">Quantum error correction →</a></div>
+  <div class="card"><h3>🔴 The math floor</h3><p>Decoders, thresholds, and the overheads that decide which speedups survive.</p><a href="basics.html#red">Read →</a></div>
+  <div class="card"><h3>🏁 The Race</h3><p>Who's building the hardware both halves of the loop depend on.</p><a href="race.html">Scoreboard →</a></div>
+</div>
+
+<footer>The loop both ways: AI fixes quantum, quantum lifts AI.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
+</div>
+
+<script>
+(function () {
+  var DETAIL = {
+    top: {
+      tag: '<span class="dirtag now">SHIPPING NOW</span>',
+      lead: 'AI → Quantum: the repair crew.',
+      body: 'What flows: syndrome data and calibration signals. ML calibration and tune-up are already routine in labs; learned decoders (AlphaQubit-class, ~30% fewer wrong calls than hand-written methods) match or beat the old ones on benchmarks and are moving toward real-time. This is the mature half of the loop.'
+    },
+    bot: {
+      tag: '<span class="dirtag soon">MOSTLY AHEAD</span>',
+      lead: 'Quantum → AI: the data factory.',
+      body: 'What flows (eventually): training data about nature (molecules, materials, quantum experiments) that is born on the device with no data-loading toll. That is the one route worth trusting. The flashier claim, "run today\'s neural nets exponentially faster," mostly dies at the door: loading ordinary data into a quantum computer costs ~N operations. Real, narrow, and slower than the headlines.'
+    }
+  };
+  var detail = document.getElementById('loop-detail');
+  var arcs = { top: document.getElementById('arc-top'), bot: document.getElementById('arc-bot') };
+  function show(which) {
+    var d = DETAIL[which];
+    detail.innerHTML = d.tag + '<span class="lead">' + d.lead + '</span> ' + d.body;
+    arcs.top.classList.toggle('sel', which === 'top');
+    arcs.bot.classList.toggle('sel', which === 'bot');
+  }
+  function wire(hitId, capId, which) {
+    var els = [document.getElementById(hitId), document.getElementById(capId)];
+    els.forEach(function (el) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function () { show(which); });
+      el.addEventListener('mouseenter', function () { show(which); });
+    });
+  }
+  wire('hit-top', 'cap-top', 'top');
+  wire('hit-bot', 'cap-bot', 'bot');
+  show('top');
+})();
+</script>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

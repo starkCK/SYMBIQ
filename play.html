@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-xz2jfeoGDftmh1cFbfUaUCrBgu1Fd+TIrSvkRltEhiE=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>The Arcade · quantum games, free play</title>
+<meta name="description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with shortest-possible pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, quantum tic-tac-toe with genuine superposition and collapse, and The Calibration where you configure a qubit-recalibration agent rather than driving the qubit yourself. No story, no gates: the physics does the judging.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/play.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/play.html">
+<meta property="og:title" content="The Arcade · quantum games, free play">
+<meta property="og:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ games. The physics does the judging.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="The Arcade · quantum games, free play">
+<meta name="twitter:description" content="Six games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/play.css?v=32">
+
+
+
+
+
+
+
+
+
+
+<style>
+/* The Contract of the Day card. Page-local: it lives only on the Arcade for now,
+   and style.css is shared by 24 pages (the 2026-07-24 scar). Same restrained
+   language as .showcase — an accented card, nothing louder. */
+.contract-card { border-left: 3px solid var(--teal); }
+.contract-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.contract-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--teal);
+}
+.contract-streak { font-size: .82rem; font-weight: 600; color: var(--teal); }
+.contract-card p { margin: 0 0 8px; }
+.contract-go { margin-left: 8px; }
+.contract-status .ok { color: var(--teal); font-weight: 600; }
+.contract-status .todo { color: var(--muted); }
+
+/* Your medals. Page-local for the same reason the Contract card is: it lives
+   only on the Arcade, and style.css is shared by 24 pages. Restrained — a
+   tinted card, a small grid, no louder than .showcase. */
+.medals-card { border-left: 3px solid var(--violet); }
+.medals-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.medals-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--violet);
+}
+.medals-sum { font-size: .82rem; font-weight: 600; color: var(--muted); }
+.medals-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.medal-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px;
+}
+.medal-ico { font-size: 1.3rem; line-height: 1; width: 1.4em; text-align: center; flex: none; }
+.medal-ico.none { filter: grayscale(1); opacity: .35; }
+.medal-body { min-width: 0; }
+.medal-name { display: block; font-weight: 600; font-size: .9rem; }
+.medal-meta { display: block; font-size: .78rem; color: var(--muted); }
+.medal-meta b { color: inherit; }
+.medals-foot { font-size: .8rem; color: var(--muted); margin: 10px 0 0; }
+
+/* Today's leaderboard (B4). Page-local, same restraint. Ships hidden and is
+   only ever revealed by leaderboard.js once a signed-in Supabase client
+   exists — with no back end it never appears and makes no request. */
+.lb-card { border-left: 3px solid var(--teal); }
+.lb-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.lb-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--teal);
+}
+.lb-date { font-size: .82rem; color: var(--muted); }
+.lb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.lb-col h4 { margin: 0 0 6px; font-size: .9rem; }
+.lb-list { list-style: none; margin: 0; padding: 0; }
+.lb-list li { display: flex; align-items: baseline; gap: 8px; font-size: .82rem; padding: 2px 0; }
+.lb-rank { color: var(--muted); width: 1.2em; flex: none; }
+.lb-who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-score { font-weight: 700; }
+.lb-unit { font-size: .72rem; color: var(--muted); margin: 4px 0 0; }
+.lb-empty, .lb-foot { font-size: .8rem; color: var(--muted); margin: 6px 0 0; }
+</style>
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="save.js"></script>
+<script src="coherence.js?v=3"></script>
+<script src="games.js?v=46"></script>
+<script src="scene.js?v=6"></script>
+<script src="missions.js?v=11"></script>
+<script src="p/play.js?v=12" defer></script>
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "The Arcade: quantum games, free play",
+      "author": {"@type": "Organization", "name": "SymbiQ"},
+      "datePublished": "2026-07-21",
+      "dateModified": "2026-08-27",
+      "description": "Six games built on real quantum mechanics and optimisation: Circuit Golf (proven-minimal pars), Grover's Escape (a provable quadratic speedup where over-amplifying loses), Max-Cut (the NP-hard problem that is the Ising ground state), the Annealing Volcano (simulated annealing, scored on your cooling schedule rather than your luck), quantum tic-tac-toe, and The Calibration (configuring a qubit-recalibration agent rather than driving the qubit yourself)."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "index.html"},
+        {"@type": "ListItem", "position": 2, "name": "The Arcade", "item": "play.html"}
+      ]
+    }
+  ]
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain active">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+
+
+<h1>The Arcade</h1>
+<p class="tagline">Five of these six machines also appear on <a href="journey.html">the Solver's Path</a>. Here the story is switched off: no mentor and no set order. The sixth, The Calibration, has no mission of its own and lives here and on <a href="circuits.html#calibration">circuits.html</a>. Two of the six now fight back, with a vs Computer mode on Grover's Escape and on Max-Cut.</p>
+
+<div id="browse">
+
+<div class="gate" id="gate" role="button" tabindex="0" aria-controls="floor" aria-expanded="false">
+  <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g class="brick">
+      <rect x="14" y="14" width="106" height="122" rx="10"/>
+      <rect x="140" y="14" width="106" height="122" rx="10"/>
+      <path d="M14 55h106M14 96h106M140 55h106M140 96h106"/>
+    </g>
+    <line class="seam" x1="130" y1="8" x2="130" y2="142"/>
+    <circle class="gnode" cx="130" cy="41" r="3.5"/>
+    <circle class="gnode" cx="130" cy="75" r="4.5"/>
+    <circle class="gnode" cx="130" cy="109" r="3.5"/>
+  </svg>
+  <h3 aria-level="2">Push the door</h3>
+  <p>Behind it are six machines, and none of them can be bluffed. Where a machine has a par (Circuit Golf, Grover's Escape, Max-Cut), exhaustive search found it. The Volcano replays your cooling schedule 500 times, because one lucky run proves nothing. The Calibration sets your score against a fixed strategy facing the identical drift, so a kind qubit can't flatter you. Every probability on screen is computed. Two of the machines now have an opponent: race a classical searcher door for door, or trade moves with a computer that solved the board before you sat down. And one landscape exists purely to watch your best strategy fail on the wrong problem.</p>
+  <span class="push">Open the arcade ▸</span>
+</div>
+
+<div id="floor" hidden>
+  <div class="card contract-card" id="contract-card" hidden>
+    <div class="contract-head">
+      <span class="contract-tag">Contract of the day</span>
+      <span class="contract-streak" id="contract-streak"></span>
+    </div>
+    <p id="contract-text"></p>
+    <div class="contract-status" id="contract-status"></div>
+  </div>
+
+  <div class="card medals-card" id="medals-card" hidden>
+    <div class="medals-head">
+      <span class="medals-tag">Your medals</span>
+      <span class="medals-sum" id="medals-sum"></span>
+    </div>
+    <div class="medals-grid" id="medals-grid"></div>
+    <p class="medals-foot">Bronze the first time you clear a mode, then silver and gold for depth. Local to this browser; your <a href="journey.html">Path save</a> carries them, and a save code moves them between devices.</p>
+  </div>
+
+  <div class="card lb-card" id="leaderboard" hidden></div>
+
+  <div class="showcase" id="showcase">
+    <div class="showcase-lead">
+      <span class="showcase-tag">Rebuilt</span>
+      <h2>The whole campaign, rebuilt as scenes</h2>
+      <p>The same verified engines as the machines below, set inside a world instead of a widget box. The scenery answers to the number the game is computing, and each mentor's flaw is written into the rules you play by.</p>
+      <p class="showcase-note">Six acts, five to eight minutes each. Sound is off until you ask for it. On <a href="journey.html">The Solver&rsquo;s Path</a> they run in order and remember what you did; here you can walk into any one of them.</p>
+    </div>
+    <div class="showcase-picks" id="showcase-picks"></div>
+  </div>
+
+  <h2>Pick a machine</h2>
+  <div class="cabs" id="cabs"></div>
+
+  <h2 id="workshop">The Workshop</h2>
+  <p>Build a target on the sphere with Circuit Golf's six gates, and this browser runs the same exhaustive search that proved every other par on the site. <strong>The search sets the par, and nobody can overrule it, you included.</strong> Share what you build: whoever opens the link reruns the search and gets its answer.</p>
+  <div class="card" id="workshop-card">
+    <div id="workshop-mount"></div>
+  </div>
+
+  <h2>Out in the wild</h2>
+  <p>Six more playable things live on the pages they illustrate, since each one needs its explanation standing beside it.</p>
+  <div class="grid">
+    <div class="card">
+      <h3><a href="analog.html#bench">The Bench</a></h3>
+      <p>Three real methods race on one graph, 200 replays each, under a time budget you set. Slide the budget and watch the lead change hands.</p>
+    </div>
+    <div class="card">
+      <h3><a href="qec.html#duel">The Decoder Duel</a></h3>
+      <p>Ten rounds against the textbook matching decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</p>
+    </div>
+    <div class="card">
+      <h3><a href="quantum-mechanics.html#chsh">The CHSH game</a></h3>
+      <p>Win more often than any classical strategy can: 85.4% against a provable ceiling of 75%.</p>
+    </div>
+    <div class="card">
+      <h3><a href="index.html#daily-q">The Question</a></h3>
+      <p>One question at a time, answered at three levels, with a streak that forgives a single miss the way a real code corrects a single error.</p>
+    </div>
+    <div class="card">
+      <h3><a href="feasible.html#bottleneck">The Bottleneck</a></h3>
+      <p>Five upgrades, three resources, and a shadow price that lies to you if you read it without its range. Operations research, on <a href="feasible.html">The Feasible Region</a>.</p>
+    </div>
+    <div class="card">
+      <h3><a href="feasible.html#prune">The Prune</a></h3>
+      <p>Prove which haul is best by opening about thirty-five branches out of thousands. You leave with a certificate in hand.</p>
+    </div>
+  </div>
+
+  <h2 hidden>Coming next</h2>
+  <div class="card" hidden>
+    <p>A <strong>board game</strong> for two to four players about quantum computing and the corners of AI that touch it, where knowing more wins and the pieces are worth looking at. <strong>Designed, not yet started</strong>, and deliberately queued behind the machines above. Border War and the Knocker are its first two playtests: every mechanic on this page either earns a square on that board or gets cut.</p>
+  </div>
+</div>
+
+</div>
+
+<div class="stage" id="stage" hidden>
+  <div class="stage-top">
+    <button class="stage-back" id="stage-back">← back to the Arcade</button>
+    <span style="color:var(--muted);font-size:.86rem" id="stage-mentor"></span>
+  </div>
+  <h2 id="stage-title"></h2>
+  <p id="stage-hook"></p>
+  <div id="stage-chrome"></div>
+  <div id="stage-about"></div>
+  <div class="card" id="stage-game"></div>
+  <div id="stage-next"></div>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0" id="stage-honest"></p>
+</div>
+
+<div id="mission-host" hidden></div>
+
+<footer>Here the physics does the judging.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
+</div>
+
+<script>
+(function () {
+  var browse = document.getElementById('browse');
+  var gate = document.getElementById('gate'), floor = document.getElementById('floor');
+  var stage = document.getElementById('stage');
+  var missionHost = document.getElementById('mission-host');
+  var S = window.SymbiQ && SymbiQ.save, GS = window.SymbiQ && SymbiQ.games;
+  var MS = window.SymbiQ && SymbiQ.missions;
+  if (!GS) return;
+
+  // The Workshop is not an arcade cabinet (see games.js's own note on why it
+  // is exported outside GS.get/.mount), so it is mounted directly, once,
+  // rather than routed. Its container sits inside #floor, which starts
+  // hidden behind the door -- mounting into a hidden element is harmless,
+  // and it means the search is warmed up the instant the door opens rather
+  // than on first click.
+  if (GS.workshop) {
+    try { GS.workshop.mount(document.getElementById('workshop-mount'), {}); } catch (e) {}
+  }
+  // A shared #workshop=PATH link is a deep link like #volcano or #golf, not
+  // a plain anchor -- "workshop=HTHT" matches no element id, so the browser
+  // cannot scroll to it on its own, and the door defaults shut. Open it
+  // explicitly, same as the router does for every other machine.
+  // The bare #workshop (from the nav's Play menu) needs the same treatment as #workshop=PATH:
+  // its heading sits inside the closed #floor, so the browser has nothing to scroll to.
+  if (/^#workshop(=|$)/.test(location.hash)) {
+    openFloor();
+    var wsCard = document.getElementById('workshop-card');
+    if (wsCard) setTimeout(function () { wsCard.scrollIntoView({ block: 'start' }); }, 0);
+  }
+
+  function openFloor() {
+    if (!floor.hidden) return;
+    floor.hidden = false;
+    gate.classList.add('opened');
+    gate.setAttribute('aria-expanded', 'true');
+    drawCabs();
+  }
+  gate.addEventListener('click', openFloor);
+  gate.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFloor(); }
+  });
+  // it also opens if you simply scroll past it — the door is an invitation, not a wall
+  window.addEventListener('scroll', function () {
+    if (browse.hidden) return;
+    if (floor.hidden && gate.getBoundingClientRect().bottom < window.innerHeight * 0.55) openFloor();
+  }, { passive: true });
+
+  /* Three banners over the six machines (2026-09-26), so a first-time visitor can tell the
+     kinds of game apart before reading a single hook. `also` lists the games of the same kind
+     that live on the page that explains them. A machine missing from BANDS is appended to the
+     last band, so a game added to games.js can never silently vanish from the floor. */
+  function drawCabs() {
+    var BANDS = [
+      { t: 'Puzzles with a proven best answer',
+        d: 'Every par here is an optimum found by exhaustive search, so a score cannot be bluffed.',
+        ids: ['golf', 'grover', 'maxcut', 'volcano'],
+        also: [['The Prune', 'feasible.html#prune'], ['The Bottleneck', 'feasible.html#bottleneck']] },
+      { t: 'Head to head',
+        d: 'Someone, or something, plays back. Grover’s Escape and Max-Cut also carry a vs Computer mode inside.',
+        ids: ['qttt'],
+        also: [['The Decoder Duel', 'qec.html#duel'], ['The CHSH game', 'quantum-mechanics.html#chsh']] },
+      { t: 'Build and tune',
+        d: 'You set the rules or the strategy, and the machine tells you what it did.',
+        ids: ['calibration'],
+        also: [['The Workshop', '#workshop'], ['The Bench', 'analog.html#bench']] }
+    ];
+    var byId = {}, placed = {};
+    GS.list.forEach(function (g) { byId[g.id] = g; });
+    function cab(g) {
+      var done = S && S.isComplete(g.id);
+      return '<button class="cab" data-g="' + g.id + '">' +
+        (done ? '<span class="cabdone" title="cleared on the Path">✓</span>' : '') +
+        '<span class="cabname">' + g.title + '</span>' +
+        '<span class="cabhook">' + g.hook + '</span>' +
+        '<span class="cabtag">' + g.about.tier + ' · play ▸</span></button>';
+    }
+    document.getElementById('cabs').innerHTML = BANDS.map(function (b, bi) {
+      var ids = b.ids.slice();
+      if (bi === BANDS.length - 1) GS.list.forEach(function (g) {
+        var seen = BANDS.some(function (o) { return o.ids.indexOf(g.id) >= 0; });
+        if (!seen && ids.indexOf(g.id) < 0) ids.push(g.id);
+      });
+      return '<div class="cabband"><h3 aria-level="2">' + b.t + '</h3><p>' + b.d + '</p></div>' +
+        ids.filter(function (id) { return byId[id]; }).map(function (id) { return cab(byId[id]); }).join('') +
+        '<p class="cabalso">Also in this kind: ' + b.also.map(function (a) {
+          return '<a href="' + a[1] + '">' + a[0] + '</a>';
+        }).join(' · ') + '</p>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) {
+      b.addEventListener('click', function () { showStage(b.getAttribute('data-g')); });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+   * ROUTER. Each game and each showcased mission gets its own dedicated,
+   * full-page view and its own URL (#play/<id> / #mission/<id>) — opening
+   * one hides the entire selection floor rather than expanding inline
+   * inside it, and the URL change means the browser's own Back button (as
+   * well as the in-page one) returns you to the selection screen.
+   * ------------------------------------------------------------------- */
+  function showBrowse(push) {
+    stage.hidden = true;
+    document.getElementById('stage-game').innerHTML = '';
+    missionHost.hidden = true;
+    missionHost.innerHTML = '';
+    browse.hidden = false;
+    openFloor(); // once you've navigated once, always land on the open floor, not the door
+    Array.prototype.forEach.call(document.querySelectorAll('.cab'), function (b) { b.classList.remove('on'); });
+    if (push !== false) history.pushState(null, '', location.pathname + location.search);
+    window.scrollTo(0, 0);
+  }
+
+  function showStage(id, push) {
+    var g = GS.get(id);
+    if (!g) { showBrowse(false); return; }
+    browse.hidden = true;
+    missionHost.hidden = true;
+    missionHost.innerHTML = '';
+    document.getElementById('stage-title').textContent = g.title;
+    document.getElementById('stage-hook').textContent = g.hook;
+    document.getElementById('stage-mentor').textContent = g.mentor ? ('On the Path this is ' + g.mentor + "'s mission") : 'No mission on the Path; also lives natively on circuits.html';
+    document.getElementById('stage-chrome').innerHTML = GS.chromeHTML ? GS.chromeHTML(id) : '';
+    document.getElementById('stage-about').innerHTML = GS.aboutHTML(id);
+    document.getElementById('stage-honest').innerHTML = g.honest || '';
+    document.getElementById('stage-next').innerHTML = '';
+    stage.hidden = false;
+    var stageGame = document.getElementById('stage-game');
+    GS.mount(id, stageGame, { mode: 'arcade', onWin: function () { onGameWin(id); } });
+    if (GS.wireLevel) GS.wireLevel(document.getElementById('stage-chrome'), stageGame, id,
+                                  document.querySelector('#stage-about .gamerules'));
+    if (push !== false) history.pushState(null, '', '#play/' + id);
+    window.scrollTo(0, 0);
+  }
+
+  function showMission(id, push) {
+    if (!MS || !window.SymbiQ.scene || !MS.get(id)) { showBrowse(false); return; }
+    browse.hidden = true;
+    stage.hidden = true;
+    document.getElementById('stage-game').innerHTML = '';
+    missionHost.hidden = false;
+    MS.mount(id, missionHost, { onExit: function () { showBrowse(); } });
+    if (push !== false) history.pushState(null, '', '#mission/' + id);
+    window.scrollTo(0, 0);
+  }
+
+  function onGameWin(id) {
+    drawCabs();
+    paintMedals();
+    // Same problem the Path had: winning left you at the bottom of a
+    // finished machine with nothing saying where to go. Say it, loudly.
+    var order = GS.list.map(function (g) { return g.id; });
+    var rest  = order.filter(function (k) { return k !== id && !(S && S.isComplete(k)); });
+    var nid   = rest[0];
+    var nextHost = document.getElementById('stage-next');
+    if (nid) {
+      var ng = GS.get(nid);
+      nextHost.innerHTML =
+        '<a class="nextup" href="#play/' + nid + '" data-g="' + nid + '">' +
+          '<span class="eyebrow">Cleared, next machine</span>' +
+          '<span class="headline">' + ng.title + '</span>' +
+          '<span class="sub">' + ng.hook + '</span>' +
+          '<span class="go">Play it</span>' +
+        '</a>';
+      nextHost.querySelector('.nextup').addEventListener('click', function (ev) {
+        ev.preventDefault(); showStage(nid);
+      });
+    } else {
+      nextHost.innerHTML =
+        '<a class="nextup" href="journey.html">' +
+          '<span class="eyebrow">Every machine cleared</span>' +
+          '<span class="headline">Walk them as a story instead</span>' +
+          '<span class="sub">The Solver&#39;s Path gives each of these a mentor, a world and a reason.</span>' +
+          '<span class="go">Enter the Path</span>' +
+        '</a>';
+    }
+  }
+
+  /* The showcase mission picks. If missions.js or scene.js failed to load,
+     the card simply is not shown and the floor below is untouched. */
+  (function () {
+    var card = document.getElementById('showcase'),
+        picks = document.getElementById('showcase-picks');
+    if (!picks) return;
+    if (!MS || !window.SymbiQ.scene) { card.hidden = true; return; }
+    picks.innerHTML = MS.list.map(function (m) {
+      return '<button type="button" class="pick" data-m="' + m.id + '">' +
+        '<span class="pick-act">' + m.act + ' &middot; ' + m.place + '</span>' +
+        '<span class="pick-title">' + m.title + '</span>' +
+        '<span class="pick-blurb">' + m.blurb + '</span>' +
+        '<span class="pick-go">' + m.mentor + ' is waiting &#9656;</span></button>';
+    }).join('');
+    Array.prototype.forEach.call(picks.querySelectorAll('.pick'), function (b) {
+      b.addEventListener('click', function () { showMission(b.getAttribute('data-m')); });
+    });
+  })();
+
+  document.getElementById('stage-back').addEventListener('click', function () { showBrowse(); });
+
+  /* Route from the current hash — runs on load and on browser Back/Forward.
+     Deep links keep working exactly as before: play.html#volcano still
+     opens straight to that machine (no door/floor detour), just as a
+     dedicated full-page view instead of a scroll target. */
+  function route() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (!h) { showBrowse(false); return; }
+    var mm = h.match(/^mission\/(.+)$/);
+    if (mm) { showMission(decodeURIComponent(mm[1]), false); return; }
+    var pm = h.match(/^play\/(.+)$/);
+    var gid = pm ? decodeURIComponent(pm[1]) : h;
+    // #play/<id>/vs/<code> is a friend's challenge: games.js parses the code,
+    // and the cabinet opens its vs Computer mode on the shared night or board.
+    var vm = gid.match(/^([a-z]+)\/vs\/([a-z0-9-]+)$/);
+    if (vm && GS.get(vm[1]) && GS.challenge) { GS.challenge.set(vm[1], vm[2]); showStage(vm[1], false); return; }
+    if (GS.get(gid)) { showStage(gid, false); return; }
+    showBrowse(false);
+  }
+  window.addEventListener('popstate', route);
+  route();
+
+  /* -------------------------------------------------------------------
+   * THE CONTRACT OF THE DAY. games.js owns the challenge, the check and
+   * the streak; this just paints the card and routes "Play it" to the
+   * right cabinet. Every cabinet feeds its state to the contract through
+   * the mount wrapper, so clearing it anywhere updates this in place.
+   * ----------------------------------------------------------------- */
+  (function () {
+    var C = GS.frame && GS.frame.contract, card = document.getElementById('contract-card');
+    if (!C || !card) return;
+    var elText = document.getElementById('contract-text');
+    var elStreak = document.getElementById('contract-streak');
+    var elStatus = document.getElementById('contract-status');
+
+    function paint() {
+      var t = C.today(), st = C.state();
+      elText.innerHTML = t.text +
+        ' <button class="preset contract-go" id="contract-go">Play it &#9656;</button>';
+      elStreak.textContent = st.streak > 0 ? '🔥 ' + st.streak + '-day streak' : '';
+      elStatus.innerHTML = t.done
+        ? '<span class="ok">✓ Cleared today.</span> The next one lands tomorrow.'
+        : '<span class="todo">Not cleared yet today. Do it in any cabinet, or here on the Path.</span>';
+      card.hidden = false;
+      var go = document.getElementById('contract-go');
+      if (go) go.addEventListener('click', function () {
+        var t2 = C.today();
+        if (GS.get(t2.game)) showStage(t2.game);
+      });
+    }
+
+    C.onchange = paint;
+    paint();
+  })();
+
+  /* -------------------------------------------------------------------
+   * YOUR MEDALS. games.js owns the bests, the thresholds and the medal
+   * logic (SymbiQ.games.medals); this paints the card. Nothing for a
+   * browser with no bests at all — an empty scoreboard is clutter, same
+   * rule as hud.js. Repaints on any game win and on any save change.
+   * ----------------------------------------------------------------- */
+  var ICON = { gold: '🥇', silver: '🥈', bronze: '🥉', none: '🏅' };
+  function paintMedals() {
+    var M = GS.medals, card = document.getElementById('medals-card');
+    if (!M || !card) return;
+    var rows;
+    try { rows = M.table(); } catch (e) { return; }
+    var any = rows.some(function (r) { return r.best > 0; });
+    if (!any) { card.hidden = true; return; }
+
+    var sum = M.summary();
+    var parts = [];
+    if (sum.gold)   parts.push(sum.gold + ' ' + ICON.gold);
+    if (sum.silver) parts.push(sum.silver + ' ' + ICON.silver);
+    if (sum.bronze) parts.push(sum.bronze + ' ' + ICON.bronze);
+    document.getElementById('medals-sum').textContent = parts.join('  ');
+
+    document.getElementById('medals-grid').innerHTML = rows.map(function (r) {
+      var meta;
+      if (r.best === 0) {
+        meta = 'not started, ' + r.mode;
+      } else if (r.next) {
+        meta = '<b>' + r.best + '</b> ' + r.unit + ' · ' + r.next.tier + ' at ' + r.next.at;
+      } else {
+        meta = '<b>' + r.best + '</b> ' + r.unit + ' · gold, maxed';
+      }
+      return '<div class="medal-row">' +
+        '<span class="medal-ico ' + r.medal + '">' + ICON[r.medal] + '</span>' +
+        '<span class="medal-body">' +
+          '<span class="medal-name">' + r.title + '</span>' +
+          '<span class="medal-meta">' + meta + '</span>' +
+        '</span></div>';
+    }).join('');
+    card.hidden = false;
+  }
+  paintMedals();
+  // Chain save.onchange so a bump/best anywhere repaints the card. Chaining,
+  // not claiming: whatever is already there (hud.js chains it too) keeps working.
+  try {
+    var SV = window.SymbiQ && SymbiQ.save;
+    if (SV && !SV._medalsChained) {
+      var prevOnChange = SV.onchange;
+      SV.onchange = function () {
+        if (typeof prevOnChange === 'function') { try { prevOnChange.apply(this, arguments); } catch (e) {} }
+        paintMedals();
+      };
+      SV._medalsChained = true;
+    }
+    window.addEventListener('storage', function (e) {
+      if (!e || e.key === null || e.key === 'symbiq.solverpath.v1') paintMedals();
+    });
+  } catch (e) {}
+})();
+</script>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

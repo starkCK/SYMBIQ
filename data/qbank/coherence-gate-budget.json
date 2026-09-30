@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "coherence-gate-budget",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "qm-gate-budget",
+  "question": {
+    "text": "⌊T₂ · ln 2 / t_gate⌋ says a qubit with T₂ = 100 µs and a 20 ns two-qubit gate gets about 3,465 gates before its phase halves. Is 3,465 how many useful gates a real circuit can expect to run?",
+    "options": [
+      "No — it's gate slots inside one coherence half-life assuming every gate is perfect and back-to-back; gate error, idling, readout and compilation all cut into the real number",
+      "Yes — 3,465 is exactly the circuit depth a compiler should target for this device, since going further guarantees failure",
+      "No — the real number is higher, since T₂ describes the worst case and most gates finish well within it",
+      "Yes, because this formula already accounts for gate error by using T₂ rather than the longer T₁"
+    ],
+    "answerIndex": 0,
+    "hint": "The formula divides a coherence time by a gate duration. Does either of those numbers know anything about whether a gate succeeds?",
+    "explain": {
+      "g": "This counts how many gate-sized time slots fit before the phase has halved — a clock calculation, not a success calculation. It assumes every single gate lands perfectly and with zero gap between them. Real circuits have gate error, dead time waiting for classical control, measurement, and compilation overhead, all of which shrink how many gates actually do useful work before things fall apart.",
+      "y": "T₂ · ln 2 gives the time by which the coherence envelope has dropped to half; dividing by t_gate converts that into a gate count purely on the basis of timing. It's a budget of clock slots, not of correct operations — at any realistic per-gate error rate, useful circuit depth is well below this number even before decoherence is the binding constraint.",
+      "r": "tools/verify_decoherence.py computes this ratio directly from T₂ and t_gate; it deliberately does not fold in gate infidelity, idling during measurement/reset, or compiler-introduced SWAP overhead, each of which is a separate, device- and compiler-specific quantity this receipt makes no claim about."
+    }
+  }
+}

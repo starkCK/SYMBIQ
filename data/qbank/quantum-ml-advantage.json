@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "quantum-ml-advantage",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "r",
+  "receipt": "ai-quantum-data",
+  "question": {
+    "text": "There is a proven exponential quantum advantage in machine learning. Proven at what, precisely?",
+    "options": [
+      "Learning about quantum systems from quantum experiments, using coherent quantum memory — not learning from classical data",
+      "Training neural networks on classical datasets, given enough qubits to hold the parameters",
+      "Recommendation systems, the original flagship quantum machine-learning speedup",
+      "Any task where the training data is larger than the classical memory available"
+    ],
+    "answerIndex": 0,
+    "hint": "Ask what the data is made of. One of these was specifically dequantized in 2018 by an eighteen-year-old.",
+    "explain": {
+      "g": "The proven advantage is for a quantum machine learning about quantum things, holding quantum information coherently while it does so. That is a real and important result, and it is not the claim most coverage is making. Quantum machine learning on ordinary classical data is a much weaker story, and one of its flagship examples was matched by a classical algorithm.",
+      "y": "The advantage concentrates on tasks whose data is itself quantum: the machine acts as a data factory, and the learning happens over experiments rather than over spreadsheets. The recommendation-system speedup went the other way in 2018, when Ewin Tang gave a classical algorithm polylogarithmic in dimension under comparable data-access assumptions, collapsing the claimed exponential separation. The loudest quantum machine-learning claim, exponential speedup for linear algebra, mostly dies on the cost of loading classical data in the first place.",
+      "r": "Huang, Broughton, Cotler, Chen, Li, Mohseni, Neven, Babbush, Kueng, Preskill and McClean, “Quantum advantage in learning from experiments,” arXiv:2112.00778 (Science 376, 1182 (2022)). The same group's arXiv:2011.01938 argues the other side of the ledger: classical learners gain provable power from data, which shrinks the space where genuine quantum machine-learning advantage can live. Tang's dequantization is arXiv:1807.04271."
+    }
+  }
+}

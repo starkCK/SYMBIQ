@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "barren-plateau-decay",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "r",
+  "receipt": "ai-barren-plateau",
+  "question": {
+    "text": "McClean, Boixo, Smelyanskiy, Babbush and Neven show that Var[∂θC] — the variance of a cost function's gradient — decays exponentially in qubit count n, for random parameterised circuits deep enough to form approximate 2-designs. Does this mean variational quantum algorithms can't work as qubit count grows?",
+    "options": [
+      "No — the result is conditional on the ansatz forming an approximate 2-design; shallow, structured or problem-informed ansätze can avoid the plateau, and much variational-algorithm research exists specifically to do that",
+      "Yes — this proves that no variational quantum algorithm can be trained successfully once qubit count exceeds a few dozen",
+      "No — the barren plateau only affects gradient-based optimisers, so gradient-free classical optimisation entirely sidesteps the problem",
+      "Yes, and this is why all major quantum-computing companies have abandoned variational approaches in favour of fault-tolerant algorithms"
+    ],
+    "answerIndex": 0,
+    "hint": "The vanishing-gradient result is proven for a specific KIND of circuit — random ones deep enough to look Haar-random. Is every variational ansatz built that way?",
+    "explain": {
+      "g": "The result is real and important, but it's about a specific setup: circuits random and deep enough to behave like a uniformly random unitary. Once you deliberately move away from that — a shallow circuit, one with structure that matches the problem, or one initialised close to a good solution — the argument that produced the vanishing gradient no longer applies in the same way. A large and active area of variational-algorithm research is built around exactly that move.",
+      "y": "McClean, Boixo, Smelyanskiy, Babbush & Neven, Nature Communications 9, 4812 (2018) (arXiv:1803.11173) proves the exponential decay for circuits that form approximate unitary 2-designs — a technical condition satisfied by sufficiently deep random circuits, where the statistics of the circuit's outputs start to mimic Haar-random unitaries. Ansätze that are shallow, hardware-efficient with limited depth, or built from problem structure (like Hamiltonian variational ansätze) are not covered by that condition and can have much milder gradient decay.",
+      "r": "The 2-design condition is precisely what makes the concentration-of-measure argument behind the proof go through; breaking that condition breaks the proof's applicability, not necessarily the underlying difficulty, and barren plateaus can still arise from other causes (cost-function locality, noise-induced plateaus) that this specific paper doesn't cover. The result is a statement about random circuits, correctly read, not a no-go theorem for variational methods in general."
+    }
+  }
+}

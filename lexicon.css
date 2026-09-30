@@ -1,0 +1,107 @@
+
+.lx-term, .rcpt {
+  cursor: help;
+  border-bottom: 1px dotted var(--muted);
+  text-underline-offset: 2px;
+  -webkit-text-decoration-color: var(--muted);
+  text-decoration-color: var(--muted);
+}
+.rcpt { font-variant-numeric: tabular-nums; }
+
+.lx-term:hover, .lx-term:focus-visible,
+.rcpt:hover, .rcpt:focus-visible {
+  border-bottom-color: var(--teal);
+}
+.lx-term[aria-expanded="true"], .rcpt[aria-expanded="true"] {
+  border-bottom-style: solid;
+  border-bottom-color: var(--teal);
+}
+.lx-term:focus-visible, .rcpt:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+body.rcpt-on .rcpt {
+  border-bottom-style: solid;
+  border-bottom-color: var(--teal);
+  background: rgba(45, 212, 191, 0.10);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+.sig-card {
+  position: absolute;
+  z-index: 95;
+  max-width: 320px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--elev-2);
+  padding: var(--sp-4);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  visibility: hidden;
+}
+.sig-card.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sig-card { transition: opacity 160ms var(--ease-out-quint, ease), transform 160ms var(--ease-out-quint, ease); }
+}
+
+.sig-card-title { font-weight: 700; margin: 0 0 6px; color: var(--text); }
+.sig-card-body { margin: 0 0 10px; color: var(--text); }
+.sig-card-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.sig-card-foot .tier { margin-bottom: 0; }
+.sig-card-kind {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.sig-card-link { font-size: 0.84rem; white-space: nowrap; }
+
+.sig-card-formula {
+  font-family: "Cambria Math", Georgia, serif;
+  background: var(--surface-3);
+  border-radius: 6px;
+  padding: 6px 9px;
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  overflow-x: auto;
+}
+.sig-card-meta { color: var(--muted); font-size: 0.78rem; margin: 0 0 4px; }
+.sig-card-wrong { color: var(--muted); font-size: 0.78rem; margin: 0 0 10px; font-style: italic; }
+
+@media (pointer: coarse) {
+  .sig-card {
+    position: fixed;
+    left: 0; right: 0; bottom: 0; top: auto;
+    max-width: none;
+    width: auto;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    transform: translateY(100%);
+    box-shadow: 0 -20px 44px -20px var(--shadow);
+    max-height: min(60vh, 420px);
+    overflow-y: auto;
+    padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom, 0px));
+  }
+  .sig-card.open { transform: translateY(0); }
+  .sig-backdrop {
+    position: fixed; inset: 0; z-index: 94; background: rgba(0, 0, 0, 0.35);
+    opacity: 0; pointer-events: none; visibility: hidden;
+  }
+  .sig-backdrop.open { opacity: 1; pointer-events: auto; visibility: visible; }
+  @media (prefers-reduced-motion: no-preference) {
+    .sig-backdrop { transition: opacity 160ms ease; }
+  }
+}

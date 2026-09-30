@@ -1,0 +1,959 @@
+{
+ "schema": 1,
+ "generated": "2026-09-08",
+ "count": 119,
+ "events": [
+  {
+   "at": "2026-09-30",
+   "kind": "correction",
+   "tag": "Correction 16",
+   "title": "The Inside page said the tunnel barrier is a few dozen atoms thick. It is four to eight.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-29 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Home: The Dive, fall through the star field into the 3D machine",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Front page: start-by-intent row, Reality Check card, term of the day, the desk's own record",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-29",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Inside the machine: 3D model of a superconducting quantum computer, six levels deep",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-28",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Fix orphaned .lede class: about/apply/insights/privacy/standing/terms/changelog get the tagline treatment",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-27",
+   "kind": "build",
+   "tag": "Build",
+   "title": "core.js: assemble contact mailto: links at runtime, not in page source",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-26",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Reality Check swipe deck, nav regrouped to Learn / Security / Reality Check / Community / Play",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-26",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Native UI follows the theme; form fields fill their field; visible focus ring on text fields",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-26",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Phones: root font 17px -> 18px (body and every rem-based size scale together)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Polish pass 3: heading outline, topic indexes, em dashes",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Polish: the progress chip no longer lets page text show through it; card grids space rows like columns; Insights notes read two-up",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Light mode on the Quantum pages; the Arcade's act cards; the Through-Line no longer covers prose",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Fix a black layer over every page: the bundler broke the film grain's SVG filter reference",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Reserve the real card heights at the bigger type size; Insights/Apply copy stops promising what one person can't guarantee",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "insights.html: drop the \"why this exists\" rationale section",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-25",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Add Insight Notes: creator applications + a reviewed, bylined essay page",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 15",
+   "title": "The hardware table called 24 logical qubits a record, one row below 48.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-01 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 14",
+   "title": "A Signal called an error-detected circuit error-corrected, and kept figures the authors had revised.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-08 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 13",
+   "title": "The site offered things it could not deliver yet.",
+   "href": "corrections.html",
+   "note": "Live from 2026-07-29 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 12",
+   "title": "The Ledger said a second person writes every verdict, and that its rules come before the answer is known. Neither was true of its first two verdicts.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 11",
+   "title": "The Ledger promised companies a reply before a Not verified verdict. The first two got none.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-22 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "correction",
+   "tag": "Correction 10",
+   "title": "The Ledger said it logged every claim the day it was made. It never had.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Hide what can't be delivered yet; update the hardware chart through 2025; corrections 12-15",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Bigger type site-wide; home hero uses the full width, makes room for the instrument only when open",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger rule 5: right of reply is open at any time, not promised in advance",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-24",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: the tagline stops claiming claims are logged the day they're made",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "correction",
+   "tag": "Correction 9",
+   "title": "This page said two Ledger verdicts were waiting for a second reviewer after both had been published.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-22 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "correction",
+   "tag": "Correction 8",
+   "title": "A quote on the Ledger cited a page that never printed it.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "correction",
+   "tag": "Correction 7",
+   "title": "The Ledger promised an archived copy of every source. None had one.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "The EU's NIS Cooperation Group set the end of 2026 for every Member State to have started a national post-quantum transition.",
+   "href": "ledger.html#c-eu-pqc-national-strategies-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Fujitsu and RIKEN scheduled the launch of a 1,000-qubit superconducting quantum computer for 2026.",
+   "href": "ledger.html#c-fujitsu-riken-1000-qubit-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
+   "href": "ledger.html#c-huang-useful-quantum-15-30-years",
+   "note": "On 20 March 2025, at Nvidia's Quantum Day, Huang walked the remark back: \"This is the first event in history where a company CEO invites all of the guests to explain why he was wrong\" (CNBC). He named no revised range, so there is no new dated claim to track. This one stands as stated and resolves on its own criteria."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IBM will deliver Kookaburra, its first modular processor designed to store and process encoded information, in 2026.",
+   "href": "ledger.html#c-ibm-kookaburra-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+   "href": "ledger.html#c-ibm-verified-quantum-advantage-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+   "href": "ledger.html#c-ibm-verified-quantum-advantage-2026",
+   "note": "On 30 July 2026 IBM and Qedma announced a quantum-advantage result on commercially available IBM hardware and released the circuits to the Quantum Advantage Tracker for classical benchmarking. That is the claimant's own announcement, so it is logged without a signal. The claim scores confirmation by the wider community"
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IonQ's roadmap puts 10,000 physical qubits on a single chip in 2027.",
+   "href": "ledger.html#c-ionq-10000-qubits-single-chip-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "NIST expects to finalise a standard for HQC, its backup post-quantum key-exchange algorithm, in 2027.",
+   "href": "ledger.html#c-nist-hqc-final-standard-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Pasqal's roadmap pointed to 10,000 qubits in 2026.",
+   "href": "ledger.html#c-pasqal-10000-qubits-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, at risk",
+   "title": "Pasqal's roadmap pointed to 10,000 qubits in 2026.",
+   "href": "ledger.html#c-pasqal-10000-qubits-2026",
+   "note": "Pasqal's own 2025 roadmap (12 June 2025) says it is \"moving towards 10,000 qubits by 2028\". The claimant has moved the date two years. The 2026 claim is still scored as it was made."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "PsiQuantum planned to have its utility-scale quantum computing site near Brisbane operational by the end of 2027.",
+   "href": "ledger.html#c-psiquantum-brisbane-operational-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "QuEra will introduce a quantum computer with 100 logical qubits and over 10,000 physical qubits in 2026.",
+   "href": "ledger.html#c-quera-100-logical-qubits-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "QuNorth said Magne, the logical-qubit machine it is buying from Microsoft and Atom Computing, would be ready for its first tasks by the new year 2026/27.",
+   "href": "ledger.html#c-qunorth-magne-first-tasks-2026",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, at risk",
+   "title": "QuNorth said Magne, the logical-qubit machine it is buying from Microsoft and Atom Computing, would be ready for its first tasks by the new year 2026/27.",
+   "href": "ledger.html#c-qunorth-magne-first-tasks-2026",
+   "note": "On 2 September 2026 The Quantum Insider reported the building complete and installation only beginning, and that \"MAGNE is expected to be fully operational in the spring of 2027\". Full operation is a later bar than first tasks, so this is a warning, not a verdict. The archived copy was taken on 23 September 2026."
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "claim",
+   "tag": "Check-in, off track",
+   "title": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
+   "href": "ledger.html#c-rigetti-roadmap-2025-2027",
+   "note": "The 2025 interim target, a 100+ qubit chiplet-based system, slipped. On 9 January 2026 Rigetti said it was revising its roadmap and that its 108-qubit Cepheus-1-108Q was \"now expected to reach general availability around the end of the first quarter of 2026\". Under this claim's criteria an interim slip still leaves PAR"
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: ten claims that resolve by the end of 2027 (10 -> 20)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: show scored calls on resolved claims; archive every source; corrections 7-9",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "site guard: hash files as git stores them, so CI stops failing every push",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendation 9: the headline settles from a lighter weight, once",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 7+8: film grain against banding; balanced headings, pretty prose",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 5+6: the loop figure draws itself in; a refraction lens on the float",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 3+4: the evidence board, with rolling odometer digits",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Recommendations 1+2: router doors morph into their destination; internal links prefetch on hover",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Home hero: the threshold instrument floats instead of taking a column",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-23",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Ledger: publish the first two verdicts, both not_verified",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "claim",
+   "tag": "Resolved, Not verified",
+   "title": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
+   "href": "ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025",
+   "note": "Evidence gathered from the pre-registered resolver sources only. The criteria required a commercial customer to have RECEIVED AND OPERATED a system matching the 24-entangled-logical-qubit specification by 31 Dec 2025 plus the 30-day grace (30 Jan 2026), and said in advance that an order or a demo does not count.\n\nOne c"
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "claim",
+   "tag": "Resolved, Not verified",
+   "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
+   "href": "ledger.html#c-ionq-five-nines-2025",
+   "note": "Evidence gathered from the pre-registered resolver sources only. The tracked target, as stated in IonQ's July 2024 roadmap announcement, was 99.999% (“five nines”) LOGICAL two-qubit gate fidelity using small-distance quantum error-correcting codes, by the end of 2025.\n\nInside the window (31 Dec 2025 plus the 30-day gra"
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "standing.js: correct the Brier baseline in the scoring comment",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Every question visible at every depth, plus four measured UX fixes",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Standing records a proof: load standing.js on approach to a question",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Standing, registered as page 27; question bank 21 -> 53",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Bundling: p/*.css and p/*.js, the manifest, and the version registry",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Pages: CSP application, core.js load order, and the bundle-tag rewrite",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Vendor: pin Supabase's client library locally (plan 24 §7.1, finding S1)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Vendor pinning hashes and schema hardening (plan 24 §7.1, finding S2)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Perf: games.js loads on approach for the three single-cabinet explainers",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Perf: on-demand Supabase client, and the modules that wait on it (plan 24 §7.2)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Core.js: one copy of esc/reduced/store, wired into every module (plan 24 §2.2)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-22",
+   "kind": "build",
+   "tag": "Build",
+   "title": "vs-Computer: waitlist checkbox on capture-at-the-win, challenge-link routing",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-21",
+   "kind": "correction",
+   "tag": "Correction 6",
+   "title": "A whole game was invisible to almost everyone who visited the page it lives on.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-15",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Two games that play back, and copy that sounds like a person wrote it",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-15",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The desk opens up: an About page, a changelog, search, and The Signal seeded by hand",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "correction",
+   "tag": "Correction 5",
+   "title": "The Ledger hand-typed its own claim count, and the number went stale in under a fortnight.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-27 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "correction",
+   "tag": "Correction 4",
+   "title": "The home page counted nine games. There were twelve, and the Arcade page said so.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-21 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "claim",
+   "tag": "Check-in, off track",
+   "title": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
+   "href": "ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025",
+   "note": "Resolution pass run. The one identified commercial sale (QuNorth / Magne) had not been installed, let alone operated, by the 30 Jan 2026 grace deadline — as of 2 Sep 2026 the housing facility is only just finished and full operation is expected spring 2027. This supersedes the intake note's reading of the Jan 2025 HPCw"
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "claim",
+   "tag": "Check-in, off track",
+   "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
+   "href": "ledger.html#c-ionq-five-nines-2025",
+   "note": "Resolution pass run. IonQ's in-window publication (20–21 Oct 2025) is a PHYSICAL two-qubit gate fidelity of ~99.9916% on prototype hardware, not the 99.999% LOGICAL figure with small-distance QEC codes that this claim tracks. Moved to proposed with a drafted NOT_VERIFIED verdict and full reasoning; awaiting the second "
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "signal",
+   "tag": "Signal, Proven",
+   "title": "The building for Denmark’s quantum computer is finished. The computer is not.",
+   "href": "signals.html#qunorth-magne-facility-milestone",
+   "note": "MAGNE’s Copenhagen facility cleared handover on 2 September; installation is only now beginning and full operation is expected in spring 2027. That makes a 2025 delivery promise measurable — and we just measured it."
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "signal",
+   "tag": "Signal, Heuristic",
+   "title": "Xanadu put a date on 1,000 logical qubits — and published the number it has to fix first",
+   "href": "signals.html#xanadu-1000-logical-qubits-2031",
+   "note": "More than 1,000 logical qubits by 2031, fault tolerance in 2028–2029, a quantum data centre by 2030. Also: a photon-loss figure that has to fall from 24.1× to 1.0×. The second number is the honest one."
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "signal",
+   "tag": "Signal, Heuristic",
+   "title": "A “quantum-safe” satellite link went live over Doha — and the word is doing two different jobs",
+   "href": "signals.html#arqit-eshailsat-quantum-safe-satellite",
+   "note": "Arqit, Es’hailSat and AIEE ran quantum-safe key agreement across an operating satellite link with no hardware swap. Worth being precise about what was, and was not, quantum about it."
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "signal",
+   "tag": "Signal, Heuristic",
+   "title": "Fujitsu has a diamond-spin quantum computer working — and has not said how big it is",
+   "href": "signals.html#fujitsu-diamond-spin-prototype",
+   "note": "Tin-vacancy centres built into photonic integrated circuits, running at −271.6 °C. The temperature is the interesting number. The missing qubit count is the interesting silence."
+  },
+  {
+   "at": "2026-09-08",
+   "kind": "signal",
+   "tag": "Signal, Proven",
+   "title": "IBM and Chicago ran a hard, encoded circuit, and certified how good the answer was",
+   "href": "signals.html#ibm-uchicago-70-logical-qubits-verified",
+   "note": "A 64-qubit circuit with 314 T gates, encoded in 76 physical qubits, with gate errors about ten times lower once runs that flagged an error were thrown out. The new part is not the size. It is the certificate."
+  },
+  {
+   "at": "2026-09-05",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Home page back to the cool ground, and a field that keeps up with the cursor",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-05",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The home page leads with an instrument, and the lattice you can put a hand in",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "correction",
+   "tag": "Correction 3",
+   "title": "A sentence on the Ising page contradicted the widget sitting directly above it.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-23 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "correction",
+   "tag": "Correction 2",
+   "title": "We fixed this exact error on two pages and left it standing on a third for another five days.",
+   "href": "corrections.html",
+   "note": "Live from 2026-08-18 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "correction",
+   "tag": "Correction 1",
+   "title": "The Race said Google's Willow was smaller than Sycamore. It is about twice the size.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-01 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The question bank: 14 to 21, and every answer still rests on a receipt",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Re-generate the nav on two drifted pages, and stop it drifting again",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "DESIGN.md: the Through-Line's Signature Components bullet now describes both shapes",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Through-Line on mobile: a sticky band, not a shrunken corner card",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Ladder on three more cabinets: Grover's Escape, Max-Cut, the Volcano",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The question bank: the daily rotation goes from 7 to 14, and stops repeating weekly",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Correction 3, and receipts on the last six pages that carry an argument",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Correction 2, the scoreboard wired to the Ledger, receipts on two more pages",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-04",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Correction 1, the Contradiction card, and receipts on three more pages",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-02",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The warm retint: a new dark palette on the six vivid pages only",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-02",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Signature Layer + the games ladder: Lexicon, Receipts, FRAME.ladder, Workshop, Through-Line",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-01",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Hardware Scaling Explorer (race.html#scaling) + coupling strip on analog.html",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-01",
+   "kind": "build",
+   "tag": "Build",
+   "title": "qec.html: the Threshold Explorer (#threshold-widget)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-01",
+   "kind": "build",
+   "tag": "Build",
+   "title": "quantum-mechanics.html: the Decoherence Playground (#decohere)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-01",
+   "kind": "build",
+   "tag": "Build",
+   "title": "living layer: coupling strip + breakout figure (v1, 7 pages)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
+   "href": "ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025",
+   "note": "Criteria and resolver sources frozen. Resolves by 2025-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, on track",
+   "title": "Atom Computing and Microsoft announced a commercial quantum machine with 24 entangled logical qubits, available for delivery in 2025.",
+   "href": "ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025",
+   "note": "A January 2025 report describes an on-premise system from the same Atom Computing/Microsoft partnership supporting up to 50 logical qubits -- more than this claim's own 24, which is why this is logged on_track rather than off_track. Not treated as a resolution: the desk still needs to confirm this is the SAME delivery "
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "D-Wave says its Advantage2 annealing quantum computer demonstrated quantum computational supremacy on a real-world magnetic-materials simulation problem, beating classical supercomputers.",
+   "href": "ledger.html#c-dwave-magnetic-simulation-supremacy-2025",
+   "note": "Criteria and resolver sources frozen. Resolves by 2026-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Executive Order 14412 requires U.S. federal high-value assets to migrate to post-quantum key establishment by 31 December 2030, and to post-quantum digital signatures by 31 December 2031.",
+   "href": "ledger.html#c-eo14412-pqc-key-establishment-2030",
+   "note": "Criteria and resolver sources frozen. Resolves by 2030-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Google has set 2029 as its internal deadline to complete post-quantum cryptography migration across its infrastructure.",
+   "href": "ledger.html#c-google-pqc-migration-2029",
+   "note": "Criteria and resolver sources frozen. Resolves by 2029-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
+   "href": "ledger.html#c-huang-useful-quantum-15-30-years",
+   "note": "Criteria and resolver sources frozen. Resolves by 2040-01-06."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "NVIDIA's Jensen Huang said truly useful quantum computers are 15 to 30 years away, with 20 years as the figure “a whole bunch of us would believe.”",
+   "href": "ledger.html#c-huang-useful-quantum-15-30-years",
+   "note": "Captured at seed, 19 months after the remark. Real-world consequence worth noting for context (not evidence toward the verdict): the comment briefly wiped tens of billions of dollars off publicly traded quantum companies' market capitalisation the same week, and Huang has since visibly softened the framing at subsequen"
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IBM will deliver a large-scale, fault-tolerant quantum computer (“Starling”) by 2029, running 100 million quantum operations on 200 logical qubits.",
+   "href": "ledger.html#c-ibm-starling-2029",
+   "note": "Criteria and resolver sources frozen. Resolves by 2029-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "IBM will deliver a large-scale, fault-tolerant quantum computer (“Starling”) by 2029, running 100 million quantum operations on 200 logical qubits.",
+   "href": "ledger.html#c-ibm-starling-2029",
+   "note": "Captured at seed. IBM Quantum Starling is IBM's stated terminal milestone on a roadmap with earlier named systems (Loon, Kookaburra, Cockatoo) due in the intervening years -- those intermediate milestones are the check-ins to watch for, not just the 2029 date."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
+   "href": "ledger.html#c-ionq-five-nines-2025",
+   "note": "Criteria and resolver sources frozen. Resolves by 2025-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, off track",
+   "title": "IonQ targeted 99.999% (“five nines”) logical two-qubit gate fidelity by the end of 2025.",
+   "href": "ledger.html#c-ionq-five-nines-2025",
+   "note": "Deadline plus grace period has passed with no independent report found (during this session's research pass) of IonQ publishing a 99.999% logical two-qubit gate fidelity result. That absence of evidence is not itself a verdict -- it needs a deliberate resolution pass checking IonQ's own 2025 technical announcements and"
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Microsoft says its Majorana 1 / Topological Core approach puts industrial-scale, meaningful quantum computing “years, not decades” away.",
+   "href": "ledger.html#c-microsoft-topological-years-not-decades",
+   "note": "Criteria and resolver sources frozen. Resolves by 2035-02-19."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "Microsoft says its Majorana 1 / Topological Core approach puts industrial-scale, meaningful quantum computing “years, not decades” away.",
+   "href": "ledger.html#c-microsoft-topological-years-not-decades",
+   "note": "Captured at seed. No SymbiQ-tracked interim milestone yet -- see sourcing_note for the reason this claimant specifically needs independent replication, not just a press release, before any check-in here is marked on_track."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Quantinuum will deliver universal, fully fault-tolerant quantum computing (system “Apollo”) by 2030.",
+   "href": "ledger.html#c-quantinuum-apollo-2030",
+   "note": "Criteria and resolver sources frozen. Resolves by 2030-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, on track",
+   "title": "Quantinuum will deliver universal, fully fault-tolerant quantum computing (system “Apollo”) by 2030.",
+   "href": "ledger.html#c-quantinuum-apollo-2030",
+   "note": "Interim milestone Helios (≈100 physical qubits, two-qubit gate error <5×10⁻⁴) launched commercially per Quantinuum's Nov 2025 announcements, one step on the path to Apollo -- named here as the check-in to track, not as evidence the 2030 claim itself has resolved."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Now tracking",
+   "title": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
+   "href": "ledger.html#c-rigetti-roadmap-2025-2027",
+   "note": "Criteria and resolver sources frozen. Resolves by 2027-12-31."
+  },
+  {
+   "at": "2026-08-27",
+   "kind": "claim",
+   "tag": "Check-in, no signal",
+   "title": "Rigetti's own roadmap commits to a 100+ qubit chiplet system in 2025, 150+ qubits in 2026, and 1,000+ qubits in 2027.",
+   "href": "ledger.html#c-rigetti-roadmap-2025-2027",
+   "note": "Captured at seed. Worth noting for context: Rigetti's public roadmap has moved before -- an earlier iteration of this same roadmap targeted 100+ qubits with 99.5% median two-qubit fidelity specifically \"by the end of 2025,\" reported the same week -- so the 2025 leg of this claim is the nearest-term thing to watch first"
+  },
+  {
+   "at": "2025-03-12",
+   "kind": "claim",
+   "tag": "Check-in, at risk",
+   "title": "D-Wave says its Advantage2 annealing quantum computer demonstrated quantum computational supremacy on a real-world magnetic-materials simulation problem, beating classical supercomputers.",
+   "href": "ledger.html#c-dwave-magnetic-simulation-supremacy-2025",
+   "note": "Linda Mauron and Giuseppe Carleo (EPFL) posted a separate classical approach (time-dependent variational Monte Carlo) to arXiv, reporting correlation errors below 7% on systems up to 128 spins -- “aligning with or surpassing” D-Wave's reported accuracy at that scale, though not yet tested at D-Wave's largest reported i"
+  },
+  {
+   "at": "2025-03-07",
+   "kind": "claim",
+   "tag": "Check-in, at risk",
+   "title": "D-Wave says its Advantage2 annealing quantum computer demonstrated quantum computational supremacy on a real-world magnetic-materials simulation problem, beating classical supercomputers.",
+   "href": "ledger.html#c-dwave-magnetic-simulation-supremacy-2025",
+   "note": "Flatiron Institute (Joseph Tindall et al.) posted a classical belief-propagation approach to arXiv claiming it “demonstrably outperforms other reported methods” on the same spin-glass problem, with errors “noticeably lower than the quantum annealing approach” -- not yet peer-reviewed at time of posting."
+  }
+ ]
+}

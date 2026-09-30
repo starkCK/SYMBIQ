@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "willow-101-qubits",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "race-101",
+  "question": {
+    "text": "101 physical qubits — a distance-7 patch (97) plus 4 leakage-removal qubits — sit inside Willow's 105-qubit budget. Is 101 a general estimate of surface-code overhead on any device?",
+    "options": [
+      "No — it's one d = 7 patch on one specific device, and the 4 leakage-removal qubits are particular to Willow's own implementation",
+      "Yes — 2d²−1 at any distance gives the standard, device-independent overhead figure every surface-code machine should expect",
+      "No — 101 double-counts; the leakage-removal qubits are already included inside the 97 from 2d²−1",
+      "Yes, and leakage-removal qubits are a mandatory part of the surface code's mathematical definition, needed on every implementation"
+    ],
+    "answerIndex": 0,
+    "hint": "Leakage — a qubit falling out of its computational subspace — is a hardware failure mode, not a feature of the surface code's math. Whose hardware is being counted here?",
+    "explain": {
+      "g": "97 physical qubits for a distance-7 patch comes straight from the surface code's own formula, so that part generalises. The extra 4 are there because Willow's specific qubits can leak out of the 0/1 subspace they're supposed to stay in, and Google's implementation spends qubits detecting that. A different platform with a different leakage profile would need a different number, including possibly zero.",
+      "y": "2·7²−1 = 97 is the exact rotated-code count for distance 7, a formula that applies to any surface-code implementation. The 4 leakage-removal qubits are architecture-specific overhead for handling a failure mode superconducting transmons are prone to; a platform without that failure mode, or one that handles it differently, wouldn't carry the same 4.",
+      "r": "tools/verify_hardware.py checks both the 2d²−1 arithmetic and the reported 101-inside-105 figure for Willow specifically. Leakage-removal circuitry is a documented feature of Google's own error-correction protocol, not a term in the surface-code threshold theorem — treating 101 as a universal per-patch overhead number would be importing one device's engineering choice into a general claim."
+    }
+  }
+}

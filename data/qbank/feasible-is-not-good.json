@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "feasible-is-not-good",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "g",
+  "receipt": "fsb-northwest-25",
+  "question": {
+    "text": "A shipping plan uses every unit of supply and meets every unit of demand. Two sources, three destinations, nothing left over. Is it a good plan?",
+    "options": [
+      "Not necessarily. A plan can satisfy every constraint and still cost far more than the best one — the standard quick-start plan on this instance costs 25% more",
+      "Yes. If it meets every supply and demand exactly, there is nothing left to optimise",
+      "Only if it ships whole units; fractional plans are the ones that waste money",
+      "Yes, because a balanced transportation problem has exactly one feasible plan"
+    ],
+    "answerIndex": 0,
+    "hint": "Feasible and optimal are two different words. Ask how many plans satisfy the constraints before asking which one is cheapest.",
+    "explain": {
+      "g": "Meeting every constraint is the entry requirement, not the goal. Plenty of plans do it; only one is cheapest. The northwest-corner rule is a standard way to get a legal plan fast, and on this instance the plan it produces costs 25% more than the true optimum. That gap is the whole reason optimisation exists as a subject.",
+      "y": "The instance ships 15 units on one route, 15 on another and 20 on a third for a total cost of 240, which an exhaustive search over every integer-feasible plan confirms is the minimum. The northwest-corner plan is also feasible and costs 300. (300 − 240) / 240 = 25%. Note this is one instance: the overspend of that rule on another problem could be anything.",
+      "r": "The constraint matrix of a transportation problem is totally unimodular — every square submatrix has determinant 0, +1 or −1, checked here over all 461 square submatrices — so the linear-programming relaxation's vertices are already integral and the LP optimum equals the integer optimum with no branching. That is why this problem is easy despite looking like an integer program. Recomputed in tools/verify_transportation_csp.py."
+    }
+  }
+}

@@ -1,0 +1,795 @@
+
+(function () {
+  window.SymbiQ = window.SymbiQ || {};
+  var NS = 'http://www.w3.org/2000/svg';
+  function $(r, s) { return r.querySelector(s); }
+  var esc = window.SymbiQ.core.esc;
+  function fmt(x) { return (Math.round(x * 100) / 100).toString(); }
+  function win(id, opts) {
+    var first = false;
+    if (window.SymbiQ && SymbiQ.save) first = SymbiQ.save.completeMission(id);
+    if (opts && typeof opts.onWin === 'function') opts.onWin(id, first);
+    return first;
+  }
+
+  function clears(key) {
+    var S = window.SymbiQ && SymbiQ.save;
+    var v = S ? S.get('or.' + key + '.cleared', []) : [];
+    return Object.prototype.toString.call(v) === '[object Array]' ? v : [];
+  }
+  function markClear(key, lv) {
+    var S = window.SymbiQ && SymbiQ.save; if (!S) return false;
+    var c = clears(key);
+    if (c.indexOf(lv) >= 0) return false;
+    c.push(lv); S.set('or.' + key + '.cleared', c);
+    return true;
+  }
+  function levelBar(key, levels, cur, go) {
+    var done = clears(key);
+    return '<div class="lvbar" role="tablist" aria-label="Levels">' +
+      levels.map(function (L, i) {
+        var cleared = done.indexOf(i) >= 0;
+        return '<button class="lv' + (i === cur ? ' on' : '') + (cleared ? ' done' : '') + '"' +
+          ' role="tab" aria-selected="' + (i === cur) + '" data-lv="' + i + '">' +
+          '<span class="lv-n">' + (i + 1) + '</span>' +
+          '<span class="lv-t">' + esc(L.name) + '</span>' +
+          (cleared ? '<span class="lv-tick" aria-label="cleared">✓</span>' : '') +
+          '</button>';
+      }).join('') + '</div>';
+  }
+
+  function focusNext(root) {
+    var cta = root.querySelector('button[data-nextcta]');
+    if (!cta || cta._focused) return;
+    cta._focused = true;
+    var a = document.activeElement;
+    if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+    try { cta.focus({ preventScroll: true }); } catch (e) { try { cta.focus(); } catch (e2) {} }
+  }
+
+  function nextCTA(cleared, last, cur, noun, levels) {
+    if (!cleared) return '';
+    if (last) {
+      return '<div class="nextup" data-nextcta><span class="eyebrow">Every ' + noun +
+        ' cleared</span><span class="headline">You have finished this game</span>' +
+        '<span class="sub">The other game on this page teaches the opposite half of the field.</span>' +
+        '<span class="go">Back to the course</span></div>';
+    }
+    var nx = levels[cur + 1];
+    return '<button class="nextup" data-next data-nextcta>' +
+      '<span class="eyebrow">Cleared &#183; ' + (cur + 2) + ' of ' + levels.length + '</span>' +
+      '<span class="headline">Next ' + noun + ': ' + esc(nx.name) + '</span>' +
+      '<span class="sub">' + esc(nx.story) + '</span>' +
+      '<span class="go">Play it</span></button>';
+  }
+
+  var G = {};
+
+  G.bottleneck = {
+    title: 'The Bottleneck',
+    hook: 'Three factories, one upgrade a quarter, and one number that tells you which, if you ask it the right question.',
+    mentor: 'Cordon',
+    about: {
+      goal: 'Finish each factory&#39;s run with the highest profit you can. Every quarter you may expand exactly <strong>one</strong> resource.',
+      how: 'Read each resource&#39;s <strong>shadow price</strong>, what one more unit is worth, and the <strong>range</strong> over which that price still holds. Then buy. The region grows and the best plan slides to a new corner. Undo and restart are always there.',
+      inspired: 'Linear-programming duality (von Neumann 1947; Gale, Kuhn &amp; Tucker 1951) and right-hand-side ranging, the output real planners actually buy an optimiser for.',
+      learn: 'Why the most valuable resource is not the scarcest or the dearest, why relieving a bottleneck destroys its own value, and why a shadow price without its range is a trap.',
+      link: 'feasible.html#t03', linkText: 'Topic 03: Duality ▸', tier: 'Proven'
+    },
+    honest: 'Honest model: each level is a real linear program, re-solved exactly at every step by enumerating the vertices of the feasible region, the reason an optimum can be found without searching the interior. A shadow price here is the <em>right-hand</em> derivative of the optimum with respect to that right-hand side, one-sided on purpose, because the optimal-value function is piecewise linear and has a corner exactly where the binding set changes, which is the whole lesson of level 2. The range is found by walking that right-hand side until the price changes, which is exactly what right-hand-side ranging means. Every par was established by exhaustive search over all possible purchase sequences before any of this was drawn. <strong>Level 1</strong> (8 sequences) is a tutorial and both greedy strategies solve it. <strong>Level 2</strong> (243 sequences, par 34.5 reached by 10 of them) is the range trap, and the trap is more specific than it looks. Simply following the largest shadow price actually <em>wins</em> here (34.5), because after one purchase machine-hours&#39; price collapses and a price-follower correctly moves on. What scores 31.5 is multiplying the price by the size of the upgrade: machine-hours are worth 0.75 each but only for 2.25 more units, so an upgrade of 6 looks like 4.5 and delivers 1.8. A price without its range is what misleads you, not the price. Skilled hours, meanwhile, are worthless in <em>every</em> one of the 243 sequences, the best plan touching them scores 33 against the 34.5 available without. <strong>Level 3</strong> (81 sequences, par 40.5 reached by only 6) is where greedy play runs out: 44 of the 81 sequences score exactly 36 and greedy lands there unless a tie between equal-scoring resources happens to fall its way, in which case it stumbles onto par. The right first move is worth nothing on the quarter you make it and only pays through what it unblocks later. That is the honest limit of a shadow price: it is a slope, not a plan.',
+
+    mount: function (root, opts) {
+      opts = opts || {};
+      var LEVELS = [
+        { name: 'Two lines', rounds: 3, par: 31.5, profit: [5, 4],
+          story: 'A small shop with two products and two limits. Warm-up: find the one number that matters.',
+          res: [ { n:'machine-hours', row:[6,4], cap:24, step:6, c:'var(--violet)' },
+                 { n:'material',      row:[1,2], cap:6,  step:3, c:'var(--teal)'   } ] },
+        { name: 'The plant', rounds: 5, par: 34.5, profit: [5, 4],
+          story: 'Three resources now, and one of them is a decoy. The board will fund five upgrades.',
+          res: [ { n:'machine-hours', row:[6,4], cap:24, step:6, c:'var(--violet)' },
+                 { n:'material',      row:[1,2], cap:6,  step:3, c:'var(--teal)'   },
+                 { n:'skilled hours', row:[3,1], cap:12, step:4, c:'var(--yellow)' } ] },
+        { name: 'The long game', rounds: 4, par: 40.5, profit: [9, 4],
+          story: 'Only one resource is worth anything today. Buying it every time is not the answer.',
+          res: [ { n:'furnace time', row:[3,2], cap:22, step:4, c:'var(--violet)' },
+                 { n:'alloy',        row:[6,5], cap:21, step:3, c:'var(--teal)'   },
+                 { n:'finishing',    row:[5,6], cap:14, step:6, c:'var(--yellow)' } ] }
+      ];
+      var lv = Math.min(Math.max(opts.level || 0, 0), LEVELS.length - 1);
+      var L, st, round, hist, done;
+
+      function cons(s) {
+        var C = L.res.map(function (r, i) { return [r.row[0], r.row[1], s[i]]; });
+        C.push([-1, 0, 0]); C.push([0, -1, 0]);
+        return C;
+      }
+      function feas(C, x, y) {
+        for (var i = 0; i < C.length; i++) if (C[i][0]*x + C[i][1]*y > C[i][2] + 1e-9) return false;
+        return true;
+      }
+      function solve(s) {
+        var C = cons(s), best = null, bv = -Infinity, verts = [];
+        for (var i = 0; i < C.length; i++) for (var j = i+1; j < C.length; j++) {
+          var det = C[i][0]*C[j][1] - C[j][0]*C[i][1];
+          if (Math.abs(det) < 1e-12) continue;
+          var x = (C[i][2]*C[j][1] - C[j][2]*C[i][1]) / det;
+          var y = (C[i][0]*C[j][2] - C[j][0]*C[i][2]) / det;
+          if (!feas(C, x, y)) continue;
+          if (!verts.some(function (v) { return Math.abs(v[0]-x) < 1e-9 && Math.abs(v[1]-y) < 1e-9; })) verts.push([x,y]);
+          var v = L.profit[0]*x + L.profit[1]*y;
+          if (v > bv + 1e-12) { bv = v; best = [x,y]; }
+        }
+        var cx = 0, cy = 0;
+        verts.forEach(function (v) { cx += v[0]; cy += v[1]; });
+        cx /= verts.length; cy /= verts.length;
+        verts.sort(function (a,b) { return Math.atan2(a[1]-cy, a[0]-cx) - Math.atan2(b[1]-cy, b[0]-cx); });
+        return { value: bv, point: best, verts: verts };
+      }
+      function bump(s, i, d) { var o = s.slice(); o[i] += d; return o; }
+      function price(s, i) {
+        var e = 1e-6;
+        return Math.round((solve(bump(s,i,e)).value - solve(s).value) / e * 1e4) / 1e4;
+      }
+      function range(s, i) {
+        var p0 = price(s, i), d = 0;
+        while (d < 40) { d += 0.25; if (Math.abs(price(bump(s,i,d), i) - p0) > 1e-6) return d - 0.25; }
+        return Infinity;
+      }
+      function binding(s) {
+        var o = solve(s).point;
+        return L.res.map(function (r, i) { return Math.abs(r.row[0]*o[0] + r.row[1]*o[1] - s[i]) < 1e-7; });
+      }
+
+      function load(n) {
+        lv = n; L = LEVELS[lv];
+        st = L.res.map(function (r) { return r.cap; });
+        round = 1; hist = []; done = false;
+        render();
+      }
+
+      function axisMax() {
+        var s = L.res.map(function (r, i) { return r.cap + r.step * L.rounds; });
+        var mx = 0, my = 0;
+        L.res.forEach(function (r, i) {
+          if (r.row[0] > 0) mx = Math.max(mx, s[i] / r.row[0]);
+          if (r.row[1] > 0) my = Math.max(my, s[i] / r.row[1]);
+        });
+        var m = Math.ceil(Math.min(Math.min(mx, my) * 1.15, 40));
+        return Math.max(m, 4);
+      }
+
+      function drawRegion() {
+        var AX = axisMax(), sol = solve(st), bnd = binding(st);
+        var W = 430, H = 330, x0 = 48, y0 = 280, pw = 360, ph = 250;
+        function px(a) { return x0 + a / AX * pw; }
+        function py(b) { return y0 - b / AX * ph; }
+        var g = ['<svg class="orsvg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="' + NS +
+                 '" role="img" aria-label="The feasible region for the current capacities. The best plan is marked at a corner.">'];
+        g.push('<g stroke="var(--border)" stroke-width="1" opacity=".28">');
+        for (var i = 1; i <= AX; i++) {
+          if (AX > 14 && i % 2) continue;
+          g.push('<path d="M' + px(i) + ' ' + py(0) + 'V' + py(AX) + '"/>');
+          g.push('<path d="M' + px(0) + ' ' + py(i) + 'H' + px(AX) + '"/>');
+        }
+        g.push('</g>');
+        g.push('<polygon class="orregion" points="' + sol.verts.map(function (v) {
+          return px(v[0]) + ',' + py(v[1]); }).join(' ') + '"/>');
+        L.res.forEach(function (r, i) {
+          var a = r.row[0], b = r.row[1], c = st[i], p1, p2;
+          if (b !== 0) { p1 = [0, c/b]; p2 = [AX, (c - a*AX)/b]; }
+          else { p1 = [c/a, 0]; p2 = [c/a, AX]; }
+          g.push('<path class="orline' + (bnd[i] ? ' tight' : '') + '" d="M' + px(p1[0]) + ' ' + py(p1[1]) +
+                 'L' + px(p2[0]) + ' ' + py(p2[1]) + '" stroke="' + r.c + '"/>');
+        });
+        g.push('<circle class="oropt" cx="' + px(sol.point[0]) + '" cy="' + py(sol.point[1]) + '" r="7"/>');
+        g.push('<path d="M' + px(0) + ' ' + py(AX) + 'V' + py(0) + 'H' + px(AX) +
+               '" fill="none" stroke="var(--border)" stroke-width="2"/>');
+        g.push('<text class="orax" x="' + px(AX/2) + '" y="' + (y0 + 30) + '" text-anchor="middle">units of A</text>');
+        g.push('<text class="orax" x="14" y="' + py(AX/2) + '" text-anchor="middle" transform="rotate(-90 14 ' + py(AX/2) + ')">units of B</text>');
+        g.push('</svg>');
+        return g.join('');
+      }
+
+      function recipe() {
+        return '<table class="orrec"><thead><tr><th></th>' +
+          '<th>A</th><th>B</th><th>you have</th></tr></thead><tbody>' +
+          L.res.map(function (r, i) {
+            return '<tr><th scope="row"><i style="background:' + r.c + '"></i>' + esc(r.n) + '</th>' +
+              '<td>' + r.row[0] + '</td><td>' + r.row[1] + '</td>' +
+              '<td class="have">' + fmt(st[i]) +
+              (st[i] > r.cap ? ' <span class="up">+' + fmt(st[i] - r.cap) + '</span>' : '') + '</td></tr>';
+          }).join('') +
+          '<tr class="profitrow"><th scope="row">earns you</th><td>' + L.profit[0] +
+          '</td><td>' + L.profit[1] + '</td><td></td></tr></tbody></table>';
+      }
+
+      function offers() {
+        var bnd = binding(st);
+        return L.res.map(function (r, i) {
+          var p = price(st, i), rg = range(st, i);
+          var over = rg < r.step - 1e-9 && p > 0;
+          return '<button class="orbuy" data-buy="' + i + '"' + (done ? ' disabled' : '') + '>' +
+            '<span class="orbuy-top"><i style="background:' + r.c + '"></i>' + esc(r.n) +
+              (bnd[i] ? '<em class="tight">binding</em>' : '<em class="slack">slack</em>') + '</span>' +
+            '<span class="orbuy-price">' + (p > 0 ? fmt(p) + ' per unit' : 'worth nothing right now') + '</span>' +
+            '<span class="orbuy-range">' + (p > 0
+              ? 'that price holds for ' + (rg === Infinity ? 'a long way' : fmt(rg) + ' more units')
+              : 'you already have spare, more cannot help') + '</span>' +
+            '<span class="orbuy-go">buy +' + r.step + (over ? ' <b class="warn">overshoots the range</b>' : '') + '</span>' +
+            '</button>';
+        }).join('');
+      }
+
+      function render(flash) {
+        var sol = solve(st), pct = Math.round((round - 1) / L.rounds * 100);
+        root.innerHTML =
+          levelBar('bottleneck', LEVELS, lv) +
+          '<p class="orstory">' + esc(L.story) + '</p>' +
+          '<div class="orhud">' +
+            '<span class="orhud-k">Quarter</span><span class="orhud-v">' + Math.min(round, L.rounds) + ' / ' + L.rounds + '</span>' +
+            '<span class="orhud-k">Profit</span><span class="orhud-v big">' + fmt(sol.value) + '</span>' +
+            '<span class="orhud-k">Par</span><span class="orhud-v">' + L.par + '</span>' +
+            '<span class="orctl">' +
+              '<button class="ctrlbtn" data-undo' + (hist.length && !done ? '' : ' disabled') + '>↶ undo</button>' +
+              '<button class="ctrlbtn" data-restart>↺ restart</button>' +
+            '</span>' +
+          '</div>' +
+          '<div class="orprog"><i style="width:' + pct + '%"></i></div>' +
+          '<div class="orsplit">' +
+            '<div class="orviz">' + drawRegion() +
+              '<p class="orcap">The shaded shape is every production plan you could actually run. ' +
+              'A <b>binding</b> line touches the best corner, that resource is the bottleneck. ' +
+              'A <b>slack</b> line does not, and buying more of it moves nothing.</p>' +
+            '</div>' +
+            '<div class="orside">' +
+              '<p class="oreyebrow">The recipe</p>' + recipe() +
+              (done ? verdict(sol) : '<p class="oreyebrow" style="margin-top:16px">Expand one resource</p>' + offers()) +
+              (hist.length ? '<p class="orlog">' + hist.map(function (h) { return esc(h); }).join(' → ') + '</p>' : '') +
+            '</div>' +
+          '</div>' +
+          (flash ? '<p class="verdict ' + flash.cls + '">' + flash.html + '</p>' : '');
+
+        Array.prototype.forEach.call(root.querySelectorAll('[data-buy]'), function (b) {
+          b.addEventListener('click', function () { buy(+b.getAttribute('data-buy')); });
+        });
+        Array.prototype.forEach.call(root.querySelectorAll('[data-lv]'), function (b) {
+          b.addEventListener('click', function () { load(+b.getAttribute('data-lv')); });
+        });
+        var u = $(root, '[data-undo]'); if (u) u.addEventListener('click', undo);
+        var r = $(root, '[data-restart]'); if (r) r.addEventListener('click', function () { load(lv); });
+        var n = $(root, '[data-next]'); if (n) n.addEventListener('click', function () { load(lv + 1); });
+        var a = $(root, '[data-again]'); if (a) a.addEventListener('click', function () { load(lv); });
+        focusNext(root);
+      }
+
+      function undo() {
+        if (!hist.length || done) return;
+        var last = hist.pop();
+        st = bump(st, last.i, -L.res[last.i].step);
+        round--; render();
+      }
+
+      function buy(i) {
+        if (done) return;
+        var r = L.res[i], before = solve(st).value, p = price(st, i), rg = range(st, i);
+        st = bump(st, i, r.step);
+        var gain = solve(st).value - before;
+        hist.push({ i: i, toString: function () { return r.n.split(' ')[0] + ' +' + fmt(gain); } });
+
+        var msg;
+        if (p === 0) {
+          msg = { cls: '', html: '<strong>Nothing happened, and the price told you so.</strong> ' + esc(r.n) +
+            ' had slack, the best plan was not using all of what you already had, so more of it changes no corner. ' +
+            'A shadow price of zero is not a small number. It is a statement that this is not your problem.' };
+        } else if (rg < r.step - 1e-9) {
+          msg = { cls: 'good', html: '<strong>+' + fmt(gain) + ', not the +' + fmt(p * r.step) + ' the price appeared to promise.</strong> ' +
+            'Each unit really was worth ' + fmt(p) + ', but only for ' + fmt(rg) + ' more units. Past that this stopped being ' +
+            'the bottleneck and the extra capacity had nothing to do. <em>A shadow price is a slope, not a promise.</em>' };
+        } else {
+          msg = { cls: 'good', html: '<strong>+' + fmt(gain) + '.</strong> The price held across the whole purchase, so ' +
+            fmt(p) + ' × ' + r.step + ' was exactly right.' };
+        }
+        round++;
+        if (round > L.rounds) { done = true; finish(); return; }
+        render(msg);
+      }
+
+      function verdict(sol) {
+        var v = sol.value, hit = v >= L.par - 1e-9, last = lv === LEVELS.length - 1;
+        var notes = [
+          'Both greedy strategies solve this one, that is why it is first. The habit to take forward: a resource with slack is worth <b>exactly</b> zero, not a little.',
+          '<b>Skilled hours were never worth buying.</b> The best plan that spends anything on them scores 33, below the 34.5 available if you never touch them. And <b>a price times an upgrade size scores 31.5</b>: machine-hours are worth 0.75 each, but only for 2.25 more units, and an upgrade buys 6, so it looks like 4.5 and pays 1.8. Following the price itself is fine; multiplying it out is the trap.',
+          'This one runs greedy play out of road. Buying the best-looking resource every quarter lands on <b>36</b>, and so does buying the one with the largest true one-step gain, 44 of the 81 sequences score exactly that, and only 6 reach par. (A greedy player facing a tie between equal-scoring resources can stumble onto 40.5; that is luck, not method.) Par needs a purchase that is worth <b>nothing on the quarter you make it</b> and only pays through what it unblocks. A shadow price is a slope, not a plan.'
+        ];
+        return '<div class="orfinal ' + (hit ? 'win' : '') + '">' +
+          '<p class="oreyebrow">' + esc(L.name) + ', closed</p>' +
+          '<p class="orfinal-v">' + fmt(v) + ' <span>vs par ' + L.par + '</span></p>' +
+          nextCTA(hit, last, lv, 'factory', LEVELS) +
+          '<p>' + (hit ? 'That is the maximum available on this factory.'
+                       : 'Par is ' + L.par + ', found by checking every possible purchase sequence. You left ' +
+                         fmt(L.par - v) + ' on the table.') + '</p>' +
+          '<p class="orfinal-note">' + notes[lv] + '</p>' +
+          '<p><button class="preset" data-again>Play this one again</button></p>' +
+          '</div>';
+      }
+
+      function finish() {
+        if (solve(st).value >= L.par - 1e-9) {
+          markClear('bottleneck', lv);
+          if (clears('bottleneck').length >= LEVELS.length) win('or-bottleneck', opts);
+        }
+        render();
+      }
+
+      load(lv);
+    }
+  };
+
+  G.prune = {
+    title: 'The Prune',
+    hook: 'Sixty-five thousand possibilities by the last level. You will look at about thirty-six, and prove the rest cannot win.',
+    mentor: 'Cordon',
+    about: {
+      goal: '<strong>Prove</strong> which haul is best, not guess it. You are finished when every combination is accounted for: taken, or ruled out by a bound.',
+      how: 'Pick an open branch to open. The number on each is its <strong>bound</strong>, the most it could possibly be worth. When a bound cannot beat the best haul you already hold, that whole branch dies untouched.',
+      inspired: 'Branch and bound (Land &amp; Doig, 1960) and the Dantzig bound for the knapsack, the machinery every commercial solver still runs on.',
+      learn: 'Why finding a good answer <em>early</em> beats exploring the promising branch, why a cut high in the tree is worth exponentially more than one low down, and what happens to a quantum speedup when the problem has structure.',
+      link: 'feasible.html#t05', linkText: 'Topic 05: Branch and bound ▸', tier: 'Proven'
+    },
+    honest: 'Honest model: genuine 0/1 knapsacks solved by genuine branch and bound. The bound on each node is the <strong>Dantzig bound</strong>, relax to fractional, fill greedily by value per kilogram, allow a fraction of the last item, which is provably an upper bound on anything below the node, and that is what makes discarding a branch safe rather than merely likely. Each optimum was found by exhaustive search, and each par is the count of nodes whose bound strictly exceeds that optimum: such a node can never be safely cut by <em>any</em> strategy, so par is a floor rather than a target. Measured on the four levels, best-bound play needs 14 / 27 / 35–38 / 36 expansions (the level-3 spread is nothing but how ties between equal bounds fall), a depth-first dive needs 42 / 151 / 507 / 1,203, and breadth-first needs 29 / 204 / 1,388 / <strong>19,829</strong>. <strong>The quantum comparison, and it is the reason the levels get bigger:</strong> Grover would need roughly 6 / 18 / 50 / 201 oracle queries on the same four search spaces. On level 1 that <em>beats</em> branch and bound. By level 4 it loses five-fold. The units are not comparable, an oracle query and a bound computation are different work, so the point is not the scoreboard. The point is the shape: Grover&#39;s Proven quadratic speedup is still exponential, and it is the same whether the problem is a knapsack or pure noise, because it never looks at the structure. The bound is <em>made</em> of that structure, so it barely grows at all, and it finishes holding a certificate rather than a likely answer.',
+
+    mount: function (root, opts) {
+      opts = opts || {};
+      var LEVELS = [
+        { name: 'The sampler', cap: 40, par: 14, gate: 18, opt: 205, bfs: 29, grover: 6,
+          story: 'Six crates, a small van. Learn the move: open a branch, read its bound, watch what a bound can kill.',
+          raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18]] },
+        { name: 'The van', cap: 55, par: 27, gate: 31, opt: 280, bfs: 204, grover: 18,
+          story: 'Nine crates. Five hundred and twelve ways to load them, and you will not look at most of them.',
+          raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18],[30,7],[105,25],[52,11]] },
+        { name: 'The container', cap: 70, par: 30, gate: 42, opt: 355, bfs: 1388, grover: 50,
+          story: 'Twelve crates, four thousand combinations. Breadth-first play needs 1,388 branches. Good play needs about 38.',
+          raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18],[30,7],[105,25],[52,11],[84,21],[38,8],[66,14]] },
+        { name: 'The freighter', cap: 95, par: 24, gate: 40, opt: 479, bfs: 19829, grover: 201,
+          story: 'Sixteen crates. Sixty-five thousand combinations. This is where the whole argument lands.',
+          raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18],[30,7],[105,25],[52,11],[84,21],
+                [38,8],[66,14],[72,16],[48,10],[93,22],[57,12]] }
+      ];
+      var lv = Math.min(Math.max(opts.level || 0, 0), LEVELS.length - 1);
+      var L, IT, N, TOTAL, nodes, frontier, inc, incTaken, used, killed, over;
+
+      function bound(k, val, wt) {
+        var b = val, rem = L.cap - wt;
+        for (var j = k; j < N; j++) {
+          if (IT[j][1] <= rem) { b += IT[j][0]; rem -= IT[j][1]; }
+          else { b += IT[j][0] * rem / IT[j][1]; break; }
+        }
+        return b;
+      }
+      function leaves(k) { return Math.pow(2, N - k); }
+
+      function load(n) {
+        lv = n; L = LEVELS[lv];
+        IT = L.raw.slice().sort(function (a, b) { return b[0]/b[1] - a[0]/a[1]; });
+        N = IT.length; TOTAL = Math.pow(2, N);
+        nodes = []; used = 0; killed = 0; inc = 0; incTaken = []; over = false;
+        var r0 = { id:0, k:0, val:0, wt:0, b:bound(0,0,0), taken:[], parent:null, state:'open', kids:[] };
+        nodes.push(r0); frontier = [r0];
+        render();
+      }
+
+      function prune(n, why) {
+        n.state = why; killed += leaves(n.k);
+        var i = frontier.indexOf(n); if (i >= 0) frontier.splice(i, 1);
+      }
+      function sweep() {
+        for (var i = frontier.length - 1; i >= 0; i--)
+          if (frontier[i].b <= inc + 1e-9) prune(frontier[i], 'cut');
+      }
+      function expand(n) {
+        if (over || n.state !== 'open') return;
+        if (n.b <= inc + 1e-9) { prune(n, 'cut'); render(); return; }
+        used++; n.state = 'done';
+        var i = frontier.indexOf(n); if (i >= 0) frontier.splice(i, 1);
+        [1, 0].forEach(function (take) {
+          var k = n.k + 1,
+              val = n.val + (take ? IT[n.k][0] : 0),
+              wt  = n.wt  + (take ? IT[n.k][1] : 0),
+              taken = take ? n.taken.concat(n.k) : n.taken;
+          var kid = { id:nodes.length, k:k, val:val, wt:wt, taken:taken,
+                      parent:n, state:'open', kids:[], take:take };
+          nodes.push(kid); n.kids.push(kid);
+          if (wt > L.cap) { kid.b = -Infinity; prune(kid, 'heavy'); return; }
+          if (k === N) {
+            kid.b = val; kid.state = 'leaf'; killed += 1;
+            if (val > inc) { inc = val; incTaken = taken.slice(); kid.state = 'best'; sweep(); }
+            return;
+          }
+          kid.b = bound(k, val, wt);
+          if (kid.b <= inc + 1e-9) prune(kid, 'cut'); else frontier.push(kid);
+        });
+        sweep();
+        if (!frontier.length) { over = true; finish(); return; }
+        render();
+      }
+
+      function layout() {
+        var xs = 0;
+        (function place(n) {
+          if (!n.kids.length) n.x = xs++;
+          else { n.kids.forEach(place); n.x = (n.kids[0].x + n.kids[n.kids.length-1].x) / 2; }
+          n.y = n.k;
+        })(nodes[0]);
+        return xs || 1;
+      }
+
+      function drawTree() {
+        var cols = layout(), colW = 30, rowH = 32, TOP_PAD = 28;
+        var w = Math.max(320, cols * colW + 60), h = TOP_PAD + N * rowH + 34;
+        var g = ['<svg class="ortree" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h +
+                 '" xmlns="' + NS + '" role="img" aria-label="The search tree so far. Grey branches were eliminated by a bound without ever being searched.">'];
+        function X(n) { return 30 + n.x * colW; }
+        function Y(n) { return TOP_PAD + n.y * rowH; }
+        nodes.forEach(function (n) {
+          if (!n.parent) return;
+          g.push('<path class="oredge ' + n.state + '" d="M' + X(n.parent) + ' ' + Y(n.parent) +
+                 'C' + X(n.parent) + ' ' + (Y(n.parent) + rowH*.55) + ',' + X(n) + ' ' + (Y(n) - rowH*.55) +
+                 ',' + X(n) + ' ' + Y(n) + '"/>');
+        });
+        nodes.forEach(function (n) {
+          var r = n.state === 'open' ? 9 : 6;
+          g.push('<g class="ornode ' + n.state + '"' +
+                 (n.state === 'open' ? ' data-n="' + n.id + '" tabindex="0" role="button" aria-label="Open branch, bound ' + Math.floor(n.b) + '"' : '') + '>');
+          g.push('<circle cx="' + X(n) + '" cy="' + Y(n) + '" r="' + r + '"/>');
+          if (n.state === 'open') g.push('<text x="' + X(n) + '" y="' + (Y(n) - 13) + '" text-anchor="middle">' + Math.floor(n.b) + '</text>');
+          if (n.state === 'cut')  g.push('<text class="killed" x="' + X(n) + '" y="' + (Y(n) + 15) + '" text-anchor="middle">−' + leaves(n.k) + '</text>');
+          g.push('</g>');
+        });
+        g.push('</svg>');
+        return g.join('');
+      }
+
+      function crates() {
+        return '<div class="orcrates">' +
+          '<p class="oreyebrow">The crates <span class="capnote">van holds ' + L.cap + ' kg</span></p>' +
+          '<div class="cratelist">' + IT.map(function (it, i) {
+            var inBest = incTaken.indexOf(i) >= 0;
+            return '<span class="crate' + (inBest ? ' in' : '') + '" title="' +
+              (Math.round(it[0]/it[1]*100)/100) + ' per kg">' +
+              '<b>' + it[0] + '</b><i>' + it[1] + 'kg</i></span>';
+          }).join('') + '</div>' +
+          '<p class="orcap" style="margin-top:8px">Sorted by value per kilogram, the order the bound needs. ' +
+          'Highlighted crates are in the best haul found so far' +
+          (incTaken.length ? ' (' + incTaken.length + ' crates, ' +
+            incTaken.reduce(function (a,i) { return a + IT[i][1]; }, 0) + ' kg, worth ' + inc + ')' : ', none yet') + '.</p>' +
+          '</div>';
+      }
+
+      function render() {
+        var pct = Math.round(killed / TOTAL * 100);
+        root.innerHTML =
+          levelBar('prune', LEVELS, lv) +
+          '<p class="orstory">' + esc(L.story) + '</p>' +
+          '<div class="orhud">' +
+            '<span class="orhud-k">Best haul</span><span class="orhud-v big">' + inc + '</span>' +
+            '<span class="orhud-k">Branches opened</span><span class="orhud-v">' + used + '</span>' +
+            '<span class="orhud-k">Par</span><span class="orhud-v">' + L.par + '</span>' +
+            '<span class="orctl"><button class="ctrlbtn" data-restart>↺ restart</button></span>' +
+          '</div>' +
+          '<div class="orbar" title="' + killed + ' of ' + TOTAL + ' accounted for">' +
+            '<i style="width:' + pct + '%"></i><span>' + killed.toLocaleString() + ' of ' +
+            TOTAL.toLocaleString() + ' combinations ruled out, ' + pct + '%</span></div>' +
+          crates() +
+          (over ? finalHTML() :
+            '<p class="oreyebrow" style="margin-top:16px">Open a branch, the number above it is the most it could possibly be worth</p>') +
+          '<div class="ortreewrap">' + drawTree() + '</div>' +
+          '<p class="orcap">Every grey branch was eliminated by arithmetic, not by looking. ' +
+          'The number under it is how many complete combinations died with it, that is where the speed comes from.</p>';
+
+        Array.prototype.forEach.call(root.querySelectorAll('[data-n]'), function (nd) {
+          var n = nodes[+nd.getAttribute('data-n')];
+          nd.addEventListener('click', function () { expand(n); });
+          nd.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); expand(n); }
+          });
+        });
+        Array.prototype.forEach.call(root.querySelectorAll('[data-lv]'), function (b) {
+          b.addEventListener('click', function () { load(+b.getAttribute('data-lv')); });
+        });
+        var r = $(root, '[data-restart]'); if (r) r.addEventListener('click', function () { load(lv); });
+        var a = $(root, '[data-again]');   if (a) a.addEventListener('click', function () { load(lv); });
+        var n2 = $(root, '[data-next]');   if (n2) n2.addEventListener('click', function () { load(lv + 1); });
+        focusNext(root);
+      }
+
+      function finalHTML() {
+        var proved = inc === L.opt, tight = used <= L.gate, last = lv === LEVELS.length - 1;
+        var beatsGrover = used < L.grover;
+        return '<div class="orfinal ' + (proved && tight ? 'win' : '') + '">' +
+          '<p class="oreyebrow">The frontier is empty, that is the proof</p>' +
+          '<p class="orfinal-v">' + used + ' <span>branches opened · par ' + L.par + '</span></p>' +
+          nextCTA(proved && tight, last, lv, 'load', LEVELS) +
+          '<p>All ' + TOTAL.toLocaleString() + ' combinations are accounted for: taken, or ruled out by a bound. ' +
+          'The best haul is <strong>' + inc + '</strong>' + (proved ? ', and it is provably the best there is.' : '.') + '</p>' +
+          '<p class="orfinal-note">Par is <b>' + L.par + '</b>, and it is a floor rather than a target, exactly ' + L.par +
+          ' nodes in this tree have a bound above ' + L.opt + ', and a branch that could still beat the optimum can never be ' +
+          'safely cut by any strategy, reaching it needs a perfect first guess. Clearing this level asks for <b>' + L.gate +
+          '</b> or fewer, which best-bound play achieves. Breadth-first needs <b>' + L.bfs.toLocaleString() + '</b>.</p>' +
+          '<p class="orfinal-note quantum">Grover would need about <b>' + L.grover + '</b> oracle queries on these ' +
+          TOTAL.toLocaleString() + ', Proven quadratic, and it returns a <em>likely</em> answer rather than a proof. ' +
+          (beatsGrover
+            ? 'You beat that. '
+            : 'That is fewer than you used. <b>Grover genuinely wins at this size</b>, and saying otherwise would be dishonest. ') +
+          (last
+            ? 'Look back at level 1: Grover needed 6 there and you needed about 14. It needs 201 here. That is the whole argument, ' +
+              'the quadratic speedup is still exponential, and it is identical whether the problem is a knapsack or pure noise, ' +
+              'because it never looks at the structure. The bound is <em>made</em> of that structure, so it barely grows at all.'
+            : 'Keep going, the gap moves as the problem grows, and which way it moves is the point of this game.') +
+          '</p>' +
+          '<p><button class="preset" data-again>Prove it again, faster</button></p>' +
+          '</div>';
+      }
+
+      function finish() {
+        if (inc === L.opt && used <= L.gate) {
+          markClear('prune', lv);
+          if (clears('prune').length >= LEVELS.length) win('or-prune', opts);
+        }
+        render();
+      }
+
+      load(lv);
+    }
+  };
+
+  window.SymbiQ.orgames = {
+    all: G,
+    list: ['bottleneck', 'prune'].map(function (k) {
+      return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
+    }),
+    get: function (id) { return G[id]; },
+    aboutHTML: function (id) {
+      var a = G[id] && G[id].about;
+      if (!a) return '';
+      var S = window.SymbiQ && SymbiQ.save;
+      var seen = S && S.get ? S.get('rules.seen.' + id, false) : false;
+      if (S && S.set) S.set('rules.seen.' + id, true);
+      return '<details class="gamerules"' + (seen ? '' : ' open') + '>' +
+        '<summary><span class="gr-ico" aria-hidden="true">🕹️</span>' +
+          '<span class="gr-txt"><b>How to play</b>' +
+          '<i>the goal, the rules, and what you will get a feel for</i></span>' +
+          '<span class="gr-x" aria-hidden="true"></span></summary>' +
+        '<div class="gameabout">' +
+        '<div><span class="lbl">🎯 The goal</span> ' + a.goal + '</div>' +
+        '<div><span class="lbl">🕹️ How to play</span> ' + a.how + '</div>' +
+        '<div><span class="lbl v">💡 Inspired by</span> ' + a.inspired + '</div>' +
+        '<div><span class="lbl v">🔬 You’ll get a feel for</span> ' + a.learn +
+          ' <a href="' + a.link + '">' + a.linkText + '</a> <span class="tier">' + a.tier + '</span></div>' +
+        '</div></details>';
+    },
+    mount: function (id, elm, opts) {
+      var g = G[id];
+      if (!g || !elm) return false;
+      try { g.mount(elm, opts || {}); return true; }
+      catch (e) { elm.innerHTML = '<p style="color:var(--muted)">This game could not start. Reload the page.</p>'; return false; }
+    }
+  };
+})();
+
+(function () {
+  window.SymbiQ = window.SymbiQ || {};
+
+  var INSTANCES = [
+    { name: 'The sampler', cap: 40, opt: 205, grover: 6,
+      raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18]] },
+    { name: 'The van', cap: 55, opt: 280, grover: 18,
+      raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18],[30,7],[105,25],[52,11]] },
+    { name: 'The container', cap: 70, opt: 355, grover: 50,
+      raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18],[30,7],[105,25],[52,11],[84,21],[38,8],[66,14]] },
+    { name: 'The freighter', cap: 95, opt: 479, grover: 201,
+      raw: [[60,10],[100,20],[120,30],[75,15],[45,9],[90,18],[30,7],[105,25],[52,11],[84,21],
+            [38,8],[66,14],[72,16],[48,10],[93,22],[57,12]] }
+  ];
+
+  function greedy(items, cap) {
+    var ord = items.map(function (it, i) { return { i: i, v: it[0], w: it[1], r: it[0] / it[1] }; })
+                   .sort(function (a, b) { return b.r - a.r; });
+    var w = 0, v = 0, steps = 0;
+    for (var k = 0; k < ord.length; k++) {
+      steps++;
+      if (w + ord[k].w <= cap) { w += ord[k].w; v += ord[k].v; }
+    }
+    return { value: v, effort: steps, unit: 'items examined' };
+  }
+
+  function dantzig(items, cap) {
+    var ord = items.map(function (it) { return { v: it[0], w: it[1], r: it[0] / it[1] }; })
+                   .sort(function (a, b) { return b.r - a.r; });
+    var w = 0, v = 0, frac = false;
+    for (var k = 0; k < ord.length; k++) {
+      if (w + ord[k].w <= cap) { w += ord[k].w; v += ord[k].v; }
+      else { v += ord[k].r * (cap - w); w = cap; frac = true; break; }
+    }
+    return { value: v, effort: ord.length, unit: 'items examined', fractional: frac };
+  }
+
+  function branchAndBound(items, cap) {
+    var ord = items.map(function (it) { return { v: it[0], w: it[1], r: it[0] / it[1] }; })
+                   .sort(function (a, b) { return b.r - a.r; });
+    var n = ord.length, total = Math.pow(2, n), best = 0, nodes = 0, killed = 0;
+
+    function bound(idx, w, v) {
+      var bw = w, bv = v;
+      for (var k = idx; k < n; k++) {
+        if (bw + ord[k].w <= cap) { bw += ord[k].w; bv += ord[k].v; }
+        else { return bv + ord[k].r * (cap - bw); }
+      }
+      return bv;
+    }
+    var open = [{ idx: 0, w: 0, v: 0, b: bound(0, 0, 0) }];
+    while (open.length) {
+      open.sort(function (a, b) { return b.b - a.b; });
+      var node = open.shift();
+      if (node.b <= best) { killed += Math.pow(2, n - node.idx); continue; }
+      if (node.idx === n) { if (node.v > best) best = node.v; killed += 1; continue; }
+      nodes++;
+      var it = ord[node.idx];
+      if (node.w + it.w <= cap) {
+        var tv = node.v + it.v, tw = node.w + it.w;
+        if (tv > best) best = tv;
+        open.push({ idx: node.idx + 1, w: tw, v: tv, b: bound(node.idx + 1, tw, tv) });
+      } else {
+        killed += Math.pow(2, n - node.idx - 1);
+      }
+      open.push({ idx: node.idx + 1, w: node.w, v: node.v, b: bound(node.idx + 1, node.w, node.v) });
+    }
+    return { value: best, effort: nodes, unit: 'nodes opened', killed: killed, total: total,
+             partitions: killed === total };
+  }
+
+  function anneal(items, cap, runs) {
+    var n = items.length, bestOverall = 0, hits = 0, worst = Infinity, steps = 300;
+    function val(mask) {
+      var v = 0, w = 0;
+      for (var i = 0; i < n; i++) if (mask[i]) { v += items[i][0]; w += items[i][1]; }
+      return w <= cap ? v : -1;
+    }
+    for (var r = 0; r < runs; r++) {
+      var cur = new Array(n).fill(0), cv = 0, T = 60;
+      for (var s = 0; s < steps; s++) {
+        var i = (Math.random() * n) | 0;
+        cur[i] ^= 1;
+        var nv = val(cur);
+        if (nv >= 0 && (nv > cv || Math.random() < Math.exp((nv - cv) / T))) cv = nv;
+        else cur[i] ^= 1;
+        T *= 0.985;
+      }
+      if (cv > bestOverall) bestOverall = cv;
+      if (cv < worst) worst = cv;
+    }
+    return { value: bestOverall, worst: worst, effort: runs * steps, unit: 'moves' };
+  }
+
+  function grover(n) {
+    var exact = (Math.PI / 4) * Math.sqrt(Math.pow(2, n));
+    return { queries: Math.round(exact), exact: exact, n: n };
+  }
+
+  function run(inst, saRuns) {
+    var items = inst.raw, cap = inst.cap, n = items.length;
+    var g = greedy(items, cap), lp = dantzig(items, cap), bb = branchAndBound(items, cap);
+    var hits = 0, R = saRuns || 200;
+    for (var r = 0; r < R; r++) { if (anneal(items, cap, 1).value === bb.value) hits++; }
+    var sa = anneal(items, cap, R);
+    return { inst: inst, n: n, greedy: g, lp: lp, bb: bb, sa: sa, saHitRate: hits / R,
+             grover: grover(n),
+             agrees: inst.opt == null || bb.value === inst.opt };
+  }
+
+  SymbiQ.methods = { INSTANCES: INSTANCES, run: run, branchAndBound: branchAndBound,
+                     greedy: greedy, dantzig: dantzig, anneal: anneal, grover: grover };
+
+  var esc = function (s) { return String(s).replace(/[&<>]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); };
+  var num = function (x) { return x.toLocaleString('en-GB'); };
+
+  function tableRow(m) {
+    return '<tr class="vm-' + m.kind + '">' +
+      '<th scope="row">' + esc(m.name) + '<em>' + esc(m.note) + '</em></th>' +
+      '<td class="vm-ans">' + m.answer + '</td>' +
+      '<td class="vm-eff">' + m.effort + '</td>' +
+      '<td class="vm-cert"><span class="vm-badge ' + (m.proof ? 'yes' : 'no') + '">' +
+        (m.proof ? 'certificate' : 'no certificate') + '</span>' + m.cert + '</td></tr>';
+  }
+
+  SymbiQ.methods.mount = function (root, opts) {
+    opts = opts || {};
+    var idx = opts.level || 2;
+
+    function render() {
+      var inst = INSTANCES[idx];
+      var r = run(inst, 120);
+
+      if (!r.agrees) {
+        root.innerHTML = '<div class="verdict bad">This solver disagreed with the ' +
+          'independently verified optimum for ' + esc(inst.name) + '. Refusing to show ' +
+          'figures until that is resolved.</div>';
+        return;
+      }
+
+      var gap = r.bb.value - r.greedy.value;
+      var rows = [
+        { kind: 'cl', name: 'Greedy', note: 'best value per kilogram, take it if it fits',
+          answer: num(r.greedy.value),
+          effort: num(r.greedy.effort) + ' items looked at',
+          proof: false,
+          cert: gap
+            ? 'None. It is instant, and it cannot tell you it fell <b>' + num(gap) +
+              '</b> short, you only know that because the exact method below proved it.'
+            : 'None. It happens to be optimal here, and it has no way of knowing that.' },
+        { kind: 'cl', name: 'LP relaxation', note: 'the Dantzig bound, allow a fraction of one crate',
+          answer: r.lp.value.toFixed(2) + (r.lp.fractional ? ' <em>fractional</em>' : ''),
+          effort: num(r.lp.effort) + ' items looked at',
+          proof: true,
+          cert: 'An <b>upper bound</b>: proves nothing can beat ' + r.lp.value.toFixed(2) +
+                '. But its own answer splits a crate, so you cannot load it.' },
+        { kind: 'ex', name: 'Branch & bound', note: 'exact, the machinery every commercial solver runs',
+          answer: '<b>' + num(r.bb.value) + '</b> <span class="vm-opt">optimal</span>',
+          effort: num(r.bb.effort) + ' nodes opened',
+          proof: true,
+          cert: '<b>Optimal, proven.</b> Every one of the ' + num(r.bb.total) +
+                ' combinations is accounted for, taken, or killed by a bound. ' +
+                'killed + reached = ' + num(r.bb.killed) + ' = 2<sup>' + r.n + '</sup>.' },
+        { kind: 'he', name: 'Simulated annealing', note: 'the metaheuristic quantum annealing imitates',
+          answer: num(r.sa.value),
+          effort: num(r.sa.effort) + ' moves, 120 restarts',
+          proof: false,
+          cert: 'None, and this is the sharp one. It landed on the optimum in <b>' +
+                Math.round(r.saHitRate * 100) + '%</b> of runs. In the other ' +
+                Math.round((1 - r.saHitRate) * 100) + '% it also stopped, and also reported an answer.' },
+        { kind: 'q', name: 'Grover', note: 'quantum, Proven quadratic, a resource estimate, not a result',
+          answer: '<span class="vm-na">no answer to show</span>',
+          effort: '~' + num(r.grover.queries) + ' oracle queries',
+          proof: false,
+          cert: 'None. Returns a <em>likely</em> answer, and needs a fault-tolerant machine ' +
+                'that does not exist at this size. It never looks at the structure.' }
+      ];
+
+      var beats = r.grover.queries < r.bb.effort;
+      var verdict = beats
+        ? '<div class="verdict split"><b>Watch.</b> On an instance this small Grover&rsquo;s query count is ' +
+          'below the number of nodes branch and bound opens. That is real, and it is also the ' +
+          'last size at which it is true.</div>'
+        : '<div class="verdict good"><b>Never</b>, for this problem, at this size. Branch and bound ' +
+          'finished in ' + num(r.bb.effort) + ' nodes <em>holding a proof</em>; Grover would need ~' +
+          num(r.grover.queries) + ' queries on hardware that does not exist, and finish holding a guess.</div>';
+
+      root.innerHTML =
+        '<div class="vm-pick">' + INSTANCES.map(function (I, i) {
+          return '<button type="button" class="preset' + (i === idx ? ' on' : '') + '" data-i="' + i + '">' +
+                 esc(I.name) + '<em>' + I.raw.length + ' crates · ' + num(Math.pow(2, I.raw.length)) +
+                 ' ways</em></button>'; }).join('') + '</div>' +
+        verdict +
+        '<div class="vm-scroll"><table class="vm"><thead><tr><th>Method</th><th>Best it found</th>' +
+        '<th>Effort</th><th>What it can prove</th></tr></thead><tbody>' +
+        rows.map(tableRow).join('') + '</tbody></table></div>' +
+        '<p class="vm-note"><b>The units are not comparable</b>, an oracle query and a bound ' +
+        'computation are different work, so the scoreboard is not the point. The shape is. ' +
+        'Grover&rsquo;s speedup is quadratic but still exponential, and identical on a knapsack or ' +
+        'on pure noise, because it never reads the structure. The bound is <em>made</em> of that ' +
+        'structure, so it barely grows. <b>Node counts depend on how ties between equal bounds ' +
+        'fall</b>: this solver opens ' + num(r.bb.effort) + ' on ' + esc(inst.name) +
+        ', while <a href="#prune">The Prune</a>, playable below, same instance, reports 14 / 27 / ' +
+        '35&ndash;38 / 36 for the four. Both are honest; neither is <em>the</em> number.</p>';
+    }
+
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-i]');
+      if (!b) return;
+      idx = +b.dataset.i;
+      render();
+    });
+    render();
+  };
+})();

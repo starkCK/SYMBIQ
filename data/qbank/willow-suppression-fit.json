@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "willow-suppression-fit",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "qec-lambda",
+  "question": {
+    "text": "Google's Willow chip is reported at a suppression factor Λ = 2.14 ± 0.02 per two steps of code distance. But the single d = 5 → 7 step, read on its own, comes out closer to 2.1. Which number is wrong?",
+    "options": [
+      "Neither — 2.14 is a fit across the whole d = 3, 5, 7 series, and any one step can legitimately read a little different from the series-wide average",
+      "2.1 is wrong; measurement error on the last step alone should be discarded in favour of the fitted value",
+      "2.14 is wrong; the true suppression factor is whatever the most recent step measured",
+      "Both are wrong; Λ should be recomputed from d = 3 → 5 alone, since later steps accumulate more noise"
+    ],
+    "answerIndex": 0,
+    "hint": "A regression across three points and the last pair of those points are two different quantities, even when nothing has gone wrong with either one.",
+    "explain": {
+      "g": "2.14 comes from fitting a line through three data points, not from reading off the last one. A fit summarises a trend; any individual step is allowed to sit a bit above or below that trend without either number being a mistake. Quoting 2.14 as if it were what the d = 5 → 7 step alone showed would be the actual error here.",
+      "y": "The fit regresses log(logical error rate) against distance across d = 3, 5, 7 — three points, one slope. The d = 5 → 7 step in isolation is a single two-point ratio, which is noisier and not required to match the whole-series slope exactly. Reading closer to 2.1 on that one step is consistent with a fit centred at 2.14 ± 0.02; it isn't a contradiction.",
+      "r": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687. The ± 0.02 is the fit's own uncertainty, not a claim that every individual step lands within it — that would only hold if the underlying suppression were perfectly constant across distances, which single-step measurement noise alone would violate even if it were. Extrapolating this Λ nine steps past where it was measured is a separate, larger caveat (see the nine-steps receipt)."
+    }
+  }
+}

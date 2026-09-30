@@ -1,0 +1,230 @@
+
+body[data-vivid] {
+  --bg: #16100f;
+  --panel: #221816;
+  --panel-2: #2b1f1b;
+  --text: #e8ecf6;
+  --muted: #9aa5bd;
+
+  --violet: #c586e6;
+  --indigo: #e0a15c;
+  --teal: #33d696;
+  --link: #33d696;
+
+  --border: #362721;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --red: #f87171;
+
+  --nav-bg: rgba(22, 16, 15, 0.82);
+  --dot: rgba(197, 134, 230, 0.08);
+  --glow1: rgba(197, 134, 230, 0.16);
+  --glow2: rgba(51, 214, 150, 0.11);
+  --glow3: rgba(224, 161, 92, 0.08);
+  --shadow: rgba(20, 10, 8, 0.36);
+
+  --h1-a: #e8ecf6;
+  --h1-b: #c586e6;
+  --h1-c: #33d696;
+  --rowhover: rgba(148, 163, 184, 0.06);
+
+  --spectrum: linear-gradient(100deg, var(--violet), var(--indigo) 46%, var(--teal));
+}
+
+@media (prefers-color-scheme: light) {
+  body[data-vivid] {
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --panel-2: #eef3fb;
+    --text: #0f172a;
+    --muted: #526180;
+
+    --violet: #7c3aed;
+    --indigo: #4a5ad0;
+    --teal: #0f766e;
+    --link: #0f766e;
+
+    --border: #dbe2ef;
+    --green: #15803d;
+    --yellow: #b45309;
+    --red: #b91c1c;
+
+    --nav-bg: rgba(248, 250, 252, 0.85);
+    --dot: rgba(124, 58, 237, 0.06);
+    --glow1: rgba(124, 58, 237, 0.09);
+    --glow2: rgba(13, 148, 136, 0.08);
+    --glow3: rgba(74, 90, 208, 0.06);
+    --shadow: rgba(15, 23, 42, 0.09);
+    --rowhover: rgba(15, 23, 42, 0.04);
+
+    --h1-a: #0f172a;
+    --h1-b: #7c3aed;
+    --h1-c: #0d9488;
+    --spectrum: linear-gradient(100deg, #7c3aed, #4a5ad0 46%, #0f766e);
+  }
+}
+
+body[data-vivid]::before {
+  background-image:
+    radial-gradient(780px circle at 4% -8%, var(--glow1), transparent 60%),
+    radial-gradient(900px circle at 98% 6%, var(--glow3), transparent 58%),
+    radial-gradient(920px circle at 92% 110%, var(--glow2), transparent 60%),
+    radial-gradient(circle, var(--dot) 1px, transparent 1.5px),
+    var(--grain-url);
+  background-size: auto, auto, auto, 26px 26px, 140px 140px;
+}
+
+body[data-vivid]::after {
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--violet), var(--indigo) 25%, var(--teal) 50%,
+    var(--indigo) 75%, var(--violet));
+  background-size: 200% 100%;
+  opacity: 0.92;
+}
+
+body[data-vivid] h1 {
+  font-size: clamp(2.05rem, 1.3rem + 3.4vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  --h1-w: 800;
+  font-weight: var(--h1-w);
+  background-image: linear-gradient(96deg, var(--h1-a) 20%, var(--h1-b) 62%, var(--h1-c) 100%);
+}
+@media (prefers-color-scheme: dark) {
+  body[data-vivid] h1 {
+    filter: drop-shadow(0 2px 24px color-mix(in oklab, var(--violet) 20%, transparent));
+  }
+}
+
+body[data-vivid] h2 {
+  font-size: 1.32rem;
+  letter-spacing: -0.01em;
+}
+body[data-vivid] h2::before {
+  width: 4px;
+  background: var(--spectrum);
+  box-shadow: 0 0 12px -2px color-mix(in oklab, var(--teal) 55%, transparent);
+}
+
+body[data-vivid] .spine::before,
+body[data-vivid] .spine-tag + .spine::before {
+  width: 4px;
+  background: var(--spectrum);
+}
+
+body[data-vivid] .card,
+body[data-vivid] .introute-card {
+  background: var(--panel);
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--violet) 6%, var(--panel)),
+    var(--panel) 44%);
+  border-color: var(--border);
+  border-color: color-mix(in oklab, var(--indigo) 24%, var(--border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #ffffff 6%, transparent),
+    0 12px 30px -18px var(--shadow);
+}
+body[data-vivid] .card:hover,
+body[data-vivid] .introute-card:hover {
+  border-color: color-mix(in oklab, var(--teal) 58%, var(--border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #ffffff 9%, transparent),
+    0 22px 46px -20px color-mix(in oklab, var(--indigo) 42%, var(--shadow)),
+    0 0 26px -6px color-mix(in oklab, var(--violet) 24%, transparent);
+}
+
+body[data-vivid][data-motion] .card::after,
+body[data-vivid][data-motion] .introute-card::after {
+  background: radial-gradient(
+    360px circle at var(--mo-x, 50%) var(--mo-y, 50%),
+    color-mix(in oklab, var(--teal) 20%, transparent),
+    color-mix(in oklab, var(--violet) 13%, transparent) 40%,
+    transparent 68%
+  );
+}
+
+body[data-vivid] .orhero {
+  background: var(--panel);
+  background:
+    radial-gradient(130% 150% at 4% 0%, color-mix(in oklab, var(--teal) 16%, transparent), transparent 60%),
+    radial-gradient(130% 150% at 100% 100%, color-mix(in oklab, var(--violet) 18%, transparent), transparent 58%),
+    var(--panel);
+  border-color: var(--border);
+  border-color: color-mix(in oklab, var(--indigo) 22%, var(--border));
+  box-shadow: 0 30px 70px -46px color-mix(in oklab, var(--indigo) 60%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  body[data-vivid] .orhero {
+    background-size: 200% 200%, 200% 200%, auto;
+    animation: vv-aurora 26s ease-in-out infinite alternate;
+  }
+}
+@keyframes vv-aurora {
+  from { background-position: 0% 0%, 100% 100%, 0 0; }
+  to   { background-position: 18% 12%, 82% 88%, 0 0; }
+}
+
+
+body[data-vivid] .nextup {
+  background: var(--panel);
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--teal) 12%, var(--panel)),
+    color-mix(in oklab, var(--violet) 10%, var(--panel)));
+  border-color: color-mix(in oklab, var(--teal) 55%, var(--border));
+}
+
+body[data-vivid] .tier.g {
+  background: color-mix(in oklab, var(--green) 15%, transparent);
+  border-color: color-mix(in oklab, var(--green) 50%, transparent);
+}
+body[data-vivid] .tier.y {
+  background: color-mix(in oklab, var(--yellow) 15%, transparent);
+  border-color: color-mix(in oklab, var(--yellow) 50%, transparent);
+}
+body[data-vivid] .tier.r {
+  background: color-mix(in oklab, var(--red) 15%, transparent);
+  border-color: color-mix(in oklab, var(--red) 50%, transparent);
+}
+
+body[data-vivid] nav a.link.active {
+  box-shadow: 0 3px 10px -4px color-mix(in oklab, var(--teal) 65%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-vivid] .reveal.in h2::before {
+    animation:
+      growbar 0.5s cubic-bezier(0.22, 0.7, 0.3, 1) both,
+      vv-bar-charge 1.15s cubic-bezier(0.22, 0.7, 0.3, 1) 0.08s both;
+  }
+}
+@keyframes vv-bar-charge {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--teal) 0%, transparent); }
+  35%  { box-shadow: 0 0 20px 1px color-mix(in oklab, var(--teal) 72%, transparent); }
+  100% { box-shadow: 0 0 12px -2px color-mix(in oklab, var(--teal) 55%, transparent); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-vivid]::before {
+    animation: vv-breathe 20s ease-in-out infinite;
+  }
+}
+@keyframes vv-breathe {
+  0%, 100% { transform: scale(1);     opacity: 1;    }
+  50%      { transform: scale(1.045); opacity: 0.9;  }
+}
+
+body[data-vivid] .readbar { height: 3px; }
+body[data-vivid] .readbar i {
+  background: var(--spectrum);
+  transition: width 0.14s var(--ease-out-quint, cubic-bezier(0.22, 1, 0.36, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-vivid] .readbar i { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-vivid]::before,
+  body[data-vivid]::after,
+  body[data-vivid] .orhero { animation: none; }
+}

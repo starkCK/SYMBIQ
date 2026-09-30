@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "date": "2026-08-01",
+  "qnum": 5,
+  "tier": "g",
+  "question": {
+    "text": "Your bank says \"we use encryption, we're safe.\" A quantum-aware friend says \"your data might already be stolen — just not read yet.\" What attack is the friend describing?",
+    "options": [
+      "The bank's encryption has a bug that lets ordinary hackers read your data right now, quantum computers aside",
+      "A big enough quantum computer already exists somewhere and could crack the bank's encryption today",
+      "Harvest-now-decrypt-later — someone is recording your encrypted data today, planning to unlock it once a powerful enough quantum computer exists",
+      "A quantum computer would have to physically break into the bank's servers to steal your data"
+    ],
+    "answerIndex": 2,
+    "hint": "It isn't about whether a quantum computer exists today — it's about what gets saved today and opened later.",
+    "explain": {
+      "g": "Encryption today locks your data behind a math problem no computer alive can solve in a useful amount of time. That's true right now. The catch: \"right now\" isn't forever. A powerful enough quantum computer — one that doesn't exist yet — could solve that same math problem in reasonable time, using an algorithm built for exactly this job. So an attacker doesn't need a quantum computer today to threaten your data today. They just need a hard drive: copy your encrypted traffic now, store it, and wait. Whatever you send today stays exposed for as long as it needs to stay secret — which for medical records, state secrets, or a 30-year mortgage is a very long time.",
+      "y": "Public-key encryption (RSA, elliptic-curve) is secure because factoring large numbers or solving discrete logs is intractable for classical computers. Shor's algorithm solves both in polynomial time on a fault-tolerant quantum computer — but that computer doesn't need to exist when the data is captured, only when someone chooses to decrypt it later. So the real clock isn't \"does a cryptographically relevant quantum computer exist today,\" it's \"how many years does this data need to stay secret, versus how many years until that computer exists.\" That gap is exactly why organizations aren't waiting: Google has set a public 2029 deadline to migrate its infrastructure to post-quantum cryptography, a full year ahead of NIST's 2030 deprecation of the legacy algorithms Shor's algorithm breaks — prioritizing digital signatures first, since a compromised signing chain can't be fixed retroactively.",
+      "r": "Shor's algorithm factors an n-bit integer (and solves the analogous discrete-log problem for elliptic curves) in time polynomial in n, versus the best known sub-exponential classical attack — the asymmetry that breaks RSA and ECC once a fault-tolerant quantum computer of sufficient scale exists. Resource estimates for RSA-2048 have fallen sharply: the most recent published estimate puts it within reach of a machine with under 1,200 logical qubits and roughly 500,000 physical qubits (arXiv 2603.28846, Mar 2026), versus roughly 1,000 physical qubits on today's largest chips and well over a billion in 2019-era estimates. Harvest-now-decrypt-later exploits the fact that ciphertext captured today remains decryptable retroactively; the operative race is between an organization's required confidentiality horizon and the falling estimated arrival date of that hardware, not the hardware's current existence. This is the reasoning behind NIST finalizing post-quantum standards ML-KEM/ML-DSA (FIPS 203/204, Aug 2024) and Google's public 2029 internal migration deadline, a year ahead of NIST's 2030 sunset for the vulnerable legacy algorithms."
+    }
+  },
+  "signal": "Pasqal researchers built an agentic AI workflow that turns a published quantum-physics paper into an overnight experiment campaign on their neutral-atom QPUs, and used a second agent to scan 633 Rydberg-array arXiv papers, finding nearly half already runnable on present-day hardware — but the same paper reports the agent picking an inadequate observable in one case study and inventing a plausible-but-wrong hardware diagnosis in another, caught only by expert human review (arXiv 2607.25834, 28 Jul 2026).",
+  "lattice": { "f": 0, "goal": 3000, "nextD": 4 }
+}

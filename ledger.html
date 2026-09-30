@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-apxpZqj71Iy5U3YFgNIc20YL03pNNRWIWva6KfBmy84=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>The Ledger · SymbiQ</title>
+<meta name="description" content="Public claims about quantum computing, each logged with the date it was made and an archived source, and tracked to a dated verdict. Criteria frozen when a claim is logged, and our own error rate published next to theirs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/ledger.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="alternate" type="application/rss+xml" title="SymbiQ · The Ledger" href="ledger.xml">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/ledger.html">
+<meta property="og:title" content="The Ledger · SymbiQ">
+<meta property="og:description" content="Public claims about quantum computing, each logged with the date it was made and an archived source, and tracked to a dated verdict, with our own error rate published next to theirs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="The Ledger · SymbiQ">
+<meta name="twitter:description" content="Public claims about quantum computing, each logged with the date it was made and an archived source, and tracked to a dated verdict.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/ledger.css?v=33">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/ledger.js?v=16" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain active">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+<h1>The Ledger</h1>
+<p class="tagline">Every public, dated, falsifiable claim SymbiQ tracks about quantum computing (from
+labs, executives, and regulators), logged with the date it was made and an archived copy of where it was said, checked against sources named <em>before</em>
+we look, and resolved to <strong>Verified</strong>, <strong>Partially verified</strong>, <strong>Not
+verified</strong>, or <strong>Unfalsifiable</strong> only when the deadline arrives. No deleting misses.
+<span id="ldg-state">Counting the current state…</span></p>
+
+<noscript><p class="ldg-nr">The live counts need JavaScript; the underlying
+data is at <code>data/claims/index.json</code> either way.</p></noscript>
+
+<div class="card" id="ldg-summary">
+  <h3>Loading The Ledger…</h3>
+  <p style="margin-bottom:0">If this does not fill in, the data could not be fetched. It lives at
+  <code>data/claims/index.json</code>.</p>
+</div>
+
+<div id="ldg-mount"></div>
+
+<h2 id="scorecards">Claimant scorecards</h2>
+<p style="color:var(--muted);font-size:.92rem">Rebuilt every time a claim resolves. A claimant needs
+five resolved claims before we rank them; below that, the count shows but the rate is withheld, since
+one lucky or unlucky guess could swing it 20 points.</p>
+<div id="ldg-scorecards"><p class="archq-loading">Loading…</p></div>
+
+<h2 id="ours">Our own scorecard</h2>
+<p style="color:var(--muted);font-size:.92rem">Published with the same prominence as theirs. If we write
+criteria that turn out unscoreable, that's <em>our</em> error, not the claimant's, and it counts here as
+void.</p>
+<div id="ldg-ours"><p class="archq-loading">Loading…</p></div>
+
+<h2 id="how">How a claim moves through the Ledger</h2>
+<p>A claim only enters the Ledger if it is <strong>attributed</strong> to a named person or organisation,
+<strong>dated</strong>, <strong>falsifiable</strong> (there's a stated observation that would make it
+false), <strong>deadlined</strong>, and its resolution criteria are <strong>pre-registered</strong> before
+tracking starts. If a claim can't clear that bar as stated, we either rewrite it with an explicit
+SymbiQ-constructed interpretation (flagged as such; see
+<a href="#c-microsoft-topological-years-not-decades">Microsoft's entry</a> for a live example) or file it
+as unfalsifiable, which is itself a published verdict.</p>
+<ol class="asks" style="margin:16px 0 0;padding:0;list-style:none">
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Pre-registration and freeze.</strong>
+  Resolution criteria and resolver sources are locked the moment a claim starts tracking. Changing them
+  after the fact voids the claim from scoring, in public, never as a quiet edit.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>A separate verdict.</strong> A verdict
+  is written after the deadline, in its own pass, against the criteria and sources frozen when the claim was
+  logged, and it cites every piece of evidence it uses. A drafted verdict is shown in full, marked as not yet
+  final, before it is published.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Archive at intake.</strong> No claim
+  starts tracking without an independent, dated snapshot of its source, and no verdict ships without one for
+  every piece of evidence it rests on, so an edited or deleted press release can't make a claim unprovable
+  later. Each link shows the date its copy was taken.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Void is our failure, not
+  theirs.</strong> Unscoreable criteria are our mistake, published with the same weight as any other
+  correction.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Right of reply.</strong> Any
+  claimant can answer a verdict at any time, through <a href="corrections.html#report">the correction
+  report</a> or by email. The reply is published in full beside the verdict, and if it shows the verdict is
+  wrong, the verdict changes and the change is logged.</li>
+  <li style="padding:10px 0;border-top:1px solid var(--border)"><strong>Claims, not people.</strong> The
+  verdict vocabulary has no word for lying, hype, or fraud, only whether what was said matches what
+  happened.</li>
+</ol>
+<p style="margin-top:14px;font-size:.9rem;color:var(--muted)">The full design (schema, scoring maths, the
+whole claim lifecycle) is in <code>outputs/21_MARKETPLACE_AND_REALITY_TRACKER.md</code>.</p>
+<p>Any open claim below also carries a <strong>Your call</strong> panel, next to the crowd forecast, where
+you can stake your own split of verified / partially verified / not verified. It's saved in this browser
+only, scored the day the claim actually resolves, and never blended with a game score or a curriculum
+answer — see <a href="standing.html">The Standing</a> for the honest reasoning behind keeping those
+separate.</p>
+
+<h2 id="subscribe">Follow it without coming back</h2>
+<p>A dated record nobody hears about is just a file. Every event here — a claim captured with its
+criteria frozen, a dated check-in, a verdict drafted, a verdict countersigned — goes out on a feed:
+<a href="ledger.xml"><code>ledger.xml</code></a>. Paste that into any reader. The underlying data is
+<a href="data/claims/index.json"><code>data/claims/index.json</code></a>, and every claim has its own
+permanent link (the <b>#</b> on each entry above), so anything here can be cited without citing us.</p>
+
+<h2 id="propose">Seen a claim that belongs here?</h2>
+<p><strong>No account needed.</strong> Send it in and it clears the same bar as everything above
+(attributed, dated, falsifiable, deadlined) before the desk writes it up as a real entry with frozen
+criteria. Nothing publishes automatically. The one thing that helps most is not the link &mdash; it is
+telling us <em>what would settle it</em>: a claim nobody can write a resolution rule for cannot be
+tracked here at all, and saying so is half the work.</p>
+<div id="ldg-submit"><p class="ldg-nr">Checking sign-in status…</p></div>
+
+<script>
+(function () {
+  var host = document.getElementById("ldg-mount");
+  var sum  = document.getElementById("ldg-summary");
+  var sub  = document.getElementById("ldg-submit");
+  if (sum) sum.remove();
+  function go() {
+    if (!(window.SymbiQ && SymbiQ.ledger)) return;
+    SymbiQ.ledger.mount(host, { heading: true });
+    SymbiQ.ledger.wireSubmitForm(sub);
+  }
+  if (window.SymbiQ && SymbiQ.ledger) go();
+  else document.addEventListener("DOMContentLoaded", go);
+})();
+</script>
+
+<footer>Nothing here is a judgment of anyone's character, only of whether a dated, public claim came
+true.<br>SymbiQ · Think we got a resolution wrong? <a href="corrections.html#report">Tell us</a>.</footer>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "period-finding-divisor",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "r",
+  "receipt": "pk-2000-trial",
+  "question": {
+    "text": "Shor's period finding measures a phase, then runs continued fractions to recover the period r. When the sampled numerator s shares a factor with r, what does that step actually return?",
+    "options": [
+      "r divided by gcd(s, r) — a genuine divisor of r, not r itself, which is why the algorithm retries",
+      "r exactly, since continued fractions reconstruct the reduced fraction either way",
+      "Nothing usable: the continued-fraction step fails and returns no candidate",
+      "A multiple of r, which still factors the number after one extra classical step"
+    ],
+    "answerIndex": 0,
+    "hint": "Continued fractions recover a fraction in lowest terms. Ask what s over r looks like once you cancel the common factor.",
+    "explain": {
+      "g": "The quantum part hands back a fraction, and continued fractions can only give it back in lowest terms. If the numerator it happened to sample shares a factor with the period, the cancelling has already happened and what comes out is a smaller number that divides the true period. It is not wrong, it is just not the whole answer, so the algorithm tries again. Shor's algorithm is probabilistic for this reason, not because the physics is unreliable.",
+      "y": "Phase estimation returns an approximation to s/r for a uniformly sampled s. Continued fractions recover the convergent in lowest terms, which is s/gcd(s,r) over r/gcd(s,r). So a coprime s recovers r exactly and a non-coprime s recovers a proper divisor. Over 2,000 trials this site checked both branches separately: 1,189 coprime cases recovered r exactly, 100% of the time, and 811 non-coprime cases recovered a genuine divisor, also 100% of the time.",
+      "r": "The 100% figures describe the continued-fraction step behaving exactly as specified once the phase is resolved to sufficient precision; they are not a claim that factoring succeeds in one shot. Separately, at t = 8 bits on random non-exact phases, the probability of landing within one bin of the best estimate stays above 0.85 across trials. Recomputed in tools/verify_qft_phase_periodfinding.py; the mechanism is derived in full on The Machinery."
+    }
+  }
+}

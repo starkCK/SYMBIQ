@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "date": "2026-07-30",
+  "qnum": 4,
+  "tier": "y",
+  "question": {
+    "text": "A quantum computer's state decays within microseconds, so its error-correcting decoder has to make a call in about a microsecond too. For years that was the argument AGAINST replacing hand-written decoders with neural networks. What actually changed to make a neural-network decoder viable in real time?",
+    "options": [
+      "Chip designers slowed the qubits' decay rate instead, giving any decoder more time to think",
+      "Specialized real-time hardware (an FPGA) got a trained neural network's inference down to hundreds of nanoseconds, comfortably inside the ~1-microsecond QEC cycle",
+      "Neural networks were redesigned to run directly on the qubits themselves, removing the classical bottleneck entirely",
+      "Researchers showed the ~1-microsecond limit was overly conservative and decoders actually have milliseconds to respond"
+    ],
+    "answerIndex": 1,
+    "hint": "The qubits didn't get more patient, and the network didn't move onto the chip itself — something about how fast the decision runs changed.",
+    "explain": {
+      "g": "Every microsecond, the quantum chip needs a yes/no decision about which errors just happened, or errors pile up faster than they can be fixed. A trained neural network can be very accurate, but running one is normally like a smart translator who needs a few seconds to think — too slow for a live conversation. The fix wasn't a smarter or smaller network. It was building fast, dedicated hardware (an FPGA — a chip wired to do one job extremely quickly) that runs the SAME trained network but delivers its answer in a few hundred billionths of a second instead. Same brain, faster reflexes.",
+      "y": "The QEC cycle on real superconducting hardware repeats roughly every 1.25 microseconds — decode, correct, repeat, or errors accumulate faster than you remove them. Big neural-network decoders (like AlphaQubit) were accurate but historically evaluated offline or on general-purpose processors, with inference times far longer than that budget. In May 2026, an FPGA implementation of a neural decoder brought total system latency to about 550 nanoseconds — only 124 ns of that spent on the network itself — comfortably inside the 1.25 μs window, while matching offline decoding accuracy (arXiv 2605.04892). The bottleneck was never whether a neural net could learn the error patterns; it was whether the hardware running it could keep pace with the qubits.",
+      "r": "Below-threshold surface-code operation needs syndrome extraction and decoding to complete within the stabilizer-measurement cycle (~1.25 μs on typical superconducting hardware) to avoid a growing backlog of undecoded syndrome history. Prior recurrent-transformer decoders such as AlphaQubit (arXiv 2310.05900) showed strong accuracy — about 6% fewer logical errors than tensor-network decoders and 30% fewer than correlated matching — but were evaluated offline, not under a real-time latency budget. An FPGA-based neural decoder (arXiv 2605.04892, May 2026) closed that gap: 550 ns total system latency (124 ns network inference) on real superconducting-qubit hardware, matching offline decoding quality inside the 1.25 μs cycle. That reframes real-time neural decoding from an open engineering problem into a solved one at the distances demonstrated, though scaling to much larger code distances in real time remains unproven."
+    }
+  },
+  "signal": "HRL built an 18-qubit silicon processor whose own onboard cryogenic chip runs error correction autonomously, with no room-temperature control loop in the decision path, reporting control errors ten times lower than any prior demo of this qubit type and roughly fivefold error suppression as qubits were added to the repetition code (Nature, \"A digitally controlled silicon quantum processing unit,\" 29 Jul 2026).",
+  "lattice": { "f": 0, "goal": 3000, "nextD": 4 }
+}

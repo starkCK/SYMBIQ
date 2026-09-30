@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "pqc-slh-dsa-7856",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "pqc-7856",
+  "question": {
+    "text": "The widget measures a real SLH-DSA-128s signature at 7,856 bytes. SLH-DSA also has an 'f' (fast) parameter set alongside the 's' (small) one measured here. What should you expect from the 'f' set instead?",
+    "options": [
+      "A larger signature than 7,856 bytes, in exchange for faster signing",
+      "The same 7,856 bytes, since both parameter sets target the same NIST security level",
+      "A smaller signature than 7,856 bytes, with slower signing as the cost",
+      "A completely different byte count that has nothing to do with a size-versus-speed tradeoff"
+    ],
+    "answerIndex": 0,
+    "hint": "The letter stands for what that parameter set is optimising for. 's' bought something by giving something else up — what's on the other side of that trade for 'f'?",
+    "explain": {
+      "g": "SLH-DSA offers a choice: sign slower and get a smaller signature, or sign faster and accept a bigger one. 7,856 bytes is what the 'small' choice costs. The 'fast' choice sits on the other side of that same trade — quicker to produce, but with more bytes to send.",
+      "y": "SLH-DSA-128s ('s' for small) is one of two parameter sets at the 128-bit security level defined in FIPS 205; the 's' variant is tuned for smaller signatures at the cost of more hash computations per signature, which is slower. The 'f' variant inverts that trade — fewer hash computations, faster signing, larger signature. This page measures only the 's' side of that tradeoff.",
+      "r": "FIPS 205 (SLH-DSA). The size-versus-speed axis comes from how SLH-DSA's hypertree structure trades subtree height against the number of few-time signatures needed; 's' parameter sets favour fewer, taller subtrees (smaller signature, more hashing per operation) and 'f' sets favour the opposite. Neither is a security difference — both target the same NIST level."
+    }
+  }
+}

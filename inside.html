@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>What does a quantum computer look like inside? · SymbiQ</title>
+<meta name="description" content="A 3D model you can rotate, zoom and take apart: superconducting, trapped-ion and neutral-atom quantum computers, each from the whole machine down to a single qubit.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/inside.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/inside.html">
+<meta property="og:title" content="What does a quantum computer look like inside? · SymbiQ">
+<meta property="og:description" content="Rotate, zoom and open three kinds of quantum computer in 3D, from the fridge or the laser table down to a single qubit.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/inside.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A cutaway of a quantum computer's cryostat: five gold plates narrowing to a glowing chip at about 10 millikelvin.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="What does a quantum computer look like inside? · SymbiQ">
+<meta name="twitter:description" content="Rotate, zoom and open three kinds of quantum computer in 3D, from the fridge or the laser table down to a single qubit.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/inside.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/inside.css?v=4">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/inside.js?v=4" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain active">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+<h1>What does a quantum computer look like inside?</h1>
+<p class="tagline">Not a glowing chandelier in a lab. A fridge, a lot of wire, and at the bottom a chip the size of a fingernail. Or a chamber of lasers holding a row of single atoms. Pick a machine, rotate it, zoom in, take it apart and keep opening parts until you reach the qubit itself.</p>
+
+<section class="in-wrap" aria-label="Interactive 3D model of a superconducting quantum computer">
+  <div class="in-stage" id="in-stage">
+    <canvas id="in-canvas" tabindex="0" role="application" aria-label="3D model. Drag to rotate, scroll or pinch to zoom, arrow keys to orbit, plus and minus to zoom, Enter to open the selected part, Escape to step back."></canvas>
+    <div class="in-veil" id="in-veil"></div>
+    <div class="in-tip" id="in-tip" aria-hidden="true"></div>
+    <div class="in-ladder" id="in-ladder" role="group" aria-label="Depth: pick a level"></div>
+    <div class="in-cap" id="in-cap" aria-hidden="true"></div>
+    <div class="in-bar" role="group" aria-label="View controls">
+      <button type="button" class="in-ic" id="in-up" title="Up one level (Esc)" aria-label="Up one level">&#9652; Up</button>
+      <label class="in-slide"><span>Take apart</span><input type="range" id="in-explode" min="0" max="100" value="0" aria-label="Take the parts apart"></label>
+      <button type="button" class="in-ic" id="in-xray" aria-pressed="false" title="See through everything but the selected part">See-through</button>
+      <button type="button" class="in-ic" id="in-flowbtn" aria-pressed="true" hidden>Signals</button>
+      <span class="in-seg" id="in-layout" role="group" aria-label="Qubit layout" hidden>
+        <button type="button" data-layout="hex" aria-pressed="true">IBM heavy-hex</button><button type="button" data-layout="square" aria-pressed="false">Google square grid</button>
+      </span>
+      <button type="button" class="in-ic" id="in-showall" title="Un-hide and un-isolate every part">Show all</button>
+      <span class="in-grp"><button type="button" class="in-ic" id="in-zout" aria-label="Zoom out">&minus;</button><button type="button" class="in-ic" id="in-zin" aria-label="Zoom in">+</button><button type="button" class="in-ic" id="in-reset" title="Reset the camera (0)">Reset</button><button type="button" class="in-ic" id="in-full" aria-label="Full screen">&#x26F6;</button></span>
+    </div>
+    <p class="in-nogl" hidden>Your browser could not start 3D graphics. The parts list on the right still works: every part, what it does and how cold it is.</p>
+    <div id="in-live" class="in-sr" aria-live="polite"></div>
+  </div>
+  <aside class="in-panel" id="in-panel" aria-label="Parts and details">
+    <div class="in-mach" id="in-mach" role="group" aria-label="Kind of quantum computer"></div>
+    <div id="in-head"></div>
+    <ul class="in-list" id="in-list"></ul>
+    <div class="in-info" id="in-info"></div>
+  </aside>
+</section>
+<noscript><p class="card">The model needs JavaScript and WebGL. The six levels are: the whole machine, the cryostat, the chip package, the chip, one qubit, and the Josephson junction.</p></noscript>
+
+<div class="card in-photos">
+<h3 aria-level="2">The real thing</h3>
+<p>Everything above is drawn. These are photographs of the real hardware, to check the drawing against.</p>
+<figure class="photo photo-pair">
+  <img src="img/reality/visionquest-ibm-quantum-system-one.jpg" width="1000" height="625" loading="lazy" decoding="async" alt="A gold-plated stack of round plates joined by rods and coiled wiring hangs from a steel housing: the cooling assembly of an IBM quantum computer.">
+  <img src="img/pages/google-sycamore-chip.jpg" width="900" height="593" loading="lazy" decoding="async" alt="A square silicon quantum chip set in a grey metal mount engraved with the words Google and Sycamore.">
+  <figcaption>Superconducting. Left: the cooling and wiring stack of an IBM quantum computer, at IBM&#39;s Thomas J. Watson Research Center; the processor sits at the coldest plate, at the bottom (OJB Quantum (Onri Jay Benally), cropped, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer">CC BY 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:IBM_Quantum_System_One.jpg" rel="noopener noreferrer">source</a>). Right: Google&#39;s Sycamore processor in its mount, on display at the Deutsches Museum, Munich (Coldupnorth, cropped, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Sycamore_Quantum_Chip.jpg" rel="noopener noreferrer">source</a>). Compare with levels 2 and 4 of the superconducting model.</figcaption>
+</figure>
+<figure class="photo">
+  <img src="img/pages/nist-ion-trap.jpg" width="1000" height="683" loading="lazy" decoding="async" alt="A gold-plated chip inside a copper housing, wired with gold traces and thin cables: an ion trap.">
+  <figcaption>Trapped ions. The apparatus NIST physicists used to hold two beryllium ions about 40 micrometres apart above a gold chip (Y. Colombe/NIST, a US government work in the public domain, resized, <a href="https://commons.wikimedia.org/wiki/File:Quantum_Computing;_Ion_Trapping_(5941055642).jpg" rel="noopener noreferrer">source</a>). Compare with the vacuum-chamber level of the trapped-ion model. There is no photograph of a neutral-atom machine here because we have not found one we are allowed to reuse.</figcaption>
+</figure>
+</div>
+
+<div class="card" id="scale-ladder">
+<h3 aria-level="2">How small is this?</h3>
+<p>Every bar below is one object, drawn at its real size compared with the width of the view. Drag the slider to zoom the whole ladder at once. At 1 cm across the chip fills the view; keep going and the qubit&rsquo;s pads fill it; keep going and the junction does. Click a name to zoom to it, or a <em>Level</em> tag to open it in the model above.</p>
+<div class="sl-ctl">
+  <label class="sl-lab" for="sl-range">Zoom</label>
+  <input type="range" id="sl-range" class="sl-range" aria-label="How wide the view is, from 3 metres down to a fifth of a nanometre">
+  <span class="sl-view" aria-live="off"></span>
+</div>
+<div class="sl-jump" role="group" aria-label="Jump to a scale">
+  <button type="button" class="preset" data-fit="fridge">The fridge</button>
+  <button type="button" class="preset" data-fit="chip">The chip</button>
+  <button type="button" class="preset" data-fit="qubit">A qubit</button>
+  <button type="button" class="preset" data-fit="junction">The junction</button>
+  <button type="button" class="preset" data-fit="atom">An atom</button>
+</div>
+<ul class="sl-list"></ul>
+<p class="sl-foot">Sizes are representative: a hair, a virus and a chip all vary, so the range is written beside each one. The fridge is roughly three billion times the width of an aluminium atom, and the oxide barrier in the junction is roughly four to eight of those atoms thick.</p>
+</div>
+
+<div class="card">
+<h3 aria-level="2">How to use it</h3>
+<ul>
+  <li><strong>Pick a machine:</strong> the three buttons at the top of the panel switch between a superconducting computer (IBM, Google), a trapped-ion computer (Quantinuum, IonQ) and a neutral-atom computer (QuEra, Atom Computing, Pasqal). Each opens down to a single qubit, in four to six levels.</li>
+  <li><strong>Turn it:</strong> drag. Zoom with the pinch gesture, the + and &minus; buttons, or the scroll wheel once you have clicked the scene. Shift-drag or right-drag pans.</li>
+  <li><strong>Look at a part:</strong> hover for its name, click for what it is and how cold it runs. The list on the right does the same and works without a mouse.</li>
+  <li><strong>Take it apart:</strong> the slider pulls the parts of the current level away from each other. <em>See-through</em> fades everything but the selected part. <em>Isolate</em> hides the rest.</li>
+  <li><strong>Go inside:</strong> parts marked <em>opens</em> have an inside. Click <em>Open inside</em>, or double-click the part, and you drop one level. Each level is smaller than the last by anything from two times to several thousand. The row along the top jumps between levels.</li>
+  <li><strong>Watch it work:</strong> in the cryostat, teal dots are control pulses on their way down and amber dots are readout replies on their way up. In the ion and atom views, look for the chain rocking, the tweezer that carries an atom into a gap, and an ion’s random bright-or-dark readout.</li>
+</ul>
+</div>
+
+<div class="card in-note">
+<h3 aria-level="2">What this model is, and is not</h3>
+<p>It is a teaching model of three kinds of quantum computer: <strong>superconducting</strong> (IBM, Google), <strong>trapped-ion</strong> (Quantinuum, IonQ) and <strong>neutral-atom</strong> (QuEra, Atom Computing, Pasqal), drawn from published descriptions of how those machines are put together. It is <strong>not</strong> a CAD file of any company&rsquo;s machine: nobody publishes one. Proportions are simplified, and the scale is bent wherever it has to be to show anything. The chip shows a small excerpt of the qubits a real one carries. In the junction view the oxide barrier is drawn about ten times too thick. In the ion and atom views the ions, the atoms and the gaps between them are drawn far too big to be seen at that scale, and the Rydberg orbit is drawn about 300 times too small next to the atom it belongs to. Temperatures and sizes are the typical values from the papers below, and they differ between labs and machines.</p>
+<p>Photonic quantum computers are not modelled. <a href="compare.html">How the companies compare</a> covers all four approaches side by side.</p>
+</div>
+
+<div class="card in-src">
+<h3 aria-level="2">Where the numbers come from</h3>
+<p class="in-srchead">Superconducting</p>
+<ol>
+  <li>Krinner et al., <em>Engineering cryogenic setups for 100-qubit scale superconducting circuit systems</em>, EPJ Quantum Technology 6, 2 (2019). <a href="https://doi.org/10.1140/epjqt/s40507-019-0072-0" rel="noopener">doi:10.1140/epjqt/s40507-019-0072-0</a>. Stages, wiring, attenuation, amplifier chain.</li>
+  <li>Krantz et al., <em>A quantum engineer&rsquo;s guide to superconducting qubits</em>, Applied Physics Reviews 6, 021318 (2019). <a href="https://doi.org/10.1063/1.5089550" rel="noopener">doi:10.1063/1.5089550</a>. Transmons, resonators, junctions, readout.</li>
+  <li>Kjaergaard et al., <em>Superconducting qubits: current state of play</em>, Annual Review of Condensed Matter Physics 11 (2020). <a href="https://doi.org/10.1146/annurev-conmatphys-031119-050605" rel="noopener">doi:10.1146/annurev-conmatphys-031119-050605</a>. Fabrication and the state of the art.</li>
+  <li>Arute et al., <em>Quantum supremacy using a programmable superconducting processor</em>, Nature 574, 505 (2019). <a href="https://doi.org/10.1038/s41586-019-1666-5" rel="noopener">doi:10.1038/s41586-019-1666-5</a>. Google&rsquo;s square-grid layout with tunable couplers.</li>
+  <li>Google Quantum AI, <em>Quantum error correction below the surface code threshold</em>, Nature (2025). <a href="https://doi.org/10.1038/s41586-024-08449-y" rel="noopener">doi:10.1038/s41586-024-08449-y</a>. The Willow chip.</li>
+  <li>Chamberland et al., <em>Topological and subsystem codes on low-degree graphs with flag qubits</em>, Physical Review X 10, 011022 (2020). <a href="https://doi.org/10.1103/PhysRevX.10.011022" rel="noopener">doi:10.1103/PhysRevX.10.011022</a>. The heavy-hex lattice IBM uses.</li>
+</ol>
+<p class="in-srchead">Trapped ions</p>
+<ol start="7">
+  <li>Bruzewicz et al., <em>Trapped-ion quantum computing: progress and challenges</em>, Applied Physics Reviews 6, 021314 (2019). <a href="https://doi.org/10.1063/1.5088164" rel="noopener">doi:10.1063/1.5088164</a>. The apparatus, the lasers, the traps.</li>
+  <li>Pino et al., <em>Demonstration of the trapped-ion quantum CCD computer architecture</em>, Nature 592, 209 (2021). <a href="https://doi.org/10.1038/s41586-021-03318-4" rel="noopener">doi:10.1038/s41586-021-03318-4</a>. Segmented traps that shuttle ions.</li>
+  <li>Cirac and Zoller, <em>Quantum computations with cold trapped ions</em>, Physical Review Letters 74, 4091 (1995). <a href="https://doi.org/10.1103/PhysRevLett.74.4091" rel="noopener">doi:10.1103/PhysRevLett.74.4091</a>. Gates through the shared motion.</li>
+  <li>S&oslash;rensen and M&oslash;lmer, <em>Quantum computation with ions in thermal motion</em>, Physical Review Letters 82, 1971 (1999). <a href="https://doi.org/10.1103/PhysRevLett.82.1971" rel="noopener">doi:10.1103/PhysRevLett.82.1971</a>. The gate most machines use.</li>
+  <li>Ballance et al., <em>High-fidelity quantum logic gates using trapped-ion hyperfine qubits</em>, Physical Review Letters 117, 060504 (2016). <a href="https://doi.org/10.1103/PhysRevLett.117.060504" rel="noopener">doi:10.1103/PhysRevLett.117.060504</a>, and Gaebler et al., Physical Review Letters 117, 060505 (2016), <a href="https://doi.org/10.1103/PhysRevLett.117.060505" rel="noopener">doi:10.1103/PhysRevLett.117.060505</a>. Two-qubit gate fidelities above 99.9%.</li>
+</ol>
+<p class="in-srchead">Neutral atoms</p>
+<ol start="12">
+  <li>Saffman, Walker and M&oslash;lmer, <em>Quantum information with Rydberg atoms</em>, Reviews of Modern Physics 82, 2313 (2010). <a href="https://doi.org/10.1103/RevModPhys.82.2313" rel="noopener">doi:10.1103/RevModPhys.82.2313</a>. Rydberg states, the blockade, gates.</li>
+  <li>Jaksch et al., <em>Fast quantum gates for neutral atoms</em>, Physical Review Letters 85, 2208 (2000), <a href="https://doi.org/10.1103/PhysRevLett.85.2208" rel="noopener">doi:10.1103/PhysRevLett.85.2208</a>, and Lukin et al., Physical Review Letters 87, 037901 (2001), <a href="https://doi.org/10.1103/PhysRevLett.87.037901" rel="noopener">doi:10.1103/PhysRevLett.87.037901</a>. Gates built on the blockade.</li>
+  <li>Evered et al., <em>High-fidelity parallel entangling gates on a neutral-atom quantum computer</em>, Nature 622, 268 (2023). <a href="https://doi.org/10.1038/s41586-023-06481-y" rel="noopener">doi:10.1038/s41586-023-06481-y</a>. Global pulses acting on many pairs.</li>
+  <li>Bluvstein et al., <em>A quantum processor based on coherent transport of entangled atom arrays</em>, Nature 604, 451 (2022). <a href="https://doi.org/10.1038/s41586-022-04592-6" rel="noopener">doi:10.1038/s41586-022-04592-6</a>, and <em>Logical quantum processor based on reconfigurable atom arrays</em>, Nature 626, 58 (2024), <a href="https://doi.org/10.1038/s41586-023-06927-3" rel="noopener">doi:10.1038/s41586-023-06927-3</a>. Moving tweezers, arrays of hundreds of atoms.</li>
+  <li>Manetsch et al., <em>A tweezer array with 6,100 highly coherent atomic qubits</em>, Nature 647, 60 (2025). <a href="https://doi.org/10.1038/s41586-025-09641-4" rel="noopener">doi:10.1038/s41586-025-09641-4</a>. The largest array so far.</li>
+</ol>
+<p>The 3D library is <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence), served from this site, pinned and hashed like the other vendored code.</p>
+</div>
+<script type="module" src="inside.js?v=3"></script>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

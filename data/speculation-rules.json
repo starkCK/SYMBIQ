@@ -1,0 +1,17 @@
+{
+  "_comment": "SymbiQ speculation rules (2026-09-23, researched top-10 item 2). PREFETCH only, never prerender: prerender executes the destination page's JavaScript in the background before a click, and this site mutates state on load -- localStorage progress, hud.js's returning-visitor read, analytics.js's pageview beacon -- so a hover would silently count as a visit. Prefetch just puts the HTML in the HTTP cache; nothing on the page runs until the reader actually clicks. 'moderate' eagerness starts the fetch ~200ms into a hover, which is long enough that a reader passing the cursor over a menu doesn't fetch every door it crosses. The href pattern is written with no leading slash and no origin, so it resolves relative to whichever document loads it -- the same way every <a href=\"pqc.html\"> on this site already does -- and therefore matches correctly both at the local http://localhost:8642/ root smoke.mjs and preview_start use, and at the production https://starkck.github.io/SYMBIQ/ subpath. A leading '/' would have silently matched the wrong origin in production while looking correct in every local test. analytics.js still guards document.prerendering for the day this list ever grows a real prerender entry.",
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          { "href_matches": "*.html" },
+          { "not": { "selector_matches": "[data-no-speculate]" } },
+          { "not": { "selector_matches": "[target=_blank]" } },
+          { "not": { "selector_matches": "[download]" } }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}

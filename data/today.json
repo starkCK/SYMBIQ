@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "date": "2026-08-04",
+  "qnum": 7,
+  "tier": "r",
+  "question": {
+    "text": "A surface code has distance d, running below the physical error threshold p_th. As you increase d, how does the logical error rate p_L actually scale — and why does that make hardware engineers optimistic?",
+    "options": [
+      "Exponentially: p_L ∝ (p/p_th)^⌊(d+1)/2⌋ — each further increase in distance multiplies the suppression, so modest extra qubits buy compounding reliability gains",
+      "Linearly: p_L drops by a fixed amount for every extra unit of distance, so reliability scales in direct proportion to how many qubits you add",
+      "It barely moves: once p is below p_th the logical error rate is already suppressed, and adding more distance provides little further benefit",
+      "It gets worse: more physical qubits per logical qubit means more components that can fail, so larger d actually raises the logical error rate"
+    ],
+    "answerIndex": 0,
+    "hint": "Below threshold isn't a one-time light switch — think about what happens to an exponent, not a fixed offset, every time d climbs.",
+    "explain": {
+      "g": "Below the error threshold, building a bigger surface code doesn't just help a little — it helps by more and more each time. Picture wrapping the data in extra rings of protective qubits: each additional ring multiplies your odds of catching mistakes rather than adding a fixed amount of safety. That's why engineers are hopeful: you don't need to double your hardware for each order-of-magnitude improvement in reliability, you need a fixed handful of ADDITIONAL qubits per step, and the payoff compounds. Two wrong intuitions worth naming: it isn't a fixed-per-step improvement like padding, and it isn't a one-time win where crossing the threshold is basically the whole story — the suppression keeps compounding as you keep growing the code.",
+      "y": "The scaling law is p_L ∝ (p/p_th)^⌊(d+1)/2⌋. Since p/p_th < 1 below threshold, every time the exponent climbs — which happens each time distance d goes up by 2 — the logical error rate gets multiplied by another factor of (p/p_th). That's exponential suppression for polynomial cost: the code uses roughly 2d² physical qubits, so error rate falls exponentially while hardware only grows quadratically. This is the actual mathematical reason 'below threshold' is the whole game in error correction: it's the regime where adding qubits pays back with compounding interest instead of a flat return. Above threshold the sign flips — more qubits mean more chances to fail, and reliability gets WORSE with size, which is exactly why so much of quantum engineering is about getting p under p_th in the first place.",
+      "r": "For a rotated surface code with p below threshold p_th, the standard phenomenological result is p_L ≈ A·(p/p_th)^⌊(d+1)/2⌋ for a hardware-dependent prefactor A (Fowler et al., arXiv:1208.0928). The floor-of-((d+1)/2) exponent means each increase of d by 2 buys exactly one more power of (p/p_th) suppression, while bumping an odd d up by just 1 alone buys nothing — a rounding detail worth knowing but one that doesn't change the asymptotic story. Concretely: at p/p_th ≈ 1/3 (roughly Google Willow-class hardware's ratio), reaching a target logical error rate of 10⁻¹² needs ⌊(d+1)/2⌋ ≥ 12/log₁₀3 ≈ 25.2, i.e. d ≥ 51, costing about 2d²−1 ≈ 5,201 physical qubits per logical qubit. Improving the effective ratio to 1/4 (e.g. via a better decoder) drops that to d ≥ 39, ≈3,041 physical qubits — a ~42% qubit saving for the same reliability target. This mechanism is not hoped-for, it is measured: Google's below-threshold demonstration reported Λ = 2.14 ± 0.02 for the d=5→7 suppression step (Nature 638, 920, 2025). Exponential suppression below threshold is why the entire fault-tolerance roadmap bets on staying under p_th rather than on any single hardware trick."
+    }
+  },
+  "signal": "UC Berkeley's Department of Physics and QuantrolOx signed a five-year MOU (announced 2026-08-04) to industrialize quantum computing: QuantrolOx's machine-learning software handles automated qubit characterisation, calibration, and control, folded into a unified workflow-automation data architecture at Berkeley's Roger Herst Quantum Nexus — AI doing the babysitting, at institutional scale.",
+  "lattice": { "f": 0, "goal": 3000, "nextD": 4 }
+}

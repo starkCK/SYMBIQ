@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-sZa9kVpPdO7OHmMrIyjiIVBlvvXIv+VXcVozshdy4Zs=' 'sha256-RReLW50KcHagE2atK8Jdkzp4TQfF6rvRx93RNOb8bDQ=' 'sha256-qP1s5Wn9T1zs3yHh5grtkhHOvBsZVXB5u9A2S+aNoBA=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>The Race · SymbiQ</title>
+<meta name="description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/race.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/race.html">
+<meta property="og:title" content="The Race · SymbiQ">
+<meta property="og:description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="The Race · SymbiQ">
+<meta name="twitter:description" content="The scoreboard on the labs racing to fault tolerance, and an interactive look at the one number the race is actually scored on: the threshold. Our own prediction record now lives on The Ledger.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/race.css?v=32">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/race.js?v=12" defer></script>
+
+
+
+
+
+
+<style>
+#thr-svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; height: auto; }
+.bar { transition: height .45s cubic-bezier(.2,.7,.3,1), y .45s cubic-bezier(.2,.7,.3,1), fill .3s ease; }
+.barlab { fill: var(--muted); font-size: 11px; font-family: inherit; text-anchor: middle; }
+.barval { font-size: 10px; font-family: inherit; text-anchor: middle; transition: fill .3s ease; }
+.axis { stroke: var(--border); stroke-width: 1; }
+.thr-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 6px; }
+.thr-controls input[type=range] { flex: 1; min-width: 180px; accent-color: var(--teal); }
+.lam { font-family: "Cambria Math", Georgia, serif; font-size: 1.15rem; font-weight: 700; min-width: 92px; }
+/* Hardware Scaling Explorer (#scaling) */
+#hw-svg { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; }
+.hw-axis { stroke: var(--border); stroke-width: 1; }
+.hw-grid { stroke: var(--border); stroke-opacity: .5; stroke-dasharray: 2 3; }
+.hw-tick { fill: var(--muted); font-size: 10px; font-family: inherit; }
+.hw-line { fill: none; stroke-width: 2; stroke-opacity: .55; }
+.hw-line.phys { stroke: var(--teal); }
+.hw-line.log { stroke: var(--violet); }
+.hw-dot.phys { fill: var(--teal); }
+.hw-dot.log { fill: var(--violet); }
+.hw-dlab { fill: var(--muted); font-size: 9px; font-family: inherit; }
+.hw-series.off { display: none; }
+.hw-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 4px; align-items: center; }
+.hw-controls .preset[aria-pressed="false"] { opacity: .5; }
+.hw-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: baseline; }
+#scaling-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat navcat-cur" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain active">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+
+
+
+<h1>The Race</h1>
+<p class="tagline">The scoreboard on the labs racing to fault tolerance. Our own prediction record now lives on <a href="ledger.html">The Ledger</a>, tracked by the same public rules as every other claim we follow. <strong>The scoreboard below is still empty</strong>, and saying so is the point. We keep score on ourselves so you can decide whether to trust us.</p>
+
+<h2 id="what-the-race-is-actually-scored-on">What the race is scored on</h2>
+<p>Qubit counts make the headlines. They are close to meaningless on their own. The number that decides whether a machine is in this race at all is <strong>Λ</strong>: how much the logical error rate shrinks each time you make the code bigger.</p>
+<p>The rule, from the scaling law on the <a href="qec.html#red">QEC page</a>: raising the code distance by <strong>two</strong> (d → d+2, one <em>step</em>, which is what the word means everywhere below) divides the logical error rate by Λ. Raising an odd d by one buys nothing at all. Below threshold Λ &gt; 1 and errors fall away geometrically as you add qubits. Above threshold Λ &lt; 1 and the same extra qubits make the machine <em>worse</em>. Same hardware, same code, opposite direction, and the whole industry is sorted by which side of that line it sits on.</p>
+
+<div class="card" id="threshold">
+  <h3>Drag the line</h3>
+  <div class="thr-controls">
+    <span class="lam" id="thr-lam"></span>
+    <input type="range" id="thr-slider" min="40" max="400" step="2" value="214"
+           aria-label="Lambda: error suppression per two units of code distance (d to d+2)">
+  </div>
+  <p style="margin:0 0 6px">
+    <button class="preset" data-lam="214">Willow (measured Λ=2.14)</button>
+    <button class="preset" data-lam="100">Exactly at threshold</button>
+    <button class="preset" data-lam="60">Above threshold</button>
+  </p>
+  <div class="verdict" id="thr-verdict"></div>
+  <svg id="thr-svg" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg"
+       aria-label="Logical error rate versus code distance, relative to distance 3"></svg>
+  <p class="legend" style="text-align:center">Logical error per round, relative to d=3: <strong>shorter is better</strong>. <strong>Logarithmic scale</strong>, no gridlines by design: the axis runs from 10⁻⁴ (floor) to 10² (full height), so a bar that is one sixth of the axis shorter than its neighbour is ten times better, and one that is half the axis shorter is a thousand times better. Read the number on the bar, not the picture. The count under each bar is 2d²−1 (data + ancilla for a rotated surface code); Willow's distance-7 code added 4 leakage-removal qubits, <span class="rcpt" data-rcpt="race-101">101 in total</span>.</p>
+  <dl class="rows" id="thr-rows" style="margin-top:12px"></dl>
+  <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">Honest model: this is the standard below-threshold scaling form p<sub>L</sub> ∝ (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup>, plotted as a <em>ratio</em> to d=3, which is why no fitted prefactor appears and none is needed. It is the shape of the curve, not a prediction of any specific chip's error rate. Real devices depart from it near threshold, and Λ itself drifts with calibration. Here Λ is set by the slider as the suppression per d → d+2 directly, and the scaling form above is what ties that to the ratio p/p<sub>th</sub>; in a real device the two agree only as well as the model does. Willow's <span class="rcpt" data-rcpt="race-lambda">Λ = 2.14 ± 0.02</span> is a <em>measured</em> suppression factor for increasing the code distance by two, obtained by fitting the log of the logical error rate against distance across the d = 3, 5, 7 series, not a single-step reading (the lone 5 → 7 ratio is ≈ 2.1) (<a href="https://arxiv.org/abs/2408.13687">arXiv 2408.13687</a>, <em>Nature</em> 638, 920 (2025)).</p>
+</div>
+
+<h2 id="scoreboard">Scoreboard</h2>
+<p style="color:var(--muted);font-size:.92rem">The middle columns fill in when there is a real, dated <em>move</em> to put in them, not before — and they are <strong>still empty</strong>. The last column asks a different question: not what a lab has <em>done</em>, but what it has already <strong>promised on the record</strong>, with a date we will score it against whether or not it wants us to. Four of these six have one. Read straight across and the gap between the two is the story.</p>
+<div class="overflow">
+<table>
+  <tr><th>Lab</th><th>One-line status</th><th>Last move</th><th>Promised, on the record</th></tr>
+  <tr><td>Google</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td class="todo">no fault-tolerance claim tracked</td></tr>
+  <tr><td>IBM</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="ibm-starling-2029"><a href="ledger.html#c-ibm-starling-2029">on The Ledger →</a></td></tr>
+  <tr><td>IonQ</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="ionq-five-nines-2025"><a href="ledger.html#c-ionq-five-nines-2025">on The Ledger →</a></td></tr>
+  <tr><td>Quantinuum</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="quantinuum-apollo-2030"><a href="ledger.html#c-quantinuum-apollo-2030">on The Ledger →</a></td></tr>
+  <tr><td>Microsoft</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td data-claim-cell="microsoft-topological-years-not-decades"><a href="ledger.html#c-microsoft-topological-years-not-decades">on The Ledger →</a></td></tr>
+  <tr><td>PsiQuantum</td><td class="todo">awaiting a dated update</td><td class="todo">not yet</td><td class="todo">no dated claim tracked</td></tr>
+</table>
+</div>
+
+<h2 id="scaling">What got built</h2>
+<p>The scoreboard above is empty by choice. This is not: a hand-curated set of milestones, each dated and sourced, on a log axis. Two things show up. Physical qubit counts climbed <span class="rcpt" data-rcpt="race-growth">about twenty-fold from 2019 to 2023</span> — and then the leading superconducting chips <strong>stopped competing on raw count</strong>. Google's Willow (2024) holds <span class="rcpt" data-rcpt="race-tenth">under a tenth the qubits of 2023's largest chip</span>. Neutral-atom arrays kept growing, to 6,100 atoms in 2025, but those are atoms held in traps, not qubits in one computation. The numbers that matter now are logical qubits, and there the counts are small: the one that is actually below threshold, the first that gets <em>better</em> as you grow it, is a single qubit.</p>
+
+<div class="card" id="scaling-widget">
+  <div class="hw-controls">
+    <button class="preset" id="hw-t-phys" type="button" aria-pressed="true"><span class="hw-swatch" style="background:var(--teal)"></span>physical</button>
+    <button class="preset" id="hw-t-log" type="button" aria-pressed="true"><span class="hw-swatch" style="background:var(--violet)"></span>logical</button>
+  </div>
+  <svg id="hw-svg" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Largest announced qubit counts by date, physical and logical, on a log axis"></svg>
+  <p style="font-size:0.85rem;color:var(--muted);margin:10px 0 0">&ldquo;Qubit count&rdquo; is not one number: this splits physical from logical, and even then a physical count spans fabricated sites, controlled qubits, and qubits good enough to compute with. Only the 2024 Google entry is a below-threshold result; the other logical points are qubits encoded and operated, not proven to improve with scale. Curated by the desk from the sources in the table below; last updated 2026-09-24. No 2026 result has been added yet: none has met the bar of a new count stated in a primary source. The same data lives in <a href="data/hardware.json">hardware.json</a>.</p>
+</div>
+
+<div class="overflow">
+<table id="scaling-table">
+  <tr><th>Date</th><th>Org</th><th>Device</th><th>Kind</th><th>Qubits</th><th>What it was</th></tr>
+  <tr><td>2019-10</td><td>Google</td><td>Sycamore</td><td>physical</td><td class="num">53</td><td>The "quantum supremacy" chip: a sampling task in 200 seconds that Google argued would take a classical supercomputer millennia (a gap classical work later narrowed).</td></tr>
+  <tr><td>2021-11</td><td>IBM</td><td>Eagle</td><td>physical</td><td class="num">127</td><td>First IBM processor past 100 qubits; introduced the multi-level wiring that the later big chips scaled up.</td></tr>
+  <tr><td>2022-11</td><td>IBM</td><td>Osprey</td><td>physical</td><td class="num">433</td><td>Roughly a 3.4x jump in a year, and the last of IBM's chips whose headline was its size.</td></tr>
+  <tr><td>2023-10</td><td>Atom Computing</td><td>second-generation array</td><td>physical</td><td class="num">1180</td><td>Neutral atoms held in optical tweezers; the first system with more than 1,000 qubit sites. Sites in a trap array, not 1,180 simultaneously computing qubits.</td></tr>
+  <tr><td>2023-12</td><td>IBM</td><td>Condor</td><td>physical</td><td class="num">1121</td><td>IBM's largest single chip, and deliberately its last of that kind: the roadmap released the same day pivots to smaller, lower-error modular processors.</td></tr>
+  <tr><td>2023-12</td><td>IBM</td><td>Heron</td><td>physical</td><td class="num">133</td><td>Shipped alongside Condor as the actual direction: about a 3-5x lower error rate than Eagle, and the template for everything IBM has built since.</td></tr>
+  <tr><td>2023-12</td><td>QuEra / Harvard / MIT</td><td>neutral-atom processor</td><td>logical</td><td class="num">48</td><td>48 logical qubits from up to 280 physical atoms, with logical circuits run across them. Encoded and operated, not scaled below threshold.</td></tr>
+  <tr><td>2024-04</td><td>Microsoft / Quantinuum</td><td>H2</td><td>logical</td><td class="num">4</td><td>Four logical qubits with a reported ~800x lower error rate than the underlying physical qubits, running thousands of operations.</td></tr>
+  <tr><td>2024-11</td><td>Atom Computing / Microsoft</td><td>neutral-atom system</td><td>logical</td><td class="num">24</td><td>24 logical qubits entangled together on a neutral-atom machine, which Microsoft and Atom called a record for entangled logical qubits. Not the largest logical count (the 2023 entry above has 48), and still not a below-threshold result.</td></tr>
+  <tr><td>2024-12</td><td>Google</td><td>Willow</td><td>physical</td><td class="num">105</td><td>Under a tenth the size of 2023's largest chips, and about twice Sycamore's. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.</td></tr>
+  <tr><td>2024-12</td><td>Google</td><td>Willow</td><td>logical</td><td class="num">1</td><td>One logical qubit, at distance 7, below threshold: the first whose error rate provably falls as you add physical qubits. The number is 1 on purpose.</td></tr>
+  <tr><td>2025-06</td><td>Harvard / MIT / QuEra</td><td>continuously reloaded atom array</td><td>physical</td><td class="num">3000</td><td>Over 3,000 atoms kept in an array for more than two hours by reloading atoms as they are lost. The result is keeping a large array loaded and coherent, not a large computation.</td></tr>
+  <tr><td>2025-09</td><td>Caltech</td><td>tweezer array</td><td>physical</td><td class="num">6100</td><td>6,100 cesium atoms held in 12,000 laser tweezers, which Caltech called the largest qubit array ever assembled. Like the 2023 Atom Computing entry, these are atoms held in a trap array, not 6,100 qubits in one computation.</td></tr>
+  <tr><td>2025-11</td><td>IBM</td><td>Nighthawk</td><td>physical</td><td class="num">120</td><td>120 qubits on a square lattice with 218 tunable couplers, over 20 percent more couplers than Heron. IBM pitched it on connectivity and the number of gates a circuit can run, not on qubit count.</td></tr>
+  <tr><td>2025-11</td><td>Quantinuum</td><td>Helios</td><td>logical</td><td class="num">48</td><td>48 error-corrected logical qubits from 98 physical trapped-ion qubits, reported to perform better than the physical qubits underneath. Encoded and operated, not a demonstration that errors fall as the code grows.</td></tr>
+</table>
+</div>
+<p style="font-size:.85rem;color:var(--muted)">Sources, in table order: Arute et al., <em>Nature</em> 574, 505 (2019), arXiv:1910.11333 · IBM Research announcements (15 Nov 2021, 9 Nov 2022, 4 Dec 2023) · Atom Computing announcement (24 Oct 2023) · Google Quantum AI, <em>Nature</em> 638, 920 (2025), arXiv:2408.13687 · Bluvstein et al., <em>Nature</em> 626, 58 (2024), arXiv:2312.03982 · Microsoft / Quantinuum announcement (3 Apr 2024) · Atom Computing / Microsoft announcement (19 Nov 2024).</p>
+
+<div class="contra" data-claim="atom-computing-microsoft-24-logical-qubits-2025">
+  <p><a href="ledger.html#c-atom-computing-microsoft-24-logical-qubits-2025">The largest logical-qubit count in that table — tracked on The Ledger →</a></p>
+</div>
+
+<h2 id="our-predictions">Our predictions</h2>
+<p>Every prediction we make is falsifiable, dated, and scored when it resolves. No deleting misses. As of
+2026-08-27 this table moved to <a href="ledger.html">The Ledger</a>, the same mechanism generalised to
+track claims from anyone, not only from us. Our own predictions live there as ordinary entries
+(claimant = SymbiQ), scored by the exact same rules we hold everyone else to, published on
+<a href="ledger.html#ours">our own scorecard</a> rather than a separate table here. <strong>None made yet.</strong></p>
+<p class="cta"><a href="ledger.html">See every tracked claim, ours included, on The Ledger →</a></p>
+
+<p>And the question underneath the whole race, <em>when does a quantum computer first do something
+commercially or scientifically useful faster than classical, and on which hardware</em>, is one nobody
+has settled.</p>
+
+<footer>The scoreboard nobody else bothers to keep.<br>SymbiQ · The lab scoreboard is still empty. Our
+prediction record lives on <a href="ledger.html#ours">The Ledger</a>: 0 right, 0 wrong, 0 made so far.</footer>
+</div>
+
+<script>
+(function () {
+  // Below-threshold scaling: p_L(d) ∝ (p/p_th)^⌊(d+1)/2⌋ = Λ^(-⌊(d+1)/2⌋).
+  // Plotted as a ratio to d=3, so the unknown prefactor cancels exactly:
+  //     E(d) = p_L(d)/p_L(3) = Λ^(-(⌊(d+1)/2⌋ - 2))  and for odd d that exponent is (d-3)/2.
+  // One factor of Λ per d→d+2 step — NOT per d→d+1 (adding 1 to an odd d buys nothing).
+  var DS = [3, 5, 7, 9, 11, 13];
+  var svg = document.getElementById('thr-svg');
+  if (!svg) return;
+  var slider = document.getElementById('thr-slider'),
+      lamEl = document.getElementById('thr-lam'),
+      verdict = document.getElementById('thr-verdict'),
+      rows = document.getElementById('thr-rows'),
+      NS = 'http://www.w3.org/2000/svg';
+
+  var W = 520, H = 250, PAD_B = 44, PAD_T = 18, BW = 52;
+  function step(d) { return Math.floor((d + 1) / 2); }
+  function rel(d, lam) { return Math.pow(lam, -(step(d) - step(3))); }
+  function qubits(d) { return 2 * d * d - 1; }
+
+  // log-scale bar height: E=1e-4 -> floor, E=100 -> full
+  function frac(E) {
+    var v = (Math.log(E) / Math.LN10 + 4) / 6;
+    return Math.max(0.012, Math.min(1, v));
+  }
+  function fmt(E) {
+    if (E >= 100) return Math.round(E) + '×';
+    if (E >= 1.5) return E.toFixed(1) + '×';
+    if (E > 1.005) return E.toFixed(2) + '×';   // anything above unity reads as ×, never ÷ (a worse bar)
+    if (E >= 0.995) return '1×';
+    if (E >= 0.01) return '÷' + (1 / E).toFixed(1);
+    return '÷' + Math.round(1 / E);
+  }
+
+  function el(tag, a) { var n = document.createElementNS(NS, tag); for (var k in a) n.setAttribute(k, a[k]); svg.appendChild(n); return n; }
+  el('line', { 'class': 'axis', x1: 30, y1: H - PAD_B, x2: W - 12, y2: H - PAD_B });
+  var bars = [], vals = [];
+  DS.forEach(function (d, i) {
+    var x = 44 + i * ((W - 66) / DS.length);
+    bars.push(el('rect', { 'class': 'bar', x: x, width: BW, y: H - PAD_B, height: 0, rx: 4 }));
+    vals.push(el('text', { 'class': 'barval', x: x + BW / 2, y: H - PAD_B - 6 }));
+    el('text', { 'class': 'barlab', x: x + BW / 2, y: H - PAD_B + 17 }).textContent = 'd=' + d;
+    el('text', { 'class': 'barlab', x: x + BW / 2, y: H - PAD_B + 31, opacity: .7 }).textContent = qubits(d) + 'q';
+  });
+
+  function draw() {
+    var lam = +slider.value / 100, below = lam > 1.0005, at = Math.abs(lam - 1) <= 0.0005;
+    lamEl.innerHTML = 'Λ = ' + lam.toFixed(2);
+    lamEl.style.color = at ? 'var(--yellow)' : (below ? 'var(--teal)' : 'var(--red)');
+
+    var maxD = DS[DS.length - 1], E = rel(maxD, lam);
+    DS.forEach(function (d, i) {
+      var e = rel(d, lam), f = frac(e), h = (H - PAD_B - PAD_T) * f;
+      bars[i].setAttribute('height', h);
+      bars[i].setAttribute('y', H - PAD_B - h);
+      bars[i].setAttribute('fill', at ? 'var(--yellow)' : (below ? 'var(--teal)' : 'var(--red)'));
+      bars[i].setAttribute('opacity', at ? .55 : (below ? (0.45 + 0.55 * (1 - i / DS.length)) : (0.5 + 0.5 * (i / DS.length))));
+      vals[i].textContent = fmt(e);
+      vals[i].setAttribute('y', H - PAD_B - h - 6);
+      vals[i].setAttribute('fill', at ? 'var(--yellow)' : (below ? 'var(--teal)' : 'var(--red)'));
+    });
+
+    verdict.className = 'verdict ' + (at ? 'split' : (below ? 'good' : 'bad'));
+    if (at) {
+      verdict.textContent = 'Exactly at threshold: adding qubits changes nothing. Every bar the same height: the code is treading water.';
+    } else if (below) {
+      verdict.textContent = 'Below threshold. Growing d=3 → 13 divides the logical error rate by ' +
+        (1 / E).toFixed(1) + '×, for ' + qubits(maxD) + ' physical qubits instead of ' + qubits(3) + '. This is the good side of the line.';
+    } else {
+      verdict.textContent = 'Above threshold. Growing d=3 → 13 makes the logical qubit ' + Math.round(E) +
+        '× WORSE, and costs ' + qubits(maxD) + ' physical qubits to do it. More hardware, worse computer.';
+    }
+
+    rows.innerHTML =
+      '<dt>Per step (d→d+2)</dt><dd>logical error ' + (below ? '÷' : '×') + ' ' + (below ? lam.toFixed(2) : (1 / lam).toFixed(2)) + '</dd>' +
+      '<dt>d=3 → 13</dt><dd>five such steps → ' + (below ? 'error ÷ ' + (1 / E).toFixed(1) : 'error × ' + Math.round(E)) +
+        ', qubits ' + qubits(3) + ' → ' + qubits(maxD) + '</dd>' +
+      '<dt>Verdict</dt><dd>' + (at ? 'no scaling either way' : (below ? 'in the race' : 'not in the race: no amount of qubits fixes this')) + '</dd>';
+  }
+
+  slider.addEventListener('input', draw);
+  Array.prototype.forEach.call(document.querySelectorAll('#threshold .preset'), function (b) {
+    b.addEventListener('click', function () { slider.value = b.getAttribute('data-lam'); draw(); });
+  });
+  draw();
+})();
+</script>
+
+<script type="application/json" id="hw-data">
+[{"date":"2019-10","org":"Google","device":"Sycamore","kind":"physical","n":53,"note":"The \"quantum supremacy\" chip: a sampling task in 200 seconds that Google argued would take a classical supercomputer millennia (a gap classical work later narrowed).","source":"Arute et al., Nature 574, 505 (2019); arXiv:1910.11333"},{"date":"2021-11","org":"IBM","device":"Eagle","kind":"physical","n":127,"note":"First IBM processor past 100 qubits; introduced the multi-level wiring that the later big chips scaled up.","source":"IBM Research announcement, 15 Nov 2021"},{"date":"2022-11","org":"IBM","device":"Osprey","kind":"physical","n":433,"note":"Roughly a 3.4x jump in a year, and the last of IBM's chips whose headline was its size.","source":"IBM Research announcement, 9 Nov 2022"},{"date":"2023-10","org":"Atom Computing","device":"second-generation array","kind":"physical","n":1180,"note":"Neutral atoms held in optical tweezers; the first system with more than 1,000 qubit sites. Sites in a trap array, not 1,180 simultaneously computing qubits.","source":"Atom Computing announcement, 24 Oct 2023"},{"date":"2023-12","org":"IBM","device":"Condor","kind":"physical","n":1121,"note":"IBM's largest single chip, and deliberately its last of that kind: the roadmap released the same day pivots to smaller, lower-error modular processors.","source":"IBM Research announcement, 4 Dec 2023"},{"date":"2023-12","org":"IBM","device":"Heron","kind":"physical","n":133,"note":"Shipped alongside Condor as the actual direction: about a 3-5x lower error rate than Eagle, and the template for everything IBM has built since.","source":"IBM Research announcement, 4 Dec 2023"},{"date":"2023-12","org":"QuEra / Harvard / MIT","device":"neutral-atom processor","kind":"logical","n":48,"note":"48 logical qubits from up to 280 physical atoms, with logical circuits run across them. Encoded and operated, not scaled below threshold.","source":"Bluvstein et al., Nature 626, 58 (2024); arXiv:2312.03982"},{"date":"2024-04","org":"Microsoft / Quantinuum","device":"H2","kind":"logical","n":4,"note":"Four logical qubits with a reported ~800x lower error rate than the underlying physical qubits, running thousands of operations.","source":"Microsoft / Quantinuum announcement, 3 Apr 2024"},{"date":"2024-11","org":"Atom Computing / Microsoft","device":"neutral-atom system","kind":"logical","n":24,"note":"24 logical qubits entangled together on a neutral-atom machine, which Microsoft and Atom called a record for entangled logical qubits. Not the largest logical count (the 2023 entry above has 48), and still not a below-threshold result.","source":"Atom Computing / Microsoft announcement, 19 Nov 2024"},{"date":"2024-12","org":"Google","device":"Willow","kind":"physical","n":105,"note":"Under a tenth the size of 2023's largest chips, and about twice Sycamore's. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.","source":"Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687"},{"date":"2024-12","org":"Google","device":"Willow","kind":"logical","n":1,"note":"One logical qubit, at distance 7, below threshold: the first whose error rate provably falls as you add physical qubits. The number is 1 on purpose.","source":"Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687"},{"date":"2025-06","org":"Harvard / MIT / QuEra","device":"continuously reloaded atom array","kind":"physical","n":3000,"note":"Over 3,000 atoms kept in an array for more than two hours by reloading atoms as they are lost. The result is keeping a large array loaded and coherent, not a large computation.","source":"Chiu et al., Nature (2025); arXiv:2506.20660"},{"date":"2025-09","org":"Caltech","device":"tweezer array","kind":"physical","n":6100,"note":"6,100 cesium atoms held in 12,000 laser tweezers, which Caltech called the largest qubit array ever assembled. Like the 2023 Atom Computing entry, these are atoms held in a trap array, not 6,100 qubits in one computation.","source":"Manetsch et al., Nature (2025); doi:10.1038/s41586-025-09641-4"},{"date":"2025-11","org":"IBM","device":"Nighthawk","kind":"physical","n":120,"note":"120 qubits on a square lattice with 218 tunable couplers, over 20 percent more couplers than Heron. IBM pitched it on connectivity and the number of gates a circuit can run, not on qubit count.","source":"IBM announcement, 12 Nov 2025"},{"date":"2025-11","org":"Quantinuum","device":"Helios","kind":"logical","n":48,"note":"48 error-corrected logical qubits from 98 physical trapped-ion qubits, reported to perform better than the physical qubits underneath. Encoded and operated, not a demonstration that errors fall as the code grows.","source":"Quantinuum announcement, 5 Nov 2025"}]
+</script>
+
+<script>
+/* Hardware Scaling Explorer (#scaling). Reads the inline #hw-data block
+   (kept identical to site/data/hardware.json by tools/verify_hardware.py) and
+   draws it on a fixed log axis. Data + a full table are already in the static
+   HTML above; this only adds the picture and the physical/logical toggle. */
+(function () {
+  'use strict';
+  var svg = document.getElementById('hw-svg');
+  var raw = document.getElementById('hw-data');
+  if (!svg || !raw) return;
+  var ms;
+  try { ms = JSON.parse(raw.textContent); } catch (e) { return; }
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var PX0 = 52, PX1 = 544, PY0 = 20, PY1 = 244;
+  var T0 = 2019 + 5 / 12, TSPAN = 2027 - T0;      // x axis: mid-2019 .. end of 2026
+  var LMAX = 4;                                    // y axis: 10^0 .. 10^4 (the 2025 atom arrays reach 6,100)
+
+  function tx(dateStr) {
+    var p = dateStr.split('-');
+    var yr = +p[0] + (+p[1] - 0.5) / 12;
+    return PX0 + Math.max(0, Math.min(1, (yr - T0) / TSPAN)) * (PX1 - PX0);
+  }
+  function ty(n) {
+    var l = Math.log(n) / Math.LN10;
+    return PY1 - Math.max(0, Math.min(1, l / LMAX)) * (PY1 - PY0);
+  }
+  function el(tag, a, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in a) e.setAttribute(k, a[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  }
+
+  // axes + decade grid
+  el('line', { 'class': 'hw-axis', x1: PX0, y1: PY0, x2: PX0, y2: PY1 });
+  el('line', { 'class': 'hw-axis', x1: PX0, y1: PY1, x2: PX1, y2: PY1 });
+  [0, 1, 2, 3, 4].forEach(function (d) {
+    var y = ty(Math.pow(10, d));
+    el('line', { 'class': 'hw-grid', x1: PX0, y1: y.toFixed(1), x2: PX1, y2: y.toFixed(1) });
+    el('text', { 'class': 'hw-tick', x: PX0 - 5, y: (y + 3).toFixed(1), 'text-anchor': 'end' })
+      .textContent = d === 0 ? '1' : '10' + ['', '¹', '²', '³', '⁴'][d];
+  });
+  for (var yr = 2019; yr <= 2026; yr++) {
+    var x = tx(yr + '-07');
+    el('text', { 'class': 'hw-tick', x: x.toFixed(1), y: PY1 + 14, 'text-anchor': 'middle' }).textContent = yr;
+  }
+  el('text', { 'class': 'hw-tick', x: (PX0 + PX1) / 2, y: 296, 'text-anchor': 'middle' }).textContent = 'announced  →';
+  el('text', { 'class': 'hw-tick', x: PX0 - 30, y: (PY0 + PY1) / 2, 'text-anchor': 'middle',
+    transform: 'rotate(-90 ' + (PX0 - 30) + ' ' + ((PY0 + PY1) / 2) + ')' }).textContent = 'qubits (log)';
+
+  function series(kind, cls) {
+    var pts = ms.filter(function (m) { return m.kind === kind; })
+      .slice().sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    var g = el('g', { 'class': 'hw-series ' + kind });
+    var d = pts.map(function (m, i) { return (i ? 'L' : 'M') + tx(m.date).toFixed(1) + ' ' + ty(m.n).toFixed(1); }).join('');
+    el('path', { 'class': 'hw-line ' + cls, d: d }, g);
+    pts.forEach(function (m) {
+      var x = tx(m.date), y = ty(m.n);
+      el('circle', { 'class': 'hw-dot ' + cls, cx: x.toFixed(1), cy: y.toFixed(1), r: 4 }, g);
+      el('text', { 'class': 'hw-dlab', x: x.toFixed(1), y: (y - 7).toFixed(1), 'text-anchor': 'middle' }, g)
+        .textContent = m.n;
+    });
+    return g;
+  }
+  var gPhys = series('physical', 'phys');
+  var gLog = series('logical', 'log');
+
+  function bind(btnId, g) {
+    var b = document.getElementById(btnId);
+    if (!b) return;
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      g.classList.toggle('off', !on);
+    });
+  }
+  bind('hw-t-phys', gPhys);
+  bind('hw-t-log', gLog);
+})();
+</script>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

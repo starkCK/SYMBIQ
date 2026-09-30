@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Do quantum sensors and networks matter sooner than quantum computers? · SymbiQ</title>
+<meta name="description" content="Atomic clocks, gravitational-wave detectors and encrypted links already use quantum effects. What quantum sensing gains, why noise steals most of the textbook advantage, and what quantum key distribution does and does not do.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/sensing.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/sensing.html">
+<meta property="og:title" content="Do quantum sensors and networks matter sooner than quantum computers? · SymbiQ">
+<meta property="og:description" content="Quantum sensors already ship. What they gain, why noise steals the textbook advantage, and what quantum key distribution is really for.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@symbiq">
+<meta name="twitter:title" content="Do quantum sensors and networks matter sooner than quantum computers? · SymbiQ">
+<meta name="twitter:description" content="Quantum sensors already ship. What they gain, why noise steals the textbook advantage, and what quantum key distribution is really for.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/sensing.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=4"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
+<script src="p/sensing.js?v=4" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails data-tiers data-vivid data-alive data-glass data-living>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
+  <div id="navcats">
+    <details class="navcat navcat-cur" data-cat="learn">
+      <summary>Learn</summary>
+      <div class="navpanel navpanel-wide">
+      <div class="navcol">
+      <p class="navhead">Quantum computing</p>
+      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
+      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <div class="navrow">
+        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
+        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+      </div>
+      <div class="navrow">
+        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
+        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+      </div>
+      <div class="navrow">
+        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
+        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+      </div>
+      <div class="navrow">
+        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
+        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+      </div>
+      <div class="navrow">
+        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
+        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+      </div>
+      <div class="navrow">
+        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
+        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
+      </div>
+      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
+      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
+      <a href="sensing.html" class="navmain active">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
+      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
+      </div>
+      <div class="navcol">
+      <p class="navhead">Optimisation</p>
+      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
+      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
+      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
+      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
+      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
+      <p class="navhead">Find your way</p>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
+      </div>
+      </div>
+    </details>
+    <details class="navcat" data-cat="security" data-hot="1">
+      <summary>Security</summary>
+      <div class="navpanel">
+      <p class="navhead">Live tools, no signup</p>
+      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
+      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
+      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
+      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
+      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+      <p class="navhead">The argument</p>
+      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="reality" data-new="1">
+      <summary>Reality Check</summary>
+      <div class="navpanel">
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <p class="navhead">The scorekeeping</p>
+      <div class="navrow">
+        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
+        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
+      </div>
+      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
+      <div class="navrow">
+        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
+        <a href="race.html#threshold" class="navchip">threshold →</a>
+      </div>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="community">
+      <summary>Community</summary>
+      <div class="navpanel">
+      <p class="navhead">Read</p>
+      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
+      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
+      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
+      <p class="navhead">Write</p>
+      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
+      <p class="navhead">About</p>
+      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
+      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
+      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
+      </div>
+    </details>
+    <details class="navcat" data-cat="play">
+      <summary>Play</summary>
+      <div class="navpanel">
+      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
+      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <p class="navhead">Puzzles with a proven best answer</p>
+      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
+      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
+      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
+      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
+      <p class="navhead">Head to head</p>
+      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
+      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
+      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
+      <p class="navhead">Build and tune</p>
+      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
+      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
+      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
+      </div>
+    </details>
+  </div>
+  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
+  <details class="navcat sq-account" id="sq-account" hidden>
+    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
+    <div class="navpanel" id="sq-auth"></div>
+  </details>
+</nav>
+
+<h1>Do quantum sensors and networks matter sooner than quantum computers?</h1>
+<p class="tagline">Atomic clocks, gravitational-wave detectors and encrypted links already use quantum effects. The computer gets the headlines; these are the ones that ship.</p>
+
+<div class="card">
+<h3 aria-level="2">The answer in four lines</h3>
+<p>Quantum sensing turns fragility into a feature: a system disturbed by almost anything is a good detector of almost anything. It already works. The best optical clock is uncertain by <strong>8.1 &times; 10<sup>&minus;19</sup></strong>, and LIGO has injected squeezed light into its detectors since 2019. Quantum <em>networks</em> are earlier: a three-node entangled network exists in one lab. In both, the textbook gain (error falling as 1/<em>N</em> instead of 1/&radic;<em>N</em>) is easy to lose to noise, and quantum key distribution is not a substitute for post-quantum cryptography.</p>
+</div>
+
+<figure class="photo photo-pair">
+  <img src="img/pages/nist-ytterbium-lattice-clock.jpg" width="1000" height="664" loading="lazy" decoding="async" alt="A dense laboratory apparatus of gold-coloured vacuum flanges, optical mounts, blue frames and cables around a central vacuum chamber.">
+  <img src="img/pages/ligo-hanford-aerial.jpg" width="1000" height="666" loading="lazy" decoding="async" alt="An aerial photograph of two long straight buildings meeting at a right angle in a flat desert landscape: the arms of the LIGO Hanford detector.">
+  <figcaption>Two instruments that use quantum effects to measure. Left: an optical lattice clock at NIST, with an oven (the large cylinder) feeding ytterbium atoms into a vacuum chamber where lasers hold and probe them; the record clock quoted below is the same kind of machine, with strontium (Burrus/NIST, 2013, US government work in the public domain, <a href="https://commons.wikimedia.org/wiki/File:Ytterbium_Lattice_Atomic_Clock_(10444764266).jpg" rel="noopener noreferrer">source</a>). Right: the LIGO Hanford Observatory, whose 4 km arms hold the laser interferometer that now uses squeezed light (LIGO Laboratory, 2008, public domain, <a href="https://commons.wikimedia.org/wiki/File:LIGO_Hanford_aerial_05.jpg" rel="noopener noreferrer">source</a>).</figcaption>
+</figure>
+
+<span class="tier g">🟢 No math</span>
+<h2 id="green">Sensors: the quiet successes</h2>
+<p><strong>Clocks.</strong> The second is defined by counting 9,192,631,770 oscillations of a caesium-133 atom. Optical lattice clocks use a much faster transition in strontium atoms, and the best of them, at JILA, reports a systematic uncertainty of <strong>8.1 &times; 10<sup>&minus;19</sup></strong> (<a href="https://arxiv.org/abs/2403.10664">arXiv 2403.10664</a>). A clock that good would be off by one second in about 39 billion years, nearly three times the age of the universe. Comparing clocks like this against one another is one way physicists test whether the constants of nature drift.</p>
+<p><strong>Gravitational waves.</strong> LIGO&rsquo;s detectors are limited at high frequency by quantum noise in the laser light. Since the third observing run they have injected <em>squeezed</em> light, a state with less noise in the quantity that matters, which the LIGO team reports improved sensitivity above 50&nbsp;Hz by up to 3&nbsp;dB and raised the expected detection rate by 40% at one site and 50% at the other (<a href="https://doi.org/10.1103/PhysRevLett.123.231107">Phys. Rev. Lett. 123, 231107</a>). That is quantum technology paying its way in the world&rsquo;s most sensitive instrument, and it involves no quantum computer at all.</p>
+
+<h2 id="networks">Networks: earlier, and harder</h2>
+<p>A quantum network moves quantum states between places. The pieces exist in isolation. A three-node network of diamond spin qubits has been demonstrated at Delft, with entanglement distribution and entanglement swapping between the nodes (<a href="https://doi.org/10.1126/science.abg1919">Science 372, 259</a>). A qubit&rsquo;s state has been teleported from the ground to a satellite up to 1,400&nbsp;km away (<a href="https://www.nature.com/articles/nature23675">Nature 549, 70</a>; <a href="reality.html#star-trek-transporter">what that does and does not mean</a>). What does not yet exist is anything you could call an internet: no network of many nodes, on demand, at useful speed.</p>
+
+<div class="card">
+  <h3 aria-level="3">What this does NOT mean</h3>
+  <p style="margin-bottom:0">It does not mean quantum sensors are about to replace GPS receivers in phones, or that a &ldquo;quantum internet&rdquo; is a few years off. The best clocks are laboratory instruments. The claim here is narrower: <strong>this is where the physics already pays for itself.</strong></p>
+</div>
+
+<span class="tier y">🟡 Some math</span>
+<h2 id="yellow">Why 1/N beats 1/&radic;N, and why noise steals it</h2>
+<p>Measure a phase with <em>N</em> independent probes and the error shrinks as 1/&radic;<em>N</em>, the <strong>standard quantum limit</strong>. Entangle the probes and, in principle, it shrinks as 1/<em>N</em>, the <strong>Heisenberg limit</strong>. With 10,000 probes that is a gain of &radic;10,000 = 100 in precision, for free, from the physics.</p>
+<p>The catch is that entangled states are the most fragile ones. Demkowicz-Dobrza&#324;ski, Ko&#322;ody&#324;ski and Gu&#355;&#259; showed that once decoherence is included, the best possible enhancement in the limit of many probes is generically only a constant factor, not a change in scaling (<a href="https://www.nature.com/articles/ncomms2067">Nature Communications 3, 1063</a>). That is why real instruments report gains of a few decibels, not a factor of 100.</p>
+
+<h3 id="qkd">Quantum key distribution, in four lines</h3>
+<p>In BB84 (Bennett and Brassard, 1984), one party sends single photons prepared in one of two bases; the other measures in a randomly chosen basis. Measuring a photon in the wrong basis disturbs it, so an eavesdropper leaves a trace in the errors the two parties find when they compare a sample. If the error rate is low enough, they distil a secret key; the asymptotic threshold is about 11% (Shor and Preskill, 2000).</p>
+<p><strong>Distance is the wall.</strong> Ordinary fibre loses about 0.2&nbsp;dB per kilometre, so 1,000&nbsp;km is 200&nbsp;dB: a factor of 10<sup>20</sup> in power. Twin-field QKD (<a href="https://doi.org/10.1038/s41586-018-0066-6">Lucamarini et al., 2018</a>) sends the signal to a middle station and its rate scales as the <em>square root</em> of that transmittance, 10<sup>&minus;10</sup> instead of 10<sup>&minus;20</sup>, and a group in China has demonstrated it over 1,000&nbsp;km of fibre (<a href="https://arxiv.org/abs/2303.15795">Phys. Rev. Lett. 130, 210801</a>).</p>
+<p><strong>What QKD does not do.</strong> It needs an authenticated classical channel to begin with, it produces keys rather than signing anything, and real devices have been attacked through their detectors (<a href="https://doi.org/10.1038/nphoton.2010.214">Lydersen et al., 2010</a>). It is not a replacement for the cryptography that is being migrated. <a href="pqc.html#qkd">The short answer on this site</a> is &ldquo;not for this&rdquo;.</p>
+
+<span class="tier r">🔴 Real math</span>
+<h2 id="red">The Fisher-information argument</h2>
+<p>For a pure probe state and a phase generated by an operator <em>G</em>, the <strong>quantum Fisher information</strong> is F<sub>Q</sub> = 4&thinsp;Var(<em>G</em>), and the Cram&eacute;r&ndash;Rao bound says the phase error after &nu; repeats obeys</p>
+<div class="formula">&Delta;&phi; &ge; 1 / &radic;(&nu; F<sub>Q</sub>)</div>
+<p>Take <em>G</em> = J<sub>z</sub> = &frac12; &Sigma; &sigma;<sub>z</sub> over <em>N</em> qubits. A product state |+&rang;<sup>&otimes;N</sup> has variance <em>N</em>/4, so F<sub>Q</sub> = <em>N</em> and &Delta;&phi; = 1/&radic;(&nu;<em>N</em>): the standard quantum limit. The GHZ state (|0&hellip;0&rang; + |1&hellip;1&rang;)/&radic;2 has variance <em>N</em><sup>2</sup>/4, so F<sub>Q</sub> = <em>N</em><sup>2</sup> and &Delta;&phi; = 1/(<em>N</em>&radic;&nu;): the Heisenberg limit. Both are computed exactly for <em>N</em> = 1 to 8 in <code>tools/verify_applications_sensing.py</code>.</p>
+<p>For BB84 the asymptotic key rate is 1 &minus; 2<em>h</em>(<em>e</em>), with <em>h</em> the binary entropy and <em>e</em> the error rate. It reaches zero at <em>e</em> &asymp; 0.110, the 11% above. And the fibre arithmetic: 0.2&nbsp;dB/km &times; 1,000&nbsp;km = 200&nbsp;dB = a factor 10<sup>20</sup>; the square root of 10<sup>&minus;20</sup> is 10<sup>&minus;10</sup>.</p>
+
+<div class="cyu" data-tier-keep data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">You measure a phase with 10,000 probes. In the ideal, noiseless case, how much more precise is a perfectly entangled (Heisenberg-limited) measurement than 10,000 independent probes?</p>
+  <div class="cyu-opts">
+    <button data-opt>10,000 times.</button>
+    <button data-opt>2 times.</button>
+    <button data-opt>100 times.</button>
+    <button data-opt>No difference: entanglement adds nothing.</button>
+  </div>
+  <p class="cyu-why">Independent probes give error 1/&radic;<em>N</em> = 1/100; the Heisenberg limit gives 1/<em>N</em> = 1/10,000. The ratio is &radic;<em>N</em> = <strong>100</strong>. And that is the noiseless ideal: with decoherence the enhancement collapses to a constant factor, which is why real detectors report a few decibels.</p>
+</div>
+
+<h2 data-tier-stop>Go deeper</h2>
+<div class="grid">
+  <div class="card"><h3>🔴 Teleportation, exactly</h3><p>The protocol behind every quantum network, worked and verified.</p><a href="formalism.html#f05">The Machinery, topic 05 →</a></div>
+  <div class="card"><h3>🟡 Where computers might help</h3><p>Chemistry and materials, and why the honest answer is still &ldquo;not yet shown&rdquo;.</p><a href="applications.html">Applications →</a></div>
+  <div class="card"><h3>🔒 QKD versus the fix</h3><p>Why key distribution is not what replaces the encryption that quantum computers threaten.</p><a href="pqc.html#qkd">Isn&#39;t QKD the fix? →</a></div>
+</div>
+
+<footer>The quantum technologies that already ship.<br>SymbiQ &middot; Sources cited inline &middot; Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

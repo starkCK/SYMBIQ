@@ -1,0 +1,113 @@
+{
+  "package": "@noble/post-quantum@0.6.1",
+  "license": "MIT",
+  "source": "cdn.jsdelivr.net /+esm",
+  "files": [
+    {
+      "local": "ml-dsa.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/post-quantum@0.6.1/ml-dsa.js/+esm",
+      "sha256_upstream": "e53a47cb3e6947608880138e9ca836d10a8461d3fc85ac3a43f94cfa09393779",
+      "bytes_upstream": 12074,
+      "imports": [
+        "/npm/@noble/curves@2.2.0/abstract/fft.js/+esm",
+        "/npm/@noble/curves@2.2.0/utils.js/+esm",
+        "/npm/@noble/hashes@2.2.0/sha3.js/+esm",
+        "/npm/@noble/hashes@2.2.0/utils.js/+esm"
+      ],
+      "sha256_local": "ae9b911d656afc4d55515559cc6a151f96a1127ee2316e260232852c5b26a0a3",
+      "bytes_local": 12018,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "ml-kem.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/post-quantum@0.6.1/ml-kem.js/+esm",
+      "sha256_upstream": "48afdada17193afd2a55c6f744e6a5d0b03423cb548bb63d8aacbcc09f468951",
+      "bytes_upstream": 8668,
+      "imports": [
+        "/npm/@noble/curves@2.2.0/abstract/fft.js/+esm",
+        "/npm/@noble/hashes@2.2.0/sha3.js/+esm",
+        "/npm/@noble/hashes@2.2.0/utils.js/+esm"
+      ],
+      "sha256_local": "e39a867f7eafa3fa5eb521a71fe2e557d30b0617831412947311f2f80d68268f",
+      "bytes_local": 8626,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "noble-curves-abstract-fft.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/curves@2.2.0/abstract/fft.js/+esm",
+      "sha256_upstream": "6e10fd9f6716e4b09b1d69e3f4cc9df2c95b07c20e90d54da1d3b381b96a3c52",
+      "bytes_upstream": 6304,
+      "imports": [],
+      "sha256_local": "6e10fd9f6716e4b09b1d69e3f4cc9df2c95b07c20e90d54da1d3b381b96a3c52",
+      "bytes_local": 6304,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "noble-curves-utils.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/curves@2.2.0/utils.js/+esm",
+      "sha256_upstream": "f5a8d2373485fd0c6af7c381769a9519eb1fe4dbfb321437259570a1279fcc39",
+      "bytes_upstream": 4124,
+      "imports": [
+        "/npm/@noble/hashes@2.2.0/utils.js/+esm"
+      ],
+      "sha256_local": "a2cd126298eb548aa20ac369ce98e6f85efee3bf0e1d42a6e95b9bbe65d68096",
+      "bytes_local": 4110,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "noble-hashes-hmac.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/hashes@2.2.0/hmac.js/+esm",
+      "sha256_upstream": "6b7b854e12cdb3aab72632fb534304853a21f322189206d679ae8246f8e775fd",
+      "bytes_upstream": 2969,
+      "imports": [],
+      "sha256_local": "6b7b854e12cdb3aab72632fb534304853a21f322189206d679ae8246f8e775fd",
+      "bytes_local": 2969,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "noble-hashes-sha2.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/hashes@2.2.0/sha2.js/+esm",
+      "sha256_upstream": "749bc14b46bd65e68c5c77afce7c070c1e1452527a884f3e8e265bcbec9d820b",
+      "bytes_upstream": 11255,
+      "imports": [],
+      "sha256_local": "749bc14b46bd65e68c5c77afce7c070c1e1452527a884f3e8e265bcbec9d820b",
+      "bytes_local": 11255,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "noble-hashes-sha3.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/hashes@2.2.0/sha3.js/+esm",
+      "sha256_upstream": "d8025f66c1f47d21c5a6f7a5d58e7226b6a481b75833e7ff682e41582b771cfe",
+      "bytes_upstream": 5883,
+      "imports": [],
+      "sha256_local": "d8025f66c1f47d21c5a6f7a5d58e7226b6a481b75833e7ff682e41582b771cfe",
+      "bytes_local": 5883,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "noble-hashes-utils.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/hashes@2.2.0/utils.js/+esm",
+      "sha256_upstream": "dd8db5f9e47950fbcdf1d97893278d905c6cbf6f8c9aaa6de468f4de6c9a75b6",
+      "bytes_upstream": 4877,
+      "imports": [],
+      "sha256_local": "dd8db5f9e47950fbcdf1d97893278d905c6cbf6f8c9aaa6de468f4de6c9a75b6",
+      "bytes_local": 4877,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    },
+    {
+      "local": "slh-dsa.mjs",
+      "url": "https://cdn.jsdelivr.net/npm/@noble/post-quantum@0.6.1/slh-dsa.js/+esm",
+      "sha256_upstream": "a88fa182d6356e491640d110d124b82090ffd9b1702c37f8b2e0f9c4b8cc6641",
+      "bytes_upstream": 12172,
+      "imports": [
+        "/npm/@noble/hashes@2.2.0/hmac.js/+esm",
+        "/npm/@noble/hashes@2.2.0/sha2.js/+esm",
+        "/npm/@noble/hashes@2.2.0/sha3.js/+esm",
+        "/npm/@noble/hashes@2.2.0/utils.js/+esm"
+      ],
+      "sha256_local": "4d2ca7421983de1959b1b919e479c784b91d527a3983ae3fb318bddaba54f91f",
+      "bytes_local": 12116,
+      "note": "Edited after download (CDN import paths rewritten to local files), so the on-disk bytes differ from upstream by design."
+    }
+  ]
+}

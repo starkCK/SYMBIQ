@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "bitcoin-estimate-collapse",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "y",
+  "receipt": "btc-1.9b",
+  "question": {
+    "text": "In 2022 a careful estimate put breaking one Bitcoin key inside its confirmation window at about 1.9 billion physical qubits. A 2026 re-costing puts it under half a million. What closed a gap of three orders of magnitude in four years?",
+    "options": [
+      "The algorithm side — better circuit constructions, windowed arithmetic and far lower gate counts, plus precomputing part of the work before the transaction exists",
+      "Hardware: physical error rates improved by roughly three orders of magnitude over those four years",
+      "The 2022 estimate was simply wrong, and was retracted",
+      "The two numbers assume different security levels, so they are not comparable"
+    ],
+    "answerIndex": 0,
+    "hint": "Both estimates assume much the same physical error rate. So the thing that moved is not the hardware.",
+    "explain": {
+      "g": "Nothing about the machines changed by a factor of a thousand. What changed was the recipe: better ways to arrange the computation, and the discovery that a large part of the work can be done in advance, before the transaction you are attacking even exists. The lesson is uncomfortable and worth keeping: a correctly cited number can go stale by three orders of magnitude in four years, and the direction of travel is toward easier, not harder.",
+      "y": "Both estimates assume a physical error rate around 10 to the minus 3 and surface-code overheads. The 2026 re-costing needs fewer than 1,200 logical qubits and fewer than 90 million Toffoli gates, where the earlier construction needed vastly more. Active-volume architectures, windowed arithmetic and lower Toffoli counts did most of it, and the observation that the first half of the work can be precomputed from public curve parameters did the rest.",
+      "r": "Webber et al., AVS Quantum Science 4, 013801 (2022) for the 1.9 billion figure; Gidney, Babbush, Drake, Boneh et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (March 2026) for the re-costing. Our page keeps the older number deliberately, as the before-picture of the collapse rather than as a current estimate. It could move again, and there is no reason to think this direction has stopped."
+    }
+  }
+}

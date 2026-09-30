@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "speaker": "IBM (press release)",
+  "source_archive_url": "https://web.archive.org/web/20251112125211/https://newsroom.ibm.com/2025-11-12-ibm-delivers-new-quantum-processors,-software,-and-algorithm-breakthroughs-on-path-to-advantage-and-fault-tolerance",
+  "grace_days": 30,
+  "criteria_frozen_at": "2026-09-23",
+  "hedge_score": 2,
+  "stated_confidence": null,
+  "status": "tracking",
+  "verdict": null,
+  "verdict_reasoning": null,
+  "verdict_sources": [],
+  "resolved_at": null,
+  "captured_by": "desk",
+  "resolved_by": null,
+  "reviewed_by": null,
+  "claimant_response": null,
+  "claimant_response_url": null,
+  "supersedes": null,
+  "evidence_tier": "y",
+  "checkins": [
+    {
+      "at": "2026-09-23",
+      "signal": "no_signal",
+      "source_url": "https://newsroom.ibm.com/2026-07-30-ibm-and-qedma-demonstrate-quantum-advantage,-modeling-physics-beyond-classical-capabilities-through-trusted-quantum-computation",
+      "note": "On 30 July 2026 IBM and Qedma announced a quantum-advantage result on commercially available IBM hardware and released the circuits to the Quantum Advantage Tracker for classical benchmarking. That is the claimant's own announcement, so it is logged without a signal. The claim scores confirmation by the wider community, which had not been established when this entry was captured.",
+      "source_archive_url": "https://web.archive.org/web/20260730145347/https://newsroom.ibm.com/2026-07-30-ibm-and-qedma-demonstrate-quantum-advantage,-modeling-physics-beyond-classical-capabilities-through-trusted-quantum-computation",
+      "author": "desk"
+    }
+  ],
+  "created_at": "2026-09-23",
+  "updated_at": "2026-09-23",
+  "sourcing_note": null,
+  "slug": "ibm-verified-quantum-advantage-2026",
+  "claimant": "ibm",
+  "verbatim": "IBM anticipates that the first cases of verified quantum advantage will be confirmed by the wider community by the end of 2026.",
+  "headline": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+  "source_url": "https://newsroom.ibm.com/2025-11-12-ibm-delivers-new-quantum-processors,-software,-and-algorithm-breakthroughs-on-path-to-advantage-and-fault-tolerance",
+  "source_date": "2025-11-12",
+  "source_kind": "press release",
+  "kind": "scientific",
+  "domain": "quantum",
+  "resolution_criteria": "IBM's own test is the one scored: confirmation by the wider community, not an IBM announcement. Resolves VERIFIED if, by 31 Dec 2026 (plus grace), at least one quantum-advantage result run on IBM hardware has been confirmed by a party that is neither IBM nor an author of the result: a peer-reviewed paper or an independent group stating that the best classical methods it tried cannot match the result, with no published classical reproduction of that result standing at the resolution date. PARTIALLY_VERIFIED if a result is under open dispute at the deadline (classical work matches part of it but not all). NOT_VERIFIED if every claimed case has been matched classically, or no case has been confirmed outside IBM and its co-authors.",
+  "resolver_sources": [
+    "https://newsroom.ibm.com",
+    "https://arxiv.org/list/quant-ph/recent",
+    "The Quantum Advantage Tracker (IBM with Algorithmiq, the Flatiron Institute and BlueQubit)"
+  ],
+  "resolves_by": "2026-12-31",
+  "concept_ids": [
+    "nisq-quantum-advantage",
+    "superconducting-qubits"
+  ]
+}

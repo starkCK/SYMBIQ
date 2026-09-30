@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "qec-threshold-1057",
+  "written": "2026-09-22",
+  "asked": false,
+  "tier": "y",
+  "receipt": "qec-1057",
+  "question": {
+    "text": "The threshold widget puts one logical qubit at 1,057 physical qubits when the physical error rate sits at a tenth of threshold. That number comes straight out of the surface-code formula p_L ≈ (p/p_th)^⌊(d+1)/2⌋. What is it the cost of?",
+    "options": [
+      "The bare code patch alone — routing between patches, magic-state factories and correlated noise all sit on top of it",
+      "A complete fault-tolerant computer, including the classical control and routing overhead needed to run a real algorithm",
+      "The minimum any surface-code machine could ever need, regardless of how close to threshold its hardware runs",
+      "One physical qubit's worth of error correction, before any logical operations are counted"
+    ],
+    "answerIndex": 0,
+    "hint": "The formula only has two ingredients: an error-rate ratio and a code distance. Ask what a real fault-tolerant computer needs that isn't in either.",
+    "explain": {
+      "g": "1,057 is a real answer to a narrow question: how many physical qubits does one patch of surface code need to hit a chosen error target, given how far the hardware sits from threshold. It says nothing about wiring patches together, manufacturing the special states magic-state distillation needs, or noise that doesn't behave independently qubit to qubit. All of that rides on top.",
+      "y": "p_L ≈ A(p/p_th)^⌊(d+1)/2⌋ with A = 1, r = p/p_th = 1/10 and a target p_L = 10⁻¹² fixes the distance, and 2d²−1 physical qubits (the rotated-code convention) gives 1,057. Every input here is about one isolated patch reaching one target error rate — nothing about how many patches a computation needs or how they talk to each other enters the formula at all.",
+      "r": "tools/verify_threshold.py brute-forces this exact relation. The prefactor A = 1 is itself an idealisation — real devices measure A above 1, which shifts the required distance upward. Magic-state factories for T gates routinely cost several times a single logical patch, and correlated noise (crosstalk, leakage) violates the independent-error assumption the threshold theorem is built on. 1,057 is a lower bound on a lower bound."
+    }
+  }
+}

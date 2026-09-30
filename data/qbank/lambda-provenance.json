@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "lambda-provenance",
+  "written": "2026-09-04",
+  "asked": false,
+  "tier": "r",
+  "receipt": "race-lambda",
+  "question": {
+    "text": "Google reports an error-suppression factor Λ = 2.14 ± 0.02 for Willow. Precisely what is that number a measurement of?",
+    "options": [
+      "A linear regression of ln(ε(d)) against d across the whole d = 3, 5, 7 series — a common-ratio parameter of the family, not of one step",
+      "The ratio of logical error rates between the d = 5 and d = 7 codes, the largest pair measured",
+      "The factor by which the logical error rate falls per unit increase in code distance",
+      "The ratio of the logical error rate to the best physical qubit's error rate on the same chip"
+    ],
+    "answerIndex": 0,
+    "hint": "An uncertainty of ±0.02 is characteristic of a fit rather than of a ratio between two measured quantities. And check which single step, if any, actually equals 2.14.",
+    "explain": {
+      "g": "The number describes the whole family of codes Google measured, not any one comparison inside it. It came from fitting a line through several sizes at once, which is why it carries a tight error bar. Pinning it to a single pair of codes sounds more concrete and is simply not what the paper did.",
+      "y": "Λ is defined per two-distance step, Λ ≡ p_L(d)/p_L(d+2) — not per unit of d, since only odd distances are used and the exponent ⌊(d+1)/2⌋ advances every two. The paper computes it by linear regression of ln(ε(d)) against d over d = 3, 5, 7. Taking the individual steps instead gives ε₃/ε₅ = 2.15 and ε₅/ε₇ = 2.12, so the d = 5 → 7 step is the value *furthest* from 2.14.",
+      "r": "On the paper's neural-network-decoder rates (ε₃ = 6.50×10⁻³, ε₅ = 3.03×10⁻³, ε₇ = 1.43×10⁻³), fitting ln ε(d) = a + bd and taking Λ = e^(−2b) gives 2.13, consistent with the paper's 2.14 ± 0.02. Google Quantum AI, Nature 638, 920 (2025), arXiv:2408.13687. We attributed 2.14 to the d = 5 → 7 step on three of our own pages; two were corrected in August 2026 and the third stood five days longer. Both are on our corrections page, and tools/verify_hardware.py now fails the build if any page reinstates the retracted wording."
+    }
+  }
+}

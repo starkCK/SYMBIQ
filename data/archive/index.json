@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "count": 7,
+  "entries": [
+    {
+      "date": "2026-07-19",
+      "qnum": 1,
+      "tier": "g",
+      "question": "You can copy a computer file perfectly, a billion times. Why can't a quantum computer copy a qubit even once?"
+    },
+    {
+      "date": "2026-07-25",
+      "qnum": 2,
+      "tier": "g",
+      "question": "Google's AlphaQubit spots errors in a quantum chip more accurately than the hand-written decoders. But it never looks at the qubits doing the actual work. So wh"
+    },
+    {
+      "date": "2026-07-27",
+      "qnum": 3,
+      "tier": "y",
+      "question": "Add more qubits to a quantum computer and you usually get MORE errors, not fewer — more parts to fail, more crosstalk. But there's one condition under which add"
+    },
+    {
+      "date": "2026-07-30",
+      "qnum": 4,
+      "tier": "y",
+      "question": "A quantum computer's state decays within microseconds, so its error-correcting decoder has to make a call in about a microsecond too. For years that was the arg"
+    },
+    {
+      "date": "2026-08-01",
+      "qnum": 5,
+      "tier": "g",
+      "question": "Your bank says \"we use encryption, we're safe.\" A quantum-aware friend says \"your data might already be stolen — just not read yet.\" What attack "
+    },
+    {
+      "date": "2026-08-02",
+      "qnum": 6,
+      "tier": "y",
+      "question": "Quantum computers are worse than classical computers at almost everything classical computers already do well — email, spreadsheets, web browsing, ordinary arit"
+    },
+    {
+      "date": "2026-08-04",
+      "qnum": 7,
+      "tier": "r",
+      "question": "A surface code has distance d, running below the physical error threshold p_th. As you increase d, how does the logical error rate p_L actually "
+    }
+  ]
+}

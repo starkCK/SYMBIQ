@@ -1,6 +1,6 @@
 (function () {
   window.SymbiQ = window.SymbiQ || {};
-  var TIER = { g: '🟢 Beginner', y: '🟡 Intermediate', r: '🔴 Expert' };
+  var TIER = { g: '🟢 Plain', y: '🟡 Working', r: '🔴 Formal' };
 
   var esc = window.SymbiQ.core.esc;
 
@@ -16,7 +16,7 @@
         var txt = Q.explain && Q.explain[t];
         return txt ? '<div class="archq-ex"><h4>' + TIER[t] + '</h4><p>' + esc(txt) + '</p></div>' : '';
       }).join('') +
-      (q.signal ? '<p class="archq-signal"><b>The Signal that day:</b> ' + esc(q.signal) + '</p>' : '');
+      (q.signal ? '<p class="archq-signal"><b>The desk note that day:</b> ' + esc(q.signal) + '</p>' : '');
   }
 
   function mount(host, o) {

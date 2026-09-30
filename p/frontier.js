@@ -131,9 +131,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'No math',   blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Some math', blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Real math', blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -1830,7 +1830,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     'ledger.html':          ['corrections.html',      'Corrections',                'What we got wrong, and when'],
     'corrections.html':     ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'signals.html':         ['archive.html',          'The archive',                'Everything asked and answered so far'],
-    'archive.html':         ['signals.html',          'Signals',                    'What moved this week, and why it matters']
+    'archive.html':         ['signals.html',          'Desk notes',                 'Dated notes from the desk on what moved, and why it matters']
   };
 
   var RUNGS = [

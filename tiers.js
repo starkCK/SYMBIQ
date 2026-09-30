@@ -3,9 +3,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'No math',   blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Some math', blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Real math', blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }

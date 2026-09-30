@@ -1,26 +1,24 @@
 # SymbiQ
 
-**Two broken geniuses, fixing each other.**
+Learn quantum computing at your depth, prove it in games with proven answers, and see every big claim scored in public.
 
-AI is fixing quantum computing's errors. Quantum will supercharge AI. SymbiQ tracks that loop — at three levels, as a game.
-
-Live at **https://starkck.github.io/symbiq/**
+Live at **https://starkck.github.io/SYMBIQ/**
 
 ---
 
 ## What this is
 
-A static site about the symbiosis between AI and quantum computing — the loop most coverage misses, because it sits between two beats that are usually reported separately.
+A static site about quantum computing and its overlap with AI and operations research. No accounts, no sign-up: your progress lives in your own browser.
 
-Everything is written at three levels, and you pick your own:
+Pages teach at three depths, and you pick yours:
 
-- 🟢 **Basics** — no math, no jargon
-- 🟡 **Concepts** — real terms, light math
-- 🔴 **Deep** — actual formalism, with citations
+- **Plain** — no maths, no jargon
+- **Working** — real terms, light maths
+- **Formal** — the actual formalism, with citations
 
 ## The rule this project runs on
 
-**Every quantitative claim is verified before it ships**, and the verification is adversarial: a fresh reader tries to break it. Where something is unproven, the page says so — each claim carries an evidence tier:
+**Every number is checked before it ships.** AI drafts parts of the site. Scripts then check the arithmetic, the counts and the links, AI referee passes try to break each page, and a person reads it before it goes live. [How we check](how-we-check.html) says exactly what each of those does and does not catch. Where something is unproven, the page says so. Each claim carries an evidence tier:
 
 | Tier | Meaning |
 |---|---|
@@ -29,37 +27,29 @@ Everything is written at three levels, and you pick your own:
 | ⟦Inspired⟧ | A faithful analogy, not the real mechanism |
 | ⟦Frontier⟧ | Open question — nobody knows yet |
 
-Interactive pieces are held to the same standard. Every par, probability and threshold in the games was computed offline (usually by exhaustive search or simulation), then re-verified against an independent reimplementation running in the browser. Nothing here is a designer's guess.
+Interactive pieces are held to the same standard. Every par, probability and threshold in the games was computed offline (usually by exhaustive search or simulation), then re-verified against an independent reimplementation running in the browser. Anything too large to prove is labelled "best known".
 
-Found an error? That pays the biggest reward we offer — see the [Corrections](corrections.html) page. A reader who checks our work is worth more than a reader who trusts it.
+Found an error? Tell us on the [Corrections](corrections.html) page. A correction runs with more prominence than the original mistake, and credits you by name if you want that.
 
 ## What's in here
 
 | | |
 |---|---|
-| `index.html` | Home, plus The Question |
+| `index.html` | Home |
+| `basics.html` | Start here: no maths |
 | `journey.html` | **The Solver's Path** — the narrative game: map, missions, mentors, saved progress |
-| `play.html` | **The Arcade** — the same five games, free play, no story |
-| `basics · concepts · deep` | The three tiers |
-| `quantum-mechanics · qec · logical-qubit · ai · bitcoin · compare` | The six explainers |
-| `race.html` | Who is actually ahead, and our own prediction record |
+| `play.html` | **The Arcade** — the games, free play, no story |
+| `formalism.html` · `feasible.html` | **The Machinery** and **The Feasible Region**, the two full courses |
+| `quantum-mechanics · qec · logical-qubit · ai · bitcoin · compare` | The explainers |
+| `race.html` | Who is actually ahead, and the desk's own forecasts |
+| `ledger.html` | Every big claim, scored when its deadline passes |
 | `corrections.html` | Where we were wrong |
-| `games.js` | All five game engines, defined once, mounted in both the Path and the Arcade |
+| `games.js` | The game engines, defined once, mounted in both the Path and the Arcade |
 | `nav.js` · `save.js` · `style.css` | Navigation, local progress store, styling |
-
-## The games
-
-All five are real, not decorative:
-
-- **Circuit Golf** — reach a target qubit state in as few gates as possible. Every par is a *proven minimum*, found by breadth-first search over all gate words.
-- **Grover's Escape** — the exit's odds are exactly sin²((2k+1)θ). Over-amplify and they fall again, because Grover is a rotation, not a ratchet.
-- **Max-Cut** — NP-hard (Karp 1972); pars brute-forced. District 5 is a deliberate local-optimum trap where no single move helps.
-- **The Annealing Volcano** — you play the *cooling schedule*. Scored on 500 replays of your schedule, not the one run you got lucky on.
-- **Quantum Tic-Tac-Toe** — Goff's game (*Am. J. Phys.* **74**, 962, 2006). Collapse engine verified on thousands of random entanglement tangles.
 
 ## Running it locally
 
-No build step, no dependencies — it is plain HTML, CSS and JavaScript.
+No build step, no dependencies: it is plain HTML, CSS and JavaScript.
 
 ```bash
 python -m http.server 8642

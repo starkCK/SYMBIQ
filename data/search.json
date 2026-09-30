@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-09-30",
- "pages": 34,
- "count": 549,
+ "pages": 35,
+ "count": 562,
  "records": [
   {
    "k": "s",
@@ -11,6 +11,22 @@
    "h": "About the desk",
    "x": "SymbiQ is written and kept by Chinmoy: one person, a stubborn test suite, and no money or ties to any company whose claims turn up on these pages. The independence matters because most of what happens here is arguing with numbers. A figure ",
    "w": 3
+  },
+  {
+   "k": "s",
+   "p": "about.html",
+   "t": "About the desk",
+   "h": "Who writes this",
+   "x": "Chinmoy, sole author and editor. Independent: no employer, investor or client among the companies whose claims appear here, and no position in any of them. Write to the desk: chinmoyuas@gmail.com. The method below, and How we check, are the",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "about.html#ai-use",
+   "t": "About the desk",
+   "h": "How AI is used here",
+   "x": "Large parts of this site are drafted by AI, and saying so plainly is part of the method. Three things do the checking, and each has limits, set out in full on How we check. AI drafts. Most of the prose, the code, the calculators and figures",
+   "w": 2
   },
   {
    "k": "s",
@@ -49,7 +65,7 @@
    "p": "about.html#contact",
    "t": "About the desk",
    "h": "Telling us we got something wrong",
-   "x": "The fastest route is the correction report. It lands on the desk directly, and it is read by the desk. For anything else: email the desk. Last updated: 24 September 2026.",
+   "x": "The fastest route is the correction report. It lands on the desk directly, and it is read by the desk. For anything else: chinmoyuas@gmail.com. Last updated: 30 September 2026.",
    "w": 2
   },
   {
@@ -465,7 +481,7 @@
    "p": "archive.html#how-the-question-works",
    "t": "The Question Archive",
    "h": "How The Question works",
-   "x": "One question at a time, at one of three levels: 🟢 beginner, 🟡 intermediate, 🔴 expert with real mathematics. Every answer carries an explanation at all three levels, so you can always drop down a tier if the explanation loses you, or climb o",
+   "x": "One question at a time, at one of three levels: 🟢 Plain, 🟡 Working, 🔴 Formal (the real mathematics). Every answer carries an explanation at all three levels, so you can always drop down a tier if the explanation loses you, or climb one if i",
    "w": 2
   },
   {
@@ -928,8 +944,16 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "19 corrections logged",
+   "h": "20 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "Correction 13 removed a promise of payment and a paid reviewer. Both were still live in three other places.",
+   "x": "What we said. After Correction 13, the menu still described this page as “where we were wrong, and paid for it”. The diagram on this page still showed the hostile referee as “a fresh reader paid to attack it”. The Ledger's submission box st",
    "w": 1
   },
   {
@@ -1646,6 +1670,94 @@
   },
   {
    "k": "s",
+   "p": "how-we-check.html",
+   "t": "How we check",
+   "h": "How we check",
+   "x": "What checks a number before it reaches this site, and what no check can catch.",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html",
+   "t": "How we check",
+   "h": "The short version",
+   "x": "AI drafts most of this site: the prose, the code, the first version of every figure. Scripts then recompute whatever can be recomputed. Fresh AI sessions try to break each page. One person, Chinmoy, decides what goes live. None of that is a",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#sources",
+   "t": "How we check",
+   "h": "Where a number comes from",
+   "x": "A figure that carries weight comes from the primary source: the paper, the standard, the regulation or the press release itself. A summary by someone else is a lead, not a source. If we cannot reach the primary source, we do not publish the",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#scripts",
+   "t": "How we check",
+   "h": "Layer 1: scripts",
+   "x": "Scripts do the parts that do not need judgement. Arithmetic is redone. Widget outputs, thresholds, resource estimates and game pars are recomputed, usually by trying every possible input rather than a hopeful handful. A game par that is not",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#referees",
+   "t": "How we check",
+   "h": "Layer 2: AI referee passes",
+   "x": "A fresh AI session, with no memory of writing the page, is told to attack it: recompute every number, fetch every cited source, and look for claims that go further than the evidence. These passes have found real errors, including several in",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#person",
+   "t": "How we check",
+   "h": "Layer 3: a person",
+   "x": "Chinmoy decides what is published and acts on reader reports. He is one person with limited hours, and he does not re-derive every proof himself. That is why layers 1 and 2 exist, and why this page does not call the result “verified” withou",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#receipts",
+   "t": "How we check",
+   "h": "Receipts",
+   "x": "The figures a reader is most likely to act on carry a receipt: a small note that opens beside the number and shows the formula, the inputs, the source, the date it was last checked, and what would prove it wrong. Look for the underlined fig",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#tiers",
+   "t": "How we check",
+   "h": "Evidence tiers",
+   "x": "Every claim carries one of four tiers, so a reader can see what kind of knowledge it is: Proven — a theorem, or a measured result with a citation. Heuristic — works in practice, no guarantee. Inspired — a faithful analogy, not the real mech",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#ledger",
+   "t": "How we check",
+   "h": "How the Ledger judges a claim",
+   "x": "The Ledger tracks 20 dated, public, falsifiable claims. The resolution criteria and the sources that will settle each one are fixed the day it is logged. A verdict is written after the deadline and checked against those criteria. The verdic",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#wrong",
+   "t": "How we check",
+   "h": "When we are wrong",
+   "x": "It goes on the corrections log, in public, with more room than the original mistake had: what we said, what is true, and how we missed it. The log counts anything wrong that reached the published site, whoever found it. A reader who finds o",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "how-we-check.html#gaps",
+   "t": "How we check",
+   "h": "Known gaps",
+   "x": "Only 3 of the 20 topics on The Machinery link a primary paper so far, so most of that course is checked by scripts and AI passes but not cited. Some older pages still carry numbers typed by hand, and each one we find gets moved to a compute",
+   "w": 2
+  },
+  {
+   "k": "s",
    "p": "index.html",
    "t": "Two broken geniuses,fixing each other.",
    "h": "Two broken geniuses,fixing each other.",
@@ -1722,14 +1834,6 @@
    "t": "Two broken geniuses,fixing each other.",
    "h": "Why the timing matters",
    "x": "Estimates in this field can move by orders of magnitude in a few years. The clearest case, with every number sourced to a primary paper: how many physical qubits it would take to steal one Bitcoin key inside the ten-minute window before you",
-   "w": 2
-  },
-  {
-   "k": "s",
-   "p": "index.html#insight-notes",
-   "t": "Two broken geniuses,fixing each other.",
-   "h": "Insight Notes: essays from people outside the desk",
-   "x": "Researchers, practitioners and serious enthusiasts can publish short, evidence-tiered essays here under their own name — reviewed before they run, held to the same 🟢🟡🔴 tier and citation rules as everything else on this site. Read Insight No",
    "w": 2
   },
   {
@@ -1897,7 +2001,7 @@
    "p": "insights.html#talk",
    "t": "Insight Notes",
    "h": "Comment and share",
-   "x": "There’s no comment thread here yet. If a note raises a question for its author, email the desk and it’ll be forwarded. Every note carries a plain, permanent link — share it wherever you like. There’s no reshare-into-feed mechanic here, on p",
+   "x": "There’s no comment thread here yet. If a note raises a question for its author, chinmoyuas@gmail.com and it’ll be forwarded. Every note carries a plain, permanent link — share it wherever you like. There’s no reshare-into-feed mechanic here",
    "w": 2
   },
   {
@@ -1936,7 +2040,7 @@
    "k": "s",
    "p": "learn.html",
    "t": "The course map",
-   "h": "🟢 No math",
+   "h": "🟢 Plain",
    "x": "An analogy, no equations, no unexplained jargon. If you can follow a good magazine article, you can follow this.",
    "w": 1
   },
@@ -1944,7 +2048,7 @@
    "k": "s",
    "p": "learn.html",
    "t": "The course map",
-   "h": "🟡 Some math",
+   "h": "🟡 Working",
    "x": "The real terms and light arithmetic: ratios, exponents, a formula you can plug numbers into.",
    "w": 1
   },
@@ -1952,7 +2056,7 @@
    "k": "s",
    "p": "learn.html",
    "t": "The course map",
-   "h": "🔴 Real math",
+   "h": "🔴 Formal",
    "x": "The actual formalism, with worked examples that are computed and checked, and the papers behind them. Pick a depth at the top of any page and the site remembers it. The glossary lists every term with the depth it is taught at.",
    "w": 1
   },
@@ -2713,7 +2817,7 @@
    "p": "qec.html",
    "t": "What is quantum error correction?",
    "h": "Decoder Duel",
-   "x": "🔴 Real math",
+   "x": "🔴 Formal",
    "w": 1
   },
   {
@@ -2849,7 +2953,7 @@
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
    "h": "The CHSH game",
-   "x": "🔴 Real math",
+   "x": "🔴 Formal",
    "w": 1
   },
   {
@@ -3111,25 +3215,25 @@
   {
    "k": "s",
    "p": "signals.html",
-   "t": "The Signal",
-   "h": "The Signal",
-   "x": "One AI/quantum story at a time: evidence tier named, linked to whatever it rests on that SymbiQ already teaches, and carrying a “what this does NOT mean” section as standard. A human approves every story before it ships.",
+   "t": "Desk notes",
+   "h": "Desk notes",
+   "x": "One story at a time, written by hand and dated: evidence tier named, linked to whatever it rests on that SymbiQ already teaches, and carrying a “what this does NOT mean” section as standard. A human approves every story before it ships.",
    "w": 3
   },
   {
    "k": "s",
    "p": "signals.html",
-   "t": "The Signal",
-   "h": "Loading The Signal…",
+   "t": "Desk notes",
+   "h": "Loading the desk notes…",
    "x": "If this does not fill in, the feed could not be fetched. It lives at data/signals/index.json.",
    "w": 1
   },
   {
    "k": "s",
    "p": "signals.html#how",
-   "t": "The Signal",
-   "h": "How The Signal works",
-   "x": "When it runs, a daily pass over a short list of primary sources will draft at most one story, never a roundup or filler for a quiet day. The draft cannot state any number that is not in the source, has to name what a reader would wrongly co",
+   "t": "Desk notes",
+   "h": "How these notes are written",
+   "x": "Each note is written by hand, dated the day it was written, and covers one story. Sources are primary: the paper, the announcement or the filing. AI drafts the first version; scripts check the numbers it quotes, and Chinmoy approves every n",
    "w": 2
   },
   {

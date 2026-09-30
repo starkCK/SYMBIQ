@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="The AI That Babysits Qubits · SymbiQ">
 <meta name="twitter:description" content="Quantum error correction and the AI decoder now beating thirty years of hand-written rulebooks. Read it with no math, with light math, or with full formalism and citations, all on one page.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/basics.css?v=32">
+<link rel="stylesheet" href="p/basics.css?v=34">
 
 
 
@@ -68,10 +67,10 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/basics.js?v=13" defer></script>
+<script src="p/basics.js?v=16" defer></script>
 
 
 
@@ -181,15 +180,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -236,7 +235,7 @@
   <figcaption>What a quantum chip looks like: Google's Sycamore processor in its mount, on display at the Deutsches Museum in Munich. The chip sits at the centre of the mount. Photo: Coldupnorth, cropped, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Sycamore_Quantum_Chip.jpg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g" id="green">🟢 No math</span>
+<span class="tier g" id="green">🟢 Plain</span>
 <p class="tier-lede">One analogy, no equations, about two minutes. The 🟡 tier builds the machinery and 🔴 carries the derivation.</p>
 
 <p>A quantum computer is a choir in which every singer slowly drifts off key, and glancing at any one of them to check makes that singer forget the song. <em>(Singer = qubit, the machine's basic unit of information. Off key = the small error every qubit collects simply by existing. Those are the only two terms you need.)</em></p>
@@ -308,7 +307,7 @@
   <p class="cyu-why"><strong>Measuring one qubit on its own collapses its superposition</strong>, the property that made it worth having. A parity check dodges this by asking only <em>do these two agree?</em>, which reveals that something flipped without revealing what either one is. That single constraint is why quantum error correction looks so strange next to the classical kind: you are repairing a thing you are never allowed to inspect.</p>
 </div>
 
-<span class="tier y" id="yellow">🟡 Some math</span>
+<span class="tier y" id="yellow">🟡 Working</span>
 <p class="tier-lede">The mechanism, one worked number, and the picture you should have in your head. No derivations; those are in 🔴.</p>
 
 <h2 id="the-mechanism">The mechanism</h2>
@@ -393,7 +392,7 @@
   <p class="cyu-why">Each step of <em>d</em> → <em>d</em>+2 divides the logical error rate by Λ, so 1,000× needs log(1000)/log(2.14) ≈ 9.08 steps. Nine steps buys 2.14<sup>9</sup> ≈ <strong>941×</strong> and takes you from <em>d</em> = 5 to <strong><em>d</em> = 23</strong>, which is 2<em>d</em>²−1 = <strong>1,057 physical qubits</strong> for that one logical qubit. Note the trap in the wording: raising <em>d</em> from 5 to 6 would buy you nothing at all, because the exponent only moves when the distance moves by two.</p>
 </div>
 
-<span class="tier r" id="red">🔴 Real math</span>
+<span class="tier r" id="red">🔴 Formal</span>
 <p class="tier-lede">Formalism, one derivation carried through, primary sources, and the problems still open. Assumes stabilizer formalism. The 🟡 tier carries the same content without the algebra. Independently verified 2026-07-13.</p>
 
 <p>Rotated surface code with code distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits, so a patch costs 2<em>d</em>²−1 physical qubits. Stabilizers are weight-4 X/Z plaquette operators in the bulk (weight-2 on boundaries), measured each cycle. Decoding is inference over the syndrome volume: given syndrome history σ, find the most probable logical equivalence class of errors, <em>not</em> the most probable error, which is a different and worse objective.</p>

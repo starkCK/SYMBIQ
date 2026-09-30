@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="What is quantum error correction?">
 <meta name="twitter:description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it, with an interactive surface code you can break yourself.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/qec.css?v=34">
+<link rel="stylesheet" href="p/qec.css?v=36">
 
 
 
@@ -105,11 +104,11 @@
 .thr-read .big { font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .thr-read b { color: var(--text); font-variant-numeric: tabular-nums; }
 </style>
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="save.js"></script>
-<script id="games-src" type="text/symbiq-lazy" src="games.js?v=46"></script>
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=48"></script>
 <script id="sq3d-src" type="text/symbiq-lazy" src="sq3d.js?v=2"></script>
 <script type="application/ld+json">
 {
@@ -158,7 +157,7 @@
   ]
 }
 </script>
-<script src="p/qec.js?v=15" defer></script>
+<script src="p/qec.js?v=18" defer></script>
 
 
 
@@ -271,15 +270,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -329,7 +328,7 @@
 <p>One qubit is too fragile to trust, so you weave one <strong>logical qubit</strong> out of many physical ones. You never look at the data. You measure <strong>checks between neighbors</strong>, and a <strong>decoder</strong> infers what went wrong. Done well, errors get exponentially rarer as you add qubits; done badly, adding qubits makes things worse. The inferring is a pattern-recognition problem, which is why an AI now out-guesses thirty years of hand-written algorithms on accuracy, with speed as the remaining fight.</p>
 </div>
 
-<span class="tier g">🟢 No math</span>
+<span class="tier g">🟢 Plain</span>
 <h2 id="green" data-fig-state="1">The problem: a computer that breaks when you look at it</h2>
 <p>A qubit is a singer who slowly drifts off key. Everything nudges it: a warm wire, a stray bit of radiation, the qubit next door. On good hardware, roughly one operation in a thousand goes wrong. That sounds tolerable until you hear that useful algorithms need <em>billions</em> of error-free steps (trillions of physical operations underneath) to land correctly, back to back.</p>
 <p>A classical computer solves this with copies: store the bit three times, take the majority vote. Quantum mechanics slams both doors on that. You <strong>can't copy</strong> an unknown qubit: the no-cloning theorem isn't an engineering limit, it's the law. And you <strong>can't peek</strong> at one to see if it's still right, because measuring a qubit destroys the very superposition you were trying to protect.</p>
@@ -337,7 +336,7 @@
 <p>For thirty years, humans wrote that conductor's rulebook by hand, assuming the choir fails in tidy, textbook ways. Real choirs don't. In 2024, Google DeepMind replaced the rulebook with an AI, <strong>AlphaQubit</strong>, that learned a real machine's actual bad habits from its data, and it made fewer wrong calls than every hand-written rulebook it was tested against. (It's still too slow to run live; making learned decoders fast is the current race.) The thing AI is worst at (being exactly right) is fixing the thing quantum computing can't exist without. <a href="index.html">That loop is this site's whole subject.</a></p>
 <p>Real terms for the same picture: <a href="#yellow">🟡 keep going ↓</a></p>
 
-<span class="tier y">🟡 Some math</span>
+<span class="tier y">🟡 Working</span>
 <h2 id="yellow" data-fig-state="2">The machine: surface codes, syndromes, decoders</h2>
 <p>Encode one logical qubit into a grid, a <strong>surface code</strong>, where data qubits are interleaved with measurement qubits. The measurement qubits repeatedly run parity checks (<strong>stabilizers</strong>) on their data-qubit neighbors. A check that fires tells you an odd number of its neighbors flipped; the full pattern of fired checks is the <strong>syndrome</strong>. It's a diagnosis from symptoms: you never see the disease, only which alarms it tripped.</p>
 <div class="overflow"><table>
@@ -424,7 +423,7 @@
   <p id="duel-honest" style="font-size:0.85rem;color:var(--muted);margin-bottom:0"></p>
 </div>
 
-<span class="tier r">🔴 Real math</span>
+<span class="tier r">🔴 Formal</span>
 <h2 id="red" data-fig-state="5">The formalism, with receipts</h2>
 <p>Rotated surface code with distance <em>d</em>: <em>d</em>² data qubits, <em>d</em>²−1 syndrome qubits; the stabilizer group is generated by weight-4 X- and Z-plaquette operators in the bulk and weight-2 operators on the boundaries. Logical operators are X- and Z-strings spanning the lattice between their respective boundaries; the code is [[<em>d</em>², 1, <em>d</em>]]. Decoding is inference over the syndrome volume: given syndrome history σ, return the most probable <em>logical equivalence class</em> of errors. The exact physical error is unrecoverable and irrelevant; any correction in the right class (differing from the truth by a stabilizer) succeeds. The demo above shows this: flip one qubit of a weight-2 check and the decoder may "repair" its partner instead, and that's a win.</p>
 <p><strong>The threshold theorem</strong> is what makes "below threshold" more than a hopeful phrase: it is the proof that arbitrarily long fault-tolerant quantum computation is possible at all, provided the physical error rate sits below a fixed constant p<sub>th</sub> and the code is scaled up to compensate, exactly the claim the scaling law below quantifies. It was proven independently, by three different routes, in the late 1990s: by concatenating small codes inside themselves recursively (Aharonov &amp; Ben-Or, <a href="https://arxiv.org/abs/quant-ph/9906129">arXiv quant-ph/9906129</a> (<em>SIAM J. Comput.</em> 38, 1207 (2008), expanding their 1997 STOC result); Knill, Laflamme &amp; Zurek, <a href="https://arxiv.org/abs/quant-ph/9702058">arXiv quant-ph/9702058</a> (<em>Proc. R. Soc. Lond. A</em> 454, 365 (1998))), and by a topological route closer to the surface code used here (Kitaev, <em>Russian Mathematical Surveys</em> 52, 1191 (1997)). The proof holds under a specific noise model, though: errors independent across qubits and gates, local rather than striking many qubits at once, and already below threshold before scaling starts. Real hardware breaks the first two by default (crosstalk correlates neighboring failures, leakage escapes the two-level qubit the proof assumes), and that gap, far from being a footnote to the theorem, is the reason correlated matching and AlphaQubit exist below.</p>

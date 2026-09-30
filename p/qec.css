@@ -215,6 +215,13 @@ p { margin-bottom: 14px; text-wrap: pretty; }
   .rung-dot { width: 22px; height: 22px; }
   .rung-seg { width: 8px; }
 }
+.ev { display: inline-flex; align-items: center; gap: .4em; font-size: .8rem; font-weight: 600; line-height: 1.2;
+  padding: 2px 10px 2px 7px; border-radius: 99px; border: 1px solid currentColor; color: var(--muted); white-space: nowrap; }
+.ev::before { content: ""; flex: none; width: .8em; height: .8em; background: currentColor; }
+.ev-proven { color: var(--teal); } .ev-proven::before { clip-path: circle(50%); }
+.ev-heuristic { color: var(--yellow); } .ev-heuristic::before { clip-path: polygon(50% 4%, 100% 96%, 0 96%); }
+.ev-inspired { color: var(--violet); } .ev-inspired::before { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.ev-frontier { color: var(--red); } .ev-frontier::before { clip-path: polygon(50% 0, 62% 36%, 100% 38%, 70% 60%, 80% 96%, 50% 74%, 20% 96%, 30% 60%, 0 38%, 38% 36%); }
 .tier { display: inline-block; font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--border); margin-bottom: 10px; }
 .tier.g { color: var(--green); background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.3); }
 .tier.y { color: var(--yellow); background: rgba(250, 204, 21, 0.08); border-color: rgba(250, 204, 21, 0.3); }

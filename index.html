@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-dR5EwJldmnRf45dra6So6hzwwLL8yNl+fjh37IU6U5M=' 'sha256-Cvv17i+mPJR3msGsNxroi1XCcaQZKFL1W2PWx2Mk5bU=' 'sha256-VI9z9y6Y/frOMK5VU2xZG8wk0eOu+Yj4hXLti4vjbdY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-dR5EwJldmnRf45dra6So6hzwwLL8yNl+fjh37IU6U5M=' 'sha256-wXIbu7s1IFdXnctngli09jT2r0vY1rhru9dKQEb6A4A=' 'sha256-VI9z9y6Y/frOMK5VU2xZG8wk0eOu+Yj4hXLti4vjbdY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>SymbiQ: Two broken geniuses, fixing each other.</title>
@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ. Two broken geniuses, fixing each other.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="SymbiQ: Two broken geniuses, fixing each other.">
 <meta name="twitter:description" content="Claims about AI and quantum computing, checked. Every number from a primary paper, twelve games where the mathematics does the judging, and a public ledger of predictions scored against criteria frozen before the deadline.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/index.css?v=47">
+<link rel="stylesheet" href="p/index.css?v=49">
 
 
 
@@ -84,9 +83,9 @@
   .herocta-alt { text-align: center; padding: 10px 0; }   /* keeps the 44px touch minimum */
 }
 </style>
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/index.js?v=25" defer></script>
+<script src="p/index.js?v=28" defer></script>
 
 
 
@@ -204,15 +203,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -414,9 +413,9 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
       <span class="ev-sub">claims tracked, scored when the deadline lands</span>
     </a>
     <a class="ev-tile" href="signals.html" data-ev="signal">
-      <span class="ev-eyebrow">The Signal</span>
+      <span class="ev-eyebrow">Desk notes</span>
       <span class="ev-num">–</span>
-      <span class="ev-sub">news items checked against the loop</span>
+      <span class="ev-sub">dated notes from the desk, written by hand</span>
     </a>
     <a class="ev-tile" href="archive.html" data-ev="archive">
       <span class="ev-eyebrow">The Question Archive</span>
@@ -518,11 +517,11 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
 <section class="orhero gamehero" data-station="games">
   <p class="eyebrow">The part you play</p>
   <h2 id="twelve-games-where-you-cannot-fake-a-score">Twelve games where you cannot fake a score</h2>
-  <p class="orhero-lede">Most explainers ask you to take their word for it. Here the mathematics holds the whistle: <strong>every par is an optimum found by exhaustive search, and every probability on screen is computed rather than chosen by a designer</strong>. Two of the machines now play back, against a computer that solved the board before you sat down.</p>
+  <p class="orhero-lede">Most explainers ask you to take their word for it. Here the mathematics holds the whistle: <strong>every par is an optimum found by exhaustive search, and every probability on screen is computed rather than chosen by a designer</strong>. Two of the machines now have a Versus the Machine mode, against a computer that solved the board before you sat down.</p>
 
   <div class="orhero-grid">
-    <div><b>The Knocker</b><span>Your quantum register against a classical crew, one query each per turn. Measure too soon and you waste the vault; wait too long and they knock on the right door first.</span></div>
-    <div><b>Border War</b><span>Take turns painting a city map with a computer that scores every road you fail to cut. Nine boards, each solved outright, and on the boss exactly one opening move wins.</span></div>
+    <div><b>Versus the Machine: the Knocker</b><span>Your quantum register against a classical crew, one query each per turn. Measure too soon and you waste the vault; wait too long and they knock on the right door first.</span></div>
+    <div><b>Versus the Machine: Border War</b><span>Take turns painting a city map with a computer that scores every road you fail to cut. Nine boards, each solved outright, and on the boss exactly one opening move wins.</span></div>
     <div><b>The Decoder Duel</b><span>Ten rounds against the textbook decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</span></div>
     <div><b>The Annealing Volcano</b><span>You play the weather, not the hiker: set the temperature and let the landscape settle. Your schedule is replayed 500 times, so one lucky run earns nothing.</span></div>
   </div>
@@ -652,15 +651,6 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
 </figure>
 </section>
 
-<section class="orhero">
-  <p class="eyebrow">Not written by the desk alone</p>
-  <h2 id="insight-notes">Insight Notes: essays from people outside the desk</h2>
-  <p class="orhero-lede">Researchers, practitioners and serious enthusiasts can publish short, evidence-tiered essays here under their own name &mdash; reviewed before they run, held to the same 🟢🟡🔴 tier and citation rules as everything else on this site.</p>
-  <p class="gh-row" style="margin-bottom:0">
-    <a class="bigplay ghost" href="insights.html">Read Insight Notes <span class="kbd">for scientists &amp; researchers</span></a>
-    <a class="bigplay ghost" href="apply.html">Write for SymbiQ →</a>
-  </p>
-</section>
 
 <section data-station-hidden="join" hidden>
 <h2 id="join-loop">Join the loop</h2>
@@ -686,7 +676,7 @@ frozen before each deadline, with <a href="corrections.html">our own misses</a> 
   var box = document.getElementById('daily-q');
   if (!box) return;
   var KEY = 'symbiq_dq_v1';
-  var TIER = { g: ['🟢', 'No math'], y: ['🟡', 'Some math'], r: ['🔴', 'Real math'] };
+  var TIER = { g: ['🟢', 'Plain'], y: ['🟡', 'Working'], r: ['🔴', 'Formal'] };
   var TICK = { true: '🟩', false: '🟥' };
 
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }

@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Quantum computing companies compared: how to actually read the race">
 <meta name="twitter:description" content="The four qubit technologies (superconducting, trapped-ion, neutral-atom, photonic) and why you can't compare their qubit counts. A field guide to the metrics that actually decide the race.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/compare.css?v=32">
+<link rel="stylesheet" href="p/compare.css?v=34">
 
 
 
@@ -131,10 +130,10 @@
   ]
 }
 </script>
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/compare.js?v=13" defer></script>
+<script src="p/compare.js?v=16" defer></script>
 
 
 
@@ -247,15 +246,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -311,7 +310,7 @@
   <figcaption>Two of the four technologies, photographed. Left: Google's Sycamore superconducting chip in its mount, on display at the Deutsches Museum, Munich (Coldupnorth, cropped, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Sycamore_Quantum_Chip.jpg" rel="noopener noreferrer">source</a>). Right: the apparatus NIST physicists used to hold two beryllium ions about 40 micrometres apart above a gold chip, a trapped-ion device (Y. Colombe/NIST, a US government work in the public domain, resized, <a href="https://commons.wikimedia.org/wiki/File:Quantum_Computing;_Ion_Trapping_(5941055642).jpg" rel="noopener noreferrer">source</a>).</figcaption>
 </figure>
 
-<span class="tier g">🟢 No math</span>
+<span class="tier g">🟢 Plain</span>
 <h2 id="green">Why the "biggest number" is the wrong number</h2>
 <p>Every few months a company announces a record qubit count and the headlines treat it like a lap time. It isn't one. A quantum computer's qubit count tells you almost nothing on its own, the way a car's number of cylinders tells you nothing about whether it wins races.</p>
 <p>Two reasons. First, <strong>qubits vary wildly in quality</strong>: a noisy qubit that forgets its state in a microsecond is not interchangeable with a pristine one that holds for seconds, and <a href="logical-qubit.html">error correction spends the noisy ones at a brutal exchange rate</a>. Fifty excellent qubits routinely beat a thousand sloppy ones.</p>
@@ -345,14 +344,14 @@
   <p><a href="ledger.html#c-microsoft-topological-years-not-decades">Microsoft's own timeline for this — tracked on The Ledger →</a></p>
 </div>
 
-<span class="tier y">🟡 Some math</span>
+<span class="tier y">🟡 Working</span>
 <h2 id="yellow">The trade-off nobody escapes</h2>
 <p>Why hasn't one technology simply won? Because the requirements pull against each other. Trapped ions hold their quantum state on the order of a <strong>million times longer</strong> than superconducting qubits, yet superconducting machines run vastly more operations per second, because their gates are nanoseconds where ions' are microseconds to milliseconds. One is a better memory; the other is a faster processor. Neither wins outright, because the figure of merit is roughly</p>
 <div class="formula">usefulness ≈ coherence × gate-speed × connectivity × scalability × engineering-maturity</div>
 <p>That figure of merit is a <em>product</em>, where any single zero sinks the whole thing. That's why "we have the most qubits" (one term, and the least informative one) is a marketing line, not a lead. Each technology is a bet that <em>its</em> weakest factor is the one that yields first: ions bet gate speed and trap-scaling get solved; superconductors bet coherence and connectivity improve; neutral atoms bet their large reconfigurable arrays keep scaling; photonics bets manufacturability beats photon loss.</p>
 <p><strong>The scoreboard worth reading.</strong> Skip qubit count. Look at: physical two-qubit error rate (are they below the error-correction threshold?), connectivity (all-to-all or nearest-neighbor?), demonstrated logical-qubit lifetime, and above all whether they've shown <a href="qec.html">below-threshold error correction</a>, the one result that turns raw qubits into <a href="logical-qubit.html">logical ones</a>. A machine's logical-qubit count is its real size.</p>
 
-<span class="tier r">🔴 Real math</span>
+<span class="tier r">🔴 Formal</span>
 <h2 id="red">What to read instead of the headline</h2>
 <p>The metrics that survive scrutiny, roughly in order of how much they tell you:</p>
 <div class="overflow"><table>

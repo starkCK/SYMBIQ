@@ -504,11 +504,7 @@
 
   function wireSubmitForm(container) {
     var auth = window.SymbiQ.auth;
-    if (!auth || !auth.ready) {
-      container.innerHTML = '<p class="ldg-nr">Checking sign-in status…</p>';
-      return;
-    }
-    var user = auth.getUser();
+    var user = (auth && auth.ready) ? auth.getUser() : null;
     if (!user) {
       container.innerHTML = anonFormHTML();
       container.dataset.wired = 'anon';

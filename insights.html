@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>Insight Notes · SymbiQ</title>
 <meta name="description" content="Short, evidence-tiered essays about quantum computing, operations research and post-quantum security, written by researchers and practitioners outside the desk — reviewed before they run, credited by name, held to the same citation rules as every other page here.">
@@ -52,12 +53,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Insight Notes · SymbiQ">
 <meta name="twitter:description" content="Short, evidence-tiered essays written by researchers and practitioners outside the desk — reviewed before they run, credited by name, same citation rules as everywhere else on SymbiQ.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/insights.css?v=21">
+<link rel="stylesheet" href="p/insights.css?v=23">
 
 
 
@@ -69,9 +69,9 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/insights.js?v=8" defer></script>
+<script src="p/insights.js?v=11" defer></script>
 
 
 
@@ -181,15 +181,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain active">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -255,7 +255,7 @@
 </div>
 
 <h2 id="talk">Comment and share</h2>
-<p>There&rsquo;s no comment thread here yet. If a note raises a question for its author, <a data-mail data-mail-u="chinmoyuas" data-mail-d="gmail.com">email the desk</a> and it&rsquo;ll be forwarded. Every note carries a plain, permanent link &mdash; share it wherever you like. There&rsquo;s no reshare-into-feed mechanic here, on purpose: SymbiQ doesn&rsquo;t run a feed.</p>
+<p>There&rsquo;s no comment thread here yet. If a note raises a question for its author, <a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a> and it&rsquo;ll be forwarded. Every note carries a plain, permanent link &mdash; share it wherever you like. There&rsquo;s no reshare-into-feed mechanic here, on purpose: SymbiQ doesn&rsquo;t run a feed.</p>
 
 <p class="verif">Have something to say? <a href="apply.html#apply">Apply as a verified writer</a> or <a href="apply.html#post">send a community post</a>.</p>
 <footer>SymbiQ &middot; One person and a stubborn test suite. <a href="apply.html">Write for SymbiQ</a> &middot; <a href="corrections.html">Corrections</a></footer>

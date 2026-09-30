@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="About the desk · SymbiQ">
 <meta name="twitter:description" content="Who writes SymbiQ, and the method every number on it goes through before it ships: primary sources only, checks that run on every build, criteria frozen before a claim is judged, and a corrections log that never deletes a miss.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/about.css?v=32">
+<link rel="stylesheet" href="p/about.css?v=34">
 
 
 
@@ -68,9 +67,9 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/about.js?v=13" defer></script>
+<script src="p/about.js?v=16" defer></script>
 
 
 
@@ -180,15 +179,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat navcat-cur" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -231,6 +230,23 @@
 
 <p>The independence matters because most of what happens here is arguing with numbers. A figure you read last week turns out to be wrong, or right, or right about a different quantity than the headline implied. Anyone doing that from behind a curtain is asking for trust on credit. So instead of a biography, this page lays out the machinery, and <em>every part of it can be checked from the outside</em>.</p>
 
+<aside class="card authorbox" aria-label="About the author">
+<h3 aria-level="2" style="margin-top:0">Who writes this</h3>
+<p style="margin-bottom:6px"><strong>Chinmoy</strong>, sole author and editor. Independent: no employer, investor or client among the companies whose claims appear here, and no position in any of them.</p>
+<p style="margin:0;font-size:.9rem;color:var(--muted)">Write to the desk: <a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a>. The method below, and <a href="how-we-check.html">How we check</a>, are the credentials.</p>
+</aside>
+
+<h2 id="ai-use">How AI is used here</h2>
+<p>Large parts of this site are drafted by AI, and saying so plainly is part of the method. Three things do the checking, and each has limits, set out in full on <a href="how-we-check.html">How we check</a>.</p>
+<div class="card">
+<ul style="margin:0;padding-left:1.1em">
+<li><strong>AI drafts.</strong> Most of the prose, the code, the calculators and figures, the Ledger write-ups and the proposed verdicts on it, and the question bank.</li>
+<li><strong>Scripts check.</strong> They recompute arithmetic and game pars, read counts from the pages they describe, look every arXiv citation up against arXiv, and compare tables with the sentences around them.</li>
+<li><strong>Fresh AI sessions attack.</strong> A referee pass with no memory of writing the page recomputes the numbers and fetches the sources. It can share the drafting AI&rsquo;s blind spots.</li>
+<li><strong>A person decides.</strong> Chinmoy chooses what is published, reads the headline claims and the sources behind them, and acts on reader reports. He does not re-derive every proof line by line.</li>
+</ul>
+</div>
+
 <h2 id="how-a-number-gets-here">How a number gets onto this site</h2>
 <p>Figures that carry weight come from the primary source: the paper, the standard, the regulation, the press release itself. A confident summary by somebody else doesn&rsquo;t count. When a number is calculated rather than quoted, a script recomputes it. Where you might reasonably want to see the working, <a href="qec.html">the page shows it</a> in a small receipt that opens beside the claim.</p>
 
@@ -264,8 +280,8 @@
 
 <h2 id="contact">Telling us we got something wrong</h2>
 <p>The fastest route is <a href="corrections.html#report">the correction report</a>. It lands on the desk directly, and it is read by the desk.</p>
-<p>For anything else: <a data-mail data-mail-u="chinmoyuas" data-mail-d="gmail.com">email the desk</a>.</p>
-<p class="verif">Last updated: 24 September 2026.</p>
+<p>For anything else: <a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a>.</p>
+<p class="verif">Last updated: 30 September 2026.</p>
 <footer>SymbiQ &middot; One person and a stubborn test suite. <a href="corrections.html">Corrections</a> &middot; <a href="privacy.html">Privacy</a></footer>
 </div>
 <div id="search" class="sr-wrap" hidden></div>

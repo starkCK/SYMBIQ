@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Is quantum computing just quantum mechanics?">
 <meta name="twitter:description" content="Quantum computing is built entirely on quantum mechanics: same laws, same math, same word. What changed is the question being asked. Here is the exact relationship, at three levels.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/quantum-mechanics.css?v=33">
+<link rel="stylesheet" href="p/quantum-mechanics.css?v=35">
 
 
 
@@ -69,10 +68,10 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/quantum-mechanics.js?v=14" defer></script>
+<script src="p/quantum-mechanics.js?v=17" defer></script>
 
 
 
@@ -262,15 +261,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -329,7 +328,7 @@
   <figcaption>Electrons sent through a double slit one at a time. After 11 arrivals there is nothing to see, after 6,000 a scatter, and after 140,000 the interference bands appear. Every electron lands at a single point; the pattern exists only in the crowd. Experiment by Akira Tonomura and colleagues at Hitachi; panels a, c and e of a five-panel figure, cropped and rearranged. Image: Belsazar, with permission of Dr. Tonomura, <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="noopener noreferrer">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Double-slit_experiment_results_Tonomura_2.jpg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 No math</span>
+<span class="tier g">🟢 Plain</span>
 <h2 id="green">The rulebook and the machine</h2>
 <p>Quantum mechanics is the rulebook. Worked out in the 1920s, it describes how very small things behave, and they behave nothing like the objects we have intuitions about. A particle can be in a blend of two states at once. Looking at it changes it. Two particles can be linked so that neither has a definite state on its own. None of this is a metaphor or a gap in our knowledge. Its most stringently tested piece, quantum electrodynamics, predicts the electron's magnetic moment, and prediction and measurement agree to about <strong>one part in a trillion</strong>. That is among the most precisely checked predictions anyone has ever made about anything.</p>
 <p>For more than fifty years, that rulebook was used mainly to <em>explain</em> things: why the sun shines, why metals conduct, why chemistry works. The machine came later. In the early 1980s a few people asked a stranger question: not "what does nature do?" but <em>"what could I compute, if I built something that runs on these rules by design?"</em></p>
@@ -428,7 +427,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin:12px 0 0">The arrow follows the exact solution of the single-qubit Bloch equations for constant rates: the transverse part decays as e<sup>−t/T₂</sup> while it precesses at the detuning, and z relaxes toward <span class="ket">|0⟩</span> as e<sup>−t/T₁</sup>. The slider forces <strong><span class="rcpt" data-rcpt="qm-t2-bound">T<sub>2</sub> ≤ 2T<sub>1</sub></span></strong> because past that the density matrix stops being a valid state. This is the Markovian picture &mdash; real devices also have slow drift and 1/f noise that a single T<sub>2</sub> does not capture. The closed form the widget draws is checked against a direct RK4 integration of the same ODEs, plus the physical bounds and both limiting cases, before shipping.</p>
 </div>
 
-<span class="tier y">🟡 Some math</span>
+<span class="tier y">🟡 Working</span>
 <h2 id="yellow">The same postulates, renamed</h2>
 <p>The clearest way to see that quantum computing is not a separate theory is to lay the two vocabularies side by side. Every item in the right column <em>is</em> the item on its left: the same mathematical object, given a job title.</p>
 <div class="overflow"><table>
@@ -456,7 +455,7 @@
   <p id="chsh-honest" style="font-size:0.85rem;color:var(--muted);margin:12px 0 0"></p>
 </div>
 
-<span class="tier r">🔴 Real math</span>
+<span class="tier r">🔴 Formal</span>
 <h2 id="red">The formal statement, and its caveats</h2>
 <p>Take the standard postulates. A pure state of a register is a unit vector |ψ⟩ ∈ ℋ ≅ (ℂ²)<sup>⊗<em>n</em></sup>, dim = 2<sup><em>n</em></sup>. Closed evolution over time <em>t</em> is |ψ(t)⟩ = U(t)|ψ(0)⟩ with U = exp(−<em>i</em>H<em>t</em>/ℏ) for Hamiltonian H = H<sup>†</sup>. A projective measurement in basis {|k⟩} returns <em>k</em> with probability |⟨k|ψ⟩|², leaving the state in |k⟩.</p>
 <p>A quantum <em>circuit</em> is nothing but a factorisation of one such U into a product of local unitaries:</p>
@@ -508,7 +507,7 @@
 <footer>The same laws as a cooling coffee, asked a harder question.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 </div>
 
-<script id="games-src" type="text/symbiq-lazy" src="games.js?v=46"></script>
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=48"></script>
 <script id="sq3d-src" type="text/symbiq-lazy" src="sq3d.js?v=2"></script>
 <script>
 (function () {

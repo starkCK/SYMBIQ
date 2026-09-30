@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="The Machinery: the mathematical spine of quantum computing | SymbiQ">
 <meta name="twitter:description" content="The mathematical spine underneath every quantum algorithm on this site: the postulates, density matrices, measurement, and the no-cloning theorem, with proofs, not just claims.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/formalism.css?v=36">
+<link rel="stylesheet" href="p/formalism.css?v=38">
 
 
 
@@ -69,10 +68,10 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script src="save.js"></script>
-<script src="p/formalism.js?v=12" defer></script>
+<script src="p/formalism.js?v=14" defer></script>
 
 
 
@@ -183,15 +182,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -1617,7 +1616,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  <h4>The mathematics</h4>
  <p>For a circuit applying gates U₁,…,U<sub>T</sub> to a data register, with a clock register of T qubits in "unary" form (clock value t is represented as t ones followed by T−t zeros), the Hamiltonian is H = H<sub>clock</sub> + H<sub>in</sub> + H<sub>prop</sub>, where H<sub>clock</sub> penalizes any clock string that isn't a valid unary count, H<sub>in</sub> penalizes the wrong data value at clock=0, and each propagation term is</p>
  <code class="eq">H<sub>t</sub> = ½( I⊗(P<sub>t−1</sub>+P<sub>t</sub>) − U<sub>t</sub>⊗|t⟩⟨t−1| − U<sub>t</sub><sup>†</sup>⊗|t−1⟩⟨t| )</code>
- <p>where P<sub>t</sub> projects the clock onto its valid t-th value. <strong>Built and diagonalized exactly</strong>, not just described: for the 1-qubit, 2-gate toy circuit in the figure (apply H, then Z, to data qubit |0⟩), this Hamiltonian is an 8×8 matrix (1 data + 2 clock qubits). Exact diagonalization gives ground energy 0.0000000000 and a ground state whose overlap with the constructed history state (|0⟩|00⟩+|+⟩|10⟩+|−⟩|11⟩)/√3 is 1.0000000000 to machine precision: the ground state <em>is</em> the history state, not merely close to it, with a real spectral gap of 0.134 above it separating it from every other configuration. (Without H<sub>in</sub>, this ground space is 2-dimensional: spanned by the histories of <em>every</em> possible starting data value, which is itself worth stating plainly: H<sub>in</sub> is what pins the reduction to one specific input rather than "some input or other." Script: <code>tools/verify_qma_hamiltonian_complexity.py</code>.)</p>
+ <p>where P<sub>t</sub> projects the clock onto its valid t-th value. <strong>Built and diagonalized exactly</strong>, not just described: for the 1-qubit, 2-gate toy circuit in the figure (apply H, then Z, to data qubit |0⟩), this Hamiltonian is an 8×8 matrix (1 data + 2 clock qubits). Exact diagonalization gives ground energy 0.0000000000 and a ground state whose overlap with the constructed history state (|0⟩|00⟩+|+⟩|10⟩+|−⟩|11⟩)/√3 is 1.0000000000 to machine precision: the ground state <em>is</em> the history state, not merely close to it, with a real spectral gap of 0.134 above it separating it from every other configuration. (Without H<sub>in</sub>, this ground space is 2-dimensional: spanned by the histories of <em>every</em> possible starting data value, which is itself worth stating plainly: H<sub>in</sub> is what pins the reduction to one specific input rather than "some input or other." A verification script recomputes it.)</p>
  <p><strong>The locality this construction needs, and how far it's been pushed down.</strong> This toy example's terms touch at most 3 qubits (1 data + 2 clock) because its gates are single-qubit and its clock is short, but a construction robust to <em>any</em> circuit (multi-qubit gates, arbitrarily long clocks, checked only via local clock-adjacency) needs more room. Kitaev's original proof used 5-local terms (Kitaev, Shen &amp; Vyalyi, 2002). Kempe &amp; Regev reduced this to <strong>3-local</strong> (<em>Quantum Inf. Comput.</em> 3(3), 258 (2003), <a href="https://arxiv.org/abs/quant-ph/0302079">arXiv quant-ph/0302079</a>). Kempe, Kitaev &amp; Regev pushed it to <strong>2-local</strong> using "perturbative gadgets": auxiliary qubits with large coupling constants whose low-energy effective behaviour approximates a higher-local term (<em>SIAM J. Comput.</em> 35(5), 1070 (2006), <a href="https://arxiv.org/abs/quant-ph/0406180">arXiv quant-ph/0406180</a>). <strong>1-local Hamiltonian is not QMA-complete</strong>. Each term acts on a single qubit independently, so the ground energy is just the sum of each term's own lowest eigenvalue, achievable by an unentangled product state and found in polynomial time; it's in P, believed strictly easier than QMA-complete problems.</p>
  </div>
 

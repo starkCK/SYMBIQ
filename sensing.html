@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Do quantum sensors and networks matter sooner than quantum computers? · SymbiQ">
 <meta name="twitter:description" content="Quantum sensors already ship. What they gain, why noise steals the textbook advantage, and what quantum key distribution is really for.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/sensing.css?v=2">
+<link rel="stylesheet" href="p/sensing.css?v=4">
 
 
 
@@ -69,10 +68,10 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/sensing.js?v=5" defer></script>
+<script src="p/sensing.js?v=8" defer></script>
 
 
 
@@ -182,15 +181,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -243,7 +242,7 @@
   <figcaption>Two instruments that use quantum effects to measure. Left: an optical lattice clock at NIST, with an oven (the large cylinder) feeding ytterbium atoms into a vacuum chamber where lasers hold and probe them; the record clock quoted below is the same kind of machine, with strontium (Burrus/NIST, 2013, US government work in the public domain, <a href="https://commons.wikimedia.org/wiki/File:Ytterbium_Lattice_Atomic_Clock_(10444764266).jpg" rel="noopener noreferrer">source</a>). Right: the LIGO Hanford Observatory, whose 4 km arms hold the laser interferometer that now uses squeezed light (LIGO Laboratory, 2008, public domain, <a href="https://commons.wikimedia.org/wiki/File:LIGO_Hanford_aerial_05.jpg" rel="noopener noreferrer">source</a>).</figcaption>
 </figure>
 
-<span class="tier g">🟢 No math</span>
+<span class="tier g">🟢 Plain</span>
 <h2 id="green">Sensors: the quiet successes</h2>
 <p><strong>Clocks.</strong> The second is defined by counting 9,192,631,770 oscillations of a caesium-133 atom. Optical lattice clocks use a much faster transition in strontium atoms, and the best of them, at JILA, reports a systematic uncertainty of <strong>8.1 &times; 10<sup>&minus;19</sup></strong> (<a href="https://arxiv.org/abs/2403.10664">arXiv 2403.10664</a>). A clock that good would be off by one second in about 39 billion years, nearly three times the age of the universe. Comparing clocks like this against one another is one way physicists test whether the constants of nature drift.</p>
 <p><strong>Gravitational waves.</strong> LIGO&rsquo;s detectors are limited at high frequency by quantum noise in the laser light. Since the third observing run they have injected <em>squeezed</em> light, a state with less noise in the quantity that matters, which the LIGO team reports improved sensitivity above 50&nbsp;Hz by up to 3&nbsp;dB and raised the expected detection rate by 40% at one site and 50% at the other (<a href="https://doi.org/10.1103/PhysRevLett.123.231107">Phys. Rev. Lett. 123, 231107</a>). That is quantum technology paying its way in the world&rsquo;s most sensitive instrument, and it involves no quantum computer at all.</p>
@@ -256,7 +255,7 @@
   <p style="margin-bottom:0">It does not mean quantum sensors are about to replace GPS receivers in phones, or that a &ldquo;quantum internet&rdquo; is a few years off. The best clocks are laboratory instruments. The claim here is narrower: <strong>this is where the physics already pays for itself.</strong></p>
 </div>
 
-<span class="tier y">🟡 Some math</span>
+<span class="tier y">🟡 Working</span>
 <h2 id="yellow">Why 1/N beats 1/&radic;N, and why noise steals it</h2>
 <p>Measure a phase with <em>N</em> independent probes and the error shrinks as 1/&radic;<em>N</em>, the <strong>standard quantum limit</strong>. Entangle the probes and, in principle, it shrinks as 1/<em>N</em>, the <strong>Heisenberg limit</strong>. With 10,000 probes that is a gain of &radic;10,000 = 100 in precision, for free, from the physics.</p>
 <p>The catch is that entangled states are the most fragile ones. Demkowicz-Dobrza&#324;ski, Ko&#322;ody&#324;ski and Gu&#355;&#259; showed that once decoherence is included, the best possible enhancement in the limit of many probes is generically only a constant factor, not a change in scaling (<a href="https://www.nature.com/articles/ncomms2067">Nature Communications 3, 1063</a>). That is why real instruments report gains of a few decibels, not a factor of 100.</p>
@@ -266,11 +265,11 @@
 <p><strong>Distance is the wall.</strong> Ordinary fibre loses about 0.2&nbsp;dB per kilometre, so 1,000&nbsp;km is 200&nbsp;dB: a factor of 10<sup>20</sup> in power. Twin-field QKD (<a href="https://doi.org/10.1038/s41586-018-0066-6">Lucamarini et al., 2018</a>) sends the signal to a middle station and its rate scales as the <em>square root</em> of that transmittance, 10<sup>&minus;10</sup> instead of 10<sup>&minus;20</sup>, and a group in China has demonstrated it over 1,000&nbsp;km of fibre (<a href="https://arxiv.org/abs/2303.15795">Phys. Rev. Lett. 130, 210801</a>).</p>
 <p><strong>What QKD does not do.</strong> It needs an authenticated classical channel to begin with, it produces keys rather than signing anything, and real devices have been attacked through their detectors (<a href="https://doi.org/10.1038/nphoton.2010.214">Lydersen et al., 2010</a>). It is not a replacement for the cryptography that is being migrated. <a href="pqc.html#qkd">The short answer on this site</a> is &ldquo;not for this&rdquo;.</p>
 
-<span class="tier r">🔴 Real math</span>
+<span class="tier r">🔴 Formal</span>
 <h2 id="red">The Fisher-information argument</h2>
 <p>For a pure probe state and a phase generated by an operator <em>G</em>, the <strong>quantum Fisher information</strong> is F<sub>Q</sub> = 4&thinsp;Var(<em>G</em>), and the Cram&eacute;r&ndash;Rao bound says the phase error after &nu; repeats obeys</p>
 <div class="formula">&Delta;&phi; &ge; 1 / &radic;(&nu; F<sub>Q</sub>)</div>
-<p>Take <em>G</em> = J<sub>z</sub> = &frac12; &Sigma; &sigma;<sub>z</sub> over <em>N</em> qubits. A product state |+&rang;<sup>&otimes;N</sup> has variance <em>N</em>/4, so F<sub>Q</sub> = <em>N</em> and &Delta;&phi; = 1/&radic;(&nu;<em>N</em>): the standard quantum limit. The GHZ state (|0&hellip;0&rang; + |1&hellip;1&rang;)/&radic;2 has variance <em>N</em><sup>2</sup>/4, so F<sub>Q</sub> = <em>N</em><sup>2</sup> and &Delta;&phi; = 1/(<em>N</em>&radic;&nu;): the Heisenberg limit. Both are computed exactly for <em>N</em> = 1 to 8 in <code>tools/verify_applications_sensing.py</code>.</p>
+<p>Take <em>G</em> = J<sub>z</sub> = &frac12; &Sigma; &sigma;<sub>z</sub> over <em>N</em> qubits. A product state |+&rang;<sup>&otimes;N</sup> has variance <em>N</em>/4, so F<sub>Q</sub> = <em>N</em> and &Delta;&phi; = 1/&radic;(&nu;<em>N</em>): the standard quantum limit. The GHZ state (|0&hellip;0&rang; + |1&hellip;1&rang;)/&radic;2 has variance <em>N</em><sup>2</sup>/4, so F<sub>Q</sub> = <em>N</em><sup>2</sup> and &Delta;&phi; = 1/(<em>N</em>&radic;&nu;): the Heisenberg limit. Both are computed exactly for <em>N</em> = 1 to 8 in a script.</p>
 <p>For BB84 the asymptotic key rate is 1 &minus; 2<em>h</em>(<em>e</em>), with <em>h</em> the binary entropy and <em>e</em> the error rate. It reaches zero at <em>e</em> &asymp; 0.110, the 11% above. And the fibre arithmetic: 0.2&nbsp;dB/km &times; 1,000&nbsp;km = 200&nbsp;dB = a factor 10<sup>20</sup>; the square root of 10<sup>&minus;20</sup> is 10<sup>&minus;10</sup>.</p>
 
 <div class="cyu" data-tier-keep data-a="2">

@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>The course map · SymbiQ</title>
-<meta name="description" content="Three tracks (quantum computing, optimisation, security), three depths (plain, working, formal), and the order to read them in. Where to start, and where every page fits.">
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/learn.html">
+<title>How we check · SymbiQ</title>
+<meta name="description" content="What checks a number before it reaches SymbiQ, what each check cannot catch, how AI is used, and what happens when we are wrong.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/how-we-check.html">
 <script type="speculationrules">{
   "prefetch": [
     {
@@ -44,19 +44,19 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/learn.html">
-<meta property="og:title" content="The course map · SymbiQ">
-<meta property="og:description" content="Where to start on SymbiQ, and the order to read things in: three tracks, three depths.">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/how-we-check.html">
+<meta property="og:title" content="How we check · SymbiQ">
+<meta property="og:description" content="Scripts, AI referee passes and one person: what each checks, what each misses, and how we log our own errors.">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The course map · SymbiQ">
-<meta name="twitter:description" content="Where to start on SymbiQ, and the order to read things in: three tracks, three depths.">
+<meta name="twitter:title" content="How we check · SymbiQ">
+<meta name="twitter:description" content="Scripts, AI referee passes and one person: what each checks, what each misses, and how we log our own errors.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/learn.css?v=5">
+<link rel="stylesheet" href="p/how-we-check.css?v=2">
 
 
 
@@ -70,7 +70,7 @@
 
 <script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/learn.js?v=8" defer></script>
+<script src="p/how-we-check.js?v=3" defer></script>
 
 
 
@@ -103,7 +103,7 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat navcat-cur" data-cat="learn">
+    <details class="navcat" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel navpanel-wide">
       <div class="navcol">
@@ -148,7 +148,7 @@
       <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
       <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
       <p class="navhead">Find your way</p>
-      <a href="learn.html" class="navmain active">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
+      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
       <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
       </div>
       </div>
@@ -166,7 +166,7 @@
       <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
       </div>
     </details>
-    <details class="navcat" data-cat="reality" data-new="1">
+    <details class="navcat navcat-cur" data-cat="reality" data-new="1">
       <summary>Reality Check</summary>
       <div class="navpanel">
       <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
@@ -181,7 +181,7 @@
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
       <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
-      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="how-we-check.html" class="navmain active">How we check<span class="sub">What checks a number, and what it misses</span></a>
       <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
@@ -227,54 +227,57 @@
   </details>
 </nav>
 
-<h1>The course map</h1>
-<p class="tagline">Three tracks, three depths, and the order to read them in. Every page here teaches its idea three times over, so you choose how far down to go.</p>
+<h1>How we check</h1>
+<p class="tagline">What checks a number before it reaches this site, and what no check can catch.</p>
 
-<h2 id="depths">Three depths, on every page</h2>
-<div class="grid">
-  <div class="card"><h3>🟢 Plain</h3><p>An analogy, no equations, no unexplained jargon. If you can follow a good magazine article, you can follow this.</p></div>
-  <div class="card"><h3>🟡 Working</h3><p>The real terms and light arithmetic: ratios, exponents, a formula you can plug numbers into.</p></div>
-  <div class="card"><h3>🔴 Formal</h3><p>The actual formalism, with worked examples that are computed and checked, and the papers behind them.</p></div>
+<div class="card">
+<h3 aria-level="2">The short version</h3>
+<p>AI drafts most of this site: the prose, the code, the first version of every figure. Scripts then recompute whatever can be recomputed. Fresh AI sessions try to break each page. One person, Chinmoy, decides what goes live. None of that is a guarantee. The corrections log holds <strong> 20 entries</strong>, and each one is a case where all three layers missed something.</p>
 </div>
-<p>Pick a depth at the top of any page and the site remembers it. <a href="glossary.html">The glossary</a> lists every term with the depth it is taught at.</p>
 
-<h2 id="quantum">Track 1: Quantum computing</h2>
-<p>Read it in this order; each step uses the one before.</p>
-<ol class="lm-steps">
-  <li><a href="basics.html"><strong>Start here</strong></a>: two minutes and zero equations. Why the field&rsquo;s two hardest problems fit together.</li>
-  <li><a href="circuits.html"><strong>What is a qubit made of?</strong></a>: the physical circuit underneath everything else.</li>
-  <li><a href="quantum-mechanics.html"><strong>Quantum mechanics versus computing</strong></a>: which parts of the theory the machine actually uses. Includes a Bloch sphere you can rotate.</li>
-  <li><a href="qec.html"><strong>Error correction</strong></a> and <a href="logical-qubit.html"><strong>the logical qubit</strong></a>: how noisy hardware becomes trustworthy, and why the field counts logical qubits.</li>
-  <li><a href="phase-kickback.html"><strong>Why the algorithms work</strong></a>: one mechanism behind Grover&rsquo;s and Shor&rsquo;s.</li>
-  <li><a href="ai.html"><strong>Will quantum boost AI?</strong></a> and <a href="bitcoin.html"><strong>Can it break Bitcoin?</strong></a>: the two loudest claims, with the numbers.</li>
-  <li><a href="compare.html"><strong>How the companies compare</strong></a>: five structural trade-offs behind the leaderboard.</li>
-  <li><a href="applications.html"><strong>Where might it earn its keep?</strong></a> and <a href="sensing.html"><strong>Sensors and networks</strong></a>: what quantum technology is for, and what already ships.</li>
-  <li><a href="formalism.html"><strong>The Machinery</strong></a>: the mathematics underneath, topic by topic, with every claim proved or marked as not.</li>
-</ol>
+<h2 id="sources">Where a number comes from</h2>
+<p>A figure that carries weight comes from the primary source: the paper, the standard, the regulation or the press release itself. A summary by someone else is a lead, not a source. If we cannot reach the primary source, we do not publish the figure, and the gap goes in a log the desk keeps.</p>
 
-<h2 id="optimisation">Track 2: Optimisation</h2>
-<p>The field hiding behind every &ldquo;quantum will transform logistics&rdquo; headline, and the honest test of that claim.</p>
-<ol class="lm-steps">
-  <li><a href="analog.html"><strong>Can a classical machine out-optimise a quantum one?</strong></a>: an Ising machine you can race.</li>
-  <li><a href="feasible.html"><strong>The Feasible Region</strong></a>: a course in operations research, from linear programming and duality through network flow, game theory and reinforcement learning, with games and a verdict on one named quantum-advantage claim.</li>
-</ol>
+<h2 id="scripts">Layer 1: scripts</h2>
+<p>Scripts do the parts that do not need judgement.</p>
+<ul>
+<li><strong>Arithmetic is redone.</strong> Widget outputs, thresholds, resource estimates and game pars are recomputed, usually by trying every possible input rather than a hopeful handful. A game par that is not a proven optimum is labelled &ldquo;best known&rdquo;, not &ldquo;par&rdquo;.</li>
+<li><strong>Counts are read, not typed.</strong> How many topics a course has, how many corrections are logged, how many claims the Ledger tracks: the number on a page is written into it from the thing it describes.</li>
+<li><strong>Charts and tables come from data files.</strong> The Bitcoin timing chart and the hardware table are generated from the papers&rsquo; figures and <a href="data/hardware.json">the hardware data</a>, so a page cannot drift from its data.</li>
+<li><strong>Citations are looked up.</strong> Every arXiv identifier is checked against arXiv: does the paper exist, was it withdrawn, has a newer version changed the figure we quote.</li>
+<li><strong>The site guards itself on every publish.</strong> Links, file hashes and the content-security policy are checked before anything goes out.</li>
+</ul>
+<p><strong>What scripts cannot catch.</strong> A sentence that is wrong but contradicts no table. A source that says something other than what we say it says. A correct number for the wrong quantity. Most of the corrections below were that kind of error.</p>
 
-<h2 id="security">Track 3: Security</h2>
-<p>For anyone who has to decide what to do about the locks, not just understand them.</p>
-<ol class="lm-steps">
-  <li><a href="pqc.html"><strong>Post-quantum cryptography, on the wire</strong></a>: seven tools that run on real keys with no signup, from a one-paste check to running the new standards yourself.</li>
-</ol>
+<h2 id="referees">Layer 2: AI referee passes</h2>
+<p>A fresh AI session, with no memory of writing the page, is told to attack it: recompute every number, fetch every cited source, and look for claims that go further than the evidence. These passes have found real errors, including several in the corrections log.</p>
+<p><strong>What they cannot catch.</strong> They can share blind spots with the AI that drafted the page. They can be confidently wrong. They are only as good as the source they manage to fetch.</p>
 
-<h2 id="routes">Or start from what you want to do</h2>
-<div class="grid">
-  <div class="card"><h3>Understand a headline</h3><p>Movie scenes, myths and viral claims, rated against the physics.</p><a href="reality.html">Reality Check →</a></div>
-  <div class="card"><h3>Check a claim</h3><p>Every tracked claim, scored when its deadline lands, with our own misses beside theirs.</p><a href="ledger.html">The Ledger →</a></div>
-  <div class="card"><h3>Learn by playing</h3><p>Games where the mathematics holds the whistle, or the story campaign around them.</p><a href="play.html">The Arcade →</a></div>
-  <div class="card"><h3>Look a word up</h3><p>Every term, with the page that explains it.</p><a href="glossary.html">Glossary →</a></div>
-</div>
-<p style="color:var(--muted);font-size:.92rem">Press <kbd>/</kbd> anywhere to search the whole site, or <kbd>?</kbd> for the keyboard shortcuts.</p>
+<h2 id="person">Layer 3: a person</h2>
+<p>Chinmoy decides what is published and acts on reader reports. He is one person with limited hours, and he does not re-derive every proof himself. That is why layers 1 and 2 exist, and why this page does not call the result &ldquo;verified&rdquo; without saying by what.</p>
 
-<footer>One order to read it in.<br>SymbiQ &middot; A page missing from the map? <a href="corrections.html#report">Tell us</a>.</footer>
+<h2 id="receipts">Receipts</h2>
+<p>The figures a reader is most likely to act on carry a receipt: a small note that opens beside the number and shows the formula, the inputs, the source, the date it was last checked, and what would prove it wrong. Look for the underlined figures on pages such as <a href="bitcoin.html">the Bitcoin page</a>.</p>
+
+<h2 id="tiers">Evidence tiers</h2>
+<p>Every claim carries one of four tiers, so a reader can see what kind of knowledge it is:</p>
+<ul>
+<li><span class="ev ev-proven">Proven</span> — a theorem, or a measured result with a citation.</li>
+<li><span class="ev ev-heuristic">Heuristic</span> — works in practice, no guarantee.</li>
+<li><span class="ev ev-inspired">Inspired</span> — a faithful analogy, not the real mechanism.</li>
+<li><span class="ev ev-frontier">Frontier</span> — an open question; nobody knows yet.</li>
+</ul>
+
+<h2 id="ledger">How the Ledger judges a claim</h2>
+<p>The <a href="ledger.html">Ledger</a> tracks20 dated, public, falsifiable claims. The resolution criteria and the sources that will settle each one are fixed the day it is logged. A verdict is written after the deadline and checked against those criteria. The verdict words have no term for lying or hype: they set what was said next to what happened. If a claim turns out to be unscoreable, that counts against us.</p>
+
+<h2 id="wrong">When we are wrong</h2>
+<p>It goes on <a href="corrections.html">the corrections log</a>, in public, with more room than the original mistake had: what we said, what is true, and how we missed it. The log counts anything wrong that reached the published site, whoever found it. A reader who finds one can have their name on it.</p>
+
+<h2 id="gaps">Known gaps</h2>
+<p>Only3 of the20 topics on <a href="formalism.html">The Machinery</a> link a primary paper so far, so most of that course is checked by scripts and AI passes but not cited. Some older pages still carry numbers typed by hand, and each one we find gets moved to a computed figure and logged as a correction.</p>
+
+<p><a href="corrections.html#report">Found something wrong? Tell us.</a></p>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

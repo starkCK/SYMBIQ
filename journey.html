@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-SVXdBISHxnC6Rlw7p9B5T3SnA5THOKp6Ja2O5h5guKY=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-g9NolDVBw+EMSoe+ue2gtF9RnSqrcfIdycW/eSWQUXI=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <script>/* door morph arrival (doormorph.js companion, 2026-09-23): MUST run this early, as a classic head script, not from the deferred doormorph.js file. pagereveal fires the moment this document is first rendered -- the API's own description is "equivalent to the first requestAnimationFrame() run ... if you were to trigger it in the head" -- which is well before a deferred script has loaded, so a listener registered from one would miss the event outright (found live: the sessionStorage handoff was never consumed until this moved here). The querySelector below still works from this early: pagereveal's own documented use case is exactly "read/write an element on the newly revealed page", and by the time the callback actually FIRES the browser has parsed enough of the document to paint it, h1 included. */try{if('onpagereveal' in window){window.addEventListener('pagereveal',function(e){var raw=null;try{raw=sessionStorage.getItem('sq-vt-door');sessionStorage.removeItem('sq-vt-door');}catch(_){}if(!raw||!e.viewTransition)return;var i=raw.lastIndexOf(':');if(i<0)return;var track=raw.slice(0,i),stamp=+raw.slice(i+1);if(!(Date.now()-stamp<4000))return;var mine=document.body&&document.body.getAttribute('data-door');if(track!==mine)return;var h1=document.querySelector('.wrap > h1');if(!h1)return;h1.style.viewTransitionName='sq-door-'+track;var restore=function(){try{h1.style.viewTransitionName='';}catch(_e){}};e.viewTransition.ready.then(restore,restore);});}}catch(er){}</script>
@@ -53,12 +53,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ games. The physics does the judging.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="The Solver's Path · SymbiQ">
 <meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice: superposition, a proven speedup, an NP-hard city, entanglement, each a mission with a mentor, a story, and progress that saves. Real…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/games.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/journey.css?v=32">
+<link rel="stylesheet" href="p/journey.css?v=34">
 
 
 
@@ -69,14 +68,14 @@
 
 
 
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script src="save.js"></script>
 <script src="coherence.js?v=3"></script>
-<script src="games.js?v=46"></script>
-<script src="scene.js?v=6"></script>
-<script src="missions.js?v=11"></script>
-<script src="p/journey.js?v=14" defer></script>
+<script src="games.js?v=48"></script>
+<script src="scene.js?v=7"></script>
+<script src="missions.js?v=13"></script>
+<script src="p/journey.js?v=17" defer></script>
 
 
 
@@ -415,15 +414,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -802,7 +801,7 @@
       '<h3>' + m.title +
         (isDone ? '<span class="mission-tag done">mended ✓</span>'
                 : m.soon ? '<span class="mission-tag">not yet reachable</span>'
-                : avail ? '<span class="mission-tag">' + m.tier + '</span>'
+                : avail ? '<span class="mission-tag">' + SymbiQ.ev(m.tier) + '</span>'
                 : '<span class="mission-tag">sealed</span>') +
         (isDone && !avail ? '<span class="mission-tag">cleared in the Arcade</span>' : '') +
       '</h3>' +
@@ -834,12 +833,12 @@
     body += '<div class="vision-row" id="vision-row"></div>';
     if (isDone && CODEX[m.id]) {
       body += '<p style="font-size:.85rem;color:var(--muted);margin-top:10px">Codex unlocked: <strong>' +
-        CODEX[m.id].name + '</strong> ' + CODEX[m.id].tier + '</p>';
+        CODEX[m.id].name + '</strong> ' + SymbiQ.ev(CODEX[m.id].tier) + '</p>';
     }
     body += '<div id="mgame"></div>';
     if (m.real) {
       body += '<div class="whatsreal"><div class="wr-h">What is actually going on here ' +
-        '<span class="orbadge">' + m.tier + '</span></div>' + m.real +
+        '<span class="orbadge">' + SymbiQ.ev(m.tier) + '</span></div>' + m.real +
         '<div class="wr-claim" id="wr-claim"></div></div>';
     }
     body += '</div>';
@@ -970,7 +969,7 @@
         // outer pair alone leaves their internal dialogue marks unbalanced
         note.innerHTML = '<strong>The fracture closes.</strong> ' + m.mentor + ': <em>' +
           (m.signoff || '') + '</em>' +
-          (CODEX[m.id] ? '<br><span style="font-weight:400">Codex entry added: <strong>' + CODEX[m.id].name + '</strong> ' + CODEX[m.id].tier + '</span>' : '');
+          (CODEX[m.id] ? '<br><span style="font-weight:400">Codex entry added: <strong>' + CODEX[m.id].name + '</strong> ' + SymbiQ.ev(CODEX[m.id].tier) + '</span>' : '');
         host.appendChild(note);
 
         // The click that used to be missing. Winning left you at the bottom of a
@@ -1054,13 +1053,13 @@
   function renderCodex() {
     var out = MISSIONS.filter(function (m) { return CODEX[m.id]; }).map(function (m) {
       var c = CODEX[m.id];
-      if (done(m.id)) return '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' + c.tier + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+      if (done(m.id)) return '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' + SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span></span></li>';
       var f = FACTIONS[m.held];
       // aria-hidden on every corrupted string, with the real sentence beside it:
       // a screen reader must hear what happened, never the glyphs.
       return '<li class="held"><span class="glyph static" aria-hidden="true">▨</span><span>' +
         '<span class="nm static-txt" aria-hidden="true">' + esc(scramble(c.name)) + '</span> ' +
-        '<span class="ct">' + c.tier + '</span>' +
+        '<span class="ct">' + SymbiQ.ev(c.tier) + '</span>' +
         '<span class="sr">This Codex entry is held by the Static in ' + m.world +
           '. Mend that region to recover it.</span>' +
         '<br><span class="arc static-txt" aria-hidden="true">' + esc(scramble(c.body)) + '</span>' +
@@ -1072,14 +1071,14 @@
       if (!done(k)) return;
       var c = LEGACY_CODEX[k];
       out += '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' +
-        c.tier + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+        SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span></span></li>';
     });
     // Earned off the Path entirely, on formalism.html/feasible.html.
     Object.keys(CURRICULUM_CODEX).forEach(function (k) {
       if (!done(k)) return;
       var c = CURRICULUM_CODEX[k];
       out += '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' +
-        c.tier + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+        SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span></span></li>';
     });
     document.getElementById('codex-list').innerHTML = out;
   }

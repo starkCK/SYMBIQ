@@ -110,6 +110,13 @@
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', function () { mailLinks(); });
   else mailLinks();
 
+  function ev(t) {
+    var w = String(t == null ? '' : t).split(/[\s·]+/)[0].toLowerCase();
+    var known = { proven: 1, heuristic: 1, inspired: 1, frontier: 1 };
+    return '<span class="ev' + (known[w] ? ' ev-' + w : '') + '">' + esc(t) + '</span>';
+  }
+  W.SymbiQ.ev = ev;
+
   W.SymbiQ.core = {
     editable: editable,
     esc: esc,

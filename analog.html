@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ. Operations research, run for real.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Can a classical machine out-optimise a quantum one?">
 <meta name="twitter:description" content="Every 'quantum will revolutionise optimisation' headline has a classical rival built on the same physics -- coupled circuits settling into the answer rather than calculating it. Meet the machine it has to beat.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/or.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/analog.css?v=32">
+<link rel="stylesheet" href="p/analog.css?v=34">
 
 
 
@@ -138,10 +137,10 @@
   ]
 }
 </script>
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/analog.js?v=13" defer></script>
+<script src="p/analog.js?v=16" defer></script>
 
 
 
@@ -254,15 +253,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -318,7 +317,7 @@
   <figcaption>The object every machine on this page is built to settle: a two-dimensional Ising model, spins on a lattice that each point up or down, with neighbouring spins pulling on each other. The lowest-energy pattern of ups and downs is the answer. Diagram: Ta2o, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer">CC BY 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:2D_ising_model_on_lattice.svg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 No math</span>
+<span class="tier g">🟢 Plain</span>
 <h2 id="green">The trick: don't calculate the answer, build something that settles into it</h2>
 <p>Tip a tray full of marbles onto a warped sheet and walk away. You didn't compute where they'd end up; you shaped the sheet, and physics did the rest. Every marble rolls downhill until it can't roll any further, and the resting positions are, in a real sense, the "answer" to "where is lowest here?" Nobody ran an algorithm. The shape of the sheet <em>was</em> the algorithm.</p>
 <p>Now imagine a much stranger version of the same trick, played with something simpler than marbles: a row of switches, each one either up or down. Wire pairs of them together, and let each wire carry an opinion: some wires want their two switches to <em>agree</em>, others want them to <em>disagree</em>. Count how many wires get their wish in any given arrangement of the switches. The best arrangement is whichever one keeps the most wires happy.</p>
@@ -328,7 +327,7 @@
 <div data-living-strip></div>
 <p class="living-strip-note">Fourteen coupled oscillators settling toward one phase &mdash; no search, just the hardware relaxing. The &ldquo;Let it settle&rdquo; widget below does the same on a real problem graph.</p>
 
-<span class="tier y">🟡 Some math</span>
+<span class="tier y">🟡 Working</span>
 <h2 id="yellow">Three ways to build one</h2>
 <p>Every design below needs the same two ingredients: something with exactly two stable states (so it can stand in for a switch, or "spin"), and a way to wire pairs of them together so each connection can push its two spins toward agreeing or disagreeing. What differs is the physical substrate.</p>
 <div class="overflow"><table>
@@ -403,7 +402,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Limits: the true optimum is brute-forced over all 2⁸ = 256 arrangements at load, exactly as above. "Time budget" is not a perfectly fair unit across three kinds of machine, since a random-restart attempt, a single-spin-flip Metropolis step, and one Euler step of a continuous relaxation are not the same amount of physical work. And <strong>at a high budget on this tiny 256-arrangement graph, blind random restart can catch up to and even pass the annealer</strong>, not because randomness is clever but because trying enough independent guesses against a small enough haystack finds the needle by brute coverage. That evaporates the moment a graph is too large to nearly enumerate by luck, which is every real optimisation problem, and exactly why annealing exists at all.</p>
 </div>
 
-<span class="tier r">🔴 Real math</span>
+<span class="tier r">🔴 Formal</span>
 <h2 id="red">The formalism, with receipts</h2>
 <p>The Ising Hamiltonian over spins s<sub>i</sub> ∈ {−1, +1} on a graph with couplings J<sub>ij</sub> is</p>
 <div class="formula">H(s) = − Σ<sub>(i,j)</sub> J<sub>ij</sub> s<sub>i</sub> s<sub>j</sub></div>

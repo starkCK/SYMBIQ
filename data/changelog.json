@@ -1,8 +1,16 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 122,
+ "count": 123,
  "events": [
+  {
+   "at": "2026-09-30",
+   "kind": "correction",
+   "tag": "Correction 20",
+   "title": "Correction 13 removed a promise of payment and a paid reviewer. Both were still live in three other places.",
+   "href": "corrections.html",
+   "note": "Live from 2026-07-29 until it was caught and published here."
+  },
   {
    "at": "2026-09-30",
    "kind": "correction",
@@ -34,6 +42,22 @@
    "title": "The Inside page said the tunnel barrier is a few dozen atoms thick. It is four to eight.",
    "href": "corrections.html",
    "note": "Live from 2026-09-29 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Phase 1.5-1.7: remove leftover promises (nav subtitle, referee diagram, Ledger sign-in line, README), internal references, How we check page, About AI-use disclosure and author box; Correction 20",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "The Race: populated, sourced scoreboard generated from hardware.json; three below-threshold entries (Google, Harvard/QuEra, USTC); desk forecasts; Correction 19",
+   "href": "",
+   "note": ""
   },
   {
    "at": "2026-09-30",
@@ -808,22 +832,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "The Ladder on three more cabinets: Grover's Escape, Max-Cut, the Volcano",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-04",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The question bank: the daily rotation goes from 7 to 14, and stops repeating weekly",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-04",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Correction 3, and receipts on the last six pages that carry an argument",
    "href": "",
    "note": ""
   },

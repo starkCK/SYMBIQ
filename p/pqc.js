@@ -1276,7 +1276,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     'ledger.html':          ['corrections.html',      'Corrections',                'What we got wrong, and when'],
     'corrections.html':     ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'signals.html':         ['archive.html',          'The archive',                'Everything asked and answered so far'],
-    'archive.html':         ['signals.html',          'Signals',                    'What moved this week, and why it matters']
+    'archive.html':         ['signals.html',          'Desk notes',                 'Dated notes from the desk on what moved, and why it matters']
   };
 
   var RUNGS = [

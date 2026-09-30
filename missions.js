@@ -156,7 +156,7 @@
           body = '<p class="ms-duo">&ldquo;&hellip;how did you know where it stops.&rdquo;</p>' +
                  '<p class="ms-duo">&ldquo;You are the first one who ever told me to stop.&rdquo;</p>';
           tag  = '<div class="ms-codex">Codex entry unlocked, <strong>The Turning Point</strong> ' +
-                 '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+                 '<span class="ev ev-proven">Proven</span><br>' +
                  '<span>Amplitude amplification is a <em>rotation</em>, not a ratchet. ' +
                  'After k passes the exit sits at exactly sin&sup2;((2k+1)&theta;) with sin&thinsp;&theta; = 1/&radic;N. ' +
                  'It peaks near k &asymp; (&pi;/4)&radic;N and then falls. Certainty is not reachable, and trying harder is how you lose it.</span></div>';
@@ -377,7 +377,7 @@
                  '<p class="ms-duo">&ldquo;I did not need to. You told me what the turns were.&rdquo;</p>' +
                  '<p class="ms-note">She has spent her life believing that knowing meant looking. It is going to take her a while.</p>';
           tag = '<div class="ms-codex">Codex entry unlocked,  <strong>The Vocabulary</strong> ' +
-                '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+                '<span class="ev ev-proven">Proven</span><br>' +
                 '<span>A quantum gate is a <em>rotation</em>, not a switch. The whole one-qubit vocabulary is six of them, ' +
                 'and every par in this hall is a <strong>proven minimum</strong>,  found by breadth-first search over all gate words, ' +
                 'then re-checked exhaustively at every shorter length. &ldquo;Par 3&rdquo; means no two-turn route exists anywhere.</span></div>';
@@ -566,7 +566,7 @@
           body = '<p class="ms-duo">&ldquo;I spent years thinking I was not clever enough to satisfy that third road.&rdquo;</p>' +
                  '<p class="ms-duo">&ldquo;Nobody is. That is what the word is for.&rdquo;</p>';
           tag = '<div class="ms-codex">Codex entry unlocked,  <strong>Frustration</strong> ' +
-                '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+                '<span class="ev ev-proven">Proven</span><br>' +
                 '<span>An odd loop cannot be two-coloured, so at least one edge always has matching ends. ' +
                 'Max-Cut is <strong>NP-hard</strong> (Karp 1972), which is why every par here was found by brute force over all 2&#8319; splits. ' +
                 'Label the sides &plusmn;1 and the satisfied count is &Sigma;w<sub>ij</sub>(1&minus;s<sub>i</sub>s<sub>j</sub>)/2,  ' +
@@ -788,7 +788,7 @@
           body = '<p class="ms-duo">&ldquo;So it was never a good rule.&rdquo;</p>' +
                  '<p class="ms-duo">&ldquo;It is an excellent rule. It just is not a law.&rdquo;</p>' + scores;
           tag = '<div class="ms-codex">Codex entry unlocked,  <strong>No Free Lunch</strong> ' +
-                '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+                '<span class="ev ev-proven">Proven</span><br>' +
                 '<span>Averaged over <em>all</em> possible landscapes, no search method beats any other ' +
                 '(Wolpert &amp; Macready 1997). Methods win by exploiting structure, so where there is none, nothing helps. ' +
                 'On the Salt Flat every move out on the plain has &Delta;E = 0, so the Metropolis rule accepts everything at every ' +
@@ -1018,7 +1018,7 @@
                  '<p class="ms-duo">&ldquo;Yes.&rdquo;</p>' +
                  '<p class="ms-duo">&ldquo;&hellip;that is almost the same thing.&rdquo;</p>' + scores;
           tag = '<div class="ms-codex">Codex entry unlocked,  <strong>Correlation Is Not Communication</strong> ' +
-                '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+                '<span class="ev ev-proven">Proven</span><br>' +
                 '<span>Beating 75% proves the correlation is not pre-agreed answers,  that is the CHSH inequality ' +
                 '(Clauser, Horne, Shimony &amp; Holt 1969), and the experiments that closed its loopholes won the ' +
                 '<strong>2022 Nobel Prize in Physics</strong>. The quantum ceiling is cos&sup2;(&pi;/8) = 85.36%, ' +
@@ -1376,7 +1376,7 @@
                  '<p class="ms-duo">&ldquo;Read it to me again tomorrow. I still will not know what to do.&rdquo;</p>' +
                  '<p class="ms-duo">&ldquo;Good.&rdquo;</p>' + scores;
           tag = '<div class="ms-codex">Codex entry unlocked,  <strong>The Reading and the Decision</strong> ' +
-            '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+            '<span class="ev ev-proven">Proven</span><br>' +
             '<span>Minimum-weight matching is exactly optimal under the noise model it was handed, and this chip is not that ' +
             'chip. Measured over every round this machine can deal: it holds <strong>9 of 9</strong> single flips, ' +
             '<strong>0 of 6</strong> coupled-pair firings and <strong>14 of 42</strong> pair-plus-stray rounds,  ' +
@@ -1391,7 +1391,7 @@
                  '<p class="ms-note">You beat it without naming what was wrong with the chip. That still counts: ' +
                  'the Hollow Oracle only ever needed to be shown, once, that the machine can read perfectly and answer badly.</p>' + scores;
           tag = '<div class="ms-codex">Codex entry unlocked,  <strong>The Reading and the Decision</strong> ' +
-            '<span class="tier">&#10214;Proven&#10215;</span><br>' +
+            '<span class="ev ev-proven">Proven</span><br>' +
             '<span>The decoder is exactly optimal under the noise model it was handed,  and this chip was not that chip. ' +
             'Measured: it holds <strong>0 of 6</strong> coupled-pair firings on every chip this game can deal, for an expected ' +
             '<strong>4.7 of 10</strong> overall, while a player who learns the coupling reaches <strong>7.9</strong> and correct ' +
@@ -1413,11 +1413,11 @@
         }
 
         tier = '<div class="ms-tier"><b>What is established, and what is not.</b> ' +
-          '<span class="tier">&#10214;Proven&#10215;</span> A stabilizer check asks whether neighbours agree and never what they are, ' +
+          '<span class="ev ev-proven">Proven</span> A stabilizer check asks whether neighbours agree and never what they are, ' +
           'so it extracts the error and not the encoded value,  that is why a surface code survives being measured a million ' +
           'times a second, and it is ordinary quantum error correction (Dennis, Kitaev, Landahl &amp; Preskill 2001). ' +
           'Measuring the logical operator itself <em>does</em> collapse what is encoded. ' +
-          '<span class="tier">&#10214;Frontier&#10215;</span> That the world is itself a computation, measured once and unravelling since, ' +
+          '<span class="ev ev-frontier">Frontier</span> That the world is itself a computation, measured once and unravelling since, ' +
           'is a respectable idea and not a result,  Wheeler&rsquo;s it-from-bit, Deutsch, Lloyd. Halden says the Solvers ' +
           '<em>believe</em> it, because that is exactly as far as anyone can honestly put it. ' +
           (ending === 'look'

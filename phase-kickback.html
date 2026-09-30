@@ -52,12 +52,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@symbiq">
 <meta name="twitter:title" content="Why do Grover's and Shor's algorithms actually work?">
 <meta name="twitter:description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/phase-kickback.css?v=32">
+<link rel="stylesheet" href="p/phase-kickback.css?v=34">
 
 
 
@@ -122,10 +121,10 @@
   ]
 }
 </script>
-<script src="core.js?v=4"></script>
+<script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
-<script src="p/phase-kickback.js?v=13" defer></script>
+<script src="p/phase-kickback.js?v=16" defer></script>
 
 
 
@@ -236,15 +235,15 @@
         <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
         <a href="race.html#threshold" class="navchip">threshold →</a>
       </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Where we were wrong, and paid for it</span></a>
+      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
+      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
+      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
       </div>
     </details>
     <details class="navcat" data-cat="community">
       <summary>Community</summary>
       <div class="navpanel">
       <p class="navhead">Read</p>
-      <a href="insights.html" class="navmain">Insight Notes<span class="sub">Essays from verified writers and the community</span></a>
-      <a href="signals.html" class="navmain">The Signal<span class="sub">News from the loop</span></a>
       <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
       <p class="navhead">Write</p>
       <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
@@ -296,13 +295,13 @@
   <figcaption>Grover's algorithm as a circuit: Hadamard gates spread the amplitude evenly, then the oracle U<sub>&omega;</sub> and a diffusion step repeat about (&pi;/4)&radic;N times, then a measurement. Diagram by Fawly, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Grover's_algorithm_circuit.svg" rel="noopener noreferrer">source</a>.</figcaption>
 </figure>
 
-<span class="tier g">🟢 No math</span>
+<span class="tier g">🟢 Plain</span>
 <h2 id="green">The trick: aim at something that can't move, and watch the recoil</h2>
 <p>Picture a locked door with a combination dial, and a rule: turning the dial to the right number does nothing visible to the door: it was already unlocked, so "unlocking" it again just leaves it exactly as unlocked as before. But the person turning the dial isn't left unaffected. Their hand picks up a small, specific twist depending on whether the combination they tried was right or wrong: a twist you can't see by looking at the door, only by looking at the hand.</p>
 <p>Now do this in superposition: instead of trying combinations one at a time, hold every combination in your hand <em>at once</em>, and touch the dial once. The door, silent throughout, never changing, has left a different twist onto each of your simultaneously-held combinations. Nothing about the door tells you which twist went where. But if you now let all those twisted possibilities interfere with each other, the twisted-right combination reinforcing itself and the twisted-wrong ones cancelling out, the answer falls out.</p>
 <p>That is phase kickback, stated without a single equation. The "door" is a target qubit prepared so that touching it can never change it. The "twist" is a phase. And "letting them interfere" is exactly what a Hadamard gate, or the more elaborate Fourier transform used in Shor's algorithm, is for. The mechanism, with the equation: <a href="#yellow">🟡 keep going ↓</a></p>
 
-<span class="tier y">🟡 Some math</span>
+<span class="tier y">🟡 Working</span>
 <h2 id="yellow">The mechanism: eigenstates don't move, so the phase has nowhere else to go</h2>
 <p>An <strong>eigenstate</strong> of a gate U is a state that U leaves pointing the same direction: U only ever multiplies it by a number, U|u⟩ = λ|u⟩, called the eigenvalue. For any gate used in quantum computing, λ is a pure phase, λ = e<sup>iφ</sup>, since gates preserve length.</p>
 <p>The cleanest possible case: the gate Z flips the sign of |1⟩ and leaves |0⟩ alone, so |1⟩ is an eigenstate of Z with eigenvalue −1. Take the <strong>controlled</strong> version, CZ, wired so a control qubit decides whether Z is applied to a target held fixed at |1⟩, and put the control in an equal superposition |+⟩ = (|0⟩+|1⟩)/√2:</p>
@@ -340,7 +339,7 @@
   <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Scope: this shows the cleanest case, a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full, numerical verification included, at <a href="formalism.html#f08">The Machinery, topic f08</a>. It exists to make the mechanism visible before the proof.</p>
 </div>
 
-<span class="tier r">🔴 Real math</span>
+<span class="tier r">🔴 Formal</span>
 <h2 id="red">Where this mechanism runs, and where the proofs already live</h2>
 <p>This page does not re-derive what <a href="formalism.html">The Machinery</a> has already proven and independently referee-verified. It exists to name the mechanism plainly and point at exactly where each proof lives.</p>
 <p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register, proven on <a href="formalism.html#f08">topic f08</a> and <a href="formalism.html#f09">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)), and numerically checked two different ways: <em>exhaustively</em> at f08's n=1 (all four possible one-bit functions), and by <em>sampling</em> at f09's n=4 (both constant functions, plus 20 of the 12,870 possible balanced ones); worth knowing which is which before quoting either as a full proof by enumeration.</p>

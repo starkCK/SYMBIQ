@@ -131,9 +131,9 @@
 
   var TIERS = ['g', 'y', 'r'];
   var META = {
-    g: { chip: '🟢', name: 'No math',   blurb: 'One analogy. No equations.' },
-    y: { chip: '🟡', name: 'Some math', blurb: 'Mechanism, and a worked number.' },
-    r: { chip: '🔴', name: 'Real math', blurb: 'Derivations, sources, open problems.' }
+    g: { chip: '🟢', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '🟡', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '🔴', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
   };
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -853,7 +853,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
 ;
 (function () {
   window.SymbiQ = window.SymbiQ || {};
-  var TIER = { g: '🟢 Beginner', y: '🟡 Intermediate', r: '🔴 Expert' };
+  var TIER = { g: '🟢 Plain', y: '🟡 Working', r: '🔴 Formal' };
 
   var esc = window.SymbiQ.core.esc;
 
@@ -869,7 +869,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         var txt = Q.explain && Q.explain[t];
         return txt ? '<div class="archq-ex"><h4>' + TIER[t] + '</h4><p>' + esc(txt) + '</p></div>' : '';
       }).join('') +
-      (q.signal ? '<p class="archq-signal"><b>The Signal that day:</b> ' + esc(q.signal) + '</p>' : '');
+      (q.signal ? '<p class="archq-signal"><b>The desk note that day:</b> ' + esc(q.signal) + '</p>' : '');
   }
 
   function mount(host, o) {
@@ -1662,7 +1662,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     'ledger.html':          ['corrections.html',      'Corrections',                'What we got wrong, and when'],
     'corrections.html':     ['ledger.html',           'The ledger',                 'Every claim on this site, and its source'],
     'signals.html':         ['archive.html',          'The archive',                'Everything asked and answered so far'],
-    'archive.html':         ['signals.html',          'Signals',                    'What moved this week, and why it matters']
+    'archive.html':         ['signals.html',          'Desk notes',                 'Dated notes from the desk on what moved, and why it matters']
   };
 
   var RUNGS = [

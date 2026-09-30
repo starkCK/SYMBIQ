@@ -1130,6 +1130,46 @@ const DEF = {
   'atom-machine': { expl: 0 }, 'atom-cell': { expl: 0.5 }, 'atom-array': { expl: 0.4 }, 'atom-atom': { expl: 0 },
 };
 
+const SRC_BY_LEVEL = {
+  system: [1, 2], cryostat: [1, 2], package: [1, 2], chip: [2, 3, 4, 5, 6], transmon: [2, 3], junction: [2, 3],
+  'ion-machine': [7], 'ion-trap': [7, 8], 'ion-chain': [7, 9, 10, 11], 'ion-ion': [7, 11],
+  'atom-machine': [12], 'atom-cell': [12], 'atom-array': [12, 13, 14, 15, 16], 'atom-atom': [12, 13],
+};
+const MADE = {
+  'system/can': 'Metal, commonly stainless steel or aluminium.',
+  'cryostat/struts': 'Stainless steel or a fibre composite.',
+  'cryostat/cablesIn': 'Coax. A typical choice is stainless steel near the top, cupronickel in the middle and copper at the bottom.',
+  'cryostat/cablesOut': 'Coax that is superconducting niobium-titanium between 4 K and the mixing chamber.',
+  'cryostat/twpa': 'Superconducting Josephson junctions.',
+  'cryostat/atten': 'Small in-line resistors.',
+  'cryostat/circ': 'Contains a small magnet.',
+  'package/base': 'Gold-plated copper.',
+  'package/chip': 'Silicon or sapphire with superconducting circuits patterned on top.',
+  'package/pcb': 'A printed circuit with microwave transmission lines.',
+  'package/bonds': 'Aluminium wire, each about 25 µm thick.',
+  'package/lid': 'Gold-plated copper or aluminium.',
+  'package/shield': 'A layer of superconducting aluminium and a layer of high-permeability metal.',
+  'chip/substrate': 'Silicon or sapphire.',
+  'chip/wiring': 'A second chip, joined to the first by many small indium or solder bumps.',
+  'chip/qubits': 'Two metal pads and a Josephson junction between them.',
+  'transmon/substrate': 'Silicon or sapphire.',
+  'transmon/ground': 'A niobium or aluminium film, about 100 nm thick.',
+  'transmon/squid': 'Two Josephson junctions wired in a loop.',
+  'junction/substrate': 'Silicon or sapphire.',
+  'junction/elA': 'Aluminium, evaporated in vacuum.',
+  'junction/elB': 'Aluminium, evaporated in vacuum from a different angle.',
+  'junction/barrier': 'Aluminium oxide, made by oxidising the first aluminium layer.',
+  'junction/pairs': 'Pairs of electrons bound together.',
+  'ion-machine/table': 'Steel, drilled with a grid of screw holes.',
+  'ion-machine/chamber': 'Steel, with glass viewports.',
+  'ion-trap/rods': 'Four electrodes; the two radio-frequency rods are about 1 mm across.',
+  'atom-machine/cell': 'Glass.',
+  'atom-machine/table': 'Steel, drilled with a grid of screw holes.',
+  'atom-cell/cell': 'Glass, coated to let the laser colours through.',
+  'atom-cell/coils': 'Two current-carrying coils.',
+};
+const RELATED = { sc: ['circuits.html', 'How circuits and qubits work'], ion: ['compare.html', 'How the companies compare'], atom: ['compare.html', 'How the companies compare'] };
+
 function boot() {
   const stage = $('#in-stage'); if (!stage) return;
   const canvas = $('#in-canvas'); const panel = $('#in-panel');
@@ -1155,6 +1195,11 @@ function boot() {
   const cam = { target: V3(), r: 20, az: 0.6, el: 0.3, vaz: 0, vel: 0, fly: null, rmin: 2, rmax: 60 };
 
   const veil = $('#in-veil'), tip = $('#in-tip'), live = $('#in-live'), cap = $('#in-cap');
+  const cardEl = $('#in-card'), hudEl = $('#in-hud'), crossEl = $('#in-cross'), deepEl = $('#in-deep');
+
+  const F = { on: false, pos: V3(), yaw: 0, pitch: 0, vel: V3(), keys: new Set(), joy: { x: 0, y: 0 }, vbtn: 0, lock: false, tilt: false, tref: null, tbase: null,
+    auto: true, speedK: 1, slow: 1, solid: [], base: 10, dwell: 0, dwellPart: null, boxes: [], boxT: 0, out: 0, hint: '' };
+  camera.rotation.order = 'YXZ';
 
   const fitK = () => Math.max(1, 0.40 / (camera.aspect * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))));
   function place() {
@@ -1217,19 +1262,24 @@ function boot() {
   async function goto(id, o = {}) {
     if (S.busy || !BUILD[id]) return; S.busy = true;
     const from = S.view; const dive = o.dive;
+    const prevId = from && from.id;
     if (from && !reduced()) {
       veil.classList.add('on');
-      if (dive && dive.center) flyTo({ target: dive.center, r: Math.max(cam.rmin, dive.size * 0.9) }, 460);
+      if (F.on) F.vel.set(0, 0, 0);
+      else if (dive && dive.center) flyTo({ target: dive.center, r: Math.max(cam.rmin, dive.size * 0.9) }, 460);
       else flyTo({ r: cam.r * (o.up ? 1.5 : 0.7) }, 460);
-      await sleep(470);
+      await sleep(F.on ? 300 : 470);
     }
     if (from) disposeView(from);
     S.interacted = false;
     const v = makeAndShow(id); const c = v.def.cam;
     const R = c.r * fitK();
-    cam.target.copy(c.target); cam.az = c.az + (o.up ? 0.5 : -0.5); cam.el = c.el; cam.r = R * (o.up ? 0.55 : 1.6);
-    place(); veil.classList.remove('on');
-    flyTo({ r: R, az: c.az }, 900);
+    if (F.on) { flyPlace(v, o.up ? prevId : null); veil.classList.remove('on'); }
+    else {
+      cam.target.copy(c.target); cam.az = c.az + (o.up ? 0.5 : -0.5); cam.el = c.el; cam.r = R * (o.up ? 0.55 : 1.6);
+      place(); veil.classList.remove('on');
+      flyTo({ r: R, az: c.az }, 900);
+    }
     S.busy = false; syncUi(); history.replaceState(null, '', '#' + id);
     if (o.select && v.byId[o.select]) select(v.byId[o.select], false);
     announce(INTRO[id].title + '. ' + INTRO[id].text);
@@ -1238,6 +1288,14 @@ function boot() {
   function focus(p) {
     const b = partBox(p); if (b.isEmpty()) return; const c = b.getCenter(V3()), s = b.getSize(V3()); const size = Math.max(s.x, s.y, s.z);
     if (size > S.view.def.cam.r * 0.9) return;
+    if (F.on) {
+      const dirv = F.pos.clone().sub(c); if (dirv.lengthSq() < 1e-9) dirv.set(0, 0.3, 1); dirv.normalize();
+      const p1 = c.clone().addScaledVector(dirv, size * 1.6 + F.base * 0.03), save = { p: F.pos.clone(), y: F.yaw, q: F.pitch };
+      F.pos.copy(p1); faceTo(c); const y1 = F.yaw, q1 = F.pitch; let dy = y1 - save.y; dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+      F.pos.copy(save.p); F.yaw = save.y; F.pitch = save.q;
+      F.tw = { t0: performance.now(), ms: reduced() ? 1 : 650, p0: save.p, p1, y0: save.y, dy, q0: save.q, q1 };
+      return;
+    }
     flyTo({ target: c, r: clamp(size * 2.1 + 2.2, cam.rmin, cam.rmax) }, 700);
   }
 
@@ -1266,14 +1324,14 @@ function boot() {
   }
   function renderInfo() {
     const v = S.view; const p = v && v.sel;
-    if (!p) { infoEl.innerHTML = '<p class="in-hint">Click any part in the scene, or pick one from the list. Parts marked <b>opens</b> have an inside you can dive into.</p>'; cap.classList.remove('on'); return; }
+    if (!p) { infoEl.innerHTML = '<p class="in-hint">Click any part in the scene, or pick one from the list. Parts marked <b>opens</b> have an inside you can dive into.</p>'; cap.classList.remove('on'); renderCard(); return; }
     const facts = (p.f && p.f.length) ? '<ul class="in-facts">' + p.f.map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul>' : '';
     const iso = v.isolate === p;
     infoEl.innerHTML = '<h3 class="in-name">' + esc(p.name) + '</h3><dl class="in-meta"><div><dt>Temperature</dt><dd>' + esc(p.t || '') + '</dd></div><div><dt>Size</dt><dd>' + esc(p.s || '') + '</dd></div></dl><p>' + esc(p.d) + '</p>' + facts +
       '<div class="in-actions">' + (p.opens ? '<button type="button" class="in-btn in-primary" data-act="open">Open inside &#9656;</button>' : '') +
       '<button type="button" class="in-btn" data-act="zoom">Zoom to it</button><button type="button" class="in-btn" data-act="iso" aria-pressed="' + iso + '">' + (iso ? 'Show everything' : 'Isolate') + '</button><button type="button" class="in-btn" data-act="hide">Hide</button></div>' +
       (p.opens ? '' : '<p class="in-end">No separate inside view for this part.</p>');
-    cap.innerHTML = '<b>' + esc(p.name) + '</b><span>' + esc(p.t || '') + '</span>'; cap.classList.add('on');
+    cap.innerHTML = '<b>' + esc(p.name) + '</b><span>' + esc(p.t || '') + '</span>'; cap.classList.add('on'); renderCard();
   }
   function renderMachines() {
     const cur = machineOf(S.id);
@@ -1288,6 +1346,10 @@ function boot() {
     $('#in-flowbtn').setAttribute('aria-pressed', String(!!(S.view.ctx && S.view.ctx.flow)));
     $$('#in-layout [data-layout]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.layout === S.layout)));
     $('#in-xray').setAttribute('aria-pressed', String(S.xray));
+    $('#in-flybtn').setAttribute('aria-pressed', String(F.on));
+    ['#in-lockbtn', '#in-autobtn'].forEach((q) => { $(q).hidden = !F.on; });
+    $('#in-tiltbtn').hidden = !(F.on && COARSE && window.DeviceOrientationEvent);
+    $('#in-joy').hidden = $('#in-vert').hidden = !(F.on && COARSE);
     $('#in-up').disabled = levelsOf(S.id).findIndex((l) => l.id === S.id) === 0;
   }
   function $$(s) { return Array.from(document.querySelectorAll(s)); }
@@ -1304,7 +1366,7 @@ function boot() {
   $('#in-ladder').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (!b || b.dataset.go === S.id) return; const L = levelsOf(S.id), to = L.findIndex((l) => l.id === b.dataset.go), cur = L.findIndex((l) => l.id === S.id); goto(b.dataset.go, { up: to < cur }); });
   $('#in-mach').addEventListener('click', (e) => { const b = e.target.closest('[data-m]'); if (!b || b.dataset.m === machineOf(S.id)) return; goto(MACHINES[b.dataset.m].levels[0].id, {}); });
   $('#in-up').addEventListener('click', up);
-  function up() { const L = levelsOf(S.id), i = L.findIndex((l) => l.id === S.id); if (i > 0) goto(L[i - 1].id, { up: true }); }
+  function up() { const L = levelsOf(S.id), i = L.findIndex((l) => l.id === S.id); if (i > 0) goto(L[i - 1].id, { up: true, from: S.id }); }
   $('#in-explode').addEventListener('input', (e) => { S.view.setExplode(+e.target.value / 100); });
   $('#in-xray').addEventListener('click', () => { S.xray = !S.xray; paint(S.view); syncUi(); });
   $('#in-flowbtn').addEventListener('click', () => { S.view.ctx.flow = !S.view.ctx.flow; syncUi(); });
@@ -1329,21 +1391,29 @@ function boot() {
     const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
     if (ptrs.size === 1) {
       if (down) down.moved += Math.abs(dx) + Math.abs(dy);
-      if (btn === 2 || e.shiftKey || e.ctrlKey || e.metaKey) pan(dx, dy); else { cam.az -= dx * 0.0062; cam.el = clamp(cam.el + dy * 0.0062, -1.3, 1.5); cam.vaz = -dx * 0.0062; cam.vel = dy * 0.0062; }
+      if (F.on) { if (!F.lock) look(dx * 0.0042, dy * 0.0042); }
+      else if (btn === 2 || e.shiftKey || e.ctrlKey || e.metaKey) pan(dx, dy); else { cam.az -= dx * 0.0062; cam.el = clamp(cam.el + dy * 0.0062, -1.3, 1.5); cam.vaz = -dx * 0.0062; cam.vel = dy * 0.0062; }
     } else if (ptrs.size === 2) {
-      const [a, b] = [...ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (pinch0) cam.r = clamp(cam.r * (pinch0 / d), cam.rmin, cam.rmax); pinch0 = d; pan(dx / 2, dy / 2);
+      const [a, b] = [...ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (F.on) { if (pinch0) F.pos.addScaledVector(fwdVec(), (d - pinch0) * F.base * 0.012 * F.speedK); pinch0 = d; return; }
+      if (pinch0) cam.r = clamp(cam.r * (pinch0 / d), cam.rmin, cam.rmax); pinch0 = d; pan(dx / 2, dy / 2);
     }
   });
   const end = (e) => {
     const wasOne = ptrs.size === 1; ptrs.delete(e.pointerId);
-    if (wasOne && down && down.moved < 7 && e.type === 'pointerup') { const p = pick(e.clientX, e.clientY); if (p) select(p, false); else select(null); }
+    if (wasOne && down && down.moved < 7 && e.type === 'pointerup') {
+      const cr = canvas.getBoundingClientRect(), cx = F.lock ? cr.left + cr.width / 2 : e.clientX, cy = F.lock ? cr.top + cr.height / 2 : e.clientY;
+      const p = pick(cx, cy); if (p) select(p, false); else select(null);
+    }
     if (!ptrs.size) down = null; pinch0 = 0;
   };
   canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
   canvas.addEventListener('pointerleave', () => { if (!ptrs.size) hover(null); });
   canvas.addEventListener('blur', () => { S.armed = false; });
   canvas.addEventListener('dblclick', (e) => { const p = pick(e.clientX, e.clientY); if (p && p.opens) { select(p, false); open(p); } });
-  canvas.addEventListener('wheel', (e) => { if (!S.armed) return; e.preventDefault(); touched(); cam.r = clamp(cam.r * Math.exp(e.deltaY * 0.0014), cam.rmin, cam.rmax); }, { passive: false });
+  canvas.addEventListener('wheel', (e) => { if (!S.armed) return; e.preventDefault(); touched();
+    if (F.on) { F.speedK = clamp(F.speedK * Math.exp(-e.deltaY * 0.0012), 0.12, 8); return; }
+    cam.r = clamp(cam.r * Math.exp(e.deltaY * 0.0014), cam.rmin, cam.rmax); }, { passive: false });
   function pan(dx, dy) {
     const k = cam.r * 0.0016; const right = V3().setFromMatrixColumn(camera.matrix, 0), upv = V3().setFromMatrixColumn(camera.matrix, 1);
     cam.target.addScaledVector(right, -dx * k).addScaledVector(upv, dy * k);
@@ -1354,6 +1424,7 @@ function boot() {
     if (p && e) { const r = stage.getBoundingClientRect(); tip.textContent = p.name + (p.opens ? '  ▸' : ''); tip.style.transform = 'translate(' + (e.clientX - r.left + 14) + 'px,' + (e.clientY - r.top + 12) + 'px)'; tip.classList.add('on'); } else tip.classList.remove('on');
   }
   canvas.addEventListener('keydown', (e) => {
+    if (F.on) return;
     const k = e.key; let used = true; touched();
     if (k === 'ArrowLeft') cam.az -= 0.12; else if (k === 'ArrowRight') cam.az += 0.12; else if (k === 'ArrowUp') cam.el = clamp(cam.el + 0.1, -1.3, 1.5); else if (k === 'ArrowDown') cam.el = clamp(cam.el - 0.1, -1.3, 1.5);
     else if (k === '+' || k === '=') cam.r = clamp(cam.r * 0.88, cam.rmin, cam.rmax); else if (k === '-' || k === '_') cam.r = clamp(cam.r * 1.14, cam.rmin, cam.rmax);
@@ -1363,6 +1434,208 @@ function boot() {
     if (used) e.preventDefault();
   });
 
+  const COARSE = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+  const fwdVec = () => V3(-Math.sin(F.yaw) * Math.cos(F.pitch), Math.sin(F.pitch), -Math.cos(F.yaw) * Math.cos(F.pitch));
+  function faceTo(pt) { const d = pt.clone().sub(F.pos), L = d.length() || 1; F.yaw = Math.atan2(-d.x, -d.z); F.pitch = Math.asin(clamp(d.y / L, -1, 1)); }
+  function look(dx, dy) {
+    F.tw = null; F.yaw -= dx; F.pitch = clamp(F.pitch - dy, -1.5, 1.5);
+    if (F.tbase) { F.tbase.yaw -= dx; F.tbase.pitch -= dy; }
+  }
+  function flyPlace(v, cameFrom) {
+    const c = v.def.cam, R = c.r * fitK();
+    const dir = V3(Math.sin(c.az) * Math.cos(c.el), Math.sin(c.el), Math.cos(c.az) * Math.cos(c.el));
+    let look0 = c.target.clone(), pos = null;
+    if (cameFrom) {
+      const pp = v.parts.find((q) => q.opens === cameFrom && !q.shell) || v.parts.find((q) => q.opens === cameFrom);
+      if (pp) { const b = partBox(pp), cc = b.getCenter(V3()), sz = b.getSize(V3()); look0 = cc; pos = cc.clone().addScaledVector(dir, Math.max(sz.x, sz.y, sz.z) * 1.8 + c.r * 0.05); }
+    }
+    if (!pos) pos = c.target.clone().addScaledVector(dir, R * 0.78);
+    F.pos.copy(pos); faceTo(look0); F.vel.set(0, 0, 0); F.tw = null; F.base = c.r; F.speedK = 1;
+    F.boxes = []; F.solid = []; F.slow = 1; F.boxT = 0; F.dwell = 0; F.dwellPart = null; F.out = 0; F.tref = null;
+    camera.near = c.r * 0.004; camera.updateProjectionMatrix();
+  }
+  function enterFly() {
+    if (F.on || !S.view) return;
+    F.on = true; cam.fly = null; S.interacted = true; S.armed = true;
+    F.pos.copy(camera.position); faceTo(S.view.def.cam.target);
+    F.base = S.view.def.cam.r; F.speedK = 1; F.vel.set(0, 0, 0); F.boxT = 0; F.dwell = 0; F.dwellPart = null; F.out = 0; F.tw = null;
+    camera.near = F.base * 0.004; camera.updateProjectionMatrix();
+    stage.classList.add('is-fly'); syncUi(); renderCard(); canvas.focus({ preventScroll: true });
+    announce('Fly mode. W A S D to move, drag to look, Q and E for down and up. Fly into a part that opens to shrink inside it.');
+  }
+  function leaveFly() {
+    if (!F.on) return;
+    F.on = false; F.keys.clear(); F.joy.x = F.joy.y = 0; F.vbtn = 0;
+    if (document.pointerLockElement === canvas) document.exitPointerLock();
+    setTilt(false);
+    const c = S.view.def.cam, rel = F.pos.clone().sub(c.target), r = rel.length() || c.r;
+    cam.target.copy(c.target); cam.r = clamp(r, cam.rmin, cam.rmax);
+    cam.az = Math.atan2(rel.x, rel.z); cam.el = clamp(Math.asin(clamp(rel.y / r, -1, 1)), -1.3, 1.5); cam.vaz = cam.vel = 0;
+    camera.near = 0.05; camera.updateProjectionMatrix(); place();
+    stage.classList.remove('is-fly'); cardEl.hidden = true; syncUi();
+    announce('Back to the orbit view.');
+  }
+  function flyKey(e, isDown) {
+    if (deepEl.open || e.ctrlKey || e.metaKey || e.altKey) return;
+    const c = e.code;
+    if (/^(Key[WASDQEC]|Space|Shift(Left|Right)|Arrow(Up|Down|Left|Right))$/.test(c)) { if (isDown) F.keys.add(c); else F.keys.delete(c); e.preventDefault(); return; }
+    if (!isDown) return;
+    const v = S.view, k = e.key; let used = true;
+    if (k === 'Enter') { const p = F.dwellPart || (v.sel && v.sel.opens ? v.sel : null); if (p) open(p); else used = false; }
+    else if (k === 'Escape') { if (v.sel) select(null); else leaveFly(); }
+    else if (k === 'b' || k === 'B') up();
+    else if (k === 'f' || k === 'F') leaveFly();
+    else if (k === 'r' || k === 'R') showAll();
+    else if (k === 'i' || k === 'I') { if (v.sel) toggleIso(v.sel); }
+    else if (k === 'x' || k === 'X') { const t = v.t > 0.05 ? 0 : (DEF[S.id].expl || 0.5); $('#in-explode').value = String(Math.round(t * 100)); v.setExplode(t); }
+    else used = false;
+    if (used) e.preventDefault();
+  }
+  const flyIgnores = (e) => { const t = e.target, tag = t && t.tagName; return tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || ((tag === 'BUTTON' || tag === 'A') && (e.code === 'Space' || e.key === 'Enter')); };
+  stage.addEventListener('keydown', (e) => { if (F.on && !flyIgnores(e)) flyKey(e, true); });
+  stage.addEventListener('keyup', (e) => { if (F.on) flyKey(e, false); });
+  stage.addEventListener('focusout', (e) => { if (!stage.contains(e.relatedTarget)) F.keys.clear(); });
+  window.addEventListener('blur', () => F.keys.clear());
+  function showAll() { const v = S.view; v.isolate = null; v.parts.forEach((p) => { p.hidden = false; }); paint(v); renderInfo(); renderList(); }
+  function toggleIso(p) { const v = S.view; v.isolate = v.isolate === p ? null : p; paint(v); renderInfo(); }
+
+  const hudState = { a: '', b: '' };
+  function updateHud() {
+    if (!F.on) { hudEl.hidden = true; return; }
+    hudEl.hidden = false;
+    const L = levelsOf(S.id), i = L.findIndex((l) => l.id === S.id), M = MACHINES[machineOf(S.id)];
+    const a = '<b>' + esc(L[i].label) + '</b> <span>' + esc(M.name) + ' &middot; ' + esc(L[i].size) + ' &middot; speed ' + (F.speedK).toFixed(2) + '&times;</span>';
+    let hint;
+    if (F.dwellPart) hint = F.auto ? 'Shrinking into <b>' + esc(F.dwellPart.name) + '</b>&hellip; fly away to cancel' : 'Press <b>Enter</b> to shrink into <b>' + esc(F.dwellPart.name) + '</b>';
+    else if (F.out > 0.05) hint = 'Growing back out&hellip;';
+    else hint = 'Fly into a part marked &#9656; to shrink inside it. Fly out, or press <b>B</b>, to grow back.';
+    if (a !== hudState.a) { hudState.a = a; hudEl.querySelector('.in-hud-a').innerHTML = a; }
+    if (hint !== hudState.b) { hudState.b = hint; hudEl.querySelector('.in-hud-b').innerHTML = hint; }
+  }
+  function stepFlight(dt) {
+    const v = S.view, k = F.keys;
+    if (F.tw) {
+      const t = clamp((performance.now() - F.tw.t0) / F.tw.ms, 0, 1), e = ease(t);
+      F.pos.lerpVectors(F.tw.p0, F.tw.p1, e); F.yaw = F.tw.y0 + F.tw.dy * e; F.pitch = F.tw.q0 + (F.tw.q1 - F.tw.q0) * e; F.vel.set(0, 0, 0);
+      if (t >= 1) F.tw = null;
+    } else {
+      const f = fwdVec(), right = V3(Math.cos(F.yaw), 0, -Math.sin(F.yaw));
+      const has = (a, b) => (k.has(a) || (b && k.has(b)) ? 1 : 0);
+      const fw = has('KeyW') - has('KeyS') + F.joy.y, st = has('KeyD') - has('KeyA') + F.joy.x, vt = has('KeyE', 'Space') - has('KeyQ', 'KeyC') + F.vbtn;
+      const want = V3().addScaledVector(f, fw).addScaledVector(right, st).addScaledVector(UPV, vt);
+      if (want.length() > 1) want.normalize();
+      let dmin = Infinity; for (const b of F.solid) { const dd = b.distanceToPoint(F.pos); if (dd < dmin) dmin = dd; }
+      const target = clamp(dmin / (F.base * 0.35), 0.16, 1);
+      F.slow += (target - F.slow) * (1 - Math.exp(-10 * dt));
+      const boost = k.has('ShiftLeft') || k.has('ShiftRight') ? 3 : 1;
+      want.multiplyScalar(F.base * 0.28 * F.speedK * (boost > 1 ? Math.max(F.slow, 0.35) : F.slow) * boost);
+      F.vel.lerp(want, 1 - Math.exp(-9 * dt)); F.pos.addScaledVector(F.vel, dt);
+      const ly = has('ArrowLeft') - has('ArrowRight'), lp = has('ArrowUp') - has('ArrowDown');
+      if (ly || lp) look(-ly * 1.7 * dt, -lp * 1.4 * dt);
+    }
+    const c = v.def.cam, d = F.pos.distanceTo(c.target), lim = c.r * 2.4 * fitK();
+    if (d > lim * 1.7) F.pos.copy(c.target).addScaledVector(F.pos.clone().sub(c.target), lim * 1.7 / d);
+    const idx = levelsOf(S.id).findIndex((l) => l.id === S.id);
+    if (d > lim && idx > 0 && !S.busy) { F.out += dt; if (F.out > 0.9) { F.out = 0; up(); return; } } else F.out = Math.max(0, F.out - dt * 2);
+    F.boxT -= dt;
+    if (F.boxT <= 0) {
+      F.boxT = 0.3; const all = v.parts.filter((p) => !p.hidden).map((p) => ({ p, b: partBox(p) })).filter((x) => !x.b.isEmpty());
+      F.boxes = all.filter((x) => x.p.opens).map((x) => { const z = x.b.getSize(V3()); return { p: x.p, b: x.b.clone().expandByScalar(0.15 * Math.max(z.x, z.y, z.z)) }; });
+      F.solid = all.filter((x) => !x.p.shell && x.b.getSize(V3()).length() < F.base * 0.6).map((x) => x.b);
+    }
+    let best = null, bv = Infinity;
+    for (const x of F.boxes) if (x.b.containsPoint(F.pos)) { const z = x.b.getSize(V3()), vol = z.x * z.y * z.z; if (vol < bv) { bv = vol; best = x.p; } }
+    if (best && best === F.dwellPart) F.dwell += dt; else { F.dwellPart = best; F.dwell = 0; }
+    if (best && F.auto && F.dwell > 0.85 && !S.busy) { F.dwell = 0; open(best); return; }
+    camera.position.copy(F.pos); camera.rotation.set(F.pitch, F.yaw, 0);
+    if (F.lock && (F.hoverT = (F.hoverT || 0) - dt) <= 0) { F.hoverT = 0.1; const r = canvas.getBoundingClientRect(); hover({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }); }
+  }
+
+  document.addEventListener('pointerlockchange', () => {
+    F.lock = document.pointerLockElement === canvas; crossEl.hidden = !F.lock; $('#in-lockbtn').setAttribute('aria-pressed', String(F.lock));
+    if (!F.lock) hover(null);
+  });
+  document.addEventListener('mousemove', (e) => { if (F.on && F.lock) look(e.movementX * 0.0022, e.movementY * 0.0022); });
+  $('#in-lockbtn').addEventListener('click', () => { if (document.pointerLockElement === canvas) document.exitPointerLock(); else if (canvas.requestPointerLock) canvas.requestPointerLock(); canvas.focus({ preventScroll: true }); });
+
+  const tq = new THREE.Quaternion(), tq1 = new THREE.Quaternion(-Math.SQRT1_2, 0, 0, Math.SQRT1_2), tq0 = new THREE.Quaternion(), te = new THREE.Euler(), Z = V3(0, 0, 1);
+  function onTilt(e) {
+    if (!F.on || e.alpha == null) return;
+    const D = Math.PI / 180, o = ((screen.orientation && screen.orientation.angle) || window.orientation || 0) * D;
+    te.set(e.beta * D, e.alpha * D, -e.gamma * D, 'YXZ'); tq.setFromEuler(te); tq.multiply(tq1); tq.multiply(tq0.setFromAxisAngle(Z, -o));
+    if (!F.tref) { F.tref = tq.clone().invert(); F.tbase = { yaw: F.yaw, pitch: F.pitch }; return; }
+    te.setFromQuaternion(F.tref.clone().multiply(tq), 'YXZ');
+    F.yaw = F.tbase.yaw + te.y; F.pitch = clamp(F.tbase.pitch + te.x, -1.5, 1.5);
+  }
+  async function setTilt(on) {
+    const b = $('#in-tiltbtn');
+    if (on && !F.tilt) {
+      try { if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && (await DeviceOrientationEvent.requestPermission()) !== 'granted') return; } catch (e) { return; }
+      window.addEventListener('deviceorientation', onTilt); F.tilt = true; F.tref = null;
+    } else if (!on && F.tilt) { window.removeEventListener('deviceorientation', onTilt); F.tilt = false; F.tref = null; F.tbase = null; }
+    b.setAttribute('aria-pressed', String(F.tilt));
+  }
+  $('#in-tiltbtn').addEventListener('click', () => setTilt(!F.tilt));
+
+  { const joy = $('#in-joy'), knob = joy.firstElementChild; let pid = null, c0 = null; const RADIUS = 46;
+    const set = (e) => { let dx = e.clientX - c0.x, dy = e.clientY - c0.y; const L = Math.hypot(dx, dy); if (L > RADIUS) { dx *= RADIUS / L; dy *= RADIUS / L; } knob.style.transform = 'translate(' + dx + 'px,' + dy + 'px)'; F.joy.x = dx / RADIUS; F.joy.y = -dy / RADIUS; };
+    joy.addEventListener('pointerdown', (e) => { pid = e.pointerId; joy.setPointerCapture(pid); const r = joy.getBoundingClientRect(); c0 = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; set(e); e.preventDefault(); });
+    joy.addEventListener('pointermove', (e) => { if (e.pointerId === pid) set(e); });
+    const off = (e) => { if (e.pointerId !== pid) return; pid = null; F.joy.x = F.joy.y = 0; knob.style.transform = ''; };
+    joy.addEventListener('pointerup', off); joy.addEventListener('pointercancel', off);
+    const vb = (id, val) => { const b = $(id); b.addEventListener('pointerdown', (e) => { F.vbtn = val; b.setPointerCapture(e.pointerId); e.preventDefault(); }); const r = () => { F.vbtn = 0; }; b.addEventListener('pointerup', r); b.addEventListener('pointercancel', r); };
+    vb('#in-vup', 1); vb('#in-vdn', -1); }
+
+  $('#in-flybtn').addEventListener('click', () => (F.on ? leaveFly() : enterFly()));
+  $('#in-autobtn').addEventListener('click', () => { F.auto = !F.auto; $('#in-autobtn').setAttribute('aria-pressed', String(F.auto)); });
+
+  function renderCard() {
+    const v = S.view, p = v && v.sel;
+    if (!F.on || !p) { cardEl.hidden = true; return; }
+    const iso = v.isolate === p;
+    cardEl.innerHTML = '<button type="button" class="in-x" data-cact="close" aria-label="Close details">&times;</button><h3>' + esc(p.name) + (p.opens ? ' <small>opens &#9656;</small>' : '') + '</h3>' +
+      '<p class="in-cmeta">' + esc(p.t || '') + ' &middot; ' + esc(p.s || '') + '</p><p class="in-cd">' + esc(p.d) + '</p>' +
+      '<div class="in-cact">' + (p.opens ? '<button type="button" class="in-btn in-primary" data-cact="open">Shrink into it</button>' : '') +
+      '<button type="button" class="in-btn" data-cact="deep">Full explanation</button>' +
+      '<button type="button" class="in-btn" data-cact="iso" aria-pressed="' + iso + '">' + (iso ? 'Back to the whole structure' : 'See it alone') + '</button></div>';
+    cardEl.hidden = false;
+  }
+  cardEl.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cact]'); if (!b) return; const v = S.view, p = v.sel; if (!p) return;
+    if (b.dataset.cact === 'close') select(null);
+    else if (b.dataset.cact === 'open') open(p);
+    else if (b.dataset.cact === 'iso') toggleIso(p);
+    else if (b.dataset.cact === 'deep') openDeep(p);
+  });
+  function openDeep(p) {
+    if (document.pointerLockElement) document.exitPointerLock();
+    const id = S.id, M = MACHINES[machineOf(id)], L = levelsOf(id), i = L.findIndex((l) => l.id === id), made = MADE[id + '/' + p.id];
+    const lis = Array.from(document.querySelectorAll('.in-src li')), srcs = (SRC_BY_LEVEL[id] || []).map((n) => (lis[n - 1] ? '<li value="' + n + '">' + lis[n - 1].innerHTML + '</li>' : '')).join('');
+    const rel = RELATED[machineOf(id)];
+    const child = p.opens ? [].concat(...Object.values(MACHINES).map((m) => m.levels)).find((l) => l.id === p.opens) : null;
+    $('#in-deep-body').innerHTML =
+      '<p class="in-crumb">' + esc(M.name) + ' &rsaquo; ' + L.slice(0, i + 1).map((l) => esc(l.label)).join(' &rsaquo; ') + ' &rsaquo; <b>' + esc(p.name) + '</b></p>' +
+      '<h2 id="in-deep-h">' + esc(p.name) + '</h2>' +
+      '<dl class="in-meta"><div><dt>Temperature</dt><dd>' + esc(p.t || '') + '</dd></div><div><dt>Size</dt><dd>' + esc(p.s || '') + '</dd></div></dl>' +
+      '<h3>What it is, and why it is needed</h3><p>' + esc(p.d) + '</p>' +
+      (p.f && p.f.length ? '<h3>How it works, and what to know</h3><ul>' + p.f.map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul>' : '') +
+      (made ? '<h3>Made of</h3><p>' + esc(made) + '</p>' : '') +
+      (child ? '<h3>Inside it</h3><p>Opens to the <b>' + esc(child.label) + '</b> level (' + esc(child.size) + ').</p><p><button type="button" class="in-btn in-primary" data-dact="open">Shrink into it</button></p>' : '') +
+      '<h3>Sources</h3><p class="in-fine">These cover this level as a whole. Where a size in the drawing is exaggerated to be visible, the text says so.</p><ol class="in-dsrc">' + srcs + '</ol>' +
+      '<p class="in-fine">' + (rel ? '<a href="' + rel[0] + '">' + esc(rel[1]) + '</a> &middot; ' : '') + '<a href="#in-src-card" data-dact="close">Every source, with the numbers</a>. This is a teaching model, not a drawing of any company&rsquo;s machine.</p>';
+    if (!deepEl.open) deepEl.showModal();
+    deepEl.dataset.part = p.id; $('#in-deep-close').focus();
+  }
+  deepEl.addEventListener('click', (e) => {
+    if (e.target === deepEl) { deepEl.close(); return; }
+    const b = e.target.closest('[data-dact]'); if (!b) return;
+    const p = S.view.byId[deepEl.dataset.part];
+    if (b.dataset.dact === 'open' && p) { deepEl.close(); open(p); }
+    if (b.dataset.dact === 'close') deepEl.close();
+  });
+  $('#in-deep-close').addEventListener('click', () => deepEl.close());
+  deepEl.addEventListener('close', () => { if (F.on) canvas.focus({ preventScroll: true }); });
+
   let raf = 0, last = performance.now(), running = false, onScreen = true;
   function size() {
     const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h;
@@ -1371,12 +1644,15 @@ function boot() {
   new ResizeObserver(size).observe(stage);
   function frame(now) {
     raf = requestAnimationFrame(frame); const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    stepFly(now);
-    if (!ptrs.size && !cam.fly) {
-      cam.az += cam.vaz; cam.el = clamp(cam.el + cam.vel, -1.3, 1.5); cam.vaz *= 0.92; cam.vel *= 0.92;
-      if (!S.interacted && !reduced()) cam.az += dt * 0.09;
+    if (F.on) { stepFlight(dt); updateHud(); }
+    else {
+      stepFly(now);
+      if (!ptrs.size && !cam.fly) {
+        cam.az += cam.vaz; cam.el = clamp(cam.el + cam.vel, -1.3, 1.5); cam.vaz *= 0.92; cam.vel *= 0.92;
+        if (!S.interacted && !reduced()) cam.az += dt * 0.09;
+      }
+      cam.r = clamp(cam.r, cam.rmin, cam.rmax); place();
     }
-    cam.r = clamp(cam.r, cam.rmin, cam.rmax); place();
     if (S.view && !reduced()) S.view.anim.forEach((fn) => fn(now / 1000, dt));
     renderer.render(scene, camera);
   }
@@ -1401,7 +1677,7 @@ function boot() {
     }, true);
     requestAnimationFrame(() => requestAnimationFrame(() => window.parent.postMessage({ sq: 'inside-ready' }, location.origin)));
   }
-  window.__inside = { S, cam, goto, select, open, THREE, scene, camera, renderer, MACHINES, ionEquilibrium };
+  window.__inside = { S, cam, F, pick, goto, select, open, up, enterFly, leaveFly, openDeep, THREE, scene, camera, renderer, MACHINES, ionEquilibrium, SRC_BY_LEVEL, MADE };
   window.addEventListener('hashchange', () => { const h = (location.hash || '').slice(1); if (BUILD[h] && h !== S.id) goto(h); });
 }
 

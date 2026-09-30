@@ -57,7 +57,7 @@
 <meta name="twitter:description" content="Rotate, zoom and open three kinds of quantum computer in 3D, from the fridge or the laser table down to a single qubit.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/inside.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/inside.css?v=4">
+<link rel="stylesheet" href="p/inside.css?v=2">
 
 
 
@@ -71,7 +71,7 @@
 
 <script src="core.js?v=4"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/inside.js?v=4" defer></script>
+<script src="p/inside.js?v=2" defer></script>
 
 
 
@@ -104,14 +104,14 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat navcat-cur" data-cat="learn">
+    <details class="navcat" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel navpanel-wide">
       <div class="navcol">
       <p class="navhead">Quantum computing</p>
       <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
-      <a href="inside.html" class="navmain active">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
       <div class="navrow">
         <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
         <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
@@ -167,10 +167,10 @@
       <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
       </div>
     </details>
-    <details class="navcat" data-cat="reality" data-new="1">
+    <details class="navcat navcat-cur" data-cat="reality" data-new="1">
       <summary>Reality Check</summary>
       <div class="navpanel">
-      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <a href="reality.html" class="navmain active">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
       <p class="navhead">The scorekeeping</p>
       <div class="navrow">
         <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
@@ -204,6 +204,7 @@
       <div class="navpanel">
       <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
       <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
+      <a href="#play-noise" class="navmain">◐ Noise &amp; Decoder<span class="sub">Break this page, then repair it. Nothing is deleted</span></a>
       <p class="navhead">Puzzles with a proven best answer</p>
       <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
       <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
@@ -237,7 +238,16 @@
     <div class="in-tip" id="in-tip" aria-hidden="true"></div>
     <div class="in-ladder" id="in-ladder" role="group" aria-label="Depth: pick a level"></div>
     <div class="in-cap" id="in-cap" aria-hidden="true"></div>
+    <div class="in-hud" id="in-hud" hidden><p class="in-hud-a"></p><p class="in-hud-b"></p><p class="in-hud-k">W A S D move &middot; Q E down/up &middot; Shift faster &middot; drag or arrows look &middot; wheel speed &middot; B back out &middot; F leave</p></div>
+    <div class="in-cross" id="in-cross" hidden aria-hidden="true"></div>
+    <div class="in-joy" id="in-joy" hidden aria-label="Move: drag the stick"><i></i></div>
+    <div class="in-vert" id="in-vert" hidden><button type="button" id="in-vup" aria-label="Fly up">&#9650;</button><button type="button" id="in-vdn" aria-label="Fly down">&#9660;</button></div>
+    <div class="in-card" id="in-card" hidden role="region" aria-label="Selected part"></div>
     <div class="in-bar" role="group" aria-label="View controls">
+      <button type="button" class="in-ic in-fly" id="in-flybtn" aria-pressed="false" title="Shrink down and fly through the model (F)">&#9992; Shrink &amp; fly</button>
+      <button type="button" class="in-ic" id="in-autobtn" aria-pressed="true" title="Shrink into a part automatically when you fly into it" hidden>Auto-shrink</button>
+      <button type="button" class="in-ic" id="in-lockbtn" aria-pressed="false" title="Capture the mouse for free look; Esc releases it" hidden>Mouse look</button>
+      <button type="button" class="in-ic" id="in-tiltbtn" aria-pressed="false" title="Turn your phone to look around" hidden>Tilt to look</button>
       <button type="button" class="in-ic" id="in-up" title="Up one level (Esc)" aria-label="Up one level">&#9652; Up</button>
       <label class="in-slide"><span>Take apart</span><input type="range" id="in-explode" min="0" max="100" value="0" aria-label="Take the parts apart"></label>
       <button type="button" class="in-ic" id="in-xray" aria-pressed="false" title="See through everything but the selected part">See-through</button>
@@ -258,6 +268,7 @@
     <div class="in-info" id="in-info"></div>
   </aside>
 </section>
+<dialog class="in-deep" id="in-deep" aria-labelledby="in-deep-h"><div class="in-deep-in"><button type="button" class="in-x" id="in-deep-close" aria-label="Close the full explanation">&times;</button><div id="in-deep-body"></div></div></dialog>
 <noscript><p class="card">The model needs JavaScript and WebGL. The six levels are: the whole machine, the cryostat, the chip package, the chip, one qubit, and the Josephson junction.</p></noscript>
 
 <div class="card in-photos">
@@ -301,6 +312,7 @@
   <li><strong>Look at a part:</strong> hover for its name, click for what it is and how cold it runs. The list on the right does the same and works without a mouse.</li>
   <li><strong>Take it apart:</strong> the slider pulls the parts of the current level away from each other. <em>See-through</em> fades everything but the selected part. <em>Isolate</em> hides the rest.</li>
   <li><strong>Go inside:</strong> parts marked <em>opens</em> have an inside. Click <em>Open inside</em>, or double-click the part, and you drop one level. Each level is smaller than the last by anything from two times to several thousand. The row along the top jumps between levels.</li>
+  <li><strong>Shrink and fly:</strong> press <em>Shrink &amp; fly</em> (or F) and the camera becomes you. <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> move, <kbd>Q</kbd> and <kbd>E</kbd> go down and up, <kbd>Shift</kbd> is faster, and the wheel is the throttle. Drag (or the arrow keys) to look, or press <em>Mouse look</em> to capture the mouse. On a phone there is a stick, up and down buttons, a two-finger pinch to fly forward, and <em>Tilt to look</em>. Fly into any part marked &#9656; and you shrink into it, to the next level down; fly back out of the scene, or press <kbd>B</kbd>, to grow again. Click any part for its card: <em>See it alone</em> shows just that part, <em>Back to the whole structure</em> puts everything back, and <em>Full explanation</em> gives what it is, why it is needed, how it works, what it is made of and its sources. You can fly through walls: nothing here collides.</li>
   <li><strong>Watch it work:</strong> in the cryostat, teal dots are control pulses on their way down and amber dots are readout replies on their way up. In the ion and atom views, look for the chain rocking, the tweezer that carries an atom into a gap, and an ion’s random bright-or-dark readout.</li>
 </ul>
 </div>
@@ -311,7 +323,7 @@
 <p>Photonic quantum computers are not modelled. <a href="compare.html">How the companies compare</a> covers all four approaches side by side.</p>
 </div>
 
-<div class="card in-src">
+<div class="card in-src" id="in-src-card">
 <h3 aria-level="2">Where the numbers come from</h3>
 <p class="in-srchead">Superconducting</p>
 <ol>
@@ -340,7 +352,7 @@
 </ol>
 <p>The 3D library is <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence), served from this site, pinned and hashed like the other vendored code.</p>
 </div>
-<script type="module" src="inside.js?v=3"></script>
+<script type="module" src="inside.js?v=7"></script>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

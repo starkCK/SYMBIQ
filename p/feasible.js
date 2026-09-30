@@ -1070,6 +1070,10 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
       w.addEventListener('click', function (e) { var b = e.target.closest('.sqp-dot'); if (b) api(b.classList.contains('n') ? 'noise' : 'decoder'); });
       foot.appendChild(w);
     }
+    D.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href$="#play-noise"]');
+      if (a) { e.preventDefault(); openDoor(); }
+    });
     var n = 0, t = 0;
     D.addEventListener('click', function (e) {
       if (!e.target.closest || !e.target.closest('#qz-pill')) return;

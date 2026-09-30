@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Why qubits fail, why you can't just copy them, and how spreading one logical qubit across many physical ones fixes it, with an interactive surface code you can break yourself.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/qec.css?v=43">
+<link rel="stylesheet" href="p/qec.css?v=44">
 
 
 
@@ -108,7 +108,7 @@
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
 <script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
 <script src="save.js"></script>
-<script id="games-src" type="text/symbiq-lazy" src="games.js?v=48"></script>
+<script id="games-src" type="text/symbiq-lazy" src="games.js?v=49"></script>
 <script id="sq3d-src" type="text/symbiq-lazy" src="sq3d.js?v=2"></script>
 <script type="application/ld+json">
 {
@@ -325,12 +325,14 @@
   <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">What is quantum error correction?</span></div>
 
 
 
 
 <h1>What is quantum error correction?</h1>
 <p class="tagline">The reason quantum computers don't work yet, the reason they eventually will, and the exact door AI walked in through.</p>
+<p class="ability"><b>You&#39;ll be able to</b> explain how a surface code finds an error without reading the data, and why a threshold matters.</p>
 
 <div class="card">
 <h3 aria-level="2">The answer in four lines</h3>
@@ -422,7 +424,7 @@
 <p>Ten rounds on a chip with a defect: somewhere in this lattice two qubits are coupled, and when one flips its partner tends to flip with it. <strong>Cross-talk</strong> is a real failure mode, and one of the exact things that breaks textbook decoders. Your opponent is <strong>minimum-weight matching</strong>, the hand-written decoder the field has run on since 2001. It is very good, and it is running the textbook noise model it was handed: every qubit fails on its own, every failure equally likely. Nobody told it about this chip. You <em>can</em> hand-fit a correlation back into a matching decoder (that is what “correlated matching” is), but somebody has to know what to fit.</p>
 <p>You can. After every round you see which qubits really flipped, the same kind of device data AlphaQubit was fine-tuned on. Find the defect and you will beat it. That is the whole thesis of this site, played out on a nine-qubit grid.</p>
 
-<a class="orjump" href="feasible.html#t07">
+<a class="orjump" href="region-07.html">
   <span>◆ <b>This is operations research, running inside a quantum computer.</b> &quot;Minimum-weight matching&quot; is Edmonds&#39; blossom algorithm from 1965, a graph-optimisation result that predates the field it now decodes for, from the paper that gave computer science its definition of an efficient algorithm.<span class="arr"> Topic 07: Matching and assignment ▸</span></span>
 </a>
 
@@ -484,6 +486,8 @@
   <div class="card"><h3>🏁 The Race</h3><p>Who's furthest below threshold. The table is still empty, and the page says why.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 
+<section class="enddoors" data-tier-keep aria-label="Where to go next"><a href="logical-qubit.html"><span class="eyebrow">Next in this track</span><b>What is a logical qubit?</b></a><a href="qec.html#duel"><span class="eyebrow">Prove it</span><b>The Decoder Duel: you are the AI</b></a><a href="race.html#threshold"><span class="eyebrow">Judge a claim</span><b>Which labs are below threshold?</b></a></section>
+<aside class="aicard" data-tier-keep aria-label="Sources and AI use"><p class="aicard-h">Sources and AI</p><p>This page links <b>16</b> external sources. <b>AI drafted</b> this page. <b>Scripts</b> recompute its numbers and check its citations before every publish. <b>Chinmoy</b> approves what goes live. <a href="how-we-check.html">What each of those catches and misses</a>.</p></aside>
 <footer>Error correction: the door AI walked in through.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 
 

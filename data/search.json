@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "generated": "2026-09-30",
- "pages": 38,
- "count": 573,
+ "generated": "2026-10-01",
+ "pages": 82,
+ "count": 609,
  "records": [
   {
    "k": "s",
@@ -73,7 +73,7 @@
    "p": "ai.html",
    "t": "Will quantum computers make AI more powerful?",
    "h": "Will quantum computers make AI more powerful?",
-   "x": "This is the loop in the name. Half of it ships today; the other half is real, slower, and wildly oversold. Here's how to tell them apart.",
+   "x": "This is the loop in the name. Half of it ships today; the other half is real, slower, and wildly oversold. Here's how to tell them apart. You'll be able to rank the four ways quantum might help AI, and say which survive the data-loading tol",
    "w": 3
   },
   {
@@ -153,7 +153,7 @@
    "p": "ai.html",
    "t": "Will quantum computers make AI more powerful?",
    "h": "🏁 The Race",
-   "x": "Who's building the hardware both halves of the loop depend on.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Who's building the hardware both halves of the loop depend on.Scoreboard → Next in this trackHow do the companies compare?Prove itThe Calibration: tune the agent, not the qubitJudge a claimDid they do what they said? The Ledger Sources and ",
    "w": 1
   },
   {
@@ -161,7 +161,7 @@
    "p": "analog.html",
    "t": "Can a classical machine out-optimise a quantum one?",
    "h": "Can a classical machine out-optimise a quantum one?",
-   "x": "Every \"quantum will revolutionise optimisation\" headline has a classical rival built on the same underlying physics: coupled circuits settling into the answer, not calculating it. Meet the machine it has to beat.",
+   "x": "Every \"quantum will revolutionise optimisation\" headline has a classical rival built on the same underlying physics: coupled circuits settling into the answer, not calculating it. Meet the machine it has to beat. You'll be able to say when ",
    "w": 3
   },
   {
@@ -265,7 +265,7 @@
    "p": "analog.html",
    "t": "Can a classical machine out-optimise a quantum one?",
    "h": "🌋 Prove it yourself",
-   "x": "The same \"does it find the optimum\" question, played as a game against a real annealing schedule.The Annealing Volcano →",
+   "x": "The same \"does it find the optimum\" question, played as a game against a real annealing schedule.The Annealing Volcano → Next in this trackThe Feasible Region: operations researchProve itThe Bench: three methods race on one graphJudge a cla",
    "w": 1
   },
   {
@@ -273,7 +273,7 @@
    "p": "applications.html",
    "t": "Where might a quantum computer actually earn its keep?",
    "h": "Where might a quantum computer actually earn its keep?",
-   "x": "Chemistry and materials are the oldest reason to build one, and the place where the honest answer today is “not shown yet”. Here is what would have to be true, and who is checking.",
+   "x": "Chemistry and materials are the oldest reason to build one, and the place where the honest answer today is “not shown yet”. Here is what would have to be true, and who is checking. You'll be able to say which proposed uses of a quantum comp",
    "w": 3
   },
   {
@@ -369,7 +369,7 @@
    "p": "applications.html",
    "t": "Where might a quantum computer actually earn its keep?",
    "h": "◆ Optimisation",
-   "x": "The other big promise: “quantum will transform scheduling”, checked on one named instance.The Verdict → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "The other big promise: “quantum will transform scheduling”, checked on one named instance.The Verdict → Next in this trackDo quantum sensors and networks matter sooner?Prove itGrover's Escape: when does a speedup help?Judge a claimDid they ",
    "w": 1
   },
   {
@@ -569,7 +569,7 @@
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
    "h": "Can quantum computers break Bitcoin?",
-   "x": "Short answer: not today, and not with anything on a public roadmap. Long answer: the interesting one.",
+   "x": "Short answer: not today, and not with anything on a public roadmap. Long answer: the interesting one. You'll be able to estimate how many qubits, and how long, it takes to break a Bitcoin key on a fast or a slow machine.",
    "w": 3
   },
   {
@@ -657,7 +657,7 @@
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
    "h": "🏁 The Race",
-   "x": "Who's closest to machines that matter. The table is still empty, and the page says why.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Who's closest to machines that matter. The table is still empty, and the page says why.Scoreboard → Next in this trackPost-quantum, on the wire: seven live toolsProve itThe Solver's Path: the main questJudge a claimDid they do what they sai",
    "w": 1
   },
   {
@@ -705,7 +705,7 @@
    "p": "circuits.html",
    "t": "What is a qubit actually made of?",
    "h": "What is a qubit actually made of?",
-   "x": "Strip away the Bloch sphere and the bra-kets: physically, a superconducting qubit is a capacitor wired across one nonlinear component. Here is what that component does, and why everything hinges on it.",
+   "x": "Strip away the Bloch sphere and the bra-kets: physically, a superconducting qubit is a capacitor wired across one nonlinear component. Here is what that component does, and why everything hinges on it. You'll be able to name the parts of a ",
    "w": 3
   },
   {
@@ -809,7 +809,7 @@
    "p": "circuits.html",
    "t": "What is a qubit actually made of?",
    "h": "🏁 The Race",
-   "x": "Who is building this hardware, and how their qubit counts compare.How the companies compare → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Who is building this hardware, and how their qubit counts compare.How the companies compare → Next in this trackIs quantum computing just quantum mechanics?Prove itThe Calibration: tune the agent, not the qubitJudge a claimThe threshold num",
    "w": 1
   },
   {
@@ -817,7 +817,7 @@
    "p": "compare.html",
    "t": "Quantum computing companies compared",
    "h": "Quantum computing companies compared",
-   "x": "A field guide to reading qubit leaderboards without being fooled by them. Four kinds of physics, four different bets, one number you should ignore.",
+   "x": "A field guide to reading qubit leaderboards without being fooled by them. Four kinds of physics, four different bets, one number you should ignore. You'll be able to compare the four qubit technologies on speed, error rate and scale, and sa",
    "w": 3
   },
   {
@@ -1201,16 +1201,8 @@
    "p": "feasible.html#course",
    "t": "The Feasible Region",
    "h": "The courseTwenty-four topics, each taught four ways",
-   "x": "",
+   "x": "Your progress: 0 of 24 understood Continue where you left off 01The feasible regionWhat does \"optimising\" actually mean? 02Linear programming and the vertex theoremWhy can you skip infinitely many points? 03Duality and shadow pricesWhere sh",
    "w": 2
-  },
-  {
-   "k": "s",
-   "p": "feasible.html",
-   "t": "The Feasible Region",
-   "h": "How each topic is built",
-   "x": "Open one and you get the same four layers in the same order, every time: a picture you can read before you know any notation · the intuition in plain language · the mathematics underneath it · and a real problem it is actually used on. Noth",
-   "w": 1
   },
   {
    "k": "s",
@@ -1417,16 +1409,8 @@
    "p": "formalism.html#course",
    "t": "The Machinery",
    "h": "The Formal FrameworkFour topics, each taught four ways",
-   "x": "",
+   "x": "Your progress: 0 of 20 understood Continue where you left off 01The postulates of quantum mechanics, for computingWhat does it mean for a system to \"be\" in a quantum state? 02Density matrices & mixed statesHow do you describe half of an ent",
    "w": 2
-  },
-  {
-   "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "How each topic is built",
-   "x": "Same shape as The Feasible Region: a picture before any notation · the intuition in plain language · the mathematics, worked or proved · and where it actually matters elsewhere on this site. Nothing is locked. The postulateswhat a quantum s",
-   "w": 1
   },
   {
    "k": "s",
@@ -1438,27 +1422,11 @@
   },
   {
    "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "The three protocols",
-   "x": "Quantum teleportationmoving a state, no channel Superdense codingone qubit, two classical bits Schmidt decompositiona number for how entangled 05 Quantum teleportation How do you move an unknown qubit's state to someone else, with no quantu",
-   "w": 1
-  },
-  {
-   "k": "s",
    "p": "formalism.html#algorithms",
    "t": "The Machinery",
    "h": "Building-block algorithmsThree topics, the first speedups you can actually prove",
    "x": "These three are historically where quantum computing stopped being only physics. Each solves a promise problem: the input is guaranteed to have one of a small number of structures, and the algorithm's job is to find out which, and each does",
    "w": 2
-  },
-  {
-   "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "The three algorithms",
-   "x": "Deutsch's algorithmone query beats two Deutsch-Jozsaone query beats exponentially many Simon's algorithmthe algorithm that pointed at Shor's 08 Deutsch's algorithm Is a coin-flip function constant or does it actually depend on the input: in",
-   "w": 1
   },
   {
    "k": "s",
@@ -1470,27 +1438,11 @@
   },
   {
    "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "The chain, in order",
-   "x": "The quantum Fourier transformthe same DFT, on amplitudes Phase estimationreading out an eigenvalue, bit by bit Period finding & continued fractionsa decimal, back to a period 11 The quantum Fourier transform What does \"Fourier transform\" ev",
-   "w": 1
-  },
-  {
-   "k": "s",
    "p": "formalism.html#optimization",
    "t": "The Machinery",
    "h": "Quantum algorithms for optimization & simulationTwo topics: the near-term half of the zoo, with no speedup proof to its name",
    "x": "Every algorithm this page has built so far is proven: Deutsch's, Simon's, Shor's period-finding all come with a fixed circuit and a guaranteed advantage over any classical algorithm attacking the identical problem. This section is the hones",
    "w": 2
-  },
-  {
-   "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "The two topics",
-   "x": "QAOA & VQEthe same loop, two different jobs Quantum simulation & chemistryTrotter's trick, aimed at a molecule 16 QAOA & VQE Two algorithms, one for graphs and one for molecules: what's actually shared, and what's genuinely different? + See",
-   "w": 1
   },
   {
    "k": "s",
@@ -1502,27 +1454,11 @@
   },
   {
    "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "The two topics",
-   "x": "Shannon entropythe classical bit-count, first Von Neumann entropy & the Holevo boundthe quantum version, and its ceiling 14 Shannon entropy Before asking how much quantum information is in a state, what does \"how much information\" even mean",
-   "w": 1
-  },
-  {
-   "k": "s",
    "p": "formalism.html#complexity",
    "t": "The Machinery",
    "h": "Complexity theoryThree topics: how hard the general versions of this page's own problems actually are",
    "x": "Topics 16–17 built VQE: a loop that always reports an energy honestly no lower than the truth, because the variational principle proves it. What that loop does not come with is a promise that it ever finds the true ground energy in reasonab",
    "w": 2
-  },
-  {
-   "k": "s",
-   "p": "formalism.html",
-   "t": "The Machinery",
-   "h": "The three topics",
-   "x": "QMA & the local Hamiltonian problemthe quantum analogue of NP QMA-completenessthe quantum Cook–Levin theorem Adiabatic universality & the quantum PCP conjectureone proven, one still open 18 QMA & the local Hamiltonian problem NP has a check",
-   "w": 1
   },
   {
    "k": "s",
@@ -2217,7 +2153,7 @@
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
    "h": "What is a logical qubit?",
-   "x": "The unit the whole field switched to counting while few people were watching, and the reason \"1,000 qubits!\" is a number you should learn to distrust.",
+   "x": "The unit the whole field switched to counting while few people were watching, and the reason \"1,000 qubits!\" is a number you should learn to distrust. You'll be able to work out how many physical qubits one logical qubit costs at a given er",
    "w": 3
   },
   {
@@ -2297,15 +2233,175 @@
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
    "h": "🏁 The Race",
-   "x": "Who's fielding the most logical qubits: the scoreboard that counts the number that matters.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Who's fielding the most logical qubits: the scoreboard that counts the number that matters.Scoreboard → Next in this trackWill quantum boost AI?Prove itThe Decoder Duel: you are the AIJudge a claimDid they do what they said? The Ledger Sour",
    "w": 1
+  },
+  {
+   "k": "s",
+   "p": "machinery-01.html",
+   "t": "The postulates of quantum mechanics, for computing",
+   "h": "The postulates of quantum mechanics, for computing",
+   "x": "What does it mean for a system to \"be\" in a quantum state? 0102030405060708091011121316171415181920 1 See2 Intuition3 Maths4 Where it runs See it A qubit's state is a vector, not a switch. |0⟩ and |1⟩ are two perpendicular directions; the a",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-02.html",
+   "t": "Density matrices & mixed states",
+   "h": "Density matrices & mixed states",
+   "x": "How do you describe half of an entangled pair, honestly? 0102030405060708091011121316171415181920 1 See2 Intuition3 Maths4 Where it runs See it A pure state is one arrow. A mixed state is genuine not-knowing which arrow. Not superposition: ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-03.html",
+   "t": "Measurement, properly",
+   "h": "Measurement, properly",
+   "x": "Projective, or POVM, and why the difference is the whole security argument behind QKD 0102030405060708091011121316171415181920 1 See2 Intuition3 Maths4 Where it runs See it Two non-orthogonal states are, provably, not perfectly distinguisha",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-04.html",
+   "t": "The no-cloning theorem",
+   "h": "The no-cloning theorem",
+   "x": "Why can't you just copy a qubit and check the copy later? 0102030405060708091011121316171415181920 1 See2 Intuition3 Maths4 Where it runs See it Not \"hasn't been built.\" Provably impossible. The proof takes four lines and doesn't depend on ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-05.html",
+   "t": "Quantum teleportation",
+   "h": "Quantum teleportation",
+   "x": "How do you move an unknown qubit's state to someone else, with no quantum channel between you? 0102030405060708091011121316171415181920 About this section: Protocols Everything above described what a quantum state is. These three topics are",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-06.html",
+   "t": "Superdense coding",
+   "h": "Superdense coding",
+   "x": "How does sending one qubit deliver two classical bits? 0102030405060708091011121316171415181920 About this section: Protocols Everything above described what a quantum state is. These three topics are the first payoff: concrete things two s",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-07.html",
+   "t": "Schmidt decomposition",
+   "h": "Schmidt decomposition",
+   "x": "Given some two-part state, how entangled is it, as a number, not a vibe? 0102030405060708091011121316171415181920 About this section: Protocols Everything above described what a quantum state is. These three topics are the first payoff: con",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-08.html",
+   "t": "Deutsch's algorithm",
+   "h": "Deutsch's algorithm",
+   "x": "Is a coin-flip function constant or does it actually depend on the input: in one look, not two? 0102030405060708091011121316171415181920 About this section: Building-block algorithms These three are historically where quantum computing stop",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-09.html",
+   "t": "The Deutsch-Jozsa algorithm",
+   "h": "The Deutsch-Jozsa algorithm",
+   "x": "Same question, but the input is n bits wide: does one query still beat the classical worst case? 0102030405060708091011121316171415181920 About this section: Building-block algorithms These three are historically where quantum computing sto",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-10.html",
+   "t": "Simon's algorithm",
+   "h": "Simon's algorithm",
+   "x": "Given a function that secretly repeats itself, how fast can you find the repeat? 0102030405060708091011121316171415181920 About this section: Building-block algorithms These three are historically where quantum computing stopped being only ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-11.html",
+   "t": "The quantum Fourier transform",
+   "h": "The quantum Fourier transform",
+   "x": "What does \"Fourier transform\" even mean for a superposition of qubits? 0102030405060708091011121316171415181920 About this section: The Fourier transform Simon's algorithm (topic 10) found a hidden XOR-period using n Hadamard gates and ordi",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-12.html",
+   "t": "Quantum phase estimation",
+   "h": "Quantum phase estimation",
+   "x": "Given a unitary and one of its eigenstates, how do you read out the eigenvalue? 0102030405060708091011121316171415181920 About this section: The Fourier transform Simon's algorithm (topic 10) found a hidden XOR-period using n Hadamard gates",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-13.html",
+   "t": "Period finding & continued fractions",
+   "h": "Period finding & continued fractions",
+   "x": "Phase estimation hands you a decimal. How does that become the period Shor's algorithm needs? 0102030405060708091011121316171415181920 About this section: The Fourier transform Simon's algorithm (topic 10) found a hidden XOR-period using n ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-14.html",
+   "t": "Shannon entropy",
+   "h": "Shannon entropy",
+   "x": "Before asking how much quantum information is in a state, what does \"how much information\" even mean? 0102030405060708091011121316171415181920 About this section: Information theory Every topic so far has talked about qubits, measurement, a",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-15.html",
+   "t": "Von Neumann entropy & the Holevo bound",
+   "h": "Von Neumann entropy & the Holevo bound",
+   "x": "Can a perfectly certain whole have a genuinely uncertain half? 0102030405060708091011121316171415181920 About this section: Information theory Every topic so far has talked about qubits, measurement, and algorithms without ever asking the m",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-16.html",
+   "t": "QAOA & VQE",
+   "h": "QAOA & VQE",
+   "x": "Two algorithms, one for graphs and one for molecules: what's actually shared, and what's genuinely different? 0102030405060708091011121316171415181920 About this section: Quantum algorithms for optimization & simulation Every algorithm this",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-17.html",
+   "t": "Quantum simulation & chemistry",
+   "h": "Quantum simulation & chemistry",
+   "x": "A quantum computer can't just \"plug in\" a molecule's Hamiltonian, so what does simulating one actually involve, mechanically? 0102030405060708091011121316171415181920 About this section: Quantum algorithms for optimization & simulation Ever",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-18.html",
+   "t": "QMA & the local Hamiltonian problem",
+   "h": "QMA & the local Hamiltonian problem",
+   "x": "NP has a checkable-proof definition. What's the quantum version, and what problem is it actually about? 0102030405060708091011121316171415181920 About this section: Complexity theory Topics 16–17 built VQE: a loop that always reports an ene",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-19.html",
+   "t": "QMA-completeness",
+   "h": "QMA-completeness",
+   "x": "Is the local Hamiltonian problem actually as hard as anything in QMA, and can you watch the reduction work on a circuit small enough to check by hand? 0102030405060708091011121316171415181920 About this section: Complexity theory Topics 16–",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "machinery-20.html",
+   "t": "Adiabatic universality & the quantum PCP conjecture",
+   "h": "Adiabatic universality & the quantum PCP conjecture",
+   "x": "Can a physical system that just relaxes into its ground state be as powerful as a full quantum circuit, and how far can \"squeeze a decision into an energy gap\" be pushed before nobody knows the answer? 01020304050607080910111213161714151819",
+   "w": 3
   },
   {
    "k": "s",
    "p": "phase-kickback.html",
    "t": "Why do Grover's and Shor's algorithms actually work?",
    "h": "Why do Grover's and Shor's algorithms actually work?",
-   "x": "One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name, phase kickback, and this site never said it out loud until now.",
+   "x": "One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name, phase kickback, and this site never said it out loud until now. You'll be able to say why one mechanism, pha",
    "w": 3
   },
   {
@@ -2393,7 +2489,7 @@
    "p": "phase-kickback.html",
    "t": "Why do Grover's and Shor's algorithms actually work?",
    "h": "₿ Where this ends up",
-   "x": "The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.Can quantum break Bitcoin? → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.Can quantum break Bitcoin? → Next in this trackThe Machinery: Deutsch's algorithmProve itCircuit Golf: reach the target in the fewes",
    "w": 1
   },
   {
@@ -2497,7 +2593,7 @@
    "p": "play.html",
    "t": "The Arcade",
    "h": "Coming next",
-   "x": "",
+   "x": "About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 2
   },
   {
@@ -2793,7 +2889,7 @@
    "p": "qec.html",
    "t": "What is quantum error correction?",
    "h": "What is quantum error correction?",
-   "x": "The reason quantum computers don't work yet, the reason they eventually will, and the exact door AI walked in through.",
+   "x": "The reason quantum computers don't work yet, the reason they eventually will, and the exact door AI walked in through. You'll be able to explain how a surface code finds an error without reading the data, and why a threshold matters.",
    "w": 3
   },
   {
@@ -2929,7 +3025,7 @@
    "p": "qec.html",
    "t": "What is quantum error correction?",
    "h": "🏁 The Race",
-   "x": "Who's furthest below threshold. The table is still empty, and the page says why.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Who's furthest below threshold. The table is still empty, and the page says why.Scoreboard → Next in this trackWhat is a logical qubit?Prove itThe Decoder Duel: you are the AIJudge a claimWhich labs are below threshold? Sources and AIThis p",
    "w": 1
   },
   {
@@ -2937,7 +3033,7 @@
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
    "h": "Is quantum computing justquantum mechanics?",
-   "x": "Not the same thing, but not a different theory either. The word means exactly what it means in physics, down to the letter.",
+   "x": "Not the same thing, but not a different theory either. The word means exactly what it means in physics, down to the letter. You'll be able to say what separates quantum computing from quantum mechanics, and track a qubit on the Bloch sphere",
    "w": 3
   },
   {
@@ -3065,7 +3161,7 @@
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
    "h": "🔴 The math floor",
-   "x": "Formalism, derivations, citations.Read → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Formalism, derivations, citations.Read → Next in this trackWhat is quantum error correction?Prove itThe CHSH game: beat the best classical strategyJudge a claimWas that real physics? The swipe deck Sources and AIThis page links 10 external ",
    "w": 1
   },
   {
@@ -3182,6 +3278,198 @@
   },
   {
    "k": "s",
+   "p": "region-01.html",
+   "t": "The feasible region",
+   "h": "The feasible region",
+   "x": "What does \"optimising\" actually mean? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it Make two products. Each unit of A takes 6 machine-hours, each unit of B takes 4, and you have 24. A takes 1",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-02.html",
+   "t": "Linear programming and the vertex theorem",
+   "h": "Linear programming and the vertex theorem",
+   "x": "Why can you skip infinitely many points? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it The objective is a direction, not a place. Contours of \"profit = constant\" are parallel lines; optimisin",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-03.html",
+   "t": "Duality and shadow prices",
+   "h": "Duality and shadow prices",
+   "x": "Where should the next rupee go? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it Every number here was solved exactly. One more machine-hour really is worth 0.75, for 2.25 more hours. Then the s",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-04.html",
+   "t": "Integer programming",
+   "h": "Integer programming",
+   "x": "Why is \"whole numbers only\" so expensive? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it The single most common mistake made by people who have just learned linear programming. The continuous ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-05.html",
+   "t": "Branch and bound",
+   "h": "Branch and bound",
+   "x": "How do you search a space too big to search? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it This is what a solver actually does, and it is not what people imagine. It does not check every opti",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-06.html",
+   "t": "Network flow and min-cut",
+   "h": "Network flow and min-cut",
+   "x": "How much can you push through a network? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it Two questions that sound unrelated turn out to be the same question. \"What is the most I can push from s",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-07.html",
+   "t": "Matching and assignment",
+   "h": "Matching and assignment",
+   "x": "How do you pair things up without being greedy? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it Local greed fails, and it fails by exactly one. Costs: worker 1 can do X/Y/Z for 9/2/7, worker 2 ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-08.html",
+   "t": "Shortest paths and dynamic programming",
+   "h": "Shortest paths and dynamic programming",
+   "x": "Why is the direct road not the fastest route? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it Every distance here was computed, not drawn to look right. The cheapest way from S to B is not the ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-09.html",
+   "t": "Queueing theory",
+   "h": "Queueing theory",
+   "x": "Why do systems collapse before they are full? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it The most expensive graph in operations management, and the least intuitive. Every point is the exac",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-10.html",
+   "t": "Metaheuristics",
+   "h": "Metaheuristics",
+   "x": "What do you do when proof is out of reach? 010203040506070809101112131415161718192021222324 1 See2 Intuition3 Maths4 Where it runs See it This is why simulated annealing exists. A search that only accepts improvements is a ball rolling down",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-11.html",
+   "t": "Nash equilibrium",
+   "h": "Nash equilibrium",
+   "x": "What happens when your best move depends on theirs? 010203040506070809101112131415161718192021222324 About this section: The flagship Every topic above assumes one decision-maker facing fixed limits: machine-hours, a network, a queue. Game ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-12.html",
+   "t": "Zero-sum games and minimax",
+   "h": "Zero-sum games and minimax",
+   "x": "Why does bluffing have to be random to work? 010203040506070809101112131415161718192021222324 About this section: The flagship Every topic above assumes one decision-maker facing fixed limits: machine-hours, a network, a queue. Game theory ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-13.html",
+   "t": "Cooperative games and the Shapley value",
+   "h": "Cooperative games and the Shapley value",
+   "x": "If a team earns money together, who earned how much of it? 010203040506070809101112131415161718192021222324 About this section: The flagship Every topic above assumes one decision-maker facing fixed limits: machine-hours, a network, a queue",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-14.html",
+   "t": "Mechanism design and auctions",
+   "h": "Mechanism design and auctions",
+   "x": "Can you design the rules so honesty is the winning move? 010203040506070809101112131415161718192021222324 About this section: The flagship Every topic above assumes one decision-maker facing fixed limits: machine-hours, a network, a queue. ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-15.html",
+   "t": "Evolutionary game theory",
+   "h": "Evolutionary game theory",
+   "x": "What happens when strategies reproduce instead of reasoning? 010203040506070809101112131415161718192021222324 About this section: The flagship Every topic above assumes one decision-maker facing fixed limits: machine-hours, a network, a que",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-16.html",
+   "t": "The simplex algorithm",
+   "h": "The simplex algorithm",
+   "x": "How do you actually find the best corner? 010203040506070809101112131415161718192021222324 About this section: Added after the flagship These two belong earlier in the reading order: right after topic 02, where the vertex theorem promises a",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-17.html",
+   "t": "Quadratic & semidefinite programming",
+   "h": "Quadratic & semidefinite programming",
+   "x": "What does a quantum computer actually have to beat? 010203040506070809101112131415161718192021222324 About this section: Added after the flagship These two belong earlier in the reading order: right after topic 02, where the vertex theorem ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-18.html",
+   "t": "The transportation problem",
+   "h": "The transportation problem",
+   "x": "What happens when a flow network has no interior? 010203040506070809101112131415161718192021222324 About this section: Module B, completed Topic 18 is not a new idea so much as a return trip: it takes topic 06's network flow and strips out ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-19.html",
+   "t": "Constraint satisfaction",
+   "h": "Constraint satisfaction",
+   "x": "Does a solution exist at all? 010203040506070809101112131415161718192021222324 About this section: Module B, completed Topic 18 is not a new idea so much as a return trip: it takes topic 06's network flow and strips out everything except tw",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-20.html",
+   "t": "Markov decision processes & reinforcement learning",
+   "h": "Markov decision processes & reinforcement learning",
+   "x": "What if the edge you choose isn't the edge you get? 010203040506070809101112131415161718192021222324 About this section: Module C, completed Topic 08 solved the shortest path through a network under a quiet assumption: choosing an edge mean",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-21.html",
+   "t": "Greedy algorithms & approximation guarantees",
+   "h": "Greedy algorithms & approximation guarantees",
+   "x": "When is \"take the best-looking option now\" provably good enough? 010203040506070809101112131415161718192021222324 About this section: Module D, completed Topic 10 introduced metaheuristics as what you reach for once exact methods die. Topic",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-22.html",
+   "t": "Stochastic & robust optimization",
+   "h": "Stochastic & robust optimization",
+   "x": "What do you optimise when the data isn't known yet? 010203040506070809101112131415161718192021222324 About this section: Module E, completed Every topic so far has handed you the numbers before asking for a decision: the costs, the demands,",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-23.html",
+   "t": "Multi-objective optimization",
+   "h": "Multi-objective optimization",
+   "x": "What is \"best\" when you can't improve one goal without hurting another? 010203040506070809101112131415161718192021222324 About this section: Module F, completed Topic 19 stripped the objective out entirely. Topic 23 does the opposite. It ha",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "region-24.html",
+   "t": "Inventory & supply chain",
+   "h": "Inventory & supply chain",
+   "x": "How much to order, and when: the oldest formula in the field? 010203040506070809101112131415161718192021222324 About this section: Module F, completed Topic 19 stripped the objective out entirely. Topic 23 does the opposite. It hands you se",
+   "w": 3
+  },
+  {
+   "k": "s",
    "p": "secure.html",
    "t": "Secure",
    "h": "Secure",
@@ -3209,7 +3497,7 @@
    "p": "sensing.html",
    "t": "Do quantum sensors and networks matter sooner than quantum computers?",
    "h": "Do quantum sensors and networks matter sooner than quantum computers?",
-   "x": "Atomic clocks, gravitational-wave detectors and encrypted links already use quantum effects. The computer gets the headlines; these are the ones that ship.",
+   "x": "Atomic clocks, gravitational-wave detectors and encrypted links already use quantum effects. The computer gets the headlines; these are the ones that ship. You'll be able to explain why quantum sensors already ship, and what quantum key dis",
    "w": 3
   },
   {
@@ -3297,7 +3585,7 @@
    "p": "sensing.html",
    "t": "Do quantum sensors and networks matter sooner than quantum computers?",
    "h": "🔒 QKD versus the fix",
-   "x": "Why key distribution is not what replaces the encryption that quantum computers threaten.Isn't QKD the fix? → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
+   "x": "Why key distribution is not what replaces the encryption that quantum computers threaten.Isn't QKD the fix? → Next in this trackIsn't QKD the actual fix?Prove itThe CHSH game: beat the best classical strategyJudge a claimWas that real physi",
    "w": 1
   },
   {

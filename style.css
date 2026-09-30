@@ -1640,7 +1640,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 
 .tbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   margin: 26px 0 24px; padding: 12px 14px; border: 1px solid var(--border);
-  border-radius: 14px; background: var(--panel); position: sticky; top: 60px; z-index: 20;
+  border-radius: 14px; background: var(--panel); position: sticky; top: calc(var(--nav-h, 82px) + 4px); z-index: 20;
   backdrop-filter: blur(9px); }
 .tbar-lab { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
   color: var(--muted); font-weight: 600; }

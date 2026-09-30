@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Cooperative games and the Shapley value · Learn · SymbiQ</title>
+<meta name="description" content="If a team earns money together, who earned how much of it?. The Feasible Region, topic 13 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-13.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-13.html">
+<meta property="og:title" content="Cooperative games and the Shapley value · SymbiQ">
+<meta property="og:description" content="If a team earns money together, who earned how much of it?. The Feasible Region, topic 13 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cooperative games and the Shapley value · SymbiQ">
+<meta name="twitter:description" content="If a team earns money together, who earned how much of it?. The Feasible Region, topic 13 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/region-13.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/region-13.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Cooperative games and the Shapley value</span></div>
+
+<div class="course" id="t13" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t13" data-id="t13">
+<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 13 of 24 &middot; The flagship</div>
+<h1>Cooperative games and the Shapley value</h1>
+<p class="tagline">If a team earns money together, who earned how much of it?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" aria-current="page" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<details class="cp-section"><summary>About this section: The flagship</summary>
+<p>Every topic above assumes one decision-maker facing fixed limits: machine-hours, a network, a queue. <strong>Game theory drops that assumption.</strong> The moment another party is also choosing, and choosing in response to you, the ground shifts: your best plan depends on theirs, which depends on yours. There is no longer a single answer to compute. There is an <em>equilibrium</em> to find, and sometimes to prove doesn&#39;t exist in the form you hoped.</p>
+<p>It gets the most room of any module here because it underwrites more of daily life than any other single idea in this course: markets clear through auctions, machine-learning predictions get explained through a 70-year-old fairness theorem, security proofs are written as games between an adversary and a defender, and populations (of animals, of cancer cells, of bidders) settle into stable mixes of strategy rather than one &quot;best&quot; move. Five topics, the same four-layer treatment as everything above.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Three players. Player one holds a left glove, players two and three each hold a right glove. A matched pair is worth one dollar; any single glove is worth nothing. Only one pair can ever be sold, so the coalition of all three is worth exactly one dollar, the same as either two-player pair that includes player one.">
+ <circle cx="120" cy="70"  r="30" fill="var(--panel)" stroke="var(--or)" stroke-width="2.5"/>
+ <text class="lbl-b" x="120" y="65" text-anchor="middle">1</text>
+ <text class="lbl-s" x="120" y="82" text-anchor="middle">🧤L</text>
+ <circle cx="280" cy="70"  r="30" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+ <text class="lbl-b" x="280" y="65" text-anchor="middle">2</text>
+ <text class="lbl-s" x="280" y="82" text-anchor="middle">🧤R</text>
+ <circle cx="440" cy="70"  r="30" fill="var(--panel)" stroke="var(--teal)" stroke-width="2.5"/>
+ <text class="lbl-b" x="440" y="65" text-anchor="middle">3</text>
+ <text class="lbl-s" x="440" y="82" text-anchor="middle">🧤R</text>
+ <g class="lbl-s" text-anchor="middle">
+ <text x="120" y="150">v(1) = 0</text>
+ <text x="280" y="150">v(2) = 0</text>
+ <text x="440" y="150">v(3) = 0</text>
+ </g>
+ <text class="lbl-b or" x="200" y="180" text-anchor="middle">v(1,2) = $1</text>
+ <text class="lbl-b or" x="330" y="200" text-anchor="middle">v(1,3) = $1</text>
+ <text class="lbl-s" x="440" y="180" text-anchor="middle">v(2,3) = 0</text>
+ <text class="lbl-b" x="280" y="222" text-anchor="middle">v(1, 2, 3) = $1: only one pair is ever sellable</text>
+ </svg></div>
+ <figcaption><strong>The &quot;glove game.&quot;</strong> Player 1 holds the scarce half of every deal. A pair sells for $1; a lone glove sells for nothing; the grand coalition is worth exactly $1, no more, because a third glove of the same hand adds nothing. The Shapley value below computes exactly how that dollar should split, and it is not an even three-way share.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>Topics 11 and 12 asked what stable, non-cooperative play looks like. <strong>Cooperative game theory asks a different question: given that a group creates value <em>together</em>, how should the value be split fairly among them?</strong> Cost-sharing a shared warehouse, splitting a startup&#39;s equity, dividing a prize a whole team won: all the same question with a different noun.</p>
+ <p>The Shapley value (Shapley, 1953) answers it by asking, for each player, <em>&quot;across every possible order in which people could have joined this coalition, how much did adding me change the total value, on average?&quot;</em> A player who is essential wherever they arrive gets a large share. A player who never changes the outcome (a spare wheel) gets exactly zero, however friendly the room is.</p>
+ <p>What makes it worth naming after one person is that it is not merely <em>a</em> reasonable split. Shapley proved it is the <strong>unique</strong> split satisfying four properties nearly everyone agrees a fair split should have: stated precisely below. Reasonable-sounding fairness rules turn out to pin down one specific formula.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p>For a coalitional game with value function v (v(S) = the worth of any subset S of the n players, v(∅) = 0), player i&#39;s Shapley value averages their marginal contribution over every possible arrival order:</p>
+ <code class="eq">φᵢ = (1/n!) · Σ over all orderings π   [ v(Pᵢ(π) ∪ {i}) − v(Pᵢ(π)) ]</code>
+ <p>where P<sub>i</sub>(π) is the set of players arriving before i in ordering π. <strong>Uniqueness</strong> (Shapley, 1953): φ is the only allocation rule satisfying <em>efficiency</em> (the whole value v(N) gets fully distributed), <em>symmetry</em> (two players who contribute identically get identical shares), the <em>dummy/null player</em> property (a player who adds zero value in every coalition gets zero), and <em>additivity</em> (the value of two combined games is the sum of the two separate allocations).</p>
+ <p>Worked exactly on the glove game (6 orderings of 3 players, player 1&#39;s marginal contribution in each):</p>
+ <code class="eq">order 1,2,3: v(1)−v(∅)=0 order 2,1,3: v(1,2)−v(2)=1
+order 1,3,2: v(1)−v(∅)=0        order 2,3,1: v(1,2,3)−v(2,3)=1
+order 3,1,2: v(1,3)−v(3)=1      order 3,2,1: v(1,2,3)−v(2,3)=1
+
+φ₁ = (0+0+1+1+1+1)/6 = 4/6 = 2/3</code>
+ <p>By symmetry, players 2 and 3 must split the remainder equally: φ₂ = φ₃ = (1 − 2/3)/2 = <strong>1/6</strong> each. Check: 2/3 + 1/6 + 1/6 = 1, exactly v(1,2,3). Player 1, the scarce resource, takes four times either partner&#39;s share: computed from the coalition structure alone, not asserted.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Explaining machine-learning predictions</span>
+ <strong>SHAP</strong> (SHapley Additive exPlanations) (one of the standard tools for explaining what a machine-learning model actually did) is the Shapley value applied to a model&#39;s <em>input features</em> as if they were players in a coalition, and the model&#39;s prediction as the value they jointly produced. &quot;How much did this feature move the prediction?&quot; is answered the same way &quot;how much did this player earn?&quot; is answered above: average its marginal effect over every possible order features could be revealed in. Lundberg &amp; Lee, &quot;A Unified Approach to Interpreting Model Predictions,&quot; <em>NeurIPS</em> (2017). One of the most cited papers in applied machine learning, precisely because it gave an ad hoc practice a 1953 game-theoretic proof of uniqueness.</p>
+ <p><span class="where">And older: airport landing fees</span>
+      Cost-sharing a runway sized for the largest aircraft that uses it, fairly, among airlines flying very different aircraft, is a textbook cooperative-game application dating to the 1970s: the same marginal-contribution logic, applied to cost instead of profit.</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="region-14.html">Next: designing the rules instead of playing them ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="region-12.html"><span>Previous topic</span>12 &middot; Zero-sum games and minimax</a><a class="cp-nx" href="region-14.html"><span>Next topic</span>14 &middot; Mechanism design and auctions</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

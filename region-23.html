@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Multi-objective optimization · Learn · SymbiQ</title>
+<meta name="description" content="What is &quot;best&quot; when you can&#x27;t improve one goal without hurting another?. The Feasible Region, topic 23 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-23.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-23.html">
+<meta property="og:title" content="Multi-objective optimization · SymbiQ">
+<meta property="og:description" content="What is &quot;best&quot; when you can&#x27;t improve one goal without hurting another?. The Feasible Region, topic 23 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Multi-objective optimization · SymbiQ">
+<meta name="twitter:description" content="What is &quot;best&quot; when you can&#x27;t improve one goal without hurting another?. The Feasible Region, topic 23 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/region-23.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/region-23.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Multi-objective optimization</span></div>
+
+<div class="course" id="t23" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t23" data-id="t23">
+<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 23 of 24 &middot; Module F, completed</div>
+<h1>Multi-objective optimization</h1>
+<p class="tagline">What is &quot;best&quot; when you can&#39;t improve one goal without hurting another?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" aria-current="page" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<details class="cp-section"><summary>About this section: Module F, completed</summary>
+<p>Topic 19 stripped the objective out entirely. Topic 23 does the opposite. It hands you several objectives that genuinely conflict, so &ldquo;optimal&rdquo; stops being a point and becomes a curve. Topic 24 then closes the course on the oldest applied problem in the field, the one Ford Whitman Harris wrote a formula for in 1913, and shows how many of the threads of this course meet inside a warehouse.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Eight candidate plans plotted by cost on the horizontal axis and delay on the vertical axis, both to be minimised. Six plans P1 through P6 form the Pareto front, connected by a line: P1 at cost 1 delay 10, P2 at 2 and 6, P3 at 3 and 4, P4 at 5 and 3, P5 at 8 and 2, P6 at 10 and 1. Two plans are dominated and sit above the front: P7 at cost 4 delay 8, and P8 at cost 7 delay 5. P5 is circled and flagged: it is Pareto-optimal, but sweeping the weight in a weighted-sum objective never selects it, because it lies in a non-convex dent of the front. The epsilon-constraint method -- minimise delay subject to cost at most 8 -- does select P5.">
+ <line x1="60" y1="300" x2="600" y2="300" stroke="var(--border)" stroke-width="1.5"/>
+ <line x1="60" y1="300" x2="60"  y2="30"  stroke="var(--border)" stroke-width="1.5"/>
+ <text x="330" y="330" text-anchor="middle" class="lbl-s">cost  →   (minimise)</text>
+ <text x="24" y="165" text-anchor="middle" class="lbl-s" transform="rotate(-90 24 165)">delay  →   (minimise)</text>
+
+ <polyline points="105,40 150,144 195,196 285,222 420,248 510,274" fill="none" stroke="var(--or)" stroke-width="2.5"/>
+
+ <g fill="var(--or)">
+ <circle cx="105" cy="40"  r="6"/><circle cx="150" cy="144" r="6"/><circle cx="195" cy="196" r="6"/>
+ <circle cx="285" cy="222" r="6"/><circle cx="510" cy="274" r="6"/>
+ </g>
+ <circle cx="420" cy="248" r="11" fill="none" stroke="var(--violet)" stroke-width="2.5"/>
+ <circle cx="420" cy="248" r="6" fill="var(--violet)"/>
+
+ <circle cx="240" cy="92"  r="6" fill="none" stroke="var(--muted)" stroke-width="2"/>
+ <circle cx="375" cy="170" r="6" fill="none" stroke="var(--muted)" stroke-width="2"/>
+
+ <g class="lbl-s">
+ <text x="105" y="30">P1 (1,10)</text>
+ <text x="160" y="144">P2 (2,6)</text>
+ <text x="205" y="196">P3 (3,4)</text>
+ <text x="295" y="222">P4 (5,3)</text>
+ <text x="430" y="244" class="lbl-b" style="fill:var(--violet)">P5 (8,2)</text>
+ <text x="520" y="274">P6 (10,1)</text>
+ <text x="250" y="90" style="fill:var(--muted)">P7: dominated</text>
+ <text x="385" y="168" style="fill:var(--muted)">P8: dominated</text>
+ </g>
+
+ <g class="lbl-s">
+ <text x="300" y="55" class="lbl-b" style="fill:var(--violet)">P5: Pareto-optimal, </text>
+ <text x="300" y="72" style="fill:var(--violet)">no weighted sum ever picks it.</text>
+ <text x="300" y="96">weighted sum w·cost + (1−w)·delay :</text>
+ <text x="300" y="112">sweep w ∈ [0,1] → picks P1,P2,P3,P4,P6.</text>
+ <text x="300" y="132" class="lbl-b or">ε-constraint (min delay s.t. cost ≤ 8)</text>
+ <text x="300" y="148" class="or">→ picks P5.</text>
+ </g>
+ </svg></div>
+ <figcaption><strong>Cost against delay, both to be minimised.</strong> No single plan wins: P1 is cheapest, P6 is fastest, and P2&ndash;P5 trade between. The six form the <strong>Pareto front</strong>: the plans no other plan beats on both counts. P7 and P8 are <em>dominated</em> (some front plan is at least as good on cost and delay, better on one) and are simply off the table. The catch worth carrying away: <strong>P5 is a genuine Pareto point that the weighted-sum method can never return</strong>, whatever weight you choose, because it sits in a non-convex dent. You need the &epsilon;-constraint method to find it. Both facts are brute-forced in the script.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>Almost every real decision has more than one axis of &ldquo;good&rdquo;: cost and risk, speed and quality, profit and emissions, coverage and privacy. Most of this course assumed those could be folded into a single objective number. Topic 23 is what you do when they honestly cannot, when the axes conflict, so pushing one down pushes another up, and there is no exchange rate between them that everyone would agree on.</p>
+ <p>The organising idea is <strong>Pareto optimality</strong> (Vilfredo Pareto, 1906). A solution is Pareto-optimal, or <em>efficient</em>, if you cannot improve any one objective without making at least one other worse. The set of all such solutions is the <strong>Pareto front</strong>, and it is the honest output of a multi-objective problem: not an answer, but the complete menu of non-wasteful trade-offs. Anything not on the front is <em>dominated</em> (beaten outright by something on it) and can be discarded with no argument. Choosing a point <em>on</em> the front is a values judgement, and the method&#39;s job is to present the front clearly, not to pretend it can make that call for you.</p>
+ <p>This is the exact mirror image of topic 19. There, constraint satisfaction had <em>no</em> objective and the only question was feasibility. Here there are <em>several</em> objectives and feasibility is easy: the difficulty has moved entirely into what &ldquo;best&rdquo; even means. Between them, the two topics bracket the assumption every other topic on this page quietly relied on: that there is exactly one number to optimise.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p>With objectives f<sub>1</sub>, &hellip;, f<sub>k</sub> all to be minimised over a feasible set X, point x <strong>dominates</strong> point x&prime; if f<sub>i</sub>(x) &le; f<sub>i</sub>(x&prime;) for every i and strictly less for at least one. x* is <strong>Pareto-optimal</strong> if nothing in X dominates it. The front is the image of all Pareto-optimal points in objective space. Two standard methods turn this back into ordinary single-objective problems:</p>
+ <code class="eq">weighted sum: minimise  Σ wᵢ fᵢ(x) ,   wᵢ ≥ 0 ,  Σ wᵢ = 1
+ε-constraint:   minimise  f₁(x)   s.t.   fⱼ(x) ≤ εⱼ  for j ≠ 1</code>
+ <p><strong>Every weighted-sum optimum is Pareto-optimal</strong> (for strictly positive weights). The one-line proof: if something dominated it, that something would have a strictly smaller weighted sum. But the converse fails, and the figure is a worked counterexample: <strong>P5 = (8, 2) is Pareto-optimal, yet no weight vector makes it the weighted-sum winner</strong>, because it lies above the lower convex hull of the front. Beating P4 in the weighted sum needs w &lt; 1/4; beating P6 needs w &gt; 1/3; no w does both. Sweeping 100,001 weight values in the script confirms it: the winners are P1, P2, P3, P4, P6, never P5.</p>
+ <p><strong>The &epsilon;-constraint method has no such blind spot.</strong> Fixing &ldquo;cost &le; 8&rdquo; and minimising delay returns P5 directly, and varying the bound traces the entire front, convex dents included (Haimes, Lasdon &amp; Wismer, 1971). Its price is that each front point costs a fresh constrained optimisation, where weighted-sum only re-weights. For problems where the front is large and irregular, the workhorses are <strong>evolutionary</strong>. NSGA-II (Deb, Pratap, Agarwal &amp; Meyarivan, <em>IEEE Transactions on Evolutionary Computation</em> 6(2), 182&ndash;197 (2002)) evolves a whole population toward the front at once, keeping it spread out, which ties this topic straight back to topic 10&#39;s genetic algorithms, and more loosely to topic 15&#39;s replicator dynamics. Verification: a script recomputes this.</p>
+ <p>The classic instance is financial: Markowitz&#39;s <strong>efficient frontier</strong> (1952) is precisely the Pareto front of expected return against variance, and picking a point on it is the investor&#39;s risk appetite, not a theorem: work that shared the 1990 Nobel Memorial Prize in Economic Sciences.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Every engineered object you own</span>
+      An aircraft wing trades weight against drag against manufacturing cost; a chip layout trades speed against power against area; a delivery schedule trades fuel against on-time rate against driver hours. None has a natural exchange rate, so the standard practice is to compute the Pareto front (often with NSGA-II) hand it to the people who own the decision, and let them pick. The method&#39;s honesty is the point: it makes the trade-off explicit instead of smuggling a weighting in under the label &ldquo;the optimal design.&rdquo;</p>
+ <p><span class="where">And on the quantum side of this page</span>
+      Designing a control pulse for a quantum gate is multi-objective in practice: gate speed against fidelity against leakage out of the computational subspace, with no fixed rate between them. A faster gate is a noisier gate; suppressing leakage costs time. Pulse-engineering tools compute the trade-off surface and a human picks the operating point: the same shape as the wing, on a chip cooled to fifteen millikelvin. This is also why topic 22&#39;s robust pulses and this topic&#39;s Pareto pulses are usually built together: you want a point on the trade-off front that also survives the uncertainty set.</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="region-19.html">The mirror image: no objective at all ▸</a>
+ <a href="region-10.html">Genetic algorithms: a whole population toward the front ▸</a>
+ <a href="region-22.html">Previous: stochastic &amp; robust optimization ▸</a>
+ <a href="region-24.html">Next: keeping the shelves stocked ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="region-22.html"><span>Previous topic</span>22 &middot; Stochastic &amp; robust optimization</a><a class="cp-nx" href="region-24.html"><span>Next topic</span>24 &middot; Inventory &amp; supply chain</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

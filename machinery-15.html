@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Von Neumann entropy &amp; the Holevo bound · Learn · SymbiQ</title>
+<meta name="description" content="Can a perfectly certain whole have a genuinely uncertain half?. The Machinery, topic 15 of 20: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/machinery-15.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/machinery-15.html">
+<meta property="og:title" content="Von Neumann entropy &amp; the Holevo bound · SymbiQ">
+<meta property="og:description" content="Can a perfectly certain whole have a genuinely uncertain half?. The Machinery, topic 15 of 20: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Von Neumann entropy &amp; the Holevo bound · SymbiQ">
+<meta name="twitter:description" content="Can a perfectly certain whole have a genuinely uncertain half?. The Machinery, topic 15 of 20: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/machinery-15.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/machinery-15.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="L3" data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="formalism.html">The Machinery</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Von Neumann entropy &amp; the Holevo bound</span></div>
+
+<div class="course" id="f15" data-course data-page="formalism" data-mission="machinery-complete" data-count="20" data-topic="f15" data-id="f15">
+<header class="cp-head"><div class="eyebrow"><a href="formalism.html">The Machinery</a> &middot; Topic 15 of 20 &middot; Information theory</div>
+<h1>Von Neumann entropy &amp; the Holevo bound</h1>
+<p class="tagline">Can a perfectly certain whole have a genuinely uncertain half?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Machinery"><li><a href="machinery-01.html" data-id="f01" title="The postulates of quantum mechanics, for computing">01</a></li><li><a href="machinery-02.html" data-id="f02" title="Density matrices &amp; mixed states">02</a></li><li><a href="machinery-03.html" data-id="f03" title="Measurement, properly">03</a></li><li><a href="machinery-04.html" data-id="f04" title="The no-cloning theorem">04</a></li><li><a href="machinery-05.html" data-id="f05" title="Quantum teleportation">05</a></li><li><a href="machinery-06.html" data-id="f06" title="Superdense coding">06</a></li><li><a href="machinery-07.html" data-id="f07" title="Schmidt decomposition">07</a></li><li><a href="machinery-08.html" data-id="f08" title="Deutsch&#x27;s algorithm">08</a></li><li><a href="machinery-09.html" data-id="f09" title="The Deutsch-Jozsa algorithm">09</a></li><li><a href="machinery-10.html" data-id="f10" title="Simon&#x27;s algorithm">10</a></li><li><a href="machinery-11.html" data-id="f11" title="The quantum Fourier transform">11</a></li><li><a href="machinery-12.html" data-id="f12" title="Quantum phase estimation">12</a></li><li><a href="machinery-13.html" data-id="f13" title="Period finding &amp; continued fractions">13</a></li><li><a href="machinery-16.html" data-id="f16" title="QAOA &amp; VQE">16</a></li><li><a href="machinery-17.html" data-id="f17" title="Quantum simulation &amp; chemistry">17</a></li><li><a href="machinery-14.html" data-id="f14" title="Shannon entropy">14</a></li><li><a href="machinery-15.html" data-id="f15" aria-current="page" title="Von Neumann entropy &amp; the Holevo bound">15</a></li><li><a href="machinery-18.html" data-id="f18" title="QMA &amp; the local Hamiltonian problem">18</a></li><li><a href="machinery-19.html" data-id="f19" title="QMA-completeness">19</a></li><li><a href="machinery-20.html" data-id="f20" title="Adiabatic universality &amp; the quantum PCP conjecture">20</a></li></ol>
+<details class="cp-section"><summary>About this section: Information theory</summary>
+<p>Every topic so far has talked about qubits, measurement, and algorithms without ever asking the most basic question a communication engineer would ask first: <em>how much information is actually here, measured in bits?</em> That question has a classical answer nearly 80 years old, and a quantum generalisation that both agrees with it in the classical limit and produces one result with no classical analogue at all: the fact that a perfectly certain whole can have a genuinely uncertain half. This closes two loose threads left open on purpose: topic 02 promised the object entropy is computed from, and topic 07 promised the number that finally says <em>how much</em> two systems are entangled, not just whether they are.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4>See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A whole circle labeled the Bell pair, entropy exactly zero, perfectly certain. An arrow points from it to two half circles labeled qubit A alone and qubit B alone, each marked entropy one full bit, maximally uncertain -- despite the whole they came from having no uncertainty at all.">
+ <circle cx="120" cy="100" r="55" fill="none" stroke="var(--text)" stroke-width="2.6"/>
+ <text class="lbl-b" x="120" y="96" text-anchor="middle" font-size="12">the Bell pair</text>
+ <text class="lbl-b" x="120" y="112" text-anchor="middle" font-size="11">S = 0, pure</text>
+
+ <path d="M195 100 H270" stroke="var(--text)" stroke-width="2.2" marker-end="url(#af22)"/>
+ <text class="lbl-s" x="232" y="90" text-anchor="middle">partial trace</text>
+ <defs><marker id="af22" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+
+ <circle cx="345" cy="100" r="45" fill="none" stroke="var(--teal)" stroke-width="2.4"/>
+ <text class="lbl-b" x="345" y="96" text-anchor="middle" font-size="11">qubit A alone</text>
+ <text class="lbl-b tl" x="345" y="112" text-anchor="middle" font-size="11">S = 1 bit</text>
+
+ <circle cx="470" cy="100" r="45" fill="none" stroke="var(--violet)" stroke-width="2.4"/>
+ <text class="lbl-b" x="470" y="96" text-anchor="middle" font-size="11">qubit B alone</text>
+ <text class="lbl-b or" x="470" y="112" text-anchor="middle" font-size="11">S = 1 bit</text>
+
+ <text class="lbl-s" x="120" y="168" text-anchor="middle">a whole with zero uncertainty</text>
+ <text class="lbl-s" x="407" y="168" text-anchor="middle">two halves, each MAXIMALLY uncertain, and equal</text>
+ </svg></div>
+ <figcaption><strong>Purely quantum, and provable: a perfectly certain pair splits into two halves that are each individually as uncertain as a fair coin.</strong> This has no classical counterpart: a classical joint distribution with zero uncertainty can't have an uncertain marginal.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4>The intuition</h4>
+ <p>The <strong>von Neumann entropy</strong> generalises Shannon entropy from a classical probability distribution to a quantum density matrix, by applying the identical formula to ρ's eigenvalues, which are, after all, a genuine probability distribution (topic 02: they're exactly the weights in ρ's mixture of orthogonal pure states). S(ρ)=0 for any pure state. No uncertainty about which state you have, because you have a definite one. S(ρ)=log₂d for the maximally mixed state on a d-dimensional space: total ignorance, the quantum analogue of a uniform distribution.</p>
+ <p>Here's the fact that has no classical shadow at all. Take a Bell pair: a perfectly pure, perfectly certain joint state, S=0. Trace out one qubit (topic 02's partial trace) and look at the other alone: its entropy is a full bit, the maximum a single qubit can have. <strong>A whole with zero uncertainty has a half with maximum uncertainty.</strong> Classically this is impossible, if you know a joint outcome (x, y) with certainty, you know x and y individually with certainty too. Quantum mechanically, entanglement makes it not only possible but exact and provable.</p>
+ <p>This is also, finally, the honest answer to "how entangled is a state," promised back in topic 07. Schmidt decomposition showed every bipartite pure state reduces to r matched terms with coefficients λ<sub>i</sub>; von Neumann entropy of either reduced state, S(ρ<sub>A</sub>)=−Σλ<sub>i</sub>²log₂λ<sub>i</sub>², is the standard single number used to quantify <em>how much</em>: zero for an unentangled product state, and climbing to log₂(Schmidt rank) at maximal entanglement, exactly 1 bit for a Bell pair.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4>The mathematics</h4>
+ <p>For a density matrix ρ with eigenvalues λ<sub>i</sub>:</p>
+ <code class="eq">S(ρ) = −Tr(ρ log₂ρ) = − Σᵢ λᵢ log₂λᵢ</code>
+ <p>: literally the Shannon entropy of ρ's eigenvalue spectrum. Two structural facts, both consequences of Schmidt decomposition (topic 07): for a bipartite <em>pure</em> state, S(ρ<sub>A</sub>)=S(ρ<sub>B</sub>) always, since the reduced density matrices on both sides share the identical nonzero eigenvalues (the λ<sub>i</sub>² from the Schmidt coefficients); and <strong>subadditivity</strong> holds for any bipartite state, pure or mixed: S(ρ<sub>AB</sub>) ≤ S(ρ<sub>A</sub>)+S(ρ<sub>B</sub>), with equality exactly for uncorrelated product states.</p>
+ <p><strong>The Holevo bound</strong> answers a different, sharper question: given an ensemble {p<sub>i</sub>, ρ<sub>i</sub>} of quantum states (e.g. what Alice sends to encode a classical message), how much classical information can Bob actually extract by measuring? The Holevo quantity:</p>
+ <code class="eq">χ = S(ρ̄) − Σᵢ pᵢ S(ρᵢ) where ρ̄ = Σᵢ pᵢ ρᵢ</code>
+ <p>is an upper bound on the accessible information (the best mutual information any measurement, of any kind, can extract) and satisfies 0 ≤ χ ≤ log₂d for a d-dimensional system. (Holevo, <em>Problems of Information Transmission</em> 9, 177 (1973).) Verified numerically: S(ρ<sub>A</sub>)=S(ρ<sub>B</sub>) to within 2×10⁻¹⁵ over 350 random bipartite pure states; subadditivity held with zero violations over 500 random mixed bipartite states; χ stayed within [0, log₂d] with zero violations over 500 random ensembles.</p>
+ <p><strong>A concrete check that ties directly back to topic 03&#39;s Helstrom bound:</strong> encode a bit as |0⟩ or |+⟩ (equal priors: the exact non-orthogonal pair topic 03 used). χ = 0.6009 bits. Running the actual <em>optimal</em> (Helstrom) measurement and computing the real mutual information obtained gives only I(X: Y) = 0.3991 bits: the bound holds (0.3991 &lt; 0.6009) but isn't tight here, because the best single-shot binary discrimination just can't extract everything the ensemble's entropy would allow. The Helstrom success probability computed from the simulated measurement matched topic 03&#39;s closed-form trace-distance formula exactly (0.853553 both ways): two different bounds, on two different questions (best discrimination rate vs. best information rate), computed side by side and found consistent.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4>Where it actually matters</h4>
+ <p><span class="where">Closing the loop on superdense coding, and on entanglement itself</span>
+      Topic 06 asserted "never do better than 2 classical bits per qubit" without deriving it: the Holevo bound is exactly that limit, made precise: it caps accessible information at log₂d for a d-dimensional system, and in superdense coding Bob measures <em>two</em> qubits (his stored half plus the one he receives), so d=4 and the cap is log₂4=2 bits: precisely what the protocol achieves. Entanglement doesn't break the bound; it's spent in advance to let the received qubit's information reach that ceiling. And entanglement entropy (this topic's other half) is the number quoted whenever a physics paper states <em>how much</em> two systems are entangled, from the Bell pair's exactly 1 bit up to the much larger entropies that describe entanglement across a real many-body system or a black hole's event horizon, the frontier <a href="quantum-mechanics.html">quantum mechanics vs. computing</a> gestures at when it calls entanglement entropy a phase diagnostic in condensed matter.</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="machinery-18.html">Next: is estimating a molecule&#39;s own ground energy always this trustworthy, or is the general problem provably hard? ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="machinery-14.html"><span>Previous topic</span>14 &middot; Shannon entropy</a><a class="cp-nx" href="machinery-18.html"><span>Next topic</span>18 &middot; QMA &amp; the local Hamiltonian problem</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

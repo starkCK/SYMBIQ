@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Quadratic &amp; semidefinite programming · Learn · SymbiQ</title>
+<meta name="description" content="What does a quantum computer actually have to beat?. The Feasible Region, topic 17 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-17.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-17.html">
+<meta property="og:title" content="Quadratic &amp; semidefinite programming · SymbiQ">
+<meta property="og:description" content="What does a quantum computer actually have to beat?. The Feasible Region, topic 17 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quadratic &amp; semidefinite programming · SymbiQ">
+<meta name="twitter:description" content="What does a quantum computer actually have to beat?. The Feasible Region, topic 17 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/region-17.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/region-17.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Quadratic &amp; semidefinite programming</span></div>
+
+<div class="course" id="t17" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t17" data-id="t17">
+<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 17 of 24 &middot; Added after the flagship</div>
+<h1>Quadratic &amp; semidefinite programming</h1>
+<p class="tagline">What does a quantum computer actually have to beat?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" aria-current="page" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<details class="cp-section"><summary>About this section: Added after the flagship</summary>
+<p>These two belong earlier in the reading order: right after topic 02, where the vertex theorem promises a best corner exists but doesn&#39;t say how to find it. Topic 16 is that algorithm. Topic 17 is what happens once the objective is allowed to curve, ending at the exact classical result. Goemans&ndash;Williamson&#39;s semidefinite relaxation of Max-Cut. That QAOA on the quantum side has to beat. They are appended here, after the flagship, rather than renumbered into the middle of a page every link on this site already points into.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Three points forming a triangle, all pairwise connected. Their relaxed representation is three unit vectors at exactly one hundred twenty degrees to each other. A horizontal line through the centre, a random hyperplane, separates one vector from the other two, cutting two of the three edges -- the true optimum.">
+ <circle cx="190" cy="160" r="100" fill="none" stroke="var(--border)" stroke-width="1.5" opacity=".5"/>
+ <path d="M190 60 L103.4 210 L276.6 210 Z" fill="none" class="sMut" stroke-width="2"/>
+ <path d="M190 160 L190 60"     class="sTl" stroke-width="3" marker-end="url(#fa17v)"/>
+ <path d="M190 160 L103.4 210" class="sTl" stroke-width="3" marker-end="url(#fa17v)"/>
+ <path d="M190 160 L276.6 210" class="sTl" stroke-width="3" marker-end="url(#fa17v)"/>
+ <defs><marker id="fa17v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+ <path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/></marker></defs>
+ <path d="M60 160 H320" class="sOr" stroke-width="2.5" stroke-dasharray="7 5"/>
+ <text class="lbl-s or" x="325" y="164">the random hyperplane</text>
+ <circle cx="190" cy="60"  r="6" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+ <circle cx="103.4" cy="210" r="6" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+ <circle cx="276.6" cy="210" r="6" fill="var(--teal)" stroke="var(--bg)" stroke-width="2"/>
+ <text class="lbl-b tl" x="190" y="42" text-anchor="middle">A</text>
+ <text class="lbl-b tl" x="80" y="222" text-anchor="middle">B</text>
+ <text class="lbl-b tl" x="300" y="222" text-anchor="middle">C</text>
+ <text class="lbl-s or" x="146" y="118" text-anchor="middle">A–B: cut ✓</text>
+ <text class="lbl-s or" x="234" y="118" text-anchor="middle">A–C: cut ✓</text>
+ <text class="lbl-s" x="190" y="230" text-anchor="middle">B–C: not cut</text>
+ <g class="lbl-s" text-anchor="start">
+ <text x="360" y="60">Three points, all linked: the triangle graph K₃.</text>
+ <text x="360" y="80">Every pair of relaxed vectors sits at exactly 120°.</text>
+ <text x="360" y="108" class="lbl-b or">SDP relaxation value: 2.25</text>
+ <text x="360" y="126">a triangle can never cut more than 2 of its 3 edges,</text>
+ <text x="360" y="142">so 2.25 is provably unreachable by any real cut.</text>
+ <text x="360" y="168" class="lbl-b">This hyperplane: cuts A–B and A–C, not B–C → 2</text>
+ <text x="360" y="184">the true integral optimum, reached by one random line.</text>
+ <text x="360" y="210" class="lbl-b tl">20,000 random hyperplanes, on average: 8/9 ≈ 0.889 of 2.25</text>
+ <text x="360" y="228">comfortably above Goemans–Williamson&#39;s proven floor of 0.878567.</text>
+ </g>
+ </svg></div>
+ <figcaption><strong>The smallest odd cycle there is, solved three ways and cross-checked against each.</strong> Relaxing each ±1 spin to a unit vector and solving the semidefinite program exactly (cvxpy, Clarabel solver) places the three vectors at exactly 120° and gives 2.25: matching the known closed form 9/4 for the triangle. Brute force over all 8 assignments gives the true optimum of 2. A single random hyperplane recovers that 2 directly; averaged over 20,000 random hyperplanes, the expected cut is 8/9 ≈ 0.889 of 2.25 on this instance, above the 0.878567 worst-case guarantee proved below.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>Linear programming keeps the objective flat: a straight trade-off between variables. <strong>Quadratic programming (QP)</strong> lets it curve: minimise or maximise a quadratic function of the variables, still subject to linear constraints. Portfolio construction is the standard example: risk enters as a quadratic form (variance), return enters linearly, and Markowitz&#39;s 1952 mean-variance framework is exactly this shape.</p>
+ <p>Whether the curve is a bowl or a saddle decides everything. A convex quadratic. One whose quadratic form never bends the &quot;wrong way&quot;, technically positive semidefinite: is still efficiently solvable, by the same interior-point machinery topic 16 just introduced for linear programs. The moment the quadratic form has even one direction that curves downward instead, the nice structure is gone and the problem becomes NP-hard: not harder in some cases, but provably hard in general, with the line between zero such directions and one being the entire boundary.</p>
+ <p><strong>Semidefinite programming (SDP)</strong> is the next rung up the same ladder: instead of optimising over a vector of numbers, optimise a linear function over the cone of positive-semidefinite <em>matrices</em>. The chain is genuinely nested. LP ⊂ QP ⊂ SDP, each strictly more expressive than the last, and every one of them convex and solvable in polynomial time. What SDP buys is the ability to take a problem that is discrete and NP-hard, relax it into something continuous and convex, solve that exactly, and round the continuous answer back down with a provable guarantee on how much is lost. Doing exactly that to Max-Cut is one of the most celebrated results in the field, and the reason this topic ends up mattering to quantum computing.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p>A quadratic program in standard form, and the line that decides its complexity:</p>
+ <code class="eq">minimise   ½xᵀQx + cᵀx
+s.t.       Ax ≤ b
+
+convex (poly-time solvable)  ⟺  Q positive semidefinite
+Q has even one negative eigenvalue  ⟹  NP-hard</code>
+ <p>Sahni, &quot;Computationally Related Problems,&quot; <em>SIAM Journal on Computing</em> 3 (1974), 262&ndash;279, first showed hardness for a fully negative-definite Q. Pardalos &amp; Vavasis, &quot;Quadratic Programming with One Negative Eigenvalue is NP-hard,&quot; <em>Journal of Global Optimization</em> 1 (1991), 15&ndash;22, sharpened it to the tightest possible statement: a <em>single</em> negative eigenvalue already suffices.</p>
+ <p>A semidefinite program, in standard form. X an n×n symmetric matrix, ⟨·,·⟩ the trace inner product, X ⪰ 0 meaning positive semidefinite:</p>
+ <code class="eq">maximise   ⟨C, X⟩
+s.t.       ⟨Aᵢ, X⟩ = bᵢ for i = 1..m
+           X ⪰ 0</code>
+ <p>Linear programming is the special case where X is forced diagonal; relax that one restriction and LP becomes SDP.</p>
+ <p><strong>The centrepiece, and the reason this topic sits on the OR/quantum boundary:</strong> Goemans &amp; Williamson, &quot;Improved Approximation Algorithms for Maximum Cut and Satisfiability Problems Using Semidefinite Programming,&quot; <em>Journal of the ACM</em> 42(6) (1995), 1115&ndash;1145. Max-Cut: partition a graph&#39;s vertices into two sets to maximise the edges crossing between them: is NP-hard (one of Karp&#39;s original 21, topic 04). Relax each vertex&#39;s ±1 label to a unit vector yᵢ, and relax the objective the same way:</p>
+ <code class="eq">maximise  ½ Σ_(i,j)∈E w_ij (1 − yᵢ·yⱼ) over unit vectors y₁,…,yₙ
+        = maximise  ½ Σ w_ij (1 − Yᵢⱼ)      over Y ⪰ 0, diag(Y) = 1</code>
+ <p>: an SDP, solvable exactly in polynomial time. Then round: draw a uniformly random hyperplane through the origin (a random unit vector r) and put each vertex on the side given by the sign of yᵢ·r. For two vectors at angle θᵢⱼ, the chance a random hyperplane separates them is exactly θᵢⱼ/π, so the rounded cut&#39;s expected value is Σ w_ij·θᵢⱼ/π. Comparing that, edge by edge, to the SDP&#39;s own contribution ½(1 − cos θᵢⱼ) gives a ratio that depends only on θ:</p>
+ <code class="eq">(θ/π) ÷ ½(1 − cos θ)  =  (2/π)·θ/(1 − cos θ)</code>
+ <p>Minimised at θ ≈ 2.331122 rad (about 133.6°), giving α_GW ≈ <strong>0.878567</strong>. Since every edge contributes at least this fraction of its SDP share, so does the whole cut:</p>
+ <code class="eq">E[cut value]  ≥  α_GW · SDP_OPT  ≥  α_GW · OPT       α_GW ≈ 0.878567</code>
+ <p>: unconditional, and the best worst-case ratio then known for any polynomial-time Max-Cut algorithm. The triangle in the figure shows the relaxation&#39;s slack directly: SDP value 2.25 against a true optimum of 2, an integrality gap that matches the closed form 9/4.</p>
+ <p>Is 0.878567 the best <em>any</em> efficient algorithm could ever do, not just this specific rounding scheme? Conditionally, yes: Khot, Kindler, Mossel &amp; O&#39;Donnell, &quot;Optimal Inapproximability Results for MAX-CUT and Other 2-Variable CSPs?&quot;, <em>SIAM Journal on Computing</em> 37(1) (2007), 319&ndash;357, show that beating α_GW + ε for any ε &gt; 0 is NP-hard <em>assuming the Unique Games Conjecture</em>, a widely credited but still unproven hardness assumption. Unlike the Goemans&ndash;Williamson guarantee itself, this optimality claim rests on an open conjecture, so it is flagged rather than stated flat.</p>
+ <p><strong>This is the number a quantum optimiser has to clear.</strong> QAOA, the Quantum Approximate Optimization Algorithm (Farhi, Goldstone &amp; Gutmann, arXiv:1411.4028, 2014), was introduced on exactly this problem, and its own authors&#39; analysis is the first honest data point: on 3-regular graphs, QAOA at its shallowest depth (p=1) is guaranteed at least ≈0.6924 of the optimal cut (a bound that is tight on triangle-free graphs) below 0.878567, not above it. A companion negative result at the next depth, Marwaha, &quot;Local Classical MAX-CUT Algorithm Outperforms p=2 QAOA on High-Girth Regular Graphs,&quot; <em>Quantum</em> 5, 437 (2021), shows that a simple classical local algorithm matches or beats QAOA at depth p=2 on high-girth regular graphs: the locally tree-like family a bounded-depth quantum circuit is naturally analysed on, since a depth-p QAOA circuit only ever sees a p-hop neighbourhood of each node. Deeper circuits narrow the gap on some graph families; whether they cross 0.878567 on instances anyone actually needs solved is genuinely open, and this page will not assert more than that.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Combinatorial optimisation, exactly this way</span>
+      Max-Cut and Max-SAT are the two problems Goemans and Williamson&#39;s own 1995 paper targets directly: the same NP-hard territory topic 10&#39;s metaheuristics search <em>without</em> a certificate, using a different tool (an exact convex relaxation with a proven worst-case ratio, not a heuristic search), and SDP relaxations of this style are now the standard rigorous approach across a wide family of NP-hard combinatorial problems, wherever a certified approximation ratio is worth more than an exact answer nobody can compute in time. (For the broader field this one result opens onto: provable approximation ratios for NP-hard problems in general, including set cover and facility location. Williamson &amp; Shmoys, <em>The Design of Approximation Algorithms</em>, CUP, 2011, is the standard text; Williamson is himself a co-author of the Goemans&ndash;Williamson result above.)</p>
+ <p><span class="where">And on the quantum side of this page</span>
+      The bridges section below names this pairing directly. Goemans&ndash;Williamson&#39;s SDP is the classical benchmark every quantum Max-Cut claim is implicitly being measured against, whether the paper making the claim says so or not. For the mechanics of QAOA itself: the circuit, the hybrid loop that tunes it, and a worked example on the exact trap graph from <a href="play.html#maxcut">Graph City</a>: see <a href="machinery-16.html">The Machinery&#39;s QAOA &amp; VQE topic</a>.</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="region-16.html">Previous: the algorithm that walks the corners ▸</a>
+ <a href="feasible.html#bridges">The fifth bridge. SDP vs. QAOA ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="region-16.html"><span>Previous topic</span>16 &middot; The simplex algorithm</a><a class="cp-nx" href="region-18.html"><span>Next topic</span>18 &middot; The transportation problem</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

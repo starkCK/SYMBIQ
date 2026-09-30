@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Greedy algorithms &amp; approximation guarantees · Learn · SymbiQ</title>
+<meta name="description" content="When is &quot;take the best-looking option now&quot; provably good enough?. The Feasible Region, topic 21 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-21.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-21.html">
+<meta property="og:title" content="Greedy algorithms &amp; approximation guarantees · SymbiQ">
+<meta property="og:description" content="When is &quot;take the best-looking option now&quot; provably good enough?. The Feasible Region, topic 21 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Greedy algorithms &amp; approximation guarantees · SymbiQ">
+<meta name="twitter:description" content="When is &quot;take the best-looking option now&quot; provably good enough?. The Feasible Region, topic 21 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/region-21.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/region-21.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Greedy algorithms &amp; approximation guarantees</span></div>
+
+<div class="course" id="t21" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t21" data-id="t21">
+<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 21 of 24 &middot; Module D, completed</div>
+<h1>Greedy algorithms &amp; approximation guarantees</h1>
+<p class="tagline">When is &quot;take the best-looking option now&quot; provably good enough?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" aria-current="page" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<details class="cp-section"><summary>About this section: Module D, completed</summary>
+<p>Topic 10 introduced metaheuristics as what you reach for once exact methods die. Topic 21 steps back one pace to the simplest heuristic there is (take the best-looking option now, never reconsider) and asks the question that separates operations research from folklore: <em>when is that provably good enough, and by how much?</em> Sometimes the answer is &ldquo;exactly optimal, always.&rdquo; More often it is a guaranteed fraction of optimal, proved in advance. That guarantee is the whole topic.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A set-cover instance. Nine elements 1 to 9 sit in a row. Five available sets are shown as rows of membership dots below them: S1 covers 1,2,3,6,7,8; S2 covers 1,2,3,4,5; S3 covers 6,7,8,9; S4 covers 4,5; S5 covers 9. The greedy algorithm picks the largest set first, S1 with six elements, then S2 for two new elements, then S3 for one, using three sets in total. The true optimum is S2 together with S3, which covers all nine elements with only two sets. The greedy guarantee proved in advance is that it never uses more than H(6) times the optimum, where H(6) is 2.45, so three sets against an optimum of two is well inside the bound.">
+ <g class="lbl-b" text-anchor="middle">
+ <text x="70" y="20">elements</text>
+ </g>
+ <g>
+ <circle cx="150" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="205" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="260" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="315" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="370" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="425" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="480" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="535" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ <circle cx="590" cy="44" r="13" fill="var(--panel)" stroke="var(--border)" stroke-width="2"/>
+ </g>
+ <g class="lbl-b" text-anchor="middle">
+ <text x="150" y="49">1</text><text x="205" y="49">2</text><text x="260" y="49">3</text>
+ <text x="315" y="49">4</text><text x="370" y="49">5</text><text x="425" y="49">6</text>
+ <text x="480" y="49">7</text><text x="535" y="49">8</text><text x="590" y="49">9</text>
+ </g>
+
+ <g class="lbl-s">
+ <text x="20" y="94"  class="lbl-b" style="fill:var(--violet)">S1 · size 6: greedy takes this first</text>
+ <text x="20" y="129" class="lbl-b or">S2 · size 5</text>
+ <text x="20" y="164" class="lbl-b" style="fill:var(--teal)">S3 · size 4</text>
+ <text x="20" y="199">S4 · size 2</text>
+ <text x="20" y="229">S5 · size 1</text>
+ </g>
+
+ <g stroke="var(--violet)" stroke-width="3"><line x1="150" y1="90" x2="260" y2="90"/><line x1="425" y1="90" x2="535" y2="90"/></g>
+ <g fill="var(--violet)">
+ <circle cx="150" cy="90" r="7"/><circle cx="205" cy="90" r="7"/><circle cx="260" cy="90" r="7"/>
+ <circle cx="425" cy="90" r="7"/><circle cx="480" cy="90" r="7"/><circle cx="535" cy="90" r="7"/>
+ </g>
+ <line x1="150" y1="125" x2="370" y2="125" stroke="var(--or)" stroke-width="3"/>
+ <g fill="var(--or)">
+ <circle cx="150" cy="125" r="7"/><circle cx="205" cy="125" r="7"/><circle cx="260" cy="125" r="7"/>
+ <circle cx="315" cy="125" r="7"/><circle cx="370" cy="125" r="7"/>
+ </g>
+ <line x1="425" y1="160" x2="590" y2="160" stroke="var(--teal)" stroke-width="3"/>
+ <g fill="var(--teal)">
+ <circle cx="425" cy="160" r="7"/><circle cx="480" cy="160" r="7"/><circle cx="535" cy="160" r="7"/><circle cx="590" cy="160" r="7"/>
+ </g>
+ <line x1="315" y1="195" x2="370" y2="195" stroke="var(--muted)" stroke-width="3"/>
+ <g fill="var(--muted)"><circle cx="315" cy="195" r="7"/><circle cx="370" cy="195" r="7"/></g>
+ <circle cx="590" cy="225" r="7" fill="var(--muted)"/>
+
+ <g class="lbl-s">
+ <text x="650" y="40" class="lbl-b" style="fill:var(--violet)">Greedy, largest-first:</text>
+ <text x="650" y="60">S1 (+6) → S2 (+2) → S3 (+1)</text>
+ <text x="650" y="78" class="lbl-b" style="fill:var(--violet)">= 3 sets</text>
+ <text x="650" y="112" class="lbl-b or">True optimum:</text>
+ <text x="650" y="132">S2 ∪ S3 covers all 9</text>
+ <text x="650" y="150" class="lbl-b or">= 2 sets</text>
+ <text x="650" y="188" class="lbl-b">Guarantee, proved first:</text>
+ <text x="650" y="208">greedy ≤ H(6) · OPT</text>
+ <text x="650" y="226">= 2.45 × 2 = 4.9</text>
+ <text x="650" y="252" style="fill:var(--muted)">3 ≤ 4.9: inside the bound,</text>
+ <text x="650" y="268" style="fill:var(--muted)">on every instance, guaranteed.</text>
+ </g>
+ </svg></div>
+ <figcaption><strong>Set cover: pick the fewest sets whose union is everything.</strong> Greedy takes the largest remaining set each round. S1 (6 new), then S2 (2 new), then S3 (1 new): <b>three sets</b>. The optimum is just S2 and S3: <b>two</b>. Greedy is beaten here, but not by much, and never by much: it is proved in advance that greedy uses at most <b>H(k)</b> times the optimal count, where k is the largest set size and H(k) = 1 + 1/2 + &hellip; + 1/k. <span class="rcpt" data-rcpt="fsb-setcover-h6">For k = 6 that is 2.45, and 3 sits comfortably under 2.45 &times; 2.</span> The instance and both counts are brute-forced in the verification script below.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>A <strong>greedy algorithm</strong> builds a solution one commitment at a time, and each commitment is whatever looks best <em>right now</em> by some fixed local rule (cheapest edge, largest set, highest ratio) with no lookahead and no backtracking. It is the first thing anyone tries on a new problem, and usually the first thing they abandon, because it is so easy to build an instance where grabbing the shiny thing early forces three bad choices later.</p>
+ <p>Operations research keeps greedy in the toolkit anyway, for two precise reasons. <strong>First: on some problems greedy is not a heuristic at all. It is exactly optimal, provably, on every instance.</strong> Minimum spanning tree is the classic case: Kruskal&#39;s algorithm just adds the cheapest edge that doesn&#39;t form a cycle, forever, and the tree it ends on is the cheapest tree that exists. That is not luck. It is a structural property of the problem, the <em>matroid</em> property, made precise below.</p>
+ <p><strong>Second: when greedy is not optimal, it often comes with a guarantee</strong>: a proof, worked out before you ever run it, that its answer is within a fixed factor of the best possible, no matter how adversarial the input. An algorithm that is always within 2&times; optimal, runs in a blink, and never needs tuning is worth a great deal, especially as the honest baseline a fancier method has to beat. This is the same role simulated annealing plays for quantum annealing in the bridges section below: you cannot claim a win without knowing what the cheap classical method already gets for free.</p>
+ <p>Greedy is also the degenerate corner of topic 10&#39;s picture: a metaheuristic with the exploration turned all the way off. Simulated annealing at zero temperature <em>is</em> greedy descent. Every method in that topic exists precisely because pure greed gets stuck, but knowing exactly how badly it can get stuck, as a theorem, is what tells you whether the extra machinery is worth it.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p><strong>When greedy is exactly optimal: matroids.</strong> An independence system is a ground set E with a family of &ldquo;independent&rdquo; subsets closed under taking subsets. It is a <strong>matroid</strong> if it also satisfies the exchange property: whenever independent sets A and B have |A| &lt; |B|, some element of B\A can be added to A keeping it independent. Rado (1957) and Edmonds (&ldquo;Matroids and the Greedy Algorithm,&rdquo; <em>Mathematical Programming</em> 1, 127&ndash;136 (1971)) proved the sharp statement: <strong>the greedy algorithm returns a maximum-weight independent set for every weighting if and only if the independence system is a matroid.</strong> Forests of a graph form a matroid (the graphic matroid), which is exactly why Kruskal&#39;s cheapest-edge rule is optimal for minimum spanning tree, and why the same trick fails for shortest path or the travelling salesman, whose feasible structures are not matroids.</p>
+ <p><strong>When greedy is not optimal: the approximation ratio.</strong> For a minimisation problem, an algorithm is a <strong>&rho;-approximation</strong> if on every instance it returns a solution of cost at most &rho; times the optimum, with &rho; fixed and known ahead of time. For set cover, greedy&#39;s ratio is the harmonic number:</p>
+ <code class="eq">greedy sets  ≤  H(k) · OPT ,    H(k) = 1 + 1/2 + 1/3 + ⋯ + 1/k  ≈ ln k
+k = size of the largest set</code>
+ <p>proved by Johnson (1974), Lovász (1975) and Chvátal (1979). The proof is a charging argument: when greedy covers a batch of new elements, charge 1/(batch size) to each; every set in the optimal cover absorbs at most H(k) in total charge, so greedy&#39;s count is at most H(k)&thinsp;&middot;&thinsp;OPT. And this is essentially the best any polynomial-time algorithm can do. Feige (&ldquo;A Threshold of ln n for Approximating Set Cover,&rdquo; <em>Journal of the ACM</em> 45(4), 634&ndash;652 (1998)) proved no polynomial algorithm achieves (1&nbsp;&minus;&nbsp;&epsilon;)&thinsp;ln&thinsp;n unless every NP problem has a slightly-superpolynomial algorithm; Dinur &amp; Steurer (2014) removed the last caveat. <strong>Greedy is essentially optimal for set cover: no polynomial algorithm can improve on its leading ln&nbsp;n factor by any constant, and greedy itself attains ln&nbsp;n + O(1).</strong></p>
+ <p><strong>The submodular generalisation.</strong> The reason set cover has such a clean bound is that its coverage function is <strong>submodular</strong>: adding an element to a smaller collection helps at least as much as adding it to a larger one: diminishing returns, made formal. Nemhauser, Wolsey &amp; Fisher (&ldquo;An Analysis of Approximations for Maximizing Submodular Set Functions. I,&rdquo; <em>Mathematical Programming</em> 14, 265&ndash;294 (1978)) proved that for maximising any monotone submodular function under a &ldquo;pick at most m items&rdquo; constraint, greedy is a <strong>(1&nbsp;&minus;&nbsp;1/e)</strong>-approximation: at least 63.2% of optimal. Nemhauser &amp; Wolsey (&ldquo;Best Algorithms for Approximating the Maximum of a Submodular Set Function,&rdquo; <em>Mathematics of Operations Research</em> 3, 177&ndash;188 (1978)) then showed that in the value-oracle model no polynomial-query algorithm beats 1&nbsp;&minus;&nbsp;1/e, and Feige (1998) showed the same barrier holds for maximum coverage unless P = NP. That bound now underwrites sensor placement, feature selection, influence maximisation and data summarisation across the field. (The verification script confirms this page&#39;s instance is submodular by checking the diminishing-returns inequality on every nested pair of collections.)</p>
+ <p><strong>Where greedy has no constant guarantee at all: 0/1 knapsack</strong> (topic 05&#39;s and The Prune&#39;s problem). Sorting items by value-to-weight ratio and taking them greedily can be arbitrarily far from optimal. One heavy, slightly-better-ratio item can crowd out a perfect fill. The repair is almost embarrassingly small: return the better of the greedy pack and the single most valuable item that fits, and you have a <strong>1/2</strong>-approximation (Sahni, &ldquo;Approximate Algorithms for the 0/1 Knapsack Problem,&rdquo; <em>Journal of the ACM</em> 22(1), 115&ndash;124 (1975)). Scaling and rounding the item values instead gives a <strong>fully polynomial-time approximation scheme</strong>: optimal to any &epsilon; you name, in time polynomial in both n and 1/&epsilon;: the first for knapsack being Ibarra &amp; Kim (&ldquo;Fast Approximation Algorithms for the Knapsack and Sum of Subset Problems,&rdquo; <em>Journal of the ACM</em> 22(4), 463&ndash;468 (1975)). Verification: a script recomputes this.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Every compression you have ever used</span>
+      Huffman coding builds an optimal prefix-free code by a pure greedy rule (repeatedly merge the two least-frequent symbols) and the code it produces is provably minimum-redundancy (Huffman, 1952). It is inside ZIP, PNG, JPEG, MP3 and HTTP/2 header compression. This is a greedy algorithm that is <em>exactly</em> optimal, not through matroid structure this time, but by a direct exchange argument: the two least-frequent symbols can always be taken as the deepest pair in <em>some</em> optimal tree, and induction on the merged instance does the rest.</p>
+ <p><span class="where">Inside a quantum computer&#39;s real-time decoder</span>
+      Topic 07 showed that decoding the surface code is minimum-weight perfect matching. Exact matching is fast but not <em>quite</em> fast enough at scale, so a widely used alternative is the <strong>Union&ndash;Find decoder</strong> (Delfosse &amp; Nickerson, &ldquo;Almost-linear time decoding algorithm for topological codes,&rdquo; <em>Quantum</em> 5, 595 (2021)): it greedily grows clusters of flipped syndromes until each can be explained, trading a small loss of accuracy (measured empirically, not bounded by a theorem) for a <em>provably</em> almost-linear runtime. It is a greedy approximation to the exact matcher, chosen for exactly the reason this topic exists: a fast, well-tested approximation beats an exact method you cannot afford to run in the microsecond you have. <a href="qec.html#duel">See the exact matcher lose a different way: the Decoder Duel &rarr;</a></p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="region-07.html">Contrast: where local greed fails: matching &amp; assignment ▸</a>
+ <a href="region-10.html">The metaheuristics greedy is the zero-exploration corner of ▸</a>
+ <a href="region-20.html">Previous: Markov decision processes &amp; RL ▸</a>
+ <a href="region-22.html">Next: deciding before you know the world ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="region-20.html"><span>Previous topic</span>20 &middot; Markov decision processes &amp; reinforcement learning</a><a class="cp-nx" href="region-22.html"><span>Next topic</span>22 &middot; Stochastic &amp; robust optimization</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

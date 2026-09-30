@@ -282,7 +282,7 @@
   },
   {
    "id": "fsb-transport-240",
-   "page": "feasible.html",
+   "page": "region-18.html",
    "value": "a total cost of 240",
    "formula": "min Σ c_ij x_ij subject to every supply used and every demand met",
    "inputs": "2 sources × 3 destinations, 6 routes · ships 15 S1→D1, 15 S1→D3, 20 S2→D2",
@@ -292,7 +292,7 @@
   },
   {
    "id": "fsb-northwest-25",
-   "page": "feasible.html",
+   "page": "region-18.html",
    "value": "costs 25% more than necessary",
    "formula": "(300 − 240) / 240",
    "inputs": "northwest-corner plan 300 · true optimum 240",
@@ -302,7 +302,7 @@
   },
   {
    "id": "fsb-setcover-h6",
-   "page": "feasible.html",
+   "page": "region-21.html",
    "value": "For k = 6 that is 2.45, and 3 sits comfortably under 2.45 × 2",
    "formula": "greedy ≤ H(k) · OPT, H(k) = 1 + 1/2 + … + 1/k",
    "inputs": "H(6) = 2.45 · greedy takes 3 sets · optimum is 2 · bound = 4.9",
@@ -312,7 +312,7 @@
   },
   {
    "id": "fsb-evpi",
-   "page": "feasible.html",
+   "page": "region-22.html",
    "value": "120 − 80 = 40",
    "formula": "EVPI = E[profit | perfect forecast] − E[profit at the stochastic optimum]",
    "inputs": "newsvendor, cost 2 / price 5, demand 20 or 60 at probability ½ · Q* = 60 earns 80 · perfect information earns 120",
@@ -322,7 +322,7 @@
   },
   {
    "id": "fsb-vss",
-   "page": "feasible.html",
+   "page": "region-22.html",
    "value": "80 − 70 = 10",
    "formula": "VSS = E[profit at the stochastic optimum] − E[profit at the plug-in-the-mean plan]",
    "inputs": "Q* = 60 earns 80 · ordering the mean demand (40) earns 70",
@@ -332,7 +332,7 @@
   },
   {
    "id": "fml-teleport-12000",
-   "page": "formalism.html",
+   "page": "machinery-05.html",
    "value": "12,000 random |ψ⟩ (unique complex α,β on the Bloch sphere), all four measurement outcomes each, corrected state matches the original to within 10⁻¹⁵ up to global phase",
    "formula": "exact state-vector simulation of the teleportation circuit + the four Pauli correction maps",
    "inputs": "12,000 trials · measured max phase-fixed difference 8.4×10⁻¹⁶",
@@ -342,7 +342,7 @@
   },
   {
    "id": "fml-schmidt-500",
-   "page": "formalism.html",
+   "page": "machinery-07.html",
    "value": "500 random bipartite states reconstruct exactly from their SVD (error < 10⁻¹⁴)",
    "formula": "Schmidt decomposition via SVD; reduced-density-matrix eigenvalues compared against λᵢ²",
    "inputs": "500 random states across dimensions 2×2 … 3×4 · measured max error 4.8×10⁻¹⁵",

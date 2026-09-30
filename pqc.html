@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <script>/* door morph arrival (doormorph.js companion, 2026-09-23): MUST run this early, as a classic head script, not from the deferred doormorph.js file. pagereveal fires the moment this document is first rendered -- the API's own description is "equivalent to the first requestAnimationFrame() run ... if you were to trigger it in the head" -- which is well before a deferred script has loaded, so a listener registered from one would miss the event outright (found live: the sessionStorage handoff was never consumed until this moved here). The querySelector below still works from this early: pagereveal's own documented use case is exactly "read/write an element on the newly revealed page", and by the time the callback actually FIRES the browser has parsed enough of the document to paint it, h1 included. */try{if('onpagereveal' in window){window.addEventListener('pagereveal',function(e){var raw=null;try{raw=sessionStorage.getItem('sq-vt-door');sessionStorage.removeItem('sq-vt-door');}catch(_){}if(!raw||!e.viewTransition)return;var i=raw.lastIndexOf(':');if(i<0)return;var track=raw.slice(0,i),stamp=+raw.slice(i+1);if(!(Date.now()-stamp<4000))return;var mine=document.body&&document.body.getAttribute('data-door');if(track!==mine)return;var h1=document.querySelector('.wrap > h1');if(!h1)return;h1.style.viewTransitionName='sq-door-'+track;var restore=function(){try{h1.style.viewTransitionName='';}catch(_e){}};e.viewTransition.ready.then(restore,restore);});}}catch(er){}</script>
-<title>What does post-quantum cryptography cost on the wire? | SymbiQ · Secure · SymbiQ</title>
+<title>What does post-quantum cryptography cost on the wire? · Secure · SymbiQ</title>
 <meta name="description" content="Post-quantum TLS is not slower because the maths is slow. It is slower because the keys and signatures are large. Measure the real byte cost in your own browser, with real ML-KEM and ML-DSA keys.">
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/pqc.html">
 <script type="speculationrules">{
@@ -57,7 +57,7 @@
 <meta name="twitter:description" content="Every byte on this page is measured from a key your browser just generated. Not one number is copied from a table.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/pqc.css?v=41">
+<link rel="stylesheet" href="p/pqc.css?v=42">
 
 
 
@@ -652,6 +652,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="secure.html">Secure</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">What does post-quantum cryptography cost on the wire?</span></div>
 
 <h1>What does post-quantum cryptography cost on the wire?</h1>
 <p class="tagline">Not in theory. In bytes, measured in this browser, from keys generated a moment ago.</p>
@@ -838,7 +839,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <h2 id="qkd">Isn&#39;t quantum key distribution the actual fix?</h2>
 <p>It comes up in almost every conversation about this page, and it deserves a precise answer: <b>quantum key distribution (QKD) is real, it works, and it is not what this page is about.</b> Everything above (the Size Cliff, the Inventory, the Sequencer) is a <em>software</em> answer, changing the algorithms your existing internet already runs. QKD is a <em>hardware</em> answer, built on completely different physics, and mixing them up is how migration plans end up skipping the part they should be doing.</p>
 
-<p><b>The core trick differs from everything else on this page.</b> A classical or post-quantum key exchange proves a secret was shared correctly through mathematics: the hard problem an eavesdropper cannot solve. QKD instead uses a fact about measurement itself: encode a bit in a quantum state, and <a href="quantum-mechanics.html#bloch">measuring it in the wrong basis disturbs it</a>. The same no-cloning theorem <a href="formalism.html#f04">this site&#39;s own Machinery page proves</a> forbids an eavesdropper from covertly copying the state first and measuring the copy. Listen in, and the two ends of the channel can <em>detect it directly</em>, as a rise in errors on bits they sacrifice to check. Nothing on this page can do that: a stolen ML-KEM ciphertext leaves no trace of having been read.</p>
+<p><b>The core trick differs from everything else on this page.</b> A classical or post-quantum key exchange proves a secret was shared correctly through mathematics: the hard problem an eavesdropper cannot solve. QKD instead uses a fact about measurement itself: encode a bit in a quantum state, and <a href="quantum-mechanics.html#bloch">measuring it in the wrong basis disturbs it</a>. The same no-cloning theorem <a href="machinery-04.html">this site&#39;s own Machinery page proves</a> forbids an eavesdropper from covertly copying the state first and measuring the copy. Listen in, and the two ends of the channel can <em>detect it directly</em>, as a rise in errors on bits they sacrifice to check. Nothing on this page can do that: a stolen ML-KEM ciphertext leaves no trace of having been read.</p>
 
 <p><b>BB84</b> (Bennett &amp; Brassard, <em>Proc. IEEE Int. Conf. Computers, Systems and Signal Processing</em>, Bangalore (1984), 175&ndash;179) is the original protocol and still the reference point: Alice sends single photons, each encoding a bit in one of two conjugate bases (say, rectilinear or diagonal polarization), chosen at random; Bob measures each in a randomly chosen basis of his own; afterwards, over an ordinary public channel, they announce only their <em>basis choices</em> and keep the bits where the bases happened to match, discarding the rest. An eavesdropper who measures in the wrong basis (which she must, half the time, with no way to know Alice&#39;s choice in advance) collapses the state and introduces detectable errors in the kept bits. The no-cloning bound behind this is solid; the exact noise threshold depends on which security proof you use.</p>
 
@@ -1042,6 +1043,7 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 })();
 </script>
 
+<aside class="aicard" data-tier-keep aria-label="Sources and AI use"><p class="aicard-h">Sources and AI</p><p>This page links <b>10</b> external sources. <b>AI drafted</b> this page. <b>Scripts</b> recompute its numbers and check its citations before every publish. <b>Chinmoy</b> approves what goes live. <a href="how-we-check.html">What each of those catches and misses</a>.</p></aside>
 <footer>Measured, not looked up.<br>SymbiQ · Every byte on this page came from a key your own browser generated.</footer>
 
 

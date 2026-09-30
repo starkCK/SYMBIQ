@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="The honest version of the reverse loop: what quantum computing can and can't do for AI, why the data-loading problem kills most of the hype, and the one advantage that's actually real.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/ai.css?v=41">
+<link rel="stylesheet" href="p/ai.css?v=42">
 
 
 
@@ -309,12 +309,14 @@
   <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Will quantum computers make AI more powerful?</span></div>
 
 
 
 
 <h1>Will quantum computers make AI more powerful?</h1>
 <p class="tagline">This is the loop in the name. Half of it ships today; the other half is real, slower, and wildly oversold. Here's how to tell them apart.</p>
+<p class="ability"><b>You&#39;ll be able to</b> rank the four ways quantum might help AI, and say which survive the data-loading toll.</p>
 
 <div class="card">
 <h3 aria-level="2">The answer in four lines</h3>
@@ -371,7 +373,7 @@
 <tr><td>Optimization</td><td>QAOA / annealing explore rugged loss landscapes</td><td>Evidence mixed; classical baselines keep catching up. Trust specific results, not the category.</td></tr>
 <tr><td>Linear algebra</td><td>HHL-style "exponential speedup" for solving the big systems under ML</td><td><strong>Most oversold.</strong> Dies to the data-loading toll, conditioning, and readout (see 🔴).</td></tr>
 </table></div>
-<a class="orjump" href="feasible.html#t05">
+<a class="orjump" href="region-05.html">
   <span>◆ <b>&quot;Optimization&quot; in that table is a whole discipline.</b> The thing quantum would have to beat is <b>branch and bound</b>, which does not search the space at all; it proves most of it cannot contain the answer. That is exactly the structure Grover is blind to.<span class="arr"> Topic 05: Branch and bound ▸</span></span>
 </a>
 
@@ -381,7 +383,7 @@
 <span class="tier r">🔴 Formal</span>
 <h2 id="red">The reverse loop, with receipts</h2>
 <p>HHL solves <em>A</em><strong>x</strong>=<strong>b</strong> in Õ(log <em>N</em> · <em>s</em>²κ²/ε) time for an <em>s</em>-sparse, well-conditioned <em>A</em> with an efficiently preparable |<strong>b</strong>⟩. The "fine print" (Aaronson, <a href="https://www.nature.com/articles/nphys3272">Nat. Phys. 2015</a>) is where the exponential speedup usually leaks out: preparing an arbitrary classical <strong>b</strong> costs Ω(<em>N</em>) without QRAM; the condition number κ enters polynomially; and the output is the quantum state |<strong>x</strong>⟩, so reading out classical components costs another ~Ω(<em>N</em>) sampling overhead. Three separate O(<em>N</em>) tolls on a "log <em>N</em>" algorithm.</p>
-<p>HHL's own engine is quantum phase estimation: it reads out <em>A</em>'s eigenvalues, inverts them coherently, then uncomputes. It is the same subroutine <a href="formalism.html#f12">derived from scratch on The Machinery</a>, where it is also named as phase estimation's other real use besides factoring.</p>
+<p>HHL's own engine is quantum phase estimation: it reads out <em>A</em>'s eigenvalues, inverts them coherently, then uncomputes. It is the same subroutine <a href="machinery-12.html">derived from scratch on The Machinery</a>, where it is also named as phase estimation's other real use besides factoring.</p>
 <p><strong>Dequantization.</strong> Tang (<a href="https://arxiv.org/abs/1807.04271">arXiv 1807.04271</a>) gave <span class="rcpt" data-rcpt="ai-dequantization">a classical recommendation-system algorithm polylogarithmic in dimension under ℓ²-norm sample-and-query access</span>, collapsing the claimed exponential separation; the technique generalized to kill several QML speedups in low-rank regimes. The lesson isn't "quantum lost"; it's that a speedup is defined <em>against the best classical algorithm</em>, which may not exist yet.</p>
 <p><strong>Barren plateaus.</strong> For random parameterized circuits forming approximate 2-designs, <span class="rcpt" data-rcpt="ai-barren-plateau">Var[∂<sub>θ</sub><em>C</em>] decays exponentially in qubit count <em>n</em></span> (McClean et al., <a href="https://arxiv.org/abs/1803.11173">arXiv 1803.11173</a>); global cost functions make it worse (Cerezo et al.). Trainability then requires structured or symmetry-constrained ansätze: you must smuggle physics back in to make the "learning" learn.</p>
 <p><strong>Where the reverse loop pays rent.</strong> Problems whose only quantum edge is a modest polynomial speedup (Grover-style quadratic gaps) die under fault-tolerance overheads; the cited analysis finds even quartic speedups only marginally practical on early fault-tolerant hardware (the <a href="basics.html#red">Grover audit</a>; Babbush et al., <a href="https://arxiv.org/abs/2011.04149">arXiv 2011.04149</a>). The survivors are exponential-gap, low-data problems: Hamiltonian dynamics, chemistry and materials ground states (with careful instance selection), and, in the constructive results, classical ML gains provable power from data, which shrinks the room left for a quantum ML advantage (Huang et al., <a href="https://arxiv.org/abs/2011.01938">arXiv 2011.01938</a>), while a rigorous exponential advantage does appear when a quantum machine learns coherently from quantum experiments (Huang et al., <a href="https://arxiv.org/abs/2112.00778">arXiv 2112.00778</a>). Real advantage clusters around tasks whose data is <em>itself</em> quantum. Synthesis: the defensible near-term reverse loop is <strong>quantum devices as data factories</strong>, sampling and Hamiltonian simulation feeding classical AI, not QML on classical data.</p>
@@ -412,6 +414,8 @@
   <div class="card"><h3>🏁 The Race</h3><p>Who's building the hardware both halves of the loop depend on.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 
+<section class="enddoors" data-tier-keep aria-label="Where to go next"><a href="compare.html"><span class="eyebrow">Next in this track</span><b>How do the companies compare?</b></a><a href="play.html#calibration"><span class="eyebrow">Prove it</span><b>The Calibration: tune the agent, not the qubit</b></a><a href="ledger.html"><span class="eyebrow">Judge a claim</span><b>Did they do what they said? The Ledger</b></a></section>
+<aside class="aicard" data-tier-keep aria-label="Sources and AI use"><p class="aicard-h">Sources and AI</p><p>This page links <b>6</b> external sources. <b>AI drafted</b> this page. <b>Scripts</b> recompute its numbers and check its citations before every publish. <b>Chinmoy</b> approves what goes live. <a href="how-we-check.html">What each of those catches and misses</a>.</p></aside>
 <footer>The loop both ways: AI fixes quantum, quantum lifts AI.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 
 

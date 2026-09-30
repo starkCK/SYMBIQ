@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Not today. The honest numbers: what Shor's algorithm can and can't do to Bitcoin, which coins are exposed, why mining is safe, and an interactive calculator of what it would actually take.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/bitcoin.css?v=42">
+<link rel="stylesheet" href="p/bitcoin.css?v=43">
 
 
 
@@ -288,12 +288,14 @@
   <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="secure.html">Secure</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Can quantum computers break Bitcoin?</span></div>
 
 
 
 
 <h1>Can quantum computers break Bitcoin?</h1>
 <p class="tagline">Short answer: not today, and not with anything on a public roadmap. Long answer: the interesting one.</p>
+<p class="ability"><b>You&#39;ll be able to</b> estimate how many qubits, and how long, it takes to break a Bitcoin key on a fast or a slow machine.</p>
 
 <div class="card">
 <h3 aria-level="2">The answer in four lines</h3>
@@ -343,7 +345,7 @@
 <span class="tier r">🔴 Formal</span>
 <h2 id="red">The resource estimates, with receipts</h2>
 <p>Shor's algorithm for the elliptic-curve discrete logarithm on a 256-bit prime-field curve: <strong>2,330 logical qubits</strong> and ≈<strong>1.26×10¹¹ Toffoli gates</strong> (Roetteler, Naehrig, Svore &amp; Lauter, <a href="https://arxiv.org/abs/1706.06752">arXiv:1706.06752</a>, computed for NIST P-256; Bitcoin's secp256k1 is the same size and comparable cost). Later circuit work cuts the Toffoli count substantially (Litinski, <a href="https://arxiv.org/abs/2306.08585">arXiv:2306.08585</a>, ~5×10⁷ Toffolis via active-volume architecture and state-reuse tricks; windowed-arithmetic lines of work cut counts further), which moves the estimates down, not away.</p>
-<p>This page asserts those counts; it does not derive how Shor's algorithm reaches them. The mechanism (the quantum Fourier transform, phase estimation, and the period-finding step that turns "factor N" into "find a period") is worked through from scratch on <a href="formalism.html#f13">The Machinery</a>. Want the one-sentence version of <em>why any of it works</em> before the full derivation? <a href="phase-kickback.html">Start with phase kickback</a>, the single mechanism this whole circuit runs on, repeated.</p>
+<p>This page asserts those counts; it does not derive how Shor's algorithm reaches them. The mechanism (the quantum Fourier transform, phase estimation, and the period-finding step that turns "factor N" into "find a period") is worked through from scratch on <a href="machinery-13.html">The Machinery</a>. Want the one-sentence version of <em>why any of it works</em> before the full derivation? <a href="phase-kickback.html">Start with phase kickback</a>, the single mechanism this whole circuit runs on, repeated.</p>
 <p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ <span class="rcpt" data-rcpt="btc-1.9b" tabindex="0" role="button" aria-expanded="false">1.9B</span></strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation; and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
 <p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Babbush, Zalcman, Gidney et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis, <span class="rcpt" data-rcpt="btc-500k" tabindex="0" role="button" aria-expanded="false">under half a million physical qubits</span>, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong><span class="rcpt" data-rcpt="btc-9min" tabindex="0" role="button" aria-expanded="false">≈9 minutes</span></strong> once your transaction appears (12 minutes on the paper's second circuit), against blocks that arrive about every ten minutes. The paper puts the chance of winning that race at just under 41% under idealised assumptions, so it is a coin-flip-sized threat to a single spend, not a certainty. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's largest superconducting chip to about<strong>2.6 orders of magnitude, not 6.2</strong> (the figures are computed in the chart below). The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
 <div data-tier-keep>
@@ -449,6 +451,8 @@
   <div class="card"><h3>🏁 The Race</h3><p>Who's closest to machines that matter. The table is still empty, and the page says why.</p><a href="race.html">Scoreboard →</a></div>
 </div>
 
+<section class="enddoors" data-tier-keep aria-label="Where to go next"><a href="pqc.html"><span class="eyebrow">Next in this track</span><b>Post-quantum, on the wire: seven live tools</b></a><a href="journey.html"><span class="eyebrow">Prove it</span><b>The Solver&#x27;s Path: the main quest</b></a><a href="ledger.html"><span class="eyebrow">Judge a claim</span><b>Did they do what they said? The Ledger</b></a></section>
+<aside class="aicard" data-tier-keep aria-label="Sources and AI use"><p class="aicard-h">Sources and AI</p><p>This page links <b>6</b> external sources. <b>AI drafted</b> this page. <b>Scripts</b> recompute its numbers and check its citations before every publish. <b>Chinmoy</b> approves what goes live. <a href="how-we-check.html">What each of those catches and misses</a>.</p></aside>
 <footer>Quantum vs Bitcoin, in numbers, not panic.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 
 

@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="One mechanism -- phase kickback -- is the actual engine behind Deutsch-Jozsa, Grover's search and Shor's factoring. See it happen on two qubits, live, before the full proof.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/phase-kickback.css?v=41">
+<link rel="stylesheet" href="p/phase-kickback.css?v=42">
 
 
 
@@ -290,9 +290,11 @@
   <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Why do Grover&#x27;s and Shor&#x27;s algorithms actually work?</span></div>
 
 <h1>Why do Grover's and Shor's algorithms actually work?</h1>
 <p class="tagline">One mechanism, applied four times, is the actual engine behind Deutsch-Jozsa, Grover's search, and Shor's factoring. It has a name, phase kickback, and this site never said it out loud until now.</p>
+<p class="ability"><b>You&#39;ll be able to</b> say why one mechanism, phase kickback, runs Deutsch-Jozsa, Simon and Shor.</p>
 
 <div class="card">
 <h3 aria-level="2">The answer in four lines</h3>
@@ -345,22 +347,22 @@
     <button class="bigplay ghost" id="pk-reset">Reset</button>
   </p>
   <p style="text-align:center;margin-bottom:4px">Total kicked back onto the control: <span id="pk-total">0</span> · applications: <span id="pk-count">0</span></p>
-  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Scope: this shows the cleanest case, a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full, numerical verification included, at <a href="formalism.html#f08">The Machinery, topic f08</a>. It exists to make the mechanism visible before the proof.</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Scope: this shows the cleanest case, a controlled-phase gate acting on a target already fixed at a computational-basis eigenstate. The general statement (any unitary U, any of its eigenstates) is exactly what powers Deutsch's algorithm, proven in full, numerical verification included, at <a href="machinery-08.html">The Machinery, topic f08</a>. It exists to make the mechanism visible before the proof.</p>
 </div>
 
 <span class="tier r">🔴 Formal</span>
 <h2 id="red">Where this mechanism runs, and where the proofs already live</h2>
 <p>This page does not re-derive what <a href="formalism.html">The Machinery</a> has already proven and independently referee-verified. It exists to name the mechanism plainly and point at exactly where each proof lives.</p>
-<p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register, proven on <a href="formalism.html#f08">topic f08</a> and <a href="formalism.html#f09">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)), and numerically checked two different ways: <em>exhaustively</em> at f08's n=1 (all four possible one-bit functions), and by <em>sampling</em> at f09's n=4 (both constant functions, plus 20 of the 12,870 possible balanced ones); worth knowing which is which before quoting either as a full proof by enumeration.</p>
+<p><strong>Deutsch's algorithm and Deutsch-Jozsa</strong> are the smallest complete instance: an oracle U<sub>f</sub>|x⟩|y⟩ = |x⟩|y⊕f(x)⟩, with the answer register prepared in |−⟩, kicks back (−1)<sup>f(x)</sup> onto the query register instead of ever writing to the answer register, proven on <a href="machinery-08.html">topic f08</a> and <a href="machinery-09.html">f09</a> (Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992); the exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)), and numerically checked two different ways: <em>exhaustively</em> at f08's n=1 (all four possible one-bit functions), and by <em>sampling</em> at f09's n=4 (both constant functions, plus 20 of the 12,870 possible balanced ones); worth knowing which is which before quoting either as a full proof by enumeration.</p>
 <p><strong>Grover's algorithm</strong> uses the identical trick in its <em>phase-oracle</em> form: instead of writing "is this the answer?" to a separate register, the oracle multiplies the marked state by −1 directly, exactly the kickback pattern above with the marked state playing the role of the fixed eigenstate. Grover, <a href="https://arxiv.org/abs/quant-ph/9605043">arXiv quant-ph/9605043</a> (Proc. 28th STOC, 212 (1996)), proved the O(√N) query bound this buys; play the mechanism yourself at <a href="play.html#grover">Grover's Escape</a>, where over-rotating past the answer is a failure mode this site's games are built to show rather than hide.</p>
-<p><strong>Quantum phase estimation</strong> generalises the widget above from a fixed ±1 to an arbitrary eigenvalue e<sup>2πiθ</sup> of any unitary U, using repeated controlled applications of increasing powers of U to read θ out bit by bit, proven (with its "sharply peaked, not exact" limit stated plainly) on <a href="formalism.html#f12">topic f12</a>. <strong>Shor's algorithm</strong> is one specific choice of U, modular multiplication, that turns phase estimation's output into the period behind factoring, worked through with a <span class="rcpt" data-rcpt="pk-2000-trial">2,000-trial numerical verification</span> on <a href="formalism.html#f13">topic f13</a>. It is the mechanism <a href="bitcoin.html">the Bitcoin page's</a> qubit counts run on, though not the counts themselves: those come from separate resource-estimation papers cited there, since bitcoin.html is upfront that it asserts those numbers rather than deriving them.</p>
+<p><strong>Quantum phase estimation</strong> generalises the widget above from a fixed ±1 to an arbitrary eigenvalue e<sup>2πiθ</sup> of any unitary U, using repeated controlled applications of increasing powers of U to read θ out bit by bit, proven (with its "sharply peaked, not exact" limit stated plainly) on <a href="machinery-12.html">topic f12</a>. <strong>Shor's algorithm</strong> is one specific choice of U, modular multiplication, that turns phase estimation's output into the period behind factoring, worked through with a <span class="rcpt" data-rcpt="pk-2000-trial">2,000-trial numerical verification</span> on <a href="machinery-13.html">topic f13</a>. It is the mechanism <a href="bitcoin.html">the Bitcoin page's</a> qubit counts run on, though not the counts themselves: those come from separate resource-estimation papers cited there, since bitcoin.html is upfront that it asserts those numbers rather than deriving them.</p>
 
 <h2>References</h2>
 <div class="card">
   <p>• Deutsch's algorithm: Deutsch, <em>Proc. R. Soc. Lond. A</em> 400, 97 (1985); exact one-query version: Cleve, Ekert, Macchiavello &amp; Mosca, <em>Proc. R. Soc. Lond. A</em> 454, 339 (1998)<br>
   • Deutsch-Jozsa: Deutsch &amp; Jozsa, <em>Proc. R. Soc. Lond. A</em> 439, 553 (1992)<br>
   • Grover's algorithm: Grover, <a href="https://arxiv.org/abs/quant-ph/9605043">arXiv quant-ph/9605043</a> (Proc. 28th STOC, 212 (1996))<br>
-  • Phase estimation and period-finding: proved in full on <a href="formalism.html#f12">The Machinery, f12</a> and <a href="formalism.html#f13">f13</a>, citations there</p>
+  • Phase estimation and period-finding: proved in full on <a href="machinery-12.html">The Machinery, f12</a> and <a href="machinery-13.html">f13</a>, citations there</p>
 </div>
 
 <div class="cyu" data-tier-keep data-a="2">
@@ -372,7 +374,7 @@
     <button data-opt>The target stays exactly as it was, because that is what "eigenstate" means, and the eigenvalue's phase attaches to the control qubit instead.</button>
     <button data-opt>The control and target swap states.</button>
   </div>
-  <p class="cyu-why">An eigenstate of U is, by definition, a state U only multiplies by a number: it cannot rotate an eigenstate into some other state, only rescale it. Since a controlled-U gate's two branches (control=0 does nothing, control=1 applies U) share the same target state either way, that shared eigenvalue factors out of the target entirely and becomes a real, measurable difference between the control's own two branches instead. No metaphor is involved: it is the same algebra the widget above runs, and the same algebra formalism.html#f08 proves in full for Deutsch's algorithm.</p>
+  <p class="cyu-why">An eigenstate of U is, by definition, a state U only multiplies by a number: it cannot rotate an eigenstate into some other state, only rescale it. Since a controlled-U gate's two branches (control=0 does nothing, control=1 applies U) share the same target state either way, that shared eigenvalue factors out of the target entirely and becomes a real, measurable difference between the control's own two branches instead. No metaphor is involved: it is the same algebra the widget above runs, and the same algebra machinery-08.html proves in full for Deutsch's algorithm.</p>
 </div>
 <div class="pathway-nudge" hidden>
   <strong>That is the format.</strong> Every explainer here works the same way: a claim, the number behind it, and what it does <em>not</em> mean. The short version runs as <a href="index.html#daily-q">the Question</a>, numbered and dated. <a href="https://discord.gg/fWKGSb7ZHE">The Discord</a> is where you argue with it.
@@ -385,6 +387,8 @@
   <div class="card"><h3>₿ Where this ends up</h3><p>The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.</p><a href="bitcoin.html">Can quantum break Bitcoin? →</a></div>
 </div>
 
+<section class="enddoors" data-tier-keep aria-label="Where to go next"><a href="machinery-08.html"><span class="eyebrow">Next in this track</span><b>The Machinery: Deutsch&#x27;s algorithm</b></a><a href="play.html#golf"><span class="eyebrow">Prove it</span><b>Circuit Golf: reach the target in the fewest gates</b></a><a href="bitcoin.html"><span class="eyebrow">Judge a claim</span><b>Can quantum computers break Bitcoin?</b></a></section>
+<aside class="aicard" data-tier-keep aria-label="Sources and AI use"><p class="aicard-h">Sources and AI</p><p>This page links <b>4</b> external sources. <b>AI drafted</b> this page. <b>Scripts</b> recompute its numbers and check its citations before every publish. <b>Chinmoy</b> approves what goes live. <a href="how-we-check.html">What each of those catches and misses</a>.</p></aside>
 <footer>Phase kickback: the one mechanism, applied four times.<br>SymbiQ · Sources cited inline · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 
 

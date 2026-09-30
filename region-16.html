@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>The simplex algorithm · Learn · SymbiQ</title>
+<meta name="description" content="How do you actually find the best corner?. The Feasible Region, topic 16 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-16.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-16.html">
+<meta property="og:title" content="The simplex algorithm · SymbiQ">
+<meta property="og:description" content="How do you actually find the best corner?. The Feasible Region, topic 16 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The simplex algorithm · SymbiQ">
+<meta name="twitter:description" content="How do you actually find the best corner?. The Feasible Region, topic 16 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/region-16.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/region-16.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">The simplex algorithm</span></div>
+
+<div class="course" id="t16" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t16" data-id="t16">
+<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 16 of 24 &middot; Added after the flagship</div>
+<h1>The simplex algorithm</h1>
+<p class="tagline">How do you actually find the best corner?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" aria-current="page" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<details class="cp-section"><summary>About this section: Added after the flagship</summary>
+<p>These two belong earlier in the reading order: right after topic 02, where the vertex theorem promises a best corner exists but doesn&#39;t say how to find it. Topic 16 is that algorithm. Topic 17 is what happens once the objective is allowed to curve, ending at the exact classical result. Goemans&ndash;Williamson&#39;s semidefinite relaxation of Max-Cut. That QAOA on the quantum side has to beat. They are appended here, after the flagship, rather than renumbered into the middle of a page every link on this site already points into.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 620 400" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A five-sided feasible region. Arrows trace the simplex method's actual path: from the origin to the corner at four, zero, worth sixteen, then to four, two, worth twenty-two, then to two point five, five, worth twenty-five, where it stops because no neighbouring corner scores higher.">
+ <g stroke="var(--border)" stroke-width="1" opacity=".3">
+ <path d="M165 88 V340 M250 88 V340 M335 88 V340 M420 88 V340 M505 88 V340"/>
+ <path d="M80 298 H530 M80 256 H530 M80 214 H530 M80 172 H530 M80 130 H530"/>
+ </g>
+ <polygon points="80,340 420,340 420,256 292.5,130 80,130" fill="rgba(245,158,11,.15)" stroke="var(--or)" stroke-width="2.5"/>
+ <path d="M420 340 V88" class="sMut" stroke-width="2" stroke-dasharray="6 4"/>
+ <path d="M80 130 H530" class="sMut" stroke-width="2" stroke-dasharray="6 4"/>
+ <path d="M526 361 L229 67" class="sMut" stroke-width="2" stroke-dasharray="6 4"/>
+ <text class="lbl-s" x="428" y="102">x ≤ 4</text>
+ <text class="lbl-s" x="428" y="116">machine A</text>
+ <text class="lbl-s" x="380" y="122">y ≤ 5: machine B</text>
+ <text class="lbl-s" x="352" y="205">2x + y ≤ 10</text>
+ <text class="lbl-s" x="352" y="219">material</text>
+
+ <path d="M80 340 L420 340" class="sOr" stroke-width="3.5" marker-end="url(#fa16)"/>
+ <path d="M420 340 L420 256" class="sOr" stroke-width="3.5" marker-end="url(#fa16)"/>
+ <path d="M420 256 L292.5 130" class="sOr" stroke-width="3.5" marker-end="url(#fa16)"/>
+ <defs><marker id="fa16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+ <path d="M0 0 L10 5 L0 10 z" fill="var(--or)"/></marker></defs>
+
+ <circle cx="80" cy="340" r="7" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
+ <text class="lbl-b or" x="92" y="336">start: (0, 0)</text>
+ <text class="lbl-s" x="92" y="352">objective = 0</text>
+
+ <circle cx="420" cy="340" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
+ <text class="lbl-s or" x="428" y="330">(4, 0) → 16</text>
+
+ <circle cx="420" cy="256" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
+ <text class="lbl-s or" x="428" y="250">(4, 2) → 22</text>
+
+ <circle cx="292.5" cy="130" r="8" fill="var(--or)" stroke="var(--bg)" stroke-width="2.5"/>
+ <text class="lbl-b or" x="225" y="112">STOP, (2.5, 5) → 25</text>
+ <text class="lbl-s" x="225" y="126">no neighbour scores higher</text>
+
+ <circle cx="80" cy="130" r="6" fill="var(--muted)"/>
+ <text class="lbl-s" x="26" y="120" text-anchor="end">(0, 5) → 15</text>
+ <text class="lbl-s" x="26" y="134" text-anchor="end">never visited</text>
+
+ <path d="M80 88 V340 H530" fill="none" stroke="var(--border)" stroke-width="2"/>
+ <g class="lbl-s" text-anchor="middle">
+ <text x="80" y="356">0</text><text x="165" y="356">1</text><text x="250" y="356">2</text>
+ <text x="335" y="356">3</text><text x="420" y="356">4</text><text x="505" y="356">5</text>
+ </g>
+ <text class="lbl-b" x="300" y="380" text-anchor="middle">units of product A</text>
+ <text class="lbl-b" x="26" y="214" text-anchor="middle" transform="rotate(-90 26 214)">units of product B</text>
+ </svg></div>
+ <figcaption><strong>A fresh instance, walked rather than just solved: maximise 4x + 3y subject to x ≤ 4, y ≤ 5, 2x + y ≤ 10.</strong> Five vertices, checked here both by direct enumeration and by an independent LP solver: (0,0) → 0, (4,0) → 16, (4,2) → 22, (2.5,5) → 25, (0,5) → 15. Starting at the origin, simplex always steps to the best-looking improving neighbour, here (4,0), then (4,2), then (2.5,5), and stops the instant no neighbour scores higher. It never visits (0,5), and it does not need to: three pivots against five candidate corners.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>Topic 02 proved something remarkable and then left a practical question hanging: the best plan is always at a corner, so you never have to search the infinite interior. But a feasible region can still have an enormous number of corners. Which ones do you actually visit?</p>
+ <p>Dantzig&#39;s answer: developed in 1947 while he was at the Pentagon and later at RAND, and written up in full in <em>Linear Programming and Extensions</em> (Princeton University Press, 1963): is the simplex method, and it is almost insultingly simple once stated plainly: <strong>start at any vertex. Look at every neighbouring vertex. One along each edge. If any neighbour scores better, move to the best-looking one. If none does, stop.</strong> You are provably at the optimum, because topic 02&#39;s own convexity argument already ruled out anything better hiding elsewhere. That is the whole algorithm. Everything else: representing a vertex as a &quot;basic feasible solution&quot;, choosing which improving neighbour to try, avoiding a degenerate vertex that loops back on itself: is bookkeeping around that one idea.</p>
+ <p>The figure above walks a real instance three pivots deep: origin → (4,0) → (4,2) → (2.5,5), stopping the moment the next neighbour, (0,5), would score worse. Three moves against five vertices is not much of a saving on a toy example. The saving is that, in practice, the number of pivots needed grows nowhere near as fast as the number of vertices does, which is exactly the complexity story the mathematics below has to tell honestly, because it is not always true.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p>Maintain a basic feasible solution: a vertex, expressed as which variables (decision plus slack) are currently &quot;basic&quot;. At each iteration, compute the <strong>reduced cost</strong> of every non-basic variable: how much the objective would improve per unit if that variable entered the basis. Dantzig&#39;s original rule enters the variable with the most attractive reduced cost; a ratio test then finds which basic variable must leave to keep the solution feasible, and pivoting swaps the two:</p>
+ <code class="eq">enter: the non-basic variable with the best reduced cost
+leave:  arg min over rows i with a_ij &gt; 0 of  b_i / a_ij      (the ratio test)
+stop:   when no reduced cost is still improving. That is the certificate</code>
+ <p><strong>Worst case: exponential, and provably so.</strong> Klee &amp; Minty, &quot;How Good is the Simplex Algorithm?&quot;, in <em>Inequalities III</em> (O. Shisha, ed.), Academic Press (1972), pp. 159&ndash;175, built a family of feasible regions (a mildly skewed n-dimensional cube) on which the standard largest-coefficient pivot rule visits <em>every one</em> of the 2ⁿ vertices before stopping. Re-running the classic n = 3 instance confirms it: starting from the origin, the rule takes exactly 7 pivots to reach all 8 vertices of the cube in turn, the objective climbing 0 → 20 → 30 → 50 → 75 → 95 → 105 → 125, never once revisiting a vertex or finding a shortcut.</p>
+ <p>And yet simplex is, empirically, one of the fastest algorithms known for typical linear programs: solving instances with millions of variables in seconds. That gap between the proven worst case and lived reality went unexplained for three decades, until Spielman &amp; Teng, &quot;Smoothed Analysis of Algorithms: Why the Simplex Algorithm Usually Takes Polynomial Time,&quot; <em>Journal of the ACM</em> 51(3) (2004), 385&ndash;463: perturb any input instance by a small amount of random noise, and simplex&#39;s <em>expected</em> running time is polynomial in the input size and the inverse of the perturbation size. Pathological instances like the Klee&ndash;Minty cube turn out to be fragile, not typical: nudge them slightly and the exponential behaviour disappears.</p>
+ <p>Note what this settles and what it doesn&#39;t. It does not contradict Klee&ndash;Minty. That cube is still there, and an adversary who knows your pivot rule can still build one on purpose. It explains why nobody runs into one by accident. Topic 02 already noted that linear programming <em>as a decision problem</em> is in P via Khachiyan&#39;s ellipsoid method and Karmarkar&#39;s interior-point method; smoothed analysis is the separate, later result explaining why the much older, and in practice much faster, simplex method was never really the outlier its worst case suggested.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Still inside the solver, decades after being &quot;obsoleted&quot;</span>
+      Interior-point methods (Karmarkar, 1984, and the barrier methods descended from it: topic 17 below builds on exactly that machinery) are usually the faster choice for solving one enormous linear program from a cold start. But branch and bound (topic 05) does not solve one LP. It solves thousands of closely related LPs, each just one added constraint away from the last, and needs an answer to each quickly. That is a warm-start problem, and it is where simplex, specifically its dual variant, still wins decisively: it can resume from a previous solution and restore feasibility in a handful of pivots, where a standard interior-point method has no equivalent warm start and effectively begins again. That is a structural reason rather than a single benchmark number, and it is honestly why commercial mixed-integer solvers still run (dual) simplex at every node of the search tree even when they reach for interior-point methods to solve the very first relaxation.</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="region-02.html">Where this began: why the answer is at a corner ▸</a>
+ <a href="region-17.html">Next: when the objective learns to curve ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="region-15.html"><span>Previous topic</span>15 &middot; Evolutionary game theory</a><a class="cp-nx" href="region-17.html"><span>Next topic</span>17 &middot; Quadratic &amp; semidefinite programming</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

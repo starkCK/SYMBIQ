@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>QAOA &amp; VQE · Learn · SymbiQ</title>
+<meta name="description" content="Two algorithms, one for graphs and one for molecules: what&#x27;s actually shared, and what&#x27;s genuinely different?. The Machinery, topic 16 of 20: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/machinery-16.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/machinery-16.html">
+<meta property="og:title" content="QAOA &amp; VQE · SymbiQ">
+<meta property="og:description" content="Two algorithms, one for graphs and one for molecules: what&#x27;s actually shared, and what&#x27;s genuinely different?. The Machinery, topic 16 of 20: a picture, the intuition, the mathematics, and where it ru">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="QAOA &amp; VQE · SymbiQ">
+<meta name="twitter:description" content="Two algorithms, one for graphs and one for molecules: what&#x27;s actually shared, and what&#x27;s genuinely different?. The Machinery, topic 16 of 20: a picture, the intuition, the mathematics, and where it ru">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/machinery-16.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/machinery-16.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="L3" data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="formalism.html">The Machinery</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">QAOA &amp; VQE</span></div>
+
+<div class="course" id="f16" data-course data-page="formalism" data-mission="machinery-complete" data-count="20" data-topic="f16" data-id="f16">
+<header class="cp-head"><div class="eyebrow"><a href="formalism.html">The Machinery</a> &middot; Topic 16 of 20 &middot; Quantum algorithms for optimization &amp; simulation</div>
+<h1>QAOA &amp; VQE</h1>
+<p class="tagline">Two algorithms, one for graphs and one for molecules: what's actually shared, and what's genuinely different?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Machinery"><li><a href="machinery-01.html" data-id="f01" title="The postulates of quantum mechanics, for computing">01</a></li><li><a href="machinery-02.html" data-id="f02" title="Density matrices &amp; mixed states">02</a></li><li><a href="machinery-03.html" data-id="f03" title="Measurement, properly">03</a></li><li><a href="machinery-04.html" data-id="f04" title="The no-cloning theorem">04</a></li><li><a href="machinery-05.html" data-id="f05" title="Quantum teleportation">05</a></li><li><a href="machinery-06.html" data-id="f06" title="Superdense coding">06</a></li><li><a href="machinery-07.html" data-id="f07" title="Schmidt decomposition">07</a></li><li><a href="machinery-08.html" data-id="f08" title="Deutsch&#x27;s algorithm">08</a></li><li><a href="machinery-09.html" data-id="f09" title="The Deutsch-Jozsa algorithm">09</a></li><li><a href="machinery-10.html" data-id="f10" title="Simon&#x27;s algorithm">10</a></li><li><a href="machinery-11.html" data-id="f11" title="The quantum Fourier transform">11</a></li><li><a href="machinery-12.html" data-id="f12" title="Quantum phase estimation">12</a></li><li><a href="machinery-13.html" data-id="f13" title="Period finding &amp; continued fractions">13</a></li><li><a href="machinery-16.html" data-id="f16" aria-current="page" title="QAOA &amp; VQE">16</a></li><li><a href="machinery-17.html" data-id="f17" title="Quantum simulation &amp; chemistry">17</a></li><li><a href="machinery-14.html" data-id="f14" title="Shannon entropy">14</a></li><li><a href="machinery-15.html" data-id="f15" title="Von Neumann entropy &amp; the Holevo bound">15</a></li><li><a href="machinery-18.html" data-id="f18" title="QMA &amp; the local Hamiltonian problem">18</a></li><li><a href="machinery-19.html" data-id="f19" title="QMA-completeness">19</a></li><li><a href="machinery-20.html" data-id="f20" title="Adiabatic universality &amp; the quantum PCP conjecture">20</a></li></ol>
+<details class="cp-section"><summary>About this section: Quantum algorithms for optimization &amp; simulation</summary>
+<p>Every algorithm this page has built so far is <strong>proven</strong>: Deutsch's, Simon's, Shor's period-finding all come with a fixed circuit and a guaranteed advantage over any classical algorithm attacking the identical problem. This section is the honest counterpart. QAOA and VQE are a completely different kind of algorithm: built for the noisy, shallow-circuit hardware that actually exists today, and carrying a different guarantee: not "this is fast," but "this can never quietly report a wrong answer as if it were right." Nobody has a proof either one beats its best classical rival on the problems people actually care about: a fact this section states as plainly as the rest of this page states its proofs.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4>See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="A triangular loop diagram. A box at top reads U(theta), the parameterized quantum circuit. An arrow leads down-right to a large box reading measure the expectation value of H, with two sub-lines: QAOA sets H to the cost Hamiltonian for a graph problem such as Max-Cut, and VQE sets H to a molecule's Hamiltonian. An arrow leads left to a box reading classical optimizer, updates theta. A final arrow closes the loop back up to the circuit box.">
+ <rect x="170" y="20" width="220" height="50" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+ <text class="lbl-b" x="280" y="41" text-anchor="middle" font-size="12.5">U(θ): the parameterized</text>
+ <text class="lbl-b" x="280" y="57" text-anchor="middle" font-size="12.5">quantum circuit</text>
+
+ <rect x="310" y="180" width="230" height="95" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+ <text class="lbl-b" x="425" y="203" text-anchor="middle" font-size="12.5">measure ⟨ψ(θ)|H|ψ(θ)⟩</text>
+ <text class="lbl-s tl" x="425" y="228" text-anchor="middle" font-size="10.5">QAOA: H = cost Hamiltonian</text>
+ <text class="lbl-s tl" x="425" y="241" text-anchor="middle" font-size="10.5">(a graph problem, e.g. Max-Cut)</text>
+ <text class="lbl-s or" x="425" y="258" text-anchor="middle" font-size="10.5">VQE: H = a molecule's Hamiltonian</text>
+
+ <rect x="30" y="210" width="200" height="60" rx="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+ <text class="lbl-b" x="130" y="235" text-anchor="middle" font-size="12.5">classical optimizer:</text>
+ <text class="lbl-b" x="130" y="251" text-anchor="middle" font-size="12.5">update θ</text>
+
+ <defs><marker id="af-qaoa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="currentColor"/></marker></defs>
+ <path d="M290,70 L390,180" stroke="var(--muted)" stroke-width="2" fill="none" marker-end="url(#af-qaoa)"/>
+ <path d="M340,277 L200,222" stroke="var(--muted)" stroke-width="2" fill="none" marker-end="url(#af-qaoa)"/>
+ <path d="M120,210 L225,72" stroke="var(--muted)" stroke-width="2" fill="none" marker-end="url(#af-qaoa)"/>
+ </svg></div>
+ <figcaption><strong>Same loop, two different jobs plugged into it.</strong> A quantum circuit with tunable knobs (θ) is measured, a classical computer nudges the knobs to improve the number it read, and the whole thing repeats. QAOA and VQE are two names for the same hybrid quantum-classical loop, differing only in which Hamiltonian sits in the measurement box.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4>The intuition</h4>
+ <p>Both algorithms belong to a family usually called <strong>variational quantum algorithms</strong>, designed on purpose for hardware too noisy and too short-lived to run the deep, fully error-corrected circuits topics 11–13 just built. The trick: keep the quantum part short (a handful of tunable gates) and push all the hard searching onto a classical optimizer sitting outside the quantum computer, the same way an engineer tunes a handful of dials on a physical instrument rather than redesigning it from scratch each time.</p>
+ <p><strong>QAOA</strong> (the Quantum Approximate Optimization Algorithm) points that loop at a combinatorial optimization problem: encode "how good is this cut/assignment/schedule" as a Hamiltonian whose highest eigenvalue is the best possible answer (exactly the Ising-model encoding <a href="feasible.html#bridges">The Feasible Region&#39;s bridges section</a> already introduces), alternate between that cost Hamiltonian and a fixed "mixer" Hamiltonian, and let the optimizer search for the angles that push the expectation value as high as it can go.</p>
+ <p><strong>VQE</strong> (the Variational Quantum Eigensolver) points the identical loop at a completely different Hamiltonian (a real molecule's) searching for the <em>lowest</em> eigenvalue instead of the highest, because a molecule's ground-state energy is exactly that: the smallest possible expectation value of its Hamiltonian over any physical quantum state. The guarantee that makes this trustworthy rather than just plausible is a hundred-year-old fact from ordinary quantum mechanics, not something invented for this algorithm: the variational principle, proved below.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4>The mathematics</h4>
+ <p><strong>QAOA.</strong> For a graph problem such as Max-Cut, the cost Hamiltonian is H<sub>C</sub> = Σ<sub>(i,j)∈E</sub> ½(I − Z<sub>i</sub>Z<sub>j</sub>), whose eigenvalue on a computational-basis state is exactly the number of edges that state's ±1 labelling cuts. The mixer is H<sub>M</sub> = Σ<sub>i</sub> X<sub>i</sub>. At depth p, starting from the uniform superposition |+⟩<sup>⊗n</sup>:</p>
+ <code class="eq">|γ,β⟩ = e<sup>−iβ<sub>p</sub>H_M</sup>e<sup>−iγ<sub>p</sub>H_C</sup> ⋯ e<sup>−iβ₁H_M</sup>e<sup>−iγ₁H_C</sup>|+⟩<sup>⊗n</sup></code>
+ <p>and a classical optimizer searches (γ,β) to maximise ⟨γ,β|H<sub>C</sub>|γ,β⟩. Verified by exact statevector simulation on the same n=6 trap graph already verified by brute force on <a href="feasible.html#bridges">The Feasible Region</a> and playable at <a href="play.html#maxcut">Graph City, District 5</a> (edges (4,5),(3,5),(0,5),(1,3),(2,4),(0,2), brute-force max cut = 6): the best expectation value found is always sandwiched in [0, 6] at every depth, and adding layers closes the gap toward the true optimum: p=1 reaches 4.44 (74.0% of optimal), p=2 reaches 5.21 (86.9%), p=3 reaches 5.59 (93.1%). This is a real demonstration of "more layers help," on one concrete instance. It is <em>not</em> a claim that QAOA beats the 87.8567% unconditional classical guarantee <a href="region-17.html">topic 17&#39;s Goemans–Williamson bound</a> already proves; on general instances, nobody has shown that it does (Farhi, Goldstone &amp; Gutmann, arXiv:1411.4028, 2014; Marwaha, <em>Quantum</em> 5, 437 (2021)).</p>
+ <p><strong>VQE and the variational principle.</strong> For any Hermitian H with eigenvalues λ₀≤λ₁≤…, and any normalised |ψ⟩ expanded in H's own eigenbasis as |ψ⟩=Σc<sub>i</sub>|i⟩:</p>
+ <code class="eq">⟨ψ|H|ψ⟩ = Σᵢ |cᵢ|² λᵢ ≥ λ₀ Σᵢ |cᵢ|² = λ₀</code>
+ <p>: a weighted average can never fall below the smallest value being averaged, with equality only when |ψ⟩ is itself the ground state. <strong>This is why VQE's number is trustworthy even when the ansatz is a bad guess: a bad guess reports too high an energy, never too low.</strong> Verified on an illustrative 2-qubit Hamiltonian in the six-term structure a real Jordan–Wigner-mapped H₂ Hamiltonian takes (H = g₀I + g₁Z₀ + g₂Z₁ + g₃Z₀Z₁ + g₄X₀X₁ + g₅Y₀Y₁; coefficients here are illustrative, not fitted to any specific bond length): across a full 200×200 grid of the ansatz&#39;s two angles (40,000 points) not one ever produced an energy below the true ground state found by exact diagonalization, and a classical optimizer starting from 30 random points converged to the true ground energy to within 10⁻⁹.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4>Where it actually matters</h4>
+ <p><span class="where">Two live cross-links, and one honest limit shared by both</span>
+      QAOA is the quantum side of the exact head-to-head <a href="region-17.html">The Feasible Region&#39;s topic 17</a> already runs against Goemans–Williamson's SDP bound, and the graph verified above is the identical <a href="play.html#maxcut">District 5 trap</a> from Graph City: the same instance, checked by brute force there and by exact quantum simulation here. VQE's target (a molecule's ground-state energy) is exactly what the next topic explains how to actually reach on real chemistry, and how it connects back to phase estimation (topic 12). <strong>Neither algorithm proves a speedup.</strong> They exist because they are the best options that fit on hardware available <em>now</em>, not because a theorem guarantees either wins against the best classical method: the same anti-hype standard <a href="ai.html">this site&#39;s AI↔quantum page</a> applies throughout. (Quantum machine learning, the other major NISQ-era heuristic family, is covered on that page rather than repeated here.)</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="machinery-17.html">Next: what this loop is actually FOR: simulating a real molecule ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="machinery-13.html"><span>Previous topic</span>13 &middot; Period finding &amp; continued fractions</a><a class="cp-nx" href="machinery-17.html"><span>Next topic</span>17 &middot; Quantum simulation &amp; chemistry</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

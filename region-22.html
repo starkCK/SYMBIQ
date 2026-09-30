@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Stochastic &amp; robust optimization · Learn · SymbiQ</title>
+<meta name="description" content="What do you optimise when the data isn&#x27;t known yet?. The Feasible Region, topic 22 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-22.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-22.html">
+<meta property="og:title" content="Stochastic &amp; robust optimization · SymbiQ">
+<meta property="og:description" content="What do you optimise when the data isn&#x27;t known yet?. The Feasible Region, topic 22 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SymbiQ explainers. The numbers, not the panic.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stochastic &amp; robust optimization · SymbiQ">
+<meta name="twitter:description" content="What do you optimise when the data isn&#x27;t known yet?. The Feasible Region, topic 22 of 24: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/region-22.css?v=2">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=5"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/region-22.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Stochastic &amp; robust optimization</span></div>
+
+<div class="course" id="t22" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t22" data-id="t22">
+<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 22 of 24 &middot; Module E, completed</div>
+<h1>Stochastic &amp; robust optimization</h1>
+<p class="tagline">What do you optimise when the data isn&#39;t known yet?</p></header>
+<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" aria-current="page" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<details class="cp-section"><summary>About this section: Module E, completed</summary>
+<p>Every topic so far has handed you the numbers before asking for a decision: the costs, the demands, the capacities, all known. Topic 22 removes that. You must commit now; the data arrives later; and the two honest ways to cope with that gap (average over what might happen, or armour against the worst of it) give genuinely different answers on the same problem.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="The newsvendor problem. You buy papers at cost 2 and sell at price 5, unsold papers are worthless. Demand is either 20 or 60 units, each with probability one half. A table shows profit for three candidate order quantities across the two demand outcomes, plus expected profit and worst-case profit. Ordering 20 gives profit 60 in both outcomes: expected 60, worst case 60 -- this is the robust max-min choice. Ordering 40, the plug-in-the-mean choice, gives 20 and 120: expected 70, worst case 20. Ordering 60, the stochastic optimum, gives minus 20 and 180: expected 80, worst case minus 20. With perfect information you would order exactly the demand for an expected profit of 120. The value of the stochastic solution is 80 minus 70 equals 10; the expected value of perfect information is 120 minus 80 equals 40; the critical ratio (5 minus 2) over (5 minus 0) equals 0.6 picks the order quantity 60.">
+ <g class="lbl-s">
+ <text x="20" y="24" class="lbl-b or">Buy at 2, sell at 5, unsold = worthless.  Demand D = 20 or 60, each ½.</text>
+ </g>
+ <g class="lbl-b" text-anchor="middle">
+ <text x="300" y="60">D = 20  (½)</text>
+ <text x="410" y="60">D = 60  (½)</text>
+ <text x="520" y="60">E[profit]</text>
+ <text x="630" y="60">worst case</text>
+ </g>
+ <line x1="20" y1="72" x2="700" y2="72" stroke="var(--border)" stroke-width="1.5"/>
+
+ <g class="lbl-s">
+ <text x="20" y="100" class="lbl-b">Q = 20: robust</text>
+ <text x="300" y="100" text-anchor="middle">60</text>
+ <text x="410" y="100" text-anchor="middle">60</text>
+ <text x="520" y="100" text-anchor="middle">60</text>
+ <text x="630" y="100" text-anchor="middle" class="lbl-b or">60  ← max-min</text>
+
+ <text x="20" y="132" class="lbl-b">Q = 40, &quot;use the mean&quot;</text>
+ <text x="300" y="132" text-anchor="middle">20</text>
+ <text x="410" y="132" text-anchor="middle">120</text>
+ <text x="520" y="132" text-anchor="middle">70</text>
+ <text x="630" y="132" text-anchor="middle">20</text>
+
+ <text x="20" y="164" class="lbl-b">Q = 60: stochastic optimum</text>
+ <text x="300" y="164" text-anchor="middle" style="fill:var(--red)">−20</text>
+ <text x="410" y="164" text-anchor="middle">180</text>
+ <text x="520" y="164" text-anchor="middle" class="lbl-b or">80  ← max E</text>
+ <text x="630" y="164" text-anchor="middle" style="fill:var(--red)">−20</text>
+
+ <line x1="20" y1="180" x2="700" y2="180" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/>
+ <text x="20" y="204">perfect information: order D exactly</text>
+ <text x="300" y="204" text-anchor="middle">60</text>
+ <text x="410" y="204" text-anchor="middle">180</text>
+ <text x="520" y="204" text-anchor="middle">120</text>
+ <text x="630" y="204" text-anchor="middle"></text>
+ </g>
+
+ <g class="lbl-s">
+ <text x="20" y="248" class="lbl-b">Critical ratio (5−2)/(5−0) = 0.6</text>
+ <text x="20" y="266">→ smallest Q with P(D ≤ Q) ≥ 0.6 is Q = 60, matching max&nbsp;E above.</text>
+ <text x="20" y="292" class="lbl-b or">Value of the stochastic solution = 80 − 70 = 10.</text>
+ <text x="20" y="310" class="lbl-b">Expected value of perfect information = 120 − 80 = 40.</text>
+ </g>
+ </svg></div>
+ <figcaption><strong>One decision, made before demand is known.</strong> Averaging over the two outcomes says order <b>60</b> and expect <b>80</b>, but that plan loses money half the time. Armouring against the worst case says order <b>20</b> and lock in <b>60</b>, guaranteed, giving up 20 of expected profit for the certainty. Plugging in the mean demand and pretending it is certain (order 40) lands in the middle of both: expected profit <b>70</b> (short of the stochastic 80) and a worst case of <b>20</b> (better than ordering 60, worse than the robust plan). Its real flaw is quieter. It does not maximise expected profit despite being built from the average demand. Every figure is enumerated over the two scenarios in the verification script.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>Real decisions are made before the facts are in. You order stock before you know demand, commit generating capacity before you know the wind, set a budget before you know the exchange rate. The naive move (take the average of each unknown, treat it as certain, solve the deterministic problem) is <strong>Flaw of Averages</strong> territory: it systematically misprices risk, because a plan that is fine on average can still be a disaster on the outcomes that actually matter. The figure above shows it directly, and topic 04&#39;s rounding trap and topic 18&#39;s northwest-corner trap were smaller versions of the same lesson: feasible-looking is not good.</p>
+ <p>There are two disciplined ways to handle the gap, and they answer different questions.</p>
+ <p><strong>Stochastic optimisation</strong> assumes you have a probability distribution over what might happen, and minimises <em>expected</em> cost (or maximises expected value). The standard shape is <strong>two-stage with recourse</strong>: choose a here-and-now decision x now, watch the random outcome &xi; land, then take a corrective wait-and-see decision y(&xi;). You are optimising x against the average cost of the best possible correction. This is the right frame when you trust your probabilities and you will face the situation many times, so the average is what you actually experience.</p>
+ <p><strong>Robust optimisation</strong> refuses to name probabilities. It takes an <strong>uncertainty set</strong> (a range each unknown could lie in) and optimises the <em>worst case</em> over that set. The answer comes with a hard guarantee: whatever happens inside the set, you do at least this well. That is the right frame for a decision you make once, where a single bad outcome is unacceptable and you would rather not bet the business on a distribution you had to guess.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p><strong>Two-stage stochastic program.</strong> With first-stage decision x, cost vector c, random data &xi; with distribution P, and a recourse cost Q(x, &xi;) equal to the optimal second-stage response:</p>
+ <code class="eq">minimise cᵀx  +  E_ξ [ Q(x, ξ) ]
+Q(x, ξ) =  min { qᵀy : W y = h(ξ) − T(ξ) x ,  y ≥ 0 }</code>
+ <p>Founded by Dantzig (&ldquo;Linear Programming under Uncertainty,&rdquo; <em>Management Science</em> 1, 197&ndash;206 (1955)) and Beale the same year; the reference text is Birge &amp; Louveaux, <em>Introduction to Stochastic Programming</em> (Springer, 2nd ed., 2011). Two quantities score how much the uncertainty is costing you, and both are visible in the figure: the <strong>expected value of perfect information</strong> (EVPI) is what you would pay for a perfect forecast. Here <span class="rcpt" data-rcpt="fsb-evpi">120&nbsp;&minus;&nbsp;80&nbsp;=&nbsp;40</span>, and the <strong>value of the stochastic solution</strong> (VSS) is what the full stochastic (recourse) model earns over the lazy plug-in-the-mean model. Here <span class="rcpt" data-rcpt="fsb-vss">80&nbsp;&minus;&nbsp;70&nbsp;=&nbsp;10</span>; both quantities are non-negative by construction. A large VSS is, in practice, what justifies the extra modelling effort.</p>
+ <p><strong>The newsvendor</strong>, the one-line case everything reduces to: order Q, demand D random, underage cost C<sub>u</sub> per unit short, overage cost C<sub>o</sub> per unit unsold. Expected cost is convex in Q, and setting its derivative to zero gives the <strong>critical-fractile</strong> rule:</p>
+ <code class="eq">order Q* = smallest Q with  F(Q) ≥  Cᵤ / (Cᵤ + Cₒ)
+F = cumulative distribution of demand</code>
+ <p>Here C<sub>u</sub> = 5&nbsp;&minus;&nbsp;2 = 3, C<sub>o</sub> = 2&nbsp;&minus;&nbsp;0 = 2, the ratio is 0.6, and the smallest Q with P(D&nbsp;&le;&nbsp;Q)&nbsp;&ge;&nbsp;0.6 is 60, which the script confirms is the exact argmax of expected profit over the whole grid. This same fractile returns in topic 24 as the service level behind safety stock, and it is exactly the rule airlines use to protect seats for late-booking full-fare passengers.</p>
+ <p><strong>Robust counterpart.</strong> Replace &ldquo;minimise cost&rdquo; with &ldquo;minimise the maximum cost over &xi; in an uncertainty set U.&rdquo; Soyster (1973) gave the first version: box uncertainty, famously over-conservative. Ben-Tal &amp; Nemirovski (<em>Mathematics of Operations Research</em> 23, 769&ndash;805 (1998)) showed an ellipsoidal U keeps a linear program solvable as a second-order cone program: tractable, not just definable. Bertsimas &amp; Sim (&ldquo;The Price of Robustness,&rdquo; <em>Operations Research</em> 52(1), 35&ndash;53 (2004)) added a budget parameter &Gamma; that dials how many unknowns may go bad at once, so you can buy exactly as much protection as you want and read off its cost in lost objective. On the figure&#39;s instance the max-min order is 20, guaranteeing profit 60; the stochastic order 60 expects 80 but risks &minus;20. The 20 you give up is the literal price of the guarantee.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Keeping the lights on, every day</span>
+      Grid operators solve <strong>unit commitment</strong> a day ahead (which generators to switch on) before they know tomorrow&#39;s demand or wind and solar output. Cast as a two-stage stochastic program: commit plants now (first stage), redispatch against whatever the weather actually does (recourse), minimise expected cost subject to a feasible response in every scenario. It is a canonical application and an active research and pilot area. In day-to-day operation most system operators still run <em>deterministic</em> unit commitment hedged with reserve margins; scenario-based stochastic versions are so far deployed only in limited settings.</p>
+ <p><span class="where">And on the quantum side of this page</span>
+      A robust-control pulse is a gate designed to hold its fidelity not at one nominal set of hardware parameters but across a whole <em>band</em> of them: a detuning that could drift, a control amplitude that could be miscalibrated. That is robust optimisation in its exact form: an uncertainty set of Hamiltonian parameters, and a pulse chosen to maximise worst-case fidelity over the set. It is why <a href="circuits.html">DRAG and its descendants</a> exist, and it is the same worst-case-over-a-set instinct that topic 20&#39;s reinforcement-learning gate design (Baum et&nbsp;al., Q-CTRL, 2021) automates: train against the chip&#39;s own noise rather than a single nominal operating point, so the learned gate is not brittle.</p>
+ </div>
+</section>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-out"><a href="region-03.html">Shadow prices: the dual value of a constraint ▸</a>
+ <a href="region-20.html">Robust control as reinforcement learning ▸</a>
+ <a href="region-21.html">Previous: greedy algorithms &amp; guarantees ▸</a>
+ <a href="region-23.html">Next: when there is more than one goal ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="region-21.html"><span>Previous topic</span>21 &middot; Greedy algorithms &amp; approximation guarantees</a><a class="cp-nx" href="region-23.html"><span>Next topic</span>23 &middot; Multi-objective optimization</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

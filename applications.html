@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Chemistry is the strongest case for a quantum computer and still unproven. What would have to be true, and who is checking.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/applications.css?v=11">
+<link rel="stylesheet" href="p/applications.css?v=12">
 
 
 
@@ -236,9 +236,11 @@
   <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Where might a quantum computer actually earn its keep?</span></div>
 
 <h1>Where might a quantum computer actually earn its keep?</h1>
 <p class="tagline">Chemistry and materials are the oldest reason to build one, and the place where the honest answer today is &ldquo;not shown yet&rdquo;. Here is what would have to be true, and who is checking.</p>
+<p class="ability"><b>You&#39;ll be able to</b> say which proposed uses of a quantum computer have a real case and which are still hype.</p>
 
 <div class="card">
 <h3 aria-level="2">The answer in four lines</h3>
@@ -268,7 +270,7 @@
 <p>The broader audit is in <a href="https://www.nature.com/articles/s41467-023-37587-6">Nature Communications 14, 1952 (2023)</a>: the authors examined whether exponential quantum advantage exists for ground-state chemistry and concluded that evidence for it across chemical space has yet to be found. The question turns on whether the features that make a good starting state easy to prepare also let classical heuristics succeed, and their numerical studies found no evidence that they do not.</p>
 
 <h3 id="vqe">The near-term route hits a measurement wall</h3>
-<p>Machines that exist today are too noisy for the fault-tolerant algorithms above, so the near-term proposal is a hybrid loop, the variational quantum eigensolver (<a href="formalism.html#f16">how it works, in The Machinery</a>). Gonthier and colleagues counted what it would cost to get the combustion energies of small organic molecules to chemical accuracy and concluded that current techniques &ldquo;will not be sufficient to achieve practical quantum computational advantage&rdquo; for their molecule set (<a href="https://arxiv.org/abs/2012.04001">Phys. Rev. Research 4, 033154</a>). The bottleneck is not the qubits but the number of repeated measurements.</p>
+<p>Machines that exist today are too noisy for the fault-tolerant algorithms above, so the near-term proposal is a hybrid loop, the variational quantum eigensolver (<a href="machinery-16.html">how it works, in The Machinery</a>). Gonthier and colleagues counted what it would cost to get the combustion energies of small organic molecules to chemical accuracy and concluded that current techniques &ldquo;will not be sufficient to achieve practical quantum computational advantage&rdquo; for their molecule set (<a href="https://arxiv.org/abs/2012.04001">Phys. Rev. Research 4, 033154</a>). The bottleneck is not the qubits but the number of repeated measurements.</p>
 
 <h3 id="finance">Finance: real speedup, heavy overhead</h3>
 <p>Pricing a derivative is a Monte Carlo average, and amplitude estimation gives a real quadratic speedup on those. The catch is the overhead. The most complete resource estimate, by Chakrabarti and colleagues, needs about <strong>8,000 logical qubits and a T-depth of 54 million</strong>, and to match one second of classical pricing it needs a logical clock rate of 50&nbsp;MHz (<a href="https://quantum-journal.org/papers/q-2021-06-01-463/">Quantum 5, 463</a>). Fifty million logical clock cycles per second is the bar the hardware has to clear; nobody has shown it yet.</p>
@@ -301,11 +303,13 @@
 
 <h2 data-tier-stop>Go deeper</h2>
 <div class="grid">
-  <div class="card"><h3>🔴 How the hybrid loop works</h3><p>QAOA and VQE in full, with the circuits and where they are stuck.</p><a href="formalism.html#f16">The Machinery, topic 16 →</a></div>
+  <div class="card"><h3>🔴 How the hybrid loop works</h3><p>QAOA and VQE in full, with the circuits and where they are stuck.</p><a href="machinery-16.html">The Machinery, topic 16 →</a></div>
   <div class="card"><h3>🟡 Sensing and networks</h3><p>The quantum technologies that already ship, and why they matter sooner than the computer.</p><a href="sensing.html">Sensing and networks →</a></div>
   <div class="card"><h3>◆ Optimisation</h3><p>The other big promise: &ldquo;quantum will transform scheduling&rdquo;, checked on one named instance.</p><a href="feasible.html#verdict">The Verdict →</a></div>
 </div>
 
+<section class="enddoors" data-tier-keep aria-label="Where to go next"><a href="sensing.html"><span class="eyebrow">Next in this track</span><b>Do quantum sensors and networks matter sooner?</b></a><a href="play.html#grover"><span class="eyebrow">Prove it</span><b>Grover&#x27;s Escape: when does a speedup help?</b></a><a href="ledger.html"><span class="eyebrow">Judge a claim</span><b>Did they do what they said? The Ledger</b></a></section>
+<aside class="aicard" data-tier-keep aria-label="Sources and AI use"><p class="aicard-h">Sources and AI</p><p>This page links <b>10</b> external sources. <b>AI drafted</b> this page. <b>Scripts</b> recompute its numbers and check its citations before every publish. <b>Chinmoy</b> approves what goes live. <a href="how-we-check.html">What each of those catches and misses</a>.</p></aside>
 <footer>The strongest case for a quantum computer, and how far it has got.<br>SymbiQ &middot; Sources cited inline &middot; Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 
 

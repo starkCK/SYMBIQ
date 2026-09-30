@@ -1640,7 +1640,7 @@ button.nextup:focus-visible { outline: 3px solid var(--violet); outline-offset: 
 
 .tbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   margin: 26px 0 24px; padding: 12px 14px; border: 1px solid var(--border);
-  border-radius: 14px; background: var(--panel); position: sticky; top: 60px; z-index: 20;
+  border-radius: 14px; background: var(--panel); position: sticky; top: calc(var(--nav-h, 82px) + 4px); z-index: 20;
   backdrop-filter: blur(9px); }
 .tbar-lab { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
   color: var(--muted); font-weight: 600; }
@@ -4076,3 +4076,26 @@ nav.tabbar { display: none; }
 .footlinks { margin: 18px 0 6px; padding-top: 14px; border-top: 1px solid var(--border); font-size: .86rem; color: var(--muted); line-height: 2.2; }
 .footlinks a { color: var(--muted); display: inline-block; min-height: 44px; line-height: 44px; padding: 0 4px; text-decoration: none; }
 .footlinks a:hover { color: var(--text); text-decoration: underline; }
+
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; margin: -14px 0 14px; font-size: .84rem; color: var(--muted); }
+.crumbs a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; color: var(--muted); text-decoration: none; }
+.crumbs a:hover { color: var(--text); text-decoration: underline; }
+.crumbs [aria-current] { color: var(--text); }
+
+.ability { max-width: 70ch; margin: 10px 0 18px; padding: 10px 14px; border-left: 3px solid var(--teal); background: rgba(45, 212, 191, .06); border-radius: 0 10px 10px 0; font-size: 1rem; }
+.ability b { color: var(--text); }
+
+.wrap > p, .wrap > ul, .wrap > ol, .wrap > .layer > p { max-width: 72ch; }
+
+.enddoors { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; margin: 34px 0 18px; }
+.enddoors a { display: flex; flex-direction: column; gap: 4px; min-height: 44px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); background: var(--panel); }
+.enddoors a:hover { border-color: var(--teal); }
+.enddoors .eyebrow { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.enddoors b { font-size: .98rem; line-height: 1.35; }
+.enddoors a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.aicard { max-width: 72ch; margin: 22px 0 10px; padding: 12px 14px; border: 1px dashed var(--border); border-radius: 10px; color: var(--muted); font-size: .88rem; }
+.aicard p { margin: 0; }
+.aicard .aicard-h { margin: 0 0 4px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.aicard b { color: var(--text); font-weight: 600; }
+.aicard a { color: var(--link); }

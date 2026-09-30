@@ -51,7 +51,7 @@
    "value": "under half a million physical qubits",
    "formula": "state-of-the-art Shor circuit re-costing, surface-code assumptions",
    "inputs": "<1,200 logical qubits · <90M Toffoli gates · physical error rate ≈ 10⁻³",
-   "source": "Gidney, Babbush, Drake, Boneh et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (Mar 2026)",
+   "source": "Babbush, Zalcman, Gidney et al. (Google Quantum AI / Ethereum Foundation / Stanford), arXiv:2603.28846 (Mar 2026)",
    "verified_at": "2026-08-21",
    "falsifier": "a 2022 estimate under the same assumptions put this at 1.9 billion — the algorithmic side (not hardware) closed most of that three-order-of-magnitude gap, and could move again."
   },
@@ -61,7 +61,7 @@
    "value": "≈9 minutes",
    "formula": "precomputable half of Shor's algorithm depends only on public curve parameters",
    "inputs": "runs from the moment a transaction reveals its public key, inside the confirmation window",
-   "source": "Gidney, Babbush, Drake, Boneh et al., arXiv:2603.28846 (Mar 2026)",
+   "source": "Babbush, Zalcman, Gidney et al., arXiv:2603.28846 (Mar 2026)",
    "verified_at": "2026-08-21",
    "falsifier": "applies to exposed-key coins specifically — it is an upper bound on how fast the racing attack could run, not a claim about coins whose keys have never been revealed."
   },
@@ -219,7 +219,7 @@
    "page": "basics.html",
    "value": "1 error per 1,000 operations",
    "inputs": "the standard physical error rate p ≈ 10⁻³ this site uses throughout (qec.html's threshold widget, logical-qubit.html's calculator, bitcoin.html's estimator)",
-   "source": "the resource-estimation convention, not a device datasheet: Webber et al., AVS Quantum Science 4, 013801 (2022) and Gidney et al., arXiv:2603.28846 both cost surface-code machines at p ≈ 10⁻³, and the best reported two-qubit gate errors sit around that order",
+   "source": "the resource-estimation convention, not a device datasheet: Webber et al., AVS Quantum Science 4, 013801 (2022) and Babbush et al., arXiv:2603.28846 both cost surface-code machines at p ≈ 10⁻³, and the best reported two-qubit gate errors sit around that order",
    "verified_at": "2026-09-04",
    "falsifier": "this is a modelling assumption rounded to one significant figure, not a measurement of any one machine. Single-qubit gates are one to two orders better, measurement is worse, error varies by platform and drifts with calibration, and quoting it as a device spec would be wrong. It is the number every estimate on this site is built on, which is exactly why it is marked."
   },
@@ -440,7 +440,7 @@
    "value": "3,800× cheaper in four years",
    "formula": "2022 physical-qubit estimate ÷ 2026 physical-qubit estimate, for the same racing attack on one Bitcoin key",
    "inputs": "1.9×10⁹ (Webber et al., AVS Quantum Sci. 4, 013801, 2022) ÷ 5×10⁵ (arXiv:2603.28846, Mar 2026) = 3,800× exactly",
-   "source": "Webber et al., AVS Quantum Sci. 4, 013801 (2022); Babbush, Gidney, Drake, Boneh et al., arXiv:2603.28846",
+   "source": "Webber et al., AVS Quantum Sci. 4, 013801 (2022); Babbush, Zalcman, Gidney et al., arXiv:2603.28846",
    "verified_at": "2026-09-08",
    "falsifier": "Two resource estimates under different assumptions, not one measurement repeated. The 2026 figure is “fewer than half a million”, so 3,800× is a floor rather than a point value, and neither number has been demonstrated on hardware — both are costings of a machine nobody has built."
   },
@@ -455,12 +455,40 @@
   {
    "id": "home-gap-orders",
    "page": "index.html",
-   "value": "roughly three orders of magnitude, not six",
-   "formula": "log₁₀(attack estimate ÷ largest physical qubit count on record)",
-   "inputs": "2026: 5×10⁵ ÷ 1,180 = 424× = 2.6 orders. 2022: 1.9×10⁹ ÷ 1,180 = 1.6×10⁶ = 6.2 orders. Largest on record is Atom Computing’s 1,180-site array (2023-10), from data/hardware.json.",
-   "tool": "tools/verify_hardware.py",
+   "value": "at most 2.7 orders of magnitude, not 6.2",
+   "formula": "log₁₀(attack estimate ÷ qubits on the largest superconducting chip on record, IBM Condor)",
+   "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.65 orders. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",
+   "tool": "tools/gen_btc_chart.py",
+   "verified_at": "2026-09-30",
+   "falsifier": "“Fewer than half a million” is an upper bound, so every gap here is an upper bound. Condor is a 2023 chip, and the frontier stopped competing on raw qubit count after 2023, so a bigger chip shrinks the gap without any algorithmic progress. A neutral-atom array is compared on the slow-clock panel, not against this superconducting estimate."
+  },
+  {
+   "id": "btc-chart-collapse",
+   "page": "bitcoin.html",
+   "value": "3,800× cheaper in four years",
+   "formula": "2022 physical-qubit estimate ÷ 2026 physical-qubit estimate, for the same racing attack on one Bitcoin key",
+   "inputs": "1.9×10⁹ (Webber et al., AVS Quantum Sci. 4, 013801, 2022) ÷ 5×10⁵ (arXiv:2603.28846, Mar 2026) = 3,800× exactly",
+   "source": "Webber et al., AVS Quantum Sci. 4, 013801 (2022); Babbush, Zalcman, Gidney et al., arXiv:2603.28846",
    "verified_at": "2026-09-08",
-   "falsifier": "“Three” rounds 2.6 up, in the direction that makes quantum look closer, not further — the honest reading is “between two and three”. It also compares a 2026 estimate against a 2023 chip, because the frontier stopped competing on raw qubit count after 2023; a larger array announced tomorrow shrinks the gap without any algorithmic progress at all."
+   "falsifier": "Two resource estimates under different assumptions, not one measurement repeated. The 2026 figure is “fewer than half a million”, so 3,800× is a floor rather than a point value, and neither number has been demonstrated on hardware — both are costings of a machine nobody has built."
+  },
+  {
+   "id": "btc-chart-webber-2022",
+   "page": "bitcoin.html",
+   "value": "1.9 billion physical qubits",
+   "source": "Webber, Elfving, Weidt and Hensinger, “The impact of hardware specifications on reaching quantum advantage in the fault tolerant regime”, AVS Quantum Sci. 4, 013801 (2022)",
+   "verified_at": "2026-09-08",
+   "falsifier": "This is the figure for breaking a key inside Bitcoin’s roughly ten-minute confirmation window, which is far harder than breaking one key eventually. Quoted against a different threat model it is simply the wrong number."
+  },
+  {
+   "id": "btc-chart-gap-orders",
+   "page": "bitcoin.html",
+   "value": "at most 2.7 orders of magnitude, not 6.2",
+   "formula": "log₁₀(attack estimate ÷ qubits on the largest superconducting chip on record, IBM Condor)",
+   "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.65 orders. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",
+   "tool": "tools/gen_btc_chart.py",
+   "verified_at": "2026-09-30",
+   "falsifier": "“Fewer than half a million” is an upper bound, so every gap here is an upper bound. Condor is a 2023 chip, and the frontier stopped competing on raw qubit count after 2023, so a bigger chip shrinks the gap without any algorithmic progress. A neutral-atom array is compared on the slow-clock panel, not against this superconducting estimate."
   }
  ]
 }

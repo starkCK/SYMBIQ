@@ -57,7 +57,7 @@
 <meta name="twitter:description" content="Not today. The honest numbers: what Shor's algorithm can and can't do to Bitcoin, which coins are exposed, why mining is safe, and an interactive calculator of what it would actually take.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/bitcoin.css?v=32">
+<link rel="stylesheet" href="p/bitcoin.css?v=33">
 
 
 
@@ -96,7 +96,7 @@
         {
           "@type": "Question",
           "name": "Can a quantum computer break Bitcoin today?",
-          "acceptedAnswer": {"@type": "Answer", "text": "No. Current best estimates (Google Quantum AI / Ethereum Foundation, 2026) put breaking one Bitcoin key at roughly half a million error-corrected physical qubits running for about 20 minutes, down from billions in 2022 estimates. Today's largest machines have a few thousand noisy qubits. The gap is roughly three orders of magnitude of scale plus error correction that is only now leaving the lab, real, but shrinking faster than most people expected."}
+          "acceptedAnswer": {"@type": "Answer", "text": "No. Current best estimates (Google Quantum AI / Ethereum Foundation, 2026) put breaking one Bitcoin key at roughly half a million error-corrected physical qubits running for about 20 minutes, down from billions in 2022 estimates. Today's largest superconducting chip, IBM's Condor, has 1,121 noisy qubits. The gap is about 2.7 orders of magnitude of scale plus error correction that is only now leaving the lab, real, but shrinking faster than most people expected."}
         },
         {
           "@type": "Question",
@@ -289,7 +289,7 @@
 
 <div class="card">
 <h3 aria-level="2">The answer in four lines</h3>
-<p>Breaking one Bitcoin key needed <strong>~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026's</strong>. Today's biggest chips have <strong>a few thousand noisy ones</strong>, and a noisy qubit is not a fraction of a corrected one until error rates are low enough. Mining is effectively safe forever. The real story is a <em>migration problem</em> whose deadline keeps moving closer.</p>
+<p>Breaking one Bitcoin key needed <strong>~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026's</strong>. Today's biggest superconducting chip, IBM's Condor, has <strong>1,121 noisy ones</strong>, and a noisy qubit is not a fraction of a corrected one until error rates are low enough. Mining is effectively safe forever. The real story is a <em>migration problem</em> whose deadline keeps moving closer.</p>
 </div>
 
 <span class="tier g">🟢 No math</span>
@@ -337,7 +337,79 @@
 <p>Shor's algorithm for the elliptic-curve discrete logarithm on a 256-bit prime-field curve: <strong>2,330 logical qubits</strong> and ≈<strong>1.26×10¹¹ Toffoli gates</strong> (Roetteler, Naehrig, Svore &amp; Lauter, <a href="https://arxiv.org/abs/1706.06752">arXiv:1706.06752</a>, computed for NIST P-256; Bitcoin's secp256k1 is the same size and comparable cost). Later circuit work cuts the Toffoli count substantially (Litinski, <a href="https://arxiv.org/abs/2306.08585">arXiv:2306.08585</a>, ~5×10⁷ Toffolis via active-volume architecture and state-reuse tricks; windowed-arithmetic lines of work cut counts further), which moves the estimates down, not away.</p>
 <p>This page asserts those counts; it does not derive how Shor's algorithm reaches them. The mechanism (the quantum Fourier transform, phase estimation, and the period-finding step that turns "factor N" into "find a period") is worked through from scratch on <a href="formalism.html#f13">The Machinery</a>. Want the one-sentence version of <em>why any of it works</em> before the full derivation? <a href="phase-kickback.html">Start with phase kickback</a>, the single mechanism this whole circuit runs on, repeated.</p>
 <p>Under surface-code assumptions with physical error ~10⁻³, Webber et al. (<a href="https://avs.scitation.org/doi/10.1116/5.0073075">AVS Quantum Science 2022</a>) get: break a key in <strong>one day ≈ 13M physical qubits</strong>; in <strong>one hour ≈ 317M</strong>; inside the <strong>10-minute confirmation window ≈ <span class="rcpt" data-rcpt="btc-1.9b" tabindex="0" role="button" aria-expanded="false">1.9B</span></strong>. Compare: frontier chips today are O(10³) physical qubits with logical demonstrations at small code distance. Against those 2022 numbers, the gap to the one-day machine was ~4 orders of magnitude of scale <em>plus</em> sustained below-threshold operation; and to the 10-minute racing attack, ~6 orders. Those were the numbers. Then 2026 happened.</p>
-<p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Gidney, Babbush, Drake, Boneh et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis, <span class="rcpt" data-rcpt="btc-500k" tabindex="0" role="button" aria-expanded="false">under half a million physical qubits</span>, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong><span class="rcpt" data-rcpt="btc-9min" tabindex="0" role="button" aria-expanded="false">≈9 minutes</span></strong> once your transaction appears, inside the confirmation window. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's frontier to roughly <strong>three orders of magnitude, not six</strong>. The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
+<p><strong>The 2026 update.</strong> A Google Quantum AI / Ethereum Foundation / Stanford team (Babbush, Zalcman, Gidney et al., <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>, Mar 2026) re-costed the attack with state-of-the-art circuits: <strong>&lt;1,200 logical qubits and &lt;90M Toffolis, <span class="rcpt" data-rcpt="btc-500k" tabindex="0" role="button" aria-expanded="false">under half a million physical qubits</span>, breaking a key in minutes</strong>, on the same 10⁻³ surface-code assumptions. Worse for the threat model: the first half of Shor's algorithm depends only on public curve parameters, so an attacker can precompute it and finish in <strong><span class="rcpt" data-rcpt="btc-9min" tabindex="0" role="button" aria-expanded="false">≈9 minutes</span></strong> once your transaction appears (12 minutes on the paper's second circuit), against blocks that arrive about every ten minutes. The paper puts the chance of winning that race at just under 41% under idealised assumptions, so it is a coin-flip-sized threat to a single spend, not a certainty. That moves the racing attack from "1.9 billion qubits" to "half a million," and the gap from today's largest superconducting chip to about<strong>2.6 orders of magnitude, not 6.2</strong> (the figures are computed in the chart below). The two-axis compounding in note (iv) below isn't hypothetical; it happened between 2022 and 2026.</p>
+<div data-tier-keep>
+<figure class="fig figbar figcard btcclock">
+  <div class="btc-tabs" role="radiogroup" aria-label="Machine clock speed">
+    <input type="radio" name="bclk" id="bclk-fast" checked><label for="bclk-fast" data-no-lexicon>Fast clock <span>superconducting, microsecond cycles</span></label>
+    <input type="radio" name="bclk" id="bclk-slow"><label for="bclk-slow" data-no-lexicon>Slow clock <span>neutral atoms, millisecond cycles</span></label>
+    <div class="btc-panel btc-fast">
+<div class="figscroll"><svg viewBox="0 0 600 276" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logarithmic bar chart, fast clock. A 2022 estimate for racing one Bitcoin key was 1.9 billion physical qubits; the 2026 estimate is under 500,000; IBM Condor holds 1,121 and Google Willow holds 105.">
+    <text class="lbl" x="158" y="44" text-anchor="end">2022 estimate</text>
+    <text class="lbl-s" x="158" y="57" text-anchor="end">Webber et al.</text>
+    <rect class="track" x="168" y="30" width="380" height="26" rx="6"/>
+    <rect class="bar old" x="168" y="30" width="346" height="26" rx="6"/>
+    <text class="num violet" x="524" y="48">1.9 billion</text>
+    <text class="lbl" x="158" y="98" text-anchor="end">2026 estimate</text>
+    <text class="lbl-s" x="158" y="111" text-anchor="end">Babbush et al.</text>
+    <rect class="track" x="168" y="84" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="84" width="176" height="26" rx="6"/>
+    <text class="num teal" x="354" y="102">under 500 thousand</text>
+    <text class="lbl" x="158" y="152" text-anchor="end">IBM Condor, 2023</text>
+    <text class="lbl-s" x="158" y="165" text-anchor="end">largest superconducting chip</text>
+    <rect class="track" x="168" y="138" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="138" width="50" height="26" rx="6"/>
+    <text class="num yellow" x="228" y="156">1,121</text>
+    <text class="lbl" x="158" y="206" text-anchor="end">Google Willow, 2024</text>
+    <text class="lbl-s" x="158" y="219" text-anchor="end">runs below threshold</text>
+    <rect class="track" x="168" y="192" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="192" width="4" height="26" rx="6"/>
+    <text class="num yellow" x="182" y="210">105</text>
+    <line class="sMuted" x1="168" y1="238" x2="548" y2="238"/>
+    <g class="lbl-s" text-anchor="middle">
+      <line class="sMuted" x1="168" y1="238" x2="168" y2="243"/><text x="168" y="254">10²</text>
+      <line class="sMuted" x1="263" y1="238" x2="263" y2="243"/><text x="263" y="254">10⁴</text>
+      <line class="sMuted" x1="358" y1="238" x2="358" y2="243"/><text x="358" y="254">10⁶</text>
+      <line class="sMuted" x1="453" y1="238" x2="453" y2="243"/><text x="453" y="254">10⁸</text>
+    </g>
+    <text class="lbl-s" x="358" y="268" text-anchor="middle">physical qubits (logarithmic: each tick to the right is 100×)</text>
+  </svg></div>
+      <p class="swipe">← swipe the diagram to see all of it →</p>
+      <figcaption><strong>The same attack got <span class="rcpt" data-rcpt="btc-chart-collapse">3,800× cheaper in four years</span>.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at <span class="rcpt" data-rcpt="btc-chart-webber-2022">1.9 billion physical qubits</span>. In March 2026 Babbush, Zalcman, Gidney et al. (Google Quantum AI, the Ethereum Foundation and Stanford; <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor’s algorithm can be precomputed before your transaction appears. Against IBM’s 1,121-qubit Condor that is <span class="rcpt" data-rcpt="btc-chart-gap-orders"><strong>at most 2.6 orders of magnitude</strong> away, not the 6.2 of 2022</span>; against Google’s 105-qubit Willow, the only machine here that runs error correction below threshold, it is at most 3.7. The axis is logarithmic, so the short yellow bars are much further from the others than they look. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
+    </div>
+    <div class="btc-panel btc-slow">
+<div class="figscroll"><svg viewBox="0 0 600 222" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logarithmic bar chart, slow clock. Cain et al. 2026 estimate 10,000 to 26,000 atomic qubits to break a P-256 key in days; the largest trapped array holds 6,100 atoms, and computation has been shown on hundreds.">
+    <text class="lbl" x="158" y="44" text-anchor="end">Cain et al., 2026</text>
+    <text class="lbl-s" x="158" y="57" text-anchor="end">as few as, slower</text>
+    <rect class="track" x="168" y="30" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="30" width="95" height="26" rx="6"/>
+    <text class="num teal" x="273" y="48">10,000</text>
+    <text class="lbl" x="158" y="98" text-anchor="end">Cain et al., 2026</text>
+    <text class="lbl-s" x="158" y="111" text-anchor="end">for P-256, in days</text>
+    <rect class="track" x="168" y="84" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="84" width="115" height="26" rx="6"/>
+    <text class="num teal" x="293" y="102">26,000</text>
+    <text class="lbl" x="158" y="152" text-anchor="end">Caltech array, 2025</text>
+    <text class="lbl-s" x="158" y="165" text-anchor="end">trapped, not computing</text>
+    <rect class="track" x="168" y="138" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="138" width="85" height="26" rx="6"/>
+    <text class="num yellow" x="263" y="156">6,100</text>
+    <line class="sMuted" x1="168" y1="184" x2="548" y2="184"/>
+    <g class="lbl-s" text-anchor="middle">
+      <line class="sMuted" x1="168" y1="184" x2="168" y2="189"/><text x="168" y="200">10²</text>
+      <line class="sMuted" x1="263" y1="184" x2="263" y2="189"/><text x="263" y="200">10⁴</text>
+      <line class="sMuted" x1="358" y1="184" x2="358" y2="189"/><text x="358" y="200">10⁶</text>
+      <line class="sMuted" x1="453" y1="184" x2="453" y2="189"/><text x="453" y="200">10⁸</text>
+    </g>
+    <text class="lbl-s" x="358" y="214" text-anchor="middle">physical qubits (logarithmic: each tick to the right is 100×)</text>
+  </svg></div>
+      <p class="swipe">← swipe the diagram to see all of it →</p>
+      <figcaption><strong>A slower machine needs far fewer qubits, but it cannot race your transaction.</strong> Cain et al. (<a href="https://arxiv.org/abs/2603.28627">arXiv:2603.28627</a>) count reconfigurable neutral atoms, whose cycles take milliseconds, not microseconds: as few as 10,000 atoms can run Shor’s algorithm, and 26,000 could solve a P-256 discrete logarithm in a few days. Days is fine for a key that sits exposed on the chain, and useless against the ten-minute confirmation window. The largest array on record holds 6,100 trapped atoms, only 4.3× short of the higher figure, but trapping atoms is not computing with them: the paper reports computation on arrays of hundreds.</figcaption>
+    </div>
+  </div>
+</figure>
+</div>
+
 <p>Notes the headlines skip: (i) the T/Toffoli count, not qubit count, sets runtime; magic-state throughput is the real budget (the same economics as <a href="qec.html#red">magic-state distillation</a>); (ii) exposed-key coins remove the time limit entirely, so the racing-attack numbers are an upper bound on difficulty, not the threat model for the 25–30% of supply with exposed keys; (iii) "harvest now, decrypt later" does not apply to signatures the way it does to encrypted traffic, since there is nothing to record today except already-public keys, which is exactly why exposed keys are the whole early game; (iv) improvements arrive on two axes at once, hardware error rates and algorithmic Toffoli counts, so tracking one axis understates the trend. That compounding is <a href="index.html">the loop this site exists to cover</a>.</p>
 
 <div class="cyu" data-tier-keep data-a="1">

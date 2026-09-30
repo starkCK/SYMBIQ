@@ -1,0 +1,12 @@
+.btcclock .btc-tabs { display: block; }
+.btcclock .btc-tabs > input { position: absolute; opacity: 0; pointer-events: none; }
+.btcclock .btc-tabs > label {
+  display: inline-block; min-height: 44px; padding: 8px 14px; margin: 0 6px 12px 0; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 10px; font-weight: 600; line-height: 1.25; color: var(--muted);
+}
+.btcclock .btc-tabs > label span { display: block; font-weight: 400; font-size: .8em; }
+.btcclock .btc-tabs > input:checked + label { color: var(--text, inherit); border-color: var(--teal); box-shadow: inset 0 -3px 0 var(--teal); }
+.btcclock .btc-tabs > input:focus-visible + label { outline: 2px solid var(--teal); outline-offset: 2px; }
+.btcclock .btc-panel { display: none; }
+.btcclock #hclk-fast:checked ~ .btc-fast, .btcclock #hclk-slow:checked ~ .btc-slow,
+.btcclock #bclk-fast:checked ~ .btc-fast, .btcclock #bclk-slow:checked ~ .btc-slow { display: block; }

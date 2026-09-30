@@ -1,8 +1,16 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 119,
+ "count": 120,
  "events": [
+  {
+   "at": "2026-09-30",
+   "kind": "correction",
+   "tag": "Correction 17",
+   "title": "The Bitcoin timing chart credited the wrong lead author, called a 1,121-qubit chip &ldquo;a few thousand&rdquo;, and said the attack fits inside the confirmation window.",
+   "href": "corrections.html",
+   "note": "Live from 2026-07-24 until it was caught and published here."
+  },
   {
    "at": "2026-09-30",
    "kind": "correction",
@@ -10,6 +18,54 @@
    "title": "The Inside page said the tunnel barrier is a few dozen atoms thick. It is four to eight.",
    "href": "corrections.html",
    "note": "Live from 2026-09-29 until it was caught and published here."
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Shrink & Fly: fly keys heard on the stage, stopped from reaching the hidden qubit; slow near parts; dwell zones; bundle and versions refreshed",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Inside the machine: Shrink & Fly first-person mode (joystick, HUD, part cards, deep-dive dialog)",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Play menu: a visible Noise & Decoder entry opens the chooser on every page",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Add all-rights-reserved LICENSE; move DB schema, design notes and design tooling to the private repo",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Phone card reservations re-measured; four over-strong physics lines in the play layer hedged; size notes corrected",
+   "href": "",
+   "note": ""
+  },
+  {
+   "at": "2026-09-30",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Inside the machine grows to three machines; 3D Bloch and surface code; Shor peaks; the hidden play layer; Correction 16",
+   "href": "",
+   "note": ""
   },
   {
    "at": "2026-09-30",
@@ -752,54 +808,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "Correction 1, the Contradiction card, and receipts on three more pages",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-02",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The warm retint: a new dark palette on the six vivid pages only",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-02",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The Signature Layer + the games ladder: Lexicon, Receipts, FRAME.ladder, Workshop, Through-Line",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-01",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Hardware Scaling Explorer (race.html#scaling) + coupling strip on analog.html",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-01",
-   "kind": "build",
-   "tag": "Build",
-   "title": "qec.html: the Threshold Explorer (#threshold-widget)",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-01",
-   "kind": "build",
-   "tag": "Build",
-   "title": "quantum-mechanics.html: the Decoherence Playground (#decohere)",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-01",
-   "kind": "build",
-   "tag": "Build",
-   "title": "living layer: coupling strip + breakout figure (v1, 7 pages)",
    "href": "",
    "note": ""
   },

@@ -2,7 +2,7 @@
  "schema": 1,
  "generated": "2026-09-30",
  "pages": 34,
- "count": 545,
+ "count": 546,
  "records": [
   {
    "k": "s",
@@ -561,7 +561,7 @@
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
    "h": "The answer in four lines",
-   "x": "Breaking one Bitcoin key needed ~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026's. Today's biggest chips have a few thousand noisy ones, and a noisy qubit is not a fraction of a corrected one until err",
+   "x": "Breaking one Bitcoin key needed ~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026's. Today's biggest superconducting chip, IBM's Condor, has 1,121 noisy ones, and a noisy qubit is not a fraction of a cor",
    "w": 1
   },
   {
@@ -928,8 +928,16 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "16 corrections logged",
+   "h": "17 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Bitcoin timing chart credited the wrong lead author, called a 1,121-qubit chip “a few thousand”, and said the attack fits inside the confirmation window.",
+   "x": "What we said. On the home page and on the Bitcoin page, the March 2026 re-costing of the attack (arXiv:2603.28846) was labelled “Gidney et al.” and credited to “Gidney, Babbush, Drake, Boneh et al.”. The chart’s “today” bar read “a few thou",
    "w": 1
   },
   {

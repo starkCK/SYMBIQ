@@ -18,7 +18,7 @@
     "explain": {
       "g": "\"3,800× cheaper\" describes how two cost estimates compare to each other — it doesn't describe anything that has actually happened on real hardware. Both the 2022 and 2026 numbers are costings of a machine nobody has built, and the 2026 side of the ratio is itself stated as an upper bound, which makes 3,800× the least dramatic the drop could be, not a precise reading.",
       "y": "1.9×10⁹ (Webber et al., 2022) ÷ 5×10⁵ (arXiv:2603.28846, March 2026) = 3,800× exactly as arithmetic — but the 2026 figure is reported as \"fewer than half a million,\" meaning the true 2026 estimate could be smaller still, which would make the real collapse even larger than 3,800×. Read literally, 3,800× is a floor on how much the estimate has dropped, not the drop itself measured to some fixed precision.",
-      "r": "Webber, Elfving, Weidt and Hensinger, AVS Quantum Sci. 4, 013801 (2022); Babbush, Gidney, Drake, Boneh et al., arXiv:2603.28846. Both figures are resource estimates — theoretical costings under stated assumptions — not results from hardware that has run the attack. The headline number describes movement in the estimate over time, which is real and worth tracking, but carries no claim that either endpoint has been physically demonstrated."
+      "r": "Webber, Elfving, Weidt and Hensinger, AVS Quantum Sci. 4, 013801 (2022); Babbush, Zalcman, Gidney et al., arXiv:2603.28846. Both figures are resource estimates — theoretical costings under stated assumptions — not results from hardware that has run the attack. The headline number describes movement in the estimate over time, which is real and worth tracking, but carries no claim that either endpoint has been physically demonstrated."
     }
   }
 }

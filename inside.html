@@ -57,7 +57,7 @@
 <meta name="twitter:description" content="Rotate, zoom and open three kinds of quantum computer in 3D, from the fridge or the laser table down to a single qubit.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/inside.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/inside.css?v=2">
+<link rel="stylesheet" href="p/inside.css?v=4">
 
 
 
@@ -104,14 +104,14 @@
   </a>
   <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
   <div id="navcats">
-    <details class="navcat" data-cat="learn">
+    <details class="navcat navcat-cur" data-cat="learn">
       <summary>Learn</summary>
       <div class="navpanel navpanel-wide">
       <div class="navcol">
       <p class="navhead">Quantum computing</p>
       <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
       <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
-      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
+      <a href="inside.html" class="navmain active">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
       <div class="navrow">
         <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
         <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
@@ -167,10 +167,10 @@
       <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
       </div>
     </details>
-    <details class="navcat navcat-cur" data-cat="reality" data-new="1">
+    <details class="navcat" data-cat="reality" data-new="1">
       <summary>Reality Check</summary>
       <div class="navpanel">
-      <a href="reality.html" class="navmain active">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
+      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
       <p class="navhead">The scorekeeping</p>
       <div class="navrow">
         <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
@@ -352,7 +352,7 @@
 </ol>
 <p>The 3D library is <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence), served from this site, pinned and hashed like the other vendored code.</p>
 </div>
-<script type="module" src="inside.js?v=7"></script>
+<script type="module" src="inside.js?v=11"></script>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

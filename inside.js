@@ -1478,7 +1478,7 @@ function boot() {
   function flyKey(e, isDown) {
     if (deepEl.open || e.ctrlKey || e.metaKey || e.altKey) return;
     const c = e.code;
-    if (/^(Key[WASDQEC]|Space|Shift(Left|Right)|Arrow(Up|Down|Left|Right))$/.test(c)) { if (isDown) F.keys.add(c); else F.keys.delete(c); e.preventDefault(); return; }
+    if (/^(Key[WASDQEC]|Space|Shift(Left|Right)|Arrow(Up|Down|Left|Right))$/.test(c)) { if (isDown) F.keys.add(c); else F.keys.delete(c); e.preventDefault(); e.stopPropagation(); return; }
     if (!isDown) return;
     const v = S.view, k = e.key; let used = true;
     if (k === 'Enter') { const p = F.dwellPart || (v.sel && v.sel.opens ? v.sel : null); if (p) open(p); else used = false; }
@@ -1489,7 +1489,7 @@ function boot() {
     else if (k === 'i' || k === 'I') { if (v.sel) toggleIso(v.sel); }
     else if (k === 'x' || k === 'X') { const t = v.t > 0.05 ? 0 : (DEF[S.id].expl || 0.5); $('#in-explode').value = String(Math.round(t * 100)); v.setExplode(t); }
     else used = false;
-    if (used) e.preventDefault();
+    if (used) { e.preventDefault(); e.stopPropagation(); }
   }
   const flyIgnores = (e) => { const t = e.target, tag = t && t.tagName; return tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || ((tag === 'BUTTON' || tag === 'A') && (e.code === 'Space' || e.key === 'Enter')); };
   stage.addEventListener('keydown', (e) => { if (F.on && !flyIgnores(e)) flyKey(e, true); });
@@ -1525,7 +1525,7 @@ function boot() {
       const want = V3().addScaledVector(f, fw).addScaledVector(right, st).addScaledVector(UPV, vt);
       if (want.length() > 1) want.normalize();
       let dmin = Infinity; for (const b of F.solid) { const dd = b.distanceToPoint(F.pos); if (dd < dmin) dmin = dd; }
-      const target = clamp(dmin / (F.base * 0.35), 0.16, 1);
+      const target = clamp(dmin / (F.base * 0.28), 0.22, 1);
       F.slow += (target - F.slow) * (1 - Math.exp(-10 * dt));
       const boost = k.has('ShiftLeft') || k.has('ShiftRight') ? 3 : 1;
       want.multiplyScalar(F.base * 0.28 * F.speedK * (boost > 1 ? Math.max(F.slow, 0.35) : F.slow) * boost);
@@ -1540,12 +1540,13 @@ function boot() {
     F.boxT -= dt;
     if (F.boxT <= 0) {
       F.boxT = 0.3; const all = v.parts.filter((p) => !p.hidden).map((p) => ({ p, b: partBox(p) })).filter((x) => !x.b.isEmpty());
-      F.boxes = all.filter((x) => x.p.opens).map((x) => { const z = x.b.getSize(V3()); return { p: x.p, b: x.b.clone().expandByScalar(0.15 * Math.max(z.x, z.y, z.z)) }; });
+      F.boxes = all.filter((x) => x.p.opens).map((x) => { const z = x.b.getSize(V3()); return { p: x.p, b: x.b.clone().expandByScalar(Math.max(0.15 * Math.max(z.x, z.y, z.z), 0.04 * F.base)) }; });
       F.solid = all.filter((x) => !x.p.shell && x.b.getSize(V3()).length() < F.base * 0.6).map((x) => x.b);
     }
     let best = null, bv = Infinity;
     for (const x of F.boxes) if (x.b.containsPoint(F.pos)) { const z = x.b.getSize(V3()), vol = z.x * z.y * z.z; if (vol < bv) { bv = vol; best = x.p; } }
-    if (best && best === F.dwellPart) F.dwell += dt; else { F.dwellPart = best; F.dwell = 0; }
+    if (best) { if (best === F.dwellPart) F.dwell += dt; else { F.dwellPart = best; F.dwell = 0; } }
+    else if (F.dwellPart) { F.dwell -= dt * 1.5; if (F.dwell <= 0) { F.dwellPart = null; F.dwell = 0; } }
     if (best && F.auto && F.dwell > 0.85 && !S.busy) { F.dwell = 0; open(best); return; }
     camera.position.copy(F.pos); camera.rotation.set(F.pitch, F.yaw, 0);
     if (F.lock && (F.hoverT = (F.hoverT || 0) - dt) <= 0) { F.hoverT = 0.1; const r = canvas.getBoundingClientRect(); hover({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }); }
@@ -1621,7 +1622,7 @@ function boot() {
       (p.f && p.f.length ? '<h3>How it works, and what to know</h3><ul>' + p.f.map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul>' : '') +
       (made ? '<h3>Made of</h3><p>' + esc(made) + '</p>' : '') +
       (child ? '<h3>Inside it</h3><p>Opens to the <b>' + esc(child.label) + '</b> level (' + esc(child.size) + ').</p><p><button type="button" class="in-btn in-primary" data-dact="open">Shrink into it</button></p>' : '') +
-      '<h3>Sources</h3><p class="in-fine">These cover this level as a whole. Where a size in the drawing is exaggerated to be visible, the text says so.</p><ol class="in-dsrc">' + srcs + '</ol>' +
+      '<h3>Sources</h3><p class="in-fine">The sources this page draws on for this level. Not every sentence above comes from every source, and where a size in the drawing is exaggerated to be visible, the text says so.</p><ol class="in-dsrc">' + srcs + '</ol>' +
       '<p class="in-fine">' + (rel ? '<a href="' + rel[0] + '">' + esc(rel[1]) + '</a> &middot; ' : '') + '<a href="#in-src-card" data-dact="close">Every source, with the numbers</a>. This is a teaching model, not a drawing of any company&rsquo;s machine.</p>';
     if (!deepEl.open) deepEl.showModal();
     deepEl.dataset.part = p.id; $('#in-deep-close').focus();

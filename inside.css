@@ -140,7 +140,7 @@ html[data-embed] .in-panel { border-radius: 0; border-width: 0; }
 .in-fly[aria-pressed="true"] { background: linear-gradient(135deg, rgba(139, 92, 246, .55), rgba(45, 212, 191, .5)); border-color: transparent; }
 .in-stage.is-fly canvas { cursor: crosshair; }
 .in-stage.is-fly .in-cap { display: none !important; }
-.in-hud { position: absolute; z-index: 3; left: 12px; top: 58px; max-width: min(430px, calc(100% - 24px)); padding: 7px 12px; border-radius: 10px; background: rgba(9, 13, 24, .78); border: 1px solid rgba(45, 212, 191, .35); color: #dbe3f3; pointer-events: none; }
+.in-hud { position: absolute; z-index: 3; left: 12px; top: 58px; max-width: min(430px, calc(100% - 360px)); padding: 7px 12px; border-radius: 10px; background: rgba(9, 13, 24, .78); border: 1px solid rgba(45, 212, 191, .35); color: #dbe3f3; pointer-events: none; }
 .in-hud[hidden], .in-cross[hidden], .in-joy[hidden], .in-vert[hidden], .in-card[hidden] { display: none !important; }
 .in-hud p { margin: 0; font-size: .8rem; line-height: 1.35; }
 .in-hud-a b { font-size: .95rem; color: #fff; } .in-hud-a span { opacity: .75; margin-left: 6px; }
@@ -172,12 +172,18 @@ html[data-embed] .in-panel { border-radius: 0; border-width: 0; }
 .in-crumb { margin: 0; font-size: .76rem; opacity: .7; }
 .in-fine { font-size: .8rem !important; opacity: .75; }
 .in-dsrc { padding-left: 1.4em; } .in-dsrc li { font-size: .8rem; margin-bottom: 4px; }
-.in-deep .in-meta { display: flex; gap: 22px; margin: 4px 0; }
+.in-deep { margin: auto; }
+.in-deep ul { padding-left: 1.3em; }
+.in-deep .in-meta { display: flex; gap: 10px; margin: 6px 0; }
+.in-deep .in-meta div { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12); }
+.in-deep .in-meta dt { color: #9aa8c4; } .in-deep .in-meta dd { color: #e8ecf6; }
 .in-deep .in-meta dt { font-size: .7rem; text-transform: uppercase; opacity: .6; } .in-deep .in-meta dd { margin: 0; font-size: .88rem; }
 .in-deep .in-btn { color: #dbe3f3; } .in-deep .in-primary { color: #06101a; }
 @media (max-width: 560px) {
-  .in-hud { top: 50px; } .in-hud-k { display: none; }
+  .in-hud { top: 50px; max-width: calc(100% - 24px); } .in-hud-k { display: none; }
+  .in-stage.is-fly .in-slide, .in-stage.is-fly #in-xray, .in-stage.is-fly #in-showall, .in-stage.is-fly #in-reset, .in-stage.is-fly #in-lockbtn { display: none; }
   .in-card { left: 10px; right: 10px; width: auto; top: 108px; max-height: 34%; }
-  .in-joy { bottom: 126px; } .in-vert { bottom: 126px; }
+  .in-joy { bottom: 116px; } .in-vert { bottom: 116px; }
+  .in-stage.is-fly #in-layout { display: none; }
 }
 html[data-embed] .in-fly, html[data-embed] #in-autobtn, html[data-embed] #in-lockbtn, html[data-embed] #in-tiltbtn { display: none !important; }

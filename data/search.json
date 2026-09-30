@@ -2,7 +2,7 @@
  "schema": 1,
  "generated": "2026-09-30",
  "pages": 34,
- "count": 546,
+ "count": 549,
  "records": [
   {
    "k": "s",
@@ -241,7 +241,7 @@
    "p": "analog.html",
    "t": "Can a classical machine out-optimise a quantum one?",
    "h": "◆ The full OR track",
-   "x": "Max-Cut, the QUBO/Ising bridge, and nineteen other topics operations research already runs on.The Feasible Region →",
+   "x": "Max-Cut, the QUBO/Ising bridge, and 24 topics that operations research already runs on.The Feasible Region →",
    "w": 1
   },
   {
@@ -928,8 +928,24 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "17 corrections logged",
+   "h": "19 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Race said only Google's result was below threshold. Two other experiments are.",
+   "x": "What we said. On The Race, the caption of the hardware chart and the notes in our data file said “only the 2024 Google entry” was a below-threshold demonstration, and that “the others” were qubits encoded and operated but not proven to impr",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Machinery gave the mixed-state formula without its bra, said topics were “not yet built” that were, and claimed zero unsourced claims.",
+   "x": "What we said. On The Machinery, topic 2 wrote a mixed state as ρ = Σᵢ pᵢ |ψᵢ⟩⟨ψᵢ⟩, closing the bra with a ket bracket. Topics 2, 6, 7 and 10 described the quantum Fourier transform, Holevo's bound and entanglement entropy as “a later topic”",
    "w": 1
   },
   {
@@ -2889,7 +2905,7 @@
    "p": "race.html",
    "t": "The Race",
    "h": "The Race",
-   "x": "The scoreboard on the labs racing to fault tolerance. Our own prediction record now lives on The Ledger, tracked by the same public rules as every other claim we follow. The scoreboard below is still empty, and saying so is the point. We ke",
+   "x": "The scoreboard on the labs racing to fault tolerance, dated and sourced. Our own prediction record lives on The Ledger, tracked by the same public rules as every other claim we follow, and the desk's own forecasts for this race are below. W",
    "w": 3
   },
   {
@@ -2913,7 +2929,15 @@
    "p": "race.html#scoreboard",
    "t": "The Race",
    "h": "Scoreboard",
-   "x": "The middle columns fill in when there is a real, dated move to put in them, not before — and they are still empty. The last column asks a different question: not what a lab has done, but what it has already promised on the record, with a da",
+   "x": "Each lab's latest entry on the hardware table below, with its date and source there. The last column asks a different question: not what a lab has done, but what it has already promised on the record, with a date we will score it against wh",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "race.html#forecasts",
+   "t": "The Race",
+   "h": "The desk's own forecasts",
+   "x": "Pre-registered on 2026-09-30: the wording, the probability and the resolver are fixed here before anything resolves, and each is scored with a Brier score on this page when its date passes, whichever way it goes. These are the desk's estima",
    "w": 2
   },
   {
@@ -2921,7 +2945,7 @@
    "p": "race.html#scaling",
    "t": "The Race",
    "h": "What got built",
-   "x": "The scoreboard above is empty by choice. This is not: a hand-curated set of milestones, each dated and sourced, on a log axis. Two things show up. Physical qubit counts climbed about twenty-fold from 2019 to 2023 — and then the leading supe",
+   "x": "The scoreboard above lists each lab's latest entry. Below is the full record: a hand-curated set of milestones, each dated and sourced, on a log axis. Two things show up. Physical qubit counts climbed about twenty-fold from 2019 to 2023 — a",
    "w": 2
   },
   {

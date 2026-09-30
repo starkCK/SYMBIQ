@@ -234,15 +234,39 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3 aria-level="2">17 corrections logged</h3>
+  <h3 aria-level="2">19 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>17</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>19</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 19 &middot; published 2026-09-01 &middot; corrected 2026-09-30 &middot; live for 29 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Race said only Google&#39;s result was below threshold. Two other experiments are.</h3>
+
+    <p><strong>What we said.</strong> On <a href="race.html">The Race</a>, the caption of the hardware chart and the notes in our data file said &ldquo;only the 2024 Google entry&rdquo; was a below-threshold demonstration, and that &ldquo;the others&rdquo; were qubits encoded and operated but not proven to improve with scale.</p>
+
+    <p><strong>What&#39;s true.</strong> Bluvstein et al. (<em>Nature</em> 649, 39; arXiv:2506.20661) report a surface-code memory on up to 448 neutral atoms in which distance 5 had 2.14(13) times lower error per round than distance 3. He et al. (<em>Physical Review Letters</em> 135, 260601, December 2025) report a distance-7 surface code on USTC&#39;s Zuchongzhi 3.2 with a suppression factor of 1.40(6). Both are below-threshold results. The Race now lists three, and says which.</p>
+
+    <p><strong>Why we missed it.</strong> The sentence was written when Google&#39;s was the only result we had checked, and was kept as a standing claim about the whole field instead of a dated statement about our own table. The count of below-threshold entries is now read from a flag in <code>data/hardware.json</code> and written into the page by <code>tools/sync_race.py</code>, so the sentence cannot fall behind the data, only the data can fall behind the field. Two of the six labs on the old scoreboard still have no entry, and the page says so.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-30 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 18 &middot; published 2026-08-18 &middot; corrected 2026-09-30 &middot; live for 43 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Machinery gave the mixed-state formula without its bra, said topics were &ldquo;not yet built&rdquo; that were, and claimed zero unsourced claims.</h3>
+
+    <p><strong>What we said.</strong> On <a href="formalism.html">The Machinery</a>, topic 2 wrote a mixed state as &rho; = &Sigma;&#7522; p&#7522; |&psi;&#7522;&rang;&lang;&psi;&#7522;&rang;, closing the bra with a ket bracket. Topics 2, 6, 7 and 10 described the quantum Fourier transform, Holevo&#39;s bound and entanglement entropy as &ldquo;a later topic&rdquo;, &ldquo;still to be built&rdquo; or &ldquo;not yet built&rdquo;, although the page&#39;s own header says all 20 topics are live. Topic 8 said &ldquo;constant vs balanced&rdquo; covers every 1-bit function because the only other options were &ldquo;the identity or its flip in disguise&rdquo;, but the identity and NOT are exactly the two balanced functions. The header counter read &ldquo;0 claims without a proof or a source&rdquo;.</p>
+
+    <p><strong>What&#39;s true.</strong> The formula is &rho; = &Sigma;&#7522; p&#7522; |&psi;&#7522;&rang;&lang;&psi;&#7522;|. The Fourier transform is topic 11, and Holevo&#39;s bound and von Neumann entropy are topic 15; all were built. There are four 1-bit functions: two constant, two balanced. The counter was never a count. No script can count claims in prose, and only 3 of the 20 topics link a primary paper, so the header now shows that figure, computed from the page.</p>
+
+    <p><strong>Why we missed it.</strong> The forward references were written while the page was growing and were never revisited when it finished, the bra was a typing slip no check reads, and the zero was typed, not counted. Every count on the page, and the matching subtitles in the menu, now comes from <code>tools/build_counts.py</code>, and <code>--check</code> fails if a number drifts. Sourcing the other 17 topics is open work, logged in the build log.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-09-30 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 17 &middot; published 2026-07-24 &middot; corrected 2026-09-30 &middot; live for 68 days &middot; caught by the desk</p>
     <h3 style="margin-top:6px">The Bitcoin timing chart credited the wrong lead author, called a 1,121-qubit chip &ldquo;a few thousand&rdquo;, and said the attack fits inside the confirmation window.</h3>

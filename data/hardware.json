@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "updated": "2026-09-24",
+  "updated": "2026-09-30",
   "note": "A hand-curated milestone snapshot maintained by the desk, not a live feed. Dates are announcement or first-posting dates. It exists to show one shape: physical qubit counts on superconducting chips climbed hard through 2023 and then stopped being the headline; neutral-atom arrays kept growing, but as atoms held in traps rather than qubits in one computation; and the numbers that matter moved to logical qubits, where the counts are small. As of this update no 2026 result has been added: none has yet met the bar of a new count stated in a primary source. The chart on race.html#scaling is generated from this file; tools/verify_hardware.py checks the two stay consistent.",
   "caveats": [
     "\"Qubit count\" is not one number. This file separates physical from logical, but even \"physical\" spans fabricated sites, atoms held in traps, individually controlled qubits, and qubits good enough to compute with. IonQ's \"algorithmic qubits\" and various \"effective\" counts are a third thing again and are left out.",
-    "A logical-qubit count says nothing on its own about whether that qubit is below threshold. Only the Google 2024 entry here is a below-threshold demonstration; the others are qubits encoded and operated, not qubits that provably get better as the code grows.",
+    "A logical-qubit count says nothing on its own about whether that qubit is below threshold. The entries flagged below_threshold here are below-threshold demonstrations (logical error falling as the code grows); the others are qubits encoded and operated, not qubits that provably get better as the code grows.",
     "On superconducting chips, bigger has not meant better since about 2023. IBM's largest chip (Condor, 1121) predates its shift to smaller, lower-error Heron-family devices, and Google's Willow (105) holds under a tenth of Condor's count while being the more important machine. Neutral-atom arrays kept growing in 2025, to 3,000 and 6,100 atoms, but those are atoms held in traps, not qubits in one computation."
   ],
   "milestones": [
@@ -38,12 +38,15 @@
     { "date": "2024-12", "org": "Google", "device": "Willow", "kind": "physical", "n": 105,
       "note": "Under a tenth the size of 2023's largest chips, and about twice Sycamore's. The point was not the count: it was the first processor to show a surface code getting exponentially better as the code grew (below threshold), with the logical qubit outliving its best physical qubit.",
       "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687" },
-    { "date": "2024-12", "org": "Google", "device": "Willow", "kind": "logical", "n": 1,
+    { "date": "2024-12", "org": "Google", "device": "Willow", "kind": "logical", "n": 1, "below_threshold": true,
       "note": "One logical qubit, at distance 7, below threshold: the first whose error rate provably falls as you add physical qubits. The number is 1 on purpose.",
       "source": "Google Quantum AI, Nature 638, 920 (2025); arXiv:2408.13687" },
     { "date": "2025-06", "org": "Harvard / MIT / QuEra", "device": "continuously reloaded atom array", "kind": "physical", "n": 3000,
       "note": "Over 3,000 atoms kept in an array for more than two hours by reloading atoms as they are lost. The result is keeping a large array loaded and coherent, not a large computation.",
       "source": "Chiu et al., Nature (2025); arXiv:2506.20660" },
+        { "date": "2025-06", "org": "Harvard / MIT / QuEra", "device": "448-atom fault-tolerant architecture", "kind": "logical", "n": 1, "below_threshold": true,
+      "note": "A surface-code memory on up to 448 neutral atoms: distance 5 had 2.14(13)x lower error per round than distance 3 over a four-round circuit, using atom-loss detection and machine-learning decoding. Four rounds, not the long runs Willow reported.",
+      "source": "Bluvstein et al., Nature 649, 39; arXiv:2506.20661" },
     { "date": "2025-09", "org": "Caltech", "device": "tweezer array", "kind": "physical", "n": 6100,
       "note": "6,100 cesium atoms held in 12,000 laser tweezers, which Caltech called the largest qubit array ever assembled. Like the 2023 Atom Computing entry, these are atoms held in a trap array, not 6,100 qubits in one computation.",
       "source": "Manetsch et al., Nature (2025); doi:10.1038/s41586-025-09641-4" },
@@ -52,6 +55,9 @@
       "source": "IBM announcement, 12 Nov 2025" },
     { "date": "2025-11", "org": "Quantinuum", "device": "Helios", "kind": "logical", "n": 48,
       "note": "48 error-corrected logical qubits from 98 physical trapped-ion qubits, reported to perform better than the physical qubits underneath. Encoded and operated, not a demonstration that errors fall as the code grows.",
-      "source": "Quantinuum announcement, 5 Nov 2025" }
+      "source": "Quantinuum announcement, 5 Nov 2025" },
+    { "date": "2025-12", "org": "USTC", "device": "Zuchongzhi 3.2", "kind": "logical", "n": 1, "below_threshold": true,
+      "note": "A distance-7 surface code with logical error suppression factor 1.40(6) per two steps of distance, and leakage suppressed with microwave control alone. Below threshold, with a smaller margin than Willow's 2.14.",
+      "source": "He et al., Phys. Rev. Lett. 135, 260601 (2025)" }
   ]
 }

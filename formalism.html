@@ -236,9 +236,9 @@
  <p class="fr-lede">The machinery every algorithm on this site actually runs on.</p>
  <p class="fr-sub">Every pillar page on this site already teaches its ideas at three depths, toggled in place. This is a different kind of depth: not another <em>tier</em> of the same explanations, but the actual mathematical objects (state spaces, density matrices, measurement operators) that a real course builds before it lets you near Shor&#39;s algorithm. Nothing here is hand-waved. Every claim either has a proof or says plainly that it doesn&#39;t.</p>
  <div class="fr-stats">
- <div><b>20</b><span>topics live<br>of 20 planned</span></div>
+ <div><b> 20 </b><span>topics live<br>of20 planned</span></div>
  <div><b>7</b><span>sections built<br>of 7</span></div>
- <div><b>0</b><span>claims without<br>a proof or a source</span></div>
+ <div><b> 3 </b><span>of20 topics link<br>a primary paper</span></div>
  </div>
 </header>
 
@@ -276,7 +276,7 @@
 
 <div class="mod-progress-wrap" id="mod-progress-wrap">
  <div class="mod-progress-track"><span class="mod-progress-bar" id="mod-progress-bar"></span></div>
- <span id="mod-progress-label">Your progress: 0 of 20 understood</span>
+ <span id="mod-progress-label">Your progress: 0 of20 understood</span>
 </div>
 
 <details class="mod" id="f01">
@@ -380,7 +380,7 @@
  <div class="layer maths">
  <h4>The mathematics</h4>
  <p>A pure state |ψ⟩ has density matrix ρ = |ψ⟩⟨ψ|. A <strong>mixed state</strong> (genuine classical uncertainty over which pure state, with probabilities p<sub>i</sub> summing to 1) is:</p>
- <code class="eq">ρ = Σᵢ pᵢ |ψᵢ⟩⟨ψᵢ⟩</code>
+ <code class="eq">ρ = Σᵢ pᵢ |ψᵢ⟩⟨ψᵢ|</code>
  <p>Purity is testable in one number: Tr(ρ²) = 1 for a pure state, and Tr(ρ²) &lt; 1 for a mixed one (down to 1/d for the maximally mixed state on a d-dimensional space: total ignorance).</p>
  <p><strong>The partial trace</strong> is how you get from "the pair's state" to "qubit A's state, ignoring B": ρ<sub>A</sub> = Tr<sub>B</sub>(ρ<sub>AB</sub>). Apply it to a Bell pair's density matrix and the result is the maximally mixed state on qubit A alone, confirming exactly the claim above: a perfectly pure joint state can have an honestly, provably mixed reduced state.</p>
  <p><strong>Purification</strong> runs the logic in reverse: any mixed state ρ on system A can be written as the reduced state of some pure state |Ψ⟩ on a larger system AB. This isn't just a trick. It says every source of classical uncertainty can be modelled as entanglement with something outside your view, which is exactly how a noisy qubit is treated when the "something else" is the uncontrolled environment.</p>
@@ -389,7 +389,7 @@
  <div class="layer real">
  <h4>Where it actually matters</h4>
  <p><span class="where">Decoherence and the entropy topics ahead</span>
-      Every real qubit is mixed, not pure: the density matrix is the only honest way to describe a qubit that has been sitting in a noisy environment for any length of time, which is the entire subject of <a href="qec.html">quantum error correction</a>. It's also the object von Neumann entropy is computed from (a later module on this page), and the reason <a href="quantum-mechanics.html#chsh">entanglement</a> can be verified statistically even though neither qubit alone shows anything unusual on its own.</p>
+      Every real qubit is mixed, not pure: the density matrix is the only honest way to describe a qubit that has been sitting in a noisy environment for any length of time, which is the entire subject of <a href="qec.html">quantum error correction</a>. It's also the object von Neumann entropy is computed from (<a href="#f15">topic 15</a>), and the reason <a href="quantum-mechanics.html#chsh">entanglement</a> can be verified statistically even though neither qubit alone shows anything unusual on its own.</p>
  </div>
 
  <div class="mod-out">
@@ -649,7 +649,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  <h4>The intuition</h4>
  <p>This is teleportation's mirror image, and comparing them is the fastest way to understand either. Teleportation moves <em>one qubit's worth of state</em> using <em>two classical bits plus a shared pair</em>. Superdense coding moves <em>two classical bits</em> using <em>one physical qubit plus a shared pair</em>. Same resource (one pre-shared entangled pair, called an "ebit") spent in opposite directions.</p>
  <p>Alice picks one of four two-bit messages and applies one of four fixed operations to <em>only her half</em> of the pair: doing nothing to it, flipping it, phase-flipping it, or both. Each choice rotates the joint two-qubit state into one of four states that are perfectly distinguishable from each other, even though Alice touched only one of the two qubits. She physically sends that one qubit to Bob. Now holding both halves, Bob performs a single joint measurement and reads off Alice's two bits with certainty: never a guess, never a probability.</p>
- <p>This isn't "cheating" the classical one-bit-per-qubit limit (Holevo&#39;s bound, a later topic): the pair had to be distributed <em>in advance</em>, which itself took one qubit of quantum communication. Sending 2 bits this way costs 2 qubit-uses total across the whole protocol, same as sending them the ordinary way; the trick is that only <em>one</em> of those two qubit-uses happens at the moment Alice decides what to say.</p>
+ <p>This isn't "cheating" the classical one-bit-per-qubit limit (Holevo&#39;s bound, <a href="#f15">topic 15</a>): the pair had to be distributed <em>in advance</em>, which itself took one qubit of quantum communication. Sending 2 bits this way costs 2 qubit-uses total across the whole protocol, same as sending them the ordinary way; the trick is that only <em>one</em> of those two qubit-uses happens at the moment Alice decides what to say.</p>
  </div>
 
  <div class="layer maths">
@@ -662,7 +662,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  <div class="layer real">
  <h4>Where it actually matters</h4>
  <p><span class="where">The theoretical ceiling on quantum communication</span>
-      Superdense coding is the concrete proof that a pre-shared entangled pair carries real communication value: a fact that later shows up, in the opposite direction, when Holevo&#39;s bound (an information-theory topic still to be built on this page) proves you can never do <em>better</em> than 2 classical bits per qubit, entanglement or not. Together, teleportation and superdense coding fix the exchange rate between quantum and classical resources exactly: 1 ebit + 2 cbits ⇄ 1 qubit, convertible in either direction.</p>
+      Superdense coding is the concrete proof that a pre-shared entangled pair carries real communication value: a fact that later shows up, in the opposite direction, when Holevo&#39;s bound (<a href="#f15">topic 15</a> of this page) proves you can never do <em>better</em> than 2 classical bits per qubit, entanglement or not. Together, teleportation and superdense coding fix the exchange rate between quantum and classical resources exactly: 1 ebit + 2 cbits ⇄ 1 qubit, convertible in either direction.</p>
  </div>
 
  <div class="mod-out">
@@ -732,7 +732,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  <div class="layer real">
  <h4>Where it actually matters</h4>
  <p><span class="where">Every entanglement claim on this site, made precise</span>
-      When <a href="quantum-mechanics.html#chsh">the CHSH widget</a> or the Bell pairs in topics 05 and 06 above are called "maximally entangled," Schmidt rank is what makes that a specific, checkable claim rather than a figure of speech: rank 2, equal coefficients, the largest r a two-qubit state can have. Entanglement entropy (a later information-theory topic on this page) is defined directly from the λᵢ², so Schmidt rank is the first rung of a ladder that eventually reaches the entropy measures used to certify entanglement in a real lab.</p>
+      When <a href="quantum-mechanics.html#chsh">the CHSH widget</a> or the Bell pairs in topics 05 and 06 above are called "maximally entangled," Schmidt rank is what makes that a specific, checkable claim rather than a figure of speech: rank 2, equal coefficients, the largest r a two-qubit state can have. Entanglement entropy (<a href="#f15">topic 15</a>) is defined directly from the λᵢ², so Schmidt rank is the first rung of a ladder that eventually reaches the entropy measures used to certify entanglement in a real lab.</p>
  </div>
 
  <div class="mod-out">
@@ -801,7 +801,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
 
  <div class="layer">
  <h4>The intuition</h4>
- <p>f is a function on a single bit, f:{0,1}→{0,1}, and it's either <strong>constant</strong> (f(0)=f(1)) or <strong>balanced</strong> (f(0)≠f(1)). Those are the only two options for a 1-bit function that isn't literally the identity or its flip in disguise, so "constant vs balanced" covers every case. Classically, telling them apart with certainty needs both f(0) and f(1). One query only ever tells you one value, and one value is consistent with either kind. Deutsch's algorithm answers with a single call to f, and the trick it introduces is used by nearly everything downstream on this page.</p>
+ <p>f is a function on a single bit, f:{0,1}→{0,1}, and it's either <strong>constant</strong> (f(0)=f(1)) or <strong>balanced</strong> (f(0)≠f(1)). There are exactly four 1-bit functions: f(x)=0 and f(x)=1 are the two constant ones, and f(x)=x (the identity) and f(x)=1⊕x (NOT) are the two balanced ones, so "constant vs balanced" covers every case. Classically, telling them apart with certainty needs both f(0) and f(1). One query only ever tells you one value, and one value is consistent with either kind. Deutsch's algorithm answers with a single call to f, and the trick it introduces is used by nearly everything downstream on this page.</p>
  <p><strong>Phase kickback.</strong> The oracle is normally written to act on two registers (a query register x and an answer register y) as |x⟩|y⟩ → |x⟩|y⊕f(x)⟩: it XORs f(x) into y, leaving x alone. But prepare the answer register in the state (|0⟩−|1⟩)/√2 first, and something different happens: XOR-ing f(x) into that particular state either leaves it completely unchanged (f(x)=0) or flips its overall sign (f(x)=1), and a state that is only ever unchanged or globally negated is, up to that sign, the <em>same state</em>. The information about f(x) doesn't land in the answer register at all. It lands as a <strong>phase</strong>, (−1)^f(x), attached to the query register instead: the one register the oracle was "supposed" to leave alone.</p>
  <p>A single amplitude's phase is invisible to any measurement on its own. What makes it visible is interference: querying <em>both</em> inputs at once, in superposition, then running a second Hadamard that turns the phase difference between the |0⟩ and |1⟩ branches into which outcome the query qubit measures. Constant f gives the two branches the same phase, they interfere back to exactly |0⟩. Balanced f gives them opposite phases, they interfere to exactly |1⟩. One call, one bit of global structure, read off with certainty.</p>
  </div>
@@ -963,7 +963,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  <div class="layer real">
  <h4>Where it actually matters</h4>
  <p><span class="where">The direct forerunner of Shor's algorithm</span>
-      Swap "period s under XOR" for "period r under multiplication mod N" and "Hadamard transform over (ℤ/2ℤ)ⁿ" for "quantum Fourier transform over ℤ/Nℤ", and Simon's algorithm becomes the period-finding core of <a href="bitcoin.html#shor-widget">Shor's algorithm</a>: the reason RSA and ECDSA are breakable by a large enough quantum computer. The QFT (this page&#39;s next section, not yet built) is the one piece of machinery still missing to make that generalisation precise rather than asserted.</p>
+      Swap "period s under XOR" for "period r under multiplication mod N" and "Hadamard transform over (ℤ/2ℤ)ⁿ" for "quantum Fourier transform over ℤ/Nℤ", and Simon's algorithm becomes the period-finding core of <a href="bitcoin.html#shor-widget">Shor's algorithm</a>: the reason RSA and ECDSA are breakable by a large enough quantum computer. The QFT (<a href="#f11">topic 11</a>) is the piece of machinery that makes that generalisation precise rather than asserted.</p>
  </div>
 
  <div class="mod-out">
@@ -1694,7 +1694,7 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  </div>
 </details>
 
-<footer>The Machinery: 7 of 7 planned sections, 20 of 20 planned topics: complete. Every topic is verified; nothing is a placeholder.<br>SymbiQ · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
+<footer>The Machinery: 7 of 7 planned sections,20 of20 planned topics: complete. Nothing is a placeholder, but only3 topics link a primary paper so far, and sourcing the rest is open work.<br>SymbiQ · Found an error? <a href="corrections.html#report">Tell us</a>.</footer>
 </div>
 
 <script type="application/ld+json">

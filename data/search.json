@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-09-30",
- "pages": 35,
- "count": 562,
+ "pages": 38,
+ "count": 573,
  "records": [
   {
    "k": "s",
@@ -65,7 +65,7 @@
    "p": "about.html#contact",
    "t": "About the desk",
    "h": "Telling us we got something wrong",
-   "x": "The fastest route is the correction report. It lands on the desk directly, and it is read by the desk. For anything else: chinmoyuas@gmail.com. Last updated: 30 September 2026.",
+   "x": "The fastest route is the correction report. It lands on the desk directly, and it is read by the desk. For anything else: chinmoyuas@gmail.com. Last updated: 30 September 2026. About · How we check · AI use · Corrections · Changelog · RSS ·",
    "w": 2
   },
   {
@@ -153,7 +153,7 @@
    "p": "ai.html",
    "t": "Will quantum computers make AI more powerful?",
    "h": "🏁 The Race",
-   "x": "Who's building the hardware both halves of the loop depend on.Scoreboard →",
+   "x": "Who's building the hardware both halves of the loop depend on.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -369,7 +369,7 @@
    "p": "applications.html",
    "t": "Where might a quantum computer actually earn its keep?",
    "h": "◆ Optimisation",
-   "x": "The other big promise: “quantum will transform scheduling”, checked on one named instance.The Verdict →",
+   "x": "The other big promise: “quantum will transform scheduling”, checked on one named instance.The Verdict → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -640,7 +640,7 @@
    "k": "s",
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
-   "h": "🟢 Error correction, no math",
+   "h": "🟢 Error correction, Plain",
    "x": "Why quantum computers need babysitting at all.Read →",
    "w": 1
   },
@@ -657,7 +657,7 @@
    "p": "bitcoin.html",
    "t": "Can quantum computers break Bitcoin?",
    "h": "🏁 The Race",
-   "x": "Who's closest to machines that matter. The table is still empty, and the page says why.Scoreboard →",
+   "x": "Who's closest to machines that matter. The table is still empty, and the page says why.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -667,6 +667,38 @@
    "h": "What changed",
    "x": "Four streams, one timeline, generated from the record rather than written by hand: every claim the Ledger takes on or rules on, every correction published, every story on The Signal, and every commit to the site itself. The commits are the ",
    "w": 3
+  },
+  {
+   "k": "s",
+   "p": "check.html",
+   "t": "Check",
+   "h": "Check",
+   "x": "Big claims, scored in public, with our own misses beside theirs. Reality CheckHow much physics was in that scene?Movie scenes, myths and viral claims, rated.",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "check.html",
+   "t": "Check",
+   "h": "Claims",
+   "x": "Was that real physics?The swipe deck: scenes, myths, viral claims Did they do what they said?Every tracked claim, scored on its deadline How good are my predictions?Your proofs and predictions, scored honestly",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "check.html",
+   "t": "Check",
+   "h": "The race",
+   "x": "Who is actually ahead?The scoreboard, and the desk's own forecasts What is the number that matters?The threshold, live What just happened?Desk notes: dated, written by hand",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "check.html",
+   "t": "Check",
+   "h": "Our own record",
+   "x": "Where were we wrong?Every mistake, logged and dated How do you check a number?What catches errors, and what it misses What changed?Claims, corrections, notes and builds About · How we check · AI use · Corrections · Changelog · RSS · Privacy",
+   "w": 2
   },
   {
    "k": "s",
@@ -777,7 +809,7 @@
    "p": "circuits.html",
    "t": "What is a qubit actually made of?",
    "h": "🏁 The Race",
-   "x": "Who is building this hardware, and how their qubit counts compare.How the companies compare →",
+   "x": "Who is building this hardware, and how their qubit counts compare.How the companies compare → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -2121,7 +2153,7 @@
    "p": "learn.html",
    "t": "The course map",
    "h": "Look a word up",
-   "x": "Every term, with the page that explains it.Glossary → Press / anywhere to search the whole site, or ? for the keyboard shortcuts.",
+   "x": "Every term, with the page that explains it.Glossary → Press / anywhere to search the whole site, or ? for the keyboard shortcuts. About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -2265,7 +2297,7 @@
    "p": "logical-qubit.html",
    "t": "What is a logical qubit?",
    "h": "🏁 The Race",
-   "x": "Who's fielding the most logical qubits: the scoreboard that counts the number that matters.Scoreboard →",
+   "x": "Who's fielding the most logical qubits: the scoreboard that counts the number that matters.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -2361,7 +2393,7 @@
    "p": "phase-kickback.html",
    "t": "Why do Grover's and Shor's algorithms actually work?",
    "h": "₿ Where this ends up",
-   "x": "The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.Can quantum break Bitcoin? →",
+   "x": "The qubit counts this mechanism produces when pointed at Bitcoin's elliptic curve, not just at toy examples.Can quantum break Bitcoin? → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -2466,6 +2498,38 @@
    "t": "The Arcade",
    "h": "Coming next",
    "x": "",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "playhub.html",
+   "t": "Play",
+   "h": "Play",
+   "x": "Games where the mathematics holds the whistle. The main questThe Solver's PathStory, map and missions, saved in your browser.",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "playhub.html",
+   "t": "Play",
+   "h": "Play now",
+   "x": "The Solver's PathThe main quest: story, map, missions The ArcadeEvery game, free play, no story Today's challengeOne seeded puzzle a day, one shareable grid The Question archiveEvery question we've ever asked",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "playhub.html",
+   "t": "Play",
+   "h": "Head to head",
+   "x": "Grover's EscapeFind the exit, and race a classical searcher Max-CutSplit the city; race the computer The Decoder DuelYou are the AI, against the textbook decoder Quantum Tic-Tac-ToeTwo players, every move in two squares",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "playhub.html",
+   "t": "Play",
+   "h": "Build and keep",
+   "x": "The WorkshopBuild a hole; the search sets its par Your medalsEvery level you cleared, and how well Circuit GolfReach the target with the fewest gates The Annealing VolcanoYou are the temperature About · How we check · AI use · Corrections ·",
    "w": 2
   },
   {
@@ -2721,7 +2785,7 @@
    "p": "privacy.html#contact",
    "t": "Privacy",
    "h": "Contact",
-   "x": "Questions about privacy, or a request about your data: chinmoyuas@gmail.com. Last updated: 24 September 2026. SymbiQ is operated by an individual, not a company; who that is, and how the site is checked, is on the About the desk page.",
+   "x": "Questions about privacy, or a request about your data: chinmoyuas@gmail.com. Last updated: 24 September 2026. SymbiQ is operated by an individual, not a company; who that is, and how the site is checked, is on the About the desk page. About",
    "w": 2
   },
   {
@@ -2865,7 +2929,7 @@
    "p": "qec.html",
    "t": "What is quantum error correction?",
    "h": "🏁 The Race",
-   "x": "Who's furthest below threshold. The table is still empty, and the page says why.Scoreboard →",
+   "x": "Who's furthest below threshold. The table is still empty, and the page says why.Scoreboard → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -3001,7 +3065,7 @@
    "p": "quantum-mechanics.html",
    "t": "Is quantum computing justquantum mechanics?",
    "h": "🔴 The math floor",
-   "x": "Formalism, derivations, citations.Read →",
+   "x": "Formalism, derivations, citations.Read → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -3118,6 +3182,30 @@
   },
   {
    "k": "s",
+   "p": "secure.html",
+   "t": "Secure",
+   "h": "Secure",
+   "x": "Is your encryption ready for a quantum computer? Live tools, no sign-up. Quick CheckIs this endpoint quantum-safe?One paste, one answer.",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "secure.html",
+   "t": "Secure",
+   "h": "Live tools",
+   "x": "Quick CheckOne paste, one answer The Size CliffWhat post-quantum actually costs in bytes The InventoryRead your own certificates and keys The ProofRun ML-KEM and ML-DSA yourself",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "secure.html",
+   "t": "Secure",
+   "h": "The argument",
+   "x": "Can quantum break Bitcoin?The numbers, not the panic Isn't QKD the actual fix?Short answer: not for this Is it too late to start?Mosca's inequality, with your numbers About · How we check · AI use · Corrections · Changelog · RSS · Privacy ·",
+   "w": 2
+  },
+  {
+   "k": "s",
    "p": "sensing.html",
    "t": "Do quantum sensors and networks matter sooner than quantum computers?",
    "h": "Do quantum sensors and networks matter sooner than quantum computers?",
@@ -3209,7 +3297,7 @@
    "p": "sensing.html",
    "t": "Do quantum sensors and networks matter sooner than quantum computers?",
    "h": "🔒 QKD versus the fix",
-   "x": "Why key distribution is not what replaces the encryption that quantum computers threaten.Isn't QKD the fix? →",
+   "x": "Why key distribution is not what replaces the encryption that quantum computers threaten.Isn't QKD the fix? → About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 1
   },
   {
@@ -3329,7 +3417,7 @@
    "p": "terms.html#contact",
    "t": "Terms of use",
    "h": "Contact",
-   "x": "chinmoyuas@gmail.com. Last updated: 8 September 2026.",
+   "x": "chinmoyuas@gmail.com. Last updated: 8 September 2026. About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms · Write for SymbiQ",
    "w": 2
   },
   {

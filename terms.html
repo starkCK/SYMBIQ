@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="The terms for using SymbiQ: educational content, not professional advice; how our copyright works; and what happens to what you send us.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/explainers.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/terms.css?v=34">
+<link rel="stylesheet" href="p/terms.css?v=41">
 
 
 
@@ -69,7 +69,7 @@
 
 <script src="core.js?v=5"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/terms.js?v=16" defer></script>
+<script src="p/terms.js?v=17" defer></script>
 
 
 
@@ -100,130 +100,139 @@
     </svg>
     symbiq
   </a>
-  <button id="navtrig" aria-expanded="false" aria-controls="navcats">Menu</button>
-  <div id="navcats">
-    <details class="navcat" data-cat="learn">
-      <summary>Learn</summary>
-      <div class="navpanel navpanel-wide">
-      <div class="navcol">
-      <p class="navhead">Quantum computing</p>
-      <a href="basics.html" class="navmain">🟢 Start here<span class="sub">Two minutes, zero equations</span></a>
-      <a href="circuits.html" class="navmain">What is a qubit made of?<span class="sub">The circuit underneath everything below</span></a>
-      <a href="inside.html" class="navmain">◆ Inside the machine<span class="sub">Rotate it in 3D, then open it down to the junction</span></a>
-      <div class="navrow">
-        <a href="quantum-mechanics.html" class="navmain">Quantum mechanics vs computing<span class="sub">Same laws, different question</span></a>
-        <a href="quantum-mechanics.html#bloch" class="navchip">Bloch sphere →</a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="learn.html#quantum" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: four routes, ranked honestly</span></a>
+            <a href="learn.html#optimisation" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the Ising machine, live</span></a>
+            <a href="learn.html#security" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
       </div>
-      <div class="navrow">
-        <a href="qec.html" class="navmain">What is error correction?<span class="sub">The door AI walked in through</span></a>
-        <a href="qec.html#qec-widget" class="navchip">surface code →</a>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
       </div>
-      <div class="navrow">
-        <a href="logical-qubit.html" class="navmain">What is a logical qubit?<span class="sub">Why 1,000 qubits make 1</span></a>
-        <a href="logical-qubit.html#lq-widget" class="navchip">calculator →</a>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
       </div>
-      <div class="navrow">
-        <a href="ai.html" class="navmain">Will quantum boost AI?<span class="sub">Four routes, ranked honestly</span></a>
-        <a href="ai.html#loop-widget" class="navchip">loop diagram →</a>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
       </div>
-      <div class="navrow">
-        <a href="bitcoin.html" class="navmain">Can quantum break Bitcoin?<span class="sub">The numbers, not the panic</span></a>
-        <a href="bitcoin.html#shor-widget" class="navchip">Shor estimator →</a>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
       </div>
-      <div class="navrow">
-        <a href="compare.html" class="navmain">How the companies compare<span class="sub">Five structural trade-offs</span></a>
-        <a href="compare.html#mod-widget" class="navchip">modality bars →</a>
-      </div>
-      <a href="phase-kickback.html" class="navmain">Why do these algorithms work?<span class="sub">One mechanism, four algorithms</span></a>
-      <a href="applications.html" class="navmain">Where might it earn its keep?<span class="sub">Chemistry, materials, finance: not shown yet</span></a>
-      <a href="sensing.html" class="navmain">Sensors and networks<span class="sub">The quantum technology that already ships</span></a>
-      <a href="formalism.html" class="navmain">🔴 The Machinery<span class="sub">Postulates and proofs, 20 topics</span></a>
-      </div>
-      <div class="navcol">
-      <p class="navhead">Optimisation</p>
-      <a href="analog.html" class="navmain">Can classical beat quantum here?<span class="sub">The Ising machine, live</span></a>
-      <a href="feasible.html" class="navmain">◆ The Feasible Region<span class="sub">Operations research, 24 topics</span></a>
-      <a href="feasible.html#bottleneck" class="navmain">The Bottleneck<span class="sub">Which resource is actually worth money?</span></a>
-      <a href="feasible.html#prune" class="navmain">The Prune<span class="sub">Prove 4,096 possibilities wrong by opening thirty</span></a>
-      <a href="feasible.html#verdict" class="navmain">The Verdict<span class="sub">Can quantum beat classical here? One named instance</span></a>
-      <p class="navhead">Find your way</p>
-      <a href="learn.html" class="navmain">◆ The course map<span class="sub">Three tracks, three depths, in reading order</span></a>
-      <a href="glossary.html" class="navmain">Glossary<span class="sub">Every term the site teaches, with where</span></a>
-      </div>
-      </div>
-    </details>
-    <details class="navcat" data-cat="security" data-hot="1">
-      <summary>Security</summary>
-      <div class="navpanel">
-      <p class="navhead">Live tools, no signup</p>
-      <a href="pqc.html" class="navmain">◆ Post-quantum, on the wire<span class="sub">Seven tools, real keys, no signup</span></a>
-      <a href="pqc.html#quickcheck" class="navmain">Quick Check<span class="sub">One paste, one answer</span></a>
-      <a href="pqc.html#cliff" class="navmain">The Size Cliff<span class="sub">What PQC actually costs in bytes</span></a>
-      <a href="pqc.html#inventory" class="navmain">The Inventory<span class="sub">Read your own certificates and keys</span></a>
-      <a href="pqc.html#proof" class="navmain">The Proof<span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
-      <p class="navhead">The argument</p>
-      <a href="pqc.html#qkd" class="navmain">Isn&#39;t QKD the actual fix?<span class="sub">Short answer: not for this</span></a>
-      </div>
-    </details>
-    <details class="navcat" data-cat="reality" data-new="1">
-      <summary>Reality Check</summary>
-      <div class="navpanel">
-      <a href="reality.html" class="navmain">◆ The swipe deck<span class="sub">Movie scenes, myths and viral claims: how much physics was in them?</span></a>
-      <p class="navhead">The scorekeeping</p>
-      <div class="navrow">
-        <a href="ledger.html" class="navmain">The Ledger<span class="sub">Every tracked claim, verified or not</span></a>
-        <a href="ledger.html#scorecards" class="navchip">scorecards →</a>
-      </div>
-      <a href="standing.html" class="navmain">The Standing<span class="sub">Your proofs and predictions, scored honestly</span></a>
-      <div class="navrow">
-        <a href="race.html" class="navmain">The Race<span class="sub">Who is actually ahead</span></a>
-        <a href="race.html#threshold" class="navchip">threshold →</a>
-      </div>
-      <a href="corrections.html" class="navmain">Corrections<span class="sub">Every mistake, logged and dated</span></a>
-      <a href="how-we-check.html" class="navmain">How we check<span class="sub">What checks a number, and what it misses</span></a>
-      <a href="signals.html" class="navmain">Desk notes<span class="sub">Dated notes, written by hand</span></a>
-      </div>
-    </details>
-    <details class="navcat" data-cat="community">
-      <summary>Community</summary>
-      <div class="navpanel">
-      <p class="navhead">Read</p>
-      <a href="archive.html" class="navmain">The Question Archive<span class="sub">Every question we&#39;ve ever asked</span></a>
-      <p class="navhead">Write</p>
-      <a href="apply.html" class="navmain">Write for SymbiQ<span class="sub">Apply as a verified writer, or send a post for review</span></a>
-      <p class="navhead">About</p>
-      <a href="about.html" class="navmain">About the desk<span class="sub">Who writes this, and how it gets checked</span></a>
-      <a href="changelog.html" class="navmain">What changed<span class="sub">Claims, corrections, stories and builds</span></a>
-      <a href="#search" class="navmain">Search<span class="sub">Every page and concept &mdash; or press /</span></a>
-      </div>
-    </details>
-    <details class="navcat" data-cat="play">
-      <summary>Play</summary>
-      <div class="navpanel">
-      <a href="journey.html" class="navmain">▶ The Solver&#39;s Path<span class="sub">The main quest: story, map, missions</span></a>
-      <a href="play.html" class="navmain">⊞ The Arcade<span class="sub">Every game, free play, no story</span></a>
-      <a href="#play-noise" class="navmain">◐ Noise &amp; Decoder<span class="sub">Break this page, then repair it. Nothing is deleted</span></a>
-      <p class="navhead">Puzzles with a proven best answer</p>
-      <a href="play.html#golf" class="navmain">Circuit Golf<span class="sub">Reach the target with the fewest gates</span></a>
-      <a href="play.html#grover" class="navmain">Grover&#39;s Escape<span class="sub">Find the exit, and race a classical searcher</span></a>
-      <a href="play.html#maxcut" class="navmain">Max-Cut<span class="sub">Split the city; race the computer for territory</span></a>
-      <a href="play.html#volcano" class="navmain">The Annealing Volcano<span class="sub">You are the temperature</span></a>
-      <p class="navhead">Head to head</p>
-      <a href="play.html#qttt" class="navmain">Quantum Tic-Tac-Toe<span class="sub">Two players, every move in two squares</span></a>
-      <a href="qec.html#duel" class="navmain">The Decoder Duel<span class="sub">You are the AI, against the textbook decoder</span></a>
-      <a href="quantum-mechanics.html#chsh" class="navmain">The CHSH game<span class="sub">Beat the best classical strategy</span></a>
-      <p class="navhead">Build and tune</p>
-      <a href="play.html#workshop" class="navmain">The Workshop<span class="sub">Build a hole; the search sets its par</span></a>
-      <a href="play.html#calibration" class="navmain">The Calibration<span class="sub">Configure the agent, not the qubit</span></a>
-      <a href="analog.html#bench" class="navmain">The Bench<span class="sub">Three real methods race on one graph</span></a>
-      </div>
-    </details>
+    </div>
   </div>
-  <a class="link pathlink" href="journey.html">▶ The <span class="longword">Solver&#39;s </span>Path</a>
-  <details class="navcat sq-account" id="sq-account" hidden>
-    <summary aria-label="Account"><span class="sq-avatar" id="sq-avatar" aria-hidden="true">👤</span></summary>
-    <div class="navpanel" id="sq-auth"></div>
-  </details>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
 
 
@@ -263,6 +272,14 @@
 <p><strong><a href="mailto:chinmoyuas@gmail.com">chinmoyuas@gmail.com</a></strong>.</p>
 <p class="verif">Last updated: 8 September 2026.</p>
 <footer>SymbiQ &middot; Educational content, not advice. <a href="privacy.html">Privacy</a></footer>
+
+
+
+
+
+
+
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

@@ -98,6 +98,116 @@
 })();
 ;
 (function () {
+  'use strict';
+  var D = document;
+  var core = (window.SymbiQ && window.SymbiQ.core) || {};
+  var store = core.store;
+  var KEY = 'sq-last';
+
+  function all(s, r) { return [].slice.call((r || D).querySelectorAll(s)); }
+  function one(s, r) { return (r || D).querySelector(s); }
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; }
+  }
+  function write(v) {
+    try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {}
+  }
+
+  try {
+    var nav = one('nav');
+    if (!nav || !one('.navtabs', nav)) return;
+
+    var groups = all('.navtab, .nav-you', nav).map(function (host) {
+      return {
+        host: host,
+        btn: one('.navtab-arrow, .you-btn', host),
+        panel: one('.navpanel2', host),
+        hoverable: host.classList.contains('navtab'),
+        timer: 0
+      };
+    }).filter(function (g) { return g.btn && g.panel; });
+
+    function setOpen(g, open) {
+      clearTimeout(g.timer);
+      g.panel.hidden = !open;
+      g.btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) g.host.setAttribute('data-open', ''); else g.host.removeAttribute('data-open');
+    }
+    function closeAll(except) {
+      groups.forEach(function (g) { if (g !== except && !g.panel.hidden) setOpen(g, false); });
+    }
+    function open(g) { closeAll(g); setOpen(g, true); }
+
+    var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 720px)');
+
+    groups.forEach(function (g) {
+      g.btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (g.panel.hidden) open(g); else setOpen(g, false);
+      });
+      g.btn.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          open(g);
+          var first = one('a', g.panel);
+          if (first) first.focus();
+        }
+      });
+      if (g.hoverable) {
+        g.host.addEventListener('mouseenter', function () {
+          if (!fine || !fine.matches) return;
+          clearTimeout(g.timer);
+          g.timer = setTimeout(function () { open(g); }, 110);
+        });
+        g.host.addEventListener('mouseleave', function () {
+          if (!fine || !fine.matches) return;
+          clearTimeout(g.timer);
+          g.timer = setTimeout(function () { setOpen(g, false); }, 220);
+        });
+      }
+      g.panel.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+        var links = all('a', g.panel), i = links.indexOf(D.activeElement);
+        if (i < 0) return;
+        e.preventDefault();
+        var n = e.key === 'ArrowDown' ? Math.min(links.length - 1, i + 1) : Math.max(0, i - 1);
+        links[n].focus();
+      });
+    });
+
+    D.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('nav')) closeAll();
+    });
+    D.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var openOne = groups.filter(function (g) { return !g.panel.hidden; })[0];
+      if (!openOne) return;
+      setOpen(openOne, false);
+      openOne.btn.focus();
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('.navpanel2 a')) closeAll();
+    });
+
+    var page = (location.pathname.split('/').pop() || 'index.html');
+    var here = one('.navtab-link.cur', nav);
+    var saved = read();
+    if (here) {
+      var title = (D.title || '').split(' · ')[0];
+      write({ u: page, t: title, at: Date.now() });
+    }
+    var cont = one('.nav-continue', nav);
+    if (cont && saved && saved.u && saved.u !== page && /^[\w.-]+\.html$/.test(saved.u)) {
+      cont.href = saved.u;
+      cont.hidden = false;
+      cont.setAttribute('aria-label', 'Continue: ' + (saved.t || saved.u));
+      cont.title = 'Back to ' + (saved.t || saved.u);
+    }
+  } catch (err) { }
+})();
+;
+(function () {
   window.SymbiQ = window.SymbiQ || {};
   var KEY = 'symbiq.depth.v1';
 
@@ -2861,7 +2971,34 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
            '</a>';
   }
 
+  function medalCount() {
+    var n = 0, s = {};
+    try { s = JSON.parse(localStorage.getItem('symbiq_ladder_v1')) || {}; } catch (e) { s = {}; }
+    Object.keys(s).forEach(function (id) {
+      var m = (s[id] && s[id].medal) || {};
+      Object.keys(m).forEach(function (k) { if (m[k]) n++; });
+    });
+    return n;
+  }
+  function fillYou(host, p, ci) {
+    var medals = medalCount();
+    if (!p.seen && !medals) return;
+    var rows = '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
+      '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
+      '<dt>Codex</dt><dd>' + p.codex + ' fragment' + (p.codex === 1 ? '' : 's') + '</dd>' +
+      '<dt>Medals</dt><dd>' + medals + '</dd>';
+    if (ci && ci.streak > 0 && !ci.lapsed) {
+      rows += '<dt>Contract</dt><dd>' + ci.streak + '-day streak' + (ci.doneToday ? ', today cleared' : ', today open') + '</dd>';
+    }
+    var where = p.next ? p.next.act + ' awaits in ' + p.next.place : (p.done ? 'The Path is complete' : '');
+    host.innerHTML = '<dl class="you-rows">' + rows + '</dl>' +
+      (where ? '<p class="sub" style="margin:8px 0 0">' + esc(where) + '. Saved in this browser only.</p>'
+             : '<p class="sub" style="margin:8px 0 0">Saved in this browser only.</p>');
+  }
+
   function mountChip(p, ci) {
+    var you = document.querySelector('.you-progress');
+    if (you) { fillYou(you, p, ci); return; }
     var nav = document.querySelector('nav');
     if (!nav) return;
     var host = nav.querySelector('.hud-slot');

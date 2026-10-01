@@ -26,7 +26,7 @@
   "q": {
    "name": "Quantum × AI",
    "hub": "track-quantum-ai.html",
-   "cap": 118
+   "cap": 136
   },
   "o": {
    "name": "Optimisation",
@@ -91,6 +91,10 @@
   "arenafs": {
    "track": "o",
    "levels": 1
+  },
+  "strikes": {
+   "track": "q",
+   "levels": 6
   }
  },
  "sources": {
@@ -121,7 +125,8 @@
    "survival": 4,
    "qday": 4,
    "arena": 6,
-   "arenafs": 1
+   "arenafs": 1,
+   "strikes": 6
   }
  }
 }

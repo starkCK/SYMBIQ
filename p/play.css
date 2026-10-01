@@ -3659,6 +3659,12 @@ body[data-glass] ::-webkit-scrollbar-thumb:hover {
 .ar-fam h3 { margin: 0 0 6px; font-size: 1rem; }
 .ar-fam p { margin: 0 0 8px; font-size: .9rem; line-height: 1.5; }
 .ar-fam .preset { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.en-bar { display: flex; flex-wrap: wrap; gap: 6px; }
+.en-b { min-height: 44px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; cursor: pointer; }
+.en-b.on { border-color: var(--violet, var(--teal)); background: color-mix(in srgb, var(--violet, var(--teal)) 14%, transparent); }
+.en-b:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.en-line { margin: 0; font-size: .86rem; line-height: 1.55; color: var(--muted); }
+.ag-chip small, .mf-chip small, .lt-chip small, .cw-chip small { display: block; font-size: .68rem; color: var(--muted); line-height: 1.2; }
 .agl { display: grid; gap: 10px; max-width: 760px; }
 .ag-strip { display: flex; flex-wrap: wrap; gap: 6px; }
 .ag-chip { min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; cursor: pointer; }

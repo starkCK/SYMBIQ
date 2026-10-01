@@ -86,7 +86,26 @@
     return { rate: ok / runs, cost: spent / runs, runs: runs };
   }
 
-  var engine = { geo: geo, stepStats: stepStats, evaluate: evaluate, best: best, heuristics: heuristics, ratioGreedy: ratioGreedy, upgradeInOrder: upgradeInOrder, medalOf: medalOf, simulate: simulate, rng: rng, ATTEMPTS: ATTEMPTS, trustAll: trustAll };
+  var STEP_NAMES = ['Fetch the inputs', 'Read the page', 'Look it up', 'Cross-check a figure', 'Call the tool', 'Draft the answer', 'Fix the format', 'Write the result'];
+  function gen(seed, k) {
+    var r = rng(seed), n = Math.min(8, 4 + Math.floor(k / 2)), P = [0.8, 0.85, 0.88, 0.9, 0.92, 0.94, 0.95, 0.96, 0.97, 0.98], D = [0.7, 0.8, 0.9], t, i;
+    var pick = function (a) { return a[Math.floor(r() * a.length)]; };
+    for (t = 0; t < 400; t++) {
+      var L = { id: 'gen', name: 'Endless ' + (k + 1), d: pick(D), budget: 0, par: 0, steps: [], brief: '' };
+      for (i = 0; i < n; i++) L.steps.push({ id: 's' + i, name: STEP_NAMES[i], p: pick(P), c: 1 + Math.floor(r() * 6), k: 1 + Math.floor(r() * 4) });
+      L.budget = 1e9; var base = evaluate(L, trustAll(L)).cost;
+      L.budget = Math.round(base) + 2 + Math.floor(r() * 12);
+      var b = best(L);
+      if (b.count !== 1 || b.feasible > b.of * 0.7 || b.feasible < 20) continue;
+      var tr = evaluate(L, trustAll(L)).success;
+      if (b.par - tr < 0.12) continue;
+      L.par = b.par; L.brief = 'A generated task of ' + n + ' steps. The best plan within the budget is found exhaustively before you see it.';
+      return L;
+    }
+    return null;
+  }
+
+  var engine = { geo: geo, stepStats: stepStats, evaluate: evaluate, best: best, heuristics: heuristics, ratioGreedy: ratioGreedy, upgradeInOrder: upgradeInOrder, medalOf: medalOf, simulate: simulate, rng: rng, ATTEMPTS: ATTEMPTS, trustAll: trustAll, gen: gen };
 
   var LEVELS = [
     { id: 'trip', name: 'Book a trip', d: 0.8, budget: 26, par: 0.801099403987,
@@ -162,7 +181,9 @@
 
   function mountGame(root, opts) {
     var esc = W.SymbiQ.core.esc, lvl = 0, plan = [], ran = false, sim = null;
-    var KEY = 'agentlab';
+    var KEY = 'agentlab', cur = null, mode = 'ladder', ek = 0, nonce = (Date.now() % 1000000007) >>> 0;
+    var EN = W.SymbiQ.endless;
+    function cL() { return cur || LEVELS[lvl]; }
     root.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'agl';
     root.appendChild(wrap);
@@ -172,10 +193,10 @@
     function resume() { var st = ladderState(), r = 0; for (var i = 1; i <= LEVELS.length; i++) if (st.cleared[i]) r = Math.min(i, LEVELS.length - 1); return r; }
 
     function head(L, ev) {
-      return '<div class="ag-strip" role="list" aria-label="The tasks">' + LEVELS.map(function (l, i) {
+      return (EN ? EN.bar(mode) : '') + (mode !== 'ladder' ? EN.line(KEY, mode, ek) : '<div class="ag-strip" role="list" aria-label="The tasks">' + LEVELS.map(function (l, i) {
         var st = ladderState(), med = st.medal[i + 1], glyph = med ? { gold: '🥇', silver: '🥈', bronze: '🥉' }[med] : (unlocked(i + 1) ? (i + 1) : '🔒');
-        return '<button type="button" role="listitem" class="ag-chip' + (i === lvl ? ' now' : '') + '" data-lv="' + i + '"' + (unlocked(i + 1) ? '' : ' disabled') + ' aria-label="' + esc(l.name) + (unlocked(i + 1) ? '' : ', locked') + '">' + glyph + ' ' + esc(l.name) + '</button>';
-      }).join('') + '</div>' +
+        return '<button type="button" role="listitem" class="ag-chip' + (i === lvl ? ' now' : '') + '" data-lv="' + i + '"' + (unlocked(i + 1) ? '' : ' disabled') + ' aria-label="' + esc(l.name) + (unlocked(i + 1) ? '' : ', locked') + '">' + glyph + (EN ? ' <small>' + EN.tierOf(i, LEVELS.length) + '</small>' : '') + ' ' + esc(l.name) + '</button>';
+      }).join('') + '</div>') +
         '<p class="ag-brief">' + L.brief + '</p>' +
         '<p class="ag-facts"><b>Budget</b> ' + L.budget + ' (expected cost) &middot; <b>The checker</b> catches ' + Math.round(L.d * 100) + '% of wrong steps and never cries wolf &middot; <b>Par</b> ' + pct(L.par) + ' finish (proven best) &middot; <b>Trusting every step</b> finishes ' + pct(evaluate(L, trustAll(L)).success) + '</p>' +
         '<p class="ag-plan" role="status" aria-live="polite"><b>Your plan:</b> finishes <b>' + pct(ev.success) + '</b>, expected cost <b>' + ev.cost.toFixed(2) + '</b> of ' + L.budget + (ev.fits ? '' : ' <strong class="ag-over">&mdash; over budget</strong>') + '</p>';
@@ -189,10 +210,10 @@
         '<p class="ag-r">this step: right <b>' + pct(r.right) + '</b> &middot; expected cost <b>' + r.cost.toFixed(2) + '</b></p></div></li>';
     }
     function paint() {
-      var L = LEVELS[lvl], ev = evaluate(L, plan);
+      var L = cL(), ev = evaluate(L, plan);
       var html = head(L, ev) + '<ol class="ag-list">' + L.steps.map(function (st, i) { return rowHTML(L, st, i, ev); }).join('') + '</ol>';
       html += '<div class="ag-act">' + (ran
-        ? '<button type="button" class="preset" data-a="again">Change the plan</button>' + (lvl < LEVELS.length - 1 ? ' <button type="button" class="preset" data-a="next"' + (unlocked(lvl + 2) ? '' : ' disabled') + '>Next task</button>' : '')
+        ? '<button type="button" class="preset" data-a="again">Change the plan</button>' + (mode === 'endless' ? ' <button type="button" class="preset" data-a="next">Next endless task</button>' : mode === 'ladder' && lvl < LEVELS.length - 1 ? ' <button type="button" class="preset" data-a="next"' + (unlocked(lvl + 2) ? '' : ' disabled') + '>Next task</button>' : '')
         : '<button type="button" class="preset ag-run" data-a="run"' + (ev.fits ? '' : ' disabled') + '>Run the pipeline</button> <button type="button" class="preset" data-a="reset">Trust every step</button>') + '</div>' +
         '<p class="ag-say" role="status" aria-live="polite">' + (ran ? sayResult(L, ev) : (ev.fits ? 'Choose what to do at each step, then run the pipeline.' : 'This plan costs more than the budget. Trust a step or take a retry away.')) + '</p>';
       wrap.innerHTML = html;
@@ -203,7 +224,12 @@
         (ev.success >= L.par - EPS ? '' : ' Checking the weakest step first is not always the best use of the budget: weigh what each check costs against what it buys.') +
         ' Measured over ' + sim.runs.toLocaleString() + ' seeded runs: <b>' + pct(sim.rate) + '</b> finished, average cost <b>' + sim.cost.toFixed(2) + '</b>.';
     }
-    function start(n) { lvl = n; plan = trustAll(LEVELS[lvl]); ran = false; sim = null; paint(); }
+    function start(n) { mode = 'ladder'; cur = null; lvl = n; plan = trustAll(LEVELS[lvl]); ran = false; sim = null; paint(); }
+    function startGen(m) {
+      mode = m; var seed = m === 'daily' ? EN.dailySeed(KEY) : EN.hash('endless:' + KEY + ':' + nonce + ':' + ek);
+      cur = gen(seed, m === 'daily' ? 2 : ek) || LEVELS[Math.min(ek, LEVELS.length - 1)];
+      plan = trustAll(cur); ran = false; sim = null; paint();
+    }
     wrap.addEventListener('change', function (e) {
       var t = e.target; if (!t || !t.hasAttribute || !t.hasAttribute('data-step') || ran) return;
       var i = +t.getAttribute('data-step'); plan[i] = +t.value; paint();
@@ -212,22 +238,24 @@
     wrap.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('button');
       if (!b) return;
-      var L = LEVELS[lvl];
+      var L = cL();
+      if (b.hasAttribute('data-em')) { var m = b.getAttribute('data-em'); if (m === 'ladder') start(resume()); else { if (m === 'endless') ek = 0; startGen(m); } return; }
       if (b.hasAttribute('data-lv')) { var n2 = +b.getAttribute('data-lv'); if (unlocked(n2 + 1)) start(n2); return; }
       var a = b.getAttribute('data-a');
       if (a === 'reset') { plan = trustAll(L); paint(); }
       else if (a === 'run') {
         var ev = evaluate(L, plan); if (!ev.fits) return;
-        ran = true; sim = simulate(L, plan, 2000, 1000 + lvl);
+        ran = true; sim = simulate(L, plan, 2000, 1000 + (mode === 'ladder' ? lvl : ek));
         var med = medalOf(ev.success, L.par);
-        try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
+        if (mode === 'endless') EN.record(KEY, med); else if (mode === 'daily') EN.dailyRecord(KEY, med);
+        else try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
         paint();
       }
       else if (a === 'again') { ran = false; sim = null; paint(); }
-      else if (a === 'next') { start(lvl + 1); }
+      else if (a === 'next') { if (mode === 'endless') { ek++; startGen('endless'); } else start(lvl + 1); }
     });
     start(resume());
-    return { state: function () { return { lvl: lvl, plan: plan.slice(), ran: ran }; },
+    return { state: function () { return { lvl: lvl, plan: plan.slice(), ran: ran, mode: mode, level: cL() }; },
              setPlan: function (p) { plan = p.slice(); paint(); }, run: function () { wrap.querySelector('[data-a="run"]').click(); } };
   }
 

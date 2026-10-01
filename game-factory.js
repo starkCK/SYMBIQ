@@ -64,7 +64,23 @@
   }
   function medalOf(volume, par) { return volume <= par * (1 + 1e-12) ? 'gold' : volume <= par * 1.15 ? 'silver' : 'bronze'; }
 
-  var engine = { A: A, round15: round15, pL: pL, evaluate: evaluate, best: best, bestUniform: bestUniform, medalOf: medalOf, plans: ALL, DISTANCES: DISTANCES, C_FAULTS: C_FAULTS };
+  function gen(seed, k) {
+    var r = (function (a) { return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; })(seed >>> 0);
+    var RAW = [0.05, 0.02, 0.01, 0.005], PHYS = [1e-3, 3e-4, 1e-4], TG = [1e-6, 1e-8, 1e-10, 1e-12, 1e-15, 1e-18], t;
+    var pick = function (a) { return a[Math.floor(r() * a.length)]; };
+    for (t = 0; t < 400; t++) {
+      var span = Math.min(TG.length, 2 + Math.floor(k / 2)), L = { id: 'gen', name: 'Endless ' + (k + 1), raw: pick(RAW), phys: pick(PHYS), target: TG[Math.floor(r() * span)], par: 0, start: [7], brief: '' };
+      var b = best(L);
+      if (!b.plan || b.count !== 1 || b.feasible < 6 || b.feasible >= ALL.length * 0.7) continue;
+      var u = bestUniform(L);
+      if (!(u.vol > b.par * 1.03)) continue;
+      L.par = b.par; L.brief = 'A generated problem. The cheapest factory that meets the target is found over every plan before you see it.';
+      return L;
+    }
+    return null;
+  }
+
+  var engine = { gen: gen, A: A, round15: round15, pL: pL, evaluate: evaluate, best: best, bestUniform: bestUniform, medalOf: medalOf, plans: ALL, DISTANCES: DISTANCES, C_FAULTS: C_FAULTS };
 
   var LEVELS = [
     { id: 'first', name: 'The first factory', raw: 0.02, phys: 0.0003, target: 1e-06, par: 1309.176095789427, start: [7],
@@ -100,7 +116,9 @@
 
   function mountGame(root, opts) {
     var esc = W.SymbiQ.core.esc, lvl = 0, plan = [], built = false;
-    var KEY = 'factory';
+    var KEY = 'factory', cur = null, mode = 'ladder', ek = 0, nonce = (Date.now() % 1000000007) >>> 0;
+    var EN = W.SymbiQ.endless;
+    function cL() { return cur || LEVELS[lvl]; }
     root.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'mfc';
     root.appendChild(wrap);
@@ -110,11 +128,11 @@
     function resume() { var st = ladderState(), r = 0; for (var k = 1; k <= LEVELS.length; k++) if (st.cleared[k]) r = Math.min(k, LEVELS.length - 1); return r; }
 
     function paint() {
-      var L = LEVELS[lvl], ev = evaluate(L, plan), st = ladderState();
-      var html = '<div class="mf-strip" role="list" aria-label="The factories">' + LEVELS.map(function (l, k) {
+      var L = cL(), ev = evaluate(L, plan), st = ladderState();
+      var html = (EN ? EN.bar(mode) : '') + (mode !== 'ladder' ? EN.line(KEY, mode, ek) : '<div class="mf-strip" role="list" aria-label="The factories">' + LEVELS.map(function (l, k) {
         var med = st.medal[k + 1], glyph = med ? { gold: '🥇', silver: '🥈', bronze: '🥉' }[med] : (unlocked(k + 1) ? (k + 1) : '🔒');
-        return '<button type="button" role="listitem" class="mf-chip' + (k === lvl ? ' now' : '') + '" data-lv="' + k + '"' + (unlocked(k + 1) ? '' : ' disabled') + ' aria-label="' + esc(l.name) + (unlocked(k + 1) ? '' : ', locked') + '">' + glyph + ' ' + esc(l.name) + '</button>';
-      }).join('') + '</div><p class="mf-brief">' + L.brief + '</p>' +
+        return '<button type="button" role="listitem" class="mf-chip' + (k === lvl ? ' now' : '') + '" data-lv="' + k + '"' + (unlocked(k + 1) ? '' : ' disabled') + ' aria-label="' + esc(l.name) + (unlocked(k + 1) ? '' : ', locked') + '">' + glyph + (EN ? ' <small>' + EN.tierOf(k, LEVELS.length) + '</small>' : '') + ' ' + esc(l.name) + '</button>';
+      }).join('') + '</div>') + '<p class="mf-brief">' + L.brief + '</p>' +
         '<p class="mf-facts"><b>Raw state error</b> ' + sci(L.raw) + ' &middot; <b>Physical error rate</b> ' + sci(L.phys) + ' &middot; <b>Target</b> below ' + sci(L.target) + ' &middot; <b>Par</b> ' + vol(L.par) + ' volume (proven best)</p>';
       html += '<fieldset class="mf-rounds"><legend>Rounds of 15-to-1</legend>' + [1, 2, 3].map(function (n) {
         return '<label class="mf-o' + (plan.length === n ? ' on' : '') + '"><input type="radio" name="mf-n" value="' + n + '"' + (plan.length === n ? ' checked' : '') + (built ? ' disabled' : '') + '><span>' + n + (n === 1 ? ' round' : ' rounds') + '</span></label>';
@@ -126,7 +144,7 @@
         }).join('') + '</tbody></table></div>';
       html += '<p class="mf-plan" role="status" aria-live="polite"><b>Your factory:</b> output error <b>' + sci(ev.error) + '</b> ' + (ev.meets ? '(meets the target)' : '<strong class="mf-over">(not below ' + sci(L.target) + ')</strong>') + ', total volume <b>' + vol(ev.volume) + '</b>, from <b>' + ev.raw.toLocaleString() + '</b> raw states per output at the first round&rsquo;s input</p>';
       html += '<div class="mf-act">' + (built
-        ? '<button type="button" class="preset" data-a="again">Change the factory</button>' + (lvl < LEVELS.length - 1 ? ' <button type="button" class="preset" data-a="next"' + (unlocked(lvl + 2) ? '' : ' disabled') + '>Next factory</button>' : '')
+        ? '<button type="button" class="preset" data-a="again">Change the factory</button>' + (mode === 'endless' ? ' <button type="button" class="preset" data-a="next">Next endless factory</button>' : mode === 'ladder' && lvl < LEVELS.length - 1 ? ' <button type="button" class="preset" data-a="next"' + (unlocked(lvl + 2) ? '' : ' disabled') + '>Next factory</button>' : '')
         : '<button type="button" class="preset mf-run" data-a="run"' + (ev.meets ? '' : ' disabled') + '>Build the factory</button> <button type="button" class="preset" data-a="reset">Start again</button>') + '</div>' +
         '<p class="mf-say" role="status" aria-live="polite">' + (built ? sayResult(L, ev) : (ev.meets ? 'This factory reaches the target. Can it do it for less volume?' : 'Not clean enough yet: add a round, or raise a distance where the error is still large.')) + '</p>';
       wrap.innerHTML = html;
@@ -136,7 +154,12 @@
       return '<strong>' + vol(ev.volume) + ' volume' + (med === 'gold' ? ': the par, the cheapest factory that meets the target.' : ' against a par of ' + vol(L.par) + '.') + '</strong> ' + glyph + ' ' + med +
         (med === 'gold' ? '' : ' Try a different distance in each round: the last rounds run the fewest times, so protection is cheapest there.');
     }
-    function start(n) { lvl = n; plan = LEVELS[n].start.slice(); built = false; paint(); }
+    function start(n) { mode = 'ladder'; cur = null; lvl = n; plan = LEVELS[n].start.slice(); built = false; paint(); }
+    function startGen(m) {
+      mode = m; var seed = m === 'daily' ? EN.dailySeed(KEY) : EN.hash('endless:' + KEY + ':' + nonce + ':' + ek);
+      cur = gen(seed, m === 'daily' ? 2 : ek) || LEVELS[Math.min(ek, LEVELS.length - 1)];
+      plan = cur.start.slice(); built = false; paint();
+    }
     wrap.addEventListener('change', function (e) {
       var t = e.target; if (!t || built) return;
       if (t.name === 'mf-n') { var n = +t.value; while (plan.length < n) plan.push(plan[plan.length - 1] || 7); plan.length = n; paint(); var again = wrap.querySelector('input[name="mf-n"]:checked'); if (again) again.focus(); }
@@ -145,21 +168,23 @@
     wrap.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('button');
       if (!b) return;
-      var L = LEVELS[lvl];
+      var L = cL();
+      if (b.hasAttribute('data-em')) { var m = b.getAttribute('data-em'); if (m === 'ladder') start(resume()); else { if (m === 'endless') ek = 0; startGen(m); } return; }
       if (b.hasAttribute('data-lv')) { var n2 = +b.getAttribute('data-lv'); if (unlocked(n2 + 1)) start(n2); return; }
       var a = b.getAttribute('data-a');
       if (a === 'reset') { plan = L.start.slice(); paint(); }
       else if (a === 'run') {
         var ev = evaluate(L, plan); if (!ev.meets) return;
         built = true; var med = medalOf(ev.volume, L.par);
-        try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
+        if (mode === 'endless') EN.record(KEY, med); else if (mode === 'daily') EN.dailyRecord(KEY, med);
+        else try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
         paint();
       }
       else if (a === 'again') { built = false; paint(); }
-      else if (a === 'next') { start(lvl + 1); }
+      else if (a === 'next') { if (mode === 'endless') { ek++; startGen('endless'); } else start(lvl + 1); }
     });
     start(resume());
-    return { state: function () { return { lvl: lvl, plan: plan.slice(), built: built }; }, setPlan: function (p) { plan = p.slice(); paint(); }, run: function () { wrap.querySelector('[data-a="run"]').click(); } };
+    return { state: function () { return { lvl: lvl, plan: plan.slice(), built: built, mode: mode, level: cL() }; }, setPlan: function (p) { plan = p.slice(); paint(); }, run: function () { wrap.querySelector('[data-a="run"]').click(); } };
   }
 
   engine.def = def;

@@ -65,7 +65,36 @@
   }
   function medalOf(moves, par) { return moves <= par ? 'gold' : moves <= par + 2 ? 'silver' : 'bronze'; }
 
-  var engine = { KMAX: KMAX, dot: dot, norm2: norm2, apply: apply, allMoves: allMoves, key: key, shortest2: shortest2, solved: solved, bfs: bfs, greedy: greedy, medalOf: medalOf, det2: det2 };
+  function gen(seed, k) {
+    var r = (function (a) { return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; })(seed >>> 0);
+    var ri = function (a, b) { return a + Math.floor(r() * (b - a + 1)); }, t, i, j;
+    var dim = (k >= 3 && r() < 0.5) ? 3 : 2;
+    for (t = 0; t < 4000; t++) {
+      var Rb = [];
+      for (i = 0; i < dim; i++) { var v = []; for (j = 0; j < dim; j++) v.push(ri(-5, 5)); Rb.push(v); }
+      Rb.sort(function (a, b) { return norm2(a) - norm2(b); });
+      var ok = norm2(Rb[0]) >= 2;
+      for (i = 0; i < dim; i++) for (j = i + 1; j < dim; j++) if (2 * Math.abs(dot(Rb[i], Rb[j])) > norm2(Rb[i])) ok = false;
+      if (!ok) continue;
+      if (dim === 2 ? det2(Rb) === 0 : (Rb[0][0] * (Rb[1][1] * Rb[2][2] - Rb[1][2] * Rb[2][1]) - Rb[0][1] * (Rb[1][0] * Rb[2][2] - Rb[1][2] * Rb[2][0]) + Rb[0][2] * (Rb[1][0] * Rb[2][1] - Rb[1][1] * Rb[2][0])) === 0) continue;
+      var lam = shortest2(Rb, 8).norm2;
+      if (shortest2(Rb, 12).norm2 !== lam || lam !== norm2(Rb[0])) continue;
+      var L = { id: 'gen', name: 'Endless ' + (k + 1), dim: dim, lam: lam, reduced: Rb, start: null, par: 0, window: 0, brief: '' };
+      var B = cloneB(Rb), mv = allMoves(dim), m = dim === 2 ? 4 + Math.min(3, Math.floor(k / 2)) : 3;
+      for (i = 0; i < m; i++) B = apply(B, mv[ri(0, mv.length - 1)]);
+      if (solved(L, B)) continue;
+      var parv;
+      if (dim === 2) { var bf = bfs(L, B, 5); if (bf.moves == null || bf.moves < 3) continue; parv = bf.moves; }
+      else { if (bfs(L, B, 2).moves != null) continue; parv = 3; }
+      var mx = 0; Rb.forEach(function (vv) { vv.forEach(function (x) { mx = Math.max(mx, Math.abs(x)); }); });
+      L.start = B; L.par = parv; L.window = 3 * mx + 2;
+      L.brief = 'A generated vault in ' + dim + ' dimensions. The fewest moves that open it are found by exhaustive search before you see it.';
+      return L;
+    }
+    return null;
+  }
+
+  var engine = { gen: gen, KMAX: KMAX, dot: dot, norm2: norm2, apply: apply, allMoves: allMoves, key: key, shortest2: shortest2, solved: solved, bfs: bfs, greedy: greedy, medalOf: medalOf, det2: det2 };
 
   var LEVELS = [
     { id: 'warm', name: 'The first vault', dim: 2, window: 17, lam: 29, par: 4,
@@ -108,7 +137,9 @@
 
   function mountGame(root, opts) {
     var esc = W.SymbiQ.core.esc, lvl = 0, B = [], hist = [], done = false;
-    var KEY = 'lattice';
+    var KEY = 'lattice', cur = null, mode = 'ladder', ek = 0, nonce = (Date.now() % 1000000007) >>> 0;
+    var EN = W.SymbiQ.endless;
+    function cL() { return cur || LEVELS[lvl]; }
     root.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'ltc';
     root.appendChild(wrap);
@@ -133,11 +164,11 @@
       return '<svg class="lt-svg" viewBox="0 0 ' + S + ' ' + S + '" role="img" aria-label="The lattice points near the origin and the current basis vectors. The text below gives the exact vectors."><rect x="0" y="0" width="' + S + '" height="' + S + '" class="lt-bg"/>' + pts + arrows + '<circle cx="' + S / 2 + '" cy="' + S / 2 + '" r="3" class="lt-o"/></svg>';
     }
     function paint() {
-      var L = LEVELS[lvl], st = ladderState(), n = L.dim, isDone = solved(L, B);
-      var html = '<div class="lt-strip" role="list" aria-label="The vaults">' + LEVELS.map(function (l, k) {
+      var L = cL(), st = ladderState(), n = L.dim, isDone = solved(L, B);
+      var html = (EN ? EN.bar(mode) : '') + (mode !== 'ladder' ? EN.line(KEY, mode, ek) : '<div class="lt-strip" role="list" aria-label="The vaults">' + LEVELS.map(function (l, k) {
         var med = st.medal[k + 1], glyph = med ? { gold: '🥇', silver: '🥈', bronze: '🥉' }[med] : (unlocked(k + 1) ? (k + 1) : '🔒');
-        return '<button type="button" role="listitem" class="lt-chip' + (k === lvl ? ' now' : '') + '" data-lv="' + k + '"' + (unlocked(k + 1) ? '' : ' disabled') + ' aria-label="' + esc(l.name) + (unlocked(k + 1) ? '' : ', locked') + '">' + glyph + ' ' + esc(l.name) + '</button>';
-      }).join('') + '</div><p class="lt-brief">' + L.brief + '</p>' +
+        return '<button type="button" role="listitem" class="lt-chip' + (k === lvl ? ' now' : '') + '" data-lv="' + k + '"' + (unlocked(k + 1) ? '' : ' disabled') + ' aria-label="' + esc(l.name) + (unlocked(k + 1) ? '' : ', locked') + '">' + glyph + (EN ? ' <small>' + EN.tierOf(k, LEVELS.length) + '</small>' : '') + ' ' + esc(l.name) + '</button>';
+      }).join('') + '</div>') + '<p class="lt-brief">' + L.brief + '</p>' +
         '<p class="lt-facts"><b>Dimension</b> ' + n + ' &middot; <b>The shortest vector</b> has length&sup2; <b>' + L.lam + '</b> &middot; <b>Par</b> ' + L.par + ' moves (proven fewest) &middot; <b>Your moves</b> <b class="lt-mv">' + hist.length + '</b></p>';
       html += '<div class="lt-body">' + picture(L) + '<ol class="lt-vecs">' + B.map(function (v, idx) {
         var l2 = norm2(v); return '<li class="lt-v' + (idx === 0 && isDone ? ' win' : '') + '"><b>b' + (idx + 1) + '</b> = (' + v.join(', ') + ') &middot; length&sup2; <b>' + l2 + '</b>' + (l2 === L.lam ? ' <span class="lt-hit">a shortest vector</span>' : '') + '</li>';
@@ -151,7 +182,7 @@
           '<button type="button" class="preset" data-a="add">Add</button><button type="button" class="preset" data-a="swap">Swap them</button></div>';
       }
       html += '<div class="lt-act">' + (done
-        ? '<button type="button" class="preset" data-a="reset">Try again</button>' + (lvl < LEVELS.length - 1 ? ' <button type="button" class="preset" data-a="next"' + (unlocked(lvl + 2) ? '' : ' disabled') + '>Next vault</button>' : '')
+        ? '<button type="button" class="preset" data-a="reset">Try again</button>' + (mode === 'endless' ? ' <button type="button" class="preset" data-a="next">Next endless vault</button>' : mode === 'ladder' && lvl < LEVELS.length - 1 ? ' <button type="button" class="preset" data-a="next"' + (unlocked(lvl + 2) ? '' : ' disabled') + '>Next vault</button>' : '')
         : '<button type="button" class="preset" data-a="undo"' + (hist.length ? '' : ' disabled') + '>Undo</button> <button type="button" class="preset" data-a="reset">Start again</button>') + '</div>' +
         '<p class="lt-say" role="status" aria-live="polite">' + (done ? sayResult(L) : (sel.i === sel.j ? 'Pick two different vectors.' : 'Make b1 as short as the shortest vector (length&sup2; ' + L.lam + ').')) + '</p>';
       wrap.innerHTML = html;
@@ -161,12 +192,18 @@
       return '<strong>Open in ' + hist.length + ' move' + (hist.length === 1 ? '' : 's') + (hist.length <= L.par ? ': the par, no sequence of moves is shorter.' : ' against a par of ' + L.par + '.') + '</strong> ' + glyph + ' ' + med +
         (hist.length <= L.par ? '' : ' Subtract the multiple that brings the longer vector closest to zero, then swap the shorter one to the front.');
     }
-    function start(n) { lvl = n; B = cloneB(LEVELS[n].start); hist = []; done = false; sel = { i: 1, j: 0, k: -1 }; paint(); }
+    function start(n) { mode = 'ladder'; cur = null; lvl = n; B = cloneB(LEVELS[n].start); hist = []; done = false; sel = { i: 1, j: 0, k: -1 }; paint(); }
+    function startGen(m) {
+      mode = m; var seed = m === 'daily' ? EN.dailySeed(KEY) : EN.hash('endless:' + KEY + ':' + nonce + ':' + ek);
+      cur = gen(seed, m === 'daily' ? 2 : ek) || LEVELS[Math.min(ek, LEVELS.length - 1)];
+      B = cloneB(cur.start); hist = []; done = false; sel = { i: 1, j: 0, k: -1 }; paint();
+    }
     function doMove(mv) {
       if (done) return; B = apply(B, mv); hist.push(mv);
-      if (solved(LEVELS[lvl], B)) {
-        done = true; var med = medalOf(hist.length, LEVELS[lvl].par);
-        try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
+      if (solved(cL(), B)) {
+        done = true; var med = medalOf(hist.length, cL().par);
+        if (mode === 'endless') EN.record(KEY, med); else if (mode === 'daily') EN.dailyRecord(KEY, med);
+        else try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
       }
       paint();
     }
@@ -177,16 +214,17 @@
     wrap.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('button');
       if (!b) return;
+      if (b.hasAttribute('data-em')) { var m = b.getAttribute('data-em'); if (m === 'ladder') start(resume()); else { if (m === 'endless') ek = 0; startGen(m); } return; }
       if (b.hasAttribute('data-lv')) { var n2 = +b.getAttribute('data-lv'); if (unlocked(n2 + 1)) start(n2); return; }
       var a = b.getAttribute('data-a');
       if (a === 'add') { if (sel.i !== sel.j) doMove({ t: 'add', i: sel.i, j: sel.j, k: sel.k }); }
       else if (a === 'swap') { if (sel.i !== sel.j) doMove({ t: 'swap', i: Math.min(sel.i, sel.j), j: Math.max(sel.i, sel.j) }); }
-      else if (a === 'undo') { if (hist.length && !done) { hist.pop(); B = cloneB(LEVELS[lvl].start); hist.forEach(function (m) { B = apply(B, m); }); paint(); } }
-      else if (a === 'reset') { start(lvl); }
-      else if (a === 'next') { start(lvl + 1); }
+      else if (a === 'undo') { if (hist.length && !done) { hist.pop(); B = cloneB(cL().start); hist.forEach(function (m) { B = apply(B, m); }); paint(); } }
+      else if (a === 'reset') { if (mode === 'ladder') start(lvl); else { B = cloneB(cur.start); hist = []; done = false; sel = { i: 1, j: 0, k: -1 }; paint(); } }
+      else if (a === 'next') { if (mode === 'endless') { ek++; startGen('endless'); } else start(lvl + 1); }
     });
     start(resume());
-    return { state: function () { return { lvl: lvl, basis: cloneB(B), moves: hist.length, done: done }; }, play: function (mv) { doMove(mv); } };
+    return { state: function () { return { lvl: lvl, basis: cloneB(B), moves: hist.length, done: done, mode: mode, level: cL() }; }, play: function (mv) { doMove(mv); } };
   }
 
   engine.def = def;

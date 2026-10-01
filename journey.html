@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-Fl0+IYMcyoMwHMHRfFkYT7MDLN8PyzEUDj0RBD+0yas=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-cabM4UZKzmxLXXYoyvaEyIzUd6cCTB+hMBNLlAT62T8=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <script>/* door morph arrival (doormorph.js companion, 2026-09-23): MUST run this early, as a classic head script, not from the deferred doormorph.js file. pagereveal fires the moment this document is first rendered -- the API's own description is "equivalent to the first requestAnimationFrame() run ... if you were to trigger it in the head" -- which is well before a deferred script has loaded, so a listener registered from one would miss the event outright (found live: the sessionStorage handoff was never consumed until this moved here). The querySelector below still works from this early: pagereveal's own documented use case is exactly "read/write an element on the newly revealed page", and by the time the callback actually FIRES the browser has parsed enough of the document to paint it, h1 included. */try{if('onpagereveal' in window){window.addEventListener('pagereveal',function(e){var raw=null;try{raw=sessionStorage.getItem('sq-vt-door');sessionStorage.removeItem('sq-vt-door');}catch(_){}if(!raw||!e.viewTransition)return;var i=raw.lastIndexOf(':');if(i<0)return;var track=raw.slice(0,i),stamp=+raw.slice(i+1);if(!(Date.now()-stamp<4000))return;var mine=document.body&&document.body.getAttribute('data-door');if(track!==mine)return;var h1=document.querySelector('.wrap > h1');if(!h1)return;h1.style.viewTransitionName='sq-door-'+track;var restore=function(){try{h1.style.viewTransitionName='';}catch(_e){}};e.viewTransition.ready.then(restore,restore);});}}catch(er){}</script>
@@ -57,7 +57,7 @@
 <meta name="twitter:description" content="One game, five fractures. Play a Solver mending the Lattice: superposition, a proven speedup, an NP-hard city, entanglement, each a mission with a mentor, a story, and progress that saves. Real…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-journey.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/journey.css?v=40">
+<link rel="stylesheet" href="p/journey.css?v=41">
 
 
 
@@ -717,8 +717,17 @@
   var CO = window.SymbiQ && window.SymbiQ.coherence;
   function idxOf(m) { return MISSIONS.indexOf(m); }
   function done(id) { return !!(S && S.isComplete(id)); }
+  /* The Path is linear for the first two acts and open after them (Phase 5): Acts I and II teach the two ideas everything
+     else leans on, so they come in order; once both are done the other fractures can be taken in any order, and only the
+     Knot waits for all of them. */
   function available(i) {
-    for (var j = 0; j < i; j++) { if (!MISSIONS[j].soon && !done(MISSIONS[j].id)) return false; }
+    var m = MISSIONS[i], j;
+    if (m.finale) {
+      for (j = 0; j < MISSIONS.length; j++) { if (!MISSIONS[j].finale && !MISSIONS[j].soon && !done(MISSIONS[j].id)) return false; }
+      return true;
+    }
+    if (i >= 2) return done(MISSIONS[0].id) && done(MISSIONS[1].id);
+    for (j = 0; j < i; j++) { if (!MISSIONS[j].soon && !done(MISSIONS[j].id)) return false; }
     return true;
   }
   function avatarIndex() {

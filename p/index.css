@@ -3694,6 +3694,11 @@ nav.tabbar { display: none; }
 .dc-link:hover, .dc-again:hover { text-decoration: underline; }
 .dc-link:focus-visible, .dc-again:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 
+.faction { margin: 12px 0 14px; padding: 10px 14px; border-left: 3px solid var(--yellow); border-radius: 0 10px 10px 0; background: var(--panel); font-size: .92rem; line-height: 1.5; }
+.faction b { color: var(--text); }
+.faction span { color: var(--muted); }
+.faction a { display: inline-flex; align-items: center; min-height: 44px; margin-left: 4px; font-weight: 600; }
+
 body[data-still] *, body[data-still] *::before, body[data-still] *::after { animation: none !important; }
 body[data-still] .hh-machine iframe { animation: revert !important; }
 

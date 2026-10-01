@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-Y1pb38t8uvtY7zKhgADOS48vpGcRAWxQUJhqO2yUdTc=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-Ncwd34wKb09R7NS4T9UJ8RdshTWCKxdQcRr8V70U46Q=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <title>The Arcade · Play · SymbiQ</title>
-<meta name="description" content="Eight games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with shortest-possible pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, quantum tic-tac-toe with genuine superposition and collapse, and The Calibration where you configure a qubit-recalibration agent rather than driving the qubit yourself. No story, no gates: the physics does the judging.">
+<meta name="description" content="Nine games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with shortest-possible pars, Grover's Escape and its quadratic speedup, Max-Cut where operations research becomes the Ising ground state, the Annealing Volcano where you play the cooling schedule, quantum tic-tac-toe with genuine superposition and collapse, and The Calibration where you configure a qubit-recalibration agent rather than driving the qubit yourself. No story, no gates: the physics does the judging.">
 <link rel="canonical" href="https://starkck.github.io/SYMBIQ/play.html">
 <script type="speculationrules">{
   "prefetch": [
@@ -46,17 +46,17 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://starkck.github.io/SYMBIQ/play.html">
 <meta property="og:title" content="The Arcade · quantum games, free play">
-<meta property="og:description" content="Eight games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
+<meta property="og:description" content="Nine games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/p-play.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The Arcade">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Arcade · quantum games, free play">
-<meta name="twitter:description" content="Eight games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
+<meta name="twitter:description" content="Nine games built on real quantum mechanics and real optimisation: a circuit puzzle scored like golf with proven-minimal pars, Grover's Escape and its quadratic speedup, Max-Cut where operations…">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-play.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/play.css?v=48">
+<link rel="stylesheet" href="p/play.css?v=49">
 
 
 
@@ -136,6 +136,8 @@
 <script src="games.js?v=51"></script>
 <script src="game-survival.js?v=4"></script>
 <script src="game-qday.js?v=1"></script>
+<script src="game-arena.js?v=1"></script>
+<script id="arena-worker-src" type="text/symbiq-lazy" src="arena-worker.js?v=1"></script>
 <script src="scene.js?v=7"></script>
 <script src="missions.js?v=13"></script>
 <script src="p/play.js?v=29" defer></script>
@@ -156,7 +158,7 @@
       "author": {"@type": "Organization", "name": "SymbiQ"},
       "datePublished": "2026-07-21",
       "dateModified": "2026-08-27",
-      "description": "Eight games built on real quantum mechanics and optimisation: Circuit Golf (proven-minimal pars), Grover's Escape (a provable quadratic speedup where over-amplifying loses), Max-Cut (the NP-hard problem that is the Ising ground state), the Annealing Volcano (simulated annealing, scored on your cooling schedule rather than your luck), quantum tic-tac-toe, and The Calibration (configuring a qubit-recalibration agent rather than driving the qubit yourself)."
+      "description": "Nine games built on real quantum mechanics and optimisation: Circuit Golf (proven-minimal pars), Grover's Escape (a provable quadratic speedup where over-amplifying loses), Max-Cut (the NP-hard problem that is the Ising ground state), the Annealing Volcano (simulated annealing, scored on your cooling schedule rather than your luck), quantum tic-tac-toe, and The Calibration (configuring a qubit-recalibration agent rather than driving the qubit yourself)."
     },
     {
       "@type": "BreadcrumbList",
@@ -245,6 +247,7 @@
             <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
             <a href="play.html#survival" class="navmain"><span class="q">Surface Code Survival</span><span class="sub">Hold one logical qubit while the code grows</span></a>
             <a href="play.html#qday" class="navmain"><span class="q">Q-Day Command</span><span class="sub">Order the migration before the machine arrives</span></a>
+            <a href="play.html#arena" class="navmain"><span class="q">Heuristic Arena</span><span class="sub">Seven search methods, one budget, a proven best answer</span></a>
           </div>
           <div class="np-col">
             <p class="navhead">Build and keep</p>
@@ -511,7 +514,7 @@
     var BANDS = [
       { t: 'Puzzles with a proven best answer',
         d: 'Every par here is an optimum found by exhaustive search, so a score cannot be bluffed.',
-        ids: ['golf', 'grover', 'maxcut', 'volcano', 'qday'],
+        ids: ['golf', 'grover', 'maxcut', 'volcano', 'arena', 'qday'],
         also: [['The Prune', 'feasible.html#prune'], ['The Bottleneck', 'feasible.html#bottleneck']] },
       { t: 'Head to head',
         d: 'Someone, or something, plays back. Grover’s Escape and Max-Cut also carry a Versus the Machine mode inside.',

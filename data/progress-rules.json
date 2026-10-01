@@ -31,7 +31,7 @@
   "o": {
    "name": "Optimisation",
    "hub": "track-optimisation.html",
-   "cap": 103
+   "cap": 124
   },
   "s": {
    "name": "Post-quantum security",
@@ -83,6 +83,14 @@
   "qday": {
    "track": "s",
    "levels": 4
+  },
+  "arena": {
+   "track": "o",
+   "levels": 6
+  },
+  "arenafs": {
+   "track": "o",
+   "levels": 1
   }
  },
  "sources": {
@@ -111,7 +119,9 @@
    "maxcut": 9,
    "volcano": 9,
    "survival": 4,
-   "qday": 4
+   "qday": 4,
+   "arena": 6,
+   "arenafs": 1
   }
  }
 }

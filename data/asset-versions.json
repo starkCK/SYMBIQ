@@ -16,6 +16,10 @@
       "v": 6,
       "sha256": "a1dad7f38386e1030e5a4b6d74ead4bb0e5590e9607712d5eb49a40982884db9"
     },
+    "arena-worker.js": {
+      "v": 1,
+      "sha256": "ffc3b6ba80f02aa43132d76781fff3c8ffee73905972421efd06b8eb927e5e59"
+    },
     "atmosphere.js": {
       "v": 3,
       "sha256": "67445023c1479127cc760dec4878cc4fa744a5273200450a1b4a8078e1849ecc"
@@ -107,6 +111,14 @@
     "frontier.js": {
       "v": 4,
       "sha256": "42520e75d78287fd416d150b258a4f4437c0b05a768a9c260123be725cd749cb"
+    },
+    "game-arena.css": {
+      "v": 1,
+      "sha256": "036867d521ea87a1483d53d1fa61e0fffbb86b1ceab6ece9500378a2823387fc"
+    },
+    "game-arena.js": {
+      "v": 1,
+      "sha256": "7e340bfd1982274cce146788bc4502aed75d16741a3762697c6e4bce1d9cbfc7"
     },
     "game-qday.css": {
       "v": 1,
@@ -857,8 +869,8 @@
       "sha256": "a8325066ef6ca5e07d542e487272750b29438c66d58b73d0ba9feb9c0f948a6f"
     },
     "p/play.css": {
-      "v": 48,
-      "sha256": "24b72bf0997020c324a35821a4e40b207fd261c38e5592458c90469df0e220af"
+      "v": 49,
+      "sha256": "0df07e5be635970fbbc0636382f5af3bee018c1953ab7afddead1f8aac6b848c"
     },
     "p/play.js": {
       "v": 29,

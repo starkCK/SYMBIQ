@@ -94,7 +94,13 @@
     return null;
   }
 
-  var engine = { gen: gen, KMAX: KMAX, dot: dot, norm2: norm2, apply: apply, allMoves: allMoves, key: key, shortest2: shortest2, solved: solved, bfs: bfs, greedy: greedy, medalOf: medalOf, det2: det2 };
+  function rotate(v, rx, ry) {
+    var cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx);
+    var x1 = v[0] * cy + v[2] * sy, z1 = -v[0] * sy + v[2] * cy, y1 = v[1];
+    return [x1, y1 * cx - z1 * sx, y1 * sx + z1 * cx];
+  }
+
+  var engine = { rotate: rotate, gen: gen, KMAX: KMAX, dot: dot, norm2: norm2, apply: apply, allMoves: allMoves, key: key, shortest2: shortest2, solved: solved, bfs: bfs, greedy: greedy, medalOf: medalOf, det2: det2 };
 
   var LEVELS = [
     { id: 'warm', name: 'The first vault', dim: 2, window: 17, lam: 29, par: 4,
@@ -143,13 +149,14 @@
     root.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'ltc';
     root.appendChild(wrap);
-    var sel = { i: 1, j: 0, k: -1 };
+    var sel = { i: 1, j: 0, k: -1 }, view = { rx: -0.45, ry: 0.65 };
 
     function ladderState() { var f = W.SymbiQ.games && W.SymbiQ.games.frame; return f && f.ladder ? f.ladder.state(KEY) : { cleared: {}, medal: {} }; }
     function unlocked(n) { var f = W.SymbiQ.games && W.SymbiQ.games.frame; return n <= 1 || !f || !f.ladder || f.ladder.isUnlocked(KEY, n); }
     function resume() { var st = ladderState(), r = 0; for (var q = 1; q <= LEVELS.length; q++) if (st.cleared[q]) r = Math.min(q, LEVELS.length - 1); return r; }
 
     function picture(L) {
+      if (L.dim === 3) return '<canvas class="lt-cv" width="300" height="300" tabindex="0" role="img" aria-label="A three-dimensional view of the lattice points near the origin and the three basis vectors. Drag, or use the arrow keys, to turn it. The exact vectors are listed beside it."></canvas>';
       if (L.dim !== 2) return '';
       var Wd = L.window, S = 300, sc = S / (2 * Wd), pts = '', a, b, R = L.reduced;
       for (a = -12; a <= 12; a++) for (b = -12; b <= 12; b++) {
@@ -186,6 +193,32 @@
         : '<button type="button" class="preset" data-a="undo"' + (hist.length ? '' : ' disabled') + '>Undo</button> <button type="button" class="preset" data-a="reset">Start again</button>') + '</div>' +
         '<p class="lt-say" role="status" aria-live="polite">' + (done ? sayResult(L) : (sel.i === sel.j ? 'Pick two different vectors.' : 'Make b1 as short as the shortest vector (length&sup2; ' + L.lam + ').')) + '</p>';
       wrap.innerHTML = html;
+      if (L.dim === 3) draw3d(L);
+    }
+    function draw3d(L) {
+      var cv = wrap.querySelector('.lt-cv'); if (!cv || !cv.getContext) return;
+      var g = cv.getContext('2d'), S = 300, sc = S / (2 * L.window * 1.15), R = L.reduced, a, b, c, i;
+      var cs = getComputedStyle(cv), col = function (n, d) { var v = cs.getPropertyValue(n).trim(); return v || d; };
+      var teal = col('--teal', '#0f766e'), pink = '#d4567a', amber = col('--yellow', '#b45309'), muted = col('--muted', '#64748b'), panel = col('--panel', '#ffffff');
+      g.clearRect(0, 0, S, S); g.fillStyle = panel; g.fillRect(0, 0, S, S);
+      var pts = [];
+      for (a = -7; a <= 7; a++) for (b = -7; b <= 7; b++) for (c = -7; c <= 7; c++) {
+        var v = [a * R[0][0] + b * R[1][0] + c * R[2][0], a * R[0][1] + b * R[1][1] + c * R[2][1], a * R[0][2] + b * R[1][2] + c * R[2][2]];
+        if (Math.abs(v[0]) <= L.window && Math.abs(v[1]) <= L.window && Math.abs(v[2]) <= L.window) pts.push(rotate(v, view.rx, view.ry));
+      }
+      pts.sort(function (p, q) { return p[2] - q[2]; });
+      g.fillStyle = muted;
+      pts.forEach(function (p) { var near = 0.5 + 0.5 * Math.max(-1, Math.min(1, p[2] / L.window)); g.globalAlpha = 0.25 + 0.55 * near; g.beginPath(); g.arc(S / 2 + p[0] * sc, S / 2 - p[1] * sc, 1.3 + 1.4 * near, 0, 6.2832); g.fill(); });
+      g.globalAlpha = 1;
+      var cols = [teal, pink, amber];
+      B.forEach(function (vec, idx) {
+        var m = Math.max(Math.abs(vec[0]), Math.abs(vec[1]), Math.abs(vec[2])), f = m > L.window ? L.window / m : 1, r = rotate([vec[0] * f, vec[1] * f, vec[2] * f], view.rx, view.ry);
+        var ex = S / 2 + r[0] * sc, ey = S / 2 - r[1] * sc;
+        g.strokeStyle = cols[idx]; g.fillStyle = cols[idx]; g.lineWidth = 2.4; g.beginPath(); g.moveTo(S / 2, S / 2); g.lineTo(ex, ey); g.stroke();
+        g.beginPath(); g.arc(ex, ey, 4, 0, 6.2832); g.fill();
+        g.font = '11px sans-serif'; g.fillText('b' + (idx + 1) + (f < 1 ? ' (runs off)' : ''), ex + 6, ey - 6);
+      });
+      g.fillStyle = cs.color || '#000'; g.beginPath(); g.arc(S / 2, S / 2, 3, 0, 6.2832); g.fill();
     }
     function sayResult(L) {
       var med = medalOf(hist.length, L.par), glyph = { gold: '🥇', silver: '🥈', bronze: '🥉' }[med];
@@ -210,6 +243,17 @@
     wrap.addEventListener('change', function (e) {
       var t = e.target; if (!t || !t.getAttribute || !t.getAttribute('data-s')) return;
       sel[t.getAttribute('data-s')] = +t.value; paint(); var s = wrap.querySelector('.lt-s[data-s="' + t.getAttribute('data-s') + '"]'); if (s) s.focus();
+    });
+    var drag = null;
+    wrap.addEventListener('pointerdown', function (e) { var t = e.target; if (t && t.classList && t.classList.contains('lt-cv')) { drag = { x: e.clientX, y: e.clientY, rx: view.rx, ry: view.ry }; try { t.setPointerCapture(e.pointerId); } catch (x) { } } });
+    wrap.addEventListener('pointermove', function (e) { if (!drag) return; view.ry = drag.ry + (e.clientX - drag.x) * 0.01; view.rx = Math.max(-1.5, Math.min(1.5, drag.rx + (e.clientY - drag.y) * 0.01)); draw3d(cL()); });
+    wrap.addEventListener('pointerup', function () { drag = null; });
+    wrap.addEventListener('pointercancel', function () { drag = null; });
+    wrap.addEventListener('keydown', function (e) {
+      var t = e.target; if (!t || !t.classList || !t.classList.contains('lt-cv')) return;
+      var k = e.key; if (k !== 'ArrowLeft' && k !== 'ArrowRight' && k !== 'ArrowUp' && k !== 'ArrowDown') return;
+      e.preventDefault(); if (k === 'ArrowLeft') view.ry -= 0.15; else if (k === 'ArrowRight') view.ry += 0.15; else if (k === 'ArrowUp') view.rx = Math.max(-1.5, view.rx - 0.15); else view.rx = Math.min(1.5, view.rx + 0.15);
+      draw3d(cL());
     });
     wrap.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('button');

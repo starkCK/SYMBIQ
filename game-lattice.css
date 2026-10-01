@@ -23,3 +23,6 @@
 .lt-s { min-height: 44px; min-width: 64px; padding: 0 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; }
 .lt-ctl .preset, .lt-act .preset { min-height: 44px; }
 .lt-act { display: flex; flex-wrap: wrap; gap: 8px; }
+.lt-cv { width: min(300px, 100%); height: auto; aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--border); flex: 0 0 auto; touch-action: none; cursor: grab; }
+.lt-cv:active { cursor: grabbing; }
+.lt-cv:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }

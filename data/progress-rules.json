@@ -26,7 +26,7 @@
   "q": {
    "name": "Quantum × AI",
    "hub": "track-quantum-ai.html",
-   "cap": 106
+   "cap": 118
   },
   "o": {
    "name": "Optimisation",
@@ -75,6 +75,10 @@
   "volcano": {
    "track": "o",
    "levels": 9
+  },
+  "survival": {
+   "track": "q",
+   "levels": 4
   }
  },
  "sources": {
@@ -101,7 +105,8 @@
    "golf": 9,
    "grover": 9,
    "maxcut": 9,
-   "volcano": 9
+   "volcano": 9,
+   "survival": 4
   }
  }
 }

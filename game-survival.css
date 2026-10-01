@@ -1,0 +1,23 @@
+.scs { display: grid; gap: 10px; max-width: 560px; }
+.scs-hud { font-size: .9rem; line-height: 1.5; }
+.scs-clock { height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; }
+.scs-clock i { display: block; height: 100%; width: 100%; background: var(--teal); }
+.scs-fig { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); }
+.scs-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+.scs-xchk { fill: var(--border); }
+.scs-zbox { fill: transparent; stroke: var(--border); stroke-width: 1.2; }
+.scs-z.on .scs-zbox { fill: rgba(248, 113, 113, .35); stroke: var(--red); stroke-width: 2.4; }
+.scs-z.chg .scs-zbox { stroke-dasharray: 4 3; }
+.scs-qc { fill: var(--bg); stroke: var(--text); stroke-width: 1.6; }
+.scs-q { cursor: pointer; outline: none; }
+.scs-q:focus-visible .scs-qc { stroke: var(--teal); stroke-width: 3.4; }
+.scs-q.mark .scs-qc { fill: var(--teal); stroke: var(--teal); }
+.scs-q.leak .scs-qc { stroke: var(--violet); stroke-width: 4; stroke-dasharray: 3 2; }
+.scs-q.burst .scs-qc { stroke: var(--yellow); stroke-width: 3; }
+.scs-say { margin: 0; min-height: 3em; font-size: .93rem; line-height: 1.5; }
+.scs-act { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.scs-act .preset { min-height: 44px; }
+.scs-act .scs-commit { border-color: var(--teal); font-weight: 700; }
+.scs-nc { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: .86rem; color: var(--muted); }
+.scs-nc input { width: 20px; height: 20px; accent-color: var(--teal); }
+.scs-reset[hidden], .scs-q[hidden] { display: none; }

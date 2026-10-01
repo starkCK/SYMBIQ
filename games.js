@@ -4442,6 +4442,12 @@
     list: ['golf', 'grover', 'maxcut', 'volcano', 'qttt', 'calibration'].map(function (k) {
       return { id: k, title: G[k].title, hook: G[k].hook, mentor: G[k].mentor, about: G[k].about, honest: G[k].honest };
     }),
+    register: function (def) {
+      if (!def || !def.id || G[def.id]) return false;
+      G[def.id] = def;
+      window.SymbiQ.games.list.push({ id: def.id, title: def.title, hook: def.hook, mentor: def.mentor, about: def.about, honest: def.honest });
+      return true;
+    },
     get: function (id) { return G[id]; },
     aboutHTML: function (id) {
       var a = G[id] && G[id].about;

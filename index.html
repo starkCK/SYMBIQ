@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Learn quantum computing at your depth, prove it in games with proven answers, and see every big claim scored in public.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/home.png">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/index.css?v=63">
+<link rel="stylesheet" href="p/index.css?v=65">
 
 
 
@@ -85,7 +85,7 @@
 </style>
 <script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/index.js?v=45" defer></script>
+<script src="p/index.js?v=47" defer></script>
 
 
 
@@ -105,7 +105,7 @@
 
 
 </head>
-<body data-motion data-alive data-glass data-still data-home>
+<body data-motion data-rails data-alive data-glass data-home>
 <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
   <filter id="sq-lens" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
     <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="11" result="n"/>
@@ -137,6 +137,7 @@
             <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
             <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
             <a href="descent.html" class="navmain"><span class="q">Where does everything sit?</span><span class="sub">The whole site as a fridge: colder is deeper</span></a>
+            <a href="world.html" class="navmain"><span class="q">Can I drive around the site?</span><span class="sub">A small 3D town: every building is a part of SymbiQ</span></a>
           </div>
           <div class="np-col">
             <p class="navhead">Three tracks</p>
@@ -307,6 +308,8 @@
     <span class="hh-take">Take it apart</span>
   </button>
   <figcaption>Six levels, 300 K to 10 mK</figcaption>
+<p class="dive-hint"><a class="dive-btn" id="dive-btn" href="inside.html#chip" data-no-speculate>&#9670; Fall through the field</a>
+<span>The dots behind this page are a lattice of coupled circuits. Hold the pointer still on empty space for three seconds, or press <kbd>i</kbd>, to fall into a model of a real one.</span></p>
 </figure>
 
 <section class="hdoors" aria-label="Four ways in">
@@ -314,6 +317,29 @@
   <a class="door" data-tab="play" href="playhub.html"><b>Play</b><span class="d-p">Games the maths referees.</span><span class="d-n">14 games, pars proven or labelled best known</span></a>
   <a class="door" data-tab="check" href="check.html"><b>Check</b><span class="d-p">Big claims, scored in public.</span><span class="d-n">20 claims, 21 corrections to our own work</span></a>
   <a class="door" data-tab="secure" href="secure.html"><b>Secure</b><span class="d-p">Is your encryption ready?</span><span class="d-n">7 live tools</span></a>
+</section>
+
+<section class="hjump" aria-labelledby="jump-h">
+  <h2 id="jump-h">Jump straight in</h2>
+  <ul class="jump-grid">
+    <li><a href="inside.html"><span class="j-k">3D</span><b>See inside the machine</b><i>Six levels, rotate it, open it</i></a></li>
+    <li><a href="world.html"><span class="j-k">3D</span><b>Walk the SymbiQ map</b><i>A small town: every building is a part of the site</i></a></li>
+    <li><a href="play.html#contract-card"><span class="j-k">Daily</span><b>Today's puzzle</b><i>One seeded puzzle, one shareable grid</i></a></li>
+    <li><a href="play.html#survival"><span class="j-k">Game</span><b>Surface Code Survival</b><i>Hold one logical qubit while the code grows</i></a></li>
+    <li><a href="play.html#qday"><span class="j-k">Game</span><b>Q-Day Command</b><i>Order the migration before the machine arrives</i></a></li>
+    <li><a href="reality.html"><span class="j-k">Check</span><b>Was that real physics?</b><i>Swipe through scenes, myths and viral claims</i></a></li>
+    <li><a href="bitcoin.html"><span class="j-k">Secure</span><b>Can quantum break Bitcoin?</b><i>The numbers, with the sources</i></a></li>
+    <li><a href="race.html"><span class="j-k">Race</span><b>Who is actually ahead?</b><i>The scoreboard and the threshold, live</i></a></li>
+  </ul>
+</section>
+
+<section class="hplay" aria-labelledby="hp-h">
+  <h2 id="hp-h">Or play with this page</h2>
+  <p>This page is one logical qubit with a fidelity. Be the <b>Noise</b> and corrupt it, or be the <b>Decoder</b> and repair it. Nothing is deleted; leaving puts every element back.</p>
+  <p class="hp-row">
+    <button type="button" class="hh-ghost" id="hp-noise">Play as the Noise</button>
+    <button type="button" class="hh-ghost" id="hp-decoder">Play as the Decoder</button>
+  </p>
 </section>
 
 <section class="htracks" id="tracks" aria-labelledby="tracks-h">

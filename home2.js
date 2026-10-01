@@ -119,4 +119,8 @@
     var back = $('#hh-back');
     if (back) back.hidden = false;
   }
+  ['noise', 'decoder'].forEach(function (m) {
+    var b = $('#hp-' + m);
+    if (b) b.addEventListener('click', function () { if (typeof W.SymbiQ.play === 'function') W.SymbiQ.play(m); });
+  });
 })();

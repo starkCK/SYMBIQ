@@ -75,6 +75,8 @@ body[data-still] .hh-machine iframe { animation: revert !important; }
 @media (max-width: 899px) { .trackrow { grid-template-columns: minmax(0, 1fr); } }
 .track { display: flex; flex-direction: column; gap: 10px; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); }
 .track h3 { margin: 0; font-size: 1.15rem; }
+.track h3 a { color: var(--text); text-decoration: none; }
+.track h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .t-out { margin: 0; line-height: 1.45; }
 .t-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
 .t-chips a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 999px; color: var(--text); text-decoration: none; font-size: .88rem; }

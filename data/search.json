@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-10-01",
- "pages": 113,
- "count": 768,
+ "pages": 116,
+ "count": 834,
  "records": [
   {
    "k": "s",
@@ -4979,6 +4979,534 @@
    "h": "Contact",
    "x": "chinmoyuas@gmail.com. Last updated: 8 September 2026. About · How we check · AI use · Corrections · Changelog · RSS · Privacy · Terms",
    "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Optimisation",
+   "x": "When classical beats quantum, and how to read an optimisation claim. 1 lesson, 24 course topics, about 125 min at Plain. Opened pages are remembered in this browser only. Start here Can a classical machine out-optimise a quantum one?about 3",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html#modules",
+   "t": "Optimisation",
+   "h": "The lessons, in reading order",
+   "x": "1",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Can a classical machine out-optimise a quantum one?",
+   "x": "You'll be able to say when a classical or analog machine beats a quantum one on an optimisation problem. about 3 min at Plain Plain, Working or Formal",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html#course",
+   "t": "Optimisation",
+   "h": "The course: The Feasible Region",
+   "x": "Operations research, from linear programming to game theory and reinforcement learning. Open the course page. Why this has its own front door Two reasons, and the second one is the interesting one10 topics, about 42 min at Plain 2",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "The feasible region",
+   "x": "about 3 min at Plain One depth After: Can a classical machine out-optimise a quantum one? 3",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Linear programming and the vertex theorem",
+   "x": "about 4 min at Plain One depth After: The feasible region 4",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Duality and shadow prices",
+   "x": "about 5 min at Plain One depth After: Linear programming and the vertex theorem 5",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Integer programming",
+   "x": "about 4 min at Plain One depth After: Duality and shadow prices 6",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Branch and bound",
+   "x": "about 4 min at Plain One depth After: Integer programming 7",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Network flow and min-cut",
+   "x": "about 4 min at Plain One depth After: Branch and bound 8",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Matching and assignment",
+   "x": "about 4 min at Plain One depth After: Network flow and min-cut 9",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Shortest paths and dynamic programming",
+   "x": "about 3 min at Plain One depth After: Matching and assignment 10",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Queueing theory",
+   "x": "about 4 min at Plain One depth After: Shortest paths and dynamic programming 11",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Metaheuristics",
+   "x": "about 7 min at Plain One depth After: Queueing theory The flagship Game theory: when the thing you're optimising against is also deciding5 topics, about 24 min at Plain 12",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Nash equilibrium",
+   "x": "about 5 min at Plain One depth After: Metaheuristics 13",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Zero-sum games and minimax",
+   "x": "about 4 min at Plain One depth After: Nash equilibrium 14",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Cooperative games and the Shapley value",
+   "x": "about 5 min at Plain One depth After: Zero-sum games and minimax 15",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Mechanism design and auctions",
+   "x": "about 5 min at Plain One depth After: Cooperative games and the Shapley value 16",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Evolutionary game theory",
+   "x": "about 5 min at Plain One depth After: Mechanism design and auctions Added after the flagship Two more from the classical core2 topics, about 13 min at Plain 17",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "The simplex algorithm",
+   "x": "about 6 min at Plain One depth After: Evolutionary game theory 18",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Quadratic & semidefinite programming",
+   "x": "about 7 min at Plain One depth After: The simplex algorithm Module B, completed Two more: the transportation problem, and when there is no objective at all2 topics, about 12 min at Plain 19",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "The transportation problem",
+   "x": "about 6 min at Plain One depth After: Quadratic & semidefinite programming 20",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Constraint satisfaction",
+   "x": "about 6 min at Plain One depth After: The transportation problem Module C, completed One more: what to do when your own actions aren't certain1 topic, about 7 min at Plain 21",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Markov decision processes & reinforcement learning",
+   "x": "about 7 min at Plain One depth After: Constraint satisfaction Module D, completed One more: when a rule of thumb comes with a proof attached1 topic, about 7 min at Plain 22",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Greedy algorithms & approximation guarantees",
+   "x": "about 7 min at Plain One depth After: Markov decision processes & reinforcement learning Module E, completed One more: deciding before the world reveals itself1 topic, about 6 min at Plain 23",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Stochastic & robust optimization",
+   "x": "about 6 min at Plain One depth After: Greedy algorithms & approximation guarantees Module F, completed The last two: more than one goal at once, and keeping the shelves stocked2 topics, about 11 min at Plain 24",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Multi-objective optimization",
+   "x": "about 5 min at Plain One depth After: Stochastic & robust optimization 25",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-optimisation.html",
+   "t": "Optimisation",
+   "h": "Inventory & supply chain",
+   "x": "about 6 min at Plain One depth After: Multi-objective optimization Play Two games where the mathematics does the judging0 topics, about 0 min at Plain Prove itThe Bench: three methods race on one graph Judge a claimThe Ledger: did they do w",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Quantum × AI",
+   "x": "Why AI fixes quantum errors, and whether quantum will repay it. 11 lessons, 20 course topics, about 130 min at Plain. Opened pages are remembered in this browser only. Start here What is quantum computing?about 3 min at Plain",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html#modules",
+   "t": "Quantum × AI",
+   "h": "The lessons, in reading order",
+   "x": "1",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "What is quantum computing?",
+   "x": "You'll be able to say why a quantum computer needs constant error correction, and what an AI decoder adds. about 3 min at Plain Plain, Working or Formal 2",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "What is inside the machine?",
+   "x": "You'll be able to point to the main parts of a quantum computer and say what each is for. about 7 min at Plain One depth After: What is quantum computing? 3",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "What is a qubit made of?",
+   "x": "You'll be able to name the parts of a transmon qubit and say what each one does. about 3 min at Plain Plain, Working or Formal After: What is quantum computing? 4",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Is quantum computing just quantum mechanics?",
+   "x": "You'll be able to say what separates quantum computing from quantum mechanics, and track a qubit on the Bloch sphere. about 6 min at Plain Plain, Working or Formal After: What is a qubit made of? 5",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "What is quantum error correction?",
+   "x": "You'll be able to explain how a surface code finds an error without reading the data, and why a threshold matters. about 3 min at Plain Plain, Working or Formal After: What is quantum computing? 6",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "What is a logical qubit?",
+   "x": "You'll be able to work out how many physical qubits one logical qubit costs at a given error rate. about 2 min at Plain Plain, Working or Formal After: What is quantum error correction? 7",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Why do the algorithms work?",
+   "x": "You'll be able to say why one mechanism, phase kickback, runs Deutsch-Jozsa, Simon and Shor. about 3 min at Plain Plain, Working or Formal After: Is quantum computing just quantum mechanics? 8",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Will quantum boost AI?",
+   "x": "You'll be able to rank the four ways quantum might help AI, and say which survive the data-loading toll. about 3 min at Plain Plain, Working or Formal After: What is a logical qubit? 9",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "How do the companies compare?",
+   "x": "You'll be able to compare the four qubit technologies on speed, error rate and scale, and say why none wins on all three. about 6 min at Plain Plain, Working or Formal After: Will quantum boost AI? 10",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Where might quantum earn its keep?",
+   "x": "You'll be able to say which proposed uses of a quantum computer have a real case and which are still hype. about 3 min at Plain Plain, Working or Formal After: How do the companies compare? 11",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Do quantum sensors and networks matter sooner?",
+   "x": "You'll be able to explain why quantum sensors already ship, and what quantum key distribution does and does not do. about 3 min at Plain Plain, Working or Formal After: Where might quantum earn its keep?",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html#course",
+   "t": "Quantum × AI",
+   "h": "The course: The Machinery",
+   "x": "The mathematics underneath, topic by topic, with every claim proved or marked as not. Open the course page. The Formal Framework Four topics, each taught four ways4 topics, about 12 min at Plain 12",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "The postulates of quantum mechanics, for computing",
+   "x": "about 3 min at Plain One depth After: Is quantum computing just quantum mechanics? 13",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Density matrices & mixed states",
+   "x": "about 3 min at Plain One depth After: The postulates of quantum mechanics, for computing 14",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Measurement, properly",
+   "x": "about 3 min at Plain One depth After: Density matrices & mixed states 15",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "The no-cloning theorem",
+   "x": "about 3 min at Plain One depth After: Measurement, properly Protocols Three topics, the postulates turned into something you can do3 topics, about 12 min at Plain 16",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Quantum teleportation",
+   "x": "about 4 min at Plain One depth After: The no-cloning theorem 17",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Superdense coding",
+   "x": "about 4 min at Plain One depth After: Quantum teleportation 18",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Schmidt decomposition",
+   "x": "about 4 min at Plain One depth After: Superdense coding Building-block algorithms Three topics, the first speedups you can actually prove3 topics, about 15 min at Plain 19",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Deutsch's algorithm",
+   "x": "about 5 min at Plain One depth After: Schmidt decomposition 20",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "The Deutsch-Jozsa algorithm",
+   "x": "about 5 min at Plain One depth After: Deutsch's algorithm 21",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Simon's algorithm",
+   "x": "about 5 min at Plain One depth After: The Deutsch-Jozsa algorithm The Fourier transform Three topics: the machinery Shor's algorithm is actually built from3 topics, about 14 min at Plain 22",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "The quantum Fourier transform",
+   "x": "about 4 min at Plain One depth After: Simon's algorithm 23",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Quantum phase estimation",
+   "x": "about 4 min at Plain One depth After: The quantum Fourier transform 24",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Period finding & continued fractions",
+   "x": "about 6 min at Plain One depth After: Quantum phase estimation Quantum algorithms for optimization & simulation Two topics: the near-term half of the zoo, with no speedup proof to its name2 topics, about 10 min at Plain 25",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "QAOA & VQE",
+   "x": "about 5 min at Plain One depth After: Period finding & continued fractions 26",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Quantum simulation & chemistry",
+   "x": "about 5 min at Plain One depth After: QAOA & VQE Information theory Two topics: putting a number on uncertainty, classical and quantum2 topics, about 9 min at Plain 27",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Shannon entropy",
+   "x": "about 4 min at Plain One depth After: Quantum simulation & chemistry 28",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Von Neumann entropy & the Holevo bound",
+   "x": "about 5 min at Plain One depth After: Shannon entropy Complexity theory Three topics: how hard the general versions of this page's own problems actually are3 topics, about 16 min at Plain 29",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "QMA & the local Hamiltonian problem",
+   "x": "about 5 min at Plain One depth After: Von Neumann entropy & the Holevo bound 30",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "QMA-completeness",
+   "x": "about 5 min at Plain One depth After: QMA & the local Hamiltonian problem 31",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-quantum-ai.html",
+   "t": "Quantum × AI",
+   "h": "Adiabatic universality & the quantum PCP conjecture",
+   "x": "about 6 min at Plain One depth After: QMA-completeness Prove itThe Decoder Duel: you are the AI Judge a claimWhich labs are below threshold? Keep goingNext track: Optimisation About · How we check · AI use · Corrections · Changelog · RSS · ",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Post-quantum security",
+   "x": "Will your systems survive a quantum computer, and by when to migrate? 2 lessons, about 23 min at Plain. Opened pages are remembered in this browser only. Start here Can quantum break Bitcoin?about 2 min at Plain",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "track-security.html#modules",
+   "t": "Post-quantum security",
+   "h": "The lessons, in reading order",
+   "x": "1",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Can quantum break Bitcoin?",
+   "x": "You'll be able to estimate how many qubits, and how long, it takes to break a Bitcoin key on a fast or a slow machine. about 2 min at Plain Plain, Working or Formal 2",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Post-quantum cryptography, on the wire",
+   "x": "You'll be able to check an endpoint, measure what post-quantum costs in bytes, read your own certificates and keys, and work out whether it is too late to start. about 21 min at Plain One depth After: Can quantum break Bitcoin? Quick Check3",
+   "w": 1
   },
   {
    "k": "c",

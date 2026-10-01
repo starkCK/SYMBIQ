@@ -219,6 +219,19 @@
     } catch (e) {}
   }
 
+  function awardCheck(n) {
+    try {
+      var P = window.SymbiQ && window.SymbiQ.progress;
+      if (!P) return;
+      var page = (location.pathname.split('/').pop() || 'index.html');
+      P.rules().then(function (r) {
+        if (!r) return;
+        var t = P.trackOfPage(page);
+        if (t) P.award('cyu:' + page + ':' + n, t, r.pts.lesson);
+      })['catch'](function () {});
+    } catch (e) {}
+  }
+
   function preloadStanding() {
     try {
       var first = $('.cyu');
@@ -263,6 +276,7 @@
           why.hidden = false;
           bump(right);
           recordProof(right);
+          if (right) awardCheck(n);
         });
       });
     });

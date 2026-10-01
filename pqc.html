@@ -123,7 +123,8 @@
 </script>
 <script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/pqc.js?v=17" defer></script>
+<script id="standing-src" type="text/symbiq-lazy" src="standing.js?v=4"></script>
+<script src="p/pqc.js?v=20" defer></script>
 
 
 
@@ -736,6 +737,29 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 
 <p><b>A fifth algorithm exists, and it is deliberately not in the widget above.</b> On 11 March 2025, NIST selected <b>HQC</b> (Hamming Quasi-Cyclic) as a backup encryption standard specifically because it rests on a different hard problem than ML-KEM (error-correcting codes, not structured lattices) so a single mathematical break cannot take down both at once. A draft standard is due in 2026, with a final expected in 2027 (NIST, <a href="https://www.nist.gov/news-events/news/2025/03/nist-selects-hqc-fifth-algorithm-post-quantum-encryption">nist.gov, 11 Mar 2025</a>). It stays out of the size widget above for the same reason every other number on this page is generated live rather than read from a table: no production-grade, browser-safe HQC implementation is in wide use yet to generate a real key with. And it will very likely stay out of CNSA 2.0 specifically: the NSA's own FAQ states plainly that it does not currently plan to add future NIST post-quantum standards to that suite, keeping the algorithm list fixed through the transition rather than chasing every new addition.</p>
 
+<div class="cyu" data-tier-keep data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Post-quantum TLS costs more on the wire than classical TLS. Which part is the bigger problem?</p>
+  <div class="cyu-opts">
+    <button data-opt>The key exchange: ML-KEM is slow to compute.</button>
+    <button data-opt>The signatures: a certificate chain carries several, and each is roughly fifty times larger than the one it replaces.</button>
+    <button data-opt>The hybrid key share: it can never be made to fit in a packet.</button>
+    <button data-opt>Nothing: post-quantum objects are about the same size as classical ones.</button>
+  </div>
+  <p class="cyu-why">ML-KEM is fast, and the hybrid key share is a one-time cost that browsers already work around. The signatures are the real problem: a chain carries several, a post-quantum signature is roughly fifty times larger than the one it replaces, and once the server&rsquo;s reply passes about 14,600 bytes it has to wait for an acknowledgement, so every new connection pays an extra round trip.</p>
+</div>
+<div class="cyu" data-tier-keep data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">SLH-DSA-128s has a 32-byte public key; ML-DSA-65 has 1,952 bytes. For a TLS handshake, which is the more compact choice?</p>
+  <div class="cyu-opts">
+    <button data-opt>SLH-DSA-128s, because its public key is smaller.</button>
+    <button data-opt>They cost the same: only the public key matters.</button>
+    <button data-opt>ML-DSA-65: its signature is 3,309 bytes against 7,856, and a chain carries more signatures than public keys.</button>
+    <button data-opt>Neither: both are too large for any chain to carry.</button>
+  </div>
+  <p class="cyu-why">A chain carries more signatures than public keys, so the scheme with the smallest key produces the largest handshake. SLH-DSA earns that cost (it rests only on the security of a hash function), but the trade is the opposite of the one its key size advertises.</p>
+</div>
+
 <p class="pq-eyebrow" data-icon="🔍">Tool 3 of 7 · discover what you run</p>
 <h2 id="inventory">The Inventory</h2>
 <div class="card">
@@ -770,6 +794,18 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>A confidentiality lifetime of zero on every signing key</b>, with the reason stated rather than assumed. Padding an inventory is the commonest way one of these programmes ends up looking bigger than it is, and a signing key that cannot be forged backwards has no confidentiality lifetime to overstate.</li>
 </ul>
 </details>
+
+<div class="cyu" data-tier-keep data-a="0">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">A signature algorithm and a key-exchange algorithm are both broken in 2032. What does each break let an attacker do to traffic recorded in 2026?</p>
+  <div class="cyu-opts">
+    <button data-opt>The signature break only lets them forge from then on; the key-exchange break decrypts every 2026 recording of it.</button>
+    <button data-opt>Both breaks decrypt the 2026 recordings.</button>
+    <button data-opt>Neither break touches 2026 traffic.</button>
+    <button data-opt>The signature break decrypts the 2026 recordings; the key-exchange break only lets them forge from then on.</button>
+  </div>
+  <p class="cyu-why">A signature broken in 2032 cannot forge a 2026 handshake after the fact: forgery only works forwards. A key exchange broken in 2032 decrypts every recording anybody made of it in 2026. That is why the asset with the worst exposure in most estates is the key exchange, which no certificate file will hand you.</p>
+</div>
 
 <p class="pq-eyebrow" data-icon="🧮">Tool 4 of 7 · sequence the migration</p>
 <h2 id="estate">Your estate, not ours</h2>
@@ -816,6 +852,18 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
   <li><b>Nothing leaves your browser.</b> Export writes a file locally. There is no analytics on what you type, because there is no request.</li>
 </ul>
 
+<div class="cyu" data-tier-keep data-a="2">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Your team is big enough for a post-quantum migration, but the chain certificate authority, then code signing, then the device fleet takes longer, in sequence, than the time you have left. What does hiring more people do?</p>
+  <div class="cyu-opts">
+    <button data-opt>It fixes it: more people finish the chain sooner.</button>
+    <button data-opt>It fixes it, provided you hire before the deadline.</button>
+    <button data-opt>Nothing for that chain: work that must happen in sequence cannot be parallelised by hiring.</button>
+    <button data-opt>It helps only if you change the order of the three steps.</button>
+  </div>
+  <p class="cyu-why">There are two different infeasibilities. If you are short of total capacity, hiring helps and no ordering does. If the dependency chain is longer than the time remaining, you have enough people and it still cannot be done: each step waits for the one before it.</p>
+</div>
+
 <p class="pq-eyebrow" data-icon="🎲">Tool 5 of 7 · put a distribution behind the date</p>
 <h2 id="odds">The Odds</h2>
 <div class="od-spotlight">
@@ -850,6 +898,18 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <p>And the reason none of those dates can simply be waited out: <b>harvest now, decrypt later</b>. Traffic captured today is decrypted whenever the capability arrives, so the exposure is retroactive. Michele Mosca's inequality states it in one line: if <b>X</b> (how long your data must stay secret) plus <b>Y</b> (how long your migration takes) exceeds <b>Z</b> (how long until a cryptographically relevant quantum computer), you are already late. The arithmetic is certain; Z is a guess, and nobody knows it. That is exactly why X and Y are the only two you control.</p>
 <p>What a machine capable of this would have to be is a separate question, answered with resource estimates rather than adjectives, on <a href="bitcoin.html">the Bitcoin page</a>.</p>
 
+<div class="cyu" data-tier-keep data-a="3">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Your records must stay secret for 10 years, a migration would take 5, and the earliest plausible date for a machine that breaks your encryption is 12 years away. By Mosca&rsquo;s inequality, where do you stand?</p>
+  <div class="cyu-opts">
+    <button data-opt>Safe: 10 years is less than 12.</button>
+    <button data-opt>Safe: migration time only matters if it is longer than the secrecy period.</button>
+    <button data-opt>Exactly on the line: 10 + 5 is about 12.</button>
+    <button data-opt>Already late: 10 + 5 = 15 exceeds 12.</button>
+  </div>
+  <p class="cyu-why">Mosca&rsquo;s inequality: you are exposed when X (how long the data must stay secret) plus Y (how long migration takes) exceeds Z (how long until a machine can break it). 10 + 5 = 15 is more than 12, so data encrypted today is still secret-bearing after it could be read. Nobody knows Z; X and Y are the two you control.</p>
+</div>
+
 <h2 id="qkd">Isn&#39;t quantum key distribution the actual fix?</h2>
 <p>It comes up in almost every conversation about this page, and it deserves a precise answer: <b>quantum key distribution (QKD) is real, it works, and it is not what this page is about.</b> Everything above (the Size Cliff, the Inventory, the Sequencer) is a <em>software</em> answer, changing the algorithms your existing internet already runs. QKD is a <em>hardware</em> answer, built on completely different physics, and mixing them up is how migration plans end up skipping the part they should be doing.</p>
 
@@ -866,6 +926,18 @@ h2:first-of-type + .pq-eyebrow, .qc-wrap ~ .pq-eyebrow:first-child { margin-top:
 <p><b>That rate is close to the physical limit of what QKD can do at that distance</b>, which is exactly why it is not a candidate for the problem this page exists to solve. Several national cybersecurity agencies say so plainly: the NSA&#39;s own <a href="https://media.defense.gov/2021/Aug/04/2002821837/-1/-1/1/Quantum_FAQs_20210804.PDF">Quantum Computing and Post-Quantum Cryptography FAQ</a> (August 2021) states it does not support using QKD to protect national security communications and does not expect to certify QKD products until its limitations are overcome, judging post-quantum cryptography &quot;more cost effective and easily maintained.&quot; A 2025 peer-reviewed comparison (Aquina, Cimoli, Das, H&ouml;velmanns, Weber, Okonkwo, Rommel, &Scaron;kori&#263;, Tafur Monroy &amp; Verschoor, <em>EPJ Quantum Technology</em> 12, 51 (2025)) surveys the same conclusion across ANSSI (France), BSI (Germany), NLNCSA (Netherlands) and NCSC (UK), the UK agency&#39;s own position being that it &quot;does not endorse the use of QKD for any government or military applications.&quot; The reasons named are concrete, not political: QKD needs dedicated, special-purpose optical hardware rather than a software update, so it cannot run over the internet this page&#39;s tools measure; it does not remove the need for classical or post-quantum cryptography at all, because the classical channel used to compare bases still has to be <em>authenticated</em> or the whole protocol is open to a man-in-the-middle, and that authentication step is exactly the kind of signature this page&#39;s Size Cliff measures; distance without repeaters tops out well short of global reach, so long links fall back to trusted relays (physical boxes that must themselves be defended) reintroducing the very single point of failure QKD was meant to remove; and the same sensitivity to disturbance that reveals an eavesdropper also hands an attacker a cheap denial-of-service lever, since jamming the channel and eavesdropping on it look identical from the error rate alone.</p>
 
 <p>This is not an argument that QKD is a failure: Micius is a real, hard-won achievement, and QKD is the right tool for a narrow set of point-to-point links where everlasting confidentiality is worth the dedicated fibre and the cost. It is an argument that QKD and post-quantum cryptography answer <em>different</em> questions. This page&#39;s question, how do you re-key the internet as it already exists, at internet scale, before 2030&ndash;2035, has exactly one candidate answer among the two, and it is the one every tool above measures.</p>
+
+<div class="cyu" data-tier-keep data-a="1">
+  <p class="cyu-eyebrow">Check yourself</p>
+  <p class="cyu-q">Why is quantum key distribution not the fix for the problem this page is about?</p>
+  <div class="cyu-opts">
+    <button data-opt>Shor&rsquo;s algorithm breaks it.</button>
+    <button data-opt>It needs dedicated optical hardware, and it still relies on an authenticated classical channel, which needs signatures.</button>
+    <button data-opt>It has never been demonstrated outside a laboratory.</button>
+    <button data-opt>It rests on the same lattice problem as ML-KEM.</button>
+  </div>
+  <p class="cyu-why">QKD is real: it has flown, twice, on the same satellite. But it is a hardware answer, not a software update, so it cannot run over the internet the tools here measure; and the classical channel used to compare bases still has to be authenticated, which is the kind of signature the Size Cliff measures.</p>
+</div>
 
 <p class="pq-eyebrow" data-icon="⏳">Tool 6 of 7 · the inequality, played</p>
 <h2 id="mosca" data-tier-keep>The Harvest Clock</h2>

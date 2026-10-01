@@ -98,10 +98,51 @@
     });
     return n;
   }
+  var _tracks = null;
+  function tracksData() {
+    if (!_tracks) _tracks = window.fetch('data/tracks.json').then(function (r) { return r.ok ? r.json() : null; })['catch'](function () { return null; });
+    return _tracks;
+  }
+  function hasPoints() {
+    try { var P = window.SymbiQ.progress, t = P && P.points(); return !!(t && (t.q + t.o + t.s)); } catch (e) { return false; }
+  }
+  function nextStep(td, letter) {
+    var tr = td && td.tracks && td.tracks[letter], seen = {};
+    try { seen = JSON.parse(localStorage.getItem('sq-seen')) || {}; } catch (e) { seen = {}; }
+    if (!tr) return null;
+    var open = tr.modules.filter(function (m) { return !seen[m.p]; });
+    for (var i = 0; i < open.length; i++) {
+      if (open[i].after.every(function (a) { return seen[a]; })) return { href: open[i].p, label: open[i].t, track: tr.name, hub: tr.hub };
+    }
+    return open[0] ? { href: open[0].p, label: open[0].t, track: tr.name, hub: tr.hub } : { href: tr.hub, label: 'Open the ' + tr.name + ' map', track: tr.name, hub: tr.hub };
+  }
+  function richen(host) {
+    var P = window.SymbiQ.progress;
+    if (!P || !P.rules) return;
+    Promise.all([P.rules(), tracksData()]).then(function (r) {
+      var rules = r[0], td = r[1];
+      if (!rules || !host.isConnected) return;
+      var rk = P.rank(rules, P.points()), dl = host.querySelector('.you-rows');
+      if (!dl) { dl = document.createElement('dl'); dl.className = 'you-rows'; host.insertBefore(dl, host.firstChild); }
+      dl.querySelectorAll('[data-rank]').forEach(function (n) { n.parentNode.removeChild(n); });
+      var html = '<dt data-rank>Rank</dt><dd data-rank>d' + rk.d + '</dd>';
+      var step = rk.top ? null : nextStep(td, rk.limiting);
+      if (step) html += '<dt data-rank>Next step</dt><dd data-rank><a href="' + esc(step.href) + '">' + esc(step.label) + '</a></dd>';
+      dl.insertAdjacentHTML('afterbegin', html);
+      var sub = host.querySelector('[data-rank-note]');
+      if (sub && sub.parentNode) sub.parentNode.removeChild(sub);
+      var note = rk.top ? 'Top rank: d' + rk.d + '.'
+        : 'd' + rk.next.d + ' needs ' + Math.max(0, rk.next.need - rk.next.have) + ' more point' + (rk.next.need - rk.next.have === 1 ? '' : 's') +
+          ' in ' + esc(rules.tracks[rk.limiting].name) + ', your weakest track. Points come from correct checks and games finished at or near par.';
+      host.insertAdjacentHTML('beforeend', '<p class="sub" data-rank-note style="margin:6px 0 0">' + note + '</p>');
+    })['catch'](function () {});
+  }
+
   function fillYou(host, p, ci) {
     var medals = medalCount();
     var live = !!(ci && ci.streak > 0 && !ci.lapsed);
-    if (!p.seen && !medals && !live) return;
+    var pts = hasPoints();
+    if (!p.seen && !medals && !live && !pts) return;
     var rows = (p.seen || medals) ?
       '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
       '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
@@ -114,6 +155,7 @@
     host.innerHTML = '<dl class="you-rows">' + rows + '</dl>' +
       (where ? '<p class="sub" style="margin:8px 0 0">' + esc(where) + '. Saved in this browser only.</p>'
              : '<p class="sub" style="margin:8px 0 0">Saved in this browser only.</p>');
+    richen(host);
   }
 
   function mountChip(p, ci) {

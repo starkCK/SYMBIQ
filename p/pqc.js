@@ -219,6 +219,447 @@
 })();
 ;
 (function () {
+  'use strict';
+  var W = window;
+  W.SymbiQ = W.SymbiQ || {};
+  var KEY = 'symbiq.solverpath.v1', PFX = 'pr:';
+  var TRACKS = ['q', 'o', 's'];
+
+  function raw() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function put(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { } }
+  function kvAll() { var S = W.SymbiQ.save; return (S && S.data ? S.data().kv : raw().kv) || {}; }
+  function kvSet(k, v) {
+    var S = W.SymbiQ.save;
+    if (S && S.set) { S.set(k, v); return; }
+    var d = raw(); d.kv = d.kv || {}; d.kv[k] = v; put(d);
+  }
+
+  var P = { onchange: null };
+  var rulesP = null, RULES = null;
+
+  P.award = function (id, track, points) {
+    try {
+      if (TRACKS.indexOf(track) < 0) return { first: false, gained: 0 };
+      var pts = Math.max(0, Math.floor(+points || 0));
+      var key = PFX + String(id).slice(0, 80), cur = kvAll()[key];
+      var have = (cur && cur[0] === track) ? (+cur[1] || 0) : 0;
+      if (pts <= have) return { first: false, gained: 0 };
+      kvSet(key, [track, pts]);
+      try { if (typeof P.onchange === 'function') P.onchange(); } catch (e) { }
+      return { first: !have, gained: pts - have };
+    } catch (e) { return { first: false, gained: 0 }; }
+  };
+
+  P.points = function () {
+    var out = { q: 0, o: 0, s: 0 }, kv = kvAll();
+    for (var k in kv) if (Object.prototype.hasOwnProperty.call(kv, k) && k.indexOf(PFX) === 0) {
+      var v = kv[k];
+      if (v && out.hasOwnProperty(v[0])) out[v[0]] += Math.max(0, Math.floor(+v[1] || 0));
+    }
+    return out;
+  };
+
+  P.rules = function () {
+    if (rulesP) return rulesP;
+    rulesP = W.fetch('data/progress-rules.json').then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { RULES = j; return j; })['catch'](function () { return null; });
+    return rulesP;
+  };
+
+  P.trackOfPage = function (page) {
+    var p = String(page || '').split('#')[0];
+    if (!RULES) return null;
+    if (RULES.pages[p]) return RULES.pages[p];
+    var m = /^(machinery|region)-\d\d\.html$/.exec(p);
+    return m ? RULES.kinds[m[1]] : null;
+  };
+
+  P.rank = function (rules, pts) {
+    pts = pts || P.points();
+    var ranks = rules.ranks, top = rules.top, n = ranks.length - 1;
+    var frac = {}, weakest = null;
+    TRACKS.forEach(function (t) {
+      var cap = rules.tracks[t].cap;
+      frac[t] = cap > 0 ? Math.min(1, pts[t] / cap) : 1;
+      if (weakest === null || frac[t] < frac[weakest]) weakest = t;
+    });
+    var k = Math.min(n, Math.floor((frac[weakest] / top) * n + 1e-9));
+    var out = { k: k, d: ranks[k], frac: frac, limiting: weakest, top: k >= n, next: null };
+    if (k < n) {
+      var cap = rules.tracks[weakest].cap, need = Math.ceil(((k + 1) / n) * top * cap - 1e-9);
+      out.next = { d: ranks[k + 1], track: weakest, have: pts[weakest], need: need };
+    }
+    return out;
+  };
+
+  W.SymbiQ.progress = P;
+})();
+;
+(function () {
+  window.SymbiQ = window.SymbiQ || {};
+  var KEY = 'symbiq.depth.v1';
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function store(data) {
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { }
+  }
+
+  function get() {
+    var d = load();
+    return (d.pref === 'light' || d.pref === 'deep') ? d.pref : null;
+  }
+  function set(pref) {
+    if (pref !== 'light' && pref !== 'deep') return;
+    var d = load();
+    d.pref = pref;
+    d.setAt = Date.now();
+    store(d);
+  }
+
+  window.SymbiQ.depth = { get: get, set: set };
+})();
+;
+(function () {
+  'use strict';
+
+  var TIERS = ['g', 'y', 'r'];
+  var META = {
+    g: { chip: '<i class="dpt dpt-1" aria-hidden="true"></i>', name: 'Plain',     blurb: 'One analogy. No equations.' },
+    y: { chip: '<i class="dpt dpt-2" aria-hidden="true"></i>', name: 'Working',   blurb: 'Mechanism, and a worked number.' },
+    r: { chip: '<i class="dpt dpt-3" aria-hidden="true"></i>', name: 'Formal',    blurb: 'Derivations, sources, open problems.' }
+  };
+
+  function $(s, r) { return (r || document).querySelector(s); }
+  function all(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
+
+  function hashGet(key) {
+    var h = location.hash.replace(/^#/, '');
+    if (!h) return null;
+    var parts = h.split('&');
+    for (var i = 0; i < parts.length; i++) {
+      var kv = parts[i].split('=');
+      if (kv[0] === key && kv.length > 1) return decodeURIComponent(kv[1]);
+    }
+    return null;
+  }
+  function hashSet(key, val) {
+    var h = location.hash.replace(/^#/, '');
+    var parts = h ? h.split('&') : [];
+    var out = [], hit = false;
+    for (var i = 0; i < parts.length; i++) {
+      var kv = parts[i].split('=');
+      if (kv[0] === key) { out.push(key + '=' + encodeURIComponent(val)); hit = true; }
+      else if (parts[i]) out.push(parts[i]);
+    }
+    if (!hit) out.push(key + '=' + encodeURIComponent(val));
+    try { history.replaceState(null, '', '#' + out.join('&')); }
+    catch (e) { location.hash = out.join('&'); }
+  }
+  function bareAnchor() {
+    var h = location.hash.replace(/^#/, '');
+    if (!h || h.indexOf('=') > -1) return null;
+    return h;
+  }
+
+  function buildToggle() {
+    var host = $('.wrap') || document.body;
+    var kids = [].slice.call(host.children);
+
+    var cur = null;
+    var keeping = false;
+    var stopped = false;
+    var groups = { g: [], y: [], r: [] };
+    var firstChip = null;
+
+    kids.forEach(function (el) {
+      if (stopped) return;
+      if (el.hasAttribute('data-tier-stop')) { stopped = true; return; }
+
+      var isChip = el.classList.contains('tier') &&
+                   TIERS.some(function (t) { return el.classList.contains(t); });
+      if (isChip) {
+        cur = TIERS.filter(function (t) { return el.classList.contains(t); })[0];
+        keeping = false;
+        if (!firstChip) firstChip = el;
+      } else if (el.hasAttribute('data-tier-keep')) {
+        keeping = true;
+      } else if (keeping && /^H[12]$/.test(el.tagName)) {
+        keeping = false;
+      }
+
+      if (cur && !keeping) {
+        el.setAttribute('data-in-tier', cur);
+        groups[cur].push(el);
+      }
+    });
+
+    var present = TIERS.filter(function (t) { return groups[t].length; });
+    if (present.length < 2 || !firstChip) return null;
+
+    var bar = document.createElement('div');
+    bar.className = 'tbar';
+    bar.innerHTML =
+      '<span class="tbar-lab">Read this at</span>' +
+      '<div class="tbar-btns" role="group" aria-label="Choose reading depth"></div>' +
+      '<span class="tbar-blurb" aria-live="polite"></span>';
+    var btns = $('.tbar-btns', bar);
+    var blurb = $('.tbar-blurb', bar);
+
+    present.forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'tbtn t-' + t;
+      b.setAttribute('data-t', t);
+      b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = '<span class="tbtn-chip">' + META[t].chip + '</span>' +
+                    '<span class="tbtn-name">' + META[t].name + '</span>';
+      b.addEventListener('click', function () { pick(t, true); });
+      btns.appendChild(b);
+    });
+    var allBtn = document.createElement('button');
+    allBtn.type = 'button';
+    allBtn.className = 'tbtn t-all';
+    allBtn.setAttribute('data-t', 'all');
+    allBtn.setAttribute('aria-pressed', 'false');
+    allBtn.innerHTML = '<span class="tbtn-name">All three</span>';
+    allBtn.addEventListener('click', function () { pick('all', true); });
+    btns.appendChild(allBtn);
+
+    firstChip.parentNode.insertBefore(bar, firstChip);
+
+    function pick(t, fromClick) {
+      var showAll = (t === 'all');
+      TIERS.forEach(function (tt) {
+        var hide = !showAll && tt !== t;
+        groups[tt].forEach(function (el) { el.hidden = hide; });
+      });
+      all('.tbtn', bar).forEach(function (b) {
+        var on = b.getAttribute('data-t') === t;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      blurb.textContent = showAll ? 'Everything, in order.' : META[t].blurb;
+      document.body.setAttribute('data-depth', t);
+      if (fromClick) {
+        hashSet('depth', t);
+        if (window.SymbiQ && SymbiQ.depth) {
+          if (t === 'g') SymbiQ.depth.set('light');
+          else if (t === 'r') SymbiQ.depth.set('deep');
+        }
+        var top = bar.getBoundingClientRect().top;
+        if (top < 0) bar.scrollIntoView({ block: 'start' });
+      }
+      return true;
+    }
+
+    var anch = bareAnchor(), start = null;
+    if (anch) {
+      var target = document.getElementById(anch);
+      if (target) {
+        var owner = target.closest('[data-in-tier]');
+        if (owner) start = owner.getAttribute('data-in-tier');
+        else start = 'all';
+      }
+    }
+    if (!start) {
+      var want = hashGet('depth');
+      if (want && (want === 'all' || present.indexOf(want) > -1)) {
+        start = want;
+      } else {
+        var pref = (window.SymbiQ && SymbiQ.depth) ? SymbiQ.depth.get() : null;
+        var prefTier = pref === 'deep' ? 'r' : pref === 'light' ? 'g' : null;
+        start = (prefTier && present.indexOf(prefTier) > -1) ? prefTier : present[0];
+      }
+    }
+    pick(start, false);
+
+    if (anch) {
+      var t2 = document.getElementById(anch);
+      if (t2) setTimeout(function () { t2.scrollIntoView({ block: 'start' }); }, 0);
+    }
+
+    window.addEventListener('hashchange', function () {
+      var a = bareAnchor();
+      if (a) {
+        var el = document.getElementById(a);
+        if (el) {
+          var own = el.closest('[data-in-tier]');
+          if (own && own.hidden) pick(own.getAttribute('data-in-tier'), false);
+          el.scrollIntoView({ block: 'start' });
+        }
+        return;
+      }
+      var w = hashGet('depth');
+      if (w && (w === 'all' || present.indexOf(w) > -1)) pick(w, false);
+    });
+
+    return { groups: groups, present: present };
+  }
+
+  function buildCorrFilters() {
+    var btns = all('.corr-f');
+    if (!btns.length) return;
+    var items = all('.corr');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var k = b.getAttribute('data-k');
+        items.forEach(function (it) {
+          it.hidden = (k !== 'all' && it.getAttribute('data-k') !== k);
+        });
+        btns.forEach(function (x) {
+          var on = x === b;
+          x.classList.toggle('is-on', on);
+          x.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      });
+    });
+  }
+
+  function standingSrc() {
+    var tag = document.getElementById('standing-src');
+    return tag ? tag.getAttribute('src') : null;
+  }
+
+  function ensureStanding() {
+    var S = window.SymbiQ;
+    if (S && S.standing) return Promise.resolve(S.standing);
+    var src = standingSrc();
+    if (!src || !S || !S.core || !S.core.loadScript) return Promise.resolve(null);
+    return S.core.loadScript(src).then(function () {
+      return window.SymbiQ.standing || null;
+    });
+  }
+
+  function recordProof(right) {
+    try {
+      var S = window.SymbiQ;
+      if (S && S.standing) { S.standing.recordCyu(right); return; }
+      ensureStanding().then(function (st) {
+        if (st) { try { st.recordCyu(right); } catch (e) {} }
+      })['catch'](function () {});
+    } catch (e) {}
+  }
+
+  function awardCheck(n) {
+    try {
+      var P = window.SymbiQ && window.SymbiQ.progress;
+      if (!P) return;
+      var page = (location.pathname.split('/').pop() || 'index.html');
+      P.rules().then(function (r) {
+        if (!r) return;
+        var t = P.trackOfPage(page);
+        if (t) P.award('cyu:' + page + ':' + n, t, r.pts.lesson);
+      })['catch'](function () {});
+    } catch (e) {}
+  }
+
+  function preloadStanding() {
+    try {
+      var first = $('.cyu');
+      if (!first || !standingSrc()) return;
+      var S = window.SymbiQ;
+      if (S && S.core && S.core.onNear) {
+        S.core.onNear(first, function () { ensureStanding()['catch'](function () {}); }, 400);
+      }
+    } catch (e) {}
+  }
+
+  function buildChecks() {
+    all('.cyu').forEach(function (box, n) {
+      var opts = all('[data-opt]', box);
+      var why = $('.cyu-why', box);
+      if (!opts.length || !why) return;
+      var answer = parseInt(box.getAttribute('data-a'), 10);
+      if (isNaN(answer)) return;
+
+      why.hidden = true;
+      var done = false;
+      var out = document.createElement('p');
+      out.className = 'cyu-out';
+      out.setAttribute('aria-live', 'polite');
+      why.parentNode.insertBefore(out, why);
+
+      opts.forEach(function (o, i) {
+        o.setAttribute('type', 'button');
+        o.addEventListener('click', function () {
+          if (done) return;
+          done = true;
+          var right = (i === answer);
+          opts.forEach(function (x, j) {
+            x.classList.add('locked');
+            if (j === answer) x.classList.add('is-right');
+            else if (j === i) x.classList.add('is-wrong');
+          });
+          out.textContent = right
+            ? 'Right, and here is why that is the answer:'
+            : 'Not this one. The reasoning matters more than the guess:';
+          out.className = 'cyu-out ' + (right ? 'ok' : 'no');
+          why.hidden = false;
+          bump(right);
+          recordProof(right);
+          if (right) awardCheck(n);
+        });
+      });
+    });
+  }
+
+  var acted = 0;
+  function bump(right) {
+    acted++;
+    var box = $('.pathway-nudge');
+    if (!box || box.getAttribute('data-shown')) return;
+    if (acted < 1) return;
+    box.setAttribute('data-shown', '1');
+    box.hidden = false;
+    if (right) box.classList.add('warm');
+  }
+
+  function buildProgress() {
+    var bar = document.createElement('div');
+    bar.className = 'readbar';
+    bar.innerHTML = '<i></i>';
+    var fill = bar.firstChild;
+    document.body.appendChild(bar);
+    var tick = false;
+    function draw() {
+      tick = false;
+      var h = document.documentElement;
+      var max = (h.scrollHeight - h.clientHeight);
+      var p = max > 40 ? Math.min(1, Math.max(0, h.scrollTop / max)) : 0;
+      fill.style.width = (p * 100).toFixed(2) + '%';
+    }
+    window.addEventListener('scroll', function () {
+      if (!tick) { tick = true; window.requestAnimationFrame(draw); }
+    }, { passive: true });
+    draw();
+  }
+
+  function boot() {
+    try { if (document.body.hasAttribute('data-tiers')) buildToggle(); }
+    catch (e) { }
+    try { buildChecks(); } catch (e) {}
+    try { preloadStanding(); } catch (e) {}
+    try { buildCorrFilters(); } catch (e) {}
+    try {
+      if (!window.SymbiQ.core.reduced()) {
+        buildProgress();
+      }
+    } catch (e) {}
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+;
+(function () {
   try {
     var body = document.body;
     var rung = body.getAttribute('data-rung');
@@ -2552,10 +2993,51 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     });
     return n;
   }
+  var _tracks = null;
+  function tracksData() {
+    if (!_tracks) _tracks = window.fetch('data/tracks.json').then(function (r) { return r.ok ? r.json() : null; })['catch'](function () { return null; });
+    return _tracks;
+  }
+  function hasPoints() {
+    try { var P = window.SymbiQ.progress, t = P && P.points(); return !!(t && (t.q + t.o + t.s)); } catch (e) { return false; }
+  }
+  function nextStep(td, letter) {
+    var tr = td && td.tracks && td.tracks[letter], seen = {};
+    try { seen = JSON.parse(localStorage.getItem('sq-seen')) || {}; } catch (e) { seen = {}; }
+    if (!tr) return null;
+    var open = tr.modules.filter(function (m) { return !seen[m.p]; });
+    for (var i = 0; i < open.length; i++) {
+      if (open[i].after.every(function (a) { return seen[a]; })) return { href: open[i].p, label: open[i].t, track: tr.name, hub: tr.hub };
+    }
+    return open[0] ? { href: open[0].p, label: open[0].t, track: tr.name, hub: tr.hub } : { href: tr.hub, label: 'Open the ' + tr.name + ' map', track: tr.name, hub: tr.hub };
+  }
+  function richen(host) {
+    var P = window.SymbiQ.progress;
+    if (!P || !P.rules) return;
+    Promise.all([P.rules(), tracksData()]).then(function (r) {
+      var rules = r[0], td = r[1];
+      if (!rules || !host.isConnected) return;
+      var rk = P.rank(rules, P.points()), dl = host.querySelector('.you-rows');
+      if (!dl) { dl = document.createElement('dl'); dl.className = 'you-rows'; host.insertBefore(dl, host.firstChild); }
+      dl.querySelectorAll('[data-rank]').forEach(function (n) { n.parentNode.removeChild(n); });
+      var html = '<dt data-rank>Rank</dt><dd data-rank>d' + rk.d + '</dd>';
+      var step = rk.top ? null : nextStep(td, rk.limiting);
+      if (step) html += '<dt data-rank>Next step</dt><dd data-rank><a href="' + esc(step.href) + '">' + esc(step.label) + '</a></dd>';
+      dl.insertAdjacentHTML('afterbegin', html);
+      var sub = host.querySelector('[data-rank-note]');
+      if (sub && sub.parentNode) sub.parentNode.removeChild(sub);
+      var note = rk.top ? 'Top rank: d' + rk.d + '.'
+        : 'd' + rk.next.d + ' needs ' + Math.max(0, rk.next.need - rk.next.have) + ' more point' + (rk.next.need - rk.next.have === 1 ? '' : 's') +
+          ' in ' + esc(rules.tracks[rk.limiting].name) + ', your weakest track. Points come from correct checks and games finished at or near par.';
+      host.insertAdjacentHTML('beforeend', '<p class="sub" data-rank-note style="margin:6px 0 0">' + note + '</p>');
+    })['catch'](function () {});
+  }
+
   function fillYou(host, p, ci) {
     var medals = medalCount();
     var live = !!(ci && ci.streak > 0 && !ci.lapsed);
-    if (!p.seen && !medals && !live) return;
+    var pts = hasPoints();
+    if (!p.seen && !medals && !live && !pts) return;
     var rows = (p.seen || medals) ?
       '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
       '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
@@ -2568,6 +3050,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     host.innerHTML = '<dl class="you-rows">' + rows + '</dl>' +
       (where ? '<p class="sub" style="margin:8px 0 0">' + esc(where) + '. Saved in this browser only.</p>'
              : '<p class="sub" style="margin:8px 0 0">Saved in this browser only.</p>');
+    richen(host);
   }
 
   function mountChip(p, ci) {

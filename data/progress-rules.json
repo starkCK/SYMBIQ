@@ -1,0 +1,107 @@
+{
+ "v": 1,
+ "ranks": [
+  3,
+  5,
+  7,
+  9,
+  11,
+  13,
+  15,
+  17,
+  19,
+  21,
+  23,
+  25
+ ],
+ "top": 0.8,
+ "pts": {
+  "lesson": 1,
+  "topic": 2,
+  "gold": 3,
+  "silver": 2,
+  "bronze": 0
+ },
+ "tracks": {
+  "q": {
+   "name": "Quantum × AI",
+   "hub": "track-quantum-ai.html",
+   "cap": 66
+  },
+  "o": {
+   "name": "Optimisation",
+   "hub": "track-optimisation.html",
+   "cap": 55
+  },
+  "s": {
+   "name": "Post-quantum security",
+   "hub": "track-security.html",
+   "cap": 7
+  }
+ },
+ "pages": {
+  "basics.html": "q",
+  "inside.html": "q",
+  "circuits.html": "q",
+  "quantum-mechanics.html": "q",
+  "qec.html": "q",
+  "logical-qubit.html": "q",
+  "phase-kickback.html": "q",
+  "ai.html": "q",
+  "compare.html": "q",
+  "applications.html": "q",
+  "sensing.html": "q",
+  "analog.html": "o",
+  "bitcoin.html": "s",
+  "pqc.html": "s"
+ },
+ "kinds": {
+  "machinery": "q",
+  "region": "o"
+ },
+ "ladders": {
+  "golf": {
+   "track": "q",
+   "levels": 9
+  },
+  "grover": {
+   "track": "q",
+   "levels": 9
+  },
+  "maxcut": {
+   "track": "o",
+   "levels": 9
+  },
+  "volcano": {
+   "track": "o",
+   "levels": 9
+  }
+ },
+ "sources": {
+  "lessons": {
+   "ai.html": 1,
+   "analog.html": 1,
+   "applications.html": 1,
+   "basics.html": 3,
+   "bitcoin.html": 1,
+   "circuits.html": 1,
+   "compare.html": 1,
+   "logical-qubit.html": 1,
+   "phase-kickback.html": 1,
+   "pqc.html": 6,
+   "qec.html": 1,
+   "quantum-mechanics.html": 1,
+   "sensing.html": 1
+  },
+  "topics": {
+   "machinery": 0,
+   "region": 0
+  },
+  "ladders": {
+   "golf": 9,
+   "grover": 9,
+   "maxcut": 9,
+   "volcano": 9
+  }
+ }
+}

@@ -219,6 +219,83 @@
 })();
 ;
 (function () {
+  'use strict';
+  var W = window;
+  W.SymbiQ = W.SymbiQ || {};
+  var KEY = 'symbiq.solverpath.v1', PFX = 'pr:';
+  var TRACKS = ['q', 'o', 's'];
+
+  function raw() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function put(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { } }
+  function kvAll() { var S = W.SymbiQ.save; return (S && S.data ? S.data().kv : raw().kv) || {}; }
+  function kvSet(k, v) {
+    var S = W.SymbiQ.save;
+    if (S && S.set) { S.set(k, v); return; }
+    var d = raw(); d.kv = d.kv || {}; d.kv[k] = v; put(d);
+  }
+
+  var P = { onchange: null };
+  var rulesP = null, RULES = null;
+
+  P.award = function (id, track, points) {
+    try {
+      if (TRACKS.indexOf(track) < 0) return { first: false, gained: 0 };
+      var pts = Math.max(0, Math.floor(+points || 0));
+      var key = PFX + String(id).slice(0, 80), cur = kvAll()[key];
+      var have = (cur && cur[0] === track) ? (+cur[1] || 0) : 0;
+      if (pts <= have) return { first: false, gained: 0 };
+      kvSet(key, [track, pts]);
+      try { if (typeof P.onchange === 'function') P.onchange(); } catch (e) { }
+      return { first: !have, gained: pts - have };
+    } catch (e) { return { first: false, gained: 0 }; }
+  };
+
+  P.points = function () {
+    var out = { q: 0, o: 0, s: 0 }, kv = kvAll();
+    for (var k in kv) if (Object.prototype.hasOwnProperty.call(kv, k) && k.indexOf(PFX) === 0) {
+      var v = kv[k];
+      if (v && out.hasOwnProperty(v[0])) out[v[0]] += Math.max(0, Math.floor(+v[1] || 0));
+    }
+    return out;
+  };
+
+  P.rules = function () {
+    if (rulesP) return rulesP;
+    rulesP = W.fetch('data/progress-rules.json').then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { RULES = j; return j; })['catch'](function () { return null; });
+    return rulesP;
+  };
+
+  P.trackOfPage = function (page) {
+    var p = String(page || '').split('#')[0];
+    if (!RULES) return null;
+    if (RULES.pages[p]) return RULES.pages[p];
+    var m = /^(machinery|region)-\d\d\.html$/.exec(p);
+    return m ? RULES.kinds[m[1]] : null;
+  };
+
+  P.rank = function (rules, pts) {
+    pts = pts || P.points();
+    var ranks = rules.ranks, top = rules.top, n = ranks.length - 1;
+    var frac = {}, weakest = null;
+    TRACKS.forEach(function (t) {
+      var cap = rules.tracks[t].cap;
+      frac[t] = cap > 0 ? Math.min(1, pts[t] / cap) : 1;
+      if (weakest === null || frac[t] < frac[weakest]) weakest = t;
+    });
+    var k = Math.min(n, Math.floor((frac[weakest] / top) * n + 1e-9));
+    var out = { k: k, d: ranks[k], frac: frac, limiting: weakest, top: k >= n, next: null };
+    if (k < n) {
+      var cap = rules.tracks[weakest].cap, need = Math.ceil(((k + 1) / n) * top * cap - 1e-9);
+      out.next = { d: ranks[k + 1], track: weakest, have: pts[weakest], need: need };
+    }
+    return out;
+  };
+
+  W.SymbiQ.progress = P;
+})();
+;
+(function () {
   window.SymbiQ = window.SymbiQ || {};
   var KEY = 'symbiq.depth.v1';
 
@@ -1727,10 +1804,51 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     });
     return n;
   }
+  var _tracks = null;
+  function tracksData() {
+    if (!_tracks) _tracks = window.fetch('data/tracks.json').then(function (r) { return r.ok ? r.json() : null; })['catch'](function () { return null; });
+    return _tracks;
+  }
+  function hasPoints() {
+    try { var P = window.SymbiQ.progress, t = P && P.points(); return !!(t && (t.q + t.o + t.s)); } catch (e) { return false; }
+  }
+  function nextStep(td, letter) {
+    var tr = td && td.tracks && td.tracks[letter], seen = {};
+    try { seen = JSON.parse(localStorage.getItem('sq-seen')) || {}; } catch (e) { seen = {}; }
+    if (!tr) return null;
+    var open = tr.modules.filter(function (m) { return !seen[m.p]; });
+    for (var i = 0; i < open.length; i++) {
+      if (open[i].after.every(function (a) { return seen[a]; })) return { href: open[i].p, label: open[i].t, track: tr.name, hub: tr.hub };
+    }
+    return open[0] ? { href: open[0].p, label: open[0].t, track: tr.name, hub: tr.hub } : { href: tr.hub, label: 'Open the ' + tr.name + ' map', track: tr.name, hub: tr.hub };
+  }
+  function richen(host) {
+    var P = window.SymbiQ.progress;
+    if (!P || !P.rules) return;
+    Promise.all([P.rules(), tracksData()]).then(function (r) {
+      var rules = r[0], td = r[1];
+      if (!rules || !host.isConnected) return;
+      var rk = P.rank(rules, P.points()), dl = host.querySelector('.you-rows');
+      if (!dl) { dl = document.createElement('dl'); dl.className = 'you-rows'; host.insertBefore(dl, host.firstChild); }
+      dl.querySelectorAll('[data-rank]').forEach(function (n) { n.parentNode.removeChild(n); });
+      var html = '<dt data-rank>Rank</dt><dd data-rank>d' + rk.d + '</dd>';
+      var step = rk.top ? null : nextStep(td, rk.limiting);
+      if (step) html += '<dt data-rank>Next step</dt><dd data-rank><a href="' + esc(step.href) + '">' + esc(step.label) + '</a></dd>';
+      dl.insertAdjacentHTML('afterbegin', html);
+      var sub = host.querySelector('[data-rank-note]');
+      if (sub && sub.parentNode) sub.parentNode.removeChild(sub);
+      var note = rk.top ? 'Top rank: d' + rk.d + '.'
+        : 'd' + rk.next.d + ' needs ' + Math.max(0, rk.next.need - rk.next.have) + ' more point' + (rk.next.need - rk.next.have === 1 ? '' : 's') +
+          ' in ' + esc(rules.tracks[rk.limiting].name) + ', your weakest track. Points come from correct checks and games finished at or near par.';
+      host.insertAdjacentHTML('beforeend', '<p class="sub" data-rank-note style="margin:6px 0 0">' + note + '</p>');
+    })['catch'](function () {});
+  }
+
   function fillYou(host, p, ci) {
     var medals = medalCount();
     var live = !!(ci && ci.streak > 0 && !ci.lapsed);
-    if (!p.seen && !medals && !live) return;
+    var pts = hasPoints();
+    if (!p.seen && !medals && !live && !pts) return;
     var rows = (p.seen || medals) ?
       '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
       '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
@@ -1743,6 +1861,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     host.innerHTML = '<dl class="you-rows">' + rows + '</dl>' +
       (where ? '<p class="sub" style="margin:8px 0 0">' + esc(where) + '. Saved in this browser only.</p>'
              : '<p class="sub" style="margin:8px 0 0">Saved in this browser only.</p>');
+    richen(host);
   }
 
   function mountChip(p, ci) {

@@ -4053,6 +4053,13 @@
         st.cleared[n] = true;
         if ((MEDAL_RANK[medal] || 0) > (MEDAL_RANK[st.medal[n]] || 0)) st.medal[n] = medal;
         ldSave(s);
+        try {
+          var P = window.SymbiQ && window.SymbiQ.progress;
+          if (P) P.rules().then(function (r) {
+            var l = r && r.ladders && r.ladders[id];
+            if (l) P.award('medal:' + id + ':' + n, l.track, r.pts[st.medal[n]] || 0);
+          })['catch'](function () {});
+        } catch (e) { }
         return st;
       },
       strip: function (id, levels, currentN) {

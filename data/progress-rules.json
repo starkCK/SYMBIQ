@@ -36,7 +36,7 @@
   "s": {
    "name": "Post-quantum security",
    "hub": "track-security.html",
-   "cap": 7
+   "cap": 19
   }
  },
  "pages": {
@@ -79,6 +79,10 @@
   "survival": {
    "track": "q",
    "levels": 4
+  },
+  "qday": {
+   "track": "s",
+   "levels": 4
   }
  },
  "sources": {
@@ -106,7 +110,8 @@
    "grover": 9,
    "maxcut": 9,
    "volcano": 9,
-   "survival": 4
+   "survival": 4,
+   "qday": 4
   }
  }
 }

@@ -2,7 +2,7 @@
  "schema": 1,
  "generated": "2026-10-02",
  "pages": 131,
- "count": 906,
+ "count": 919,
  "records": [
   {
    "k": "s",
@@ -2969,7 +2969,7 @@
    "p": "glossary.html",
    "t": "Glossary",
    "h": "Glossary",
-   "x": "Every term this site teaches, in one place, with the page that explains it. The same list drives the definitions that pop up on hover elsewhere, so the two cannot disagree. Term of the daycryptographically relevant quantum computerA machine",
+   "x": "Every term this site teaches, in one place, with the page that explains it. The same list drives the definitions that pop up on hover elsewhere, so the two cannot disagree. Term of the dayFeMocoThe metal cluster at nitrogenase's active site",
    "w": 3
   },
   {
@@ -2993,7 +2993,7 @@
    "p": "glossary.html#letter-c",
    "t": "Glossary",
    "h": "C",
-   "x": "chemical accuracy WorkingAn energy error of 1 kcal/mol, which is 1.59 milli-hartree: the threshold below which a computed reaction energy is useful to a chemist. Where quantum might help → CNSA 2.0 Working also: CNSA, Commercial National Se",
+   "x": "certificate chain Working also: chain of trustA leaf certificate signed by an intermediate that is signed by a root your browser already trusts. Each link is a signature, so a certificate carries two algorithms: its own key and its issuer's",
    "w": 2
   },
   {
@@ -3054,10 +3054,18 @@
   },
   {
    "k": "s",
+   "p": "glossary.html#letter-k",
+   "t": "Glossary",
+   "h": "K",
+   "x": "Kerckhoffs's principle Working also: KerckhoffsA cipher should stay safe if everything about it except the key is public: algorithms leak and are costly to change, keys are cheap to replace. Stated in 1883. Crypto 01 →",
+   "w": 2
+  },
+  {
+   "k": "s",
    "p": "glossary.html#letter-l",
    "t": "Glossary",
    "h": "L",
-   "x": "Lambda suppression factor Working also: suppression factor, Willow, below-threshold demonstrationHow much the error rate falls per two steps of code distance. Google's Willow measured 2.14 for the d=5 to d=7 step. The Race → lattice surgery",
+   "x": "Lambda suppression factor Working also: suppression factor, Willow, below-threshold demonstrationHow much the error rate falls per two steps of code distance. Google's Willow measured 2.14 for the d=5 to d=7 step. The Race → Lamport signatu",
    "w": 2
   },
   {
@@ -3081,7 +3089,7 @@
    "p": "glossary.html#letter-o",
    "t": "Glossary",
    "h": "O",
-   "x": "operations research Plain also: OR, operational research, mathematical optimisation, mathematical optimizationThe field that already decides your delivery route, your shift roster and your power grid — and the classical baseline quantum opt",
+   "x": "one-time pad WorkingThe one cipher that is safe against unlimited computing power: a truly random key as long as the message, used once. Shannon proved in 1949 that nothing weaker has perfect secrecy. Crypto 01 → operations research Plain a",
    "w": 2
   },
   {
@@ -7228,7 +7236,7 @@
   },
   {
    "k": "c",
-   "p": "index.html#daily-q",
+   "p": "playhub.html#daily-q",
    "t": "The Question",
    "h": "The Question",
    "x": "One question at a time, at three depths, with a fault-tolerant streak.",
@@ -7379,7 +7387,7 @@
   },
   {
    "k": "c",
-   "p": "formalism.html#f08",
+   "p": "machinery-08.html",
    "t": "Deutsch's algorithm",
    "h": "Deutsch's algorithm",
    "x": "One query settles whether a 1-bit function is constant or balanced, where a classical algorithm needs two -- the first proof of phase kickback plus interference.",
@@ -7445,7 +7453,7 @@
   },
   {
    "k": "c",
-   "p": "formalism.html#f13",
+   "p": "machinery-13.html",
    "t": "period finding via continued fractions",
    "h": "period finding via continued fractions",
    "x": "Turns phase estimation's measured decimal back into the exact period Shor's algorithm needs -- and, when the measured numerator shares a factor with the period, only a divisor of it, provably.",
@@ -7762,7 +7770,7 @@
   },
   {
    "k": "c",
-   "p": "feasible.html#t21",
+   "p": "region-21.html",
    "t": "submodular optimization",
    "h": "submodular optimization",
    "x": "Set functions with diminishing returns, where greedy is a guaranteed (1 - 1/e)-approximation and provably nothing polynomial beats it -- the bound under sensor placement, feature selection and influence maximisation.",
@@ -7776,7 +7784,7 @@
   },
   {
    "k": "c",
-   "p": "feasible.html#t22",
+   "p": "region-22.html",
    "t": "stochastic optimization",
    "h": "stochastic optimization",
    "x": "Deciding now against a probability distribution over what comes later, minimising expected cost with a corrective 'recourse' decision once the uncertainty resolves -- how day-ahead power-grid unit commitment is actually solved.",
@@ -7806,7 +7814,7 @@
   },
   {
    "k": "c",
-   "p": "feasible.html#t22",
+   "p": "region-22.html",
    "t": "newsvendor model",
    "h": "newsvendor model",
    "x": "The one-decision stochastic problem: order Q before demand is known, and the optimal Q is the demand quantile at Cu/(Cu+Co) -- the rule behind airline seat protection and inventory safety stock alike.",
@@ -7838,7 +7846,7 @@
   },
   {
    "k": "c",
-   "p": "feasible.html#t24",
+   "p": "region-24.html",
    "t": "economic order quantity",
    "h": "economic order quantity",
    "x": "The oldest formula in operations research (Harris, 1913): order sqrt(2KD/h) at a time to balance ordering cost against holding cost -- with reorder points, safety stock, and the bullwhip effect it scales into across a supply chain.",
@@ -7953,6 +7961,149 @@
    "w": 4,
    "alias": [
     "twin-field quantum key distribution"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-01.html",
+   "t": "Kerckhoffs's principle",
+   "h": "Kerckhoffs's principle",
+   "x": "A cipher should stay safe if everything about it except the key is public: algorithms leak and are costly to change, keys are cheap to replace. Stated in 1883.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "Kerckhoffs"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-01.html",
+   "t": "one-time pad",
+   "h": "one-time pad",
+   "x": "The one cipher that is safe against unlimited computing power: a truly random key as long as the message, used once. Shannon proved in 1949 that nothing weaker has perfect secrecy.",
+   "tier": "y",
+   "w": 4,
+   "alias": []
+  },
+  {
+   "k": "c",
+   "p": "crypto-02.html",
+   "t": "hash function",
+   "h": "hash function",
+   "x": "A function that turns any input into a fixed-size fingerprint and is built so that you cannot find an input from a digest, or two inputs with one digest. A quantum computer only halves the exponent of a preimage search.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "cryptographic hash"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-02.html",
+   "t": "birthday bound",
+   "h": "birthday bound",
+   "x": "Hash k inputs to n-bit digests and a collision turns up after about 2^(n/2) of them, the square root of the output space: the reason digests are twice as long as the security they give.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "birthday attack"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-04.html",
+   "t": "Diffie-Hellman",
+   "h": "Diffie-Hellman",
+   "x": "Two strangers agree on a shared secret in public by each mixing a private exponent into a public base; it rests on the discrete logarithm being hard, which Shor's algorithm solves.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "Diffie–Hellman",
+    "ECDH"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-05.html",
+   "t": "RSA",
+   "h": "RSA",
+   "x": "The public-key system built on the difficulty of factoring a product of two large primes: anyone can lock with the public pair, only someone who knows the factors can unlock. Shor's algorithm factors in polynomial time.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "RSA-2048"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-06.html",
+   "t": "certificate chain",
+   "h": "certificate chain",
+   "x": "A leaf certificate signed by an intermediate that is signed by a root your browser already trusts. Each link is a signature, so a certificate carries two algorithms: its own key and its issuer's.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "chain of trust"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-08.html",
+   "t": "learning with errors",
+   "h": "learning with errors",
+   "x": "Noisy linear equations in a secret vector: without the noise, elimination solves them; with it, no efficient classical or quantum method is known. The basis of ML-KEM and ML-DSA, and not proven hard.",
+   "tier": "r",
+   "w": 4,
+   "alias": [
+    "LWE"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-08.html",
+   "t": "lattice problems",
+   "h": "lattice problems",
+   "x": "Given a long skewed basis of a lattice, find a short vector in it. Easy in two dimensions, believed hard in hundreds, including for quantum computers.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "shortest vector problem"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-09.html",
+   "t": "Merkle tree",
+   "h": "Merkle tree",
+   "x": "A tree of hashes in which one root stands for many leaves; a short path of hashes proves a leaf belongs. It lets one public key stand for many one-time signature keys.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "hash tree"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-09.html",
+   "t": "Lamport signature",
+   "h": "Lamport signature",
+   "x": "A signature made of secrets revealed once: for each bit of the digest, reveal the secret matching the bit. Secure given only a hash function, and safe for one use only.",
+   "tier": "r",
+   "w": 4,
+   "alias": [
+    "one-time signature"
+   ]
+  },
+  {
+   "k": "c",
+   "p": "crypto-10.html",
+   "t": "crypto-agility",
+   "h": "crypto-agility",
+   "x": "Building systems so that an algorithm is a setting rather than code, so that the next change, and there will be one, does not need a rebuild.",
+   "tier": "y",
+   "w": 4,
+   "alias": [
+    "cryptographic agility"
    ]
   },
   {

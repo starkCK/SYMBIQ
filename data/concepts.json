@@ -1163,7 +1163,7 @@
     "daily question",
     "the daily question"
    ],
-   "page": "index.html",
+   "page": "playhub.html",
    "anchor": "daily-q",
    "tier": "",
    "kind": "game",
@@ -1315,8 +1315,8 @@
     "Deutsch algorithm",
     "constant or balanced"
    ],
-   "page": "formalism.html",
-   "anchor": "f08",
+   "page": "machinery-08.html",
+   "anchor": "",
    "tier": "r",
    "kind": "concept",
    "blurb": "One query settles whether a 1-bit function is constant or balanced, where a classical algorithm needs two -- the first proof of phase kickback plus interference."
@@ -1382,8 +1382,8 @@
     "Shor period finding",
     "modular period"
    ],
-   "page": "formalism.html",
-   "anchor": "f13",
+   "page": "machinery-13.html",
+   "anchor": "",
    "tier": "r",
    "kind": "concept",
    "blurb": "Turns phase estimation's measured decimal back into the exact period Shor's algorithm needs -- and, when the measured numerator shares a factor with the period, only a divisor of it, provably."
@@ -1699,8 +1699,8 @@
     "diminishing returns",
     "submodular function"
    ],
-   "page": "feasible.html",
-   "anchor": "t21",
+   "page": "region-21.html",
+   "anchor": "",
    "tier": "r",
    "kind": "concept",
    "blurb": "Set functions with diminishing returns, where greedy is a guaranteed (1 - 1/e)-approximation and provably nothing polynomial beats it -- the bound under sensor placement, feature selection and influence maximisation."
@@ -1714,8 +1714,8 @@
     "optimization under uncertainty",
     "recourse decision"
    ],
-   "page": "feasible.html",
-   "anchor": "t22",
+   "page": "region-22.html",
+   "anchor": "",
    "tier": "y",
    "kind": "concept",
    "blurb": "Deciding now against a probability distribution over what comes later, minimising expected cost with a corrective 'recourse' decision once the uncertainty resolves -- how day-ahead power-grid unit commitment is actually solved."
@@ -1744,8 +1744,8 @@
     "critical fractile",
     "critical ratio"
    ],
-   "page": "feasible.html",
-   "anchor": "t22",
+   "page": "region-22.html",
+   "anchor": "",
    "tier": "y",
    "kind": "concept",
    "blurb": "The one-decision stochastic problem: order Q before demand is known, and the optimal Q is the demand quantile at Cu/(Cu+Co) -- the rule behind airline seat protection and inventory safety stock alike."
@@ -1779,8 +1779,8 @@
     "bullwhip effect",
     "supply chain optimization"
    ],
-   "page": "feasible.html",
-   "anchor": "t24",
+   "page": "region-24.html",
+   "anchor": "",
    "tier": "y",
    "kind": "concept",
    "blurb": "The oldest formula in operations research (Harris, 1913): order sqrt(2KD/h) at a time to balance ordering cost against holding cost -- with reorder points, safety stock, and the bullwhip effect it scales into across a supply chain."
@@ -1885,6 +1885,149 @@
    "tier": "y",
    "kind": "concept",
    "blurb": "A quantum key distribution scheme whose rate scales with the square root of the channel's transmittance, which is how fibre links past 1,000 km were reached."
+  },
+  {
+   "id": "kerckhoffs-principle",
+   "term": "Kerckhoffs's principle",
+   "aliases": [
+    "Kerckhoffs"
+   ],
+   "page": "crypto-01.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "A cipher should stay safe if everything about it except the key is public: algorithms leak and are costly to change, keys are cheap to replace. Stated in 1883."
+  },
+  {
+   "id": "one-time-pad",
+   "term": "one-time pad",
+   "aliases": [],
+   "page": "crypto-01.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "The one cipher that is safe against unlimited computing power: a truly random key as long as the message, used once. Shannon proved in 1949 that nothing weaker has perfect secrecy."
+  },
+  {
+   "id": "hash-function",
+   "term": "hash function",
+   "aliases": [
+    "cryptographic hash"
+   ],
+   "page": "crypto-02.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "A function that turns any input into a fixed-size fingerprint and is built so that you cannot find an input from a digest, or two inputs with one digest. A quantum computer only halves the exponent of a preimage search."
+  },
+  {
+   "id": "birthday-bound",
+   "term": "birthday bound",
+   "aliases": [
+    "birthday attack"
+   ],
+   "page": "crypto-02.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "Hash k inputs to n-bit digests and a collision turns up after about 2^(n/2) of them, the square root of the output space: the reason digests are twice as long as the security they give."
+  },
+  {
+   "id": "diffie-hellman",
+   "term": "Diffie-Hellman",
+   "aliases": [
+    "Diffie–Hellman",
+    "ECDH"
+   ],
+   "page": "crypto-04.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "Two strangers agree on a shared secret in public by each mixing a private exponent into a public base; it rests on the discrete logarithm being hard, which Shor's algorithm solves."
+  },
+  {
+   "id": "rsa",
+   "term": "RSA",
+   "aliases": [
+    "RSA-2048"
+   ],
+   "page": "crypto-05.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "The public-key system built on the difficulty of factoring a product of two large primes: anyone can lock with the public pair, only someone who knows the factors can unlock. Shor's algorithm factors in polynomial time."
+  },
+  {
+   "id": "certificate-chain",
+   "term": "certificate chain",
+   "aliases": [
+    "chain of trust"
+   ],
+   "page": "crypto-06.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "A leaf certificate signed by an intermediate that is signed by a root your browser already trusts. Each link is a signature, so a certificate carries two algorithms: its own key and its issuer's."
+  },
+  {
+   "id": "learning-with-errors",
+   "term": "learning with errors",
+   "aliases": [
+    "LWE"
+   ],
+   "page": "crypto-08.html",
+   "anchor": "",
+   "tier": "r",
+   "kind": "concept",
+   "blurb": "Noisy linear equations in a secret vector: without the noise, elimination solves them; with it, no efficient classical or quantum method is known. The basis of ML-KEM and ML-DSA, and not proven hard."
+  },
+  {
+   "id": "lattice-problems",
+   "term": "lattice problems",
+   "aliases": [
+    "shortest vector problem"
+   ],
+   "page": "crypto-08.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "Given a long skewed basis of a lattice, find a short vector in it. Easy in two dimensions, believed hard in hundreds, including for quantum computers."
+  },
+  {
+   "id": "merkle-tree",
+   "term": "Merkle tree",
+   "aliases": [
+    "hash tree"
+   ],
+   "page": "crypto-09.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "A tree of hashes in which one root stands for many leaves; a short path of hashes proves a leaf belongs. It lets one public key stand for many one-time signature keys."
+  },
+  {
+   "id": "lamport-signature",
+   "term": "Lamport signature",
+   "aliases": [
+    "one-time signature"
+   ],
+   "page": "crypto-09.html",
+   "anchor": "",
+   "tier": "r",
+   "kind": "concept",
+   "blurb": "A signature made of secrets revealed once: for each bit of the digest, reveal the secret matching the bit. Secure given only a hash function, and safe for one use only."
+  },
+  {
+   "id": "crypto-agility",
+   "term": "crypto-agility",
+   "aliases": [
+    "cryptographic agility"
+   ],
+   "page": "crypto-10.html",
+   "anchor": "",
+   "tier": "y",
+   "kind": "concept",
+   "blurb": "Building systems so that an algorithm is a setting rather than code, so that the next change, and there will be one, does not need a rebuild."
   }
  ]
 }

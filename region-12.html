@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-12.js?v=1" defer></script>
+<script src="p/region-12.js?v=2" defer></script>
 
 
 
@@ -310,7 +310,21 @@ min over column strategies q  max over row strategies p   pᵀMq
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In Matching Pennies, why must the equilibrium strategy be random?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Randomness adds variety players enjoy.</button>
+<button type="button" data-opt>Because both players have the same payoffs.</button>
+<button type="button" data-opt>Any predictable choice can be exploited by an opponent who predicts it, and the only unexploitable play is a fifty-fifty mix.</button>
+<button type="button" data-opt>Because the game has many pure equilibria.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>The game has no pure equilibrium: from every cell someone wants to move. The only equilibrium is each player choosing heads or tails with probability exactly one half.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a class="q" href="pqc.html">Security games, on the PQC pages ▸</a>
  <a href="region-13.html">Next: splitting the winnings fairly ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-11.html"><span>Previous topic</span>11 &middot; Nash equilibrium</a><a class="cp-nx" href="region-13.html"><span>Next topic</span>13 &middot; Cooperative games and the Shapley value</a></div>

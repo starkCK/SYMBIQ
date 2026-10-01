@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-11.js?v=1" defer></script>
+<script src="p/region-11.js?v=2" defer></script>
 
 
 
@@ -306,7 +306,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In the Prisoner&#x27;s Dilemma grid, why is (silent, silent) not a Nash equilibrium although both players prefer it to (confess, confess)?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>A Nash equilibrium must be the best joint outcome.</button>
+<button type="button" data-opt>Players cannot communicate.</button>
+<button type="button" data-opt>It is unfair to one player.</button>
+<button type="button" data-opt>Each player alone does better by switching to confess, whatever the other does, so it unravels.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Nash equilibrium means stable, not good: nobody gains by switching alone. From (silent, silent) each player does gain by confessing, even though it leaves both worse off.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-08.html">Where this rhymes with shortest paths ▸</a>
  <a href="region-12.html">Next: when there is nothing to agree on ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-10.html"><span>Previous topic</span>10 &middot; Metaheuristics</a><a class="cp-nx" href="region-12.html"><span>Next topic</span>12 &middot; Zero-sum games and minimax</a></div>

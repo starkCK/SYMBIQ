@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-04.js?v=1" defer></script>
+<script src="p/machinery-04.js?v=2" defer></script>
 
 
 
@@ -299,7 +299,21 @@ U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩</code>
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">The no-cloning proof ends at the equation x = x squared, where x is the overlap of two states. What does that force?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Every state must be orthogonal to the blank state.</button>
+<button type="button" data-opt>Any two states one cloner works for must be orthogonal or identical.</button>
+<button type="button" data-opt>The overlap must be a complex number.</button>
+<button type="button" data-opt>Cloning works for any two states with real amplitudes.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>x = x squared has only the solutions 0 and 1, so a single unitary can clone at most states that are orthogonal or identical. No universal cloner exists.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-05.html">Next: how two people move a qubit using no quantum channel at all ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-03.html"><span>Previous topic</span>03 &middot; Measurement, properly</a><a class="cp-nx" href="machinery-05.html"><span>Next topic</span>05 &middot; Quantum teleportation</a></div>
 </div>

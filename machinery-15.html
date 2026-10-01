@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-15.js?v=1" defer></script>
+<script src="p/machinery-15.js?v=2" defer></script>
 
 
 
@@ -306,7 +306,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">A Bell pair is a perfectly pure joint state. What is the von Neumann entropy of one qubit taken alone?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>0 bits.</button>
+<button type="button" data-opt>2 bits.</button>
+<button type="button" data-opt>A full bit, the most a single qubit can have.</button>
+<button type="button" data-opt>It is undefined for half of an entangled pair.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>The whole has zero uncertainty and each half has the maximum one bit. Classically a joint outcome known with certainty makes each part certain too; entanglement is what breaks that.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-18.html">Next: is estimating a molecule&#39;s own ground energy always this trustworthy, or is the general problem provably hard? ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-14.html"><span>Previous topic</span>14 &middot; Shannon entropy</a><a class="cp-nx" href="machinery-18.html"><span>Next topic</span>18 &middot; QMA &amp; the local Hamiltonian problem</a></div>
 </div>

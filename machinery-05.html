@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-05.js?v=1" defer></script>
+<script src="p/machinery-05.js?v=2" defer></script>
 
 
 
@@ -312,7 +312,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In quantum teleportation, what actually travels from Alice to Bob?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Two classical bits. Bob&#x27;s half of the shared entangled pair was already in place.</button>
+<button type="button" data-opt>Alice&#x27;s qubit itself, along a quantum channel.</button>
+<button type="button" data-opt>A copy of the unknown state.</button>
+<button type="button" data-opt>The amplitudes alpha and beta, faster than light.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Only two classical bits cross the gap, over any ordinary channel. Before they arrive Bob&#x27;s half is pure noise, so nothing travels faster than light, and Alice&#x27;s measurement destroys her copy, so nothing is cloned.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-02.html">Why Bob's half is pure noise before the bits arrive ▸</a>
  <a href="machinery-06.html">Next: the mirror-image trick: sending bits, not a state ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-04.html"><span>Previous topic</span>04 &middot; The no-cloning theorem</a><a class="cp-nx" href="machinery-06.html"><span>Next topic</span>06 &middot; Superdense coding</a></div>

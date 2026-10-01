@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-17.js?v=1" defer></script>
+<script src="p/region-17.js?v=2" defer></script>
 
 
 
@@ -334,7 +334,21 @@ s.t.       ⟨Aᵢ, X⟩ = bᵢ for i = 1..m
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">What guarantee does Goemans-Williamson&#x27;s semidefinite relaxation with random-hyperplane rounding give for Max-Cut?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>It returns the exact optimum.</button>
+<button type="button" data-opt>An expected cut of at least 0.878567 times the optimum, unconditionally.</button>
+<button type="button" data-opt>At least half the optimum, no better.</button>
+<button type="button" data-opt>At least 0.6924 of the optimum.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>The expected cut is at least alpha_GW (about 0.878567) times the SDP value, which is at least the optimum. 0.6924 is what QAOA at depth 1 is guaranteed on 3-regular graphs.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-16.html">Previous: the algorithm that walks the corners ▸</a>
  <a href="feasible.html#bridges">The fifth bridge. SDP vs. QAOA ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-16.html"><span>Previous topic</span>16 &middot; The simplex algorithm</a><a class="cp-nx" href="region-18.html"><span>Next topic</span>18 &middot; The transportation problem</a></div>

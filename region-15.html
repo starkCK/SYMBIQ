@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-15.js?v=1" defer></script>
+<script src="p/region-15.js?v=2" defer></script>
 
 
 
@@ -312,7 +312,21 @@ solving:  p* = V / C</code>
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In the Hawk-Dove game with V = 2 and C = 4, what fraction of the population plays Hawk at the evolutionarily stable mix?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>25%.</button>
+<button type="button" data-opt>0%.</button>
+<button type="button" data-opt>100%.</button>
+<button type="button" data-opt>50%.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>The stable mix is where Hawk and Dove earn the same: p = V/C = 2/4 = 0.5. Check: at p = 0.5 both strategies earn 0.5.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-10.html">Where this rhymes with metaheuristics ▸</a>
  <a href="feasible.html#bridges">The bridges to quantum ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-14.html"><span>Previous topic</span>14 &middot; Mechanism design and auctions</a><a class="cp-nx" href="region-16.html"><span>Next topic</span>16 &middot; The simplex algorithm</a></div>

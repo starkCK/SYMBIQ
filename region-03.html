@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-03.js?v=1" defer></script>
+<script src="p/region-03.js?v=2" defer></script>
 
 
 
@@ -315,7 +315,21 @@ s.t.      Ax ≤ b    s.t.      Aᵀy ≥ c
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In the best plan, one resource is not fully used. What is one more unit of it worth?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>A little, and it grows with how scarce it feels.</button>
+<button type="button" data-opt>The price you would pay to buy it.</button>
+<button type="button" data-opt>Its shadow price from the dual.</button>
+<button type="button" data-opt>Exactly zero.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>A resource with slack is worth exactly zero: if the best plan does not use all you have, more cannot change the best plan. Buy whatever is binding.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a class="play" href="feasible.html#bottleneck">Play it. The Bottleneck ▸</a>
  <a href="region-04.html">Next: where it all gets hard ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-02.html"><span>Previous topic</span>02 &middot; Linear programming and the vertex theorem</a><a class="cp-nx" href="region-04.html"><span>Next topic</span>04 &middot; Integer programming</a></div>

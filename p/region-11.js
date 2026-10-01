@@ -755,12 +755,10 @@
     }
   }
 
-  function markToggle(id) {
-    var a = cleared(), i = a.indexOf(id);
-    if (i === -1) a.push(id); else a.splice(i, 1);
-    setCleared(a);
+  function markDone(id) {
+    var a = cleared();
+    if (a.indexOf(id) === -1) { a.push(id); setCleared(a); }
     tick();
-    syncButton(id);
     if (a.length >= total && total && S && S.completeMission) {
       var first = false;
       try { first = S.completeMission(mission, { via: 'curriculum' }); } catch (e) {}
@@ -775,13 +773,36 @@
       }
     }
   }
-  function syncButton(id) {
-    var b = one('.cp-mark');
-    if (!b) return;
-    var on = cleared().indexOf(id) !== -1;
-    b.textContent = on ? '✓ Understood' : 'Mark as understood';
-    b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    b.classList.toggle('on', on);
+  function wireCheck(id) {
+    var box = one('.cp-check');
+    if (!box) return;
+    var opts = all('[data-opt]', box), right = parseInt(box.getAttribute('data-a'), 10);
+    var out = one('.cyu-out', box), why = one('.cyu-why', box);
+    if (isNaN(right) || !opts.length) return;
+    var finished = false;
+    opts.forEach(function (o, i) {
+      o.addEventListener('click', function () {
+        if (finished) return;
+        if (i !== right) {
+          o.classList.add('is-wrong'); o.disabled = true;
+          out.textContent = 'Not this one. Read the topic again and try another.'; out.className = 'cyu-out no';
+          return;
+        }
+        finished = true;
+        opts.forEach(function (x) { x.classList.add('locked'); x.disabled = true; });
+        o.classList.add('is-right');
+        out.textContent = 'Right. This topic is marked understood.'; out.className = 'cyu-out ok';
+        if (why) why.hidden = false;
+        markDone(id);
+        try {
+          var P = window.SymbiQ && window.SymbiQ.progress, page = (location.pathname.split('/').pop() || '');
+          if (P) P.rules().then(function (r) {
+            var t = r && P.trackOfPage(page);
+            if (t) P.award('topic:' + id, t, r.pts.topic);
+          })['catch'](function () {});
+        } catch (e) { }
+      });
+    });
   }
 
   tick();
@@ -823,9 +844,7 @@
     if (e.key === 'ArrowRight') { e.preventDefault(); show(cur + 1, true); var b = btns[cur]; if (b) b.focus(); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); show(cur - 1, true); var c = btns[cur]; if (c) c.focus(); }
   });
-  var mark = one('.cp-mark', root);
-  if (mark) mark.addEventListener('click', function () { markToggle(id); });
-  syncButton(id);
+  wireCheck(id);
 
   var start = 0, hh = location.hash.replace(/^#/, '');
   steps.forEach(function (s, k) { if (s.getAttribute('data-step') === hh) start = k; });

@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-20.js?v=1" defer></script>
+<script src="p/machinery-20.js?v=2" defer></script>
 
 
 
@@ -300,7 +300,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">What does the adiabatic theorem require of a sweep for the system to stay in the ground state?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>It must be as fast as possible.</button>
+<button type="button" data-opt>It must be slow compared with the smallest spectral gap along the path: the smaller the gap, the longer the sweep.</button>
+<button type="button" data-opt>The gap must grow along the path.</button>
+<button type="button" data-opt>The system must have no interactions.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Slower sweeps converge on the true ground state, exactly as measured on the same toy Hamiltonian: fidelity 0.38 at T = 2 climbing to 0.999 at T = 60.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><span style="color:var(--muted);font-size:.85rem">This closes The Machinery's full 20-topic scope: the original 15, plus five more (QAOA/VQE, quantum simulation, and this section's three), added as their own dependencies came to exist. Every algorithm elsewhere on this site now rests on machinery actually built on this page, not just cited.</span></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-19.html"><span>Previous topic</span>19 &middot; QMA-completeness</a></div>
 </div>

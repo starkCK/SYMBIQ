@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-18.js?v=1" defer></script>
+<script src="p/machinery-18.js?v=2" defer></script>
 
 
 
@@ -306,7 +306,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Why is shrinking QMA&#x27;s 2/3 versus 1/3 gap not just &quot;repeat and take a majority vote&quot;?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>It is exactly that, as for classical MA.</button>
+<button type="button" data-opt>The verifier would run out of qubits.</button>
+<button type="button" data-opt>It is impossible: the constants 2/3 and 1/3 are fixed.</button>
+<button type="button" data-opt>A dishonest prover could correlate the copies of a quantum witness, and there is no cloning to check reuse. It still works (Marriott and Watrous) without lengthening the witness.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Naive repetition feeds several copies of the witness through several verifier runs, and a quantum witness cannot be photocopied. Marriott and Watrous proved the error can still be pushed exponentially close to 0 without a longer witness.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-19.html">Next: build the reduction by hand, on a circuit small enough to diagonalize ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-15.html"><span>Previous topic</span>15 &middot; Von Neumann entropy &amp; the Holevo bound</a><a class="cp-nx" href="machinery-19.html"><span>Next topic</span>19 &middot; QMA-completeness</a></div>
 </div>

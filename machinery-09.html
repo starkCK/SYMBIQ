@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-09.js?v=1" defer></script>
+<script src="p/machinery-09.js?v=2" defer></script>
 
 
 
@@ -315,7 +315,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Why does a balanced function give a hard zero at the all-zero outcome in Deutsch-Jozsa?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Half of the 2 to the n paths carry a plus sign and half a minus sign, so their amplitudes cancel exactly.</button>
+<button type="button" data-opt>The oracle is called twice and the results disagree.</button>
+<button type="button" data-opt>Measurement noise averages out.</button>
+<button type="button" data-opt>A balanced function is never queried at the all-zero input.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>The final Hadamards act as an interferometer. A constant function gives every path the same sign, so they add to certainty; a balanced one gives exactly half of each sign, so they cancel to exactly zero.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-08.html">The one-bit version this scales up ▸</a>
  <a href="machinery-10.html">Next: the algorithm one step from Shor's ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-08.html"><span>Previous topic</span>08 &middot; Deutsch&#x27;s algorithm</a><a class="cp-nx" href="machinery-10.html"><span>Next topic</span>10 &middot; Simon&#x27;s algorithm</a></div>

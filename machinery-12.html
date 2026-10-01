@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-12.js?v=1" defer></script>
+<script src="p/machinery-12.js?v=2" defer></script>
 
 
 
@@ -325,7 +325,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">If the phase theta is exactly representable in t bits, what does quantum phase estimation return?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>A random t-bit string.</button>
+<button type="button" data-opt>theta, with certainty.</button>
+<button type="button" data-opt>theta, with probability at least 4/pi squared.</button>
+<button type="button" data-opt>Nothing: it needs t + 1 bits.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>For exactly representable phases the outcome is returned with probability exactly 1. The 4/pi squared figure is only the guaranteed floor when the phase is not exactly representable.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-11.html">The transform this reads phases out with ▸</a>
  <a href="machinery-13.html">Next: turning a measured phase back into a period ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-11.html"><span>Previous topic</span>11 &middot; The quantum Fourier transform</a><a class="cp-nx" href="machinery-13.html"><span>Next topic</span>13 &middot; Period finding &amp; continued fractions</a></div>

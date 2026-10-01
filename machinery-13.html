@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-13.js?v=1" defer></script>
+<script src="p/machinery-13.js?v=2" defer></script>
 
 
 
@@ -309,7 +309,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">The continued-fraction step sometimes returns r divided by gcd(s, r) instead of the period r. What do real implementations do about it?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Repeat the pipeline a few times and take the least common multiple of what comes back.</button>
+<button type="button" data-opt>Abort: the run has failed for good.</button>
+<button type="button" data-opt>Add counting qubits until the divisor disappears.</button>
+<button type="button" data-opt>Switch to a different N.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>It is not an error: s/r reduces before the continued-fraction algorithm sees it. Repeating and taking the lcm makes the true r appear with overwhelming probability.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-16.html">Next: the algorithms that trade the proof away on purpose ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-12.html"><span>Previous topic</span>12 &middot; Quantum phase estimation</a><a class="cp-nx" href="machinery-16.html"><span>Next topic</span>16 &middot; QAOA &amp; VQE</a></div>
 </div>

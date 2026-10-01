@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-19.js?v=1" defer></script>
+<script src="p/machinery-19.js?v=2" defer></script>
 
 
 
@@ -300,7 +300,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In Kitaev&#x27;s construction, what is the ground state of the history-state Hamiltonian for the toy circuit?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Only the circuit&#x27;s final output state.</button>
+<button type="button" data-opt>The product state |0&gt;|clock = 0&gt;.</button>
+<button type="button" data-opt>The history state: every step of the computation superposed, each tagged by a clock register.</button>
+<button type="button" data-opt>Any state at all: the ground space is the whole space.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Exact diagonalisation gives ground energy 0 and a ground state whose overlap with the history state is 1: it is the history state, not merely close to it.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-20.html">Next: relax a physical system into this same ground state: does that also compute? ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-18.html"><span>Previous topic</span>18 &middot; QMA &amp; the local Hamiltonian problem</a><a class="cp-nx" href="machinery-20.html"><span>Next topic</span>20 &middot; Adiabatic universality &amp; the quantum PCP conjecture</a></div>
 </div>

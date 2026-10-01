@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-16.js?v=1" defer></script>
+<script src="p/machinery-16.js?v=2" defer></script>
 
 
 
@@ -305,7 +305,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Why can VQE never report an energy below the true ground energy, even with a bad ansatz?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>The classical optimizer is guaranteed to find the ground state.</button>
+<button type="button" data-opt>The variational principle: the energy of any state is a weighted average of the eigenvalues, so it is at least the smallest one.</button>
+<button type="button" data-opt>Quantum noise can only ever raise the energy.</button>
+<button type="button" data-opt>The ansatz is chosen to contain the ground state exactly.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>A weighted average can never fall below the smallest value being averaged. A bad guess reports too high an energy, never too low.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-17.html">Next: what this loop is actually FOR: simulating a real molecule ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-13.html"><span>Previous topic</span>13 &middot; Period finding &amp; continued fractions</a><a class="cp-nx" href="machinery-17.html"><span>Next topic</span>17 &middot; Quantum simulation &amp; chemistry</a></div>
 </div>

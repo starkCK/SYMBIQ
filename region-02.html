@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-02.js?v=1" defer></script>
+<script src="p/region-02.js?v=2" defer></script>
 
 
 
@@ -304,7 +304,21 @@ so   cᵀx = λ·cᵀu + (1 − λ)·cᵀv   ≤   max(cᵀu, cᵀv)</code>
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">A linear program&#x27;s feasible region contains infinitely many plans. Why can it still be solved in finite time?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>The optimum is attained at a vertex, and a region with flat sides has finitely many.</button>
+<button type="button" data-opt>The region is always small.</button>
+<button type="button" data-opt>Simplex checks every point very quickly.</button>
+<button type="button" data-opt>The objective is random, so any point will do.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>If an optimum exists, one exists at an extreme point (convexity: a blend of two plans is never better than the better of the two), so the search collapses to the finitely many corners.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-03.html">Next: the number that tells you what to buy ▸</a>
  <a class="play" href="feasible.html#bottleneck">Play The Bottleneck ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-01.html"><span>Previous topic</span>01 &middot; The feasible region</a><a class="cp-nx" href="region-03.html"><span>Next topic</span>03 &middot; Duality and shadow prices</a></div>

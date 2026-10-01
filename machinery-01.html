@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-01.js?v=1" defer></script>
+<script src="p/machinery-01.js?v=2" defer></script>
 
 
 
@@ -296,7 +296,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Which of the four postulates is the only one where the rules stop being reversible?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Measurement: collapse onto one outcome.</button>
+<button type="button" data-opt>Evolution: the unitary transformation of a closed system.</button>
+<button type="button" data-opt>State: the unit vector in Hilbert space.</button>
+<button type="button" data-opt>Composite systems: the tensor product.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>A closed system evolves by a unitary, so every such operation can be run backwards. Measurement is the one place the rules stop being reversible.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-02.html">Next: describing part of an entangled system ▸</a></div>
 <div class="cp-neighbours"><a class="cp-nx" href="machinery-02.html"><span>Next topic</span>02 &middot; Density matrices &amp; mixed states</a></div>
 </div>

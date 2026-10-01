@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-18.js?v=1" defer></script>
+<script src="p/region-18.js?v=2" defer></script>
 
 
 
@@ -325,7 +325,21 @@ s.t.      Σⱼ xᵢⱼ = sᵢ every source ships its whole supply
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">A northwest-corner shipping plan is feasible and costs 300; the optimum costs 240. What does that show?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Feasible is not optimal: a plan can meet every supply and demand and still cost 25% more than necessary.</button>
+<button type="button" data-opt>The LP was solved wrongly.</button>
+<button type="button" data-opt>The plan breaks a supply or demand constraint.</button>
+<button type="button" data-opt>Whole-number plans are always worse than fractional ones.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Both plans are feasible; only one is optimal. 300/240 = 1.25. It is the same trap as the rounding trap and the greedy trap.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-06.html">Where this specialises from: network flow ▸</a>
  <a href="region-19.html">Next: when there is no objective at all ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-17.html"><span>Previous topic</span>17 &middot; Quadratic &amp; semidefinite programming</a><a class="cp-nx" href="region-19.html"><span>Next topic</span>19 &middot; Constraint satisfaction</a></div>

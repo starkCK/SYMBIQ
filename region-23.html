@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-23.js?v=1" defer></script>
+<script src="p/region-23.js?v=2" defer></script>
 
 
 
@@ -325,7 +325,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Why can the weighted-sum method never return the Pareto-optimal plan P5?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>P5 is dominated by another plan.</button>
+<button type="button" data-opt>The weights must all be zero.</button>
+<button type="button" data-opt>P5 is infeasible.</button>
+<button type="button" data-opt>P5 sits in a non-convex dent, above the lower convex hull of the front, so no weight makes it the winner.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Beating P4 needs a weight below 1/4 and beating P6 needs one above 1/3: no weight does both. The epsilon-constraint method finds P5 directly.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-19.html">The mirror image: no objective at all ▸</a>
  <a href="region-10.html">Genetic algorithms: a whole population toward the front ▸</a>
  <a href="region-22.html">Previous: stochastic &amp; robust optimization ▸</a>

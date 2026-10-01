@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-19.js?v=1" defer></script>
+<script src="p/region-19.js?v=2" defer></script>
 
 
 
@@ -335,7 +335,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">What does constraint propagation (arc consistency) do before the search has to guess anything?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>It picks the best colouring.</button>
+<button type="button" data-opt>It adds an objective function.</button>
+<button type="button" data-opt>It randomises the order of the variables.</button>
+<button type="button" data-opt>It removes domain values with no compatible support, which proves they can never be in a solution.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Fixing WA to amber removes amber from the domains of NT and SA at once. Deleting an unsupported value is a proof of uselessness, as final as branch and bound&#x27;s pruning.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-18.html">Previous: the transportation problem ▸</a>
  <a href="region-20.html">Next: what if the edge you choose isn&#39;t the edge you get? ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-18.html"><span>Previous topic</span>18 &middot; The transportation problem</a><a class="cp-nx" href="region-20.html"><span>Next topic</span>20 &middot; Markov decision processes &amp; reinforcement learning</a></div>

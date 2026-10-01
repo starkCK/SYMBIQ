@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-08.js?v=1" defer></script>
+<script src="p/machinery-08.js?v=2" defer></script>
 
 
 
@@ -314,7 +314,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In Deutsch&#x27;s algorithm the answer register starts in (|0&gt; minus |1&gt;)/sqrt 2. Where does the information about f(x) end up?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>In the answer register, as the bit f(x).</button>
+<button type="button" data-opt>As a phase, (-1) to the f(x), on the query register.</button>
+<button type="button" data-opt>Nowhere: the Hadamard destroys it.</button>
+<button type="button" data-opt>In an ancilla that is measured at the end.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Phase kickback: XOR-ing f(x) into that particular state either leaves it alone or flips its sign, so the information lands as a phase on the query register. The ancilla is never read.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-09.html">Next: the same trick, exponentially scaled up ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-07.html"><span>Previous topic</span>07 &middot; Schmidt decomposition</a><a class="cp-nx" href="machinery-09.html"><span>Next topic</span>09 &middot; The Deutsch-Jozsa algorithm</a></div>
 </div>

@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-08.js?v=1" defer></script>
+<script src="p/region-08.js?v=2" defer></script>
 
 
 
@@ -320,7 +320,21 @@ d(v) = min over edges (u,v) of [ d(u) + w(u,v) ]</code>
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">What does Bellman&#x27;s principle of optimality say?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>The first step of an optimal plan is always the cheapest edge.</button>
+<button type="button" data-opt>An optimal plan is always unique.</button>
+<button type="button" data-opt>The tail of an optimal plan is itself optimal.</button>
+<button type="button" data-opt>Shortest paths need negative edge weights.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>If the best route to Chennai passes through Nagpur, the Nagpur-to-Chennai part must be the best route from Nagpur, or you could swap in a better one. That lets you solve small problems once and look them up.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a class="q" href="ai.html">The OR → AI bridge ▸</a>
  <a href="region-09.html">Next: why the queue explodes ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-07.html"><span>Previous topic</span>07 &middot; Matching and assignment</a><a class="cp-nx" href="region-09.html"><span>Next topic</span>09 &middot; Queueing theory</a></div>

@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-24.js?v=1" defer></script>
+<script src="p/region-24.js?v=2" defer></script>
 
 
 
@@ -320,7 +320,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In the economic order quantity model, what is true at the optimal order size?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>The annual ordering cost is zero.</button>
+<button type="button" data-opt>The annual holding cost is double the ordering cost.</button>
+<button type="button" data-opt>Ordering cost and holding cost are equal.</button>
+<button type="button" data-opt>Doubling demand doubles the optimal order size.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>At Q* the two terms are equal (600 + 600 = 1,200 in the example), which is the fastest sanity check of any EOQ answer. Doubling demand multiplies Q* by only the square root of 2.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-22.html">The critical fractile behind safety stock ▸</a>
  <a href="region-08.html">The dynamic programming behind (s, S) ▸</a>
  <a href="region-23.html">Previous: multi-objective optimization ▸</a>

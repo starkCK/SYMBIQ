@@ -4295,7 +4295,10 @@ nav.tabbar { display: none; }
 .cp-foot button { min-height: 44px; padding: 0 18px; border-radius: 10px; font: inherit; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text); }
 .cp-foot button:disabled { opacity: .4; cursor: default; }
 .cp-foot .cp-next { border-color: var(--teal); }
-.cp-foot .cp-mark.on { border-color: var(--teal); color: var(--teal); }
+.cp-check { border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin: 22px 0 8px; background: var(--panel); }
+.cp-check .cyu-opts button { min-height: 44px; }
+.cp-check .cyu-opts button:disabled:not(.is-right) { opacity: .55; cursor: default; }
+.cp-check .cyu-why[hidden] { display: none; }
 .cp-out { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 4px 0 14px; }
 .cp-out a { display: inline-flex; align-items: center; min-height: 44px; }
 .cp-neighbours { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin: 6px 0 18px; }

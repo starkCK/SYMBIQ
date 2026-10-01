@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-14.js?v=1" defer></script>
+<script src="p/machinery-14.js?v=2" defer></script>
 
 
 
@@ -299,7 +299,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">A distribution puts equal probability on n outcomes. What is its Shannon entropy in bits?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>n bits.</button>
+<button type="button" data-opt>It depends on how the outcomes are labelled.</button>
+<button type="button" data-opt>1/n bits.</button>
+<button type="button" data-opt>log2 n bits, the most any distribution over n outcomes can have.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>The flat distribution maximises the uncertainty, giving exactly log2 n bits. A fair coin is the n = 2 case, which is where the unit gets its name.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-15.html">Next: the same idea, and the one purely quantum twist it gets ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-17.html"><span>Previous topic</span>17 &middot; Quantum simulation &amp; chemistry</a><a class="cp-nx" href="machinery-15.html"><span>Next topic</span>15 &middot; Von Neumann entropy &amp; the Holevo bound</a></div>
 </div>

@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/machinery-06.js?v=1" defer></script>
+<script src="p/machinery-06.js?v=2" defer></script>
 
 
 
@@ -307,7 +307,21 @@
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">In superdense coding, how many qubits does Alice physically send to deliver two classical bits?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>None: the bits travel on the classical channel.</button>
+<button type="button" data-opt>Two.</button>
+<button type="button" data-opt>Four.</button>
+<button type="button" data-opt>One, using an entangled pair Bob already holds half of.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>She applies one of four operations to her half of the pair and sends that single qubit. Bob, holding both halves, reads two bits with certainty. The pair had to be distributed in advance, which itself cost a qubit.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="machinery-05.html">The mirror-image protocol ▸</a>
  <a href="machinery-07.html">Next: putting a number on how entangled a state is ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="machinery-05.html"><span>Previous topic</span>05 &middot; Quantum teleportation</a><a class="cp-nx" href="machinery-07.html"><span>Next topic</span>07 &middot; Schmidt decomposition</a></div>

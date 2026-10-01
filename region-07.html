@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-07.js?v=1" defer></script>
+<script src="p/region-07.js?v=2" defer></script>
 
 
 
@@ -317,7 +317,21 @@ s.t.      Σⱼ xᵢⱼ = 1 every worker gets exactly one job
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="3">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Why does serving each worker their cheapest available job in turn fail to give the cheapest assignment?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>It does not fail: greedy is optimal when costs are whole numbers.</button>
+<button type="button" data-opt>Because the assignment problem is NP-hard.</button>
+<button type="button" data-opt>Because costs change while you assign.</button>
+<button type="button" data-opt>The best arrangement is not made of the best individual choices: someone must take a non-favourite so that everyone else can be served.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>In the example the greedy plan costs 10 and the true optimum is 9. The assignment problem is not NP-hard: its constraint matrix is totally unimodular, so it can be solved exactly in polynomial time.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a class="q" href="qec.html#duel">See it running in a quantum computer ▸</a>
  <a href="region-08.html">Next: optimal tails ▸</a></div>
 <div class="cp-neighbours"><a class="cp-pv" href="region-06.html"><span>Previous topic</span>06 &middot; Network flow and min-cut</a><a class="cp-nx" href="region-08.html"><span>Next topic</span>08 &middot; Shortest paths and dynamic programming</a></div>

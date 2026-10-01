@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-22.js?v=1" defer></script>
+<script src="p/region-22.js?v=2" defer></script>
 
 
 
@@ -337,7 +337,21 @@ F = cumulative distribution of demand</code>
  </div>
 </section>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button><span class="cp-finish" hidden><button type="button" class="cp-mark" aria-pressed="false">Mark as understood</button></span></div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="0">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">Which statement about the two disciplined ways of handling uncertain data is right?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Stochastic optimisation minimises expected cost under a probability distribution; robust optimisation optimises the worst case over an uncertainty set, with no probabilities.</button>
+<button type="button" data-opt>Robust optimisation needs a probability distribution; stochastic optimisation does not.</button>
+<button type="button" data-opt>They are the same method under two names.</button>
+<button type="button" data-opt>Stochastic optimisation gives a hard guarantee; robust optimisation only an average.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Use stochastic when you trust your probabilities and face the situation many times; use robust for a decision made once where one bad outcome is unacceptable.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
 <div class="cp-out"><a href="region-03.html">Shadow prices: the dual value of a constraint ▸</a>
  <a href="region-20.html">Robust control as reinforcement learning ▸</a>
  <a href="region-21.html">Previous: greedy algorithms &amp; guarantees ▸</a>

@@ -197,6 +197,17 @@
       var title = (D.title || '').split(' · ')[0];
       write({ u: page, t: title, at: Date.now() });
     }
+    if (page !== 'index.html') {
+      var seenMap = {};
+      try { seenMap = JSON.parse(localStorage.getItem('sq-seen')) || {}; } catch (e) { seenMap = {}; }
+      seenMap[page] = Date.now();
+      var keys = Object.keys(seenMap);
+      if (keys.length > 300) {
+        keys.sort(function (a, b) { return seenMap[a] - seenMap[b]; });
+        keys.slice(0, keys.length - 300).forEach(function (k) { delete seenMap[k]; });
+      }
+      try { localStorage.setItem('sq-seen', JSON.stringify(seenMap)); } catch (e) {}
+    }
     var cont = one('.nav-continue', nav);
     if (cont && saved && saved.u && saved.u !== page && /^[\w.-]+\.html$/.test(saved.u)) {
       cont.href = saved.u;
@@ -2969,12 +2980,14 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   }
   function fillYou(host, p, ci) {
     var medals = medalCount();
-    if (!p.seen && !medals) return;
-    var rows = '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
+    var live = !!(ci && ci.streak > 0 && !ci.lapsed);
+    if (!p.seen && !medals && !live) return;
+    var rows = (p.seen || medals) ?
+      '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
       '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
       '<dt>Codex</dt><dd>' + p.codex + ' fragment' + (p.codex === 1 ? '' : 's') + '</dd>' +
-      '<dt>Medals</dt><dd>' + medals + '</dd>';
-    if (ci && ci.streak > 0 && !ci.lapsed) {
+      '<dt>Medals</dt><dd>' + medals + '</dd>' : '';
+    if (live) {
       rows += '<dt>Contract</dt><dd>' + ci.streak + '-day streak' + (ci.doneToday ? ', today cleared' : ', today open') + '</dd>';
     }
     var where = p.next ? p.next.act + ' awaits in ' + p.next.place : (p.done ? 'The Path is complete' : '');

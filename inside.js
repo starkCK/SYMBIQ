@@ -1191,7 +1191,7 @@ function boot() {
   const key = new THREE.DirectionalLight(0xfff1dd, 1.2); key.position.set(10, 22, 12); scene.add(key);
   scene.add(new THREE.HemisphereLight(0x8fb2ff, 0x101522, 0.55));
 
-  const S = { view: null, id: null, xray: false, layout: 'hex', busy: false, interacted: false, armed: false, hover: null };
+  const S = { view: null, id: null, xray: false, layout: 'hex', busy: false, interacted: false, armed: false, over: false, hover: null };
   const cam = { target: V3(), r: 20, az: 0.6, el: 0.3, vaz: 0, vel: 0, fly: null, rmin: 2, rmax: 60 };
 
   const veil = $('#in-veil'), tip = $('#in-tip'), live = $('#in-live'), cap = $('#in-cap');
@@ -1346,10 +1346,10 @@ function boot() {
     $('#in-flowbtn').setAttribute('aria-pressed', String(!!(S.view.ctx && S.view.ctx.flow)));
     $$('#in-layout [data-layout]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.layout === S.layout)));
     $('#in-xray').setAttribute('aria-pressed', String(S.xray));
-    $('#in-flybtn').setAttribute('aria-pressed', String(F.on));
+    $('#in-flybtn').setAttribute('aria-pressed', String(F.on)); $('#in-flybtn .in-fly-t').textContent = F.on ? 'Leave fly mode' : 'Shrink & fly';
     ['#in-lockbtn', '#in-autobtn'].forEach((q) => { $(q).hidden = !F.on; });
     $('#in-tiltbtn').hidden = !(F.on && COARSE && window.DeviceOrientationEvent);
-    $('#in-joy').hidden = $('#in-vert').hidden = !(F.on && COARSE);
+    $('#in-joy').hidden = $('#in-vert').hidden = !F.on;
     $('#in-up').disabled = levelsOf(S.id).findIndex((l) => l.id === S.id) === 0;
   }
   function $$(s) { return Array.from(document.querySelectorAll(s)); }
@@ -1378,7 +1378,7 @@ function boot() {
   $('#in-full').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else if (stage.requestFullscreen) stage.requestFullscreen(); });
 
   const ptrs = new Map(); let down = null, pinch0 = 0, btn = 0;
-  const touched = () => { S.interacted = true; cam.fly = null; };
+  const touched = () => { S.interacted = true; cam.fly = null; stage.classList.add('is-used'); };
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
   canvas.addEventListener('pointerdown', (e) => {
     canvas.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); btn = e.button; S.armed = true;
@@ -1408,12 +1408,14 @@ function boot() {
     if (!ptrs.size) down = null; pinch0 = 0;
   };
   canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
-  canvas.addEventListener('pointerleave', () => { if (!ptrs.size) hover(null); });
+  canvas.addEventListener('pointerenter', () => { S.over = true; });
+  canvas.addEventListener('pointerleave', () => { S.over = false; if (!ptrs.size) hover(null); });
   canvas.addEventListener('blur', () => { S.armed = false; });
   canvas.addEventListener('dblclick', (e) => { const p = pick(e.clientX, e.clientY); if (p && p.opens) { select(p, false); open(p); } });
-  canvas.addEventListener('wheel', (e) => { if (!S.armed) return; e.preventDefault(); touched();
-    if (F.on) { F.speedK = clamp(F.speedK * Math.exp(-e.deltaY * 0.0012), 0.12, 8); return; }
-    cam.r = clamp(cam.r * Math.exp(e.deltaY * 0.0014), cam.rmin, cam.rmax); }, { passive: false });
+  canvas.addEventListener('wheel', (e) => { if (!(S.over || S.armed)) return; e.preventDefault(); touched();
+    const dy = clamp(e.deltaY * (e.deltaMode === 1 ? 33 : e.deltaMode === 2 ? 400 : 1), -240, 240);
+    if (F.on) { F.speedK = clamp(F.speedK * Math.exp(-dy * 0.0012), 0.12, 8); return; }
+    cam.r = clamp(cam.r * Math.exp(dy * (e.ctrlKey ? 0.011 : 0.0016)), cam.rmin, cam.rmax); }, { passive: false });
   function pan(dx, dy) {
     const k = cam.r * 0.0016; const right = V3().setFromMatrixColumn(camera.matrix, 0), upv = V3().setFromMatrixColumn(camera.matrix, 1);
     cam.target.addScaledVector(right, -dx * k).addScaledVector(upv, dy * k);
@@ -1460,7 +1462,9 @@ function boot() {
     F.pos.copy(camera.position); faceTo(S.view.def.cam.target);
     F.base = S.view.def.cam.r; F.speedK = 1; F.vel.set(0, 0, 0); F.boxT = 0; F.dwell = 0; F.dwellPart = null; F.out = 0; F.tw = null;
     camera.near = F.base * 0.004; camera.updateProjectionMatrix();
-    stage.classList.add('is-fly'); syncUi(); renderCard(); canvas.focus({ preventScroll: true });
+    const dive = S.view.def.cam.target, p1 = F.pos.clone().lerp(dive, 0.4);
+    F.tw = { t0: performance.now(), ms: reduced() ? 1 : 800, p0: F.pos.clone(), p1, y0: F.yaw, dy: 0, q0: F.pitch, q1: F.pitch };
+    stage.classList.add('is-fly', 'is-used'); syncUi(); renderCard(); canvas.focus({ preventScroll: true });
     announce('Fly mode. W A S D to move, drag to look, Q and E for down and up. Fly into a part that opens to shrink inside it.');
   }
   function leaveFly() {

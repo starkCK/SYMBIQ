@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Is your encryption ready for a quantum computer? Live tools, no sign-up.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-secure.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/secure.css?v=6">
+<link rel="stylesheet" href="p/secure.css?v=1">
 
 
 
@@ -68,9 +68,9 @@
 
 
 
-<script src="core.js?v=6"></script>
+<script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/secure.js?v=2" defer></script>
+<script src="p/secure.js?v=1" defer></script>
 
 
 
@@ -239,6 +239,79 @@
 <div class="hub" data-tab="secure">
 <header class="hubband"><div class="eyebrow">Secure</div><h1>Secure</h1><p class="tagline">Is your encryption ready for a quantum computer? Live tools, no sign-up.</p></header>
 <a class="hubstart" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span>One paste, one answer.</span></a>
+<section class="hub-timing" id="timing">
+<h2 id="why-the-timing-matters">Why the timing matters</h2>
+<p>Estimates in this field can move by orders of magnitude in a few years. The clearest case, with every number sourced to a primary paper: how many physical qubits it would take to steal one Bitcoin key <em>inside the ten-minute window</em> before your transaction confirms.</p>
+<figure class="fig figbar figcard btcclock">
+  <div class="btc-tabs" role="radiogroup" aria-label="Machine clock speed">
+    <input type="radio" name="hclk" id="hclk-fast" checked><label for="hclk-fast" data-no-lexicon>Fast clock <span>superconducting, microsecond cycles</span></label>
+    <input type="radio" name="hclk" id="hclk-slow"><label for="hclk-slow" data-no-lexicon>Slow clock <span>neutral atoms, millisecond cycles</span></label>
+    <div class="btc-panel btc-fast">
+<div class="figscroll"><svg viewBox="0 0 600 276" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logarithmic bar chart, fast clock. A 2022 estimate for racing one Bitcoin key was 1.9 billion physical qubits; the 2026 estimate is under 500,000; IBM Condor holds 1,121 and Google Willow holds 105.">
+    <text class="lbl" x="158" y="44" text-anchor="end">2022 estimate</text>
+    <text class="lbl-s" x="158" y="57" text-anchor="end">Webber et al.</text>
+    <rect class="track" x="168" y="30" width="380" height="26" rx="6"/>
+    <rect class="bar old" x="168" y="30" width="346" height="26" rx="6"/>
+    <text class="num violet" x="524" y="48">1.9 billion</text>
+    <text class="lbl" x="158" y="98" text-anchor="end">2026 estimate</text>
+    <text class="lbl-s" x="158" y="111" text-anchor="end">Babbush et al.</text>
+    <rect class="track" x="168" y="84" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="84" width="176" height="26" rx="6"/>
+    <text class="num teal" x="354" y="102">under 500 thousand</text>
+    <text class="lbl" x="158" y="152" text-anchor="end">IBM Condor, 2023</text>
+    <text class="lbl-s" x="158" y="165" text-anchor="end">largest superconducting chip</text>
+    <rect class="track" x="168" y="138" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="138" width="50" height="26" rx="6"/>
+    <text class="num yellow" x="228" y="156">1,121</text>
+    <text class="lbl" x="158" y="206" text-anchor="end">Google Willow, 2024</text>
+    <text class="lbl-s" x="158" y="219" text-anchor="end">runs below threshold</text>
+    <rect class="track" x="168" y="192" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="192" width="4" height="26" rx="6"/>
+    <text class="num yellow" x="182" y="210">105</text>
+    <line class="sMuted" x1="168" y1="238" x2="548" y2="238"/>
+    <g class="lbl-s" text-anchor="middle">
+      <line class="sMuted" x1="168" y1="238" x2="168" y2="243"/><text x="168" y="254">10²</text>
+      <line class="sMuted" x1="263" y1="238" x2="263" y2="243"/><text x="263" y="254">10⁴</text>
+      <line class="sMuted" x1="358" y1="238" x2="358" y2="243"/><text x="358" y="254">10⁶</text>
+      <line class="sMuted" x1="453" y1="238" x2="453" y2="243"/><text x="453" y="254">10⁸</text>
+    </g>
+    <text class="lbl-s" x="358" y="268" text-anchor="middle">physical qubits (logarithmic: each tick to the right is 100×)</text>
+  </svg></div>
+      <p class="swipe">← swipe the diagram to see all of it →</p>
+      <figcaption><strong>The same attack got <span class="rcpt" data-rcpt="home-collapse">3,800× cheaper in four years</span>.</strong> Webber et al. (<em>AVS Quantum Science</em>, 2022) costed the racing attack at <span class="rcpt" data-rcpt="home-webber-2022">1.9 billion physical qubits</span>. In March 2026 Babbush, Zalcman, Gidney et al. (Google Quantum AI, the Ethereum Foundation and Stanford; <a href="https://arxiv.org/abs/2603.28846">arXiv:2603.28846</a>) re-costed it at under half a million, partly because the first half of Shor’s algorithm can be precomputed before your transaction appears. Against IBM’s 1,121-qubit Condor that is <span class="rcpt" data-rcpt="home-gap-orders"><strong>at most 2.6 orders of magnitude</strong> away, not the 6.2 of 2022</span>; against Google’s 105-qubit Willow, the only machine here that runs error correction below threshold, it is at most 3.7. The axis is logarithmic, so the short yellow bars are much further from the others than they look. <a href="bitcoin.html">The full numbers, with caveats ▸</a></figcaption>
+    </div>
+    <div class="btc-panel btc-slow">
+<div class="figscroll"><svg viewBox="0 0 600 222" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logarithmic bar chart, slow clock. Cain et al. 2026 estimate 10,000 to 26,000 atomic qubits to break a P-256 key in days; the largest trapped array holds 6,100 atoms, and computation has been shown on hundreds.">
+    <text class="lbl" x="158" y="44" text-anchor="end">Cain et al., 2026</text>
+    <text class="lbl-s" x="158" y="57" text-anchor="end">as few as, slower</text>
+    <rect class="track" x="168" y="30" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="30" width="95" height="26" rx="6"/>
+    <text class="num teal" x="273" y="48">10,000</text>
+    <text class="lbl" x="158" y="98" text-anchor="end">Cain et al., 2026</text>
+    <text class="lbl-s" x="158" y="111" text-anchor="end">for P-256, in days</text>
+    <rect class="track" x="168" y="84" width="380" height="26" rx="6"/>
+    <rect class="bar new" x="168" y="84" width="115" height="26" rx="6"/>
+    <text class="num teal" x="293" y="102">26,000</text>
+    <text class="lbl" x="158" y="152" text-anchor="end">Caltech array, 2025</text>
+    <text class="lbl-s" x="158" y="165" text-anchor="end">trapped, not computing</text>
+    <rect class="track" x="168" y="138" width="380" height="26" rx="6"/>
+    <rect class="bar today" x="168" y="138" width="85" height="26" rx="6"/>
+    <text class="num yellow" x="263" y="156">6,100</text>
+    <line class="sMuted" x1="168" y1="184" x2="548" y2="184"/>
+    <g class="lbl-s" text-anchor="middle">
+      <line class="sMuted" x1="168" y1="184" x2="168" y2="189"/><text x="168" y="200">10²</text>
+      <line class="sMuted" x1="263" y1="184" x2="263" y2="189"/><text x="263" y="200">10⁴</text>
+      <line class="sMuted" x1="358" y1="184" x2="358" y2="189"/><text x="358" y="200">10⁶</text>
+      <line class="sMuted" x1="453" y1="184" x2="453" y2="189"/><text x="453" y="200">10⁸</text>
+    </g>
+    <text class="lbl-s" x="358" y="214" text-anchor="middle">physical qubits (logarithmic: each tick to the right is 100×)</text>
+  </svg></div>
+      <p class="swipe">← swipe the diagram to see all of it →</p>
+      <figcaption><strong>A slower machine needs far fewer qubits, but it cannot race your transaction.</strong> Cain et al. (<a href="https://arxiv.org/abs/2603.28627">arXiv:2603.28627</a>) count reconfigurable neutral atoms, whose cycles take milliseconds, not microseconds: as few as 10,000 atoms can run Shor’s algorithm, and 26,000 could solve a P-256 discrete logarithm in a few days. Days is fine for a key that sits exposed on the chain, and useless against the ten-minute confirmation window. The largest array on record holds 6,100 trapped atoms, only 4.3× short of the higher figure, but trapping atoms is not computing with them: the paper reports computation on arrays of hundreds.</figcaption>
+    </div>
+  </div>
+</figure>
+</section>
 <div class="hublist">
 <section><h2>Live tools</h2>
 <a href="pqc.html#quickcheck"><b>Quick Check</b><span>One paste, one answer</span></a>
@@ -252,8 +325,9 @@
 <a href="pqc.html#mosca"><b>Is it too late to start?</b><span>Mosca&#x27;s inequality, with your numbers</span></a>
 </section>
 </div>
+
 </div>
-<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

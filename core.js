@@ -15,6 +15,7 @@
 
   function reduced() {
     if (D.documentElement.getAttribute('data-motion-pref') === 'reduce') return true;
+    if (D.body && D.body.hasAttribute('data-still')) return true;
     return !!(W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }
 

@@ -98,6 +98,17 @@
       var title = (D.title || '').split(' · ')[0];
       write({ u: page, t: title, at: Date.now() });
     }
+    if (page !== 'index.html') {
+      var seenMap = {};
+      try { seenMap = JSON.parse(localStorage.getItem('sq-seen')) || {}; } catch (e) { seenMap = {}; }
+      seenMap[page] = Date.now();
+      var keys = Object.keys(seenMap);
+      if (keys.length > 300) {
+        keys.sort(function (a, b) { return seenMap[a] - seenMap[b]; });
+        keys.slice(0, keys.length - 300).forEach(function (k) { delete seenMap[k]; });
+      }
+      try { localStorage.setItem('sq-seen', JSON.stringify(seenMap)); } catch (e) {}
+    }
     var cont = one('.nav-continue', nav);
     if (cont && saved && saved.u && saved.u !== page && /^[\w.-]+\.html$/.test(saved.u)) {
       cont.href = saved.u;

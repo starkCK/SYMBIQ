@@ -1,8 +1,24 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 123,
+ "count": 124,
  "events": [
+  {
+   "at": "2026-10-01",
+   "kind": "correction",
+   "tag": "Correction 21",
+   "title": "The daily question showed every answer option twice for about an hour.",
+   "href": "corrections.html",
+   "note": "Live from 2026-10-01 until it was caught and published here."
+  },
+  {
+   "at": "2026-10-01",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Phase 2.5: share pages and images per claim, card and page; ClaimReview on resolved verdicts; Dataset markup; generated sitemap",
+   "href": "",
+   "note": ""
+  },
   {
    "at": "2026-10-01",
    "kind": "build",
@@ -728,14 +744,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "Two games that play back, and copy that sounds like a person wrote it",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-15",
-   "kind": "build",
-   "tag": "Build",
-   "title": "The desk opens up: an About page, a changelog, search, and The Signal seeded by hand",
    "href": "",
    "note": ""
   },

@@ -29,7 +29,7 @@
 .in-cap span { font-size: .74rem; opacity: .7; }
 
 .in-bar { position: absolute; z-index: 2; left: 10px; right: 10px; bottom: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.in-ic, .in-seg button { min-height: 40px; min-width: 40px; padding: 4px 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .16); background: rgba(9, 13, 24, .78); color: #dbe3f3; font: inherit; font-size: .8rem; cursor: pointer; backdrop-filter: blur(6px); }
+.in-ic, .in-seg button { min-height: 44px; min-width: 44px; padding: 4px 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .16); background: rgba(9, 13, 24, .78); color: #dbe3f3; font: inherit; font-size: .8rem; cursor: pointer; backdrop-filter: blur(6px); }
 .in-ic:hover:not(:disabled), .in-seg button:hover { border-color: rgba(45, 212, 191, .65); color: #fff; }
 .in-ic:disabled { opacity: .4; cursor: default; }
 .in-ic[aria-pressed="true"], .in-seg button[aria-pressed="true"] { background: rgba(45, 212, 191, .2); border-color: #2dd4bf; color: #fff; }
@@ -88,6 +88,8 @@
 
 @media (max-width: 560px) {
   #in-zin, #in-zout, #in-full { display: none; }
+  .in-zoom { top: 112px; transform: none; }
+  .in-ant-hint { bottom: 120px; }
   .in-bar { gap: 5px; }
   .in-ic { padding: 4px 10px; }
   .in-grp { margin-left: 0; }
@@ -137,7 +139,20 @@ html[data-embed] .in-panel { border-radius: 0; border-width: 0; }
   html[data-embed] .in-panel { max-height: 100dvh; }
 }
 
-.in-fly[aria-pressed="true"] { background: linear-gradient(135deg, rgba(139, 92, 246, .55), rgba(45, 212, 191, .5)); border-color: transparent; }
+.in-ic svg { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.in-ic.in-fly { display: inline-flex; align-items: center; gap: 9px; min-height: 48px; padding: 4px 20px 4px 15px; font-size: .92rem; font-weight: 700; color: #06101a; background: linear-gradient(135deg, #a78bfa, #2dd4bf); border-color: transparent; box-shadow: 0 6px 20px rgba(45, 212, 191, .3); }
+.in-ic.in-fly[aria-pressed="false"]:hover:not(:disabled) { color: #06101a; border-color: transparent; filter: brightness(1.08); }
+.in-ic.in-fly[aria-pressed="true"]:hover { border-color: #fff; }
+.in-ic.in-fly[aria-pressed="true"] { color: #fff; background: rgba(9, 13, 24, .88); border: 1px solid #2dd4bf; box-shadow: none; }
+.in-ic.in-fly:focus-visible, .in-zoom .in-ic:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.in-zoom { position: absolute; z-index: 2; left: 10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; border-radius: 12px; border: 1px solid rgba(255, 255, 255, .16); background: rgba(9, 13, 24, .78); backdrop-filter: blur(6px); overflow: hidden; }
+.in-zoom .in-ic { min-width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 0; background: transparent; display: grid; place-items: center; backdrop-filter: none; }
+.in-zoom .in-ic + .in-ic { border-top: 1px solid rgba(255, 255, 255, .12); }
+.in-zoom .in-ic:hover:not(:disabled) { background: rgba(45, 212, 191, .18); }
+.in-stage.is-fly #in-zin, .in-stage.is-fly #in-zout { display: none; }
+.in-stage.is-fly .in-slide, .in-stage.is-fly #in-xray, .in-stage.is-fly #in-showall { display: none; }
+.in-ant-hint { position: absolute; z-index: 2; left: 10px; bottom: 70px; max-width: min(360px, calc(100% - 20px)); margin: 0; padding: 7px 12px; border-radius: 10px; background: rgba(9, 13, 24, .78); border: 1px solid rgba(167, 139, 250, .45); color: #dbe3f3; font-size: .8rem; line-height: 1.4; pointer-events: none; }
+.in-stage.is-used .in-ant-hint, .in-stage.is-fly .in-ant-hint, html[data-embed] .in-ant-hint { display: none; }
 .in-stage.is-fly canvas { cursor: crosshair; }
 .in-stage.is-fly .in-cap { display: none !important; }
 .in-hud { position: absolute; z-index: 3; left: 12px; top: 58px; max-width: min(430px, calc(100% - 360px)); padding: 7px 12px; border-radius: 10px; background: rgba(9, 13, 24, .78); border: 1px solid rgba(45, 212, 191, .35); color: #dbe3f3; pointer-events: none; }

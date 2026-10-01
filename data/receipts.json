@@ -436,7 +436,7 @@
   },
   {
    "id": "home-collapse",
-   "page": "index.html",
+   "page": "secure.html",
    "value": "3,800× cheaper in four years",
    "formula": "2022 physical-qubit estimate ÷ 2026 physical-qubit estimate, for the same racing attack on one Bitcoin key",
    "inputs": "1.9×10⁹ (Webber et al., AVS Quantum Sci. 4, 013801, 2022) ÷ 5×10⁵ (arXiv:2603.28846, Mar 2026) = 3,800× exactly",
@@ -446,7 +446,7 @@
   },
   {
    "id": "home-webber-2022",
-   "page": "index.html",
+   "page": "secure.html",
    "value": "1.9 billion physical qubits",
    "source": "Webber, Elfving, Weidt and Hensinger, “The impact of hardware specifications on reaching quantum advantage in the fault tolerant regime”, AVS Quantum Sci. 4, 013801 (2022)",
    "verified_at": "2026-09-08",
@@ -454,7 +454,7 @@
   },
   {
    "id": "home-gap-orders",
-   "page": "index.html",
+   "page": "secure.html",
    "value": "at most 2.7 orders of magnitude, not 6.2",
    "formula": "log₁₀(attack estimate ÷ qubits on the largest superconducting chip on record, IBM Condor)",
    "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.65 orders. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",

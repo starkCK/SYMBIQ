@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Every mistake SymbiQ has made, published more prominently than the original claim and credited to whoever caught it. Finding an error here gets it published under your name.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-corrections.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/corrections.css?v=45">
+<link rel="stylesheet" href="p/corrections.css?v=46">
 
 
 
@@ -67,9 +67,9 @@
 
 
 
-<script src="core.js?v=6"></script>
+<script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/corrections.js?v=18" defer></script>
+<script src="p/corrections.js?v=20" defer></script>
 
 
 
@@ -243,15 +243,27 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3 aria-level="2">20 corrections logged</h3>
+  <h3 aria-level="2">21 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>20</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>21</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 21 &middot; published 2026-10-01 &middot; corrected 2026-10-01 &middot; live for under a day &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The daily question showed every answer option twice for about an hour.</h3>
+
+    <p><strong>What we said.</strong> Nothing in words. For about an hour after the 2026-10-01 publish, the Question on the home page was drawn with each of its four answer options listed twice, and the page&#39;s saved snapshot of it held nested copies of its own markers.</p>
+
+    <p><strong>What&#39;s true.</strong> The question has four options. The doubling came from the build step that saves a ready-drawn copy of the page so it shows something before its script runs: the widget added its options without clearing the ones already there, so running it on a saved copy drew them twice. The widget now clears the list before it draws, and the saver strips its own markers before it writes.</p>
+
+    <p><strong>Why we missed it.</strong> The saved copy was checked for the right words being present, not for each thing appearing once. A check now counts the options in the saved snapshot and fails if there are not exactly four.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-10-01 while checking the published page, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 20 &middot; published 2026-07-29 &middot; corrected 2026-09-30 &middot; live for 63 days &middot; caught by the desk</p>
     <h3 style="margin-top:6px">Correction 13 removed a promise of payment and a paid reviewer. Both were still live in three other places.</h3>
@@ -450,7 +462,7 @@
 
     <p><strong>What we said.</strong> On <a href="index.html">the home page</a>, as a section heading and in the description that search engines and social cards quote: “<strong>Nine</strong> games where you cannot fake a score.”</p>
 
-    <p><strong>What&#39;s true.</strong> <strong>Twelve.</strong> Six cabinets in <a href="play.html">The Arcade</a> — Circuit Golf, Grover&#39;s Escape, Max-Cut, the Annealing Volcano, quantum tic-tac-toe and The Calibration — plus six more playable things out on the pages they belong to: <a href="analog.html#bench">The Bench</a>, <a href="qec.html#duel">The Decoder Duel</a>, <a href="quantum-mechanics.html#chsh">the CHSH game</a>, <a href="index.html#daily-q">The Question</a>, <a href="feasible.html#bottleneck">The Bottleneck</a> and <a href="feasible.html#prune">The Prune</a>. The Arcade had been counting correctly the whole time (“six games”, “six more playable things”), so for eighteen days two of our own pages contradicted each other in public. Nine was true when it was written; three games shipped after it and nothing went back.</p>
+    <p><strong>What&#39;s true.</strong> <strong>Twelve.</strong> Six cabinets in <a href="play.html">The Arcade</a> — Circuit Golf, Grover&#39;s Escape, Max-Cut, the Annealing Volcano, quantum tic-tac-toe and The Calibration — plus six more playable things out on the pages they belong to: <a href="analog.html#bench">The Bench</a>, <a href="qec.html#duel">The Decoder Duel</a>, <a href="quantum-mechanics.html#chsh">the CHSH game</a>, <a href="playhub.html#daily-q">The Question</a>, <a href="feasible.html#bottleneck">The Bottleneck</a> and <a href="feasible.html#prune">The Prune</a>. The Arcade had been counting correctly the whole time (“six games”, “six more playable things”), so for eighteen days two of our own pages contradicted each other in public. Nine was true when it was written; three games shipped after it and nothing went back.</p>
 
     <p><strong>Why we missed it.</strong> The same shape as the correction above it and as Correction 1: a count written once, by hand, in prose, on a page nothing recomputes — and this one was also in the meta description, so the wrong number was what the site said about itself everywhere it was linked. A check now derives the real figure from the cabinet list in <code>games.js</code> and the entries in <code>play.html</code>, and fails if any of the three prose counts — the Arcade&#39;s six, the six out in the wild, or the home page&#39;s total — stops matching the games that actually exist.</p>
 
@@ -602,7 +614,7 @@ duplicating it by hand.</p>
 
 
 
-<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

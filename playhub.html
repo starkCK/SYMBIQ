@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Games where the mathematics holds the whistle.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-playhub.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/playhub.css?v=6">
+<link rel="stylesheet" href="p/playhub.css?v=1">
 
 
 
@@ -68,9 +68,9 @@
 
 
 
-<script src="core.js?v=6"></script>
+<script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/playhub.js?v=2" defer></script>
+<script src="p/playhub.js?v=1" defer></script>
 
 
 
@@ -239,6 +239,22 @@
 <div class="hub" data-tab="play">
 <header class="hubband"><div class="eyebrow">Play</div><h1>Play</h1><p class="tagline">Games where the mathematics holds the whistle.</p></header>
 <a class="hubstart" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span>Story, map and missions, saved in your browser.</span></a>
+<section class="hub-question" id="daily">
+<div class="card" id="daily-q">
+  <h3 aria-level="2">The Question</h3>
+  <p id="dq-meta"> <span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span> <span style="color:var(--muted)"> From the question bank, the daily feed is paused</span> </p>
+  <p id="dq-q" style="font-size:1.05rem;font-weight:600"> Google reports an error-suppression factor Λ = 2.14 ± 0.02 for Willow. Precisely what is that number a measurement of? </p>
+  <div id="dq-opts"> <button class="preset dq-opt" data-i="0">A. A linear regression of ln(ε(d)) against d across the whole d = 3, 5, 7 series — a common-ratio parameter of the family, not of one step</button><button class="preset dq-opt" data-i="1">B. The ratio of logical error rates between the d = 5 and d = 7 codes, the largest pair measured</button><button class="preset dq-opt" data-i="2">C. The factor by which the logical error rate falls per unit increase in code distance</button><button class="preset dq-opt" data-i="3">D. The ratio of the logical error rate to the best physical qubit's error rate on the same chip</button> </div>
+  <p style="margin:8px 0 0"><button id="dq-hint" class="preset">Need a hint?</button></p>
+  <div id="dq-out" aria-live="polite"></div>
+  <p id="dq-lattice" style="color:var(--muted);font-size:.9rem;margin-bottom:0"></p>
+
+  <details class="dq-prev">
+    <summary><span class="dq-prev-x" aria-hidden="true">+</span> Missed one? <b>Every previous question, with its answer</b></summary>
+    <div id="dq-archive"></div>
+  </details>
+</div>
+</section>
 <div class="hublist">
 <section><h2>Play now</h2>
 <a href="journey.html"><b>The Solver&#x27;s Path</b><span>The main quest: story, map, missions</span></a>
@@ -259,8 +275,28 @@
 <a href="play.html#volcano"><b>The Annealing Volcano</b><span>You are the temperature</span></a>
 </section>
 </div>
+<section class="orhero gamehero" id="games">
+  <p class="eyebrow">The part you play</p>
+  <h2 id="games-count">Twelve games where you cannot fake a score</h2>
+  <p class="orhero-lede">Most explainers ask you to take their word for it. Here the mathematics holds the whistle: <strong>where a game has a par it is a proven minimum (or is labelled "best known"), and every probability on screen is computed rather than chosen by a designer</strong>. Two of the machines now have a Versus the Machine mode, against a computer that solved the board before you sat down.</p>
+
+  <div class="orhero-grid">
+    <div><b>Versus the Machine: the Knocker</b><span>Your quantum register against a classical crew, one query each per turn. Measure too soon and you waste the vault; wait too long and they knock on the right door first.</span></div>
+    <div><b>Versus the Machine: Border War</b><span>Take turns painting a city map with a computer that scores every road you fail to cut. Nine boards, each solved outright, and on the boss exactly one opening move wins.</span></div>
+    <div><b>The Decoder Duel</b><span>Ten rounds against the textbook decoder, on a chip carrying a defect nobody told it about. You sit in the AI's seat.</span></div>
+    <div><b>The Annealing Volcano</b><span>You play the weather, not the hiker: set the temperature and let the landscape settle. Your schedule is replayed 500 times, so one lucky run earns nothing.</span></div>
+  </div>
+
+  <p>Two ways in. <strong>The Solver's Path</strong> is the campaign: five fractures, six characters, a map and a save file. <strong>The Arcade</strong> is the same machines with the story switched off, so you can walk straight to the one you want.</p>
+
+  <p class="gh-row" style="margin-bottom:0">
+    <a class="bigplay" href="journey.html">Play The Solver's Path <span class="kbd">the story</span></a>
+    <a class="bigplay ghost" href="play.html">Enter The Arcade</a>
+  </p>
+  <p class="gh-note">No account and nothing to install. Progress lives in this browser, and a short code carries it to another device.</p>
+</section>
 </div>
-<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

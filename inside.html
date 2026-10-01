@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Rotate, zoom and open three kinds of quantum computer in 3D, from the fridge or the laser table down to a single qubit.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-inside.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/inside.css?v=17">
+<link rel="stylesheet" href="p/inside.css?v=4">
 
 
 
@@ -68,9 +68,9 @@
 
 
 
-<script src="core.js?v=6"></script>
+<script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/inside.js?v=7" defer></script>
+<script src="p/inside.js?v=2" defer></script>
 
 
 
@@ -253,8 +253,15 @@
     <div class="in-joy" id="in-joy" hidden aria-label="Move: drag the stick"><i></i></div>
     <div class="in-vert" id="in-vert" hidden><button type="button" id="in-vup" aria-label="Fly up">&#9650;</button><button type="button" id="in-vdn" aria-label="Fly down">&#9660;</button></div>
     <div class="in-card" id="in-card" hidden role="region" aria-label="Selected part"></div>
+    <p class="in-ant-hint" id="in-ant-hint">Shrink down and fly through the machine. Fly into any part marked &#9656; to go inside it.</p>
+    <div class="in-zoom" role="group" aria-label="Zoom and view">
+      <button type="button" class="in-ic" id="in-zin" aria-label="Zoom in" title="Zoom in (+, or scroll over the model)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" class="in-ic" id="in-zout" aria-label="Zoom out" title="Zoom out (-, or scroll over the model)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+      <button type="button" class="in-ic" id="in-reset" aria-label="Reset the camera" title="Reset the camera (0)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></svg></button>
+      <button type="button" class="in-ic" id="in-full" aria-label="Full screen" title="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
     <div class="in-bar" role="group" aria-label="View controls">
-      <button type="button" class="in-ic in-fly" id="in-flybtn" aria-pressed="false" title="Shrink down and fly through the model (F)">&#9992; Shrink &amp; fly</button>
+      <button type="button" class="in-ic in-fly" id="in-flybtn" aria-pressed="false" title="Shrink down and fly through the model (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l5 5M4 9V4h5M20 4l-5 5M20 9V4h-5M4 20l5-5M4 15v5h5M20 20l-5-5M20 15v5h-5"/></svg><span class="in-fly-t">Shrink &amp; fly</span></button>
       <button type="button" class="in-ic" id="in-autobtn" aria-pressed="true" title="Shrink into a part automatically when you fly into it" hidden>Auto-shrink</button>
       <button type="button" class="in-ic" id="in-lockbtn" aria-pressed="false" title="Capture the mouse for free look; Esc releases it" hidden>Mouse look</button>
       <button type="button" class="in-ic" id="in-tiltbtn" aria-pressed="false" title="Turn your phone to look around" hidden>Tilt to look</button>
@@ -266,7 +273,6 @@
         <button type="button" data-layout="hex" aria-pressed="true">IBM heavy-hex</button><button type="button" data-layout="square" aria-pressed="false">Google square grid</button>
       </span>
       <button type="button" class="in-ic" id="in-showall" title="Un-hide and un-isolate every part">Show all</button>
-      <span class="in-grp"><button type="button" class="in-ic" id="in-zout" aria-label="Zoom out">&minus;</button><button type="button" class="in-ic" id="in-zin" aria-label="Zoom in">+</button><button type="button" class="in-ic" id="in-reset" title="Reset the camera (0)">Reset</button><button type="button" class="in-ic" id="in-full" aria-label="Full screen">&#x26F6;</button></span>
     </div>
     <p class="in-nogl" hidden>Your browser could not start 3D graphics. The parts list on the right still works: every part, what it does and how cold it is.</p>
     <div id="in-live" class="in-sr" aria-live="polite"></div>
@@ -362,15 +368,8 @@
 </ol>
 <p>The 3D library is <a href="https://threejs.org" rel="noopener">three.js</a> (MIT licence), served from this site, pinned and hashed like the other vendored code.</p>
 </div>
-<script type="module" src="inside.js?v=11"></script>
-
-
-
-
-
-
-
-<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a> <span aria-hidden="true">&middot;</span> <a href="apply.html">Write for SymbiQ</a></div>
+<script type="module" src="inside.js?v=2"></script>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
 </div>
 <div id="search" class="sr-wrap" hidden></div>
 </body>

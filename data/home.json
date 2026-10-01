@@ -1,0 +1,157 @@
+{
+ "built": "2026-10-01",
+ "taglines": [
+  "Hype has a half-life. We measure it.",
+  "Quantum and AI, with the receipts."
+ ],
+ "tracks": [
+  {
+   "id": "quantum-ai",
+   "name": "Quantum × AI",
+   "start": "basics.html",
+   "chips": [
+    {
+     "href": "qec.html",
+     "page": "qec.html",
+     "label": "Error correction",
+     "kind": "page",
+     "min": {
+      "g": 3,
+      "y": 6,
+      "r": 10
+     }
+    },
+    {
+     "href": "logical-qubit.html",
+     "page": "logical-qubit.html",
+     "label": "Logical qubits",
+     "kind": "page",
+     "min": {
+      "g": 2,
+      "y": 3,
+      "r": 3
+     }
+    },
+    {
+     "href": "ai.html",
+     "page": "ai.html",
+     "label": "Quantum for AI",
+     "kind": "page",
+     "min": {
+      "g": 3,
+      "y": 3,
+      "r": 5
+     }
+    }
+   ],
+   "min": {
+    "g": 8,
+    "y": 12,
+    "r": 18
+   }
+  },
+  {
+   "id": "optimisation",
+   "name": "Optimisation",
+   "start": "analog.html",
+   "chips": [
+    {
+     "href": "analog.html",
+     "page": "analog.html",
+     "label": "The Ising machine",
+     "kind": "page",
+     "min": {
+      "g": 3,
+      "y": 7,
+      "r": 7
+     }
+    },
+    {
+     "href": "region-02.html",
+     "page": "region-02.html",
+     "label": "Linear programming",
+     "kind": "page",
+     "min": {
+      "g": 4,
+      "y": 4,
+      "r": 4
+     }
+    },
+    {
+     "href": "region-05.html",
+     "page": "region-05.html",
+     "label": "Branch and bound",
+     "kind": "page",
+     "min": {
+      "g": 4,
+      "y": 4,
+      "r": 4
+     }
+    }
+   ],
+   "min": {
+    "g": 11,
+    "y": 15,
+    "r": 15
+   }
+  },
+  {
+   "id": "security",
+   "name": "Post-quantum security",
+   "start": "bitcoin.html",
+   "chips": [
+    {
+     "href": "bitcoin.html",
+     "page": "bitcoin.html",
+     "label": "Bitcoin’s timing",
+     "kind": "page",
+     "min": {
+      "g": 2,
+      "y": 3,
+      "r": 7
+     }
+    },
+    {
+     "href": "pqc.html#quickcheck",
+     "page": "pqc.html",
+     "label": "Quick Check",
+     "kind": "tool",
+     "min": {
+      "g": 3,
+      "y": 3,
+      "r": 3
+     }
+    },
+    {
+     "href": "pqc.html#cliff",
+     "page": "pqc.html",
+     "label": "The Size Cliff",
+     "kind": "tool",
+     "min": {
+      "g": 3,
+      "y": 3,
+      "r": 3
+     }
+    }
+   ],
+   "min": {
+    "g": 8,
+    "y": 9,
+    "r": 13
+   }
+  }
+ ],
+ "latest_correction": {
+  "n": 21,
+  "title": "The daily question showed every answer option twice for about an hour.",
+  "date": "2026-10-01"
+ },
+ "next_verdict": {
+  "slug": "ibm-verified-quantum-advantage-2026",
+  "claimant": "IBM",
+  "headline": "IBM expects the first cases of verified quantum advantage to be confirmed by the wider community by the end of 2026.",
+  "date": "2026-12-31"
+ },
+ "wpm": 220,
+ "tool_min": 3
+}

@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
-<title>Queueing theory · Learn · SymbiQ</title>
-<meta name="description" content="Why do systems collapse before they are full?. The Feasible Region, topic 09 of 24: a picture, the intuition, the mathematics, and where it runs.">
-<link rel="canonical" href="https://starkck.github.io/SYMBIQ/region-09.html">
+<title>Advantage Watch · Check · SymbiQ</title>
+<meta name="description" content="Every published claim that a quantum device beat a classical computer, with the classical results that followed, the days each one lasted, and what we could and could not find.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/advantage.html">
 <script type="speculationrules">{
   "prefetch": [
     {
@@ -44,19 +44,19 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SymbiQ">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://starkck.github.io/SYMBIQ/region-09.html">
-<meta property="og:title" content="Queueing theory · SymbiQ">
-<meta property="og:description" content="Why do systems collapse before they are full?. The Feasible Region, topic 09 of 24: a picture, the intuition, the mathematics, and where it runs.">
-<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/p-region-09.jpg">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/advantage.html">
+<meta property="og:title" content="Advantage Watch · SymbiQ">
+<meta property="og:description" content="Every published quantum-advantage claim we track, every classical response we found, and how long each one lasted.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/p-reality.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Queueing theory">
+<meta property="og:image:alt" content="Reality Check">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Queueing theory · SymbiQ">
-<meta name="twitter:description" content="Why do systems collapse before they are full?. The Feasible Region, topic 09 of 24: a picture, the intuition, the mathematics, and where it runs.">
-<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-region-09.jpg">
+<meta name="twitter:title" content="Advantage Watch · SymbiQ">
+<meta name="twitter:description" content="Every published quantum-advantage claim we track, every classical response we found, and how long each one lasted.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-reality.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/region-09.css?v=1">
+<link rel="stylesheet" href="p/advantage.css?v=1">
 
 
 
@@ -69,9 +69,8 @@
 
 
 <script src="core.js?v=7"></script>
-<script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/region-09.js?v=1" defer></script>
+<script src="p/advantage.js?v=1" defer></script>
 
 
 
@@ -89,7 +88,7 @@
 
 
 </head>
-<body data-motion data-rails class="fr" data-rung="FORK" data-alive data-glass data-door="or">
+<body data-motion data-rails data-alive data-glass>
 <div class="wrap">
 <nav>
   <a class="brand" href="index.html">
@@ -104,7 +103,7 @@
   </a>
   <ul class="navtabs" id="navtabs">
     <li class="navtab" data-tab="learn">
-      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <a class="navtab-link" href="learn.html">Learn</a>
       <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="navpanel2" id="np-learn" hidden>
         <div class="np-cols">
@@ -174,7 +173,7 @@
       </div>
     </li>
     <li class="navtab" data-tab="check">
-      <a class="navtab-link" href="check.html">Check</a>
+      <a class="navtab-link cur" href="check.html">Check</a>
       <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="navpanel2" id="np-check" hidden>
         <div class="np-cols">
@@ -187,7 +186,7 @@
           <div class="np-col">
             <p class="navhead">The race</p>
             <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
-            <a href="advantage.html" class="navmain"><span class="q">Did the advantage last?</span><span class="sub">Every claim, and the classical answer that followed</span></a>
+            <a href="advantage.html" class="navmain active"><span class="q">Did the advantage last?</span><span class="sub">Every claim, and the classical answer that followed</span></a>
             <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
             <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
             <a href="open.html" class="navmain"><span class="q">What is still open?</span><span class="sub">Questions nobody has answered, and ones that only look open</span></a>
@@ -243,105 +242,104 @@
 </nav>
 <nav class="tabbar" aria-label="Sections">
   <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
-  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="learn.html" data-tab="learn"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
   <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
-  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="check.html" data-tab="check" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
   <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
 </nav>
-<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="feasible.html">The Feasible Region</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Queueing theory</span></div>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="check.html">Check</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Advantage Watch</span></div>
 
-<div class="course" id="t09" data-course data-page="feasible" data-mission="feasible-complete" data-count="24" data-topic="t09" data-id="t09">
-<header class="cp-head"><div class="eyebrow"><a href="feasible.html">The Feasible Region</a> &middot; Topic 09 of 24 &middot; The course</div>
-<h1>Queueing theory</h1>
-<p class="tagline">Why do systems collapse before they are full?</p></header>
-<ol class="cp-rail" aria-label="Topics in The Feasible Region"><li><a href="region-01.html" data-id="t01" title="The feasible region">01</a></li><li><a href="region-02.html" data-id="t02" title="Linear programming and the vertex theorem">02</a></li><li><a href="region-03.html" data-id="t03" title="Duality and shadow prices">03</a></li><li><a href="region-04.html" data-id="t04" title="Integer programming">04</a></li><li><a href="region-05.html" data-id="t05" title="Branch and bound">05</a></li><li><a href="region-06.html" data-id="t06" title="Network flow and min-cut">06</a></li><li><a href="region-07.html" data-id="t07" title="Matching and assignment">07</a></li><li><a href="region-08.html" data-id="t08" title="Shortest paths and dynamic programming">08</a></li><li><a href="region-09.html" data-id="t09" aria-current="page" title="Queueing theory">09</a></li><li><a href="region-10.html" data-id="t10" title="Metaheuristics">10</a></li><li><a href="region-11.html" data-id="t11" title="Nash equilibrium">11</a></li><li><a href="region-12.html" data-id="t12" title="Zero-sum games and minimax">12</a></li><li><a href="region-13.html" data-id="t13" title="Cooperative games and the Shapley value">13</a></li><li><a href="region-14.html" data-id="t14" title="Mechanism design and auctions">14</a></li><li><a href="region-15.html" data-id="t15" title="Evolutionary game theory">15</a></li><li><a href="region-16.html" data-id="t16" title="The simplex algorithm">16</a></li><li><a href="region-17.html" data-id="t17" title="Quadratic &amp; semidefinite programming">17</a></li><li><a href="region-18.html" data-id="t18" title="The transportation problem">18</a></li><li><a href="region-19.html" data-id="t19" title="Constraint satisfaction">19</a></li><li><a href="region-20.html" data-id="t20" title="Markov decision processes &amp; reinforcement learning">20</a></li><li><a href="region-21.html" data-id="t21" title="Greedy algorithms &amp; approximation guarantees">21</a></li><li><a href="region-22.html" data-id="t22" title="Stochastic &amp; robust optimization">22</a></li><li><a href="region-23.html" data-id="t23" title="Multi-objective optimization">23</a></li><li><a href="region-24.html" data-id="t24" title="Inventory &amp; supply chain">24</a></li></ol>
+<h1>Advantage Watch</h1>
+<p class="tagline">Every claim that a quantum device beat a classical computer, and what happened next. Last checked 2 October 2026.</p>
 
-<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
-<div class="cp-steps">
-<section class="cp-step" id="step-see" data-step="see">
-<div class="layer see">
- <h4 aria-level="3">See it</h4>
- <figure class="modfig">
- <div class="modscroll"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img"
-             aria-label="Average time in the system against utilisation. The curve is flat until about seventy percent and then rises almost vertically, going to infinity at one hundred percent.">
- <g stroke="var(--border)" stroke-width="1" opacity=".3">
- <path d="M140 25 V200 M220 25 V200 M300 25 V200 M380 25 V200 M460 25 V200"/>
- <path d="M60 160 H470 M60 120 H470 M60 80 H470 M60 40 H470"/>
- </g>
- <path d="M60 190 L140 186 L220 180 L300 170 L340 160 L380 140 L420 100 L440 60 L452 25"
-                class="sOr" stroke-width="3.5"/>
- <path d="M460 25 V200" stroke="var(--red)" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
- <text class="lbl-s" style="fill:var(--red)" x="456" y="216" text-anchor="middle">100%</text>
- <circle cx="300" cy="170" r="5" fill="var(--or)"/>
- <text class="lbl-s" x="286" y="162" text-anchor="end">50% busy</text>
- <text class="lbl-s or" x="286" y="176" text-anchor="end">in system = 2</text>
- <circle cx="380" cy="140" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
- <text class="lbl-b or" x="368" y="128" text-anchor="end">80% busy</text>
- <text class="lbl-s"    x="368" y="142" text-anchor="end">in system = 5  (2.5× worse)</text>
- <circle cx="440" cy="60" r="6" fill="var(--or)" stroke="var(--bg)" stroke-width="2"/>
- <text class="lbl-b or" x="430" y="52" text-anchor="end">95% busy</text>
- <text class="lbl-s"    x="430" y="66" text-anchor="end">in system = 20  (4× worse again)</text>
- <path d="M60 25 V200 H470" fill="none" stroke="var(--border)" stroke-width="2"/>
- <g class="lbl-s" text-anchor="middle">
- <text x="140" y="216">20%</text><text x="220" y="216">40%</text>
- <text x="300" y="216">60%</text><text x="380" y="216">80%</text>
- </g>
- <text class="lbl-b" x="265" y="238" text-anchor="middle">how busy the server is (utilisation)</text>
- <text class="lbl-b" x="16" y="112" text-anchor="middle" transform="rotate(-90 16 112)">time in the system</text>
- </svg></div>
- <figcaption><strong>The most expensive graph in operations management, and the least intuitive.</strong> Every point is the exact M/M/1 formula, not a sketch. The quantity plotted is <b>time in the system</b> (queueing plus being served, the number a patient or a driver actually experiences) which is W = 1/(μ−λ), or 1/(1−ρ) in units of one service time. Going from half-busy to 80% busy multiplies it by <b>2.5×</b>. Going from 80% to 95% multiplies it by <b>4×</b> again. Queueing time <em>alone</em> is ρ/(1−ρ) and rises even faster than this, 4× and then 4.75× across the same two steps, so the curve you are looking at is the conservative one. The hospital, the motorway and the CPU all fall over at the same shape, and they all fall over well before they are &quot;full&quot;.</figcaption>
- </figure>
- </div>
-</section>
-<section class="cp-step" id="step-intuition" data-step="intuition">
-<div class="layer">
- <h4 aria-level="3">The intuition</h4>
- <p>Almost every manager&#39;s instinct is that a resource running at 95% is being used well and one running at 60% is being wasted. The mathematics says the opposite, and it is not close.</p>
- <p>The reason is <strong>variability</strong>. If work arrived like clockwork and every job took exactly the same time, you could run at 100% with no queue at all. But arrivals clump and jobs differ, so idle time and backlog are not symmetric: an idle minute is gone forever, while a backlog persists and compounds. As utilisation rises there is less and less slack to absorb a clump, and the queue that forms has less and less opportunity to drain.</p>
- <p>So the spare capacity that looks like waste is doing real work. It is what stops a random cluster of arrivals turning into a two-hour wait. This is why emergency departments target occupancy well below 100%, why motorways jam at flow rates below their theoretical maximum, and why a disk at 95% IO utilisation feels broken rather than efficient.</p>
- <p>The practical rule that follows: <strong>if you cannot add capacity, reduce variability.</strong> Appointment systems, batching, and admission control all attack the variance rather than the mean, and they work.</p>
- </div>
-</section>
-<section class="cp-step" id="step-maths" data-step="maths">
-<div class="layer maths">
- <h4 aria-level="3">The mathematics</h4>
- <p>The simplest useful model is <strong>M/M/1</strong>: Poisson arrivals at rate λ, exponential service at rate μ, one server. Write utilisation ρ = λ/μ. Then, in steady state:</p>
- <code class="eq">L = ρ / (1 − ρ) average number in the system
-W = 1 / (μ − λ)          average time in the system
-                          → ∞  as ρ → 1</code>
- <p>The 1/(1 − ρ) factor is the whole story. At ρ = 0.5 it is 2. At ρ = 0.9 it is 10. At ρ = 0.99 it is 100. Nothing about the server changed; only how close it is to the wall.</p>
- <p><strong>Little&#39;s law</strong> is the deeper result and one of the few in this field that needs almost no assumptions: for any stable system whatsoever, regardless of distributions or scheduling discipline,</p>
- <code class="eq">L = λ W</code>
- <p>Average number in the system equals arrival rate times average time in it. It holds for hospitals, factories, and TCP connections alike, and it is the reason you can infer a quantity you cannot measure from two you can.</p>
- <p>The honest caveat: M/M/1&#39;s exponential assumptions are a convenience. Real service times are rarely exponential, and the Pollaczek–Khinchine formula shows waiting scales with the <em>variance</em> of service time, not just its mean, which strengthens rather than weakens the argument above.</p>
- </div>
-</section>
-<section class="cp-step" id="step-runs" data-step="runs">
-<div class="layer real">
- <h4 aria-level="3">Where it actually runs</h4>
- <p><span class="where">Emergency department capacity</span>
-      Bed occupancy is the single most-argued number in hospital management, and this curve is why. Pushing occupancy from 85% to 95% looks like a 12% efficiency gain on a spreadsheet and behaves like a crisis on the floor: ambulances queue outside because there is no slack to absorb a bad hour. The same curve sets call-centre staffing (via Erlang C, the multi-server sibling), airport security lanes, and how much headroom a cloud service keeps before autoscaling.</p>
- </div>
-</section>
+<div class="card">
+<h3 aria-level="2">How to read this</h3>
+<p>Each row is a published claim that a quantum device did something a classical computer could not, in the claimants&#x27; own words, and every classical response we could find in journals and on arXiv. Dates are the first public posting of each paper (the arXiv version where there is one, otherwise the journal date). A response counts toward &#x27;days to a classical answer&#x27; only if it targets the same experiment and its authors say they ran it. The status is the desk&#x27;s reading of those responses, not a verdict from either side.</p>
+<p>Three statuses, and none of them is a ruling:</p>
+<ul><li><strong>Matched.</strong> A published classical method reproduces or beats the experiment&#x27;s reported benchmark, by its own authors&#x27; account.</li><li><strong>Contested.</strong> Classical work claims to match the result at some scales, on some instances, or for a later experiment in the same line, and the dispute is not closed.</li><li><strong>Standing.</strong> We found no published classical reproduction as of the check date. This is an absence in our search, not a proof.</li></ul>
+<p>The <a href="ledger.html">Ledger</a> scores promises about the future on their deadlines. This page scores results that are already published, which are tested differently: by whether anyone could do the same thing without the quantum machine.</p>
 </div>
-<div class="cp-finish" hidden>
-<div class="cp-check" data-a="1">
-<p class="cyu-eyebrow">Check yourself</p>
-<p class="cyu-q">In the M/M/1 queue, what happens to the average time in the system when utilisation rises from 50% to 80%?</p>
-<div class="cyu-opts">
-<button type="button" data-opt>It rises by 30%.</button>
-<button type="button" data-opt>It is multiplied by 2.5.</button>
-<button type="button" data-opt>It doubles.</button>
-<button type="button" data-opt>It is unchanged.</button>
+
+<h2 id="table">How long did each one last?</h2>
+<p>The days between a claim and the first classical run of the same experiment. A list of dates is not a statistic, and it is not a forecast: a handful of rows cannot say how long the next claim will last.</p>
+<div class="figscroll"><table class="adv-table" aria-label="Each claim, its first public date, its status and the days until the first classical run of the same experiment">
+<thead><tr><th scope="col">Claim</th><th scope="col">Claimed</th><th scope="col">Status</th><th scope="col">First classical run of the same experiment</th></tr></thead>
+<tbody>
+<tr><th scope="row"><a href="#sycamore-2019">Random circuit sampling, 53 qubits, 20 cycles</a></th><td>23 October 2019</td><td>Matched</td><td><strong>743 days</strong>, by Pan, Chen and Zhang</td></tr>
+<tr><th scope="row"><a href="#gbs-2020">Gaussian boson sampling, up to 76 photon clicks (Jiuzhang)</a></th><td>3 December 2020</td><td>Contested</td><td>none for this exact experiment (2,129 days since the claim)</td></tr>
+<tr><th scope="row"><a href="#ibm-utility-2023">Kicked Ising dynamics on a 127-qubit processor, error-mitigated</a></th><td>14 June 2023</td><td>Matched</td><td><strong>12 days</strong>, by Tindall, Fishman, Stoudenmire and Sels</td></tr>
+<tr><th scope="row"><a href="#willow-rcs-2024">Random circuit sampling, 67 qubits, 32 cycles</a></th><td>October 2024</td><td>Standing</td><td>none yet</td></tr>
+<tr><th scope="row"><a href="#dwave-2025">Quantum annealing dynamics of spin glasses</a></th><td>1 March 2024</td><td>Contested</td><td><strong>371 days</strong>, by Tindall, Mello, Fishman, Stoudenmire and Sels (Flatiron Institute)</td></tr>
+<tr><th scope="row"><a href="#echoes-2025">Out-of-time-order correlator (&#x27;Quantum Echoes&#x27;) on Willow</a></th><td>22 October 2025</td><td>Standing</td><td>none yet (345 days since the claim)</td></tr>
+<tr><th scope="row"><a href="#ibm-qedma-2026">Floquet dynamics on up to 74 qubits (IBM Heron with Qedma error suppression)</a></th><td>30 July 2026</td><td>Standing</td><td>none yet (64 days since the claim)</td></tr>
+</tbody></table></div>
+
+<h2 id="claims">Each claim, with its sources</h2>
+<div class="card" id="sycamore-2019">
+<h3 aria-level="2">Random circuit sampling, 53 qubits, 20 cycles</h3>
+<p><strong>Google Quantum AI</strong> &middot; quantum supremacy claim &middot; <strong>Status: Matched.</strong></p>
+<p><strong>The claim</strong> (23 October 2019, <a href="https://www.nature.com/articles/s41586-019-1666-5">Arute et al., Nature 574, 505</a>): About 200 seconds to take a million samples, against an estimate of 10,000 years on a classical supercomputer.</p>
+<p><strong>What happened next</strong></p>
+<ul><li><strong>21 October 2019</strong>, an estimate, not a run: <a href="https://arxiv.org/abs/1910.09534">arXiv:1910.09534</a>. Pednault, Gunnels, Nannicini, Horesh and Wisnieff (IBM). Argued that such circuits can be simulated on the Summit supercomputer in a matter of days. An argument about cost, not a run.</li><li><strong>4 November 2021</strong>, a classical run: <a href="https://arxiv.org/abs/2111.03011">arXiv:2111.03011; Physical Review Letters 129, 090502 (2022)</a>. Pan, Chen and Zhang. One million uncorrelated bitstrings at a fidelity of about 0.0037 in about 15 hours on a cluster of 512 GPUs.</li><li><strong>27 June 2024</strong>, a classical run: <a href="https://arxiv.org/abs/2406.18889">arXiv:2406.18889; National Science Review 12, nwae317</a>. Zhao, Zhong, Pan and co-authors. 1,432 GPUs; a higher linear cross-entropy score than the experiment and, by the authors&#x27; account, seven times faster than Sycamore&#x27;s run.</li></ul>
+<p><strong>Our reading.</strong> Two groups report running classical samplers that reach or exceed the experiment&#x27;s score. The 10,000-year estimate did not survive; the experiment itself is not in doubt.</p>
 </div>
-<p class="cyu-out" role="status" aria-live="polite"></p>
-<p class="cyu-why" hidden>Time in the system is 1/(1 - rho) service times: 2 at 50% and 5 at 80%, so 2.5 times longer. Nothing about the server changed, only how close it is to the wall.</p>
+<div class="card" id="gbs-2020">
+<h3 aria-level="2">Gaussian boson sampling, up to 76 photon clicks (Jiuzhang)</h3>
+<p><strong>USTC (Zhong, Pan and co-authors)</strong> &middot; quantum computational advantage claim &middot; <strong>Status: Contested.</strong></p>
+<p><strong>The claim</strong> (3 December 2020, <a href="https://www.science.org/doi/10.1126/science.abe8770">Zhong et al., Science 370, 1460</a>): A sampling rate about 10^14 times faster than the best known classical simulation on supercomputers.</p>
+<p><strong>What happened next</strong></p>
+<ul><li><strong>6 June 2023</strong>, a partial match: <a href="https://arxiv.org/abs/2306.03709">arXiv:2306.03709; Nature Physics 20, 1461 (2024)</a>. Oh, Liu, Alexeev, Fefferman and Jiang. A tensor-network sampler that, they report, simulates the ideal distribution better than the experiment does, for the largest Gaussian boson sampling experiment so far. The abstract does not name which experiment, so we do not count it as an answer to the 2020 one.</li></ul>
+<p><strong>Our reading.</strong> A published classical sampler beats the largest experiment of its day on the authors&#x27; own measure, which weakens the whole line of experiments; whether it answers this one is not stated in the paper.</p>
 </div>
+<div class="card" id="ibm-utility-2023">
+<h3 aria-level="2">Kicked Ising dynamics on a 127-qubit processor, error-mitigated</h3>
+<p><strong>IBM Quantum with UC Berkeley</strong> &middot; &#x27;utility&#x27; claim (IBM&#x27;s own word; not called advantage) &middot; <strong>Status: Matched.</strong></p>
+<p><strong>The claim</strong> (14 June 2023, <a href="https://www.nature.com/articles/s41586-023-06096-3">Kim et al., Nature 618, 500</a>): Accurate expectation values from a noisy 127-qubit processor, beyond the reach of the brute-force classical methods of the day.</p>
+<p><strong>What happened next</strong></p>
+<ul><li><strong>26 June 2023</strong>, a classical run: <a href="https://arxiv.org/abs/2306.14887">arXiv:2306.14887; PRX Quantum 5, 010308 (2024)</a>. Tindall, Fishman, Stoudenmire and Sels. Tensor networks with belief propagation, reported as significantly more accurate and precise than the experiment, and able to reach the thermodynamic limit.</li><li><strong>28 June 2023</strong>, a classical run: <a href="https://arxiv.org/abs/2306.16372">arXiv:2306.16372</a>. Begusic and Chan. Fast classical simulation by sparse Pauli dynamics of the same experiment.</li></ul>
+<p><strong>Our reading.</strong> Two independent classical methods simulated the experiment within two weeks of the paper. IBM did not call it advantage; it is on this list because it was widely read as one.</p>
 </div>
-<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
-<div class="cp-out"><a href="region-10.html">Next: when exact methods die ▸</a></div>
-<div class="cp-neighbours"><a class="cp-pv" href="region-08.html"><span>Previous topic</span>08 &middot; Shortest paths and dynamic programming</a><a class="cp-nx" href="region-10.html"><span>Next topic</span>10 &middot; Metaheuristics</a></div>
+<div class="card" id="willow-rcs-2024">
+<h3 aria-level="2">Random circuit sampling, 67 qubits, 32 cycles</h3>
+<p><strong>Google Quantum AI</strong> &middot; beyond-classical claim &middot; <strong>Status: Standing.</strong></p>
+<p><strong>The claim</strong> (October 2024, <a href="https://www.nature.com/articles/s41586-024-07998-6">Morvan et al., Nature 634, 328</a>): Beyond the capabilities of existing classical supercomputers at this size (Google&#x27;s December 2024 Willow post put it at under five minutes against 10^25 years).</p>
+<p><strong>What happened next</strong></p>
+<ul><li><strong>8 November 2022</strong>, a general result: <a href="https://arxiv.org/abs/2211.03999">arXiv:2211.03999; STOC 2023</a>. Aharonov, Gao, Landau, Liu and Vazirani. A polynomial-time classical algorithm for noisy random circuit sampling at a constant noise rate per gate. Its authors say it is not practical in its present form and does not address finite-size experiments. It predates the claim, so it is context, not a response.</li></ul>
+<p><strong>Our reading.</strong> We found no published classical reproduction of this experiment&#x27;s samples. The one general result (above) is asymptotic and its authors say it does not cover experiments of this size. The 10^25-year figure is a model estimate and the 2019 estimate fell, so it is not a safe number.</p>
 </div>
+<div class="card" id="dwave-2025">
+<h3 aria-level="2">Quantum annealing dynamics of spin glasses</h3>
+<p><strong>D-Wave</strong> &middot; quantum supremacy claim &middot; <strong>Status: Contested.</strong></p>
+<p><strong>The claim</strong> (1 March 2024, <a href="https://arxiv.org/abs/2403.00910">King et al., arXiv:2403.00910; Science 388, 199 (2025)</a>): Annealing processors generate samples in close agreement with the Schrödinger equation faster than leading classical methods (tensor networks and neural networks).</p>
+<p><strong>What happened next</strong></p>
+<ul><li><strong>7 March 2025</strong>, a classical run: <a href="https://arxiv.org/abs/2503.05693">arXiv:2503.05693</a>. Tindall, Mello, Fishman, Stoudenmire and Sels (Flatiron Institute). Tensor networks with belief propagation, claimed to simulate the experiment&#x27;s results efficiently on standard resources. A preprint at the time of posting.</li><li><strong>12 March 2025</strong>, a partial match: <a href="https://thequantuminsider.com/2025/03/13/d-wave-deep-dive-a-look-at-the-quantum-advantage-findings-and-the-questions-that-remain/">arXiv preprint, via The Quantum Insider&#x27;s 13 March 2025 write-up</a>. Mauron and Carleo (EPFL). A time-dependent variational Monte Carlo method matching or beating D-Wave&#x27;s reported accuracy on systems up to 128 spins; not shown at D-Wave&#x27;s largest instances.</li></ul>
+<p><strong>Our reading.</strong> Two classical groups say they match the result, one on the experiment&#x27;s own instances, one at smaller sizes. D-Wave&#x27;s largest instances are not claimed by the second. Neither is settled in a journal.</p>
+<p><a href="claim-dwave-magnetic-simulation-supremacy-2025.html">This is also a claim on the Ledger</a>, scored on its own deadline.</p></div>
+<div class="card" id="echoes-2025">
+<h3 aria-level="2">Out-of-time-order correlator (&#x27;Quantum Echoes&#x27;) on Willow</h3>
+<p><strong>Google Quantum AI</strong> &middot; verifiable advantage claim &middot; <strong>Status: Standing.</strong></p>
+<p><strong>The claim</strong> (22 October 2025, <a href="https://research.google/blog/a-verifiable-quantum-advantage/">Google Research post; Nature, &#x27;Observation of constructive interference at the edge of quantum ergodicity&#x27;</a>): About two hours on Willow against an estimate of 13,000 times longer on a classical supercomputer.</p>
+<p><strong>What happened next</strong></p>
+<ul><li><strong>16 April 2026</strong>, an argument: <a href="https://arxiv.org/abs/2604.15427">arXiv:2604.15427</a>. Bermejo, Villalonga, Ware, Vidal and Szasz. Argues that tensor networks with belief propagation cannot feasibly simulate the experiment. This supports the claim. One co-author, Benjamin Villalonga, is also an author of Google&#x27;s random circuit sampling papers, so it is not an independent test.</li></ul>
+<p><strong>Our reading.</strong> No published classical simulation found. Google&#x27;s own post says its team spent an estimated ten person-years red-teaming the result with nine classical algorithms; that is the claimant&#x27;s account.</p>
+</div>
+<div class="card" id="ibm-qedma-2026">
+<h3 aria-level="2">Floquet dynamics on up to 74 qubits (IBM Heron with Qedma error suppression)</h3>
+<p><strong>IBM and Qedma</strong> &middot; quantum advantage claim &middot; <strong>Status: Standing.</strong></p>
+<p><strong>The claim</strong> (30 July 2026, <a href="https://newsroom.ibm.com/2026-07-30-ibm-and-qedma-demonstrate-quantum-advantage,-modeling-physics-beyond-classical-capabilities-through-trusted-quantum-computation">IBM newsroom announcement</a>): Quantum advantage on commercially available hardware; the circuits are released to the Quantum Advantage Tracker for classical benchmarking.</p>
+<p><strong>What happened next</strong></p>
+<p>No classical response recorded yet.</p>
+<p><strong>Our reading.</strong> Announced 64 days before this check. The circuits are public for classical attempts and we have not recorded a published reproduction. IBM&#x27;s own 2025 prediction, that the wider community would confirm a case by the end of 2026, is tracked on the Ledger.</p>
+<p><a href="claim-ibm-verified-quantum-advantage-2026.html">This is also a claim on the Ledger</a>, scored on its own deadline.</p></div>
+
+<h2 id="limits">What this page cannot tell you</h2>
+<ul>
+<li><strong>A classical result is its authors&rsquo; claim.</strong> Most are preprints. We say whether a paper was published and which journal; we do not referee them.</li>
+<li><strong>&ldquo;Standing&rdquo; is an absence.</strong> It means we searched journals and arXiv on the check date and found nothing. A method nobody has published is not the same as a method nobody has.</li>
+<li><strong>Matching is not the same as being useless.</strong> A matched experiment can still have been a real, hard thing to build. The question here is only whether it did something classical computers could not.</li>
+<li><strong>Estimates fall.</strong> Every classical-cost figure in the claims above (&ldquo;10,000 years&rdquo;, &ldquo;13,000 times longer&rdquo;) is a claimant&rsquo;s model, and the oldest one in the list has already been beaten by runs.</li>
+</ul>
+<p>If a row is wrong, or a classical result is missing, <a href="corrections.html">tell us</a>. See also <a href="open.html">what is still open</a> and <a href="how-we-check.html">how we check</a>.</p>
 <div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
 </div>
 <div id="search" class="sr-wrap" hidden></div>

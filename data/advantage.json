@@ -1,0 +1,220 @@
+{
+  "schema": 1,
+  "checked": "2026-10-02",
+  "method": "Each row is a published claim that a quantum device did something a classical computer could not, in the claimants' own words, and every classical response we could find in journals and on arXiv. Dates are the first public posting of each paper (the arXiv version where there is one, otherwise the journal date). A response counts toward 'days to a classical answer' only if it targets the same experiment and its authors say they ran it. The status is the desk's reading of those responses, not a verdict from either side.",
+  "statuses": {
+    "matched": "A published classical method reproduces or beats the experiment's reported benchmark, by its own authors' account.",
+    "contested": "Classical work claims to match the result at some scales, on some instances, or for a later experiment in the same line, and the dispute is not closed.",
+    "standing": "We found no published classical reproduction as of the check date. This is an absence in our search, not a proof."
+  },
+  "rows": [
+    {
+      "id": "sycamore-2019",
+      "task": "Random circuit sampling, 53 qubits, 20 cycles",
+      "claimant": "Google Quantum AI",
+      "kind": "quantum supremacy claim",
+      "claim": {
+        "date": "2019-10-23",
+        "label": "Arute et al., Nature 574, 505",
+        "url": "https://www.nature.com/articles/s41586-019-1666-5",
+        "claimed": "About 200 seconds to take a million samples, against an estimate of 10,000 years on a classical supercomputer."
+      },
+      "responses": [
+        {
+          "date": "2019-10-21",
+          "type": "estimate",
+          "by": "Pednault, Gunnels, Nannicini, Horesh and Wisnieff (IBM)",
+          "label": "arXiv:1910.09534",
+          "url": "https://arxiv.org/abs/1910.09534",
+          "what": "Argued that such circuits can be simulated on the Summit supercomputer in a matter of days. An argument about cost, not a run.",
+          "same_experiment": true
+        },
+        {
+          "date": "2021-11-04",
+          "type": "demonstration",
+          "by": "Pan, Chen and Zhang",
+          "label": "arXiv:2111.03011; Physical Review Letters 129, 090502 (2022)",
+          "url": "https://arxiv.org/abs/2111.03011",
+          "what": "One million uncorrelated bitstrings at a fidelity of about 0.0037 in about 15 hours on a cluster of 512 GPUs.",
+          "same_experiment": true
+        },
+        {
+          "date": "2024-06-27",
+          "type": "demonstration",
+          "by": "Zhao, Zhong, Pan and co-authors",
+          "label": "arXiv:2406.18889; National Science Review 12, nwae317",
+          "url": "https://arxiv.org/abs/2406.18889",
+          "what": "1,432 GPUs; a higher linear cross-entropy score than the experiment and, by the authors' account, seven times faster than Sycamore's run.",
+          "same_experiment": true
+        }
+      ],
+      "status": "matched",
+      "reason": "Two groups report running classical samplers that reach or exceed the experiment's score. The 10,000-year estimate did not survive; the experiment itself is not in doubt.",
+      "ledger": null
+    },
+    {
+      "id": "gbs-2020",
+      "task": "Gaussian boson sampling, up to 76 photon clicks (Jiuzhang)",
+      "claimant": "USTC (Zhong, Pan and co-authors)",
+      "kind": "quantum computational advantage claim",
+      "claim": {
+        "date": "2020-12-03",
+        "label": "Zhong et al., Science 370, 1460",
+        "url": "https://www.science.org/doi/10.1126/science.abe8770",
+        "claimed": "A sampling rate about 10^14 times faster than the best known classical simulation on supercomputers."
+      },
+      "responses": [
+        {
+          "date": "2023-06-06",
+          "type": "partial",
+          "by": "Oh, Liu, Alexeev, Fefferman and Jiang",
+          "label": "arXiv:2306.03709; Nature Physics 20, 1461 (2024)",
+          "url": "https://arxiv.org/abs/2306.03709",
+          "what": "A tensor-network sampler that, they report, simulates the ideal distribution better than the experiment does, for the largest Gaussian boson sampling experiment so far. The abstract does not name which experiment, so we do not count it as an answer to the 2020 one.",
+          "same_experiment": null
+        }
+      ],
+      "status": "contested",
+      "reason": "A published classical sampler beats the largest experiment of its day on the authors' own measure, which weakens the whole line of experiments; whether it answers this one is not stated in the paper.",
+      "ledger": null
+    },
+    {
+      "id": "ibm-utility-2023",
+      "task": "Kicked Ising dynamics on a 127-qubit processor, error-mitigated",
+      "claimant": "IBM Quantum with UC Berkeley",
+      "kind": "'utility' claim (IBM's own word; not called advantage)",
+      "claim": {
+        "date": "2023-06-14",
+        "label": "Kim et al., Nature 618, 500",
+        "url": "https://www.nature.com/articles/s41586-023-06096-3",
+        "claimed": "Accurate expectation values from a noisy 127-qubit processor, beyond the reach of the brute-force classical methods of the day."
+      },
+      "responses": [
+        {
+          "date": "2023-06-26",
+          "type": "demonstration",
+          "by": "Tindall, Fishman, Stoudenmire and Sels",
+          "label": "arXiv:2306.14887; PRX Quantum 5, 010308 (2024)",
+          "url": "https://arxiv.org/abs/2306.14887",
+          "what": "Tensor networks with belief propagation, reported as significantly more accurate and precise than the experiment, and able to reach the thermodynamic limit.",
+          "same_experiment": true
+        },
+        {
+          "date": "2023-06-28",
+          "type": "demonstration",
+          "by": "Begusic and Chan",
+          "label": "arXiv:2306.16372",
+          "url": "https://arxiv.org/abs/2306.16372",
+          "what": "Fast classical simulation by sparse Pauli dynamics of the same experiment.",
+          "same_experiment": true
+        }
+      ],
+      "status": "matched",
+      "reason": "Two independent classical methods simulated the experiment within two weeks of the paper. IBM did not call it advantage; it is on this list because it was widely read as one.",
+      "ledger": null
+    },
+    {
+      "id": "willow-rcs-2024",
+      "task": "Random circuit sampling, 67 qubits, 32 cycles",
+      "claimant": "Google Quantum AI",
+      "kind": "beyond-classical claim",
+      "claim": {
+        "date": "2024-10",
+        "label": "Morvan et al., Nature 634, 328",
+        "url": "https://www.nature.com/articles/s41586-024-07998-6",
+        "claimed": "Beyond the capabilities of existing classical supercomputers at this size (Google's December 2024 Willow post put it at under five minutes against 10^25 years)."
+      },
+      "responses": [
+        {
+          "date": "2022-11-08",
+          "type": "theory",
+          "by": "Aharonov, Gao, Landau, Liu and Vazirani",
+          "label": "arXiv:2211.03999; STOC 2023",
+          "url": "https://arxiv.org/abs/2211.03999",
+          "what": "A polynomial-time classical algorithm for noisy random circuit sampling at a constant noise rate per gate. Its authors say it is not practical in its present form and does not address finite-size experiments. It predates the claim, so it is context, not a response.",
+          "same_experiment": false
+        }
+      ],
+      "status": "standing",
+      "reason": "We found no published classical reproduction of this experiment's samples. The one general result (above) is asymptotic and its authors say it does not cover experiments of this size. The 10^25-year figure is a model estimate and the 2019 estimate fell, so it is not a safe number.",
+      "ledger": null
+    },
+    {
+      "id": "dwave-2025",
+      "task": "Quantum annealing dynamics of spin glasses",
+      "claimant": "D-Wave",
+      "kind": "quantum supremacy claim",
+      "claim": {
+        "date": "2024-03-01",
+        "label": "King et al., arXiv:2403.00910; Science 388, 199 (2025)",
+        "url": "https://arxiv.org/abs/2403.00910",
+        "claimed": "Annealing processors generate samples in close agreement with the Schrödinger equation faster than leading classical methods (tensor networks and neural networks)."
+      },
+      "responses": [
+        {
+          "date": "2025-03-07",
+          "type": "demonstration",
+          "by": "Tindall, Mello, Fishman, Stoudenmire and Sels (Flatiron Institute)",
+          "label": "arXiv:2503.05693",
+          "url": "https://arxiv.org/abs/2503.05693",
+          "what": "Tensor networks with belief propagation, claimed to simulate the experiment's results efficiently on standard resources. A preprint at the time of posting.",
+          "same_experiment": true
+        },
+        {
+          "date": "2025-03-12",
+          "type": "partial",
+          "by": "Mauron and Carleo (EPFL)",
+          "label": "arXiv preprint, via The Quantum Insider's 13 March 2025 write-up",
+          "url": "https://thequantuminsider.com/2025/03/13/d-wave-deep-dive-a-look-at-the-quantum-advantage-findings-and-the-questions-that-remain/",
+          "what": "A time-dependent variational Monte Carlo method matching or beating D-Wave's reported accuracy on systems up to 128 spins; not shown at D-Wave's largest instances.",
+          "same_experiment": true
+        }
+      ],
+      "status": "contested",
+      "reason": "Two classical groups say they match the result, one on the experiment's own instances, one at smaller sizes. D-Wave's largest instances are not claimed by the second. Neither is settled in a journal.",
+      "ledger": "dwave-magnetic-simulation-supremacy-2025"
+    },
+    {
+      "id": "echoes-2025",
+      "task": "Out-of-time-order correlator ('Quantum Echoes') on Willow",
+      "claimant": "Google Quantum AI",
+      "kind": "verifiable advantage claim",
+      "claim": {
+        "date": "2025-10-22",
+        "label": "Google Research post; Nature, 'Observation of constructive interference at the edge of quantum ergodicity'",
+        "url": "https://research.google/blog/a-verifiable-quantum-advantage/",
+        "claimed": "About two hours on Willow against an estimate of 13,000 times longer on a classical supercomputer."
+      },
+      "responses": [
+        {
+          "date": "2026-04-16",
+          "type": "analysis",
+          "by": "Bermejo, Villalonga, Ware, Vidal and Szasz",
+          "label": "arXiv:2604.15427",
+          "url": "https://arxiv.org/abs/2604.15427",
+          "what": "Argues that tensor networks with belief propagation cannot feasibly simulate the experiment. This supports the claim. One co-author, Benjamin Villalonga, is also an author of Google's random circuit sampling papers, so it is not an independent test.",
+          "same_experiment": true
+        }
+      ],
+      "status": "standing",
+      "reason": "No published classical simulation found. Google's own post says its team spent an estimated ten person-years red-teaming the result with nine classical algorithms; that is the claimant's account.",
+      "ledger": null
+    },
+    {
+      "id": "ibm-qedma-2026",
+      "task": "Floquet dynamics on up to 74 qubits (IBM Heron with Qedma error suppression)",
+      "claimant": "IBM and Qedma",
+      "kind": "quantum advantage claim",
+      "claim": {
+        "date": "2026-07-30",
+        "label": "IBM newsroom announcement",
+        "url": "https://newsroom.ibm.com/2026-07-30-ibm-and-qedma-demonstrate-quantum-advantage,-modeling-physics-beyond-classical-capabilities-through-trusted-quantum-computation",
+        "claimed": "Quantum advantage on commercially available hardware; the circuits are released to the Quantum Advantage Tracker for classical benchmarking."
+      },
+      "responses": [],
+      "status": "standing",
+      "reason": "Announced 64 days before this check. The circuits are public for classical attempts and we have not recorded a published reproduction. IBM's own 2025 prediction, that the wider community would confirm a case by the end of 2026, is tracked on the Ledger.",
+      "ledger": "ibm-verified-quantum-advantage-2026"
+    }
+  ]
+}

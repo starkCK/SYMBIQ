@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-10-02",
- "pages": 119,
- "count": 865,
+ "pages": 120,
+ "count": 877,
  "records": [
   {
    "k": "s",
@@ -66,6 +66,102 @@
    "t": "About the desk",
    "h": "Telling us we got something wrong",
    "x": "The fastest route is the correction report. It lands on the desk directly, and it is read by the desk. For anything else: chinmoyuas@gmail.com. Last updated: 30 September 2026. About · How we check · AI use · Corrections · Changelog · RSS ·",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Advantage Watch",
+   "x": "Every claim that a quantum device beat a classical computer, and what happened next. Last checked 2 October 2026.",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "How to read this",
+   "x": "Each row is a published claim that a quantum device did something a classical computer could not, in the claimants' own words, and every classical response we could find in journals and on arXiv. Dates are the first public posting of each p",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html#table",
+   "t": "Advantage Watch",
+   "h": "How long did each one last?",
+   "x": "The days between a claim and the first classical run of the same experiment. A list of dates is not a statistic, and it is not a forecast: a handful of rows cannot say how long the next claim will last. ClaimClaimedStatusFirst classical run",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "advantage.html#claims",
+   "t": "Advantage Watch",
+   "h": "Each claim, with its sources",
+   "x": "",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Random circuit sampling, 53 qubits, 20 cycles",
+   "x": "Google Quantum AI · quantum supremacy claim · Status: Matched. The claim (23 October 2019, Arute et al., Nature 574, 505): About 200 seconds to take a million samples, against an estimate of 10,000 years on a classical supercomputer. What h",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Gaussian boson sampling, up to 76 photon clicks (Jiuzhang)",
+   "x": "USTC (Zhong, Pan and co-authors) · quantum computational advantage claim · Status: Contested. The claim (3 December 2020, Zhong et al., Science 370, 1460): A sampling rate about 10^14 times faster than the best known classical simulation on",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Kicked Ising dynamics on a 127-qubit processor, error-mitigated",
+   "x": "IBM Quantum with UC Berkeley · 'utility' claim (IBM's own word; not called advantage) · Status: Matched. The claim (14 June 2023, Kim et al., Nature 618, 500): Accurate expectation values from a noisy 127-qubit processor, beyond the reach o",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Random circuit sampling, 67 qubits, 32 cycles",
+   "x": "Google Quantum AI · beyond-classical claim · Status: Standing. The claim (October 2024, Morvan et al., Nature 634, 328): Beyond the capabilities of existing classical supercomputers at this size (Google's December 2024 Willow post put it at",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Quantum annealing dynamics of spin glasses",
+   "x": "D-Wave · quantum supremacy claim · Status: Contested. The claim (1 March 2024, King et al., arXiv:2403.00910; Science 388, 199 (2025)): Annealing processors generate samples in close agreement with the Schrödinger equation faster than leadi",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Out-of-time-order correlator ('Quantum Echoes') on Willow",
+   "x": "Google Quantum AI · verifiable advantage claim · Status: Standing. The claim (22 October 2025, Google Research post; Nature, 'Observation of constructive interference at the edge of quantum ergodicity'): About two hours on Willow against an",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html",
+   "t": "Advantage Watch",
+   "h": "Floquet dynamics on up to 74 qubits (IBM Heron with Qedma error suppression)",
+   "x": "IBM and Qedma · quantum advantage claim · Status: Standing. The claim (30 July 2026, IBM newsroom announcement): Quantum advantage on commercially available hardware; the circuits are released to the Quantum Advantage Tracker for classical ",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "advantage.html#limits",
+   "t": "Advantage Watch",
+   "h": "What this page cannot tell you",
+   "x": "A classical result is its authors’ claim. Most are preprints. We say whether a paper was published and which journal; we do not referee them. “Standing” is an absence. It means we searched journals and arXiv on the check date and found noth",
    "w": 2
   },
   {
@@ -1297,7 +1393,7 @@
    "p": "check.html",
    "t": "Check",
    "h": "The race",
-   "x": "Who is actually ahead?The scoreboard, and the desk's own forecasts What is the number that matters?The threshold, live What just happened?Desk notes: dated, written by hand What is still open?Questions nobody has answered, and ones that onl",
+   "x": "Who is actually ahead?The scoreboard, and the desk's own forecasts Did the advantage last?Every claim, and the classical answer that followed What is the number that matters?The threshold, live What just happened?Desk notes: dated, written ",
    "w": 2
   },
   {

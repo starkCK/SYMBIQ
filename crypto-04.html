@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="How can a secret be made in public, in front of a listener?. Cryptography, before and after Shor, topic 04 of 10: a picture, the intuition, the mathematics, and where it runs.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-04.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/crypto-04.css?v=1">
+<link rel="stylesheet" href="p/crypto-04.css?v=2">
 
 
 
@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/crypto-04.js?v=1" defer></script>
+<script src="p/crypto-04.js?v=2" defer></script>
 
 
 
@@ -269,7 +269,7 @@
 <details class="cp-section"><summary>About this section: Public keys</summary>
 <p>Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer breaks. These topics show how each lock works and what it rests on, using numbers small enough to follow, so that topic 07 can say exactly what Shor&#39;s algorithm does to them.</p>
 </details>
-<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="try"><b>4</b> Try it</button><button type="button" data-step="runs"><b>5</b> Where it runs</button></div>
 <div class="cp-steps">
 <section class="cp-step" id="step-see" data-step="see">
 <div class="layer see">
@@ -316,6 +316,13 @@
  <p>With p = 23, g = 5, a = 6, b = 15 the numbers are A = 8, B = 19 and the shared value 2 on both sides. The base 5 is a <em>generator</em> mod 23: its powers 5, 2, 10, 4, 20, 8, &hellip; run through all 22 nonzero residues before repeating, which is what makes every secret exponent give a different public value.</p>
  <p><strong>The hard problem.</strong> The attacker holds g, p, A and B and wants g<sup>ab</sup>. The direct route is the discrete logarithm: find a with g<sup>a</sup> = A. In the toy, trying all 22 exponents finds a = 6 at once, and then 19<sup>6</sup> mod 23 = 2. A real group has about 2<sup>256</sup> elements, and the best known classical attacks on well-chosen groups cost about the square root of the group size, so a 256-bit curve gives about 128 bits of security. Finite-field versions need much larger numbers: NIST rates a 2048-bit modulus at about 112 bits and 3072 bits at 128, because index-calculus methods run faster than square-root search there.</p>
  <p>That is where Shor&#39;s algorithm will bite, in topic 07: the discrete logarithm is a period-finding problem, and a quantum computer is good at periods.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-try" data-step="try">
+<div class="layer">
+ <h4 aria-level="3">Try it: the exchange, and the eavesdropper</h4>
+ <p>Pick a size, change the two secret numbers, and see both sides reach the same value. Then let the eavesdropper try every exponent. At 23 it takes a few steps; at 10,007 it is still instant. The point is the step count: it grows with the prime, and real groups are astronomically larger.</p>
+ <div data-ct="dh"></div>
  </div>
 </section>
 <section class="cp-step" id="step-runs" data-step="runs">

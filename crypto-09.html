@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Can you sign with nothing but a hash function, and what does it cost?. Cryptography, before and after Shor, topic 09 of 10: a picture, the intuition, the mathematics, and where it runs.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-09.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/crypto-09.css?v=1">
+<link rel="stylesheet" href="p/crypto-09.css?v=2">
 
 
 
@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/crypto-09.js?v=1" defer></script>
+<script src="p/crypto-09.js?v=2" defer></script>
 
 
 
@@ -269,7 +269,7 @@
 <details class="cp-section"><summary>About this section: After Shor</summary>
 <p>What Shor&#39;s algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they weigh, and the order in which a real system moves. This is the section the tools on the post-quantum page put into practice.</p>
 </details>
-<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="try"><b>4</b> Try it</button><button type="button" data-step="runs"><b>5</b> Where it runs</button></div>
 <div class="cp-steps">
 <section class="cp-step" id="step-see" data-step="see">
 <div class="layer see">
@@ -331,6 +331,13 @@
  <p><strong>Lamport signatures.</strong> For an n-bit digest, the private key is 2n random secrets x<sub>i</sub><sup>0</sup>, x<sub>i</sub><sup>1</sup> and the public key is their hashes H(x<sub>i</sub><sup>b</sup>). To sign a digest with bits b<sub>1</sub>&hellip;b<sub>n</sub>, reveal x<sub>i</sub><sup>b<sub>i</sub></sup> for each i. A verifier recomputes each hash and compares. For n = 8 the key has 16 secrets and a signature reveals 8 of them; signing a second message whose digest differs in some positions reveals the other secret at those positions, and from then on a forger can mix the revealed values to sign messages whose digests agree with what has been exposed. The toy confirms that a signature verifies for the message it signs and fails for another message.</p>
  <p><strong>Merkle trees.</strong> A tree of height h holds 2<sup>h</sup> one-time keys under one root. For h = 2 (four keys) a proof for key 2 is the two hashes H(key 3) and H(key 0, key 1) and the verifier recomputes the root in two steps. For h = 10 the tree holds 1,024 one-time keys, so one 32-byte public key can stand for 1,024 signatures, each carrying a path of 10 hashes.</p>
  <p><strong>What it costs.</strong> The signature carries the revealed secrets and the path, so it is large. In the SLH-DSA-SHA2-128s parameter set of FIPS 205 the public key is 32 bytes and a signature is 7,856 bytes, about 123 times the 64 bytes of an ECDSA P-256 signature. It is also slow to produce. The designs trade size and speed for the smallest possible assumption.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-try" data-step="try">
+<div class="layer">
+ <h4 aria-level="3">Try it: sign twice, then forge</h4>
+ <p>Sign one message with a fresh Lamport key, then a second with the same key, and watch which of the 16 secrets have been revealed. Then forge a third message: the page searches for one whose digest is covered by what you have already exposed, and the verifier accepts it. A real key would have 512 secrets and the search would be hopeless in one use, trivial with enough reuse.</p>
+ <div data-ct="lamport"></div>
  </div>
 </section>
 <section class="cp-step" id="step-runs" data-step="runs">

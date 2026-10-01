@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="How can a function be one-way, and does a quantum computer undo it?. Cryptography, before and after Shor, topic 02 of 10: a picture, the intuition, the mathematics, and where it runs.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-02.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/crypto-02.css?v=1">
+<link rel="stylesheet" href="p/crypto-02.css?v=2">
 
 
 
@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/crypto-02.js?v=1" defer></script>
+<script src="p/crypto-02.js?v=2" defer></script>
 
 
 
@@ -269,7 +269,7 @@
 <details class="cp-section"><summary>About this section: Secrets</summary>
 <p>Before the part that breaks, the part that does not. A secret needs a key and an open design, a fingerprint needs a one-way function, and both of those, the symmetric cipher and the hash, meet nothing worse than a square root.</p>
 </details>
-<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="try"><b>4</b> Try it</button><button type="button" data-step="runs"><b>5</b> Where it runs</button></div>
 <div class="cp-steps">
 <section class="cp-step" id="step-see" data-step="see">
 <div class="layer see">
@@ -312,6 +312,13 @@
  <code class="eq">P(collision) ≈ 1 − e<sup>−k² / 2<sup>n+1</sup></sup>     reaches ½ at   k ≈ 1.1774 · 2<sup>n/2</sup></code>
  <p>For a 32-bit digest that is about 77,163 hashes, well under a second on a laptop. For n = 256 it is about 2<sup>128</sup>. The cost of a collision is the square root of the size of the output space, which is the entire reason digests are chosen twice as long as the security they are meant to give.</p>
  <p><strong>Grover on a preimage.</strong> Finding an input that hits one target digest among N = 2<sup>n</sup> candidates takes about (&pi;/4) &radic;N = (&pi;/4) 2<sup>n/2</sup> quantum steps, each a full hash evaluation run reversibly, and Bennett, Bernstein, Brassard and Vazirani proved in 1997 that no quantum algorithm can do better than the square root for unstructured search.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-try" data-step="try">
+<div class="layer">
+ <h4 aria-level="3">Try it: break the fingerprint</h4>
+ <p>Change either text, even by a single letter, and watch how many of the 256 output bits move. The button runs the same experiment a thousand times on random messages and reports the average and the spread; an ideal hash gives 128 and 8.</p>
+ <div data-ct="hash"></div>
  </div>
 </section>
 <section class="cp-step" id="step-runs" data-step="runs">

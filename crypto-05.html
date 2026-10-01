@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Why does a lock that anyone can close need a factoring problem to stay open only for you?. Cryptography, before and after Shor, topic 05 of 10: a picture, the intuition, the mathematics, and where it ">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-05.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/crypto-05.css?v=1">
+<link rel="stylesheet" href="p/crypto-05.css?v=2">
 
 
 
@@ -71,7 +71,7 @@
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/crypto-05.js?v=1" defer></script>
+<script src="p/crypto-05.js?v=2" defer></script>
 
 
 
@@ -269,7 +269,7 @@
 <details class="cp-section"><summary>About this section: Public keys</summary>
 <p>Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer breaks. These topics show how each lock works and what it rests on, using numbers small enough to follow, so that topic 07 can say exactly what Shor&#39;s algorithm does to them.</p>
 </details>
-<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="try"><b>4</b> Try it</button><button type="button" data-step="runs"><b>5</b> Where it runs</button></div>
 <div class="cp-steps">
 <section class="cp-step" id="step-see" data-step="see">
 <div class="layer see">
@@ -320,6 +320,13 @@
  <p><strong>Why it works.</strong> Encrypt: c = m<sup>e</sup> mod n. Decrypt: c<sup>d</sup> = m<sup>ed</sup> = m<sup>1 + k&phi;</sup> &equiv; m (mod n), by Euler&#39;s theorem. Here 65<sup>17</sup> mod 3233 = 2790 and 2790<sup>2753</sup> mod 3233 = 65. For this toy, every message from 0 to 3232 survives the round trip, which is easy to check by trying all of them.</p>
  <p><strong>Signing is the same machine run the other way.</strong> Raise a message to d, and anyone can raise the result to e and compare: 1234<sup>2753</sup> mod 3233 = 1512, and 1512<sup>17</sup> mod 3233 = 1234.</p>
  <p><strong>The attack.</strong> Factor n and you can compute &phi;, and then d. Trial division finds 53 in at most 52 steps for the toy. A 2,048-bit modulus has 617 decimal digits, and the best classical factoring methods (the number field sieve) take sub-exponential time that leaves it at roughly 112 bits of security by NIST&#39;s reckoning. Shor&#39;s algorithm factors in polynomial time, which is the subject of topic 07.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-try" data-step="try">
+<div class="layer">
+ <h4 aria-level="3">Try it: build a tiny RSA, then break it</h4>
+ <p>Choose two secret primes and a message and see the whole round trip. The default is the one in the figure. Then let the attacker factor n by trial division, which works instantly here because n is tiny; that is the whole weakness of RSA, shrunk to a size you can watch.</p>
+ <div data-ct="rsa"></div>
  </div>
 </section>
 <section class="cp-step" id="step-runs" data-step="runs">

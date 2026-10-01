@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-10-02",
- "pages": 118,
- "count": 854,
+ "pages": 119,
+ "count": 865,
  "records": [
   {
    "k": "s",
@@ -1297,7 +1297,7 @@
    "p": "check.html",
    "t": "Check",
    "h": "The race",
-   "x": "Who is actually ahead?The scoreboard, and the desk's own forecasts What is the number that matters?The threshold, live What just happened?Desk notes: dated, written by hand",
+   "x": "Who is actually ahead?The scoreboard, and the desk's own forecasts What is the number that matters?The threshold, live What just happened?Desk notes: dated, written by hand What is still open?Questions nobody has answered, and ones that onl",
    "w": 2
   },
   {
@@ -3643,6 +3643,94 @@
    "h": "Adiabatic universality & the quantum PCP conjecture",
    "x": "Can a physical system that just relaxes into its ground state be as powerful as a full quantum circuit, and how far can \"squeeze a decision into an energy gap\" be pushed before nobody knows the answer? 01020304050607080910111213161714151819",
    "w": 3
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "What is still open?",
+   "x": "Questions nobody has answered, with what is known, what is not, and what would settle each. Last checked 2 October 2026.",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "How to read this",
+   "x": "Open means no accepted proof either way. A problem is listed only when we can name the paper it comes from. The date above is the last time a person checked each entry against its source; fields move, and one entry below is about a claim th",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html#open",
+   "t": "What is still open?",
+   "h": "Still open",
+   "x": "",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "Is there a fast classical algorithm for factoring?",
+   "x": "Status: open. Shor’s 1994 algorithm factors a number in polynomial time on a quantum computer. No polynomial-time classical algorithm is known, and there is no proof that none exists. Why it matters. “A quantum computer breaks RSA” is a sta",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "Does P equal NP?",
+   "x": "Status: open. It is one of the Clay Mathematics Institute’s Millennium Prize problems. Whether every problem whose answer can be checked quickly can also be solved quickly is unknown. Why it matters here. Most researchers expect that quantu",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "Is there any exponential quantum speedup for machine learning on classical data?",
+   "x": "Status: open. In 2018 Ewin Tang gave a classical algorithm for recommendation systems that matched the quantum one up to a polynomial factor, which removed the exponential advantage that had been claimed there. Several other quantum machine",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "Can a quantum computer beat the best classical heuristics at real optimisation?",
+   "x": "Status: open. For unstructured search the speedup is quadratic and that is proven to be the most there is (see below). Whether structured optimisation problems allow more, and whether any quantum method beats the best tuned classical heuris",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "Can a quantum computer break the lattice problems under ML-KEM and ML-DSA?",
+   "x": "Status: open. No quantum algorithm is known that solves them efficiently, and there is no proof that none exists. The standards built on them (FIPS 203 and 204, finalised in August 2024) rest on that absence. The 2024 episode. On 10 April 2",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html",
+   "t": "What is still open?",
+   "h": "Is the quantum PCP conjecture true?",
+   "x": "Status: open. The conjecture says that approximating the ground-state energy of a local Hamiltonian to within a constant fraction is still as hard as the hardest problems quantum computers can check. A necessary consequence, the “no low-ene",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "open.html#settled",
+   "t": "What is still open?",
+   "h": "Sounds open, is not",
+   "x": "Each of these is a result with a proof. Looking for a gap in them is looking for a clever way around a theorem. Grover’s speedup cannot be better than quadratic for unstructured search. Proven by Bennett, Bernstein, Brassard and Vazirani, “",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "open.html#ours",
+   "t": "What is still open?",
+   "h": "Open on our side",
+   "x": "Some things here are open in a smaller way: we have made a call and cannot yet say whether it was right. The desk’s forecasts on the race page and the claims on the Ledger are written down with dates so that they can be scored, and The Stan",
+   "w": 2
   },
   {
    "k": "s",

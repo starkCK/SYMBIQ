@@ -3621,6 +3621,7 @@ body[data-glass] ::-webkit-scrollbar-thumb:hover {
 .tr-tools span { margin-left: 8px; font-size: .78rem; color: var(--muted); }
 
 .tr-blurb { max-width: 62ch; }
+.tr-open { display: inline-block; min-height: 44px; line-height: 44px; }
 .tr-group { border-top: 1px solid var(--border); }
 .tr-group > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-height: 48px; padding: 6px 0; cursor: pointer; }
 .tr-group > summary b { font-size: 1.02rem; }

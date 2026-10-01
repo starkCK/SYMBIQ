@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Signatures made from hashes alone · Learn · SymbiQ</title>
+<meta name="description" content="Can you sign with nothing but a hash function, and what does it cost?. Cryptography, before and after Shor, topic 09 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/crypto-09.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/crypto-09.html">
+<meta property="og:title" content="Signatures made from hashes alone · SymbiQ">
+<meta property="og:description" content="Can you sign with nothing but a hash function, and what does it cost?. Cryptography, before and after Shor, topic 09 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-09.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Signatures made from hashes alone">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Signatures made from hashes alone · SymbiQ">
+<meta name="twitter:description" content="Can you sign with nothing but a hash function, and what does it cost?. Cryptography, before and after Shor, topic 09 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-09.jpg">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/crypto-09.css?v=1">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=7"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/crypto-09.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="L4" data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+            <a href="descent.html" class="navmain"><span class="q">Where does everything sit?</span><span class="sub">The whole site as a fridge: colder is deeper</span></a>
+            <a href="world.html" class="navmain"><span class="q">Can I drive around the site?</span><span class="sub">A small 3D town: every building is a part of SymbiQ</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="track-quantum-ai.html" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: the module map</span></a>
+            <a href="track-optimisation.html" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the module map</span></a>
+            <a href="track-security.html" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security: the module map</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+            <a href="play.html#survival" class="navmain"><span class="q">Surface Code Survival</span><span class="sub">Hold one logical qubit while the code grows</span></a>
+            <a href="play.html#qday" class="navmain"><span class="q">Q-Day Command</span><span class="sub">Order the migration before the machine arrives</span></a>
+            <a href="play.html#arena" class="navmain"><span class="q">Heuristic Arena</span><span class="sub">Seven search methods, one budget, a proven best answer</span></a>
+            <a href="play.html#strikes" class="navmain"><span class="q">Classical Strikes Back</span><span class="sub">Simulate the circuit on an ordinary computer, inside a budget</span></a>
+            <a href="play.html#agentlab" class="navmain"><span class="q">Agent Lab</span><span class="sub">Spend a budget on checking each step of an AI agent</span></a>
+            <a href="play.html#factory" class="navmain"><span class="q">Magic State Factory</span><span class="sub">Distil noisy states into clean ones for the least volume</span></a>
+            <a href="play.html#lattice" class="navmain"><span class="q">Lattice Heist</span><span class="sub">Find the shortest vector behind a skewed basis</span></a>
+            <a href="play.html#clockwork" class="navmain"><span class="q">Shor&#x27;s Clockwork</span><span class="sub">Build the shortest chain of multiplications that splits N</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="advantage.html" class="navmain"><span class="q">Did the advantage last?</span><span class="sub">Every claim, and the classical answer that followed</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+            <a href="open.html" class="navmain"><span class="q">What is still open?</span><span class="sub">Questions nobody has answered, and ones that only look open</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Learn the ideas</p>
+            <a href="crypto.html" class="navmain"><span class="q">How does cryptography work, before and after Shor?</span><span class="sub">Ten topics, every number checked</span></a>
+            <a href="crypto-07.html" class="navmain"><span class="q">What does Shor take, and what does it leave?</span><span class="sub">Three locks fall, two only dent</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Play the threat</p>
+            <a href="play.html#qday" class="navmain"><span class="q">Can you order the migration?</span><span class="sub">Q-Day Command: what goes first, before the date</span></a>
+            <a href="play.html#lattice" class="navmain"><span class="q">What is the lattice problem?</span><span class="sub">Lattice Heist: the idea under ML-KEM</span></a>
+            <a href="play.html#clockwork" class="navmain"><span class="q">What does Shor&#x27;s algorithm leave to do?</span><span class="sub">Shor&#x27;s Clockwork: the classical finish</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="crypto.html">Cryptography, before and after Shor</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Signatures made from hashes alone</span></div>
+
+<div class="course" id="c09" data-course data-page="crypto" data-mission="crypto-complete" data-count="10" data-topic="c09" data-id="c09">
+<header class="cp-head"><div class="eyebrow"><a href="crypto.html">Cryptography, before and after Shor</a> &middot; Topic 09 of 10 &middot; After Shor</div>
+<h1>Signatures made from hashes alone</h1>
+<p class="tagline">Can you sign with nothing but a hash function, and what does it cost?</p></header>
+<ol class="cp-rail" aria-label="Topics in Cryptography, before and after Shor"><li><a href="crypto-01.html" data-id="c01" title="What a secret needs to survive">01</a></li><li><a href="crypto-02.html" data-id="c02" title="Hashes, the fingerprints inside everything">02</a></li><li><a href="crypto-03.html" data-id="c03" title="Does a quantum computer break AES?">03</a></li><li><a href="crypto-04.html" data-id="c04" title="How two strangers agree on a secret">04</a></li><li><a href="crypto-05.html" data-id="c05" title="RSA, and its one weak point">05</a></li><li><a href="crypto-06.html" data-id="c06" title="What a signature or a certificate proves">06</a></li><li><a href="crypto-07.html" data-id="c07" title="What Shor takes, and what it leaves">07</a></li><li><a href="crypto-08.html" data-id="c08" title="Why lattices resist, and what they cost">08</a></li><li><a href="crypto-09.html" data-id="c09" aria-current="page" title="Signatures made from hashes alone">09</a></li><li><a href="crypto-10.html" data-id="c10" title="Migrating without breaking everything">10</a></li></ol>
+<details class="cp-section"><summary>About this section: After Shor</summary>
+<p>What Shor&#39;s algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they weigh, and the order in which a real system moves. This is the section the tools on the post-quantum page put into practice.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Two pictures. On the left, a Lamport one-time signature for a 4-bit digest. The private key is a row of four pairs of random secrets. The public key is the hash of each secret. To sign the digest 1 0 1 1 you reveal, for each position, the secret that matches that bit: the second of pair one, the first of pair two, the second of pair three and the second of pair four. Anyone hashes the four revealed secrets and checks them against the public hashes. Revealing a secret uses it up: a second message would reveal more. On the right, a Merkle tree of four one-time public keys: four leaves, two parents, one root. The root is the single public key. To prove leaf 2 belongs, you give leaf 3 and the left parent, two hashes, and the verifier rebuilds the root.">
+ <text x="150" y="20" text-anchor="middle" class="lbl-b">One-time signature (Lamport)</text>
+ <text x="20" y="48" class="lbl-s">digest bits</text>
+ <g class="lbl-b">
+ <text x="120" y="48" text-anchor="middle">1</text><text x="170" y="48" text-anchor="middle">0</text><text x="220" y="48" text-anchor="middle">1</text><text x="270" y="48" text-anchor="middle">1</text>
+ </g>
+ <text x="20" y="80" class="lbl-s">secrets</text>
+ <g fill="none" stroke="var(--border)" stroke-width="1.2">
+ <rect x="100" y="62" width="40" height="22" rx="4"/><rect x="100" y="90" width="40" height="22" rx="4" stroke="var(--red)" stroke-width="2.2"/>
+ <rect x="150" y="62" width="40" height="22" rx="4" stroke="var(--red)" stroke-width="2.2"/><rect x="150" y="90" width="40" height="22" rx="4"/>
+ <rect x="200" y="62" width="40" height="22" rx="4"/><rect x="200" y="90" width="40" height="22" rx="4" stroke="var(--red)" stroke-width="2.2"/>
+ <rect x="250" y="62" width="40" height="22" rx="4"/><rect x="250" y="90" width="40" height="22" rx="4" stroke="var(--red)" stroke-width="2.2"/>
+ </g>
+ <g class="lbl-s" text-anchor="middle"><text x="120" y="77">x₁⁰</text><text x="120" y="105" style="fill:var(--red)">x₁¹</text><text x="170" y="77" style="fill:var(--red)">x₂⁰</text><text x="170" y="105">x₂¹</text><text x="220" y="77">x₃⁰</text><text x="220" y="105" style="fill:var(--red)">x₃¹</text><text x="270" y="77">x₄⁰</text><text x="270" y="105" style="fill:var(--red)">x₄¹</text></g>
+ <text x="20" y="134" class="lbl-s">public key: H of each</text>
+ <text x="20" y="150" class="lbl-s">(8 hashes, published)</text>
+ <text x="20" y="190" class="lbl-b" style="fill:var(--red)">Signature = the four red secrets</text>
+ <text x="20" y="210" class="lbl-s">The verifier hashes them and checks the public hashes.</text>
+ <text x="20" y="232" class="lbl-s">Use the key once: the other four stay hidden.</text>
+ <text x="20" y="252" class="lbl-s">A second message reveals more of them.</text>
+ <text x="490" y="20" text-anchor="middle" class="lbl-b">Many keys, one public key (Merkle tree)</text>
+ <rect x="465" y="34" width="50" height="26" rx="5" fill="none" stroke="var(--violet)" stroke-width="2"/><text x="490" y="52" text-anchor="middle" class="lbl-b">root</text>
+ <line x1="490" y1="60" x2="430" y2="104" stroke="var(--muted)"/><line x1="490" y1="60" x2="550" y2="104" stroke="var(--muted)"/>
+ <rect x="405" y="104" width="50" height="26" rx="5" fill="none" stroke="var(--teal)" stroke-width="2"/><text x="430" y="122" text-anchor="middle" class="lbl-s" style="fill:var(--teal)">H(0,1)</text>
+ <rect x="525" y="104" width="50" height="26" rx="5" fill="none" stroke="var(--border)" stroke-width="1.5"/><text x="550" y="122" text-anchor="middle" class="lbl-s">H(2,3)</text>
+ <line x1="430" y1="130" x2="395" y2="176" stroke="var(--muted)"/><line x1="430" y1="130" x2="455" y2="176" stroke="var(--muted)"/>
+ <line x1="550" y1="130" x2="520" y2="176" stroke="var(--muted)"/><line x1="550" y1="130" x2="580" y2="176" stroke="var(--muted)"/>
+ <g class="lbl-s" text-anchor="middle">
+ <rect x="375" y="176" width="40" height="24" rx="4" fill="none" stroke="var(--border)"/><text x="395" y="192">key 0</text>
+ <rect x="435" y="176" width="40" height="24" rx="4" fill="none" stroke="var(--border)"/><text x="455" y="192">key 1</text>
+ <rect x="500" y="176" width="40" height="24" rx="4" fill="none" stroke="var(--red)" stroke-width="2.2"/><text x="520" y="192" style="fill:var(--red)">key 2</text>
+ <rect x="560" y="176" width="40" height="24" rx="4" fill="none" stroke="var(--teal)" stroke-width="2"/><text x="580" y="192" style="fill:var(--teal)">key 3</text>
+ </g>
+ <text x="490" y="232" text-anchor="middle" class="lbl-b">Prove key 2 belongs: give key 3 and H(0,1).</text>
+ <text x="490" y="252" text-anchor="middle" class="lbl-s">Two hashes rebuild the root. Four keys, a path of two.</text>
+ <text x="320" y="296" text-anchor="middle" class="lbl-s">The only thing either picture relies on is that the hash cannot be run backwards.</text>
+ </svg></div>
+ <figcaption><strong>A signature can be made of secrets that you reveal once.</strong> Left: signing a 4-bit digest reveals one secret from each pair. Right: a tree of hashes lets one short public key stand for many one-time keys. A real scheme uses 256-bit digests and much taller trees, but the idea is exactly this.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>Every signature scheme so far in this course leaned on a hard <em>algebraic</em> problem, factoring or a discrete logarithm, and that is exactly what Shor&#39;s algorithm attacks. There is a way to sign that leans on nothing but a hash function. Leslie Lamport described it in 1979: for each bit of the message digest you publish the hashes of two secrets, and to sign you reveal the one secret that matches the bit. Anyone can hash what you revealed and check it against what you published. A forger would have to produce a secret for the opposite bit, which means inverting the hash.</p>
+ <p>The catch is in the name. The key is good for <strong>one</strong> signature, because each signature uses up half the secrets. To sign many messages you build a tree: Ralph Merkle&#39;s idea of hashing the public keys together pair by pair, up to a single root that becomes the one public key. To sign with key number k you include a short path of hashes that proves key k hangs under the root.</p>
+ <p>The strength of this approach is that its security is as old and as well studied as the hash function itself. Against a quantum computer, a hash loses only the square-root factor of topic 02, which a large enough digest absorbs. NIST chose this family as the conservative backup to the lattice signature, in FIPS 205.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p><strong>Lamport signatures.</strong> For an n-bit digest, the private key is 2n random secrets x<sub>i</sub><sup>0</sup>, x<sub>i</sub><sup>1</sup> and the public key is their hashes H(x<sub>i</sub><sup>b</sup>). To sign a digest with bits b<sub>1</sub>&hellip;b<sub>n</sub>, reveal x<sub>i</sub><sup>b<sub>i</sub></sup> for each i. A verifier recomputes each hash and compares. For n = 8 the key has 16 secrets and a signature reveals 8 of them; signing a second message whose digest differs in some positions reveals the other secret at those positions, and from then on a forger can mix the revealed values to sign messages whose digests agree with what has been exposed. The toy confirms that a signature verifies for the message it signs and fails for another message.</p>
+ <p><strong>Merkle trees.</strong> A tree of height h holds 2<sup>h</sup> one-time keys under one root. For h = 2 (four keys) a proof for key 2 is the two hashes H(key 3) and H(key 0, key 1) and the verifier recomputes the root in two steps. For h = 10 the tree holds 1,024 one-time keys, so one 32-byte public key can stand for 1,024 signatures, each carrying a path of 10 hashes.</p>
+ <p><strong>What it costs.</strong> The signature carries the revealed secrets and the path, so it is large. In the SLH-DSA-SHA2-128s parameter set of FIPS 205 the public key is 32 bytes and a signature is 7,856 bytes, about 123 times the 64 bytes of an ECDSA P-256 signature. It is also slow to produce. The designs trade size and speed for the smallest possible assumption.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Firmware and software signing</span>
+      Stateful hash-based schemes, LMS (RFC 8554) and XMSS (RFC 8391), are specified for exactly the case that cannot wait: a device signed once at the factory that must still verify its updates in twenty years. The &ldquo;stateful&rdquo; part is a real hazard, since reusing a one-time key breaks the scheme, which is why the stateless SLH-DSA (SPHINCS+) exists.</p>
+ <p><span class="where">The honest comparison</span>
+      Hash-based signatures are the right answer when you want the weakest assumption and can live with kilobytes. Lattice signatures (ML-DSA, 3,309 bytes at level 65) are smaller and faster and rest on a newer assumption. Standards now offer both, and a careful migration plan uses the choice on purpose.</p>
+ </div>
+</section>
+</div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">A Lamport one-time signature reveals one secret from each pair. Why must the key be used only once?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>The key becomes too long to store.</button>
+<button type="button" data-opt>The hash function wears out with use.</button>
+<button type="button" data-opt>Each signature uses up half the secrets, and a second one reveals more that a forger can combine.</button>
+<button type="button" data-opt>The public key changes every time it is used.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Signing reveals one secret per position. A second message with a different digest reveals the other secret at the positions where the digests differ, and a forger can then assemble signatures for other messages from the revealed values.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
+<div class="cp-out"><a href="crypto-10.html">Next: migrating without breaking everything ▸</a>
+ <a href="crypto-08.html">Previous: lattices ▸</a>
+ <a href="pqc.html#proof">The Proof: run these algorithms yourself ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="crypto-08.html"><span>Previous topic</span>08 &middot; Why lattices resist, and what they cost</a><a class="cp-nx" href="crypto-10.html"><span>Next topic</span>10 &middot; Migrating without breaking everything</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

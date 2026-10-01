@@ -36,7 +36,7 @@
   "s": {
    "name": "Post-quantum security",
    "hub": "track-security.html",
-   "cap": 52
+   "cap": 72
   }
  },
  "pages": {
@@ -57,7 +57,8 @@
  },
  "kinds": {
   "machinery": "q",
-  "region": "o"
+  "region": "o",
+  "crypto": "s"
  },
  "ladders": {
   "golf": {
@@ -131,7 +132,8 @@
   },
   "topics": {
    "machinery": 20,
-   "region": 24
+   "region": 24,
+   "crypto": 10
   },
   "ladders": {
    "golf": 9,

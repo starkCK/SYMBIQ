@@ -270,7 +270,7 @@
     var p = String(page || '').split('#')[0];
     if (!RULES) return null;
     if (RULES.pages[p]) return RULES.pages[p];
-    var m = /^(machinery|region)-\d\d\.html$/.exec(p);
+    var m = /^(machinery|region|crypto)-\d\d\.html$/.exec(p);
     return m ? RULES.kinds[m[1]] : null;
   };
 
@@ -293,7 +293,7 @@
   };
 
   var DAY = 86400000, STEPS = [1, 3, 7, 21];
-  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete', 'qday-complete'];
+  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete', 'qday-complete', 'crypto-complete'];
   P.codexKeys = CODEX_KEYS.slice();
   function saved() { var S = W.SymbiQ.save; return (S && S.data) ? S.data() : raw(); }
   P.codex = function (now) {
@@ -1284,7 +1284,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   var data;
   try { data = JSON.parse(D.getElementById('descent-data').textContent); } catch (e) { return; }
 
-  var TOPIC = /^(machinery|region)-\d\d\.html$/;
+  var TOPIC = /^(machinery|region|crypto)-\d\d\.html$/;
   var topics = Object.keys(seen).filter(function (p) { return TOPIC.test(p); }).length;
   var deepest = -1;
   data.layers.forEach(function (l, i) {

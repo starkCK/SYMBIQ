@@ -56,7 +56,7 @@
 <meta name="twitter:description" content="Will your systems survive a quantum computer, and by when to migrate? A module map: lessons in order, time at each depth, one next step.">
 <meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-track-security.jpg">
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
-<link rel="stylesheet" href="p/track-security.css?v=5">
+<link rel="stylesheet" href="p/track-security.css?v=6">
 
 
 
@@ -70,7 +70,7 @@
 
 <script src="core.js?v=7"></script>
 <script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/track-security.js?v=11" defer></script>
+<script src="p/track-security.js?v=13" defer></script>
 
 
 
@@ -207,6 +207,11 @@
       <div class="navpanel2" id="np-secure" hidden>
         <div class="np-cols">
           <div class="np-col">
+            <p class="navhead">Learn the ideas</p>
+            <a href="crypto.html" class="navmain"><span class="q">How does cryptography work, before and after Shor?</span><span class="sub">Ten topics, every number checked</span></a>
+            <a href="crypto-07.html" class="navmain"><span class="q">What does Shor take, and what does it leave?</span><span class="sub">Three locks fall, two only dent</span></a>
+          </div>
+          <div class="np-col">
             <p class="navhead">Live tools</p>
             <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
             <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
@@ -258,7 +263,7 @@
 <div class="track-hub" data-track-hub="security">
 <h1>Post-quantum security</h1>
 <p class="tagline">Will your systems survive a quantum computer, and by when to migrate?</p>
-<p class="tr-trust">2 lessons, about <b>23 min</b> at Plain. Opened pages are remembered in this browser only.</p>
+<p class="tr-trust">2 lessons, 10 course topics, about <b>71 min</b> at Plain. Opened pages are remembered in this browser only.</p>
 
 <section class="tr-next" id="tr-next" aria-label="Your next step">
   <p class="tr-kicker" id="tr-kicker">Start here</p>
@@ -288,6 +293,110 @@
   <span class="tr-state" aria-live="polite"></span>
 </li>
 </ol>
+
+<h2 id="course">The course: Cryptography, before and after Shor</h2>
+<p class="tr-blurb">Keys, hashes and signatures from scratch, which ones a quantum computer opens, and what replaces them. <a class="tr-open" href="crypto.html">Open the course page</a>.</p>
+<details class="tr-group" data-group open>
+<summary><b>The foundations</b><span class="tr-gmeta">0 topics, about 0 min at Plain</span></summary>
+<ol class="tr-map tr-topics" start="3">
+
+</ol>
+</details>
+<details class="tr-group" data-group>
+<summary><b>Secrets</b> <span class="tr-gsub">Three topics: what keeps a secret, and what a quantum computer does to the cheap half</span><span class="tr-gmeta">3 topics, about 14 min at Plain</span></summary>
+<ol class="tr-map tr-topics" start="3">
+<li class="tr-mod" data-page="crypto-01.html" data-after="bitcoin.html" data-min='{"g":5,"y":5,"r":5}' data-title="What a secret needs to survive">
+  <span class="tr-num" aria-hidden="true">3</span>
+  <div class="tr-body">
+    <h3><a href="crypto-01.html">What a secret needs to survive</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: Can quantum break Bitcoin?</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-02.html" data-after="crypto-01.html" data-min='{"g":5,"y":5,"r":5}' data-title="Hashes, the fingerprints inside everything">
+  <span class="tr-num" aria-hidden="true">4</span>
+  <div class="tr-body">
+    <h3><a href="crypto-02.html">Hashes, the fingerprints inside everything</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: What a secret needs to survive</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-03.html" data-after="crypto-02.html" data-min='{"g":4,"y":4,"r":4}' data-title="Does a quantum computer break AES?">
+  <span class="tr-num" aria-hidden="true">5</span>
+  <div class="tr-body">
+    <h3><a href="crypto-03.html">Does a quantum computer break AES?</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 4 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: Hashes, the fingerprints inside everything</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+</ol>
+</details>
+<details class="tr-group" data-group>
+<summary><b>Public keys</b> <span class="tr-gsub">Three topics: the locks anyone can close, and the one weak point they share</span><span class="tr-gmeta">3 topics, about 14 min at Plain</span></summary>
+<ol class="tr-map tr-topics" start="6">
+<li class="tr-mod" data-page="crypto-04.html" data-after="crypto-03.html" data-min='{"g":5,"y":5,"r":5}' data-title="How two strangers agree on a secret">
+  <span class="tr-num" aria-hidden="true">6</span>
+  <div class="tr-body">
+    <h3><a href="crypto-04.html">How two strangers agree on a secret</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: Does a quantum computer break AES?</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-05.html" data-after="crypto-04.html" data-min='{"g":4,"y":4,"r":4}' data-title="RSA, and its one weak point">
+  <span class="tr-num" aria-hidden="true">7</span>
+  <div class="tr-body">
+    <h3><a href="crypto-05.html">RSA, and its one weak point</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 4 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: How two strangers agree on a secret</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-06.html" data-after="crypto-05.html" data-min='{"g":5,"y":5,"r":5}' data-title="What a signature or a certificate proves">
+  <span class="tr-num" aria-hidden="true">8</span>
+  <div class="tr-body">
+    <h3><a href="crypto-06.html">What a signature or a certificate proves</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: RSA, and its one weak point</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+</ol>
+</details>
+<details class="tr-group" data-group>
+<summary><b>After Shor</b> <span class="tr-gsub">Four topics: what falls, what replaces it, and how you move</span><span class="tr-gmeta">4 topics, about 20 min at Plain</span></summary>
+<ol class="tr-map tr-topics" start="9">
+<li class="tr-mod" data-page="crypto-07.html" data-after="crypto-06.html" data-min='{"g":5,"y":5,"r":5}' data-title="What Shor takes, and what it leaves">
+  <span class="tr-num" aria-hidden="true">9</span>
+  <div class="tr-body">
+    <h3><a href="crypto-07.html">What Shor takes, and what it leaves</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: What a signature or a certificate proves</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-08.html" data-after="crypto-07.html" data-min='{"g":5,"y":5,"r":5}' data-title="Why lattices resist, and what they cost">
+  <span class="tr-num" aria-hidden="true">10</span>
+  <div class="tr-body">
+    <h3><a href="crypto-08.html">Why lattices resist, and what they cost</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: What Shor takes, and what it leaves</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-09.html" data-after="crypto-08.html" data-min='{"g":5,"y":5,"r":5}' data-title="Signatures made from hashes alone">
+  <span class="tr-num" aria-hidden="true">11</span>
+  <div class="tr-body">
+    <h3><a href="crypto-09.html">Signatures made from hashes alone</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: Why lattices resist, and what they cost</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+<li class="tr-mod" data-page="crypto-10.html" data-after="crypto-09.html" data-min='{"g":5,"y":5,"r":5}' data-title="Migrating without breaking everything">
+  <span class="tr-num" aria-hidden="true">12</span>
+  <div class="tr-body">
+    <h3><a href="crypto-10.html">Migrating without breaking everything</a></h3>
+    <p class="tr-meta"><span class="tr-time" data-time>about 5 min at Plain</span> <span class="tr-dp">One depth</span> <span class="tr-after">After: Signatures made from hashes alone</span></p>
+  </div>
+  <span class="tr-state" aria-live="polite"></span>
+</li>
+</ol>
+</details>
 
 <section class="enddoors" data-tier-keep aria-label="Where to go next">
   <a href="quantum-mechanics.html#chsh"><span class="eyebrow">Prove it</span><b>The CHSH game: the physics key distribution rests on</b></a>

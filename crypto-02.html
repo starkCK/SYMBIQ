@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Hashes, the fingerprints inside everything · Learn · SymbiQ</title>
+<meta name="description" content="How can a function be one-way, and does a quantum computer undo it?. Cryptography, before and after Shor, topic 02 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/crypto-02.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/crypto-02.html">
+<meta property="og:title" content="Hashes, the fingerprints inside everything · SymbiQ">
+<meta property="og:description" content="How can a function be one-way, and does a quantum computer undo it?. Cryptography, before and after Shor, topic 02 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-02.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hashes, the fingerprints inside everything">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hashes, the fingerprints inside everything · SymbiQ">
+<meta name="twitter:description" content="How can a function be one-way, and does a quantum computer undo it?. Cryptography, before and after Shor, topic 02 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-02.jpg">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/crypto-02.css?v=1">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=7"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/crypto-02.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="L4" data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+            <a href="descent.html" class="navmain"><span class="q">Where does everything sit?</span><span class="sub">The whole site as a fridge: colder is deeper</span></a>
+            <a href="world.html" class="navmain"><span class="q">Can I drive around the site?</span><span class="sub">A small 3D town: every building is a part of SymbiQ</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="track-quantum-ai.html" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: the module map</span></a>
+            <a href="track-optimisation.html" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the module map</span></a>
+            <a href="track-security.html" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security: the module map</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+            <a href="play.html#survival" class="navmain"><span class="q">Surface Code Survival</span><span class="sub">Hold one logical qubit while the code grows</span></a>
+            <a href="play.html#qday" class="navmain"><span class="q">Q-Day Command</span><span class="sub">Order the migration before the machine arrives</span></a>
+            <a href="play.html#arena" class="navmain"><span class="q">Heuristic Arena</span><span class="sub">Seven search methods, one budget, a proven best answer</span></a>
+            <a href="play.html#strikes" class="navmain"><span class="q">Classical Strikes Back</span><span class="sub">Simulate the circuit on an ordinary computer, inside a budget</span></a>
+            <a href="play.html#agentlab" class="navmain"><span class="q">Agent Lab</span><span class="sub">Spend a budget on checking each step of an AI agent</span></a>
+            <a href="play.html#factory" class="navmain"><span class="q">Magic State Factory</span><span class="sub">Distil noisy states into clean ones for the least volume</span></a>
+            <a href="play.html#lattice" class="navmain"><span class="q">Lattice Heist</span><span class="sub">Find the shortest vector behind a skewed basis</span></a>
+            <a href="play.html#clockwork" class="navmain"><span class="q">Shor&#x27;s Clockwork</span><span class="sub">Build the shortest chain of multiplications that splits N</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="advantage.html" class="navmain"><span class="q">Did the advantage last?</span><span class="sub">Every claim, and the classical answer that followed</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+            <a href="open.html" class="navmain"><span class="q">What is still open?</span><span class="sub">Questions nobody has answered, and ones that only look open</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Learn the ideas</p>
+            <a href="crypto.html" class="navmain"><span class="q">How does cryptography work, before and after Shor?</span><span class="sub">Ten topics, every number checked</span></a>
+            <a href="crypto-07.html" class="navmain"><span class="q">What does Shor take, and what does it leave?</span><span class="sub">Three locks fall, two only dent</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Play the threat</p>
+            <a href="play.html#qday" class="navmain"><span class="q">Can you order the migration?</span><span class="sub">Q-Day Command: what goes first, before the date</span></a>
+            <a href="play.html#lattice" class="navmain"><span class="q">What is the lattice problem?</span><span class="sub">Lattice Heist: the idea under ML-KEM</span></a>
+            <a href="play.html#clockwork" class="navmain"><span class="q">What does Shor&#x27;s algorithm leave to do?</span><span class="sub">Shor&#x27;s Clockwork: the classical finish</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="crypto.html">Cryptography, before and after Shor</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Hashes, the fingerprints inside everything</span></div>
+
+<div class="course" id="c02" data-course data-page="crypto" data-mission="crypto-complete" data-count="10" data-topic="c02" data-id="c02">
+<header class="cp-head"><div class="eyebrow"><a href="crypto.html">Cryptography, before and after Shor</a> &middot; Topic 02 of 10 &middot; Secrets</div>
+<h1>Hashes, the fingerprints inside everything</h1>
+<p class="tagline">How can a function be one-way, and does a quantum computer undo it?</p></header>
+<ol class="cp-rail" aria-label="Topics in Cryptography, before and after Shor"><li><a href="crypto-01.html" data-id="c01" title="What a secret needs to survive">01</a></li><li><a href="crypto-02.html" data-id="c02" aria-current="page" title="Hashes, the fingerprints inside everything">02</a></li><li><a href="crypto-03.html" data-id="c03" title="Does a quantum computer break AES?">03</a></li><li><a href="crypto-04.html" data-id="c04" title="How two strangers agree on a secret">04</a></li><li><a href="crypto-05.html" data-id="c05" title="RSA, and its one weak point">05</a></li><li><a href="crypto-06.html" data-id="c06" title="What a signature or a certificate proves">06</a></li><li><a href="crypto-07.html" data-id="c07" title="What Shor takes, and what it leaves">07</a></li><li><a href="crypto-08.html" data-id="c08" title="Why lattices resist, and what they cost">08</a></li><li><a href="crypto-09.html" data-id="c09" title="Signatures made from hashes alone">09</a></li><li><a href="crypto-10.html" data-id="c10" title="Migrating without breaking everything">10</a></li></ol>
+<details class="cp-section"><summary>About this section: Secrets</summary>
+<p>Before the part that breaks, the part that does not. A secret needs a key and an open design, a fingerprint needs a one-way function, and both of those, the symmetric cipher and the hash, meet nothing worse than a square root.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 640 270" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Two sentences that differ in one letter, dog and cog, are passed through SHA-256. The first digest begins d7a8fbb3 and the second begins e4c4d8f3. The two 256-bit digests differ in 123 of their 256 bits. A row of 256 small cells is drawn for each digest with the differing positions shaded, roughly half of them. A note says one flipped bit of input flips about half of the output bits, on average 128, with a spread of about 8.">
+ <text x="20" y="34" class="lbl-s">The quick brown fox jumps over the lazy <tspan class="lbl-b">dog</tspan></text>
+ <text x="20" y="54" class="lbl-s">SHA-256 →  d7a8fbb3 07d78094 69ca9abc b0082e4f …</text>
+ <g id="rowA" fill="var(--muted)" opacity=".55">
+ <rect x="20" y="64" width="600" height="18" rx="3"/>
+ </g>
+ <text x="20" y="124" class="lbl-s">The quick brown fox jumps over the lazy <tspan class="lbl-b" style="fill:var(--red)">cog</tspan></text>
+ <text x="20" y="144" class="lbl-s">SHA-256 →  e4c4d8f3 bf76b692 de791a17 3e053211 …</text>
+ <g fill="var(--red)" opacity=".55">
+ <rect x="20" y="154" width="600" height="18" rx="3"/>
+ </g>
+ <g fill="var(--violet)"><rect x="24.69" y="64" width="2.34" height="18"/><rect x="27.03" y="64" width="2.34" height="18"/><rect x="34.06" y="64" width="2.34" height="18"/><rect x="36.41" y="64" width="2.34" height="18"/><rect x="41.09" y="64" width="2.34" height="18"/><rect x="43.44" y="64" width="2.34" height="18"/><rect x="48.12" y="64" width="2.34" height="18"/><rect x="50.47" y="64" width="2.34" height="18"/><rect x="62.19" y="64" width="2.34" height="18"/><rect x="71.56" y="64" width="2.34" height="18"/><rect x="73.91" y="64" width="2.34" height="18"/><rect x="78.59" y="64" width="2.34" height="18"/><rect x="95.00" y="64" width="2.34" height="18"/><rect x="99.69" y="64" width="2.34" height="18"/><rect x="102.03" y="64" width="2.34" height="18"/><rect x="104.38" y="64" width="2.34" height="18"/><rect x="113.75" y="64" width="2.34" height="18"/><rect x="118.44" y="64" width="2.34" height="18"/><rect x="130.16" y="64" width="2.34" height="18"/><rect x="137.19" y="64" width="2.34" height="18"/><rect x="139.53" y="64" width="2.34" height="18"/><rect x="144.22" y="64" width="2.34" height="18"/><rect x="146.56" y="64" width="2.34" height="18"/><rect x="162.97" y="64" width="2.34" height="18"/><rect x="165.31" y="64" width="2.34" height="18"/><rect x="170.00" y="64" width="2.34" height="18"/><rect x="174.69" y="64" width="2.34" height="18"/><rect x="177.03" y="64" width="2.34" height="18"/><rect x="181.72" y="64" width="2.34" height="18"/><rect x="184.06" y="64" width="2.34" height="18"/><rect x="186.41" y="64" width="2.34" height="18"/><rect x="188.75" y="64" width="2.34" height="18"/><rect x="193.44" y="64" width="2.34" height="18"/><rect x="195.78" y="64" width="2.34" height="18"/><rect x="202.81" y="64" width="2.34" height="18"/><rect x="205.16" y="64" width="2.34" height="18"/><rect x="207.50" y="64" width="2.34" height="18"/><rect x="226.25" y="64" width="2.34" height="18"/><rect x="230.94" y="64" width="2.34" height="18"/><rect x="235.62" y="64" width="2.34" height="18"/><rect x="240.31" y="64" width="2.34" height="18"/><rect x="242.66" y="64" width="2.34" height="18"/><rect x="245.00" y="64" width="2.34" height="18"/><rect x="254.38" y="64" width="2.34" height="18"/><rect x="256.72" y="64" width="2.34" height="18"/><rect x="259.06" y="64" width="2.34" height="18"/><rect x="273.12" y="64" width="2.34" height="18"/><rect x="275.47" y="64" width="2.34" height="18"/><rect x="280.16" y="64" width="2.34" height="18"/><rect x="289.53" y="64" width="2.34" height="18"/><rect x="291.88" y="64" width="2.34" height="18"/><rect x="294.22" y="64" width="2.34" height="18"/><rect x="303.59" y="64" width="2.34" height="18"/><rect x="308.28" y="64" width="2.34" height="18"/><rect x="310.62" y="64" width="2.34" height="18"/><rect x="312.97" y="64" width="2.34" height="18"/><rect x="315.31" y="64" width="2.34" height="18"/><rect x="320.00" y="64" width="2.34" height="18"/><rect x="322.34" y="64" width="2.34" height="18"/><rect x="327.03" y="64" width="2.34" height="18"/><rect x="329.38" y="64" width="2.34" height="18"/><rect x="331.72" y="64" width="2.34" height="18"/><rect x="336.41" y="64" width="2.34" height="18"/><rect x="338.75" y="64" width="2.34" height="18"/><rect x="343.44" y="64" width="2.34" height="18"/><rect x="355.16" y="64" width="2.34" height="18"/><rect x="357.50" y="64" width="2.34" height="18"/><rect x="359.84" y="64" width="2.34" height="18"/><rect x="362.19" y="64" width="2.34" height="18"/><rect x="364.53" y="64" width="2.34" height="18"/><rect x="371.56" y="64" width="2.34" height="18"/><rect x="376.25" y="64" width="2.34" height="18"/><rect x="380.94" y="64" width="2.34" height="18"/><rect x="392.66" y="64" width="2.34" height="18"/><rect x="395.00" y="64" width="2.34" height="18"/><rect x="397.34" y="64" width="2.34" height="18"/><rect x="402.03" y="64" width="2.34" height="18"/><rect x="404.38" y="64" width="2.34" height="18"/><rect x="411.41" y="64" width="2.34" height="18"/><rect x="416.09" y="64" width="2.34" height="18"/><rect x="420.78" y="64" width="2.34" height="18"/><rect x="423.12" y="64" width="2.34" height="18"/><rect x="434.84" y="64" width="2.34" height="18"/><rect x="439.53" y="64" width="2.34" height="18"/><rect x="441.88" y="64" width="2.34" height="18"/><rect x="444.22" y="64" width="2.34" height="18"/><rect x="446.56" y="64" width="2.34" height="18"/><rect x="448.91" y="64" width="2.34" height="18"/><rect x="451.25" y="64" width="2.34" height="18"/><rect x="460.62" y="64" width="2.34" height="18"/><rect x="472.34" y="64" width="2.34" height="18"/><rect x="474.69" y="64" width="2.34" height="18"/><rect x="479.38" y="64" width="2.34" height="18"/><rect x="481.72" y="64" width="2.34" height="18"/><rect x="484.06" y="64" width="2.34" height="18"/><rect x="486.41" y="64" width="2.34" height="18"/><rect x="491.09" y="64" width="2.34" height="18"/><rect x="493.44" y="64" width="2.34" height="18"/><rect x="495.78" y="64" width="2.34" height="18"/><rect x="498.12" y="64" width="2.34" height="18"/><rect x="500.47" y="64" width="2.34" height="18"/><rect x="505.16" y="64" width="2.34" height="18"/><rect x="507.50" y="64" width="2.34" height="18"/><rect x="512.19" y="64" width="2.34" height="18"/><rect x="514.53" y="64" width="2.34" height="18"/><rect x="516.88" y="64" width="2.34" height="18"/><rect x="521.56" y="64" width="2.34" height="18"/><rect x="528.59" y="64" width="2.34" height="18"/><rect x="530.94" y="64" width="2.34" height="18"/><rect x="533.28" y="64" width="2.34" height="18"/><rect x="540.31" y="64" width="2.34" height="18"/><rect x="542.66" y="64" width="2.34" height="18"/><rect x="547.34" y="64" width="2.34" height="18"/><rect x="554.38" y="64" width="2.34" height="18"/><rect x="561.41" y="64" width="2.34" height="18"/><rect x="575.47" y="64" width="2.34" height="18"/><rect x="580.16" y="64" width="2.34" height="18"/><rect x="584.84" y="64" width="2.34" height="18"/><rect x="587.19" y="64" width="2.34" height="18"/><rect x="594.22" y="64" width="2.34" height="18"/><rect x="605.94" y="64" width="2.34" height="18"/><rect x="610.62" y="64" width="2.34" height="18"/><rect x="612.97" y="64" width="2.34" height="18"/></g>
+ <text x="20" y="206" class="lbl-b">One changed letter: 123 of the 256 output bits differ.</text>
+ <text x="20" y="226" class="lbl-s">Each of the 256 cells is one output bit; the violet cells are the 123 bits that differ, in their exact positions.</text>
+ <text x="20" y="250" class="lbl-s">Over thousands of random one-bit changes the average is 128 bits flipped, with a spread of about 8.</text>
+ </svg></div>
+ <figcaption><strong>A hash is a fingerprint that changes completely when the input changes at all.</strong> The two digests above are the real SHA-256 values of the two sentences. They share no visible resemblance, and you cannot run the function backwards to learn which sentence produced one.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>A cryptographic hash turns any input, a word or a film, into a fixed-size digest, and it is built to make three things hard. <strong>Preimage resistance:</strong> given a digest, find any input that produces it. <strong>Second-preimage resistance:</strong> given an input, find a different one with the same digest. <strong>Collision resistance:</strong> find any two inputs with the same digest. The last is the easiest to break, because you are free to choose both inputs, and that freedom is the birthday effect: in a room of 23 people, the odds that two share a birthday pass one half, far sooner than most people guess.</p>
+ <p>Hashes sit inside nearly everything that matters here. A signature signs the hash of a message, not the message. A Merkle tree (topic 09) is built of hashes. A certificate is identified by its hash. Git names every commit by one. Bitcoin&#39;s mining is a hash puzzle.</p>
+ <p>What does a quantum computer do to this? Grover&#39;s algorithm turns a search through N possibilities into about the square root of N steps, so a preimage search for a 256-bit digest drops from about 2<sup>256</sup> to about 2<sup>128</sup> steps, which is still out of reach. Collisions already cost about 2<sup>128</sup> on a classical machine for a 256-bit digest. Quantum algorithms for collisions exist on paper, but they need an enormous quantum memory, and Daniel Bernstein argued in 2009 that once memory is priced in they save nothing over the classical attack. That is why the standard advice is short: keep your hashes, and prefer the longer ones.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p><strong>Avalanche.</strong> A good hash behaves as if each output bit flips independently with probability one half when the input changes. For a 256-bit digest the number of flipped bits is then binomial with mean 256 &times; 1/2 = 128 and standard deviation &radic;(256 &times; 1/4) = 8. Measured over 4,000 random one-bit input changes for SHA-256 the mean was 127.9 and the spread 8.0, and the single pair above happens to land at 123, about 0.6 of a standard deviation low.</p>
+ <p><strong>The birthday bound.</strong> Hash k inputs to n-bit digests. The chance of at least one collision is approximately</p>
+ <code class="eq">P(collision) ≈ 1 − e<sup>−k² / 2<sup>n+1</sup></sup>     reaches ½ at   k ≈ 1.1774 · 2<sup>n/2</sup></code>
+ <p>For a 32-bit digest that is about 77,163 hashes, well under a second on a laptop. For n = 256 it is about 2<sup>128</sup>. The cost of a collision is the square root of the size of the output space, which is the entire reason digests are chosen twice as long as the security they are meant to give.</p>
+ <p><strong>Grover on a preimage.</strong> Finding an input that hits one target digest among N = 2<sup>n</sup> candidates takes about (&pi;/4) &radic;N = (&pi;/4) 2<sup>n/2</sup> quantum steps, each a full hash evaluation run reversibly, and Bennett, Bernstein, Brassard and Vazirani proved in 1997 that no quantum algorithm can do better than the square root for unstructured search.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Everywhere a name must be tied to content</span>
+      SHA-256 and SHA-3 digests identify files, certificates and commits, and are fed into every signature scheme. NIST&#39;s post-quantum standards keep them: the hash-based signature in FIPS 205 is built from hashes alone, and the lattice signature in FIPS 204 uses SHAKE internally.</p>
+ <p><span class="where">Passwords are a different job</span>
+      A fast hash is the wrong tool for storing passwords, because speed helps the attacker. Password storage uses deliberately slow, memory-hungry functions (Argon2, bcrypt, scrypt). That is about brute force, not about quantum computers.</p>
+ <p><span class="where">The ruling</span>
+      A quantum computer does not threaten hashing in the way it threatens public-key cryptography. It halves the exponent of a preimage search. Choosing a 256-bit digest leaves 128 bits, and that is why the next topic and the rest of the course look elsewhere for the damage.</p>
+ </div>
+</section>
+</div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="2">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">You change one letter of the input to SHA-256. About how many of its 256 output bits will differ?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>Exactly one.</button>
+<button type="button" data-opt>About a dozen.</button>
+<button type="button" data-opt>About 128, roughly half of them.</button>
+<button type="button" data-opt>None, because the digest only depends on the length.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>A good hash flips each output bit with probability one half, so the count is about 128 with a spread of about 8. The dog and cog example differs in 123 bits, and thousands of random trials average 127.9.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
+<div class="cp-out"><a href="crypto-03.html">Next: does a quantum computer break AES? ▸</a>
+ <a href="crypto-01.html">Previous: what a secret needs to survive ▸</a>
+ <a href="play.html#grover">Play: Grover&#39;s Escape, the square root in your hands ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="crypto-01.html"><span>Previous topic</span>01 &middot; What a secret needs to survive</a><a class="cp-nx" href="crypto-03.html"><span>Next topic</span>03 &middot; Does a quantum computer break AES?</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

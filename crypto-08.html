@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
+<title>Why lattices resist, and what they cost · Learn · SymbiQ</title>
+<meta name="description" content="What does a quantum computer have no trick for, and what does the replacement weigh?. Cryptography, before and after Shor, topic 08 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<link rel="canonical" href="https://starkck.github.io/SYMBIQ/crypto-08.html">
+<script type="speculationrules">{
+  "prefetch": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "*.html"
+          },
+          {
+            "not": {
+              "selector_matches": "[data-no-speculate]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[target=_blank]"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download]"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SymbiQ">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://starkck.github.io/SYMBIQ/crypto-08.html">
+<meta property="og:title" content="Why lattices resist, and what they cost · SymbiQ">
+<meta property="og:description" content="What does a quantum computer have no trick for, and what does the replacement weigh?. Cryptography, before and after Shor, topic 08 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<meta property="og:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-08.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Why lattices resist, and what they cost">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why lattices resist, and what they cost · SymbiQ">
+<meta name="twitter:description" content="What does a quantum computer have no trick for, and what does the replacement weigh?. Cryptography, before and after Shor, topic 08 of 10: a picture, the intuition, the mathematics, and where it runs.">
+<meta name="twitter:image" content="https://starkck.github.io/SYMBIQ/og/p-crypto-08.jpg">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-wght-normal.woff2" crossorigin>
+<link rel="stylesheet" href="p/crypto-08.css?v=1">
+
+
+
+
+
+
+
+
+
+
+
+<script src="core.js?v=7"></script>
+<script src="save.js"></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
+<script src="p/crypto-08.js?v=1" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body data-motion data-rails class="fr" data-rung="L4" data-alive data-glass>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <ellipse cx="280" cy="280" rx="170" ry="55" fill="none" stroke="#2DD4BF" stroke-width="24" transform="rotate(45 280 280)"/>
+      <path d="M 336.2 360.3 A 140 140 0 0 1 281.5 386.4" fill="none" stroke="#8B5CF6" stroke-width="30"/>
+      <circle cx="250" cy="110" r="16" fill="#2DD4BF"/>
+      <circle cx="400" cy="400" r="16" fill="#8B5CF6"/>
+    </svg>
+    symbiq
+  </a>
+  <ul class="navtabs" id="navtabs">
+    <li class="navtab" data-tab="learn">
+      <a class="navtab-link cur" href="learn.html">Learn</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-learn" aria-label="Learn: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-learn" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Start</p>
+            <a href="basics.html" class="navmain"><span class="q">What is quantum computing?</span><span class="sub">Two minutes, zero equations</span></a>
+            <a href="inside.html" class="navmain"><span class="q">What is inside the machine?</span><span class="sub">Rotate it in 3D, then open it to the junction</span></a>
+            <a href="circuits.html" class="navmain"><span class="q">What is a qubit made of?</span><span class="sub">The circuit underneath everything else</span></a>
+            <a href="glossary.html" class="navmain"><span class="q">What does that word mean?</span><span class="sub">Every term, and the page that explains it</span></a>
+            <a href="descent.html" class="navmain"><span class="q">Where does everything sit?</span><span class="sub">The whole site as a fridge: colder is deeper</span></a>
+            <a href="world.html" class="navmain"><span class="q">Can I drive around the site?</span><span class="sub">A small 3D town: every building is a part of SymbiQ</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Three tracks</p>
+            <a href="track-quantum-ai.html" class="navmain"><span class="q">Will quantum boost AI?</span><span class="sub">Quantum × AI: the module map</span></a>
+            <a href="track-optimisation.html" class="navmain"><span class="q">Can classical beat quantum here?</span><span class="sub">Optimisation: the module map</span></a>
+            <a href="track-security.html" class="navmain"><span class="q">Will quantum break my encryption?</span><span class="sub">Post-quantum security: the module map</span></a>
+            <a href="learn.html" class="navmain"><span class="q">Where do I go next?</span><span class="sub">The course map, in reading order</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Full courses</p>
+            <a href="formalism.html" class="navmain"><span class="q">The Machinery</span><span class="sub">Postulates and proofs, 20 topics</span></a>
+            <a href="feasible.html" class="navmain"><span class="q">The Feasible Region</span><span class="sub">Operations research, 24 topics</span></a>
+            <a href="qec.html" class="navmain"><span class="q">What is error correction?</span><span class="sub">The door AI walked in through</span></a>
+            <a href="logical-qubit.html" class="navmain"><span class="q">What is a logical qubit?</span><span class="sub">Why 1,000 qubits make 1</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="basics.html"><span class="eyebrow">Start here</span><b>What is quantum computing, in two minutes?</b><span class="sub">No equations, one analogy.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="play">
+      <a class="navtab-link" href="playhub.html">Play</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-play" aria-label="Play: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-play" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Play now</p>
+            <a href="journey.html" class="navmain"><span class="q">The Solver&#x27;s Path</span><span class="sub">The main quest: story, map, missions</span></a>
+            <a href="play.html" class="navmain"><span class="q">The Arcade</span><span class="sub">Every game, free play, no story</span></a>
+            <a href="play.html#contract-card" class="navmain"><span class="q">Today&#x27;s challenge</span><span class="sub">One seeded puzzle a day, one shareable grid</span></a>
+            <a href="archive.html" class="navmain"><span class="q">The Question archive</span><span class="sub">Every question we&#x27;ve ever asked</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Head to head</p>
+            <a href="play.html#grover" class="navmain"><span class="q">Grover&#x27;s Escape</span><span class="sub">Find the exit, and race a classical searcher</span></a>
+            <a href="play.html#maxcut" class="navmain"><span class="q">Max-Cut</span><span class="sub">Split the city; race the computer</span></a>
+            <a href="qec.html#duel" class="navmain"><span class="q">The Decoder Duel</span><span class="sub">You are the AI, against the textbook decoder</span></a>
+            <a href="play.html#qttt" class="navmain"><span class="q">Quantum Tic-Tac-Toe</span><span class="sub">Two players, every move in two squares</span></a>
+            <a href="play.html#survival" class="navmain"><span class="q">Surface Code Survival</span><span class="sub">Hold one logical qubit while the code grows</span></a>
+            <a href="play.html#qday" class="navmain"><span class="q">Q-Day Command</span><span class="sub">Order the migration before the machine arrives</span></a>
+            <a href="play.html#arena" class="navmain"><span class="q">Heuristic Arena</span><span class="sub">Seven search methods, one budget, a proven best answer</span></a>
+            <a href="play.html#strikes" class="navmain"><span class="q">Classical Strikes Back</span><span class="sub">Simulate the circuit on an ordinary computer, inside a budget</span></a>
+            <a href="play.html#agentlab" class="navmain"><span class="q">Agent Lab</span><span class="sub">Spend a budget on checking each step of an AI agent</span></a>
+            <a href="play.html#factory" class="navmain"><span class="q">Magic State Factory</span><span class="sub">Distil noisy states into clean ones for the least volume</span></a>
+            <a href="play.html#lattice" class="navmain"><span class="q">Lattice Heist</span><span class="sub">Find the shortest vector behind a skewed basis</span></a>
+            <a href="play.html#clockwork" class="navmain"><span class="q">Shor&#x27;s Clockwork</span><span class="sub">Build the shortest chain of multiplications that splits N</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Build and keep</p>
+            <a href="play.html#workshop" class="navmain"><span class="q">The Workshop</span><span class="sub">Build a hole; the search sets its par</span></a>
+            <a href="play.html#medals-card" class="navmain"><span class="q">Your medals</span><span class="sub">Every level you cleared, and how well</span></a>
+            <a href="play.html#golf" class="navmain"><span class="q">Circuit Golf</span><span class="sub">Reach the target with the fewest gates</span></a>
+            <a href="play.html#volcano" class="navmain"><span class="q">The Annealing Volcano</span><span class="sub">You are the temperature</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="journey.html"><span class="eyebrow">The main quest</span><b>The Solver&#x27;s Path</b><span class="sub">Story, map and missions, saved in your browser.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="check">
+      <a class="navtab-link" href="check.html">Check</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-check" aria-label="Check: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-check" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Claims</p>
+            <a href="reality.html" class="navmain"><span class="q">Was that real physics?</span><span class="sub">The swipe deck: scenes, myths, viral claims</span></a>
+            <a href="ledger.html" class="navmain"><span class="q">Did they do what they said?</span><span class="sub">Every tracked claim, scored on its deadline</span></a>
+            <a href="standing.html" class="navmain"><span class="q">How good are my predictions?</span><span class="sub">Your proofs and predictions, scored honestly</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The race</p>
+            <a href="race.html" class="navmain"><span class="q">Who is actually ahead?</span><span class="sub">The scoreboard, and the desk&#x27;s own forecasts</span></a>
+            <a href="advantage.html" class="navmain"><span class="q">Did the advantage last?</span><span class="sub">Every claim, and the classical answer that followed</span></a>
+            <a href="race.html#threshold" class="navmain"><span class="q">What is the number that matters?</span><span class="sub">The threshold, live</span></a>
+            <a href="signals.html" class="navmain"><span class="q">What just happened?</span><span class="sub">Desk notes: dated, written by hand</span></a>
+            <a href="open.html" class="navmain"><span class="q">What is still open?</span><span class="sub">Questions nobody has answered, and ones that only look open</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Our own record</p>
+            <a href="corrections.html" class="navmain"><span class="q">Where were we wrong?</span><span class="sub">Every mistake, logged and dated</span></a>
+            <a href="how-we-check.html" class="navmain"><span class="q">How do you check a number?</span><span class="sub">What catches errors, and what it misses</span></a>
+            <a href="changelog.html" class="navmain"><span class="q">What changed?</span><span class="sub">Claims, corrections, notes and builds</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="reality.html"><span class="eyebrow">Reality Check</span><b>How much physics was in that scene?</b><span class="sub">Movie scenes, myths and viral claims, rated.</span></a>
+      </div>
+    </li>
+    <li class="navtab" data-tab="secure">
+      <a class="navtab-link" href="secure.html">Secure</a>
+      <button class="navtab-arrow" type="button" aria-expanded="false" aria-controls="np-secure" aria-label="Secure: open menu"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="navpanel2" id="np-secure" hidden>
+        <div class="np-cols">
+          <div class="np-col">
+            <p class="navhead">Learn the ideas</p>
+            <a href="crypto.html" class="navmain"><span class="q">How does cryptography work, before and after Shor?</span><span class="sub">Ten topics, every number checked</span></a>
+            <a href="crypto-07.html" class="navmain"><span class="q">What does Shor take, and what does it leave?</span><span class="sub">Three locks fall, two only dent</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Live tools</p>
+            <a href="pqc.html#quickcheck" class="navmain"><span class="q">Quick Check</span><span class="sub">One paste, one answer</span></a>
+            <a href="pqc.html#cliff" class="navmain"><span class="q">The Size Cliff</span><span class="sub">What post-quantum actually costs in bytes</span></a>
+            <a href="pqc.html#inventory" class="navmain"><span class="q">The Inventory</span><span class="sub">Read your own certificates and keys</span></a>
+            <a href="pqc.html#proof" class="navmain"><span class="q">The Proof</span><span class="sub">Run ML-KEM and ML-DSA yourself</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">The argument</p>
+            <a href="bitcoin.html" class="navmain"><span class="q">Can quantum break Bitcoin?</span><span class="sub">The numbers, not the panic</span></a>
+            <a href="pqc.html#qkd" class="navmain"><span class="q">Isn&#x27;t QKD the actual fix?</span><span class="sub">Short answer: not for this</span></a>
+            <a href="pqc.html#mosca" class="navmain"><span class="q">Is it too late to start?</span><span class="sub">Mosca&#x27;s inequality, with your numbers</span></a>
+          </div>
+          <div class="np-col">
+            <p class="navhead">Play the threat</p>
+            <a href="play.html#qday" class="navmain"><span class="q">Can you order the migration?</span><span class="sub">Q-Day Command: what goes first, before the date</span></a>
+            <a href="play.html#lattice" class="navmain"><span class="q">What is the lattice problem?</span><span class="sub">Lattice Heist: the idea under ML-KEM</span></a>
+            <a href="play.html#clockwork" class="navmain"><span class="q">What does Shor&#x27;s algorithm leave to do?</span><span class="sub">Shor&#x27;s Clockwork: the classical finish</span></a>
+          </div>
+        </div>
+        <a class="np-feature" href="pqc.html#quickcheck"><span class="eyebrow">Quick Check</span><b>Is this endpoint quantum-safe?</b><span class="sub">One paste, one answer.</span></a>
+      </div>
+    </li>
+  </ul>
+  <div class="navright">
+    <a class="nav-search" href="#search" aria-label="Search the site (press /)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><kbd aria-hidden="true">/</kbd></a>
+    <a class="nav-continue" href="journey.html" hidden>Continue</a>
+    <div class="nav-you" data-you>
+      <button class="you-btn" type="button" aria-expanded="false" aria-controls="np-you" aria-label="You: progress and saved data"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="you-label">You</span></button>
+      <div class="navpanel2 np-you" id="np-you" hidden>
+        <div class="you-progress" aria-live="polite"><p class="sub">Nothing here yet. Play a game or start the Path, and your progress shows up here, saved in this browser only.</p></div>
+        <a href="journey.html#codex" class="navmain"><span class="q">Codex</span><span class="sub">Fragments you have earned</span></a>
+        <a href="play.html#medals-card" class="navmain"><span class="q">Medals</span><span class="sub">Every level you cleared, and how well</span></a>
+        <a href="journey.html#carry" class="navmain"><span class="q">Save code</span><span class="sub">Move your progress to another device</span></a>
+        <a href="about.html" class="navmain"><span class="q">About the desk</span><span class="sub">Who writes this, and how it gets checked</span></a>
+        <a href="privacy.html" class="navmain"><span class="q">Privacy</span><span class="sub">What this site stores, and where</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<nav class="tabbar" aria-label="Sections">
+  <a href="index.html" data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Home</span></a>
+  <a href="learn.html" data-tab="learn" class="cur"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Learn</span></a>
+  <a href="playhub.html" data-tab="play"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Play</span></a>
+  <a href="check.html" data-tab="check"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.2 12.3 2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check</span></a>
+  <a href="secure.html" data-tab="secure"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.3 7 9 4.1-1.7 7-4.8 7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Secure</span></a>
+</nav>
+<div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="learn.html">Learn</a><span aria-hidden="true"> &rsaquo; </span><a href="crypto.html">Cryptography, before and after Shor</a><span aria-hidden="true"> &rsaquo; </span><span aria-current="page">Why lattices resist, and what they cost</span></div>
+
+<div class="course" id="c08" data-course data-page="crypto" data-mission="crypto-complete" data-count="10" data-topic="c08" data-id="c08">
+<header class="cp-head"><div class="eyebrow"><a href="crypto.html">Cryptography, before and after Shor</a> &middot; Topic 08 of 10 &middot; After Shor</div>
+<h1>Why lattices resist, and what they cost</h1>
+<p class="tagline">What does a quantum computer have no trick for, and what does the replacement weigh?</p></header>
+<ol class="cp-rail" aria-label="Topics in Cryptography, before and after Shor"><li><a href="crypto-01.html" data-id="c01" title="What a secret needs to survive">01</a></li><li><a href="crypto-02.html" data-id="c02" title="Hashes, the fingerprints inside everything">02</a></li><li><a href="crypto-03.html" data-id="c03" title="Does a quantum computer break AES?">03</a></li><li><a href="crypto-04.html" data-id="c04" title="How two strangers agree on a secret">04</a></li><li><a href="crypto-05.html" data-id="c05" title="RSA, and its one weak point">05</a></li><li><a href="crypto-06.html" data-id="c06" title="What a signature or a certificate proves">06</a></li><li><a href="crypto-07.html" data-id="c07" title="What Shor takes, and what it leaves">07</a></li><li><a href="crypto-08.html" data-id="c08" aria-current="page" title="Why lattices resist, and what they cost">08</a></li><li><a href="crypto-09.html" data-id="c09" title="Signatures made from hashes alone">09</a></li><li><a href="crypto-10.html" data-id="c10" title="Migrating without breaking everything">10</a></li></ol>
+<details class="cp-section"><summary>About this section: After Shor</summary>
+<p>What Shor&#39;s algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they weigh, and the order in which a real system moves. This is the section the tools on the post-quantum page put into practice.</p>
+</details>
+<div class="cp-stepper" role="group" aria-label="Steps in this topic"><button type="button" data-step="see"><b>1</b> See</button><button type="button" data-step="intuition"><b>2</b> Intuition</button><button type="button" data-step="maths"><b>3</b> Maths</button><button type="button" data-step="runs"><b>4</b> Where it runs</button></div>
+<div class="cp-steps">
+<section class="cp-step" id="step-see" data-step="see">
+<div class="layer see">
+ <h4 aria-level="3">See it</h4>
+ <figure class="modfig">
+ <div class="modscroll"><svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="The same lattice of points drawn twice. The lattice is every whole-number combination of the vectors (3, 1) and (minus 1, 3). On the left it is shown with a bad basis, two long nearly parallel vectors (minus 2, 16) and (minus 1, 13): from these the short vectors are hard to see. On the right it is shown with a good basis, the short nearly perpendicular vectors (3, 1) and (minus 1, 3), whose lengths are about 3.2. Both bases have a determinant of magnitude 10, so they generate exactly the same set of points. A caption underneath says that finding a short vector from the bad basis is the hard problem, and that in two dimensions a school method does it while in hundreds of dimensions nobody knows a fast method.">
+ <text x="150" y="20" text-anchor="middle" class="lbl-b">A bad basis of the lattice</text>
+ <text x="490" y="20" text-anchor="middle" class="lbl-b">A good basis of the same lattice</text>
+ <g fill="var(--muted)" opacity=".7"><circle cx="10.00" cy="275.00" r="2.1"/><circle cx="10.00" cy="187.50" r="2.1"/><circle cx="10.00" cy="100.00" r="2.1"/><circle cx="18.75" cy="301.25" r="2.1"/><circle cx="18.75" cy="213.75" r="2.1"/><circle cx="18.75" cy="126.25" r="2.1"/><circle cx="18.75" cy="38.75" r="2.1"/><circle cx="27.50" cy="240.00" r="2.1"/><circle cx="27.50" cy="152.50" r="2.1"/><circle cx="27.50" cy="65.00" r="2.1"/><circle cx="36.25" cy="266.25" r="2.1"/><circle cx="36.25" cy="178.75" r="2.1"/><circle cx="36.25" cy="91.25" r="2.1"/><circle cx="45.00" cy="292.50" r="2.1"/><circle cx="45.00" cy="205.00" r="2.1"/><circle cx="45.00" cy="117.50" r="2.1"/><circle cx="45.00" cy="30.00" r="2.1"/><circle cx="53.75" cy="231.25" r="2.1"/><circle cx="53.75" cy="143.75" r="2.1"/><circle cx="53.75" cy="56.25" r="2.1"/><circle cx="62.50" cy="257.50" r="2.1"/><circle cx="62.50" cy="170.00" r="2.1"/><circle cx="62.50" cy="82.50" r="2.1"/><circle cx="71.25" cy="283.75" r="2.1"/><circle cx="71.25" cy="196.25" r="2.1"/><circle cx="71.25" cy="108.75" r="2.1"/><circle cx="80.00" cy="310.00" r="2.1"/><circle cx="80.00" cy="222.50" r="2.1"/><circle cx="80.00" cy="135.00" r="2.1"/><circle cx="80.00" cy="47.50" r="2.1"/><circle cx="88.75" cy="248.75" r="2.1"/><circle cx="88.75" cy="161.25" r="2.1"/><circle cx="88.75" cy="73.75" r="2.1"/><circle cx="97.50" cy="275.00" r="2.1"/><circle cx="97.50" cy="187.50" r="2.1"/><circle cx="97.50" cy="100.00" r="2.1"/><circle cx="106.25" cy="301.25" r="2.1"/><circle cx="106.25" cy="213.75" r="2.1"/><circle cx="106.25" cy="126.25" r="2.1"/><circle cx="106.25" cy="38.75" r="2.1"/><circle cx="115.00" cy="240.00" r="2.1"/><circle cx="115.00" cy="152.50" r="2.1"/><circle cx="115.00" cy="65.00" r="2.1"/><circle cx="123.75" cy="266.25" r="2.1"/><circle cx="123.75" cy="178.75" r="2.1"/><circle cx="123.75" cy="91.25" r="2.1"/><circle cx="132.50" cy="292.50" r="2.1"/><circle cx="132.50" cy="205.00" r="2.1"/><circle cx="132.50" cy="117.50" r="2.1"/><circle cx="132.50" cy="30.00" r="2.1"/><circle cx="141.25" cy="231.25" r="2.1"/><circle cx="141.25" cy="143.75" r="2.1"/><circle cx="141.25" cy="56.25" r="2.1"/><circle cx="150.00" cy="257.50" r="2.1"/><circle cx="150.00" cy="170.00" r="2.1"/><circle cx="150.00" cy="82.50" r="2.1"/><circle cx="158.75" cy="283.75" r="2.1"/><circle cx="158.75" cy="196.25" r="2.1"/><circle cx="158.75" cy="108.75" r="2.1"/><circle cx="167.50" cy="310.00" r="2.1"/><circle cx="167.50" cy="222.50" r="2.1"/><circle cx="167.50" cy="135.00" r="2.1"/><circle cx="167.50" cy="47.50" r="2.1"/><circle cx="176.25" cy="248.75" r="2.1"/><circle cx="176.25" cy="161.25" r="2.1"/><circle cx="176.25" cy="73.75" r="2.1"/><circle cx="185.00" cy="275.00" r="2.1"/><circle cx="185.00" cy="187.50" r="2.1"/><circle cx="185.00" cy="100.00" r="2.1"/><circle cx="193.75" cy="301.25" r="2.1"/><circle cx="193.75" cy="213.75" r="2.1"/><circle cx="193.75" cy="126.25" r="2.1"/><circle cx="193.75" cy="38.75" r="2.1"/><circle cx="202.50" cy="240.00" r="2.1"/><circle cx="202.50" cy="152.50" r="2.1"/><circle cx="202.50" cy="65.00" r="2.1"/><circle cx="211.25" cy="266.25" r="2.1"/><circle cx="211.25" cy="178.75" r="2.1"/><circle cx="211.25" cy="91.25" r="2.1"/><circle cx="220.00" cy="292.50" r="2.1"/><circle cx="220.00" cy="205.00" r="2.1"/><circle cx="220.00" cy="117.50" r="2.1"/><circle cx="220.00" cy="30.00" r="2.1"/><circle cx="228.75" cy="231.25" r="2.1"/><circle cx="228.75" cy="143.75" r="2.1"/><circle cx="228.75" cy="56.25" r="2.1"/><circle cx="237.50" cy="257.50" r="2.1"/><circle cx="237.50" cy="170.00" r="2.1"/><circle cx="237.50" cy="82.50" r="2.1"/><circle cx="246.25" cy="283.75" r="2.1"/><circle cx="246.25" cy="196.25" r="2.1"/><circle cx="246.25" cy="108.75" r="2.1"/><circle cx="255.00" cy="310.00" r="2.1"/><circle cx="255.00" cy="222.50" r="2.1"/><circle cx="255.00" cy="135.00" r="2.1"/><circle cx="255.00" cy="47.50" r="2.1"/><circle cx="263.75" cy="248.75" r="2.1"/><circle cx="263.75" cy="161.25" r="2.1"/><circle cx="263.75" cy="73.75" r="2.1"/><circle cx="272.50" cy="275.00" r="2.1"/><circle cx="272.50" cy="187.50" r="2.1"/><circle cx="272.50" cy="100.00" r="2.1"/><circle cx="281.25" cy="301.25" r="2.1"/><circle cx="281.25" cy="213.75" r="2.1"/><circle cx="281.25" cy="126.25" r="2.1"/><circle cx="281.25" cy="38.75" r="2.1"/><circle cx="290.00" cy="240.00" r="2.1"/><circle cx="290.00" cy="152.50" r="2.1"/><circle cx="290.00" cy="65.00" r="2.1"/></g>
+ <g fill="var(--muted)" opacity=".7"><circle cx="350.00" cy="275.00" r="2.1"/><circle cx="350.00" cy="187.50" r="2.1"/><circle cx="350.00" cy="100.00" r="2.1"/><circle cx="358.75" cy="301.25" r="2.1"/><circle cx="358.75" cy="213.75" r="2.1"/><circle cx="358.75" cy="126.25" r="2.1"/><circle cx="358.75" cy="38.75" r="2.1"/><circle cx="367.50" cy="240.00" r="2.1"/><circle cx="367.50" cy="152.50" r="2.1"/><circle cx="367.50" cy="65.00" r="2.1"/><circle cx="376.25" cy="266.25" r="2.1"/><circle cx="376.25" cy="178.75" r="2.1"/><circle cx="376.25" cy="91.25" r="2.1"/><circle cx="385.00" cy="292.50" r="2.1"/><circle cx="385.00" cy="205.00" r="2.1"/><circle cx="385.00" cy="117.50" r="2.1"/><circle cx="385.00" cy="30.00" r="2.1"/><circle cx="393.75" cy="231.25" r="2.1"/><circle cx="393.75" cy="143.75" r="2.1"/><circle cx="393.75" cy="56.25" r="2.1"/><circle cx="402.50" cy="257.50" r="2.1"/><circle cx="402.50" cy="170.00" r="2.1"/><circle cx="402.50" cy="82.50" r="2.1"/><circle cx="411.25" cy="283.75" r="2.1"/><circle cx="411.25" cy="196.25" r="2.1"/><circle cx="411.25" cy="108.75" r="2.1"/><circle cx="420.00" cy="310.00" r="2.1"/><circle cx="420.00" cy="222.50" r="2.1"/><circle cx="420.00" cy="135.00" r="2.1"/><circle cx="420.00" cy="47.50" r="2.1"/><circle cx="428.75" cy="248.75" r="2.1"/><circle cx="428.75" cy="161.25" r="2.1"/><circle cx="428.75" cy="73.75" r="2.1"/><circle cx="437.50" cy="275.00" r="2.1"/><circle cx="437.50" cy="187.50" r="2.1"/><circle cx="437.50" cy="100.00" r="2.1"/><circle cx="446.25" cy="301.25" r="2.1"/><circle cx="446.25" cy="213.75" r="2.1"/><circle cx="446.25" cy="126.25" r="2.1"/><circle cx="446.25" cy="38.75" r="2.1"/><circle cx="455.00" cy="240.00" r="2.1"/><circle cx="455.00" cy="152.50" r="2.1"/><circle cx="455.00" cy="65.00" r="2.1"/><circle cx="463.75" cy="266.25" r="2.1"/><circle cx="463.75" cy="178.75" r="2.1"/><circle cx="463.75" cy="91.25" r="2.1"/><circle cx="472.50" cy="292.50" r="2.1"/><circle cx="472.50" cy="205.00" r="2.1"/><circle cx="472.50" cy="117.50" r="2.1"/><circle cx="472.50" cy="30.00" r="2.1"/><circle cx="481.25" cy="231.25" r="2.1"/><circle cx="481.25" cy="143.75" r="2.1"/><circle cx="481.25" cy="56.25" r="2.1"/><circle cx="490.00" cy="257.50" r="2.1"/><circle cx="490.00" cy="170.00" r="2.1"/><circle cx="490.00" cy="82.50" r="2.1"/><circle cx="498.75" cy="283.75" r="2.1"/><circle cx="498.75" cy="196.25" r="2.1"/><circle cx="498.75" cy="108.75" r="2.1"/><circle cx="507.50" cy="310.00" r="2.1"/><circle cx="507.50" cy="222.50" r="2.1"/><circle cx="507.50" cy="135.00" r="2.1"/><circle cx="507.50" cy="47.50" r="2.1"/><circle cx="516.25" cy="248.75" r="2.1"/><circle cx="516.25" cy="161.25" r="2.1"/><circle cx="516.25" cy="73.75" r="2.1"/><circle cx="525.00" cy="275.00" r="2.1"/><circle cx="525.00" cy="187.50" r="2.1"/><circle cx="525.00" cy="100.00" r="2.1"/><circle cx="533.75" cy="301.25" r="2.1"/><circle cx="533.75" cy="213.75" r="2.1"/><circle cx="533.75" cy="126.25" r="2.1"/><circle cx="533.75" cy="38.75" r="2.1"/><circle cx="542.50" cy="240.00" r="2.1"/><circle cx="542.50" cy="152.50" r="2.1"/><circle cx="542.50" cy="65.00" r="2.1"/><circle cx="551.25" cy="266.25" r="2.1"/><circle cx="551.25" cy="178.75" r="2.1"/><circle cx="551.25" cy="91.25" r="2.1"/><circle cx="560.00" cy="292.50" r="2.1"/><circle cx="560.00" cy="205.00" r="2.1"/><circle cx="560.00" cy="117.50" r="2.1"/><circle cx="560.00" cy="30.00" r="2.1"/><circle cx="568.75" cy="231.25" r="2.1"/><circle cx="568.75" cy="143.75" r="2.1"/><circle cx="568.75" cy="56.25" r="2.1"/><circle cx="577.50" cy="257.50" r="2.1"/><circle cx="577.50" cy="170.00" r="2.1"/><circle cx="577.50" cy="82.50" r="2.1"/><circle cx="586.25" cy="283.75" r="2.1"/><circle cx="586.25" cy="196.25" r="2.1"/><circle cx="586.25" cy="108.75" r="2.1"/><circle cx="595.00" cy="310.00" r="2.1"/><circle cx="595.00" cy="222.50" r="2.1"/><circle cx="595.00" cy="135.00" r="2.1"/><circle cx="595.00" cy="47.50" r="2.1"/><circle cx="603.75" cy="248.75" r="2.1"/><circle cx="603.75" cy="161.25" r="2.1"/><circle cx="603.75" cy="73.75" r="2.1"/><circle cx="612.50" cy="275.00" r="2.1"/><circle cx="612.50" cy="187.50" r="2.1"/><circle cx="612.50" cy="100.00" r="2.1"/><circle cx="621.25" cy="301.25" r="2.1"/><circle cx="621.25" cy="213.75" r="2.1"/><circle cx="621.25" cy="126.25" r="2.1"/><circle cx="621.25" cy="38.75" r="2.1"/><circle cx="630.00" cy="240.00" r="2.1"/><circle cx="630.00" cy="152.50" r="2.1"/><circle cx="630.00" cy="65.00" r="2.1"/></g>
+ <line x1="150" y1="170" x2="132.5" y2="30" stroke="var(--red)" stroke-width="2.4"/><circle cx="132.5" cy="30" r="4" fill="var(--red)"/>
+ <text x="124" y="30" class="lbl-s" style="fill:var(--red)" text-anchor="end">(−2, 16)</text>
+ <line x1="150" y1="170" x2="141.25" y2="56.25" stroke="var(--violet)" stroke-width="2.4"/><circle cx="141.25" cy="56.25" r="4" fill="var(--violet)"/>
+ <text x="150" y="68" class="lbl-s" style="fill:var(--violet)">(−1, 13)</text>
+ <line x1="490" y1="170" x2="516.25" y2="161.25" stroke="var(--teal)" stroke-width="2.4"/><circle cx="516.25" cy="161.25" r="4" fill="var(--teal)"/>
+ <text x="524" y="184" class="lbl-s" style="fill:var(--teal)">(3, 1)</text>
+ <line x1="490" y1="170" x2="481.25" y2="143.75" stroke="var(--violet)" stroke-width="2.4"/><circle cx="481.25" cy="143.75" r="4" fill="var(--violet)"/>
+ <text x="476" y="140" class="lbl-s" text-anchor="end" style="fill:var(--violet)">(−1, 3)</text>
+ <circle cx="150" cy="170" r="3.5" fill="currentColor"/><circle cx="490" cy="170" r="3.5" fill="currentColor"/>
+ <text x="320" y="326" text-anchor="middle" class="lbl-s">Same points, same lattice (both bases have determinant ±10). Finding a short vector is easy from the right and hard from the left.</text>
+ </svg></div>
+ <figcaption><strong>The hard problem is going from the left picture to the right one.</strong> In two dimensions a classical method (a few subtractions, as in <a href="play.html#lattice">Lattice Heist</a>) finds the short vectors at once. In several hundred dimensions, nobody knows a method that is fast on a classical <em>or</em> a quantum computer.</figcaption>
+ </figure>
+ </div>
+</section>
+<section class="cp-step" id="step-intuition" data-step="intuition">
+<div class="layer">
+ <h4 aria-level="3">The intuition</h4>
+ <p>A lattice is the set of all whole-number combinations of a few basis vectors, a regular grid of points. The same grid can be described by a short, tidy basis or by a long, skewed one, and the trouble is that the skewed description is easy to produce and very hard to undo. Given only the skewed basis, <em>find the shortest nonzero vector in the lattice</em> is the shortest vector problem (SVP), and in high dimensions it is believed to be hard even for quantum computers. That is the first reason to build cryptography on it: Shor&#39;s algorithm needs a hidden period, and a lattice does not offer one.</p>
+ <p>The scheme the new standards use is built on a close cousin: <strong>learning with errors</strong> (LWE), introduced by Oded Regev in 2005. Take a secret vector s and publish many noisy linear equations in it: each is a random vector a and the value a&middot;s plus a small random error. With no error, ordinary elimination recovers s from enough equations. With the error, every equation is slightly wrong and elimination collapses into a haystack. Regev showed, by a reduction that itself uses a quantum algorithm, that solving LWE would also solve certain worst-case lattice problems, which is the kind of link between a cryptosystem and a clean mathematical problem that RSA does not have.</p>
+ <p>The price is size. Lattice keys are not 32 or 64 bytes: they are kilobytes, because a whole matrix of numbers has to be published. And the honesty clause matters. Nobody has <em>proved</em> LWE is hard for quantum computers. In April 2024 a paper claimed a fast quantum algorithm for it; a bug was found within days, the author acknowledged he could not fix it, and <a href="open.html#lattices">the question is where it was</a>.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-maths" data-step="maths">
+<div class="layer maths">
+ <h4 aria-level="3">The mathematics</h4>
+ <p><strong>The lattice in the figure.</strong> The vectors (3, 1) and (&minus;1, 3) have determinant 3&middot;3 &minus; 1&middot;(&minus;1) = 10, and the skewed pair (&minus;2, 16) and (&minus;1, 13) have determinant (&minus;2)(13) &minus; (16)(&minus;1) = &minus;10. Equal magnitude and each skewed vector an integer combination of the good ones (for instance (&minus;2, 16) = (3, 1) + 5&middot;(&minus;1, 3)) means the two bases generate the same points. The short vectors have length &radic;10 &asymp; 3.16 against about 16.1 for the longest skewed one.</p>
+ <p><strong>Learning with errors, in miniature.</strong> Work modulo q = 97 with four unknowns. Four noiseless equations a&middot;s = b (mod 97) fix s by elimination. Replace each b with b + e, where e is &minus;1, 0 or +1, and the same elimination returns a different, wrong vector, because the errors have been mixed into the answer. With seven noisy equations the true s can still be found here by checking all 97<sup>4</sup> = 88,529,281 candidates against them, which is a toy. Real parameters make the dimension so large that no search, quantum or classical, is feasible.</p>
+ <p><strong>What the replacement weighs.</strong> NIST&#39;s FIPS 203 (ML-KEM) and FIPS 204 (ML-DSA) are built on module-lattice versions of this. Sizes in bytes:</p>
+ <code class="eq">X25519 public key 32     ML-KEM-768 public key 1,184 (37 ×)     ML-KEM-768 ciphertext 1,088     ML-DSA-65 signature 3,309 (52 × ECDSA P-256&#39;s 64)</code>
+ <p>1,184 &divide; 32 = 37 exactly, and 3,309 &divide; 64 &asymp; 51.7. The <a href="pqc.html#cliff">Size Cliff</a> on the post-quantum page measures these on the wire rather than trusting a table.</p>
+ </div>
+</section>
+<section class="cp-step" id="step-runs" data-step="runs">
+<div class="layer real">
+ <h4 aria-level="3">Where it actually runs</h4>
+ <p><span class="where">Your next connection, perhaps</span>
+      ML-KEM is standardised (FIPS 203, August 2024), and the hybrid X25519MLKEM768 key exchange of topic 10 is already offered by current browsers and servers. The desk measured in August 2026 that OpenSSL 3.5 negotiates it by default.</p>
+ <p><span class="where">Play the problem</span>
+      <a href="play.html#lattice">Lattice Heist</a> is the two- and three-dimensional version of the shortest-vector problem with the fewest-moves answer proven for every level; it shows the mechanism, and says plainly that it measures nothing about how hard the real thing is. Real lattice parameters live in hundreds of dimensions with noise added.</p>
+ </div>
+</section>
+</div>
+<div class="cp-finish" hidden>
+<div class="cp-check" data-a="1">
+<p class="cyu-eyebrow">Check yourself</p>
+<p class="cyu-q">The lattice figure shows the same points with a bad basis and a good basis. Why does that help cryptography?</p>
+<div class="cyu-opts">
+<button type="button" data-opt>It proves lattice problems cannot be attacked by quantum computers.</button>
+<button type="button" data-opt>A skewed basis is easy to publish, and finding a short vector from it is the hard problem.</button>
+<button type="button" data-opt>Short vectors make the keys much smaller.</button>
+<button type="button" data-opt>It lets two people share a single basis.</button>
+</div>
+<p class="cyu-out" role="status" aria-live="polite"></p>
+<p class="cyu-why" hidden>Producing a long skewed description of a lattice is easy and undoing it is believed hard in high dimension, even for quantum computers. That is believed, not proved: nobody has shown it, and a 2024 claim to the contrary was withdrawn in practice.</p>
+</div>
+</div>
+<div class="cp-foot"><button type="button" class="cp-prev">Back</button><button type="button" class="cp-next">Next step</button></div>
+<div class="cp-out"><a href="crypto-09.html">Next: signatures made from hashes alone ▸</a>
+ <a href="crypto-07.html">Previous: what Shor takes ▸</a>
+ <a href="play.html#lattice">Play: Lattice Heist ▸</a>
+ <a href="pqc.html#cliff">The Size Cliff ▸</a></div>
+<div class="cp-neighbours"><a class="cp-pv" href="crypto-07.html"><span>Previous topic</span>07 &middot; What Shor takes, and what it leaves</a><a class="cp-nx" href="crypto-09.html"><span>Next topic</span>09 &middot; Signatures made from hashes alone</a></div>
+</div>
+<div class="footlinks"><a href="about.html">About</a> <span aria-hidden="true">&middot;</span> <a href="how-we-check.html">How we check</a> <span aria-hidden="true">&middot;</span> <a href="about.html#ai-use">AI use</a> <span aria-hidden="true">&middot;</span> <a href="corrections.html">Corrections</a> <span aria-hidden="true">&middot;</span> <a href="changelog.html">Changelog</a> <span aria-hidden="true">&middot;</span> <a href="ledger.xml">RSS</a> <span aria-hidden="true">&middot;</span> <a href="privacy.html">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="terms.html">Terms</a></div>
+</div>
+<div id="search" class="sr-wrap" hidden></div>
+</body>
+</html>

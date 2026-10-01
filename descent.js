@@ -9,7 +9,7 @@
   var data;
   try { data = JSON.parse(D.getElementById('descent-data').textContent); } catch (e) { return; }
 
-  var TOPIC = /^(machinery|region)-\d\d\.html$/;
+  var TOPIC = /^(machinery|region|crypto)-\d\d\.html$/;
   var topics = Object.keys(seen).filter(function (p) { return TOPIC.test(p); }).length;
   var deepest = -1;
   data.layers.forEach(function (l, i) {

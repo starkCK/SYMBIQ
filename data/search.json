@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-10-02",
- "pages": 120,
- "count": 878,
+ "pages": 131,
+ "count": 906,
  "records": [
   {
    "k": "s",
@@ -2475,6 +2475,134 @@
    "h": "How we try to avoid needing this page",
    "x": "Every 🔴 topic gets an independent review before it ships, and facts from secondary coverage are checked against primary sources. Those passes returned hundreds of findings, all fixed before publication. This page counts only what got past t",
    "w": 2
+  },
+  {
+   "k": "s",
+   "p": "crypto-01.html",
+   "t": "What a secret needs to survive",
+   "h": "What a secret needs to survive",
+   "x": "If the attacker knows everything except the key, can a message still be safe? 01020304050607080910 About this section: Secrets Before the part that breaks, the part that does not. A secret needs a key and an open design, a fingerprint needs",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-02.html",
+   "t": "Hashes, the fingerprints inside everything",
+   "h": "Hashes, the fingerprints inside everything",
+   "x": "How can a function be one-way, and does a quantum computer undo it? 01020304050607080910 About this section: Secrets Before the part that breaks, the part that does not. A secret needs a key and an open design, a fingerprint needs a one-way",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-03.html",
+   "t": "Does a quantum computer break AES?",
+   "h": "Does a quantum computer break AES?",
+   "x": "What does a square-root speedup do to a key? 01020304050607080910 About this section: Secrets Before the part that breaks, the part that does not. A secret needs a key and an open design, a fingerprint needs a one-way function, and both of ",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-04.html",
+   "t": "How two strangers agree on a secret",
+   "h": "How two strangers agree on a secret",
+   "x": "How can a secret be made in public, in front of a listener? 01020304050607080910 About this section: Public keys Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer breaks. These topics show how",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-05.html",
+   "t": "RSA, and its one weak point",
+   "h": "RSA, and its one weak point",
+   "x": "Why does a lock that anyone can close need a factoring problem to stay open only for you? 01020304050607080910 About this section: Public keys Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-06.html",
+   "t": "What a signature or a certificate proves",
+   "h": "What a signature or a certificate proves",
+   "x": "Why does a break of signatures matter later than a break of encryption? 01020304050607080910 About this section: Public keys Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer breaks. These top",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-07.html",
+   "t": "What Shor takes, and what it leaves",
+   "h": "What Shor takes, and what it leaves",
+   "x": "Which of the locks from topics 01 to 06 does a quantum computer open? 01020304050607080910 About this section: After Shor What Shor's algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they we",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-08.html",
+   "t": "Why lattices resist, and what they cost",
+   "h": "Why lattices resist, and what they cost",
+   "x": "What does a quantum computer have no trick for, and what does the replacement weigh? 01020304050607080910 About this section: After Shor What Shor's algorithm takes and what it leaves, the two families of replacement (lattices and hashes) a",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-09.html",
+   "t": "Signatures made from hashes alone",
+   "h": "Signatures made from hashes alone",
+   "x": "Can you sign with nothing but a hash function, and what does it cost? 01020304050607080910 About this section: After Shor What Shor's algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they we",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto-10.html",
+   "t": "Migrating without breaking everything",
+   "h": "Migrating without breaking everything",
+   "x": "Where do you start, and what changes on the wire? 01020304050607080910 About this section: After Shor What Shor's algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they weigh, and the order i",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto.html",
+   "t": "Cryptography, before and after Shor",
+   "h": "Cryptography, before and after Shor",
+   "x": "What each lock is made of, which ones a quantum computer opens, and what replaces them. Ten topics, from why a secret can be safe at all to how you move a real system. Every worked number is small enough to check by hand and has been recomp",
+   "w": 3
+  },
+  {
+   "k": "s",
+   "p": "crypto.html",
+   "t": "Cryptography, before and after Shor",
+   "h": "Why this course exists, and what you need",
+   "x": "The Bitcoin page and the post-quantum page tell you what to do. This course tells you why: what a key, a hash and a signature each are, which of them a quantum computer opens (three) and which it only dents (two), and what the replacements ",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "crypto.html#secrets",
+   "t": "Cryptography, before and after Shor",
+   "h": "SecretsThree topics: what keeps a secret, and what a quantum computer does to the cheap half",
+   "x": "Before the part that breaks, the part that does not. A secret needs a key and an open design, a fingerprint needs a one-way function, and both of those, the symmetric cipher and the hash, meet nothing worse than a square root. 01What a secr",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "crypto.html#public-key",
+   "t": "Cryptography, before and after Shor",
+   "h": "Public keysThree topics: the locks anyone can close, and the one weak point they share",
+   "x": "Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer breaks. These topics show how each lock works and what it rests on, using numbers small enough to follow, so that topic 07 can say exactly wha",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "crypto.html#after-shor",
+   "t": "Cryptography, before and after Shor",
+   "h": "After ShorFour topics: what falls, what replaces it, and how you move",
+   "x": "What Shor's algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they weigh, and the order in which a real system moves. This is the section the tools on the post-quantum page put into practice.",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "crypto.html",
+   "t": "Cryptography, before and after Shor",
+   "h": "Where to go with this",
+   "x": "Run the ideas on your own material: the Quick Check reads a certificate or a domain, the Inventory reads your own keys, the Harvest Clock applies topic 06's rule with your numbers, and the Sequencer orders a migration. To play instead of re",
+   "w": 1
   },
   {
    "k": "s",
@@ -5024,6 +5152,14 @@
    "k": "s",
    "p": "secure.html",
    "t": "Secure",
+   "h": "Learn the ideas",
+   "x": "How does cryptography work, before and after Shor?Ten topics, every number checked What does Shor take, and what does it leave?Three locks fall, two only dent",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "secure.html",
+   "t": "Secure",
    "h": "Live tools",
    "x": "Quick CheckOne paste, one answer The Size CliffWhat post-quantum actually costs in bytes The InventoryRead your own certificates and keys The ProofRun ML-KEM and ML-DSA yourself",
    "w": 2
@@ -5761,7 +5897,7 @@
    "p": "track-security.html",
    "t": "Post-quantum security",
    "h": "Post-quantum security",
-   "x": "Will your systems survive a quantum computer, and by when to migrate? 2 lessons, about 23 min at Plain. Opened pages are remembered in this browser only. Start here Can quantum break Bitcoin?about 2 min at Plain",
+   "x": "Will your systems survive a quantum computer, and by when to migrate? 2 lessons, 10 course topics, about 71 min at Plain. Opened pages are remembered in this browser only. Start here Can quantum break Bitcoin?about 2 min at Plain",
    "w": 3
   },
   {
@@ -5786,6 +5922,94 @@
    "t": "Post-quantum security",
    "h": "Post-quantum cryptography, on the wire",
    "x": "You'll be able to check an endpoint, measure what post-quantum costs in bytes, read your own certificates and keys, and work out whether it is too late to start. about 21 min at Plain One depth After: Can quantum break Bitcoin? Quick Check3",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html#course",
+   "t": "Post-quantum security",
+   "h": "The course: Cryptography, before and after Shor",
+   "x": "Keys, hashes and signatures from scratch, which ones a quantum computer opens, and what replaces them. Open the course page. The foundations0 topics, about 0 min at Plain Secrets Three topics: what keeps a secret, and what a quantum compute",
+   "w": 2
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "What a secret needs to survive",
+   "x": "about 5 min at Plain One depth After: Can quantum break Bitcoin? 4",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Hashes, the fingerprints inside everything",
+   "x": "about 5 min at Plain One depth After: What a secret needs to survive 5",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Does a quantum computer break AES?",
+   "x": "about 4 min at Plain One depth After: Hashes, the fingerprints inside everything Public keys Three topics: the locks anyone can close, and the one weak point they share3 topics, about 14 min at Plain 6",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "How two strangers agree on a secret",
+   "x": "about 5 min at Plain One depth After: Does a quantum computer break AES? 7",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "RSA, and its one weak point",
+   "x": "about 4 min at Plain One depth After: How two strangers agree on a secret 8",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "What a signature or a certificate proves",
+   "x": "about 5 min at Plain One depth After: RSA, and its one weak point After Shor Four topics: what falls, what replaces it, and how you move4 topics, about 20 min at Plain 9",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "What Shor takes, and what it leaves",
+   "x": "about 5 min at Plain One depth After: What a signature or a certificate proves 10",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Why lattices resist, and what they cost",
+   "x": "about 5 min at Plain One depth After: What Shor takes, and what it leaves 11",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Signatures made from hashes alone",
+   "x": "about 5 min at Plain One depth After: Why lattices resist, and what they cost 12",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "track-security.html",
+   "t": "Post-quantum security",
+   "h": "Migrating without breaking everything",
+   "x": "about 5 min at Plain One depth After: Signatures made from hashes alone Prove itThe CHSH game: the physics key distribution rests on Judge a claimThe Ledger: the 2029 and 2030 deadlines Keep goingNext track: Quantum × AI About · How we chec",
    "w": 1
   },
   {

@@ -293,7 +293,7 @@
   };
 
   var DAY = 86400000, STEPS = [1, 3, 7, 21];
-  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete'];
+  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete', 'qday-complete'];
   P.codexKeys = CODEX_KEYS.slice();
   function saved() { var S = W.SymbiQ.save; return (S && S.data) ? S.data() : raw(); }
   P.codex = function (now) {
@@ -321,6 +321,91 @@
   };
 
   W.SymbiQ.progress = P;
+})();
+;
+(function () {
+  'use strict';
+  var W = window, D = document;
+  W.SymbiQ = W.SymbiQ || {};
+  var KEY = 'symbiq.solverpath.v1';
+
+  function raw() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function put(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { } }
+  function saved() { var S = W.SymbiQ.save; return (S && S.data) ? S.data() : raw(); }
+  function kvSet(k, v) { var S = W.SymbiQ.save; if (S && S.set) { S.set(k, v); return; } var d = raw(); d.kv = d.kv || {}; d.kv[k] = v; put(d); }
+  function answeredBitcoin() { return !!((saved().kv || {})['pr:cyu:bitcoin.html:0']); }
+  function staked() {
+    try { var s = JSON.parse(localStorage.getItem('symbiq_standing_v1')); return !!(s && s.predictions && Object.keys(s.predictions).length); } catch (e) { return false; }
+  }
+  var esc = W.SymbiQ.core.esc;
+
+  var QUESTS = {
+    qday: {
+      name: 'Q-Day', codex: 'qday-complete',
+      blurb: 'Four steps from the headline to a forecast of your own. Any order.',
+      steps: [
+        { id: 'read', label: 'Answer the Bitcoin page’s check question', href: 'bitcoin.html', test: answeredBitcoin },
+        { id: 'shor', label: 'Find a period yourself in the Shor explorer', href: 'machinery-13.html#try' },
+        { id: 'check', label: 'Run the Quick Check on a certificate or a domain', href: 'pqc.html#quickcheck' },
+        { id: 'stake', label: 'Put a forecast on a Ledger claim', href: 'standing.html', test: staked }
+      ]
+    }
+  };
+
+  var Q = { onchange: null };
+
+  function isDone(qid, s) {
+    if (s.test) return !!s.test();
+    return !!(saved().kv || {})['qd:' + qid + ':' + s.id];
+  }
+  function settle(qid) {
+    var q = QUESTS[qid], d = saved(), m = (d.missions || {})[q.codex];
+    if (m && m.complete) return;
+    if (!q.steps.every(function (s) { return isDone(qid, s); })) return;
+    var S = W.SymbiQ.save;
+    if (S && S.completeMission) S.completeMission(q.codex, { via: 'quest' });
+    else { var r = raw(); r.missions = r.missions || {}; r.missions[q.codex] = { complete: true, at: Date.now(), via: 'quest' }; put(r); }
+    try { if (typeof Q.onchange === 'function') Q.onchange(); } catch (e) { }
+  }
+
+  Q.step = function (qid, id) {
+    try {
+      var q = QUESTS[qid], s = q && q.steps.filter(function (x) { return x.id === id && !x.test; })[0];
+      if (!s) return false;
+      var had = !!(saved().kv || {})['qd:' + qid + ':' + id];
+      if (!had) kvSet('qd:' + qid + ':' + id, Date.now());
+      settle(qid);
+      try { if (typeof Q.onchange === 'function') Q.onchange(); } catch (e) { }
+      return !had;
+    } catch (e) { return false; }
+  };
+
+  Q.state = function (qid) {
+    var q = QUESTS[qid];
+    if (!q) return null;
+    settle(qid);
+    var steps = q.steps.map(function (s) { return { id: s.id, label: s.label, href: s.href, done: isDone(qid, s) }; });
+    var done = steps.filter(function (s) { return s.done; }).length, m = (saved().missions || {})[q.codex];
+    return { name: q.name, blurb: q.blurb, steps: steps, done: done, total: steps.length, complete: !!(m && m.complete) };
+  };
+
+  Q.mount = function (el) {
+    var qid = el.getAttribute('data-quest'), st = Q.state(qid);
+    if (!st) return;
+    el.innerHTML = '<section class="quest" aria-label="Quest: ' + esc(st.name) + '"><p class="quest-k">Quest</p><h2 class="quest-h">' + esc(st.name) +
+      '</h2><p class="quest-b">' + esc(st.blurb) + ' <span class="quest-n">' + st.done + ' of ' + st.total + '</span></p><ol class="quest-steps">' +
+      st.steps.map(function (s) {
+        return '<li class="' + (s.done ? 'is-done' : '') + '"><span class="quest-ck" aria-hidden="true">' + (s.done ? '✓' : '○') + '</span><a href="' + esc(s.href) + '">' + esc(s.label) + '</a>' +
+          '<span class="sr">' + (s.done ? ' (done)' : ' (not yet)') + '</span></li>';
+      }).join('') + '</ol>' +
+      (st.complete ? '<p class="quest-done">Done. A Codex entry unlocked: <a href="journey.html#codex">see it on The Solver’s Path</a>.</p>' : '') + '</section>';
+  };
+
+  W.SymbiQ.quest = Q;
+  function mountAll() { [].slice.call(D.querySelectorAll('[data-quest]')).forEach(Q.mount); }
+  Q.onchange = function () { mountAll(); };
+  (function () { var P = W.SymbiQ.progress; if (!P) return; var prev = P.onchange; P.onchange = function () { try { if (typeof prev === 'function') prev.apply(this, arguments); } finally { mountAll(); } }; })();
+  if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', mountAll); else mountAll();
 })();
 ;
 (function () {
@@ -3110,6 +3195,12 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
         : 'd' + rk.next.d + ' needs ' + Math.max(0, rk.next.need - rk.next.have) + ' more point' + (rk.next.need - rk.next.have === 1 ? '' : 's') +
           ' in ' + esc(rules.tracks[rk.limiting].name) + ', your weakest track. Points come from correct checks and games finished at or near par.';
       host.insertAdjacentHTML('beforeend', '<p class="sub" data-rank-note style="margin:6px 0 0">' + note + '</p>');
+      var any = rk.frac.q + rk.frac.o + rk.frac.s > 0, old = host.querySelector('[data-share-rank]');
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      if (any) {
+        host.insertAdjacentHTML('beforeend', '<p data-share-rank style="margin:8px 0 0"><button type="button" class="preset" data-share="rank">Share my rank</button></p>');
+        host.querySelector('[data-share="rank"]').addEventListener('click', function () { shareRank(rules, P.rank(rules, P.points())); });
+      }
     })['catch'](function () {});
   }
 
@@ -3261,7 +3352,102 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     } catch (e) {}
   }
 
-  window.SymbiQ.hud = { refresh: render, progress: progress, contract: contractInfo, acts: ACTS };
+  var SITE_URL = 'https://starkck.github.io/SYMBIQ/';
+  function drawCard(c, spec) {
+    var x = c.getContext('2d'), W = c.width, H = c.height, g = x.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#0b1020'); g.addColorStop(1, '#1a1f3d');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#2dd4bf'; x.fillRect(0, 0, 14, H);
+    var font = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+    x.textBaseline = 'alphabetic';
+    x.fillStyle = '#2dd4bf'; x.font = '700 30px ' + font; x.fillText(String(spec.kicker || '').toUpperCase(), 70, 90);
+    x.fillStyle = '#ffffff'; x.font = '800 150px ' + font; x.fillText(String(spec.big || ''), 66, 250);
+    x.fillStyle = '#c9d2e6'; x.font = '500 34px ' + font;
+    var sub = String(spec.sub || ''), words = sub.split(' '), line = '', y = 310, lines = 0;
+    for (var i = 0; i < words.length; i++) {
+      var t = line ? line + ' ' + words[i] : words[i];
+      if (x.measureText(t).width > 1000 && line) { x.fillText(line, 70, y); y += 44; line = words[i]; if (++lines > 2) break; } else line = t;
+    }
+    if (line && lines <= 2) x.fillText(line, 70, y);
+    var rows = spec.rows || [], ry = 435;
+    rows.forEach(function (r) {
+      x.fillStyle = '#e8edf8'; x.font = '600 30px ' + font; x.fillText(r.label, 70, ry);
+      for (var k = 0; k < 10; k++) {
+        x.fillStyle = k < Math.round(Math.max(0, Math.min(1, r.frac)) * 10) ? '#2dd4bf' : 'rgba(255,255,255,.14)';
+        x.fillRect(430 + k * 52, ry - 26, 44, 30);
+      }
+      x.fillStyle = '#9aa8c4'; x.font = '500 26px ' + font; x.fillText(r.note || '', 970, ry);
+      ry += 54;
+    });
+    x.fillStyle = '#9aa8c4'; x.font = '500 26px ' + font; x.fillText(String(spec.foot || ''), 70, H - 40);
+    x.textAlign = 'right'; x.fillStyle = '#ffffff'; x.font = '700 30px ' + font; x.fillText('SymbiQ', W - 60, H - 40); x.textAlign = 'left';
+  }
+  function shareCard(spec) {
+    var dlg = document.createElement('dialog');
+    dlg.className = 'sq-share';
+    dlg.setAttribute('aria-label', 'Share');
+    dlg.innerHTML = '<form method="dialog" class="sq-share-in"><h2>Share</h2>' +
+      '<canvas width="1200" height="630" role="img"></canvas><p class="sq-share-msg" role="status" aria-live="polite"></p>' +
+      '<div class="sq-share-act"><button type="button" class="preset" data-a="dl">Download image</button>' +
+      '<button type="button" class="preset" data-a="copy">Copy text</button><button class="preset" value="close">Close</button></div></form>';
+    document.body.appendChild(dlg);
+    var cv = dlg.querySelector('canvas'), msg = dlg.querySelector('.sq-share-msg');
+    cv.setAttribute('aria-label', spec.alt || spec.text || 'A SymbiQ share card');
+    drawCard(cv, spec);
+    dlg.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-a]');
+      if (!b) return;
+      if (b.getAttribute('data-a') === 'dl') {
+        cv.toBlob(function (blob) {
+          if (!blob) { msg.textContent = 'Could not make the image in this browser. Use Copy text instead.'; return; }
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob); a.download = spec.filename || 'symbiq.png';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+          msg.textContent = 'Image saved.';
+        }, 'image/png');
+      } else {
+        var ok = function () { msg.textContent = 'Copied.'; }, manual = function () { window.prompt('Copy this and send it:', spec.text); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(spec.text).then(ok, manual); else manual();
+      }
+    });
+    dlg.addEventListener('close', function () { if (dlg.parentNode) dlg.parentNode.removeChild(dlg); });
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    return dlg;
+  }
+  function grid(frac) { var n = Math.round(Math.max(0, Math.min(1, frac)) * 10), s = ''; for (var i = 0; i < 10; i++) s += i < n ? '🟩' : '⬛'; return s; }
+  function shareRank(rules, rk) {
+    var names = { q: rules.tracks.q.name, o: rules.tracks.o.name, s: rules.tracks.s.name };
+    var rows = ['q', 'o', 's'].map(function (t) { return { label: names[t], frac: rk.frac[t], note: Math.round(rk.frac[t] * 100) + '%' }; });
+    var pad = 14, text = 'SymbiQ rank d' + rk.d + ' (code distance)\n' + rows.map(function (r) { return (r.label + '              ').slice(0, pad + 8) + grid(r.frac); }).join('\n') + '\n' + SITE_URL;
+    return shareCard({ kicker: 'Rank, by code distance', big: 'd' + rk.d, sub: 'Earned only by correct checks and games finished at or near par, in all three tracks.',
+      rows: rows, foot: new Date().toISOString().slice(0, 10), text: text, filename: 'symbiq-rank-d' + rk.d + '.png',
+      alt: 'SymbiQ rank d' + rk.d + '. ' + rows.map(function (r) { return r.label + ' ' + r.note; }).join('; ') });
+  }
+  function shareBadge(name, tier, sub) {
+    var text = 'SymbiQ Codex: ' + name + (tier ? ' (' + tier + ')' : '') + '\n' + SITE_URL + 'journey.html';
+    return shareCard({ kicker: 'Codex entry earned', big: '✦', sub: name + (sub ? '. ' + sub : ''), rows: [], foot: tier || '', text: text,
+      filename: 'symbiq-codex-' + String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png', alt: 'Codex entry earned: ' + name });
+  }
+  function dailyText() {
+    var today = new Date().toISOString().slice(0, 10), cab = [['golf', 'Golf'], ['grover', 'Grover'], ['maxcut', 'Max-Cut'], ['volcano', 'Volcano'], ['calibration', 'Calibration']];
+    var c = {}, d = {};
+    try { c = JSON.parse(localStorage.getItem(CKEY)) || {}; } catch (e) { c = {}; }
+    try { d = JSON.parse(localStorage.getItem('symbiq_daily_v1')) || {}; } catch (e) { d = {}; }
+    var contractDone = !!(c.history && c.history[today] && c.history[today].done), cells = [contractDone ? '✅' : '⬜'];
+    cab.forEach(function (k) { var r = d[k[0]]; cells.push(r && r.date === today && r.best > 0 ? '🟩' : '⬛'); });
+    var live = c.streak > 0 && c.lastDate && (Date.parse(today) - Date.parse(c.lastDate)) / 86400000 <= 2;
+    return { today: today, cells: cells, streak: live ? c.streak : 0, labels: ['Contract'].concat(cab.map(function (k) { return k[1]; })),
+      text: 'SymbiQ daily ' + today + (live ? ' 🔥' + c.streak : '') + '\n' + cells.join(' ') + '\nContract · ' + cab.map(function (k) { return k[1]; }).join(' · ') + '\n' + SITE_URL + 'play.html#contract-card' };
+  }
+  function shareDaily() {
+    var t = dailyText(), played = t.cells.filter(function (x) { return x === '✅' || x === '🟩'; }).length;
+    return shareCard({ kicker: 'Daily, ' + t.today, big: played + ' of ' + t.cells.length, sub: (t.streak ? t.streak + '-day streak. ' : '') + 'The contract and the five endless modes, today’s seeded run.',
+      rows: t.cells.map(function (x, i) { return { label: t.labels[i], frac: (x === '✅' || x === '🟩') ? 1 : 0, note: (x === '✅' || x === '🟩') ? 'done' : '' }; }).slice(0, 3),
+      foot: t.today, text: t.text, filename: 'symbiq-daily-' + t.today + '.png', alt: 'SymbiQ daily ' + t.today + ': ' + played + ' of ' + t.cells.length });
+  }
+
+  window.SymbiQ.hud = { refresh: render, progress: progress, contract: contractInfo, acts: ACTS, share: shareCard, shareRank: shareRank, shareBadge: shareBadge, shareDaily: shareDaily, dailyText: dailyText };
 
   try {
     if (document.readyState === 'loading') {

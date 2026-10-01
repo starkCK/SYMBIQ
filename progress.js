@@ -73,7 +73,7 @@
   };
 
   var DAY = 86400000, STEPS = [1, 3, 7, 21];
-  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete'];
+  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete', 'qday-complete'];
   P.codexKeys = CODEX_KEYS.slice();
   function saved() { var S = W.SymbiQ.save; return (S && S.data) ? S.data() : raw(); }
   P.codex = function (now) {

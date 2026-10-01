@@ -175,10 +175,11 @@
     return st.Q - 1;
   }
   function frText(cs) { return cs.map(function (c) { return c[0] + '/' + c[1]; }).join(', '); }
+  function questStep() { try { if (window.SymbiQ && window.SymbiQ.quest) window.SymbiQ.quest.step('qday', 'shor'); } catch (e) { } }
   function once(quiet) {
     rebuild(Math.floor(Math.random() * st.r));
     var k = sample(), res = recover(k, st.Q, st.N, st.a);
-    st.tries++; if (res.r === st.r) st.wins++;
+    st.tries++; if (res.r === st.r) { st.wins++; if (!quiet) questStep(); }
     if (!quiet) {
       setK(k);
       var head = 'Measured <b>k = ' + k + '</b>, so k/Q = ' + k + '/' + st.Q + ' = ' + (k / st.Q).toFixed(4) + '. Convergents: ' + frText(res.convergents) + '. ';
@@ -201,7 +202,7 @@
       ? 'Tally: <b>' + st.wins + '</b> of <b>' + st.tries + '</b> runs found r (' + Math.round(100 * st.wins / st.tries) + '%). The exact chance of success per run for N = ' + st.N + ', a = ' + st.a + ' is <b>' + (100 * st.expect).toFixed(1) + '%</b>.'
       : 'The exact chance that one run finds r, for N = ' + st.N + ' and a = ' + st.a + ', is <b>' + (100 * st.expect).toFixed(1) + '%</b>. Run it and compare.';
   }
-  function many() { for (var i = 0; i < 50; i++) once(true); rebuild(0); var k = sample(); setK(k); read.innerHTML = 'Fifty runs done. Each one measured a k from the spectrum above and tried the continued-fraction step. The tally below is the result; it should sit near the exact chance.'; paintTally(); }
+  function many() { for (var i = 0; i < 50; i++) once(true); if (st.wins) questStep(); rebuild(0); var k = sample(); setK(k); read.innerHTML = 'Fifty runs done. Each one measured a k from the spectrum above and tried the continued-fraction step. The tally below is the result; it should sit near the exact chance.'; paintTally(); }
 
   function loop() {
     if (!st.play) return;

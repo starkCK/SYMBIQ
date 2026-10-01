@@ -53,3 +53,16 @@
 .faction b { color: var(--text); }
 .faction span { color: var(--muted); }
 .faction a { display: inline-flex; align-items: center; min-height: 44px; margin-left: 4px; font-weight: 600; }
+
+.quest { margin: 14px 0 18px; padding: 14px 18px; border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: 12px; background: var(--panel); }
+.quest-k { margin: 0; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--violet); }
+.quest-h { margin: 2px 0 4px; font-size: 1.15rem; padding-left: 0; }
+.quest-h::before { display: none; }
+.quest-b { margin: 0 0 8px; color: var(--muted); font-size: .92rem; }
+.quest-n { font-weight: 700; color: var(--text); margin-left: 6px; }
+.quest-steps { list-style: none; margin: 0; padding: 0; }
+.quest-steps li { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.quest-steps a { display: inline-flex; align-items: center; min-height: 44px; }
+.quest-ck { width: 22px; text-align: center; color: var(--muted); }
+.quest-steps .is-done .quest-ck { color: var(--teal); font-weight: 700; }
+.quest-done { margin: 8px 0 0; font-weight: 600; color: var(--teal); }

@@ -3109,6 +3109,15 @@ body[data-alive] .sq-help-hint {
   .hud-coh > i, .hud-chip { transition: none; }
 }
 
+dialog.sq-share { margin: auto; width: min(720px, calc(100vw - 24px)); padding: 0; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); color: var(--text); }
+dialog.sq-share::backdrop { background: rgba(4, 7, 15, .66); }
+.sq-share-in { margin: 0; padding: 16px 18px 18px; }
+.sq-share-in h2 { margin: 0 0 10px; font-size: 1.1rem; }
+.sq-share canvas { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); }
+.sq-share-msg { min-height: 1.4em; margin: 8px 0 0; font-size: .88rem; color: var(--muted); }
+.sq-share-act { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.sq-share-act button { min-height: 44px; }
+
 :root[data-theme="light"] {
   color-scheme: light;
   --bg: #f8fafc;
@@ -4456,3 +4465,16 @@ nav.tabbar { display: none; }
 .faction b { color: var(--text); }
 .faction span { color: var(--muted); }
 .faction a { display: inline-flex; align-items: center; min-height: 44px; margin-left: 4px; font-weight: 600; }
+
+.quest { margin: 14px 0 18px; padding: 14px 18px; border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: 12px; background: var(--panel); }
+.quest-k { margin: 0; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--violet); }
+.quest-h { margin: 2px 0 4px; font-size: 1.15rem; padding-left: 0; }
+.quest-h::before { display: none; }
+.quest-b { margin: 0 0 8px; color: var(--muted); font-size: .92rem; }
+.quest-n { font-weight: 700; color: var(--text); margin-left: 6px; }
+.quest-steps { list-style: none; margin: 0; padding: 0; }
+.quest-steps li { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.quest-steps a { display: inline-flex; align-items: center; min-height: 44px; }
+.quest-ck { width: 22px; text-align: center; color: var(--muted); }
+.quest-steps .is-done .quest-ck { color: var(--teal); font-weight: 700; }
+.quest-done { margin: 8px 0 0; font-weight: 600; color: var(--teal); }

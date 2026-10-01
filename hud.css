@@ -72,3 +72,12 @@
 @media (prefers-reduced-motion: reduce) {
   .hud-coh > i, .hud-chip { transition: none; }
 }
+
+dialog.sq-share { margin: auto; width: min(720px, calc(100vw - 24px)); padding: 0; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); color: var(--text); }
+dialog.sq-share::backdrop { background: rgba(4, 7, 15, .66); }
+.sq-share-in { margin: 0; padding: 16px 18px 18px; }
+.sq-share-in h2 { margin: 0 0 10px; font-size: 1.1rem; }
+.sq-share canvas { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); }
+.sq-share-msg { min-height: 1.4em; margin: 8px 0 0; font-size: .88rem; color: var(--muted); }
+.sq-share-act { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.sq-share-act button { min-height: 44px; }

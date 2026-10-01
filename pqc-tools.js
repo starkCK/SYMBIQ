@@ -2120,7 +2120,7 @@ function mount(root, opts) {
       '</div>';
     }
 
-    function run(text, sourceLabel) {
+    function run(text, sourceLabel, isExample) {
       var out = root.querySelector('#qc-out');
       if (!SymbiQ.cbom || !SymbiQ.cbom.parse) return;
       var r = SymbiQ.cbom.parse(text || '');
@@ -2129,6 +2129,7 @@ function mount(root, opts) {
           (r.errors.length ? esc(r.errors[0]) : 'Expecting a PEM certificate, an OpenSSH public-key line, or a JWKS document.') + '</div>';
         return;
       }
+      if (!isExample) { try { if (SymbiQ.quest) SymbiQ.quest.step('qday', 'check'); } catch (e) { } }
       var assets = SymbiQ.cbom.toEstate(r.records);
       var vuln = r.records.filter(function (x) { return !x.pq; }).length;
       out.innerHTML = '<div class="verdict ' + (vuln ? 'warn' : 'good') + '">' +
@@ -2160,7 +2161,7 @@ function mount(root, opts) {
       if (b.id === 'qc-go') run(root.querySelector('#qc-in').value, '');
       else if (b.id === 'qc-eg') {
         var eg = SymbiQ.cbom.EXAMPLE;
-        root.querySelector('#qc-in').value = eg; run(eg, '');
+        root.querySelector('#qc-in').value = eg; run(eg, '', true);
       }
       else if (b.id === 'qc-look') {
         if (!SymbiQ.cbom.lookupDomain) return;

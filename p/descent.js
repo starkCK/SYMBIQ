@@ -292,6 +292,34 @@
     return out;
   };
 
+  var DAY = 86400000, STEPS = [1, 3, 7, 21];
+  var CODEX_KEYS = ['golf', 'grover', 'maxcut', 'volcano', 'chsh', 'knot', 'qttt', 'machinery-complete', 'feasible-complete'];
+  P.codexKeys = CODEX_KEYS.slice();
+  function saved() { var S = W.SymbiQ.save; return (S && S.data) ? S.data() : raw(); }
+  P.codex = function (now) {
+    now = now || Date.now();
+    var d = saved(), ms = d.missions || {}, kv = d.kv || {}, out = [];
+    CODEX_KEYS.forEach(function (key) {
+      var m = ms[key];
+      if (!(m && m.complete)) return;
+      var v = kv['cx:' + key], stage = (Array.isArray(v) && +v[0] > 0) ? Math.min(4, Math.floor(+v[0])) : 0;
+      var base = stage ? (+v[1] || now) : (+m.at || now);
+      var due = stage >= 4 ? Infinity : base + STEPS[stage] * DAY;
+      out.push({ key: key, stage: stage, due: due, settled: stage >= 4, faded: stage < 4 && now > due });
+    });
+    return out;
+  };
+  P.codexReview = function (key, now) {
+    try {
+      now = now || Date.now();
+      var cur = P.codex(now).filter(function (e) { return e.key === key; })[0];
+      if (!cur || cur.stage >= 4) return cur ? cur.stage : 0;
+      kvSet('cx:' + key, [cur.stage + 1, now]);
+      try { if (typeof P.onchange === 'function') P.onchange(); } catch (e) { }
+      return cur.stage + 1;
+    } catch (e) { return 0; }
+  };
+
   W.SymbiQ.progress = P;
 })();
 ;
@@ -3067,6 +3095,13 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     })['catch'](function () {});
   }
 
+  function fadedNote() {
+    try {
+      var P = window.SymbiQ.progress, n = P && P.codex ? P.codex().filter(function (e) { return e.faded; }).length : 0;
+      return n ? ', ' + n + ' faded: <a href="journey.html#codex">review</a>' : '';
+    } catch (e) { return ''; }
+  }
+
   function fillYou(host, p, ci) {
     var medals = medalCount();
     var live = !!(ci && ci.streak > 0 && !ci.lapsed);
@@ -3075,7 +3110,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     var rows = (p.seen || medals) ?
       '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
       '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
-      '<dt>Codex</dt><dd>' + p.codex + ' fragment' + (p.codex === 1 ? '' : 's') + '</dd>' +
+      '<dt>Codex</dt><dd>' + p.codex + ' fragment' + (p.codex === 1 ? '' : 's') + fadedNote() + '</dd>' +
       '<dt>Medals</dt><dd>' + medals + '</dd>' : '';
     if (live) {
       rows += '<dt>Contract</dt><dd>' + ci.streak + '-day streak' + (ci.doneToday ? ', today cleared' : ', today open') + '</dd>';

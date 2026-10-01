@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-TBDhCCXXSEaUyHu9YS1aqOxpQO57p3b0eDKQREoWmcE=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Hv1t0GaRMYChyfM7OUahZR8Tps6Uw8T1J7yP1b6pfTA=' 'sha256-7vOsQoJj8aLWcH9qEtjqfwDx6llhYdLsn79HU4XyPeo=' 'sha256-IW8AiQkT6SHxmURogkORUgEYd9RSzTetdUc2lQsT07Y=' 'sha256-Fl0+IYMcyoMwHMHRfFkYT7MDLN8PyzEUDj0RBD+0yas=' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://symbiq.goatcounter.com https://gc.zgo.at; font-src 'self'; connect-src 'self' https://ymtjedmqptiwhktxdwmv.supabase.co wss://ymtjedmqptiwhktxdwmv.supabase.co https://api.web3forms.com https://symbiq.goatcounter.com https://api.certspotter.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>/* appearance: applied before first paint so there is no flash */try{var d=document.documentElement,t=localStorage.getItem('sq-theme');if(t==='light'||t==='dim'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('sq-motion')==='reduce')d.setAttribute('data-motion-pref','reduce');if(localStorage.getItem('sq-transparency')==='reduce')d.setAttribute('data-transparency-pref','reduce');}catch(e){}</script>
 <script>/* door morph arrival (doormorph.js companion, 2026-09-23): MUST run this early, as a classic head script, not from the deferred doormorph.js file. pagereveal fires the moment this document is first rendered -- the API's own description is "equivalent to the first requestAnimationFrame() run ... if you were to trigger it in the head" -- which is well before a deferred script has loaded, so a listener registered from one would miss the event outright (found live: the sessionStorage handoff was never consumed until this moved here). The querySelector below still works from this early: pagereveal's own documented use case is exactly "read/write an element on the newly revealed page", and by the time the callback actually FIRES the browser has parsed enough of the document to paint it, h1 included. */try{if('onpagereveal' in window){window.addEventListener('pagereveal',function(e){var raw=null;try{raw=sessionStorage.getItem('sq-vt-door');sessionStorage.removeItem('sq-vt-door');}catch(_){}if(!raw||!e.viewTransition)return;var i=raw.lastIndexOf(':');if(i<0)return;var track=raw.slice(0,i),stamp=+raw.slice(i+1);if(!(Date.now()-stamp<4000))return;var mine=document.body&&document.body.getAttribute('data-door');if(track!==mine)return;var h1=document.querySelector('.wrap > h1');if(!h1)return;h1.style.viewTransitionName='sq-door-'+track;var restore=function(){try{h1.style.viewTransitionName='';}catch(_e){}};e.viewTransition.ready.then(restore,restore);});}}catch(er){}</script>
@@ -75,7 +75,7 @@
 <script src="games.js?v=50"></script>
 <script src="scene.js?v=7"></script>
 <script src="missions.js?v=13"></script>
-<script src="p/journey.js?v=22" defer></script>
+<script src="p/journey.js?v=24" defer></script>
 
 
 
@@ -271,6 +271,14 @@
 .static-txt { color: #7f889c; letter-spacing: .06em; animation: staticdrift 5.5s ease-in-out infinite; }
 .static-txt.nm { font-weight: 700; }
 @keyframes staticdrift { 0%,100% { opacity: .62; } 50% { opacity: .95; } }
+.cx-recall { display: block; margin-top: 10px; }
+.cx-q { display: block; font-weight: 600; margin-bottom: 6px; }
+.cx-opts { display: flex; flex-direction: column; gap: 6px; }
+.cx-opt { text-align: left; min-height: 44px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; font-size: .9rem; cursor: pointer; }
+.cx-opt:hover:not(:disabled) { border-color: var(--teal); }
+.cx-opt:disabled { opacity: .5; cursor: default; }
+.cx-out { display: block; min-height: 1.3em; margin-top: 6px; font-size: .88rem; color: var(--muted); }
+.cx-note { display: block; margin-top: 4px; font-size: .8rem; color: var(--muted); }
 .heldby { display: block; margin-top: 5px; font-size: .78rem; color: var(--yellow); }
 .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -1064,10 +1072,42 @@
     return out;
   }
 
+  /* ---- CODEX DECAY (Phase 5) ------------------------------------------------------------------------------
+     An entry you earned fades if you do not revisit it: its words scramble the way a held entry's do, and one recall
+     question brings it back. The schedule (1, 3, 7, then 21 days) is SymbiQ.progress.codex(); the questions live here, beside
+     the entries they test. A wrong answer restores nothing and can be retried at once; nothing here pays points. */
+  var RECALL = {"golf":{"q":"What does a gate do to a qubit, and what can you never see?","o":["It rotates the point on the sphere; the global phase is invisible.","It measures the qubit; the amplitudes are invisible.","It copies the qubit; the original is invisible.","It flips a classical bit; the phase is visible."],"a":0},"grover":{"q":"How does an unstructured search scale, and what happens if you keep amplifying past the peak?","o":["It costs N, and more amplification always helps.","It costs log N, and the odds stay at the peak.","It costs the square root of N, and the odds fall again if you over-rotate.","It costs N squared, and the odds fall to zero at once."],"a":2},"maxcut":{"q":"Maximising a cut is the same as minimising what?","o":["The number of vertices.","The Ising energy, the sum of w(i,j) s(i) s(j): a ground-state problem.","The sum of all edge weights.","The longest path in the graph."],"a":1},"volcano":{"q":"How does simulated annealing escape a local optimum, and what does No Free Lunch say?","o":["It heats the system forever; one method wins everywhere.","It only accepts improvements; heuristics need a proof.","It restarts at random; annealing always beats exact methods.","It cools slowly and accepts the occasional worse move; no method wins on every problem."],"a":3},"chsh":{"q":"What does beating 75% in the CHSH game prove, and what is the quantum ceiling?","o":["A message crossed; the ceiling is 100%.","The players cheated; the ceiling is 75%.","The correlation is not pre-agreed answers; the ceiling is cos squared of pi/8, about 85.36%.","Nothing; the ceiling is 50%."],"a":2},"knot":{"q":"Why can an error-correcting code survive being measured a million times a second?","o":["A check asks only whether neighbours agree, a parity, never the value stored.","Measurement never disturbs a quantum state.","The decoder repairs the damage after each measurement.","The checks measure the data qubits directly, but gently."],"a":0},"qttt":{"q":"What do measurements on an entangled pair fix, and what can they not carry?","o":["Measuring one fixes the other, and carries a message instantly.","Measuring one fixes the other at any distance, yet no message can ride that link.","They fix nothing until the two are brought together.","They fix the other only inside one laboratory."],"a":1},"machinery-complete":{"q":"What does every algorithm on this site rest on, according to The Machinery?","o":["The speed of the hardware.","The number of qubits available.","The choice of programming language.","What a state is, how it evolves, what measurement does, and what you provably cannot do to it."],"a":3},"feasible-complete":{"q":"Why is The Feasible Region the reference point for quantum-optimisation headlines?","o":["Quantum computers were invented to solve its problems.","It proves quantum computers lose.","Every such claim is a claim about this field first, so it is what the claim is measured against.","It contains the only valid benchmarks."],"a":2}};
+  /* progress.js ships in the deferred page bundle, so it is looked up when needed, never captured at parse time */
+  function PRG() { return window.SymbiQ && window.SymbiQ.progress; }
+  function codexState(key) {
+    var all = (PRG() && PRG().codex) ? PRG().codex() : [];
+    for (var i = 0; i < all.length; i++) if (all[i].key === key) return all[i];
+    return null;
+  }
+  function whenDue(due) {
+    var d = Math.max(0, Math.ceil((due - Date.now()) / 86400000));
+    return d <= 1 ? 'tomorrow' : 'in ' + d + ' days';
+  }
+  function earnedEntry(key, c) {
+    var st = codexState(key), r = RECALL[key];
+    if (st && st.faded && r) {
+      return '<li class="held faded" data-key="' + key + '"><span class="glyph static" aria-hidden="true">▨</span><span>' +
+        '<span class="nm static-txt" aria-hidden="true">' + esc(scramble(c.name)) + '</span> <span class="ct">' + SymbiQ.ev(c.tier) + '</span>' +
+        '<span class="sr">This Codex entry has faded because you have not revisited it. Answer the recall question to restore it.</span>' +
+        '<br><span class="arc static-txt" aria-hidden="true">' + esc(scramble(c.body)) + '</span>' +
+        '<span class="heldby">Faded: not revisited on schedule. One question brings it back.</span>' +
+        '<span class="cx-recall"><span class="cx-q">' + esc(r.q) + '</span><span class="cx-opts">' +
+        r.o.map(function (t, i) { return '<button type="button" class="cx-opt" data-key="' + key + '" data-i="' + i + '">' + esc(t) + '</button>'; }).join('') +
+        '</span><span class="cx-out" role="status" aria-live="polite"></span></span></span></li>';
+    }
+    var note = st ? (st.settled ? ' <span class="cx-note">Settled: it will not fade again.</span>' : ' <span class="cx-note">Next recall ' + whenDue(st.due) + '.</span>') : '';
+    return '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' + SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span>' + note + '</span></li>';
+  }
+
   function renderCodex() {
     var out = MISSIONS.filter(function (m) { return CODEX[m.id]; }).map(function (m) {
       var c = CODEX[m.id];
-      if (done(m.id)) return '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' + SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+      if (done(m.id)) return earnedEntry(m.id, c);
       var f = FACTIONS[m.held];
       // aria-hidden on every corrupted string, with the real sentence beside it:
       // a screen reader must hear what happened, never the glyphs.
@@ -1083,19 +1123,30 @@
     // An entry you earned is not confiscated when its act leaves the Path.
     Object.keys(LEGACY_CODEX).forEach(function (k) {
       if (!done(k)) return;
-      var c = LEGACY_CODEX[k];
-      out += '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' +
-        SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+      out += earnedEntry(k, LEGACY_CODEX[k]);
     });
     // Earned off the Path entirely, on formalism.html/feasible.html.
     Object.keys(CURRICULUM_CODEX).forEach(function (k) {
       if (!done(k)) return;
-      var c = CURRICULUM_CODEX[k];
-      out += '<li><span class="glyph">✦</span><span><span class="nm">' + c.name + '</span> <span class="ct">' +
-        SymbiQ.ev(c.tier) + '</span><br><span class="arc">' + c.body + '</span></span></li>';
+      out += earnedEntry(k, CURRICULUM_CODEX[k]);
     });
     document.getElementById('codex-list').innerHTML = out;
   }
+  document.getElementById('codex-list').addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.cx-opt');
+    if (!b || b.disabled) return;
+    var key = b.getAttribute('data-key'), r = RECALL[key], i = +b.getAttribute('data-i');
+    if (!r || !PRG()) return;
+    var out = b.parentNode.parentNode.querySelector('.cx-out');
+    if (i !== r.a) {
+      b.disabled = true; b.classList.add('is-wrong');
+      if (out) out.textContent = 'Not quite. Try another.';
+      return;
+    }
+    PRG().codexReview(key);
+    renderCodex();
+  });
+  document.addEventListener('DOMContentLoaded', function () { renderCodex(); });   // once the deferred bundle (progress.js) is in, so faded entries show on first paint
 
   // On a stacked (narrow) layout the mission panel sits below the map, so a map
   // click otherwise changes something off-screen. On desktop the panel is already
@@ -1204,6 +1255,9 @@
       document.getElementById('tab-codex').style.display = t === 'codex' ? 'block' : 'none';
     });
   });
+  // journey.html#codex (the You menu's "review" link, and the Codex tab's own anchor) opens the Codex, not the cast
+  function openCodexFromHash() { if (location.hash === '#codex') { var cb = document.querySelector('.subtab[data-tab="codex"]'); if (cb) cb.click(); } }
+  openCodexFromHash(); window.addEventListener('hashchange', openCodexFromHash);
 
   document.getElementById('hud-reset').addEventListener('click', function () {
     if (!confirm('Erase your local progress and start the Path over?')) return;

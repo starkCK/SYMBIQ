@@ -138,6 +138,13 @@
     })['catch'](function () {});
   }
 
+  function fadedNote() {
+    try {
+      var P = window.SymbiQ.progress, n = P && P.codex ? P.codex().filter(function (e) { return e.faded; }).length : 0;
+      return n ? ', ' + n + ' faded: <a href="journey.html#codex">review</a>' : '';
+    } catch (e) { return ''; }
+  }
+
   function fillYou(host, p, ci) {
     var medals = medalCount();
     var live = !!(ci && ci.streak > 0 && !ci.lapsed);
@@ -146,7 +153,7 @@
     var rows = (p.seen || medals) ?
       '<dt>Coherence</dt><dd>' + p.coh + '%</dd>' +
       '<dt>Path</dt><dd>' + p.done + ' of ' + p.total + ' missions' + '</dd>' +
-      '<dt>Codex</dt><dd>' + p.codex + ' fragment' + (p.codex === 1 ? '' : 's') + '</dd>' +
+      '<dt>Codex</dt><dd>' + p.codex + ' fragment' + (p.codex === 1 ? '' : 's') + fadedNote() + '</dd>' +
       '<dt>Medals</dt><dd>' + medals + '</dd>' : '';
     if (live) {
       rows += '<dt>Contract</dt><dd>' + ci.streak + '-day streak' + (ci.doneToday ? ', today cleared' : ', today open') + '</dd>';

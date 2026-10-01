@@ -157,6 +157,7 @@
             <a href="play.html#arena" class="navmain"><span class="q">Heuristic Arena</span><span class="sub">Seven search methods, one budget, a proven best answer</span></a>
             <a href="play.html#strikes" class="navmain"><span class="q">Classical Strikes Back</span><span class="sub">Simulate the circuit on an ordinary computer, inside a budget</span></a>
             <a href="play.html#agentlab" class="navmain"><span class="q">Agent Lab</span><span class="sub">Spend a budget on checking each step of an AI agent</span></a>
+            <a href="play.html#factory" class="navmain"><span class="q">Magic State Factory</span><span class="sub">Distil noisy states into clean ones for the least volume</span></a>
           </div>
           <div class="np-col">
             <p class="navhead">Build and keep</p>
@@ -249,9 +250,9 @@
 <section class="hub-question" id="daily">
 <div class="card" id="daily-q">
   <h3 aria-level="2">The Question</h3>
-  <p id="dq-meta"> <span class="tier r"><i class="dpt dpt-3" aria-hidden="true"></i> Formal</span> <span style="color:var(--muted)"> From the question bank, the daily feed is paused</span> </p>
-  <p id="dq-q" style="font-size:1.05rem;font-weight:600"> Google reports an error-suppression factor Λ = 2.14 ± 0.02 for Willow. Precisely what is that number a measurement of? </p>
-  <div id="dq-opts"> <button class="preset dq-opt" data-i="0">A. A linear regression of ln(ε(d)) against d across the whole d = 3, 5, 7 series — a common-ratio parameter of the family, not of one step</button><button class="preset dq-opt" data-i="1">B. The ratio of logical error rates between the d = 5 and d = 7 codes, the largest pair measured</button><button class="preset dq-opt" data-i="2">C. The factor by which the logical error rate falls per unit increase in code distance</button><button class="preset dq-opt" data-i="3">D. The ratio of the logical error rate to the best physical qubit's error rate on the same chip</button> </div>
+  <p id="dq-meta"> <span class="tier g"><i class="dpt dpt-1" aria-hidden="true"></i> Plain</span> <span style="color:var(--muted)"> From the question bank, the daily feed is paused</span> </p>
+  <p id="dq-q" style="font-size:1.05rem;font-weight:600"> The headline “about a thousand physical qubits to make one logical qubit” comes from a real calculation: nine steps of code distance at Willow's measured suppression factor, landing at distance 23 and 1,057 physical qubits. What does that 1,057 actually buy? </p>
+  <div id="dq-opts"> <button class="preset dq-opt" data-i="0">A. Roughly a thousandfold reduction in error — which is short of the millionfold the stated target needs</button><button class="preset dq-opt" data-i="1">B. A logical qubit reliable enough to run a cryptographically relevant algorithm end to end</button><button class="preset dq-opt" data-i="2">C. Exactly the reliability target, which is why 1,057 is the number everyone quotes</button><button class="preset dq-opt" data-i="3">D. A thousand times more computing power than a single physical qubit provides</button> </div>
   <p style="margin:8px 0 0"><button id="dq-hint" class="preset">Need a hint?</button></p>
   <div id="dq-out" aria-live="polite"></div>
   <p id="dq-lattice" style="color:var(--muted);font-size:.9rem;margin-bottom:0"></p>
@@ -279,6 +280,7 @@
 <a href="play.html#arena"><b>Heuristic Arena</b><span>Seven search methods, one budget, a proven best answer</span></a>
 <a href="play.html#strikes"><b>Classical Strikes Back</b><span>Simulate the circuit on an ordinary computer, inside a budget</span></a>
 <a href="play.html#agentlab"><b>Agent Lab</b><span>Spend a budget on checking each step of an AI agent</span></a>
+<a href="play.html#factory"><b>Magic State Factory</b><span>Distil noisy states into clean ones for the least volume</span></a>
 </section>
 <section><h2>Build and keep</h2>
 <a href="play.html#workshop"><b>The Workshop</b><span>Build a hole; the search sets its par</span></a>
@@ -289,7 +291,7 @@
 </div>
 <section class="orhero gamehero" id="games">
   <p class="eyebrow">The part you play</p>
-  <h2 id="games-count">Seventeen games where you cannot fake a score</h2>
+  <h2 id="games-count">Eighteen games where you cannot fake a score</h2>
   <p class="orhero-lede">Most explainers ask you to take their word for it. Here the mathematics holds the whistle: <strong>where a game has a par it is a proven minimum (or is labelled "best known"), and every probability on screen is computed rather than chosen by a designer</strong>. Two of the machines now have a Versus the Machine mode, against a computer that solved the board before you sat down.</p>
 
   <div class="orhero-grid">

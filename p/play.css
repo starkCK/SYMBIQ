@@ -3681,6 +3681,29 @@ body[data-glass] ::-webkit-scrollbar-thumb:hover {
 .ag-act { display: flex; flex-wrap: wrap; gap: 8px; }
 .ag-act .preset { min-height: 44px; }
 .agl .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mfc { display: grid; gap: 10px; max-width: 820px; }
+.mf-strip { display: flex; flex-wrap: wrap; gap: 6px; }
+.mf-chip { min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; cursor: pointer; }
+.mf-chip.now { border-color: var(--teal); }
+.mf-chip:disabled { opacity: .55; cursor: not-allowed; }
+.mf-brief, .mf-facts, .mf-plan, .mf-say { margin: 0; font-size: .92rem; line-height: 1.55; }
+.mf-facts { color: var(--muted); }
+.mf-plan { padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+.mf-over { color: #d4567a; }
+.mf-rounds { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.mf-rounds legend { padding: 0; margin: 0 0 4px; font-size: .86rem; color: var(--muted); }
+.mf-o { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-size: .9rem; }
+.mf-o input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.mf-o.on { border-color: var(--teal); background: color-mix(in srgb, var(--teal) 14%, transparent); }
+.mf-o:focus-within { outline: 2px solid var(--teal); outline-offset: 2px; }
+.mf-tabw { overflow-x: auto; }
+.mf-tab { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.mf-tab th, .mf-tab td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+.mf-tab thead th { color: var(--muted); font-weight: 600; }
+.mf-d { min-height: 44px; min-width: 64px; padding: 0 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; }
+.mf-act { display: flex; flex-wrap: wrap; gap: 8px; }
+.mf-act .preset { min-height: 44px; }
+.mfc .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .lx-term, .rcpt {
   cursor: help;

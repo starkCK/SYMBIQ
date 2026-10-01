@@ -26,7 +26,7 @@
   "q": {
    "name": "Quantum × AI",
    "hub": "track-quantum-ai.html",
-   "cap": 151
+   "cap": 166
   },
   "o": {
    "name": "Optimisation",
@@ -99,6 +99,10 @@
   "agentlab": {
    "track": "q",
    "levels": 5
+  },
+  "factory": {
+   "track": "q",
+   "levels": 5
   }
  },
  "sources": {
@@ -131,7 +135,8 @@
    "arena": 6,
    "arenafs": 1,
    "strikes": 6,
-   "agentlab": 5
+   "agentlab": 5,
+   "factory": 5
   }
  }
 }

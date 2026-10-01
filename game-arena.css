@@ -20,3 +20,7 @@
 .ar-runs tr.best td { color: var(--teal); font-weight: 600; }
 .ar-runs code { font-size: .8rem; }
 @media (max-width: 480px) { .ar-runs { font-size: .78rem; } .ar-runs th, .ar-runs td { padding: 5px 4px; } }
+.ar-fam { padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); }
+.ar-fam h3 { margin: 0 0 6px; font-size: 1rem; }
+.ar-fam p { margin: 0 0 8px; font-size: .9rem; line-height: 1.5; }
+.ar-fam .preset { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }

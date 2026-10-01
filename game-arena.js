@@ -317,8 +317,9 @@
     var G = { gold: '🥇', silver: '🥈', bronze: '🥉' };
     function resume() { var st = ladderState(KEY), r = 0; for (var i = 1; i <= LEVELS.length; i++) if (st.cleared[i]) r = Math.min(i, LEVELS.length - 1); return r; }
 
-    function tabsHTML() { return '<div class="ar-tabs" role="tablist" aria-label="Arena or Be FunSearch">' +
+    function tabsHTML() { return '<div class="ar-tabs" role="tablist" aria-label="Arena, the Volcano and Bench, or Be FunSearch">' +
       '<button type="button" role="tab" class="ar-tab' + (tab === 'arena' ? ' now' : '') + '" aria-selected="' + (tab === 'arena') + '" data-tab="arena">The Arena</button>' +
+      '<button type="button" role="tab" class="ar-tab' + (tab === 'family' ? ' now' : '') + '" aria-selected="' + (tab === 'family') + '" data-tab="family">Volcano and Bench</button>' +
       '<button type="button" role="tab" class="ar-tab' + (tab === 'fs' ? ' now' : '') + '" aria-selected="' + (tab === 'fs') + '" data-tab="fs">Be FunSearch</button></div>'; }
 
     function pictureHTML(L, b) {
@@ -411,7 +412,19 @@
     function workerUrl() { var t = document.getElementById('arena-worker-src'); return t && t.getAttribute('src') ? t.getAttribute('src') : 'arena-worker.js'; }
     function paintKeep(code) { paint(); var ta = wrap.querySelector('#ar-code'); if (ta) ta.value = code; var b = wrap.querySelector('[data-a="fsrun"]'); if (b) b.focus(); }
 
-    function paint() { wrap.innerHTML = tab === 'arena' ? arenaHTML() : fsHTML(); }
+    var vRules = null;
+    function familyHTML() {
+      var st = ladderState('volcano'), cleared = Object.keys(st.cleared || {}).length, medals = Object.keys(st.medal || {}).map(function (k) { return G[st.medal[k]] || ''; }).join('');
+      var total = vRules && vRules.ladders && vRules.ladders.volcano ? vRules.ladders.volcano.levels : null;
+      return tabsHTML() + '<p class="ar-brief">Two older machines are the arena&rsquo;s first level and its race mode. They keep their own saves and addresses; nothing you earned there moves.</p>' +
+        '<div class="ar-fam"><h3>Level 1: The Annealing Volcano</h3><p>You are not the climber, you are the temperature. Simulated annealing is the third method in the arena; here you hold the cooling schedule yourself and feel why a method that never accepts a worse move cannot leave a valley.</p>' +
+        '<p class="ar-facts"><b>Your ladder</b> ' + cleared + (total ? ' of ' + total : '') + ' levels cleared ' + medals + '</p>' +
+        '<p><a class="preset" href="play.html#volcano">Play the Volcano</a></p></div>' +
+        '<div class="ar-fam"><h3>Race mode: The Bench</h3><p>One run proves nothing, so the Bench replays three very different methods many times on the same problem and shows the spread, the same discipline the arena applies with a fixed budget and a proven best.</p>' +
+        '<p><a class="preset" href="analog.html#bench">Open the Bench</a></p></div>';
+    }
+    function paint() { wrap.innerHTML = tab === 'arena' ? arenaHTML() : (tab === 'family' ? familyHTML() : fsHTML()); }
+    try { var P = W.SymbiQ.progress; if (P && P.rules) P.rules().then(function (r) { vRules = r; if (tab === 'family') paint(); })['catch'](function () {}); } catch (e) { }
     function start(n) { lvl = n; runs = []; best = null; paint(); }
     function doRun() {
       var L = LEVELS[lvl], M = METHODS.filter(function (m) { return m.id === meth; })[0], res = runMethod(L, meth, M.knob ? knob : 0), gap = gapOf(L, res.best.score), med = medalOf(L, res.best.score);

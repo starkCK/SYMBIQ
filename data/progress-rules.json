@@ -36,7 +36,7 @@
   "s": {
    "name": "Post-quantum security",
    "hub": "track-security.html",
-   "cap": 19
+   "cap": 34
   }
  },
  "pages": {
@@ -103,6 +103,10 @@
   "factory": {
    "track": "q",
    "levels": 5
+  },
+  "lattice": {
+   "track": "s",
+   "levels": 5
   }
  },
  "sources": {
@@ -136,7 +140,8 @@
    "arenafs": 1,
    "strikes": 6,
    "agentlab": 5,
-   "factory": 5
+   "factory": 5,
+   "lattice": 5
   }
  }
 }

@@ -3704,6 +3704,31 @@ body[data-glass] ::-webkit-scrollbar-thumb:hover {
 .mf-act { display: flex; flex-wrap: wrap; gap: 8px; }
 .mf-act .preset { min-height: 44px; }
 .mfc .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ltc { display: grid; gap: 10px; max-width: 820px; }
+.lt-strip { display: flex; flex-wrap: wrap; gap: 6px; }
+.lt-chip { min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; cursor: pointer; }
+.lt-chip.now { border-color: var(--teal); }
+.lt-chip:disabled { opacity: .55; cursor: not-allowed; }
+.lt-brief, .lt-facts, .lt-say { margin: 0; font-size: .92rem; line-height: 1.55; }
+.lt-facts { color: var(--muted); }
+.lt-body { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+.lt-svg { width: min(300px, 100%); height: auto; border-radius: 12px; flex: 0 0 auto; }
+.lt-bg { fill: var(--panel); stroke: var(--border); }
+.lt-pt { fill: var(--muted); opacity: .75; }
+.lt-o { fill: var(--text, currentColor); }
+.lt-arr { stroke-width: 2.4; }
+.lt-a0 { stroke: var(--teal); fill: var(--teal); }
+.lt-a1 { stroke: #d4567a; fill: #d4567a; }
+.lt-lab { font-size: 11px; fill: currentColor; }
+.lt-vecs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; flex: 1 1 260px; min-width: 0; }
+.lt-v { padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); font-size: .88rem; line-height: 1.5; overflow-wrap: anywhere; }
+.lt-v.win { border-color: var(--teal); }
+.lt-hit { color: var(--teal); font-weight: 600; }
+.lt-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lt-ctl label { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; }
+.lt-s { min-height: 44px; min-width: 64px; padding: 0 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; }
+.lt-ctl .preset, .lt-act .preset { min-height: 44px; }
+.lt-act { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .lx-term, .rcpt {
   cursor: help;

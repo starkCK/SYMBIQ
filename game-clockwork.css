@@ -1,0 +1,17 @@
+.cwk { display: grid; gap: 10px; max-width: 820px; }
+.cw-strip { display: flex; flex-wrap: wrap; gap: 6px; }
+.cw-chip { min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; cursor: pointer; }
+.cw-chip.now { border-color: var(--teal); }
+.cw-chip:disabled { opacity: .55; cursor: not-allowed; }
+.cw-brief, .cw-facts, .cw-say { margin: 0; font-size: .92rem; line-height: 1.55; }
+.cw-facts { color: var(--muted); }
+.cw-tab { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.cw-tab th, .cw-tab td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+.cw-tab thead th { color: var(--muted); font-weight: 600; }
+.cw-tab tr.win td, .cw-tab tr.win th { color: var(--teal); font-weight: 600; }
+.cw-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.cw-ctl label { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; }
+.cw-s { min-height: 44px; max-width: 100%; padding: 0 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: inherit; font: inherit; }
+.cw-ctl .preset, .cw-act .preset { min-height: 44px; }
+.cw-act { display: flex; flex-wrap: wrap; gap: 8px; }
+.cwk .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

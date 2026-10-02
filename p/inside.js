@@ -1231,13 +1231,17 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   S.play = api;
 
   var DOTS = [
-    '.sqp-dots{display:inline-flex;align-items:center;vertical-align:middle;margin-left:6px}',
-    '.sqp-dot{width:44px;height:44px;border:0;padding:0;background:transparent;display:inline-grid;place-items:center;cursor:pointer;opacity:.6}',
-    '.sqp-dot i{width:9px;height:9px;border-radius:50%;display:block;transition:transform .25s,box-shadow .25s;background:currentColor}',
+    '.sqp-dots{display:inline-flex;align-items:center;vertical-align:middle;margin-left:10px;gap:2px}',
+    '.sqp-dot{width:48px;height:48px;border:0;padding:0;background:transparent;display:inline-grid;place-items:center;cursor:pointer;opacity:.85}',
+    '.sqp-dot i{width:16px;height:16px;border-radius:50%;display:block;background:radial-gradient(circle at 35% 30%,#fff 0,currentColor 55%);box-shadow:0 0 6px currentColor;transition:transform .25s,box-shadow .25s;animation:sqpbreathe 3.2s ease-in-out infinite}',
+    '.sqp-dot.d i{animation-delay:1.6s}',
     '.sqp-dot.n{color:#a78bfa}.sqp-dot.d{color:#2dd4bf}',
     '.sqp-dot:hover,.sqp-dot:focus-visible{opacity:1}',
-    '.sqp-dot:hover i,.sqp-dot:focus-visible i{transform:scale(1.5);box-shadow:0 0 12px currentColor}',
-    '.sqp-dot:focus-visible{outline:2px solid currentColor;outline-offset:-8px;border-radius:50%}'
+    '.sqp-dot:hover i,.sqp-dot:focus-visible i{transform:scale(1.7);animation:none;box-shadow:0 0 10px currentColor,0 0 26px currentColor,0 0 48px currentColor}',
+    '.sqp-dot:focus-visible{outline:2px solid currentColor;outline-offset:-6px;border-radius:50%}',
+    '@keyframes sqpbreathe{0%,100%{box-shadow:0 0 4px currentColor;transform:scale(1)}50%{box-shadow:0 0 14px currentColor,0 0 28px currentColor;transform:scale(1.18)}}',
+    '@media (prefers-reduced-motion:reduce){.sqp-dot i{animation:none}}',
+    '#qz-pill{transition:box-shadow .3s}#qz-pill:hover{box-shadow:0 0 0 1px rgba(167,139,250,.6),0 0 16px rgba(167,139,250,.55),0 0 30px rgba(45,212,191,.4)}'
   ].join('\n');
   var DOOR = [
     '.sqp-bg{position:fixed;inset:0;z-index:2147482290;background:transparent}',
@@ -1306,7 +1310,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     D.addEventListener('click', function (e) {
       if (!e.target.closest || !e.target.closest('#qz-pill')) return;
       var now = Date.now(); n = now - t < 900 ? n + 1 : 1; t = now;
-      if (n >= 3) { n = 0; openDoor(); }
+      if (n >= 2) { n = 0; openDoor(); }
     });
     try { W.console.info('%cSymbiQ%c There is a way to play with this page: SymbiQ.play("noise") or SymbiQ.play("decoder"). Nothing is ever deleted, and Esc puts it all back.', 'background:#8b5cf6;color:#fff;padding:2px 6px;border-radius:4px', 'color:inherit'); } catch (e) { }
     var m = /[?&]play=([A-Za-z]{4}-?\d{2})\b/.exec(W.location.search);

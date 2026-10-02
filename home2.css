@@ -5,19 +5,20 @@ body[data-still] .hh-machine iframe { animation: revert !important; }
 .home {
   display: grid; gap: 28px 44px; align-items: center; margin-top: -6px;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  grid-template-areas: "start start" "copy machine" "doors doors" "jump jump" "play play" "tracks tracks" "loop loop" "trust trust";
+  grid-template-areas: "start start" "copy machine" "about about" "doors doors" "jump jump" "play play" "tracks tracks" "loop loop" "trust trust";
 }
 .hh-start { grid-area: start; justify-self: end; margin: 0 0 -14px; }
 .hh-copy, .hh-back { grid-area: copy; }
 .hh-machine { grid-area: machine; }
 .hdoors { grid-area: doors; }
+.hh-about { grid-area: about; }
 .hjump { grid-area: jump; }
 .hplay { grid-area: play; }
 .htracks { grid-area: tracks; }
 .hloop { grid-area: loop; }
 .htrust { grid-area: trust; }
 @media (max-width: 899px) {
-  .home { grid-template-columns: minmax(0, 1fr); grid-template-areas: "start" "copy" "doors" "machine" "jump" "play" "tracks" "loop" "trust"; }
+  .home { grid-template-columns: minmax(0, 1fr); grid-template-areas: "start" "copy" "about" "doors" "machine" "jump" "play" "tracks" "loop" "trust"; }
 }
 
 .hh-trust { margin: 0 0 10px; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
@@ -117,12 +118,17 @@ body[data-still] .hh-machine iframe { animation: revert !important; }
 .hh-back-row { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 12px 0 0; }
 .hh-back-row a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
 .is-returning .hh-copy, .is-returning .hh-machine, .is-returning .hh-start { display: none; }
-.is-returning .home, .home.is-returning { grid-template-areas: "start start" "copy copy" "doors doors" "jump jump" "play play" "tracks tracks" "loop loop" "trust trust"; }
-@media (max-width: 899px) { .home.is-returning { grid-template-areas: "start" "copy" "doors" "tracks" "loop" "trust"; } }
+.is-returning .home, .home.is-returning { grid-template-areas: "start start" "copy copy" "about about" "doors doors" "jump jump" "play play" "tracks tracks" "loop loop" "trust trust"; }
+@media (max-width: 899px) { .home.is-returning { grid-template-areas: "start" "copy" "about" "doors" "tracks" "loop" "trust"; } }
 .is-returning .hdoors { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.is-returning .door { padding: 8px 12px; flex-direction: row; align-items: center; justify-content: center; }
-.is-returning .door .d-p, .is-returning .door .d-n { display: none; }
-.is-returning .door b { font-size: 1rem; }
+.is-returning .door { padding: 10px 12px; align-items: flex-start; }
+.is-returning .door .d-n { display: none; }
+.is-returning .door .d-ico { width: 30px; height: 30px; }
+.is-returning .door .d-p { font-size: .84rem; font-weight: 500; line-height: 1.35; color: var(--muted); }
+.is-returning .door b { font-size: 1.05rem; }
+.door { min-width: 0; }
+.door .d-p { overflow-wrap: anywhere; }
+@media (max-width: 899px) { .is-returning .hdoors { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 body[data-home][data-alive] .sq-marker { display: none !important; }
 .sqov {

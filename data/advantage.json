@@ -26,8 +26,28 @@
           "by": "Pednault, Gunnels, Nannicini, Horesh and Wisnieff (IBM)",
           "label": "arXiv:1910.09534",
           "url": "https://arxiv.org/abs/1910.09534",
-          "what": "Argued that such circuits can be simulated on the Summit supercomputer in a matter of days. An argument about cost, not a run.",
+          "what": "Argued that such circuits can be simulated on the Summit supercomputer in a matter of days. An argument about cost, not a run. Posted two days before the Nature paper, after the 2019 leak.",
           "same_experiment": true
+        },
+        {
+          "date": "2021-03-04",
+          "type": "demonstration",
+          "by": "Pan and Zhang",
+          "label": "arXiv:2103.03074",
+          "url": "https://arxiv.org/abs/2103.03074",
+          "what": "One million correlated bitstrings at a cross-entropy score of 0.739 on 60 GPUs. Correlated samples, so not the same task as the experiment's uncorrelated ones.",
+          "same_experiment": true,
+          "correlated": true
+        },
+        {
+          "date": "2021-10-27",
+          "type": "demonstration",
+          "by": "Liu and co-authors",
+          "label": "arXiv:2110.14502",
+          "url": "https://arxiv.org/abs/2110.14502",
+          "what": "Sycamore sampling in 304 seconds on the new Sunway supercomputer (SC21). Correlated samples, so not the same task as the experiment's uncorrelated ones.",
+          "same_experiment": true,
+          "correlated": true
         },
         {
           "date": "2021-11-04",
@@ -35,13 +55,13 @@
           "by": "Pan, Chen and Zhang",
           "label": "arXiv:2111.03011; Physical Review Letters 129, 090502 (2022)",
           "url": "https://arxiv.org/abs/2111.03011",
-          "what": "One million uncorrelated bitstrings at a fidelity of about 0.0037 in about 15 hours on a cluster of 512 GPUs.",
+          "what": "One million uncorrelated bitstrings at a fidelity of about 0.0037 in about 15 hours on a cluster of 512 GPUs. The first run with uncorrelated samples at a fidelity above Google's.",
           "same_experiment": true
         },
         {
           "date": "2024-06-27",
           "type": "demonstration",
-          "by": "Zhao, Zhong, Pan and co-authors",
+          "by": "Zhao, Zhong, F. Pan, P. Zhang, J.-W. Pan, Chen and co-authors",
           "label": "arXiv:2406.18889; National Science Review 12, nwae317",
           "url": "https://arxiv.org/abs/2406.18889",
           "what": "1,432 GPUs; a higher linear cross-entropy score than the experiment and, by the authors' account, seven times faster than Sycamore's run.",
@@ -49,7 +69,7 @@
         }
       ],
       "status": "matched",
-      "reason": "Two groups report running classical samplers that reach or exceed the experiment's score. The 10,000-year estimate did not survive; the experiment itself is not in doubt.",
+      "reason": "Two papers, with overlapping authors (Feng Pan and Pan Zhang appear on both), report running classical samplers that reach or exceed the experiment's score. The 10,000-year estimate did not survive; the experiment itself is not in doubt.",
       "ledger": null
     },
     {
@@ -65,6 +85,25 @@
       },
       "responses": [
         {
+          "date": "2021-08-03",
+          "type": "estimate",
+          "by": "Bulmer and co-authors",
+          "label": "arXiv:2108.01622; Science Advances 8, eabl9236 (2022)",
+          "url": "https://arxiv.org/abs/2108.01622",
+          "what": "Cuts the estimated cost of classically simulating state-of-the-art Gaussian boson sampling, Jiuzhang scale included (up to 100 modes, 92 photons), from 600 million years to months on a supercomputer of about 100,000 cores. A cost estimate, not a run.",
+          "same_experiment": true
+        },
+        {
+          "date": "2021-09-23",
+          "type": "partial",
+          "by": "Villalonga and co-authors",
+          "label": "arXiv:2109.11525",
+          "url": "https://arxiv.org/abs/2109.11525",
+          "what": "Names the 2020 and 2021 experiments and gives classical samplers with better total variation distance and KL divergence than the experiments, by the authors' account. The benchmark is low-order marginals, which the USTC authors dispute as a test.",
+          "same_experiment": true,
+          "table_note": "a sampler that beats the experiment on distance measures, not a full simulation"
+        },
+        {
           "date": "2023-06-06",
           "type": "partial",
           "by": "Oh, Liu, Alexeev, Fefferman and Jiang",
@@ -75,7 +114,7 @@
         }
       ],
       "status": "contested",
-      "reason": "A published classical sampler beats the largest experiment of its day on the authors' own measure, which weakens the whole line of experiments; whether it answers this one is not stated in the paper.",
+      "reason": "Two classical papers target the 2020 and 2021 experiments: a cost estimate in months rather than millions of years, and a sampler that beats the experiments on distance measures. Whether those measures are the right test is disputed, so the line stays contested. A later classical sampler (Oh et al.) beats the largest experiment of its day on the authors' own measure; whether it answers this one is not stated in the paper. The 255-click Jiuzhang 3.0 (arXiv:2304.12240) and the 8,176-mode 2026 Nature experiment are separate claims and are not on this list.",
       "ledger": null
     },
     {
@@ -107,6 +146,15 @@
           "url": "https://arxiv.org/abs/2306.16372",
           "what": "Fast classical simulation by sparse Pauli dynamics of the same experiment.",
           "same_experiment": true
+        },
+        {
+          "date": "2023-06-28",
+          "type": "analysis",
+          "by": "Kechedzhi and co-authors (Google Quantum AI)",
+          "label": "arXiv:2306.15970",
+          "url": "https://arxiv.org/abs/2306.15970",
+          "what": "Google's own classical analysis of the same experiment, a third attempt.",
+          "same_experiment": true
         }
       ],
       "status": "matched",
@@ -114,15 +162,15 @@
       "ledger": null
     },
     {
-      "id": "willow-rcs-2024",
-      "task": "Random circuit sampling, 67 qubits, 32 cycles",
+      "id": "sycamore67-rcs-2024",
+      "task": "Random circuit sampling, 67 qubits, 32 cycles (Sycamore)",
       "claimant": "Google Quantum AI",
       "kind": "beyond-classical claim",
       "claim": {
-        "date": "2024-10",
-        "label": "Morvan et al., Nature 634, 328",
-        "url": "https://www.nature.com/articles/s41586-024-07998-6",
-        "claimed": "Beyond the capabilities of existing classical supercomputers at this size (Google's December 2024 Willow post put it at under five minutes against 10^25 years)."
+        "date": "2023-04-21",
+        "label": "Morvan et al., arXiv:2304.11119; Nature 634, 328 (October 2024)",
+        "url": "https://arxiv.org/abs/2304.11119",
+        "claimed": "Beyond the reach of existing classical supercomputers at this size. The arXiv version, posted April 2023, already carried the 67-qubit claim."
       },
       "responses": [
         {
@@ -136,14 +184,14 @@
         }
       ],
       "status": "standing",
-      "reason": "We found no published classical reproduction of this experiment's samples. The one general result (above) is asymptotic and its authors say it does not cover experiments of this size. The 10^25-year figure is a model estimate and the 2019 estimate fell, so it is not a safe number.",
+      "reason": "We found no published classical reproduction of this experiment's samples. The one general result (above) is asymptotic and its authors say it does not cover experiments of this size. Google's December 2024 Willow post gives a figure of under five minutes against 10^25 years; that belongs to a separate 105-qubit experiment on a different chip and is not what this row tests. A classical-cost figure of that size is a model estimate, and the 2019 estimate fell, so it is not a safe number.",
       "ledger": null
     },
     {
       "id": "dwave-2025",
       "task": "Quantum annealing dynamics of spin glasses",
       "claimant": "D-Wave",
-      "kind": "quantum supremacy claim",
+      "kind": "beyond-classical claim (D-Wave's press release said 'quantum supremacy')",
       "claim": {
         "date": "2024-03-01",
         "label": "King et al., arXiv:2403.00910; Science 388, 199 (2025)",
@@ -155,23 +203,23 @@
           "date": "2025-03-07",
           "type": "demonstration",
           "by": "Tindall, Mello, Fishman, Stoudenmire and Sels (Flatiron Institute)",
-          "label": "arXiv:2503.05693",
+          "label": "arXiv:2503.05693; Science 392, 868 (2026)",
           "url": "https://arxiv.org/abs/2503.05693",
-          "what": "Tensor networks with belief propagation, claimed to simulate the experiment's results efficiently on standard resources. A preprint at the time of posting.",
+          "what": "Tensor networks with belief propagation; the authors report state-of-the-art accuracy with modest computational resources, on the same spin-glass models. Published in Science, May 2026.",
           "same_experiment": true
         },
         {
-          "date": "2025-03-12",
+          "date": "2025-03-11",
           "type": "partial",
           "by": "Mauron and Carleo (EPFL)",
-          "label": "arXiv preprint, via The Quantum Insider's 13 March 2025 write-up",
-          "url": "https://thequantuminsider.com/2025/03/13/d-wave-deep-dive-a-look-at-the-quantum-advantage-findings-and-the-questions-that-remain/",
+          "label": "arXiv:2503.08247",
+          "url": "https://arxiv.org/abs/2503.08247",
           "what": "A time-dependent variational Monte Carlo method matching or beating D-Wave's reported accuracy on systems up to 128 spins; not shown at D-Wave's largest instances.",
           "same_experiment": true
         }
       ],
       "status": "contested",
-      "reason": "Two classical groups say they match the result, one on the experiment's own instances, one at smaller sizes. D-Wave's largest instances are not claimed by the second. Neither is settled in a journal.",
+      "reason": "Two classical groups say they match the result, one on the experiment's own instances, one at smaller sizes. D-Wave's largest instances are not claimed by the second. One is now in a journal (Science, May 2026); neither has settled the question.",
       "ledger": "dwave-magnetic-simulation-supremacy-2025"
     },
     {
@@ -192,7 +240,7 @@
           "by": "Bermejo, Villalonga, Ware, Vidal and Szasz",
           "label": "arXiv:2604.15427",
           "url": "https://arxiv.org/abs/2604.15427",
-          "what": "Argues that tensor networks with belief propagation cannot feasibly simulate the experiment. This supports the claim. One co-author, Benjamin Villalonga, is also an author of Google's random circuit sampling papers, so it is not an independent test.",
+          "what": "Argues that tensor networks with belief propagation cannot feasibly simulate the experiment. This supports the claim against one named method. All five authors list Google Quantum AI as an affiliation (Bermejo also lists two Spanish institutions), so it is not an independent test.",
           "same_experiment": true
         }
       ],
@@ -209,7 +257,7 @@
         "date": "2026-07-30",
         "label": "IBM newsroom announcement",
         "url": "https://newsroom.ibm.com/2026-07-30-ibm-and-qedma-demonstrate-quantum-advantage,-modeling-physics-beyond-classical-capabilities-through-trusted-quantum-computation",
-        "claimed": "Quantum advantage on commercially available hardware; the circuits are released to the Quantum Advantage Tracker for classical benchmarking."
+        "claimed": "Quantum advantage on commercially available hardware, in a pre-print that is not yet peer reviewed. IBM and Qedma say classical methods could not consistently agree at the scale reached and that the result was cross-validated on Quantinuum trapped-ion hardware. The circuits are released to the Quantum Advantage Tracker for classical benchmarking."
       },
       "responses": [],
       "status": "standing",

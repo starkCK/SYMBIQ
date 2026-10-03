@@ -137,6 +137,7 @@
         done = true; var med = medalOf(chain.length - 1, L.par);
         if (mode === 'endless') EN.record(KEY, med); else if (mode === 'daily') EN.dailyRecord(KEY, med);
         else try { var f = W.SymbiQ.games && W.SymbiQ.games.frame; if (f && f.ladder) f.ladder.markCleared(KEY, lvl + 1, med); } catch (x) { }
+        if (mode === 'ladder') try { if (W.SymbiQ.quest) W.SymbiQ.quest.step('qday', 'shor'); } catch (x) { }
       }
       paint();
     }

@@ -14,7 +14,7 @@ const V3 = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
 const MACHINES = {
   sc: { name: 'Superconducting', who: 'IBM, Google', levels: [
     { id: 'system',   label: 'Machine',      size: 'a few metres' },
-    { id: 'cryostat', label: 'Cryostat',     size: 'about 1.5 m' },
+    { id: 'cryostat', label: 'Cryostat',     size: 'about 1 m' },
     { id: 'package',  label: 'Chip package', size: 'about 10 cm' },
     { id: 'chip',     label: 'Chip',         size: 'about 1 cm' },
     { id: 'transmon', label: 'One qubit',    size: 'about 0.5 mm' },
@@ -23,7 +23,7 @@ const MACHINES = {
   ion: { name: 'Trapped ions', who: 'Quantinuum, IonQ', levels: [
     { id: 'ion-machine', label: 'Machine',        size: 'a few metres' },
     { id: 'ion-trap',    label: 'Vacuum chamber', size: 'about 10 cm' },
-    { id: 'ion-chain',   label: 'Ion chain',      size: 'about 50 \u00B5m' },
+    { id: 'ion-chain',   label: 'Ion chain',      size: 'about 16 \u00B5m' },
     { id: 'ion-ion',     label: 'One ion',        size: 'about 0.3 nm' },
   ] },
   atom: { name: 'Neutral atoms', who: 'QuEra, Atom Computing, Pasqal', levels: [
@@ -150,7 +150,7 @@ function buildSystem(v) {
   const lowRing = ring(3.35, 0.09, MAT.steel, 64); lowRing.rotation.x = Math.PI / 2; v.add(frame, put(lowRing, 0, 1.1, 0));
 
   const ins = v.part('insides', {
-    name: 'Cold stages', opens: 'cryostat', t: '300 K at the top, about 10 mK at the bottom', s: 'about 1.5 m tall',
+    name: 'Cold stages', opens: 'cryostat', t: '300 K at the top, about 10 mK at the bottom', s: 'about 1 m tall',
     d: 'Five gold-plated plates hung one under another, each colder than the one above. The qubits sit under the lowest one. It is often called the chandelier.',
     f: ['Open it to see each plate, the wiring between them and the processor at the bottom.'], swatch: '#d9a441',
   });
@@ -248,7 +248,7 @@ function buildCryostat(v) {
     f: ['Copper carries heat well; gold plating stops it tarnishing.', 'The gaps between plates are held open by thin low-conductance struts.'], swatch: '#d9a441' });
   plate(2, 'plate4k', { name: '4 K stage', t: 'about 4 K (−269 °C)', s: 'plate, gold-plated copper',
     d: 'Cooled by the second stage of the pulse tube. Helium gas liquefies at about this temperature. Some of the cables switch to superconductors here, and the first transistor amplifier of the readout chain sits on it.',
-    f: ['4.2 K is where helium boils at normal pressure.', 'This is the coldest the pulse tube can go on its own.'], swatch: '#d9a441' });
+    f: ['4.2 K is where helium boils at normal pressure.', 'The pulse tube holds this plate at about 3 to 4 K; it cannot go much below that on its own.'], swatch: '#d9a441' });
   plate(3, 'still', { name: 'Still plate', t: 'about 0.8 K', s: 'plate, gold-plated copper',
     d: 'Part of the dilution refrigerator. Helium-3 boils out of the mixture here and is pumped away, which drives the circulation. A small heater sets how fast it flows.',
     f: ['Below about 1 K the fridge stops relying on the pulse tube and starts using the helium mixture.'], swatch: '#d9a441' });
@@ -587,7 +587,7 @@ function buildJunction(v) {
   v.add(A, put(box(6.6, 0.45, 1.2, MAT.al), -3.0, 0.225, 0), { off: V3(0, 0, 0) });
 
   const bar = v.part('barrier', { name: 'Aluminium-oxide barrier', t: 'about 10 mK', s: 'about 1 to 2 nm, drawn about 10× too thick',
-    d: 'After the first layer a little oxygen is let into the chamber and the aluminium surface oxidises. The oxide is an insulator only about four to eight atoms thick. Electrons do not simply flow across it, but pairs of them can tunnel through.',
+    d: 'After the first layer a little oxygen is let into the chamber and the aluminium surface oxidises. The oxide is an insulator only roughly three to seven aluminium-atom widths thick. Electrons do not simply flow across it, but pairs of them can tunnel through.',
     f: ['The barrier is roughly a hundred times thinner than the junction is wide, which is why the drawing has to exaggerate it.', 'How thick the oxide is sets how easily pairs tunnel, and so the qubit’s frequency.'], swatch: '#35e0c8' });
   v.add(bar, put(box(1.2, 0.12, 1.2, MAT.oxide), 0, 0.51, 0), { off: V3(0, 0.9, 0) });
 
@@ -696,7 +696,7 @@ function buildIonMachine(v) {
 
   const ls = v.part('lasers', { name: 'Lasers', t: 'room temperature', s: 'boxes the size of a shoebox',
     d: 'Several lasers, each tuned to one atomic transition: one cools the ions, one repumps them, one ionizes the atoms that load the trap, one drives the gates. Most of these beams are ultraviolet or infrared, so the colours here are only for the picture.',
-    f: ['A laser’s colour must be held steady to within about one part in a hundred million.'], swatch: '#8a5cff' });
+    f: ['A laser’s colour must be held steady to within a very small fraction of its own frequency.'], swatch: '#8a5cff' });
   const laser = (x, y, z, hex, ax) => {
     const g = new THREE.Group(); g.add(box(1.5, 0.9, 0.9, MAT.rack)); g.add(put(box(0.06, 0.34, 0.34, new THREE.MeshBasicMaterial({ color: hex })), ax * 0.78, 0, 0)); g.position.set(x, y, z); return g;
   };
@@ -808,7 +808,7 @@ function buildIonChain(v) {
   const fl = ring(7.4, 0.015, MAT.darksteel, 96); fl.rotation.x = Math.PI / 2; fl.position.y = -2.6; v.decor(fl);
   const ions = v.part('ions', { name: 'Ions', opens: 'ion-ion', t: 'about a millikelvin', s: 'each a fraction of a nanometre, a few micrometres apart',
     d: 'Each ion is one qubit. Its two states are two of its own internal energy levels, and a laser pulse rotates the qubit between them.',
-    f: ['Every ion of an isotope is identical, unlike fabricated qubits, which differ from one to the next.', 'The spacing is uneven: closer in the middle, wider at the ends. That is the real shape of the equilibrium, computed for ten ions.'], swatch: '#2dd4bf' });
+    f: ['Every ion of an isotope is identical, unlike fabricated qubits, which differ from one to the next.', 'The spacing is uneven: closer in the middle, wider at the ends. That is the real shape of the equilibrium, computed for ten ions. For ytterbium ions in a trap whose axial frequency is assumed to be 1 MHz, the ten-ion chain is about 16 micrometres end to end, with the closest pair about 1.5 micrometres apart.'], swatch: '#2dd4bf' });
   const im = [];
   X.forEach((x, i) => { const m = put(sph(0.3, MAT.ion, 24), x, 0, 0); m.add(halo(TEAL, 2.0, 0.9)); v.add(ions, m, { off: V3(0, 0.5, 0) }); im.push(m); });
   const pot = v.part('potential', { name: 'Trapping potential', t: 'a shallow electric bowl', s: 'along the axis',
@@ -823,7 +823,7 @@ function buildIonChain(v) {
   v.add(mo, new THREE.LineSegments(springGeo, new THREE.LineBasicMaterial({ color: 0xe9c46a, transparent: true, opacity: 0.6 })), { off: V3(0, 0.5, 0) });
   const bm = v.part('beams', { name: 'Gate beams', t: 'room temperature', s: 'each focused to a few micrometres',
     d: 'Two laser beams meet at a pair of ions. Together they drive the shared motion in a way that depends on the ions’ states, which entangles the pair. Any two ions in a chain can be paired this way.',
-    f: ['Any pair in one chain can interact directly: all-to-all connectivity, which a fixed chip layout cannot match. The cost is speed, and the length a single chain can grow.', 'Two-qubit gate fidelities above 99.9% have been reported (Ballance et al. and Gaebler et al., 2016).'], swatch: '#ff4d5e' });
+    f: ['Any pair in one chain can interact directly: all-to-all connectivity, which a fixed chip layout cannot match. The cost is speed, and the length a single chain can grow.', 'Two-qubit gate fidelities of about 99.9% or better have been reported (Ballance et al. and Gaebler et al., 2016, in calcium and beryllium ions).'], swatch: '#ff4d5e' });
   const bA = coneBeam(V3(0, 0, 0), V3(-2.4, 4.4, 2.0), 0.6, 0xff4d5e, 0.4), bB = coneBeam(V3(0, 0, 0), V3(2.4, 4.4, -2.0), 0.6, 0xff4d5e, 0.4);
   v.add(bm, bA, { off: V3(0, 1.0, 0) }); v.add(bm, bB, { off: V3(0, 1.0, 0) });
   const pair = new THREE.Mesh(new THREE.SphereGeometry(0.62, 20, 14), lightMat(0xff6b7a, 0.1)); v.add(bm, pair, { off: V3(0, 0.5, 0) });
@@ -867,7 +867,7 @@ function buildIonIon(v) {
 
   const lv = v.part('levels', { name: 'Energy levels', t: 'about a millikelvin', s: 'a diagram',
     d: '|0⟩ and |1⟩ are the two hyperfine levels. A third, much higher level is used only for reading out: light tuned to it makes one state glow and leaves the other dark.',
-    f: ['The gap between |0⟩ and |1⟩ is drawn far too large. The real gap is roughly 60,000 times smaller than the gap up to the higher level.'], swatch: '#e9ecf6' });
+    f: ['The gap between |0⟩ and |1⟩ is drawn far too large. The real gap is roughly 64,000 times smaller than the gap up to the higher level.'], swatch: '#e9ecf6' });
   const LX = 8;
   const line = (y, w, hex) => put(box(w, 0.05, 0.05, new THREE.MeshBasicMaterial({ color: hex })), LX, y, 0);
   v.add(lv, line(-1.6, 3.2, 0x2dd4bf)); v.add(lv, line(-0.8, 3.2, 0xa78bfa)); v.add(lv, line(3.4, 3.2, 0xe9ecf6));
@@ -942,7 +942,7 @@ function buildAtomMachine(v) {
 
   const ls = v.part('lasers', { name: 'Lasers', t: 'room temperature', s: 'boxes the size of a shoebox',
     d: 'Different lasers do different jobs: cool the atoms, make the tweezers, lift atoms into the interacting state, read them out. Many are infrared or blue and ultraviolet, so the colours here are only for the picture.',
-    f: ['A laser’s colour must be held steady to within about one part in a hundred million.'], swatch: '#ff4d5e' });
+    f: ['A laser’s colour must be held steady to within a very small fraction of its own frequency.'], swatch: '#ff4d5e' });
   const laser = (x, z, hex, ax) => { const g = new THREE.Group(); g.add(box(1.5, 0.9, 0.9, MAT.rack)); g.add(put(box(0.06, 0.34, 0.34, new THREE.MeshBasicMaterial({ color: hex })), ax * 0.78, 0, 0)); g.position.set(x, 0.45, z); return g; };
   v.add(ls, laser(-7.4, -0.8, RED, 1), { off: V3(-1.4, 0, 0) }); v.add(ls, laser(-7.4, 0.8, BLU, 1), { off: V3(-1.4, 0, 0) });
   v.add(ls, laser(7.4, -0.8, VIO, -1), { off: V3(1.4, 0, 0) }); v.add(ls, laser(7.4, 0.8, RED, -1), { off: V3(1.4, 0, 0) });
@@ -1107,12 +1107,12 @@ function buildAtomAtom(v) {
 
 const INTRO = {
   system: { title: 'The whole machine', text: 'Most of what you see is not the computer. The processor is a chip about the size of a fingernail, buried in the can at the centre. Everything else keeps it cold, isolated and connected to the outside world.' },
-  cryostat: { title: 'Inside the cryostat', text: 'Five gold plates, each colder than the last, from room temperature at the top to about ten thousandths of a degree above absolute zero at the bottom. Wires run down, cool as they go, and end at the processor.' },
+  cryostat: { title: 'Inside the cryostat', text: 'A lid at room temperature and five gold plates, each colder than the last, down to about a hundredth of a degree (10 millikelvin) above absolute zero at the bottom. Wires run down, cool as they go, and end at the processor.' },
   package: { title: 'The chip package', text: 'A gold box on the coldest plate. Connectors fan into a circuit board, the board reaches the chip through hair-thin wires, and shields around it keep out light and magnetic fields.' },
   chip: { title: 'The chip', text: 'Superconducting circuits patterned on silicon: qubits, the resonators that read them and the couplers that link them. This is a small excerpt; real chips carry from tens to over a hundred qubits, and the largest more.' },
   transmon: { title: 'One transmon qubit', text: 'Two metal pads and a loop, in a moat cut from a sheet of superconductor. The pads glow in turn to show charge sloshing between them, billions of times a second.' },
   junction: { title: 'The Josephson junction', text: 'The bottom of the stack: two aluminium films separated by an oxide layer a few atoms thick. Everything above exists to protect, drive and read this one component.' },
-  'ion-machine': { title: 'A trapped-ion machine', text: 'Mostly light. The qubits are single charged atoms held in a vacuum chamber a few centimetres across; the table around it carries the lasers and optics that cool, control and read them. There is no fridge.' },
+  'ion-machine': { title: 'A trapped-ion machine', text: 'Mostly light. The qubits are single charged atoms held in a vacuum chamber about ten centimetres across; the table around it carries the lasers and optics that cool, control and read them. There is no fridge.' },
   'ion-trap': { title: 'Inside the vacuum chamber', text: 'Four electrodes shake a radio-frequency field that squeezes the ions onto a line, end electrodes stop them sliding off, and beams of light cool them, address them and read them out. The ions and gaps are drawn far too big to be seen at this scale.' },
   'ion-chain': { title: 'A chain of ions', text: 'Ten ions in a row, closer together in the middle than at the ends because that is where the repulsion and the trap balance. They wobble together like beads on springs, and lasers use that shared motion to entangle any two of them.' },
   'ion-ion': { title: 'One ion', text: 'A single ytterbium ion: a nucleus, closed shells of electrons and one outer electron. Two ways its spin can sit relative to the nucleus\u2019s are |0\u27E9 and |1\u27E9. Watch a pulse put it in a superposition and a readout turn that into a random bright or dark result.' },

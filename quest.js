@@ -20,7 +20,7 @@
       blurb: 'Four steps from the headline to a forecast of your own. Any order.',
       steps: [
         { id: 'read', label: 'Answer the Bitcoin page’s check question', href: 'bitcoin.html', test: answeredBitcoin },
-        { id: 'shor', label: 'Find a period yourself in the Shor explorer', href: 'machinery-13.html#try' },
+        { id: 'shor', label: 'Finish a Shor run yourself, in the Shor explorer or in Shor’s Clockwork', href: 'machinery-13.html#try' },
         { id: 'check', label: 'Run the Quick Check on a certificate or a domain', href: 'pqc.html#quickcheck' },
         { id: 'stake', label: 'Put a forecast on a Ledger claim', href: 'standing.html', test: staked }
       ]

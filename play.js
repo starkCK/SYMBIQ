@@ -643,7 +643,7 @@
 
   function curTool() { return TOOLS[G.side][G.tool]; }
   function isUnlocked(side, i) { return i < (stats.un[side] || 1); }
-  function needText(t) { if (!t.need) return ''; if (t.need.hits) return 'Unlocks after ' + t.need.hits + ' hits'; if (t.need.repairs) return 'Unlocks after ' + t.need.repairs + ' repairs'; if (t.need.F) return 'Unlocks when the page falls below ' + Math.round(t.need.F * 100) + '% fidelity'; return ''; }
+  function needText(t) { if (!t.need) return ''; if (t.need.hits) return 'Unlocks after ' + t.need.hits + ' hits'; if (t.need.repairs) return 'Unlocks after ' + t.need.repairs + ' repairs'; if (t.need.F) return 'Unlocks when the page falls below ' + Math.round(t.need.F * 100) + '% page health'; return ''; }
   function checkUnlocks() {
     ['n', 'd'].forEach(function (s) {
       var list = TOOLS[s];
@@ -890,7 +890,7 @@
     ui.root = el('div'); ui.root.id = 'sqp-root'; ui.root.setAttribute('data-sqp-ignore', ''); ui.root.setAttribute('role', 'region'); ui.root.setAttribute('aria-label', 'Noise and Decoder controls');
     ui.root.innerHTML =
       '<div class="sqp-toast" aria-hidden="true"></div><div class="sqp-roster"></div>' +
-      '<div class="sqp-bar" tabindex="-1"><div class="sqp-f"><b>100%</b><div class="sqp-fb"><i></i></div><span class="sqp-lbl">page fidelity</span></div><div class="sqp-tools" role="group" aria-label="Tools"></div>' +
+      '<div class="sqp-bar" tabindex="-1"><div class="sqp-f"><b>100%</b><div class="sqp-fb"><i></i></div><span class="sqp-lbl">page health</span></div><div class="sqp-tools" role="group" aria-label="Tools"></div>' +
       '<div class="sqp-a"><button type="button" class="sqp-b sqp-me" data-a="side"></button>' +
       '<button type="button" class="sqp-b" data-a="sound" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg></button>' +
       '<button type="button" class="sqp-b" data-a="help" aria-label="Help, and playing with others"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg></button>' +
@@ -948,15 +948,15 @@
     var roomHtml;
     if (G.room) {
       roomHtml = '<p>In room <b>' + G.room.code + '</b> with <b>' + peers.size + '</b> other' + (peers.size === 1 ? '' : 's') + '. Same page, same damage, everyone’s cursor. <span class="sqp-relay">' + relayText() + '</span></p><div class="sqp-row">' + (CFG.online ? '<button type="button" class="sqp-b" data-a="room-copy">Copy invite link</button>' : '') + '<button type="button" class="sqp-b" data-a="room-window">Open a second window</button><button type="button" class="sqp-b" data-a="round">Start a 90 second round</button><button type="button" class="sqp-b" data-a="room-leave">Leave the room</button></div>' +
-        '<p class="sqp-note">A round: Noise players try to push fidelity down, Decoders to hold it up. When the clock runs out, under 50% is a win for the Noise and 50% or over for the Decoders.</p>';
+        '<p class="sqp-note">A round: Noise players try to push the page health meter down, Decoders to hold it up. The meter is a game score for how much of the page is still undamaged, not a measured fidelity. When the clock runs out, under 50% is a win for the Noise and 50% or over for the Decoders.</p>';
     } else {
-      roomHtml = '<p>' + (CFG.online ? 'Share this page with someone else' : 'Play with a second window') + ' in real time: cursors, damage, repairs and drawings appear on both screens. Nothing typed by a player crosses the wire, only positions and actions.</p><div class="sqp-row"><button type="button" class="sqp-b" data-a="room-new">Start a room</button><input class="sqp-code" maxlength="7" placeholder="ROOM CODE" aria-label="Room code" autocomplete="off" spellcheck="false"><button type="button" class="sqp-b" data-a="room-join">Join</button></div>' +
+      roomHtml = '<p>' + (CFG.online ? 'Share this page with someone else' : 'Play with a second window') + ' in real time: cursors, damage, repairs and drawings appear on both screens. ' + (CFG.online ? 'Only the room code you typed, the page you are on, and small numbers for positions and actions cross the wire.' : 'Nothing typed by a player crosses the wire, only positions and actions.') + '</p><div class="sqp-row"><button type="button" class="sqp-b" data-a="room-new">Start a room</button><input class="sqp-code" maxlength="7" placeholder="ROOM CODE" aria-label="Room code" autocomplete="off" spellcheck="false"><button type="button" class="sqp-b" data-a="room-join">Join</button></div>' +
         '<p class="sqp-note">' + (CFG.online ? 'Two windows on this device always work. Other devices join through an online relay (Supabase Realtime), which is contacted only when you start or join a room, and used only if it answers.' : 'For now a room connects windows of this browser. Nothing is sent anywhere.') + '</p>';
     }
     p.innerHTML = '<button type="button" class="sqp-x" data-a="panel-close" aria-label="Close">✕</button><h3>Noise and Decoder</h3>' +
-      '<p>The page is one logical qubit. The Noise gives it the errors physics does; the Decoder reads them and undoes them. <b>Nothing is deleted:</b> it is all drawn over the page and undone when you leave.</p>' +
+      '<p>The page is one logical qubit. The Noise gives it the errors physics does; the Decoder reads them and undoes them. <b>Nothing is deleted:</b> the effects are temporary styles on the page plus a layer drawn over it, and they are all removed when you leave.</p>' +
       '<h4>Play</h4><ul><li><b>Click or tap</b> to fire. <b>Hold</b> to charge the tools that charge.</li><li><kbd>1</kbd>–<kbd>5</kbd> pick a tool, <kbd>Q</kbd> or right-click cycles them. New tools unlock as you play.</li><li>No mouse? Arrow keys move the aim, <kbd>Space</kbd> fires.</li><li><kbd>Esc</kbd> leaves. <b>Restore</b> puts the page back and stays.</li></ul>' +
-      '<h4>What is what</h4><ul><li><b>Bit flip</b> and <b>phase flip</b> are the two basic quantum errors, X and Z. A Y is both.</li><li>A <b>patch</b> of code distance <i>d</i> absorbs ⌊(d−1)/2⌋ errors, so raising it from 3 to 5 buys one more.</li><li>The Decoder’s <b>Storm</b> is the threshold in miniature: as long as you mend faster than the noise arrives, the page holds.</li></ul>' +
+      '<h4>What is what</h4><ul><li><b>Bit flip</b> and <b>phase flip</b> are the two basic quantum errors, X and Z. A Y is both.</li><li>A <b>patch</b> of code distance <i>d</i> absorbs ⌊(d−1)/2⌋ errors, so raising it from 3 to 5 buys one more.</li><li>The Decoder’s <b>Storm</b> is a toy version of a race a real decoder runs: it has to correct errors as fast as they arrive, or they pile up and the page is lost.</li></ul>' +
       (G.side === 'd' ? '<div class="sqp-row"><button type="button" class="sqp-b" data-a="storm">' + (G.storm ? 'Stop the storm' : 'Start a storm') + '</button></div>' : '') +
       '<h4>Play with someone</h4>' + roomHtml;
     ui.root.appendChild(p);
@@ -1016,7 +1016,7 @@
     if (v < 0.9 && !m.first) { m.first = 1; toast('The first error. Now something has to notice.'); }
     if (v < 0.5 && !m.half) { m.half = 1; toast('Half the page is gone.'); }
     if (v < 0.12 && !m.low) { m.low = 1; toast('Almost nothing left to read.'); }
-    if (v <= 0.02 && !m.zero) { m.zero = 1; stats.ruined++; saveStats(); toast('<b>Total decoherence.</b> Every outcome is as likely as any other: the maximally mixed state. Someone should fix this.', 7000); sfx.vacuum(); }
+    if (v <= 0.02 && !m.zero) { m.zero = 1; stats.ruined++; saveStats(); toast('<b>Almost nothing is left.</b> Fully depolarising noise would leave every outcome equally likely: the maximally mixed state. Someone should fix this.', 7000); sfx.vacuum(); }
     if (v > 0.6) { m.zero = 0; m.low = 0; }
     if (v > 0.9 && m.half) { m.half = 0; m.first = 0; if (m.hadLow) { m.hadLow = 0; toast('<b>The logical qubit is restored.</b> That is the core of error correction: notice the errors, and undo them faster than they arrive.', 7000); } }
     if (v < 0.4) m.hadLow = 1;
@@ -1296,12 +1296,12 @@
 
   function beginRound(dur, mine) {
     NET.round = { t0: Date.now(), dur: dur * 1000, mine: mine, ended: false };
-    toast('<b>Round.</b> ' + dur + ' seconds. Under 50% at the end, the Noise wins; 50% or more, the Decoders.', 5000); NET.rosterDirty = true;
+    toast('<b>Round.</b> ' + dur + ' seconds. Under 50% page health at the end, the Noise wins; 50% or more, the Decoders.', 5000); NET.rosterDirty = true;
   }
   function roundStart() { if (!G.room) return; closePanel(); beginRound(90, true); netSend({ t: 'round', p: 'start', d: 90 }); }
   function endRound(Fv, mine) {
     if (!NET.round || NET.round.ended) return; NET.round.ended = true; var win = Fv < 0.5 ? 'n' : 'd';
-    toast('<b>Time.</b> Fidelity ' + Math.round(Fv * 100) + '%. The <b style="color:' + (win === 'n' ? COL.noise : COL.dec) + '">' + (win === 'n' ? 'Noise' : 'Decoders') + '</b> win' + (win === G.side ? ' — and that is you.' : '.'), 7000);
+    toast('<b>Time.</b> Page health ' + Math.round(Fv * 100) + '%. The <b style="color:' + (win === 'n' ? COL.noise : COL.dec) + '">' + (win === 'n' ? 'Noise' : 'Decoders') + '</b> win' + (win === G.side ? ' — and that is you.' : '.'), 7000);
     sfx.unlock(); W.setTimeout(function () { NET.round = null; NET.rosterDirty = true; }, 200);
   }
 
@@ -1325,7 +1325,7 @@
     if (O) { O.onmsg = onNetMsg; tps.push(O); } else room.online = CFG.online ? 'no' : 'off';
     if (!tps.length) { G.room = null; netSend = function () {}; toast(CFG.online ? 'Rooms need a browser with BroadcastChannel or WebSocket. This one has neither.' : 'Rooms need a browser with BroadcastChannel. This one has none.'); return; }
     NET.synced = 0; presence(true); W.setTimeout(function () { if (G.room === room) netSend({ t: 'sync?', n: 1 }); }, 150);
-    toast('In room <b>' + code + '</b>. Share the link and it opens on this same page.'); drawRoster(); if (G.panel) togglePanel('help', true);
+    toast(CFG.online ? 'In room <b>' + code + '</b>. Share the link and it opens on this same page.' : 'In room <b>' + code + '</b>. Use "Open a second window" to join it from this browser.'); drawRoster(); if (G.panel) togglePanel('help', true);
   }
   function roomLeave(quiet) {
     if (!G.room) return; try { netSend({ t: 'bye' }); } catch (e) { }

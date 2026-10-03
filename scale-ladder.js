@@ -6,7 +6,7 @@
   var esc = C ? C.esc : function (s) { return String(s); };
 
   var ROWS = [
-    { n: 'The vacuum can', m: 0.8, r: 'about 0.5 to 1 m', t: 'The outside of the fridge.', level: 'cryostat' },
+    { n: 'The vacuum can', m: 1, r: 'about 1 m', t: 'The outside of the fridge.', level: 'cryostat' },
     { n: 'The chip package', m: 0.1, r: 'about 10 cm', t: 'The sealed box on the coldest plate.', level: 'package' },
     { n: 'The chip', m: 0.01, r: 'about 1 cm', t: 'Silicon with the circuits on top.', level: 'chip' },
     { n: 'A readout resonator', m: 0.004, r: 'a few mm', t: 'Folded back and forth to fit.' },
@@ -20,7 +20,7 @@
     { n: 'The aluminium film', m: 5e-8, r: 'tens of nm thick', t: 'How thick each electrode is.' },
     { n: 'DNA, across', m: 2e-9, r: 'about 2 nm', t: 'For comparison.' },
     { n: 'The oxide barrier', m: 1.5e-9, r: 'about 1 to 2 nm', t: 'The insulating layer in the middle of the junction.', level: 'junction' },
-    { n: 'An aluminium atom', m: 2.9e-10, r: 'about 0.29 nm across', t: 'So the barrier is roughly four to eight atoms thick.' }
+    { n: 'An aluminium atom', m: 2.9e-10, r: 'about 0.29 nm across', t: 'So the barrier is roughly three to seven aluminium-atom widths thick.' }
   ];
   var LEVEL_NAME = { cryostat: 'Level 2', package: 'Level 3', chip: 'Level 4', transmon: 'Level 5', junction: 'Level 6' };
 

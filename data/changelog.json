@@ -1,8 +1,48 @@
 {
  "schema": 1,
  "generated": "2026-09-08",
- "count": 124,
+ "count": 128,
  "events": [
+  {
+   "at": "2026-10-03",
+   "kind": "correction",
+   "tag": "Correction 25",
+   "title": "The Inside page understated its own scale steps by a factor of a hundred, and mislabelled the ion chain.",
+   "href": "corrections.html",
+   "note": "Live from 2026-09-30 until it was caught and published here."
+  },
+  {
+   "at": "2026-10-03",
+   "kind": "correction",
+   "tag": "Correction 24",
+   "title": "Advantage Watch dated one claim 18 months late and counted a first rebuttal that was not first; Open Problems stated two things too flatly.",
+   "href": "corrections.html",
+   "note": "Live from 2026-10-02 until it was caught and published here."
+  },
+  {
+   "at": "2026-10-03",
+   "kind": "correction",
+   "tag": "Correction 23",
+   "title": "The Bitcoin answer card compared two different attacks, and its qubits were the wrong kind.",
+   "href": "corrections.html",
+   "note": "Live from 2026-07-14 until it was caught and published here."
+  },
+  {
+   "at": "2026-10-03",
+   "kind": "correction",
+   "tag": "Correction 22",
+   "title": "The Security course said the hybrid handshake is 19 times X25519. One direction was set against both.",
+   "href": "corrections.html",
+   "note": "Live from 2026-10-02 until it was caught and published here."
+  },
+  {
+   "at": "2026-10-03",
+   "kind": "build",
+   "tag": "Build",
+   "title": "Daily Question refreshed (#8, archived), Bitcoin answer card compares the same attack in both years, 2.6-orders receipt corrected",
+   "href": "",
+   "note": ""
+  },
   {
    "at": "2026-10-02",
    "kind": "build",
@@ -520,14 +560,6 @@
    "kind": "build",
    "tag": "Build",
    "title": "insights.html: drop the \"why this exists\" rationale section",
-   "href": "",
-   "note": ""
-  },
-  {
-   "at": "2026-09-25",
-   "kind": "build",
-   "tag": "Build",
-   "title": "Add Insight Notes: creator applications + a reviewed, bylined essay page",
    "href": "",
    "note": ""
   },

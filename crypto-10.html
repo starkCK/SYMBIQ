@@ -70,8 +70,8 @@
 
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
-<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/crypto-10.js?v=1" defer></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=6"></script>
+<script src="p/crypto-10.js?v=2" defer></script>
 
 
 
@@ -264,7 +264,8 @@
 <div class="course" id="c10" data-course data-page="crypto" data-mission="crypto-complete" data-count="10" data-topic="c10" data-id="c10">
 <header class="cp-head"><div class="eyebrow"><a href="crypto.html">Cryptography, before and after Shor</a> &middot; Topic 10 of 10 &middot; After Shor</div>
 <h1>Migrating without breaking everything</h1>
-<p class="tagline">Where do you start, and what changes on the wire?</p></header>
+<p class="tagline">Where do you start, and what changes on the wire?</p>
+<nav class="rung-rail" aria-label="Where this page sits on SymbiQ&#39;s ladder, from the circuit to the consequence"><span class="rung-rail-lab">The Ladder</span><span class="rung-rail-track"><a href="circuits.html" class="rung-dot" title="L0, the circuit"><span aria-hidden="true">L0</span><span class="rung-sr">the circuit</span></a><span class="rung-seg" aria-hidden="true"></span><a href="quantum-mechanics.html" class="rung-dot" title="L1, the qubit"><span aria-hidden="true">L1</span><span class="rung-sr">the qubit</span></a><span class="rung-seg" aria-hidden="true"></span><a href="qec.html" class="rung-dot" title="L2, what makes it survive"><span aria-hidden="true">L2</span><span class="rung-sr">what makes it survive</span></a><span class="rung-seg" aria-hidden="true"></span><a href="phase-kickback.html" class="rung-dot" title="L3, the algorithm"><span aria-hidden="true">L3</span><span class="rung-sr">the algorithm</span></a><span class="rung-seg" aria-hidden="true"></span><a href="pqc.html" class="rung-dot is-cur" title="L4, the consequence" aria-current="page"><span aria-hidden="true">L4</span><span class="rung-sr">the consequence</span></a></span><a href="analog.html" class="rung-fork">⑂ the fork, coupled circuits instead</a></nav> </header>
 <ol class="cp-rail" aria-label="Topics in Cryptography, before and after Shor"><li><a href="crypto-01.html" data-id="c01" title="What a secret needs to survive">01</a></li><li><a href="crypto-02.html" data-id="c02" title="Hashes, the fingerprints inside everything">02</a></li><li><a href="crypto-03.html" data-id="c03" title="Does a quantum computer break AES?">03</a></li><li><a href="crypto-04.html" data-id="c04" title="How two strangers agree on a secret">04</a></li><li><a href="crypto-05.html" data-id="c05" title="RSA, and its one weak point">05</a></li><li><a href="crypto-06.html" data-id="c06" title="What a signature or a certificate proves">06</a></li><li><a href="crypto-07.html" data-id="c07" title="What Shor takes, and what it leaves">07</a></li><li><a href="crypto-08.html" data-id="c08" title="Why lattices resist, and what they cost">08</a></li><li><a href="crypto-09.html" data-id="c09" title="Signatures made from hashes alone">09</a></li><li><a href="crypto-10.html" data-id="c10" aria-current="page" title="Migrating without breaking everything">10</a></li></ol>
 <details class="cp-section"><summary>About this section: After Shor</summary>
 <p>What Shor&#39;s algorithm takes and what it leaves, the two families of replacement (lattices and hashes) and what they weigh, and the order in which a real system moves. This is the section the tools on the post-quantum page put into practice.</p>
@@ -292,7 +293,7 @@
  <rect x="20" y="184" width="30" height="26" rx="3" fill="var(--teal)" opacity=".9"/>
  <rect x="52" y="184" width="30" height="26" rx="3" fill="var(--teal)" opacity=".9"/>
  <text x="92" y="202" class="lbl-b">64 bytes in all</text>
- <text x="20" y="246" class="lbl-s">The hybrid sends and receives about 19 times the key-share data of X25519 alone (1,216 ÷ 64 = 19).</text>
+ <text x="20" y="246" class="lbl-s">Client share 1,216 bytes against 32 for X25519 (38 times); whole exchange 2,336 against 64 (36.5 times).</text>
  <text x="20" y="266" class="lbl-s">A server's first flight has room for about 14,600 bytes (10 × 1,460) before it must wait. Certificates share that room.</text>
  <text x="20" y="286" class="lbl-s">Both shares go in; the secret is safe if EITHER the classical OR the lattice half holds.</text>
  </svg></div>
@@ -313,7 +314,7 @@
  <h4 aria-level="3">The mathematics</h4>
  <p><strong>The sizes.</strong> In the hybrid X25519MLKEM768 exchange the client sends an X25519 public key (32 bytes) and an ML-KEM-768 public key (1,184 bytes), and the server answers with a 32-byte X25519 share and a 1,088-byte ML-KEM ciphertext:</p>
  <code class="eq">client: 32 + 1,184 = 1,216 bytes      server: 32 + 1,088 = 1,120 bytes      X25519 alone: 32 + 32 = 64 bytes</code>
- <p>1,216 &divide; 64 = 19, so the hybrid carries nineteen times the key-share data. A TCP sender may put an initial window of 10 segments of 1,460 bytes, 14,600 bytes, on the wire before an acknowledgement (RFC 6928), and the server&#39;s certificate chain, which may itself carry larger post-quantum signatures, has to fit in the same room. That is why the <a href="pqc.html#cliff">Size Cliff</a> measures real handshakes.</p>
+ <p>The hybrid&#39;s client share is 1,216 bytes against 32 for X25519 alone, 38 times as much, and the full exchange, 1,216 + 1,120 = 2,336 bytes, is about 36.5 times X25519&#39;s 64. A TCP sender may put an initial window of 10 segments of 1,460 bytes, 14,600 bytes, on the wire before an acknowledgement (RFC 6928), and the server&#39;s certificate chain, which may itself carry larger post-quantum signatures, has to fit in the same room. That is why the <a href="pqc.html#cliff">Size Cliff</a> measures real handshakes.</p>
  <p><strong>Mosca&#39;s inequality as a plan.</strong> You are exposed if X + Y &gt; Z (topic 06). The migration time Y is the one number in your control, and it is longer than people expect because the inventory step comes first. The <a href="pqc.html#estate">Sequencer</a> turns a list of systems, their dependencies and a capacity per quarter into a schedule; <a href="play.html#qday">Q-Day Command</a> is the same decision as a game, with the best order proven over every possible order.</p>
  <p><strong>The dated deadlines</strong> that governments have set for finishing the move are listed with their sources on the post-quantum page rather than repeated here, because a date copied into a course goes stale and a date with a link does not.</p>
  </div>

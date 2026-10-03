@@ -68,8 +68,8 @@
 
 
 <script src="core.js?v=7"></script>
-<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/corrections.js?v=34" defer></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=6"></script>
+<script src="p/corrections.js?v=36" defer></script>
 
 
 
@@ -266,15 +266,55 @@
 <p class="tagline">Every mistake we've made, displayed more prominently than the original error. Corrections are trust deposits, not withdrawals.</p>
 
 <div class="card corr-summary">
-  <h3 aria-level="2">21 corrections logged</h3>
+  <h3 aria-level="2">25 corrections logged</h3>
   <p>This log counts anything wrong that reached the <em>published</em> site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the same room and no credit to claim.</p>
   <div class="corr-stats">
-    <div><b>21</b><span>corrections since 25 Jul 2026</span></div>
+    <div><b>25</b><span>corrections since 25 Jul 2026</span></div>
     <div><b>0</b><span>caught by a reader</span></div>
   </div>
 </div>
 
 <ol class="corr-log">
+  <li class="card">
+    <p class="eyebrow">Correction 25 &middot; published 2026-09-30 &middot; corrected 2026-10-03 &middot; live for 3 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Inside page understated its own scale steps by a factor of a hundred, and mislabelled the ion chain.</h3>
+
+    <p><strong>What we said.</strong> On <a href="inside.html">Inside the machine</a>: that each level is smaller than the last &ldquo;by anything from two times to several thousand&rdquo;; that the ten-ion chain is &ldquo;about 50 &micro;m&rdquo; long; that the cryostat is 1.5 m in one place and 0.5 to 1 m in another; that the oxide barrier is &ldquo;four to eight&rdquo; atoms thick; that a ten-ion gate fidelity is &ldquo;above 99.9%&rdquo;; and, in the neutral-atom section, that Manetsch&rsquo;s array is the largest so far.</p>
+    <p><strong>What&#39;s true.</strong> The step from the ion chain to one ion is about 50,000 times, and from the neutral-atom array to one atom about 100,000 times, so the range runs from about two times to about a hundred thousand. Solving the ten-ion equilibrium, the end ions sit 2.871 length units from the centre, so for ytterbium-171 at an assumed 1 MHz the chain is about 16 &micro;m end to end (and 1.55 &micro;m between the closest pair), not 50. The cryostat is about 1 m. One to two nanometres divided by the 0.29 nm atom width the page itself states is roughly three to seven atoms, not four to eight. The cited ion fidelity is 99.9(1)%, so &ldquo;above&rdquo; overstated it. A June 2026 preprint reports about 11,000 atoms, so Manetsch&rsquo;s is the largest in a peer-reviewed paper we cite, not the largest.</p>
+    <p><strong>Why we missed it.</strong> After Correction 16 the check derived three figures from the drawing, and it did so with a different atom width (0.25 nm) than the page printed, so it confirmed the wrong range. The scale claim and the ion spacing were typed, not derived. The check now divides by the printed width, and the ion label states the trap frequency it assumes.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-10-03 by a fresh-session referee for the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 24 &middot; published 2026-10-02 &middot; corrected 2026-10-03 &middot; live for 1 day &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">Advantage Watch dated one claim 18 months late and counted a first rebuttal that was not first; Open Problems stated two things too flatly.</h3>
+
+    <p><strong>What we said.</strong> On <a href="advantage.html">Advantage Watch</a>, the row called &ldquo;Willow&rdquo; gave a date of October 2024 and Google&rsquo;s &ldquo;under five minutes against 10<sup>25</sup> years&rdquo;. The Sycamore row called a November 2021 run the first classical answer to the 2019 claim (743 days), and the Jiuzhang row said no classical run had targeted the 2020 experiment. The D-Wave row called a rebuttal a preprint. On <a href="open.html">Open Problems</a>, a card tied the quantum expectation about NP-complete problems to P versus NP, the settled list said the recommendation-systems speedup &ldquo;does not exist&rdquo;, and the page said every problem names its paper while two did not.</p>
+    <p><strong>What&#39;s true.</strong> The October 2024 paper (Morvan et al., <em>Nature</em> 634, 328) describes a 67-qubit Sycamore experiment first posted to arXiv on 21 April 2023, so the claim date is 2023-04-21; the ten-septillion-year figure belongs to the separate 105-qubit Willow result of December 2024. Two earlier classical runs on the 2019 circuits used correlated samples (4 March and 27 October 2021); the November 2021 run is the first with uncorrelated samples, and the table now says so. Two classical papers (Bulmer et al., 3 August 2021, and Villalonga et al., 23 September 2021) did target the 2020 Jiuzhang experiment; the first sampler that beats it on distance measures came 294 days after the claim. The D-Wave rebuttal by Tindall et al. appeared in <em>Science</em> on 21 May 2026. Whether quantum computers can solve NP-complete problems is the separate question of NP versus BQP, which a proof that P differs from NP would not settle. Tang&rsquo;s result removed the exponential recommendation speedup, not necessarily every polynomial one, and Liu, Arunachalam and Temme proved an exponential separation for a contrived learning task. The two cards without a source now have one.</p>
+    <p><strong>Why we missed it.</strong> Every day count was recomputed and correct; each was counted from the wrong date or against the wrong first event, and no check asked which paper a date belonged to. The open-problems wording had no check at all. A fresh-session referee found them against the arXiv records. <code>verify_advantage.py</code> now pins the corrected dates and the correlated-sample distinction.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-10-03 by a fresh-session referee for the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 23 &middot; published 2026-07-14 &middot; corrected 2026-10-03 &middot; live for 81 days &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Bitcoin answer card compared two different attacks, and its qubits were the wrong kind.</h3>
+
+    <p><strong>What we said.</strong> The four-line answer on <a href="bitcoin.html">the Bitcoin page</a> said breaking one key &ldquo;needed ~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026&rsquo;s&rdquo;. The page&rsquo;s FAQ markup said the 2026 attack runs &ldquo;for about 20 minutes&rdquo; and sits &ldquo;about 2.7 orders of magnitude&rdquo; from the largest chip. Two receipts and Correction 21 also said 2.7.</p>
+    <p><strong>What&#39;s true.</strong> The 13 million is the 2022 estimate for a one-day attack, and the half million is the 2026 estimate for an attack that finishes in minutes: two different attacks, so the comparison hid most of the real change. Both figures are <em>physical</em> qubits, not error-corrected ones. Like for like, the racing attack, which has to finish inside the ten-minute confirmation window, was costed at about 1.9 billion physical qubits in 2022 and under half a million in 2026. The paper&#39;s own time is about nine minutes once a transaction reveals the key, not twenty. And log<sub>10</sub>(500,000 &divide; 1,121) is 2.649, which is 2.6 to one decimal, so the page body and the chart had it right and the receipts, the markup and Correction 21 had it wrong.</p>
+    <p><strong>Why we missed it.</strong> The card was written before the chart existed and kept the first draft&#39;s numbers; the chart was later generated from data, so the two never met. Nothing compared a figure in a sentence with the figure beside it, and the 2.7 had been copied between four places. The card now states the same attack in both years, and the receipts and markup carry the generated 2.6.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-10-03 by the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
+  <li class="card">
+    <p class="eyebrow">Correction 22 &middot; published 2026-10-02 &middot; corrected 2026-10-03 &middot; live for 1 day &middot; caught by the desk</p>
+    <h3 style="margin-top:6px">The Security course said the hybrid handshake is 19 times X25519. One direction was set against both.</h3>
+
+    <p><strong>What we said.</strong> In <a href="crypto-10.html">topic 10 of the Security course</a>: &ldquo;the hybrid sends and receives about 19 times the key-share data of X25519 alone (1,216 &divide; 64 = 19)&rdquo;. Elsewhere in the course: that the algorithm behind the 2025 RSA estimate &ldquo;did not change&rdquo;; that a browser &ldquo;most often&rdquo; uses plain X25519; that there is &ldquo;exactly one cipher&rdquo; safe against unlimited power; that a signature &ldquo;can only be forged by a machine that exists&rdquo; when it is checked; that RSA is from 1977; that factoring is what Shor&rsquo;s algorithm &ldquo;was invented for&rdquo;; and that the author of a 2024 lattice claim could not fix it, &ldquo;and the question is where it was&rdquo;.</p>
+    <p><strong>What&#39;s true.</strong> 1,216 bytes is the client&rsquo;s share only, one direction; 64 is X25519 in both directions. Like for like, the client share is 38 times X25519&rsquo;s 32 bytes, and the whole exchange, 1,216 + 1,120 = 2,336 bytes, is 36.5 times its 64. Gidney&rsquo;s 2025 estimate changed the arithmetic circuit as well as the error correction, and it trades a longer runtime for far fewer qubits. For modern browsers the hybrid with ML-KEM is now the most common handshake. The one-time pad is the standard example of perfect secrecy, and Shannon&rsquo;s result is that any such cipher needs a key at least as large as the message space. Forgery during a handshake needs a machine that exists at that moment, but long-lived keys are an exception (topic 06). RSA was described in 1977 and published in 1978. Shor&rsquo;s paper treats factoring and the discrete logarithm together. The 2024 claim was withdrawn after a bug was found, and the standard parameters were never in its scope.</p>
+    <p><strong>Why we missed it.</strong> The division was exact, so the checker passed it; it never asked what each number was a number of. The other sentences were claims of exclusivity or origin that no script can test. A fresh-session referee found all of them, against primary sources, the day after the course went up. <code>verify_crypto_course.py</code> now pins the like-for-like ratios.</p>
+
+    <p style="color:var(--muted);font-size:.9rem">Found on 2026-10-03 by a fresh-session referee for the desk, not reported. If you had caught it first, this entry would carry your name.</p>
+  </li>
   <li class="card">
     <p class="eyebrow">Correction 21 &middot; published 2026-10-01 &middot; corrected 2026-10-01 &middot; live for under a day &middot; caught by the desk</p>
     <h3 style="margin-top:6px">The daily question showed every answer option twice for about an hour.</h3>
@@ -329,7 +369,7 @@
 
     <p><strong>What we said.</strong> On the <a href="index.html">home page</a> and on <a href="bitcoin.html">the Bitcoin page</a>, the March 2026 re-costing of the attack (arXiv:2603.28846) was labelled &ldquo;Gidney et al.&rdquo; and credited to &ldquo;Gidney, Babbush, Drake, Boneh et al.&rdquo;. The chart&rsquo;s &ldquo;today&rdquo; bar read &ldquo;a few thousand&rdquo; with no machine named, and the text put the gap at &ldquo;three orders of magnitude, not six&rdquo;. The Bitcoin page also said the attack finishes in about nine minutes &ldquo;inside the confirmation window&rdquo;.</p>
 
-    <p><strong>What&#39;s true.</strong> The paper&#39;s first author is Ryan Babbush, followed by Adam Zalcman and Craig Gidney. The largest superconducting chip is IBM&#39;s Condor, at 1,121 qubits, and Google&#39;s Willow, the machine that runs error correction below threshold, has 105. Against those the under-500,000-qubit estimate is at most 2.7 and 3.7 orders of magnitude away, and the 2022 estimate was 6.2. On timing, the paper gives about 9 or 12 minutes from a primed start, against blocks that arrive about every ten minutes, and puts the attacker&#39;s chance of winning that race at just under 41% under idealised assumptions. It is not a guarantee of finishing in time.</p>
+    <p><strong>What&#39;s true.</strong> The paper&#39;s first author is Ryan Babbush, followed by Adam Zalcman and Craig Gidney. The largest superconducting chip is IBM&#39;s Condor, at 1,121 qubits, and Google&#39;s Willow, the machine that runs error correction below threshold, has 105. Against those the under-500,000-qubit estimate is at most 2.6 and 3.7 orders of magnitude away, and the 2022 estimate was 6.2. On timing, the paper gives about 9 or 12 minutes from a primed start, against blocks that arrive about every ten minutes, and puts the attacker&#39;s chance of winning that race at just under 41% under idealised assumptions. It is not a guarantee of finishing in time.</p>
 
     <p><strong>Why we missed it.</strong> The chart&#39;s figures were typed by hand from memory of the paper, and its bar was never named, so nothing tied it to the hardware table that already held the real counts. The receipt behind the gap sentence even cited a 1,180-qubit array that the bar did not show. The chart is now generated by a script from the hardware table and the papers&#39; figures, so every bar length and every &ldquo;orders of magnitude&rdquo; is computed, and <code>--check</code> fails if a page drifts from it.</p>
 

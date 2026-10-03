@@ -345,7 +345,7 @@
       blurb: 'Four steps from the headline to a forecast of your own. Any order.',
       steps: [
         { id: 'read', label: 'Answer the Bitcoin page’s check question', href: 'bitcoin.html', test: answeredBitcoin },
-        { id: 'shor', label: 'Find a period yourself in the Shor explorer', href: 'machinery-13.html#try' },
+        { id: 'shor', label: 'Finish a Shor run yourself, in the Shor explorer or in Shor’s Clockwork', href: 'machinery-13.html#try' },
         { id: 'check', label: 'Run the Quick Check on a certificate or a domain', href: 'pqc.html#quickcheck' },
         { id: 'stake', label: 'Put a forecast on a Ledger claim', href: 'standing.html', test: staked }
       ]
@@ -789,6 +789,7 @@
 
     var h1 = document.querySelector('h1');
     if (!h1) return;
+    if (document.querySelector('nav.rung-rail')) return;
     var anchor = h1.nextElementSibling;
     if (!(anchor && anchor.classList && anchor.classList.contains('tagline'))) anchor = h1;
     var isFork = (rung === 'FORK');
@@ -1283,9 +1284,9 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     var d = D.createElement('div'); d.className = 'sqp-door'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true'); d.setAttribute('aria-label', 'Play with this page');
     var code = room ? C.esc(room) : '';
     d.innerHTML = '<button type="button" class="sqp-x" aria-label="Close">✕</button><h3>' + (room ? 'A room is open' : 'Two ways to play with this page') + '</h3>' +
-      '<p>' + (room ? 'Room <b>' + code + '</b>, in another window of this browser. Pick a side and you will see their cursor and their effects on this same page.' : 'The page is a fragile quantum state. One of you gives it errors, the other one fixes them.') + '</p>' +
+      '<p>' + (room ? 'Room <b>' + code + '</b>, in another window of this browser. Pick a side and you will see their cursor and their effects on this same page.' : 'The page is a fragile logical qubit. One of you gives it errors, the other one fixes them.') + '</p>' +
       '<div class="sqp-row"><button type="button" class="n" data-m="noise">Be the Noise<small>break things, physically</small></button><button type="button" class="d" data-m="decoder">Be the Decoder<small>mend, shield, draw</small></button></div>' +
-      '<p class="sqp-fine">Nothing is deleted: it is all drawn over the page, and Esc puts everything back. ' + (room ? 'Picking a side here joins that room. ' : '') + 'Nothing is sent anywhere; a room connects windows of this browser.</p>';
+      '<p class="sqp-fine">Nothing is deleted: the effects are temporary styles plus a layer drawn over the page, and Esc puts everything back. ' + (room ? 'Picking a side here joins that room. ' : '') + 'Nothing is sent anywhere; a room connects windows of this browser.</p>';
     D.body.appendChild(d);
     d.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; if (b.classList.contains('sqp-x')) closeDoor(true); else go(b.getAttribute('data-m'), room); });
     D.addEventListener('keydown', onKey, true);
@@ -1327,7 +1328,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
   var esc = C ? C.esc : function (s) { return String(s); };
 
   var ROWS = [
-    { n: 'The vacuum can', m: 0.8, r: 'about 0.5 to 1 m', t: 'The outside of the fridge.', level: 'cryostat' },
+    { n: 'The vacuum can', m: 1, r: 'about 1 m', t: 'The outside of the fridge.', level: 'cryostat' },
     { n: 'The chip package', m: 0.1, r: 'about 10 cm', t: 'The sealed box on the coldest plate.', level: 'package' },
     { n: 'The chip', m: 0.01, r: 'about 1 cm', t: 'Silicon with the circuits on top.', level: 'chip' },
     { n: 'A readout resonator', m: 0.004, r: 'a few mm', t: 'Folded back and forth to fit.' },
@@ -1341,7 +1342,7 @@ if (typeof window.SymbiQ.track !== 'function') window.SymbiQ.track = function ()
     { n: 'The aluminium film', m: 5e-8, r: 'tens of nm thick', t: 'How thick each electrode is.' },
     { n: 'DNA, across', m: 2e-9, r: 'about 2 nm', t: 'For comparison.' },
     { n: 'The oxide barrier', m: 1.5e-9, r: 'about 1 to 2 nm', t: 'The insulating layer in the middle of the junction.', level: 'junction' },
-    { n: 'An aluminium atom', m: 2.9e-10, r: 'about 0.29 nm across', t: 'So the barrier is roughly four to eight atoms thick.' }
+    { n: 'An aluminium atom', m: 2.9e-10, r: 'about 0.29 nm across', t: 'So the barrier is roughly three to seven aluminium-atom widths thick.' }
   ];
   var LEVEL_NAME = { cryostat: 'Level 2', package: 'Level 3', chip: 'Level 4', transmon: 'Level 5', junction: 'Level 6' };
 

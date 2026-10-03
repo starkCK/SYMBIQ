@@ -70,8 +70,8 @@
 
 <script src="core.js?v=7"></script>
 <script src="save.js"></script>
-<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/crypto-05.js?v=1" defer></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=6"></script>
+<script src="p/crypto-05.js?v=2" defer></script>
 
 
 
@@ -264,7 +264,8 @@
 <div class="course" id="c05" data-course data-page="crypto" data-mission="crypto-complete" data-count="10" data-topic="c05" data-id="c05">
 <header class="cp-head"><div class="eyebrow"><a href="crypto.html">Cryptography, before and after Shor</a> &middot; Topic 05 of 10 &middot; Public keys</div>
 <h1>RSA, and its one weak point</h1>
-<p class="tagline">Why does a lock that anyone can close need a factoring problem to stay open only for you?</p></header>
+<p class="tagline">Why does a lock that anyone can close need a factoring problem to stay open only for you?</p>
+<nav class="rung-rail" aria-label="Where this page sits on SymbiQ&#39;s ladder, from the circuit to the consequence"><span class="rung-rail-lab">The Ladder</span><span class="rung-rail-track"><a href="circuits.html" class="rung-dot" title="L0, the circuit"><span aria-hidden="true">L0</span><span class="rung-sr">the circuit</span></a><span class="rung-seg" aria-hidden="true"></span><a href="quantum-mechanics.html" class="rung-dot" title="L1, the qubit"><span aria-hidden="true">L1</span><span class="rung-sr">the qubit</span></a><span class="rung-seg" aria-hidden="true"></span><a href="qec.html" class="rung-dot" title="L2, what makes it survive"><span aria-hidden="true">L2</span><span class="rung-sr">what makes it survive</span></a><span class="rung-seg" aria-hidden="true"></span><a href="phase-kickback.html" class="rung-dot" title="L3, the algorithm"><span aria-hidden="true">L3</span><span class="rung-sr">the algorithm</span></a><span class="rung-seg" aria-hidden="true"></span><a href="pqc.html" class="rung-dot is-cur" title="L4, the consequence" aria-current="page"><span aria-hidden="true">L4</span><span class="rung-sr">the consequence</span></a></span><a href="analog.html" class="rung-fork">⑂ the fork, coupled circuits instead</a></nav> </header>
 <ol class="cp-rail" aria-label="Topics in Cryptography, before and after Shor"><li><a href="crypto-01.html" data-id="c01" title="What a secret needs to survive">01</a></li><li><a href="crypto-02.html" data-id="c02" title="Hashes, the fingerprints inside everything">02</a></li><li><a href="crypto-03.html" data-id="c03" title="Does a quantum computer break AES?">03</a></li><li><a href="crypto-04.html" data-id="c04" title="How two strangers agree on a secret">04</a></li><li><a href="crypto-05.html" data-id="c05" aria-current="page" title="RSA, and its one weak point">05</a></li><li><a href="crypto-06.html" data-id="c06" title="What a signature or a certificate proves">06</a></li><li><a href="crypto-07.html" data-id="c07" title="What Shor takes, and what it leaves">07</a></li><li><a href="crypto-08.html" data-id="c08" title="Why lattices resist, and what they cost">08</a></li><li><a href="crypto-09.html" data-id="c09" title="Signatures made from hashes alone">09</a></li><li><a href="crypto-10.html" data-id="c10" title="Migrating without breaking everything">10</a></li></ol>
 <details class="cp-section"><summary>About this section: Public keys</summary>
 <p>Public-key cryptography is what lets strangers talk safely, and it is the half a quantum computer breaks. These topics show how each lock works and what it rests on, using numbers small enough to follow, so that topic 07 can say exactly what Shor&#39;s algorithm does to them.</p>
@@ -307,7 +308,7 @@
 <section class="cp-step" id="step-intuition" data-step="intuition">
 <div class="layer">
  <h4 aria-level="3">The intuition</h4>
- <p>RSA, named for Rivest, Shamir and Adleman (1977), is a lock with two different keys. The public key closes it, the private key opens it, and the public key can be handed to the whole world. It rests on a difference in difficulty: multiplying two large primes is a moment&#39;s work, while taking their product apart is, for classical computers, not. So the modulus n = p &times; q is public and the primes are the secret.</p>
+ <p>RSA, named for Rivest, Shamir and Adleman (described in 1977, published in 1978), is a lock with two different keys. The public key closes it, the private key opens it, and the public key can be handed to the whole world. It rests on a difference in difficulty: multiplying two large primes is a moment&#39;s work, while taking their product apart is, for classical computers, not. So the modulus n = p &times; q is public and the primes are the secret.</p>
  <p>The example above is <strong>textbook RSA</strong>, deliberately tiny so you can check it by hand, and not something to use as it stands. Real RSA pads the message with random structure first (OAEP for encryption, PSS for signatures), because the bare version is deterministic and malleable. The padding is a large part of what makes it safe in practice.</p>
  <p>Notice what the weak point is. It is not the exponentiation and not the padding. It is a single assumption: that factoring n is hard. Nobody has proved it. There is no known fast classical method, there is no proof that none exists (<a href="open.html#factoring">one of the open problems</a>), and there is a fast quantum one. Every RSA key anywhere is a bet on that one sentence.</p>
  </div>
@@ -333,9 +334,9 @@
 <div class="layer real">
  <h4 aria-level="3">Where it actually runs</h4>
  <p><span class="where">Certificates, mostly</span>
-      RSA encryption has gone from the web: TLS 1.3 removed RSA key exchange entirely. RSA <em>signatures</em> are still everywhere in certificate chains, code signing and email, and 2,048-bit keys are the long-standing minimum.</p>
+      RSA key exchange has gone from TLS 1.3, which removed it entirely. RSA <em>signatures</em> are still everywhere in certificate chains, code signing and email, and 2,048-bit keys are the long-standing minimum.</p>
  <p><span class="where">Why this one is the poster child</span>
-      Factoring is the problem Shor&#39;s algorithm was invented for, and the resource estimate for it has dropped more than twenty-fold in six years. A tiny RSA number is also a good first thing to try in <a href="play.html#clockwork">Shor&#39;s Clockwork</a>, which does the last classical step by hand.</p>
+      Factoring is one of the two problems Shor&#39;s algorithm was built for (the discrete logarithm is the other), and the resource estimate for it has dropped more than twenty-fold in six years. A tiny RSA number is also a good first thing to try in <a href="play.html#clockwork">Shor&#39;s Clockwork</a>, which does the last classical step by hand.</p>
  </div>
 </section>
 </div>

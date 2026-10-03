@@ -69,8 +69,8 @@
 
 
 <script src="core.js?v=7"></script>
-<script id="play-src" type="text/symbiq-lazy" src="play.js?v=5"></script>
-<script src="p/open.js?v=5" defer></script>
+<script id="play-src" type="text/symbiq-lazy" src="play.js?v=6"></script>
+<script src="p/open.js?v=6" defer></script>
 
 
 
@@ -282,14 +282,14 @@
 <div class="card" id="p-np">
 <h3 aria-level="2">Does P equal NP?</h3>
 <p><strong>Status: open.</strong> It is one of the Clay Mathematics Institute&rsquo;s Millennium Prize problems. Whether every problem whose answer can be checked quickly can also be solved quickly is unknown.</p>
-<p><strong>Why it matters here.</strong> Most researchers expect that quantum computers cannot solve NP-complete problems efficiently, but that is an expectation, not a theorem. It is why &ldquo;a quantum computer will solve optimisation&rdquo; is a claim to test rather than a result.</p>
-<p><strong>What would settle it.</strong> A proof either way. Nothing quantum is needed or known to be sufficient.</p>
-<p><strong>On this site.</strong> <a href="play.html#arena">The Heuristic Arena</a> and the optimisation course, where the pars are proven only because the instances are small enough to try everything.</p>
+<p><strong>Why it matters here.</strong> Whether quantum computers can solve NP-complete problems efficiently is a separate open question (NP versus BQP). Most researchers expect they cannot, but even a proof that P differs from NP would not establish it. A proof that P equals NP would. It is why &ldquo;a quantum computer will solve optimisation&rdquo; is a claim to test rather than a result.</p>
+<p><strong>What would settle it.</strong> A proof of P = NP, or of P &ne; NP (which would still leave NP versus BQP open). Nothing quantum is needed or known to be sufficient.</p>
+<p><strong>Source.</strong> S. Cook, &ldquo;The complexity of theorem-proving procedures&rdquo;, STOC 1971; the Clay Mathematics Institute problem statement by S. Cook, 2000. <strong>On this site.</strong> <a href="play.html#arena">The Heuristic Arena</a> and the optimisation course, where the pars are proven only because the instances are small enough to try everything.</p>
 </div>
 
 <div class="card" id="qml">
 <h3 aria-level="2">Is there any exponential quantum speedup for machine learning on classical data?</h3>
-<p><strong>Status: open.</strong> In 2018 Ewin Tang gave a classical algorithm for recommendation systems that matched the quantum one up to a polynomial factor, which removed the exponential advantage that had been claimed there. Several other quantum machine-learning speedups have been treated the same way since. Whether any exponential speedup survives for tasks whose data starts out classical is unresolved.</p>
+<p><strong>Status: open.</strong> In 2018 Ewin Tang gave a classical algorithm for recommendation systems that matched the quantum one up to a polynomial factor, which removed the exponential advantage that had been claimed there. Several other quantum machine-learning speedups have been treated the same way since. Whether any exponential speedup survives for a natural task whose data starts out classical is unresolved. Contrived tasks with a proven separation exist (Liu, Arunachalam and Temme, <em>Nature Physics</em> 17, 1013, 2021, assuming the discrete-logarithm problem is hard classically).</p>
 <p><strong>What would settle it.</strong> A task with a proven separation, or a classical algorithm for every candidate. Until then, a quantum-learning speedup claim comes with the question &ldquo;compared with the best classical algorithm that reads the data the same way?&rdquo;.</p>
 <p><strong>Source.</strong> E. Tang, &ldquo;A quantum-inspired classical algorithm for recommendation systems&rdquo;, 2018 (published at STOC 2019). <strong>On this site.</strong> <a href="ai.html">The AI page</a>.</p>
 </div>
@@ -298,13 +298,13 @@
 <h3 aria-level="2">Can a quantum computer beat the best classical heuristics at real optimisation?</h3>
 <p><strong>Status: open.</strong> For unstructured search the speedup is quadratic and that is proven to be the most there is (see below). Whether structured optimisation problems allow more, and whether any quantum method beats the best tuned classical heuristic on an instance somebody actually needs solved, has no accepted demonstration.</p>
 <p><strong>What would settle it.</strong> A named problem, a named instance family, a fixed budget and a fair classical baseline, with both sides tuned by someone who wanted the other to win.</p>
-<p><strong>On this site.</strong> <a href="ledger.html">The Ledger</a> tracks the specific claims and scores them on their own deadlines; <a href="play.html#strikes">Classical Strikes Back</a> lets you be the classical side.</p>
+<p><strong>Source.</strong> A. Abbas et al., &ldquo;Challenges and opportunities in quantum optimization&rdquo;, <em>Nature Reviews Physics</em> 6, 718 (2024). <strong>On this site.</strong> <a href="ledger.html">The Ledger</a> tracks the specific claims and scores them on their own deadlines; <a href="play.html#strikes">Classical Strikes Back</a> lets you be the classical side.</p>
 </div>
 
 <div class="card" id="lattices">
 <h3 aria-level="2">Can a quantum computer break the lattice problems under ML-KEM and ML-DSA?</h3>
 <p><strong>Status: open.</strong> No quantum algorithm is known that solves them efficiently, and there is no proof that none exists. The standards built on them (FIPS 203 and 204, finalised in August 2024) rest on that absence.</p>
-<p><strong>The 2024 episode.</strong> On 10 April 2024 Yilei Chen posted a paper claiming a polynomial-time quantum algorithm for the learning-with-errors problem. Within days Hongxun Wu and, independently, Thomas Vidick found a bug in step 9, and the author&rsquo;s own note on the paper says he does not know how to fix it. The claim is withdrawn in practice; the question is back where it was. It is a fair picture of how fast a serious claim can fall, and of why we wait for the second pair of eyes.</p>
+<p><strong>The 2024 episode.</strong> On 10 April 2024 Yilei Chen posted a paper claiming a polynomial-time quantum algorithm for the learning-with-errors problem with polynomial modulus-to-noise ratio, not for LWE in general. Within days Hongxun Wu and, independently, Thomas Vidick found a bug in step 9, and the author&rsquo;s own note on the paper says he does not know how to fix it. The claim is withdrawn in practice; the question is back where it was. It is a fair picture of how fast a serious claim can fall, and of why we wait for the second pair of eyes.</p>
 <p><strong>What would settle it.</strong> A correct algorithm, or a reduction showing the problem is as hard as something already trusted for quantum machines. Neither exists.</p>
 <p><strong>Source.</strong> Y. Chen, &ldquo;Quantum Algorithms for Lattice Problems&rdquo;, IACR ePrint 2024/555, with the bug notice on its first page. <strong>On this site.</strong> <a href="pqc.html">The post-quantum page</a>; <a href="play.html#lattice">Lattice Heist</a>.</p>
 </div>
@@ -314,15 +314,15 @@
 <p><strong>Status: open.</strong> The conjecture says that approximating the ground-state energy of a local Hamiltonian to within a constant fraction is still as hard as the hardest problems quantum computers can check. A necessary consequence, the &ldquo;no low-energy trivial states&rdquo; (NLTS) conjecture, was proved in 2022; the full conjecture was not.</p>
 <p><strong>Why it matters.</strong> It would say something about the limits of how well any machine, quantum or not, can approximate quantum systems, and it is tied to how much entanglement is unavoidable at low energy.</p>
 <p><strong>What would settle it.</strong> A proof or a disproof; NLTS was a step along the way and not the arrival.</p>
-<p><strong>Source.</strong> A. Anshu, N. P. Breuckmann and C. Nirkhe, &ldquo;NLTS Hamiltonians from good quantum codes&rdquo;, STOC 2023.</p>
+<p><strong>Source.</strong> D. Aharonov, I. Arad and T. Vidick, &ldquo;The quantum PCP conjecture&rdquo;, <em>SIGACT News</em> 44(2), 2013 (arXiv:1309.7495), states the conjecture. A. Anshu, N. P. Breuckmann and C. Nirkhe, &ldquo;NLTS Hamiltonians from good quantum codes&rdquo;, STOC 2023, proved NLTS.</p>
 </div>
 
 <h2 id="settled">Sounds open, is not</h2>
 <p>Each of these is a result with a proof. Looking for a gap in them is looking for a clever way around a theorem.</p>
 <ul>
 <li><strong>Grover&rsquo;s speedup cannot be better than quadratic for unstructured search.</strong> Proven by Bennett, Bernstein, Brassard and Vazirani, &ldquo;Strengths and Weaknesses of Quantum Computing&rdquo;, <em>SIAM Journal on Computing</em> 26(5), 1997. A claim of a faster generic search is a claim that structure is being used.</li>
-<li><strong>A quantum computer can in principle be made reliable.</strong> The threshold theorem (Aharonov and Ben-Or, 1997; Knill, Laflamme and Zurek, <em>Science</em> 279, 1998): below a certain error rate per operation, errors can be corrected faster than they accumulate. What remains open is engineering: how many physical qubits that takes, shown on <a href="qec.html">the error-correction page</a>.</li>
-<li><strong>The recommendation-systems speedup does not exist.</strong> It was <em>claimed</em>, and then removed by Tang&rsquo;s classical algorithm (above). It is listed here so nobody repeats it as an example of exponential quantum learning.</li>
+<li><strong>A quantum computer can in principle be made reliable.</strong> The threshold theorem (Aharonov and Ben-Or, 1997; Knill, Laflamme and Zurek, <em>Science</em> 279, 1998): below a certain error rate per operation, and assuming errors that are not too strongly correlated, errors can be corrected faster than they accumulate. Whether real hardware noise meets that assumption at scale is an engineering question, as is how many physical qubits it takes, shown on <a href="qec.html">the error-correction page</a>.</li>
+<li><strong>The exponential recommendation-systems speedup does not exist.</strong> It was <em>claimed</em>, and then removed by Tang&rsquo;s classical algorithm (above); a smaller polynomial gap is not ruled out. It is listed here so nobody repeats it as an example of exponential quantum learning.</li>
 <li><strong>NLTS is true.</strong> Proved in 2022 (above). The conjecture it was meant to be a step towards is not.</li>
 </ul>
 

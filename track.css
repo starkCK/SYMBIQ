@@ -37,6 +37,13 @@
 .tr-gsub { color: var(--muted); font-weight: 400; font-size: .92rem; }
 .tr-gmeta { margin-left: auto; font-size: .84rem; color: var(--muted); }
 .tr-group .tr-map { margin-top: 0; }
+.tr-rank { margin-top: 28px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.tr-rank > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-height: 48px; padding: 6px 0; cursor: pointer; }
+.tr-rank > p { max-width: 62ch; }
+.tr-rank-tab { border-collapse: collapse; margin: 6px 0 16px; font-variant-numeric: tabular-nums; }
+.tr-rank-tab caption { text-align: left; color: var(--muted); font-size: .86rem; padding-bottom: 6px; }
+.tr-rank-tab th, .tr-rank-tab td { padding: 4px 18px 4px 0; text-align: left; font-weight: 400; border-top: 1px solid var(--border); }
+.tr-rank-tab thead th { font-size: .82rem; color: var(--muted); border-top: 0; }
 .tr-topics .tr-mod { padding: 10px 0; }
 @media (max-width: 560px) {
   .tr-mod { grid-template-columns: 34px minmax(0, 1fr); }

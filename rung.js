@@ -15,6 +15,7 @@
 
     var h1 = document.querySelector('h1');
     if (!h1) return;
+    if (document.querySelector('nav.rung-rail')) return;
     var anchor = h1.nextElementSibling;
     if (!(anchor && anchor.classList && anchor.classList.contains('tagline'))) anchor = h1;
     var isFork = (rung === 'FORK');

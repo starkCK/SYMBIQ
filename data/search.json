@@ -2,7 +2,7 @@
  "schema": 1,
  "generated": "2026-10-03",
  "pages": 131,
- "count": 919,
+ "count": 923,
  "records": [
   {
    "k": "s",
@@ -128,8 +128,8 @@
    "k": "s",
    "p": "advantage.html",
    "t": "Advantage Watch",
-   "h": "Random circuit sampling, 67 qubits, 32 cycles",
-   "x": "Google Quantum AI · beyond-classical claim · Status: Standing. The claim (October 2024, Morvan et al., Nature 634, 328): Beyond the capabilities of existing classical supercomputers at this size (Google's December 2024 Willow post put it at",
+   "h": "Random circuit sampling, 67 qubits, 32 cycles (Sycamore)",
+   "x": "Google Quantum AI · beyond-classical claim · Status: Standing. The claim (21 April 2023, Morvan et al., arXiv:2304.11119; Nature 634, 328 (October 2024)): Beyond the reach of existing classical supercomputers at this size. The arXiv version",
    "w": 1
   },
   {
@@ -137,7 +137,7 @@
    "p": "advantage.html",
    "t": "Advantage Watch",
    "h": "Quantum annealing dynamics of spin glasses",
-   "x": "D-Wave · quantum supremacy claim · Status: Contested. The claim (1 March 2024, King et al., arXiv:2403.00910; Science 388, 199 (2025)): Annealing processors generate samples in close agreement with the Schrödinger equation faster than leadi",
+   "x": "D-Wave · beyond-classical claim (D-Wave's press release said 'quantum supremacy') · Status: Contested. The claim (1 March 2024, King et al., arXiv:2403.00910; Science 388, 199 (2025)): Annealing processors generate samples in close agreemen",
    "w": 1
   },
   {
@@ -153,7 +153,7 @@
    "p": "advantage.html",
    "t": "Advantage Watch",
    "h": "Floquet dynamics on up to 74 qubits (IBM Heron with Qedma error suppression)",
-   "x": "IBM and Qedma · quantum advantage claim · Status: Standing. The claim (30 July 2026, IBM newsroom announcement): Quantum advantage on commercially available hardware; the circuits are released to the Quantum Advantage Tracker for classical ",
+   "x": "IBM and Qedma · quantum advantage claim · Status: Standing. The claim (30 July 2026, IBM newsroom announcement): Quantum advantage on commercially available hardware, in a pre-print that is not yet peer reviewed. IBM and Qedma say classical",
    "w": 1
   },
   {
@@ -2272,8 +2272,40 @@
    "k": "s",
    "p": "corrections.html",
    "t": "We got this wrong →",
-   "h": "21 corrections logged",
+   "h": "25 corrections logged",
    "x": "This log counts anything wrong that reached the published site, whoever caught it — not what the desk fixes before it ships. A reader catch runs with the finder's name on it and the 🏅 tag; a desk catch, like the one below, runs with the sam",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Inside page understated its own scale steps by a factor of a hundred, and mislabelled the ion chain.",
+   "x": "What we said. On Inside the machine: that each level is smaller than the last “by anything from two times to several thousand”; that the ten-ion chain is “about 50 µm” long; that the cryostat is 1.5 m in one place and 0.5 to 1 m in another;",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "Advantage Watch dated one claim 18 months late and counted a first rebuttal that was not first; Open Problems stated two things too flatly.",
+   "x": "What we said. On Advantage Watch, the row called “Willow” gave a date of October 2024 and Google’s “under five minutes against 1025 years”. The Sycamore row called a November 2021 run the first classical answer to the 2019 claim (743 days),",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Bitcoin answer card compared two different attacks, and its qubits were the wrong kind.",
+   "x": "What we said. The four-line answer on the Bitcoin page said breaking one key “needed ~13 million error-corrected qubits in the 2022 estimates, about half a million in 2026’s”. The page’s FAQ markup said the 2026 attack runs “for about 20 mi",
+   "w": 1
+  },
+  {
+   "k": "s",
+   "p": "corrections.html",
+   "t": "We got this wrong →",
+   "h": "The Security course said the hybrid handshake is 19 times X25519. One direction was set against both.",
+   "x": "What we said. In topic 10 of the Security course: “the hybrid sends and receives about 19 times the key-share data of X25519 alone (1,216 ÷ 64 = 19)”. Elsewhere in the course: that the algorithm behind the 2025 RSA estimate “did not change”",
    "w": 1
   },
   {
@@ -2657,7 +2689,7 @@
    "p": "descent.html",
    "t": "The Descent",
    "h": "0.8 K The still: the formal courses",
-   "x": "Every claim proved, or marked as not. The MachineryThe Feasible Region 44 course topics",
+   "x": "Every claim proved, or marked as not. The MachineryThe Feasible RegionCryptography, before and after Shor 44 course topics",
    "w": 1
   },
   {
@@ -2673,7 +2705,7 @@
    "p": "descent.html",
    "t": "The Descent",
    "h": "10 mK The mixing chamber: where claims are scored",
-   "x": "The coldest, quietest place on the site: claims scored in public, and our own mistakes beside them. The LedgerThe RaceCorrections to our own workHow we checkDesk notes 5 pages About · How we check · AI use · Corrections · Changelog · RSS · ",
+   "x": "The coldest, quietest place on the site: claims scored in public, and our own mistakes beside them. The LedgerThe RaceCorrections to our own workAdvantage WatchOpen problemsHow we checkDesk notes 7 pages About · How we check · AI use · Corr",
    "w": 1
   },
   {
@@ -3273,7 +3305,7 @@
    "p": "index.html",
    "t": "Quantum and AI, with the receipts.",
    "h": "Quantum × AI",
-   "x": "Why AI fixes quantum errors, and whether quantum will repay it. Error correctionLogical qubitsQuantum for AI Plain, Working or Formalabout 8 min at Plain Start this track",
+   "x": "Why AI fixes quantum errors, and whether quantum will repay it. Error correctionLogical qubitsQuantum for AI Plain, Working or Formalabout 9 min at Plain Start this track",
    "w": 1
   },
   {
@@ -3305,7 +3337,7 @@
    "p": "index.html#trust-h",
    "t": "Quantum and AI, with the receipts.",
    "h": "Why you can trust it",
-   "x": "Primary sources only. Every game answer proven, or labelled best known. Mistakes published louder than the original. Latest correctionThe daily question showed every answer option twice for about an hour.1 Oct 2026 Next verdictIBM: IBM expe",
+   "x": "Primary sources only. Every game answer proven, or labelled best known. Mistakes published louder than the original. Latest correctionThe Inside page understated its own scale steps by a factor of a hundred, and mislabelled…3 Oct 2026 Next ",
    "w": 2
   },
   {
@@ -3913,7 +3945,7 @@
    "p": "open.html",
    "t": "What is still open?",
    "h": "Does P equal NP?",
-   "x": "Status: open. It is one of the Clay Mathematics Institute’s Millennium Prize problems. Whether every problem whose answer can be checked quickly can also be solved quickly is unknown. Why it matters here. Most researchers expect that quantu",
+   "x": "Status: open. It is one of the Clay Mathematics Institute’s Millennium Prize problems. Whether every problem whose answer can be checked quickly can also be solved quickly is unknown. Why it matters here. Whether quantum computers can solve",
    "w": 1
   },
   {
@@ -4393,7 +4425,7 @@
    "p": "privacy.html#what-is-stored-on-your-device-not-ours",
    "t": "Privacy",
    "h": "What is stored on your device, not ours",
-   "x": "Your progress through The Solver's Path, your streak on The Question, what you have earned in the games, and any depth preference you set are held in your browser's localStorage. That data never leaves your machine and we cannot read it. Cl",
+   "x": "Your progress through The Solver's Path, your streak on The Question, what you have earned in the games, any depth preference you set, and the Noise and Decoder game's unlocks, best Storm time and sound setting are held in your browser's lo",
    "w": 2
   },
   {
@@ -5409,7 +5441,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Optimisation",
-   "x": "When classical beats quantum, and how to read an optimisation claim. 1 lesson, 24 course topics, about 130 min at Plain. Opened pages are remembered in this browser only. Start here Can a classical machine out-optimise a quantum one?about 3",
+   "x": "When classical beats quantum, and how to read an optimisation claim. 1 lesson, 24 course topics, about 133 min at Plain. Opened pages are remembered in this browser only. Start here Can a classical machine out-optimise a quantum one?about 3",
    "w": 3
   },
   {
@@ -5433,7 +5465,7 @@
    "p": "track-optimisation.html#course",
    "t": "Optimisation",
    "h": "The course: The Feasible Region",
-   "x": "Operations research, from linear programming to game theory and reinforcement learning. Open the course page. Why this has its own front door Two reasons, and the second one is the interesting one10 topics, about 43 min at Plain 2",
+   "x": "Operations research, from linear programming to game theory and reinforcement learning. Open the course page. Why this has its own front door Two reasons, and the second one is the interesting one10 topics, about 44 min at Plain 2",
    "w": 2
   },
   {
@@ -5465,7 +5497,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Integer programming",
-   "x": "about 4 min at Plain One depth After: Duality and shadow prices 6",
+   "x": "about 5 min at Plain One depth After: Duality and shadow prices 6",
    "w": 1
   },
   {
@@ -5585,7 +5617,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Constraint satisfaction",
-   "x": "about 7 min at Plain One depth After: The transportation problem Module C, completed One more: what to do when your own actions aren't certain1 topic, about 7 min at Plain 21",
+   "x": "about 7 min at Plain One depth After: The transportation problem Module C, completed One more: what to do when your own actions aren't certain1 topic, about 8 min at Plain 21",
    "w": 1
   },
   {
@@ -5593,7 +5625,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Markov decision processes & reinforcement learning",
-   "x": "about 7 min at Plain One depth After: Constraint satisfaction Module D, completed One more: when a rule of thumb comes with a proof attached1 topic, about 8 min at Plain 22",
+   "x": "about 8 min at Plain One depth After: Constraint satisfaction Module D, completed One more: when a rule of thumb comes with a proof attached1 topic, about 8 min at Plain 22",
    "w": 1
   },
   {
@@ -5601,7 +5633,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Greedy algorithms & approximation guarantees",
-   "x": "about 8 min at Plain One depth After: Markov decision processes & reinforcement learning Module E, completed One more: deciding before the world reveals itself1 topic, about 6 min at Plain 23",
+   "x": "about 8 min at Plain One depth After: Markov decision processes & reinforcement learning Module E, completed One more: deciding before the world reveals itself1 topic, about 7 min at Plain 23",
    "w": 1
   },
   {
@@ -5609,7 +5641,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Stochastic & robust optimization",
-   "x": "about 6 min at Plain One depth After: Greedy algorithms & approximation guarantees Module F, completed The last two: more than one goal at once, and keeping the shelves stocked2 topics, about 12 min at Plain 24",
+   "x": "about 7 min at Plain One depth After: Greedy algorithms & approximation guarantees Module F, completed The last two: more than one goal at once, and keeping the shelves stocked2 topics, about 12 min at Plain 24",
    "w": 1
   },
   {
@@ -5625,7 +5657,7 @@
    "p": "track-optimisation.html",
    "t": "Optimisation",
    "h": "Inventory & supply chain",
-   "x": "about 6 min at Plain One depth After: Multi-objective optimization Play Two games where the mathematics does the judging0 topics, about 0 min at Plain Prove itThe Bench: three methods race on one graph Judge a claimThe Ledger: did they do w",
+   "x": "about 6 min at Plain One depth After: Multi-objective optimization Play Two games where the mathematics does the judging0 topics, about 0 min at Plain How this track counts toward your rank124 points in all Your rank is a code distance, d3 ",
    "w": 1
   },
   {
@@ -5633,7 +5665,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "Quantum × AI",
-   "x": "Why AI fixes quantum errors, and whether quantum will repay it. 11 lessons, 20 course topics, about 135 min at Plain. Opened pages are remembered in this browser only. Start here What is quantum computing?about 3 min at Plain",
+   "x": "Why AI fixes quantum errors, and whether quantum will repay it. 11 lessons, 20 course topics, about 140 min at Plain. Opened pages are remembered in this browser only. Start here What is quantum computing?about 3 min at Plain",
    "w": 3
   },
   {
@@ -5657,7 +5689,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "What is inside the machine?",
-   "x": "You'll be able to point to the main parts of a quantum computer and say what each is for. about 7 min at Plain One depth After: What is quantum computing? 3",
+   "x": "You'll be able to point to the main parts of a quantum computer and say what each is for. about 8 min at Plain One depth After: What is quantum computing? 3",
    "w": 1
   },
   {
@@ -5689,7 +5721,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "What is a logical qubit?",
-   "x": "You'll be able to work out how many physical qubits one logical qubit costs at a given error rate. about 2 min at Plain Plain, Working or Formal After: What is quantum error correction? 7",
+   "x": "You'll be able to work out how many physical qubits one logical qubit costs at a given error rate. about 3 min at Plain Plain, Working or Formal After: What is quantum error correction? 7",
    "w": 1
   },
   {
@@ -5737,7 +5769,7 @@
    "p": "track-quantum-ai.html#course",
    "t": "Quantum × AI",
    "h": "The course: The Machinery",
-   "x": "The mathematics underneath, topic by topic, with every claim proved or marked as not. Open the course page. The Formal Framework Four topics, each taught four ways4 topics, about 14 min at Plain 12",
+   "x": "The mathematics underneath, topic by topic, with every claim proved or marked as not. Open the course page. The Formal Framework Four topics, each taught four ways4 topics, about 15 min at Plain 12",
    "w": 2
   },
   {
@@ -5753,7 +5785,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "Density matrices & mixed states",
-   "x": "about 3 min at Plain One depth After: The postulates of quantum mechanics, for computing 14",
+   "x": "about 4 min at Plain One depth After: The postulates of quantum mechanics, for computing 14",
    "w": 1
   },
   {
@@ -5841,7 +5873,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "Period finding & continued fractions",
-   "x": "about 6 min at Plain One depth After: Quantum phase estimation Quantum algorithms for optimization & simulation Two topics: the near-term half of the zoo, with no speedup proof to its name2 topics, about 11 min at Plain 25",
+   "x": "about 6 min at Plain One depth After: Quantum phase estimation Quantum algorithms for optimization & simulation Two topics: the near-term half of the zoo, with no speedup proof to its name2 topics, about 12 min at Plain 25",
    "w": 1
   },
   {
@@ -5857,7 +5889,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "Quantum simulation & chemistry",
-   "x": "about 5 min at Plain One depth After: QAOA & VQE Information theory Two topics: putting a number on uncertainty, classical and quantum2 topics, about 9 min at Plain 27",
+   "x": "about 6 min at Plain One depth After: QAOA & VQE Information theory Two topics: putting a number on uncertainty, classical and quantum2 topics, about 10 min at Plain 27",
    "w": 1
   },
   {
@@ -5873,7 +5905,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "Von Neumann entropy & the Holevo bound",
-   "x": "about 5 min at Plain One depth After: Shannon entropy Complexity theory Three topics: how hard the general versions of this page's own problems actually are3 topics, about 17 min at Plain 29",
+   "x": "about 6 min at Plain One depth After: Shannon entropy Complexity theory Three topics: how hard the general versions of this page's own problems actually are3 topics, about 17 min at Plain 29",
    "w": 1
   },
   {
@@ -5897,7 +5929,7 @@
    "p": "track-quantum-ai.html",
    "t": "Quantum × AI",
    "h": "Adiabatic universality & the quantum PCP conjecture",
-   "x": "about 6 min at Plain One depth After: QMA-completeness Prove itThe Decoder Duel: you are the AI Judge a claimWhich labs are below threshold? Keep goingNext track: Optimisation About · How we check · AI use · Corrections · Changelog · RSS · ",
+   "x": "about 6 min at Plain One depth After: QMA-completeness How this track counts toward your rank166 points in all Your rank is a code distance, d3 up to d25. Points come from questions you answer correctly and game levels you finish, never fro",
    "w": 1
   },
   {
@@ -6017,7 +6049,7 @@
    "p": "track-security.html",
    "t": "Post-quantum security",
    "h": "Migrating without breaking everything",
-   "x": "about 5 min at Plain One depth After: Signatures made from hashes alone Prove itThe CHSH game: the physics key distribution rests on Judge a claimThe Ledger: the 2029 and 2030 deadlines Keep goingNext track: Quantum × AI About · How we chec",
+   "x": "about 5 min at Plain One depth After: Signatures made from hashes alone How this track counts toward your rank72 points in all Your rank is a code distance, d3 up to d25. Points come from questions you answer correctly and game levels you f",
    "w": 1
   },
   {

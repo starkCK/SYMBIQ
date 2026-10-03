@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "count": 7,
+  "count": 8,
   "entries": [
     {
       "date": "2026-07-19",
@@ -43,6 +43,12 @@
       "qnum": 7,
       "tier": "r",
       "question": "A surface code has distance d, running below the physical error threshold p_th. As you increase d, how does the logical error rate p_L actually "
+    },
+    {
+      "date": "2026-10-03",
+      "qnum": 8,
+      "tier": "g",
+      "question": "A 2026 re-costing puts breaking one Bitcoin key inside its confirmation window at under half a million physical qubits. The same page notes a 2022 estimate, und"
     }
   ]
 }

@@ -455,9 +455,9 @@
   {
    "id": "home-gap-orders",
    "page": "secure.html",
-   "value": "at most 2.7 orders of magnitude, not 6.2",
+   "value": "at most 2.6 orders of magnitude, not 6.2",
    "formula": "log₁₀(attack estimate ÷ qubits on the largest superconducting chip on record, IBM Condor)",
-   "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.65 orders. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",
+   "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.649 orders, 2.6 to one decimal. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",
    "tool": "tools/gen_btc_chart.py",
    "verified_at": "2026-09-30",
    "falsifier": "“Fewer than half a million” is an upper bound, so every gap here is an upper bound. Condor is a 2023 chip, and the frontier stopped competing on raw qubit count after 2023, so a bigger chip shrinks the gap without any algorithmic progress. A neutral-atom array is compared on the slow-clock panel, not against this superconducting estimate."
@@ -483,9 +483,9 @@
   {
    "id": "btc-chart-gap-orders",
    "page": "bitcoin.html",
-   "value": "at most 2.7 orders of magnitude, not 6.2",
+   "value": "at most 2.6 orders of magnitude, not 6.2",
    "formula": "log₁₀(attack estimate ÷ qubits on the largest superconducting chip on record, IBM Condor)",
-   "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.65 orders. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",
+   "inputs": "2026: 5×10⁵ ÷ 1,121 = 446× = 2.649 orders, 2.6 to one decimal. 2022: 1.9×10⁹ ÷ 1,121 = 1.7×10⁶ = 6.23 orders. Against Google Willow (105): 4,762× = 3.68 orders. Machines from data/hardware.json; computed by tools/gen_btc_chart.py.",
    "tool": "tools/gen_btc_chart.py",
    "verified_at": "2026-09-30",
    "falsifier": "“Fewer than half a million” is an upper bound, so every gap here is an upper bound. Condor is a 2023 chip, and the frontier stopped competing on raw qubit count after 2023, so a bigger chip shrinks the gap without any algorithmic progress. A neutral-atom array is compared on the slow-clock panel, not against this superconducting estimate."

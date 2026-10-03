@@ -1,10 +1,9 @@
 {
   "schema": 1,
-  "id": "btc-half-million-moves",
-  "written": "2026-09-22",
-  "asked": false,
+  "date": "2026-10-03",
+  "qnum": 8,
   "tier": "g",
-  "receipt": "btc-500k",
+  "signal": "The desk's latest published Signal (8 September): IBM and the University of Chicago ran a 64-qubit circuit with 314 T gates, encoded in 76 physical qubits, and certified how good the answer was (arXiv:2607.25941). The new part is the certificate, not the size.",
   "question": {
     "text": "A 2026 re-costing puts breaking one Bitcoin key inside its confirmation window at under half a million physical qubits. The same page notes a 2022 estimate, under the same assumptions, put this at 1.9 billion. Should the half-million figure be treated as the settled number from here on?",
     "options": [
